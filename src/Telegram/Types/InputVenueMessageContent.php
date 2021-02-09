@@ -1,0 +1,61 @@
+<?php
+
+namespace SergiX44\Nutgram\Telegram\Types;
+
+/**
+ * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content}
+ * of a venue message to be sent as the result of an inline query.
+ * @see https://core.telegram.org/bots/api#inputvenuemessagecontent
+ */
+class InputVenueMessageContent
+{
+    /**
+     * Latitude of the venue in degrees
+     * @var float
+     */
+    public float $latitude;
+
+    /**
+     * Longitude of the venue in degrees
+     * @var float
+     */
+    public float $longitude;
+
+    /**
+     * Name of the venue
+     * @var string
+     */
+    public string $title;
+
+    /**
+     * Address of the venue
+     * @var string
+     */
+    public string $address;
+
+    /**
+     * Optional. Foursquare identifier of the venue, if known
+     * @var string
+     */
+    public string $foursquare_id;
+
+    /**
+     * Optional. Foursquare type of the venue.
+     * (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+     * @var string
+     */
+    public string $foursquare_type;
+
+    /**
+     * Optional. Google Places identifier of the venue
+     * @var string
+     */
+    public string $google_place_id;
+
+    /**
+     * Optional. Google Places type of the venue.
+     * (See {@see https://developers.google.com/places/web-service/supported_types supported types}.)
+     * @var string
+     */
+    public string $google_place_type;
+}
