@@ -18,7 +18,9 @@
     "php": "^7.4|^8.0",
     "ext-json": "*",
     "guzzlehttp/guzzle": "^7.2",
-    "netresearch/jsonmapper": "^4.0"
+    "netresearch/jsonmapper": "^4.0",
+    "opis/closure": "^3.6",
+    "php-di/php-di": "^6.3"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^2.17",
