@@ -15,4 +15,7 @@
             <directory suffix=".php">./src</directory>
         </include>
     </coverage>
+    <php>
+        <env name="TOKEN" value="TELEGRAM_TOKEN_HERE" force="true" />
+    </php>
 </phpunit>

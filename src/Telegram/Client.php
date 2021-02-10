@@ -8,6 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Message;
+use SergiX44\Nutgram\Telegram\Types\Update;
+use stdClass;
 
 /**
  * Trait Client
@@ -23,30 +25,47 @@ trait Client
      */
     public function sendMessage(string $text, ?array $opt = []): Message
     {
-        return $this->request(__FUNCTION__, Message::class, array_merge([
+        return $this->request(__FUNCTION__, array_merge([
             'text' => $text,
-        ], $opt));
+        ], $opt), Message::class);
+    }
+
+    /**
+     * @param  int  $timeout
+     * @param  array|null  $parameters
+     * @return mixed
+     */
+    public function getUpdates(array $parameters = [])
+    {
+        return $this->request(__FUNCTION__, $parameters, Update::class, [
+            'timeout' => $parameters['timeout'] + 1,
+        ]);
     }
 
     /**
      * @param  string  $method
-     * @param  string  $mapTo
      * @param  array|null  $parameters
+     * @param  string  $mapTo
+     * @param  array|null  $options
      * @return mixed
      */
-    protected function request(string $method, string $mapTo = 'Scalar', ?array $parameters = [])
+    protected function request(string $method, ?array $parameters = [], string $mapTo = stdClass::class, ?array $options = [])
     {
-        $promise = $this->http->postAsync($method, [
+        $promise = $this->http->postAsync($method, array_merge([
             'json' => $parameters,
-        ])->then(function (ResponseInterface $response) use ($mapTo) {
+        ], $options))->then(function (ResponseInterface $response) use ($mapTo) {
             $body = $response->getBody()->getContents();
             $json = json_decode($body);
 
-            if (is_scalar($json->result) && $mapTo === 'Scalar') {
+            if (is_scalar($json->result)) {
                 return $json->result;
             }
 
-            return $this->jsonMapper->map($json->result, new $mapTo);
+            if (is_array($json->result)) {
+                return $this->mapper->mapArray($json->result, [], $mapTo);
+            }
+
+            return $this->mapper->map($json->result, new $mapTo);
         }, function ($e) {
             if ($e instanceof RequestException) {
                 $body = $e->getResponse()->getBody()->getContents();

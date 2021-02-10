@@ -6,13 +6,14 @@ namespace SergiX44\Nutgram;
 use DI\Container;
 use GuzzleHttp\Client as Guzzle;
 use JsonMapper;
+use SergiX44\Nutgram\Handlers\ResolveHandlers;
+use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Client;
 
-class Nutgram
+class Nutgram extends ResolveHandlers
 {
     use Client;
-    use ProcessUpdates;
 
     /**
      * @var string
@@ -32,12 +33,7 @@ class Nutgram
     /**
      * @var JsonMapper
      */
-    private JsonMapper $jsonMapper;
-
-    /**
-     * @var Container
-     */
-    private Container $container;
+    private JsonMapper $mapper;
 
     /**
      * Nutgram constructor.
@@ -57,11 +53,11 @@ class Nutgram
             'timeout' => $config['client_timeout'] ?? 5,
         ]);
 
-        $this->jsonMapper = new JsonMapper();
+        $this->mapper = new JsonMapper();
 
-        $this->container->set('config', $this->config);
         $this->container->set(Guzzle::class, $this->http);
-        $this->container->set(JsonMapper::class, $this->jsonMapper);
+        $this->container->set(JsonMapper::class, $this->mapper);
+        $this->container->set(RunningMode::class, $this->container->make($config['running_mode'] ?? Polling::class));
     }
 
     /**
@@ -79,5 +75,13 @@ class Nutgram
     public function getContainer(): Container
     {
         return $this->container;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfig(): array
+    {
+        return $this->config;
     }
 }
