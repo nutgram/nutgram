@@ -8,7 +8,7 @@ use DI\Container;
 use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Telegram\Types\Message;
 
-abstract class HandlersChain extends MiddlewareChain
+abstract class CollectHandlers extends MiddlewareChain
 {
     /**
      * @var Container
