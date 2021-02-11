@@ -3,20 +3,19 @@
 
 namespace SergiX44\Nutgram\Middleware;
 
-
-use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Nutgram;
 
 class Link
 {
-
+    /**
+     * @var
+     */
     private $callable;
 
     /**
      * @var Link|null
      */
     private ?Link $next;
-
 
     /**
      * Link constructor.
@@ -31,10 +30,12 @@ class Link
 
     /**
      * @param  Nutgram  $bot
-     * @return false|mixed
+     * @return mixed
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     public function __invoke(Nutgram $bot)
     {
-        return call_user_func($this->callable, $bot, $this->next);
+        return call_user_func($bot->resolve($this->callable), $bot, $this->next);
     }
 }

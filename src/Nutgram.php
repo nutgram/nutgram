@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram;
 
 use DI\Container;
 use GuzzleHttp\Client as Guzzle;
+use InvalidArgumentException;
 use JsonMapper;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\RunningMode\Polling;
@@ -57,7 +58,12 @@ class Nutgram extends ResolveHandlers
 
         $this->container->set(Guzzle::class, $this->http);
         $this->container->set(JsonMapper::class, $this->mapper);
-        $this->container->set(RunningMode::class, $this->container->make($config['running_mode'] ?? Polling::class));
+        $runningMode = $config['running_mode'] ?? Polling::class;
+        if (is_object($runningMode)) {
+            $this->container->set(RunningMode::class, $runningMode);
+        } else {
+            $this->container->set(RunningMode::class, $this->container->get($runningMode));
+        }
     }
 
     /**
@@ -83,5 +89,30 @@ class Nutgram extends ResolveHandlers
     public function getConfig(): array
     {
         return $this->config;
+    }
+
+    /**
+     * @param $callable
+     * @return callable|mixed
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     */
+    public function resolve($callable)
+    {
+        // if is a class definition, resolve it to an instance through the container
+        if (is_array($callable) && count($callable) === 2 && is_string($callable[0]) && class_exists($callable[0])) {
+            $callable[0] = $this->container->make($callable[0]);
+        }
+
+        // if passing a class, we probably want resolve that and call the __invoke method
+        if (is_string($callable) && class_exists($callable)) {
+            $callable = $this->container->make($callable);
+        }
+
+        if (! is_callable($callable)) {
+            throw new InvalidArgumentException('The callback parameter must be a valid callable.');
+        }
+
+        return $callable;
     }
 }

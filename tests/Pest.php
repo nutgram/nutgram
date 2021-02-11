@@ -39,7 +39,17 @@
 |
 */
 
-//function something()
-//{
-//    // ..
-//}
+use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Tests\Fixtures\TestingRunningMode;
+
+function getInstance($update = null): Nutgram
+{
+    return new Nutgram($_ENV['TOKEN'] ?? 'FAKE', [
+        'running_mode' => new TestingRunningMode($update),
+    ]);
+}
+
+dataset('message', function () {
+    $file = file_get_contents(__DIR__.'/Updates/message.json');
+    return [json_decode($file)];
+});

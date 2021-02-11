@@ -3,47 +3,54 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
-
 use DI\Container;
 use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Telegram\Types\Message;
 
 abstract class CollectHandlers extends MiddlewareChain
 {
-    /**
-     * @var Container
-     */
-    protected Container $container;
 
+    /**
+     * @var array
+     */
     protected array $handlers;
 
-    public function onCommand(string $command, $callable)
+    /**
+     * @param  string  $command
+     * @param $callable
+     * @return Handler
+     */
+    public function onCommand(string $command, $callable): Handler
     {
-        $handler = new Handler($callable, $command);
-        $this->handlers[Message::class][$command] = $handler;
-        return $handler;
+        $command = "/{$command}";
+
+        return $this->handlers[Message::class][$command] = new Handler($callable, $command);
     }
 
-    public function onMessage($callable)
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onMessage($callable): Handler
     {
-        $handler = new Handler($callable);
-        $this->handlers[Message::class][] = $handler;
-        return $handler;
+        return $this->handlers[Message::class][] = new Handler($callable);
     }
 
-    public function onText(string $pattern, $callable)
+    /**
+     * @param  string  $pattern
+     * @param $callable
+     * @return Handler
+     */
+    public function onText(string $pattern, $callable): Handler
     {
-
+        return $this->handlers[Message::class][$pattern] = new Handler($callable);
     }
 
     public function onCallbackQuery($callable)
     {
-
     }
 
     public function onException($callable)
     {
-
     }
-
 }
