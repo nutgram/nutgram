@@ -37,6 +37,11 @@ class Nutgram extends ResolveHandlers
     private JsonMapper $mapper;
 
     /**
+     * @var Container
+     */
+    protected Container $container;
+
+    /**
      * Nutgram constructor.
      * @param  string  $token
      * @param  array  $config
@@ -109,7 +114,7 @@ class Nutgram extends ResolveHandlers
             $callable = $this->container->make($callable);
         }
 
-        if (! is_callable($callable)) {
+        if (!is_callable($callable)) {
             throw new InvalidArgumentException('The callback parameter must be a valid callable.');
         }
 
