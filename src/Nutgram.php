@@ -10,11 +10,13 @@ use JsonMapper;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Cache\ArrayCache;
 use SergiX44\Nutgram\Conversation\ConversationRepository;
+use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Update;
+use Throwable;
 
 class Nutgram extends ResolveHandlers
 {
@@ -103,6 +105,7 @@ class Nutgram extends ResolveHandlers
      */
     public function run()
     {
+        $this->applyGlobalMiddleware();
         $this->container->get(RunningMode::class)->processUpdates($this);
     }
 
@@ -127,6 +130,22 @@ class Nutgram extends ResolveHandlers
         }
 
         $this->fireHandlers($handlers);
+    }
+
+    /**
+     * @param  array  $handlers
+     */
+    protected function fireHandlers(array $handlers)
+    {
+        try {
+            /** @var Handler $handler */
+            foreach ($handlers as $handler) {
+                $handler->getChain()($this);
+            }
+        } catch (Throwable $e) {
+            //TODO
+            throw $e;
+        }
     }
 
     /**

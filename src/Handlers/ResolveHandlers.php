@@ -58,7 +58,7 @@ abstract class ResolveHandlers extends CollectHandlers
     /**
      * @param  string  $type
      * @param  array  $handlers
-     * @return array
+     * @return void
      */
     protected function getHandlersByType(string $type, array &$handlers): void
     {
@@ -70,17 +70,14 @@ abstract class ResolveHandlers extends CollectHandlers
 
     /**
      * @param  string  $type
-     * @param $value
+     * @param  string  $value
      * @param  array  $handlers
      */
-    protected function filterHandlersBy(string $type, $value, array &$handlers): void
+    protected function filterHandlersBy(string $type, string $value, array &$handlers): void
     {
-        /**
-         * @var string $pattern
-         * @var Handler $handler
-         */
-        foreach ($this->handlers[$type] ?? [] as $pattern => $handler) {
-            if ($handler->matching($pattern, $value)) {
+        /*** @var Handler $handler */
+        foreach ($this->handlers[$type] ?? [] as $handler) {
+            if ($handler->matching($value)) {
                 $handlers[] = $handler;
             }
         }
@@ -92,5 +89,28 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected function continueConversation(Conversation $conversation): array
     {
+        $resolvedHandlers = $this->resolveHandlers();
+        if (!$conversation->skipHandlers() && !empty($resolvedHandlers)) {
+            return $resolvedHandlers;
+        }
+
+        $handler = new Handler($conversation);
+
+        if (!$conversation->skipMiddlewares()) {
+            $handler->middleware($this->chain);
+        }
+
+        return [$handler];
+    }
+
+    protected function applyGlobalMiddleware(): void
+    {
+        if ($this->chain !== null) {
+            array_walk_recursive($this->handlers, function ($leaf) {
+                if ($leaf instanceof Handler) {
+                    $leaf->middleware($this->chain);
+                }
+            });
+        }
     }
 }

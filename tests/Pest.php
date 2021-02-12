@@ -46,10 +46,12 @@ function getInstance($update = null): Nutgram
 {
     $bot = new Nutgram($_ENV['TOKEN'] ?? 'FAKE');
     $bot->setRunningMode(new TestingRunningMode($update));
+
     return $bot;
 }
 
 dataset('message', function () {
     $file = file_get_contents(__DIR__.'/Updates/message.json');
+
     return [json_decode($file)];
 });

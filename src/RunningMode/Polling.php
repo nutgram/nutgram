@@ -56,6 +56,7 @@ class Polling implements RunningMode
                 if ($last) {
                     $offset = $last->update_id;
                 }
+
                 continue;
             }
 

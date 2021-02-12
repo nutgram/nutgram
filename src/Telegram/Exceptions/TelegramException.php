@@ -6,7 +6,6 @@ use Exception;
 
 class TelegramException extends Exception
 {
-
     /**
      * TelegramException constructor.
      * @param $message

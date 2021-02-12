@@ -23,7 +23,7 @@ class Handler extends MiddlewareChain
     /**
      * @var array
      */
-    private array $parameters;
+    private array $parameters = [];
 
     private $callable;
 
@@ -40,13 +40,12 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param  string  $pattern
      * @param  string  $value
      * @return bool
      */
-    public function matching(string $pattern, string $value): bool
+    public function matching(string $value): bool
     {
-        $pattern = str_replace('/', '\/', $pattern);
+        $pattern = str_replace('/', '\/', $this->pattern);
         $regex = '/^'.preg_replace(self::PARAM_NAME_REGEX, '(?<$1>.*)', $pattern).' ?$/miu';
 
         $regexMatched = (bool) preg_match($regex, $value, $matches);

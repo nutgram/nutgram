@@ -27,7 +27,6 @@ class TestingRunningMode implements RunningMode
         $this->update = $update;
     }
 
-
     public function processUpdates(Nutgram $bot)
     {
         $bot->processUpdate($this->mapper->map($this->update, new Update()));

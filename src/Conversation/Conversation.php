@@ -65,6 +65,7 @@ abstract class Conversation
     protected function next(string $step): Conversation
     {
         $this->step = $step;
+
         return $this;
     }
 
@@ -88,6 +89,7 @@ abstract class Conversation
     protected function setSkipHandlers(bool $skipHandlers): Conversation
     {
         $this->skipHandlers = $skipHandlers;
+
         return $this;
     }
 
@@ -98,6 +100,7 @@ abstract class Conversation
     protected function setSkipMiddlewares(bool $skipMiddlewares): Conversation
     {
         $this->skipMiddlewares = $skipMiddlewares;
+
         return $this;
     }
 
