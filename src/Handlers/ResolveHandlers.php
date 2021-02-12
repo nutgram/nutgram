@@ -6,6 +6,8 @@ namespace SergiX44\Nutgram\Handlers;
 use SergiX44\Nutgram\Conversation\Conversation;
 use SergiX44\Nutgram\Conversation\ConversationRepository;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
+use SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Nutgram\Telegram\Types\Update;
 
 /**
@@ -30,18 +32,58 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected function resolveHandlers(): array
     {
-        $resolvedHandlers = $this->handlersByType(Update::class, []);
+        $resolvedHandlers = [];
+        $this->getHandlersByType(Update::class, $resolvedHandlers);
         $updateType = $this->update->getType();
 
         if ($updateType === UpdateTypes::MESSAGE) {
-
+            $this->getHandlersByType(Message::class, $resolvedHandlers);
+            $text = $this->update->message->text;
+            if ($text !== null) {
+                $this->filterHandlersBy(Message::class, $text, $resolvedHandlers);
+            }
         } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
-
+            $this->getHandlersByType(CallbackQuery::class, $resolvedHandlers);
+            $data = $this->update->callback_query->data;
+            if ($data !== null) {
+                $this->filterHandlersBy(CallbackQuery::class, $data, $resolvedHandlers);
+            }
         } else {
-            $resolvedHandlers = $this->handlersByType($updateType, $resolvedHandlers);
+            $this->getHandlersByType($updateType, $resolvedHandlers);
         }
 
         return $resolvedHandlers;
+    }
+
+    /**
+     * @param  string  $type
+     * @param  array  $handlers
+     * @return array
+     */
+    protected function getHandlersByType(string $type, array &$handlers): void
+    {
+        $typedHandlers = $this->handlers[$type] ?? null;
+        if ($typedHandlers !== null) {
+            $handlers = array_merge($handlers, $typedHandlers);
+        }
+    }
+
+    /**
+     * @param  string  $type
+     * @param $value
+     * @param  array  $handlers
+     */
+    protected function filterHandlersBy(string $type, $value, array &$handlers): void
+    {
+        /**
+         * @var string $pattern
+         * @var Handler $handler
+         */
+        foreach ($this->handlers[$type] ?? [] as $pattern => $handler) {
+            if ($handler->matching($pattern, $value)) {
+                $handlers[] = $handler;
+            }
+        }
     }
 
     /**
@@ -50,20 +92,5 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected function continueConversation(Conversation $conversation): array
     {
-    }
-
-    /**
-     * @param  string  $type
-     * @param  array  $handlers
-     * @return array
-     */
-    protected function handlersByType(string $type, array $handlers): array
-    {
-        $typedHandlers = $this->handlers[$type] ?? null;
-        if ($typedHandlers !== null) {
-            return array_merge_recursive($handlers, $typedHandlers);
-        }
-
-        return $handlers;
     }
 }
