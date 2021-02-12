@@ -13,13 +13,13 @@ class ShippingOption
      * @var string
      */
     public string $id;
-    
+
     /**
      * Option title
      * @var string
      */
     public string $title;
-    
+
     /**
      * List of price portions
      * @var LabeledPrice[]

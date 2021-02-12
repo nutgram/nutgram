@@ -15,19 +15,19 @@ class ChosenInlineResult
      * @var string
      */
     public string $result_id;
-    
+
     /**
      * The user that chose the result
      * @var User
      */
     public User $from;
-    
+
     /**
      * Optional. Sender location, only for bots that require user location
      * @var Location
      */
     public Location $location;
-    
+
     /**
      * Optional. Identifier of the sent inline message.
      * Available only if there is an {@see https://core.telegram.org/bots/api#inlinekeyboardmarkup inline keyboard}
@@ -37,7 +37,7 @@ class ChosenInlineResult
      * @var string
      */
     public string $inline_message_id;
-    
+
     /**
      * The query that was used to obtain the result
      * @var string

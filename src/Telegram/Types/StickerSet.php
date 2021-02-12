@@ -13,31 +13,31 @@ class StickerSet
      * @var string
      */
     public string $name;
-    
+
     /**
      * Sticker set title
      * @var string
      */
     public string $title;
-    
+
     /**
      * True, if the sticker is animated
      * @var bool
      */
     public bool $is_animated;
-    
+
     /**
      * True, if the sticker set contains masks
      * @var bool
      */
     public bool $contains_masks;
-    
+
     /**
      * List of all set stickers
      * @var Sticker[]
      */
     public array $stickers;
-    
+
     /**
      * Optional. Sticker set thumbnail in the .WEBP or .TGS format
      * @var PhotoSize

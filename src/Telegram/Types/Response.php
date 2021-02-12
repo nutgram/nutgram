@@ -13,25 +13,25 @@ class Response
      * @var bool
      */
     public bool $ok;
-    
+
     /**
      * An Integer field but its contents are subject to change in the future.
      * @var int
      */
     public int $error_code;
-    
+
     /**
      * Optional field with a human-readable description of the result.
      * @var string
      */
     public string $description;
-    
+
     /**
      * Result data
      * @var object
      */
     public object $result;
-    
+
     /**
      * Optional field which can help to automatically handle the error.
      * @var ResponseParameters

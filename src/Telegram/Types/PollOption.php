@@ -13,7 +13,7 @@ class PollOption
      * @var string
      */
     public string $text;
-    
+
     /**
      * Number of users that voted for this option
      * @var int

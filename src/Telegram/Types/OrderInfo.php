@@ -13,19 +13,19 @@ class OrderInfo
      * @var string
      */
     public string $name;
-    
+
     /**
      * Optional. User's phone number
      * @var string
      */
     public string $phone_number;
-    
+
     /**
      * Optional. User email
      * @var string
      */
     public string $email;
-    
+
     /**
      * Optional. User shipping address
      * @var ShippingAddress

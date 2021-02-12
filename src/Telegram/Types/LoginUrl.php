@@ -26,13 +26,13 @@ class LoginUrl
      * @var string
      */
     public string $url;
-    
+
     /**
      * Optional. New text of the button in forwarded messages.
      * @var string
      */
     public string $forward_text;
-    
+
     /**
      * Optional. Optional. Username of a bot, which will be used for user authorization.
      * See Setting up a bot for more details.
@@ -44,7 +44,7 @@ class LoginUrl
      * @var string
      */
     public string $bot_username;
-    
+
     /**
      * Optional. Pass True to request the permission for your bot to send messages to the user.
      * @var bool

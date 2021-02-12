@@ -13,7 +13,7 @@ class PassportData
      * @var EncryptedPassportElement[]
      */
     public array $data;
-    
+
     /**
      * Encrypted credentials required to decrypt the data
      * @var EncryptedCredentials

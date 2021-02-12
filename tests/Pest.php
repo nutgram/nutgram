@@ -44,9 +44,9 @@ use SergiX44\Nutgram\Tests\Fixtures\TestingRunningMode;
 
 function getInstance($update = null): Nutgram
 {
-    return new Nutgram($_ENV['TOKEN'] ?? 'FAKE', [
-        'running_mode' => new TestingRunningMode($update),
-    ]);
+    $bot = new Nutgram($_ENV['TOKEN'] ?? 'FAKE');
+    $bot->setRunningMode(new TestingRunningMode($update));
+    return $bot;
 }
 
 dataset('message', function () {

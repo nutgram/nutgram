@@ -14,7 +14,7 @@ class InputLocationMessageContent
      * @var float
      */
     public float $latitude;
-    
+
     /**
      * Longitude of the location in degrees
      * @var float

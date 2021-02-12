@@ -7,10 +7,14 @@ use DI\Container;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use JsonMapper;
+use Psr\SimpleCache\CacheInterface;
+use SergiX44\Nutgram\Cache\ArrayCache;
+use SergiX44\Nutgram\Conversation\ConversationRepository;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Types\Update;
 
 class Nutgram extends ResolveHandlers
 {
@@ -45,6 +49,8 @@ class Nutgram extends ResolveHandlers
      * Nutgram constructor.
      * @param  string  $token
      * @param  array  $config
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     public function __construct(string $token, array $config = [])
     {
@@ -63,12 +69,32 @@ class Nutgram extends ResolveHandlers
 
         $this->container->set(Guzzle::class, $this->http);
         $this->container->set(JsonMapper::class, $this->mapper);
-        $runningMode = $config['running_mode'] ?? Polling::class;
-        if (is_object($runningMode)) {
-            $this->container->set(RunningMode::class, $runningMode);
+        $this->container->set(CacheInterface::class, $config['cache'] ?? new ArrayCache());
+
+        $this->setRunningMode(Polling::class);
+        $this->conversation = $this->container->get(ConversationRepository::class);
+    }
+
+    /**
+     * @param  string|RunningMode  $classOrInstance
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     */
+    public function setRunningMode($classOrInstance): void
+    {
+        if ($classOrInstance instanceof RunningMode) {
+            $this->container->set(RunningMode::class, $classOrInstance);
         } else {
-            $this->container->set(RunningMode::class, $this->container->get($runningMode));
+            $this->container->set(RunningMode::class, $this->container->get($classOrInstance));
         }
+    }
+
+    /**
+     * @param  CacheInterface  $cache
+     */
+    public function setCache(CacheInterface $cache): void
+    {
+        $this->container->set(CacheInterface::class, $cache);
     }
 
     /**
@@ -78,6 +104,31 @@ class Nutgram extends ResolveHandlers
     public function run()
     {
         $this->container->get(RunningMode::class)->processUpdates($this);
+    }
+
+    /**
+     * @param  Update  $update
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function processUpdate(Update $update): void
+    {
+        $this->update = $update;
+        $this->container->set(Update::class, $update);
+
+        $chatId = $update->getChatId();
+        $userId = $update->getUser()->id;
+
+        $conversation = $this->conversation->get($userId, $chatId);
+        if ($conversation !== null) {
+            $conversation->setBot($this);
+            if (!$conversation->skipHandlers()) {
+                $this->resolveHandlers();
+            }
+
+            $this->continueConversation($conversation);
+        } else {
+            $this->resolveHandlers();
+        }
     }
 
     /**

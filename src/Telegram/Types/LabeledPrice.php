@@ -13,7 +13,7 @@ class LabeledPrice
      * @var string
      */
     public string $label;
-    
+
     /**
      * Price of the product in the smallest units of the
      * {@see https://core.telegram.org/bots/payments#supported-currencies currency} (integer, not float/double).

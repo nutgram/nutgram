@@ -16,31 +16,31 @@ class MessageEntity
      * @var string
      */
     public string $type;
-    
+
     /**
      * Offset in UTF-16 code units to the start of the entity
      * @var int
      */
     public int $offset;
-    
+
     /**
      * Length of the entity in UTF-16 code units
      * @var int
      */
     public int $length;
-    
+
     /**
      * Optional. For “text_link” only, url that will be opened after user taps on the text
      * @var string
      */
     public string $url;
-    
+
     /**
      * Optional. For “text_mention” only, the mentioned user
      * @var User
      */
     public User $user;
-    
+
     /**
      * Optional. For “pre” only, the programming language of the entity text
      * @var string

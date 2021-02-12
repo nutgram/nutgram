@@ -15,37 +15,37 @@ class InlineQueryResultCachedVideo
      * @var string
      */
     public string $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 bytes
      * @var string
      */
     public string $id;
-    
+
     /**
      * A valid file identifier for the video file
      * @var string
      */
     public string $video_file_id;
-    
+
     /**
      * Title for the result
      * @var string
      */
     public string $title;
-    
+
     /**
      * Optional. Short description of the result
      * @var string
      */
     public string $description;
-    
+
     /**
      * Optional. Caption of the video to be sent, 0-1024 characters
      * @var string
      */
     public string $caption;
-    
+
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
      * {@see https://core.telegram.org/bots/api#html-style HTML},
@@ -61,7 +61,7 @@ class InlineQueryResultCachedVideo
      * @var MessageEntity[]
      */
     public array $caption_entities;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
@@ -69,7 +69,7 @@ class InlineQueryResultCachedVideo
      * @var InlineKeyboardMarkup
      */
     public InlineKeyboardMarkup $reply_markup;
-    
+
     /**
      * Optional. Content of the message to be sent instead of the video
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent

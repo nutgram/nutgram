@@ -14,19 +14,19 @@ class PassportElementErrorUnspecified
      * @var string
      */
     public string $source;
-    
+
     /**
      * Type of element of the user's Telegram Passport which has the issue
      * @var string
      */
     public string $type;
-    
+
     /**
      * Base64-encoded element hash
      * @var string
      */
     public string $element_hash;
-    
+
     /**
      * Error message
      * @var string

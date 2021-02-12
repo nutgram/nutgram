@@ -32,7 +32,7 @@ class ForceReply
      * @var bool
      */
     public bool $force_reply;
-    
+
     /**
      * Optional. Use this parameter if you want to force reply from specific users only.
      * Targets:

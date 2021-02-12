@@ -3,6 +3,8 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use SergiX44\Nutgram\Conversation\Conversation;
+use SergiX44\Nutgram\Conversation\ConversationRepository;
 use SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Nutgram\Telegram\Types\Update;
 
@@ -12,20 +14,35 @@ use SergiX44\Nutgram\Telegram\Types\Update;
  */
 abstract class ResolveHandlers extends CollectHandlers
 {
-    use InteractsWithUpdates;
+
+    /**
+     * @var ConversationRepository
+     */
+    protected ConversationRepository $conversation;
 
     /**
      * @var Update
      */
     protected Update $update;
 
-    /**
-     * @param  Update  $update
-     */
-    public function processUpdate(Update $update)
+    protected function resolveHandlers()
     {
-        $this->update = $update;
-        $this->handlers[Message::class][0]($this);
+        $resolvedHandlers = [];
+        $this->handlersByType(Update::class, $resolvedHandlers);
+        $this->handlersByType(Message::class, $resolvedHandlers);
 
+        // TODO
+    }
+
+    protected function continueConversation(Conversation $conversation)
+    {
+    }
+
+    protected function handlersByType(string $type, array &$handlers): void
+    {
+        $typedHandlers = $this->handlers[$type] ?? null;
+        if ($typedHandlers !== null) {
+            $handlers = array_merge_recursive($handlers, $typedHandlers);
+        }
     }
 }

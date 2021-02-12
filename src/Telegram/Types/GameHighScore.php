@@ -13,13 +13,13 @@ class GameHighScore
      * @var int
      */
     public int $position;
-    
+
     /**
      * User
      * @var User
      */
     public User $user;
-    
+
     /**
      * Score
      * @var int

@@ -3,7 +3,6 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
-use DI\Container;
 use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Telegram\Types\Message;
 

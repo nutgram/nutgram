@@ -13,27 +13,27 @@ class InlineKeyboardButton
      * @var string
      */
     public string $text;
-    
+
     /**
      * Optional. HTTP or tg:// url to be opened when button is pressed
      * @var string
      */
     public string $url;
-    
+
     /**
      * Optional. An HTTP URL used to automatically authorize the user.
      * Can be used as a replacement for the {@see https://core.telegram.org/widgets/login Telegram Login Widget}.
      * @var LoginUrl
      */
     public LoginUrl $login_url;
-    
+
     /**
      * Optional. Data to be sent in a {@see https://core.telegram.org/bots/api#callbackquery callback}
      * query to the bot when button is pressed, 1-64 bytes
      * @var string
      */
     public string $callback_data;
-    
+
     /**
      * Optional. If set, pressing the button will prompt the user to select one of their chats,
      * open that chat and insert the bot‘s username and the specified
@@ -47,7 +47,7 @@ class InlineKeyboardButton
      * @var string
      */
     public string $switch_inline_query;
-    
+
     /**
      * Optional. If set, pressing the button will insert the bot‘s username
      * and the specified inline query in the current chat's input field.
@@ -57,7 +57,7 @@ class InlineKeyboardButton
      * @var string
      */
     public string $switch_inline_query_current_chat;
-    
+
     /**
      * Optional. Description of the game that will be launched when the user presses the button.
      *
@@ -65,7 +65,7 @@ class InlineKeyboardButton
      * @var string
      */
     public string $callback_game;
-    
+
     /**
      * Optional. Specify True, to send a Pay button.
      *

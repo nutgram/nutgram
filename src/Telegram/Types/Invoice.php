@@ -13,25 +13,25 @@ class Invoice
      * @var string
      */
     public string $title;
-    
+
     /**
      * Product description
      * @var string
      */
     public string $description;
-    
+
     /**
      * Unique bot deep-linking parameter that can be used to generate this invoice
      * @var string
      */
     public string $start_parameter;
-    
+
     /**
      * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code
      * @var string
      */
     public string $currency;
-    
+
     /**
      * Price of the product in the smallest units of the
      * {@see https://core.telegram.org/bots/payments#supported-currencies currency} (integer, not float/double).

@@ -15,7 +15,7 @@ class ReplyKeyboardMarkup
      * @var KeyBoardButton[][]
      */
     public array $keyboard;
-    
+
     /**
      * Optional. Requests clients to resize the keyboard vertically for optimal fit
      * (e.g., make the keyboard smaller if there are just two rows of buttons).
@@ -23,7 +23,7 @@ class ReplyKeyboardMarkup
      * @var bool
      */
     public bool $resize_keyboard;
-    
+
     /**
      * Optional. Requests clients to hide the keyboard as soon as it's been used.
      * The keyboard will still be available, but clients will automatically display the usual
@@ -33,7 +33,7 @@ class ReplyKeyboardMarkup
      * @var bool
      */
     public bool $one_time_keyboard;
-    
+
     /**
      * Optional. Use this parameter if you want to show the keyboard to specific users only.
      * Targets:

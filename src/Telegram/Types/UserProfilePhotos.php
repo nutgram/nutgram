@@ -13,7 +13,7 @@ class UserProfilePhotos
      * @var int
      */
     public int $total_count;
-    
+
     /**
      * Requested profile pictures (in up to 4 sizes each)
      * @var PhotoSize[][]

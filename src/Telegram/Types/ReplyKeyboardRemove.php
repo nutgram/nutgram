@@ -20,7 +20,7 @@ class ReplyKeyboardRemove
      * @var bool
      */
     public bool $remove_keyboard;
-    
+
     /**
      * Optional. Optional. Use this parameter if you want to remove the keyboard for specific users only.
      * Targets:

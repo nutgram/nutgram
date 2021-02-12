@@ -16,19 +16,19 @@ class InlineQueryResultCachedSticker
      * @var string
      */
     public string $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 bytes
      * @var string
      */
     public string $id;
-    
+
     /**
      * A valid file identifier of the sticker
      * @var string
      */
     public string $sticker_file_id;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
@@ -36,7 +36,7 @@ class InlineQueryResultCachedSticker
      * @var InlineKeyboardMarkup
      */
     public InlineKeyboardMarkup $reply_markup;
-    
+
     /**
      * Optional. Content of the message to be sent instead of the sticker
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent

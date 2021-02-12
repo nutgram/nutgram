@@ -17,19 +17,19 @@ class File
      * @var string
      */
     public string $file_id;
-    
+
     /**
      * Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
      * @var string
      */
     public string $file_unique_id;
-    
+
     /**
      * Optional. File size, if known
      * @var int
      */
     public int $file_size;
-    
+
     /**
      * Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
      * @var string

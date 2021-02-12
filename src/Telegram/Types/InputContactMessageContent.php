@@ -14,19 +14,19 @@ class InputContactMessageContent
      * @var string
      */
     public string $phone_number;
-    
+
     /**
      * Contact's first name
      * @var string
      */
     public string $first_name;
-    
+
     /**
      * Optional. Contact's last name
      * @var string
      */
     public string $last_name;
-    
+
     /**
      * Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
      * @var string

@@ -13,7 +13,7 @@ class BotCommand
      * @var string
      */
     public string $command;
-    
+
     /**
      * Description of the command, 3-256 characters.
      * @var string

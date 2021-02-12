@@ -16,19 +16,19 @@ class InlineQueryResultGame
      * @var string
      */
     public string $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 bytes
      * @var string
      */
     public string $id;
-    
+
     /**
      * Short name of the game
      * @var string
      */
     public string $game_short_name;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}

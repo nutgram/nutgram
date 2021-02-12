@@ -14,7 +14,7 @@ class InputTextMessageContent
      * @var string
      */
     public string $message_text;
-    
+
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
      * {@see https://core.telegram.org/bots/api#html-style HTML},
@@ -30,7 +30,7 @@ class InputTextMessageContent
      * @var MessageEntity[]
      */
     public array $entities;
-    
+
     /**
      * Optional. Disables link previews for links in the sent message
      * @var string

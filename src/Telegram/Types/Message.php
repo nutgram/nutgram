@@ -371,7 +371,7 @@ class Message
         if ($this->text !== null) {
             $result = preg_match('/^(\/\w+)(@\w+)?(.+)?$/', $this->text, $matches);
 
-            if (! $result) {
+            if (!$result) {
                 return null;
             }
 
@@ -383,7 +383,7 @@ class Message
 
     /**
      * Returns the args as array or as string
-     * @param bool|int $asStringorKey True to get an array of strings;
+     * @param  bool|int  $asStringorKey  True to get an array of strings;
      *                                False to get a string;
      *                                Integer to get the string at the array index position.
      * @return array|string
