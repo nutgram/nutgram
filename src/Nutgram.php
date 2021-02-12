@@ -121,14 +121,12 @@ class Nutgram extends ResolveHandlers
         $conversation = $this->conversation->get($userId, $chatId);
         if ($conversation !== null) {
             $conversation->setBot($this);
-            if (!$conversation->skipHandlers()) {
-                $this->resolveHandlers();
-            }
-
-            $this->continueConversation($conversation);
+            $handlers = $this->continueConversation($conversation);
         } else {
-            $this->resolveHandlers();
+            $handlers = $this->resolveHandlers();
         }
+
+        $this->fireHandlers($handlers);
     }
 
     /**

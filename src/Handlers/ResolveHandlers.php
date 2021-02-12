@@ -5,7 +5,7 @@ namespace SergiX44\Nutgram\Handlers;
 
 use SergiX44\Nutgram\Conversation\Conversation;
 use SergiX44\Nutgram\Conversation\ConversationRepository;
-use SergiX44\Nutgram\Telegram\Types\Message;
+use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Types\Update;
 
 /**
@@ -25,24 +25,45 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected Update $update;
 
-    protected function resolveHandlers()
+    /**
+     * @return array
+     */
+    protected function resolveHandlers(): array
     {
-        $resolvedHandlers = [];
-        $this->handlersByType(Update::class, $resolvedHandlers);
-        $this->handlersByType(Message::class, $resolvedHandlers);
+        $resolvedHandlers = $this->handlersByType(Update::class, []);
+        $updateType = $this->update->getType();
 
-        // TODO
+        if ($updateType === UpdateTypes::MESSAGE) {
+
+        } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
+
+        } else {
+            $resolvedHandlers = $this->handlersByType($updateType, $resolvedHandlers);
+        }
+
+        return $resolvedHandlers;
     }
 
-    protected function continueConversation(Conversation $conversation)
+    /**
+     * @param  Conversation  $conversation
+     * @return array
+     */
+    protected function continueConversation(Conversation $conversation): array
     {
     }
 
-    protected function handlersByType(string $type, array &$handlers): void
+    /**
+     * @param  string  $type
+     * @param  array  $handlers
+     * @return array
+     */
+    protected function handlersByType(string $type, array $handlers): array
     {
         $typedHandlers = $this->handlers[$type] ?? null;
         if ($typedHandlers !== null) {
-            $handlers = array_merge_recursive($handlers, $typedHandlers);
+            return array_merge_recursive($handlers, $typedHandlers);
         }
+
+        return $handlers;
     }
 }
