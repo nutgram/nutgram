@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use JsonMapper;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Cache\ArrayCache;
+use SergiX44\Nutgram\Conversation\Conversation;
 use SergiX44\Nutgram\Conversation\ConversationRepository;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
@@ -123,7 +124,6 @@ class Nutgram extends ResolveHandlers
 
         $conversation = $this->conversation->get($userId, $chatId);
         if ($conversation !== null) {
-            $conversation->setBot($this);
             $handlers = $this->continueConversation($conversation);
         } else {
             $handlers = $this->resolveHandlers();
@@ -146,6 +146,24 @@ class Nutgram extends ResolveHandlers
             //TODO
             throw $e;
         }
+    }
+
+    /**
+     * @param  Conversation  $conversation
+     * @return $this
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function conversationStep(Conversation $conversation): self
+    {
+        if ($this->update === null) {
+            throw new InvalidArgumentException('You cannot set a conversation step without processing and update.');
+        }
+
+        $chatId = $this->update->getChatId();
+        $userId = $this->update->getUser()->id;
+
+        $this->conversation->store($userId, $chatId, $conversation);
+        return $this;
     }
 
     /**

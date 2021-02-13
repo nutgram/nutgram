@@ -29,52 +29,44 @@ abstract class Conversation
     protected string $step;
 
     /**
-     * @var Nutgram
+     * @var Nutgram|null
      */
-    private Nutgram $bot;
-
-    public function __construct(Nutgram $bot)
-    {
-        $this->bot = $bot;
-    }
+    private ?Nutgram $bot;
 
     /**
      * @param  Nutgram  $bot
      * @return static
      */
-    public static function begin(Nutgram $bot)
+    public static function begin(Nutgram $bot): Conversation
     {
-        $instance = new static($bot);
-        $instance();
+        $instance = new static();
+        $instance($bot);
 
         return $instance;
     }
 
     /**
-     * @param  Nutgram  $bot
-     */
-    public function setBot(Nutgram $bot): void
-    {
-        $this->bot = $bot;
-    }
-
-    /**
      * @param  string  $step
      * @return Conversation
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function next(string $step): Conversation
     {
         $this->step = $step;
+
+        $this->bot->conversationStep($this);
 
         return $this;
     }
 
     /**
      * Invokes the correct conversation step.
+     * @param  Nutgram  $bot
      */
-    public function __invoke()
+    public function __invoke(Nutgram $bot)
     {
         if ($this->step !== null) {
+            $this->bot = $bot;
             $method = $this->step;
             $this->$method($this->bot);
         } else {
@@ -118,5 +110,15 @@ abstract class Conversation
     public function skipMiddlewares(): bool
     {
         return $this->skipMiddlewares;
+    }
+
+    /**
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        $attributes = get_object_vars($this);
+        unset($attributes['bot']);
+        return $attributes;
     }
 }

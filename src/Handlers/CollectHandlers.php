@@ -20,7 +20,7 @@ abstract class CollectHandlers
     /**
      * @param $callable
      */
-    public function middleware($callable)
+    public function middleware($callable): void
     {
         array_unshift($this->globalMiddlewares, $callable);
     }

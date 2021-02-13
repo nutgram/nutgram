@@ -3,6 +3,8 @@
 
 namespace SergiX44\Nutgram\Conversation;
 
+use Closure;
+use Opis\Closure\SerializableClosure;
 use Psr\SimpleCache\CacheInterface;
 
 class ConversationRepository
@@ -47,7 +49,13 @@ class ConversationRepository
     {
         $data = $this->cache->get($this->makeKey($chatId, $userId));
         if ($data !== null) {
-            return unserialize($data);
+            $handler = unserialize($data);
+
+            if ($handler instanceof SerializableClosure) {
+                $handler = $handler->getClosure();
+            }
+
+            return $handler;
         }
 
         return null;
@@ -56,12 +64,16 @@ class ConversationRepository
     /**
      * @param $userId
      * @param $chatId
-     * @param  Conversation  $conversation
+     * @param  Conversation|callable  $conversation
      * @return bool
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function store($userId, $chatId, Conversation $conversation): bool
+    public function store($userId, $chatId, $conversation): bool
     {
+        if ($conversation instanceof Closure) {
+            $conversation = new SerializableClosure($conversation);
+        }
+
         $data = serialize($conversation);
 
         return $this->cache->set($this->makeKey($userId, $chatId), $data, $this->ttl);
