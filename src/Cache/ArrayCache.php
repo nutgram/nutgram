@@ -5,6 +5,10 @@ namespace SergiX44\Nutgram\Cache;
 
 use Psr\SimpleCache\CacheInterface;
 
+/**
+ * Class ArrayCache
+ * @package SergiX44\Nutgram\Cache
+ */
 class ArrayCache implements CacheInterface
 {
     private array $cache = [];
@@ -66,7 +70,6 @@ class ArrayCache implements CacheInterface
      * @param  iterable  $keys
      * @param  null  $default
      * @return array
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function getMultiple($keys, $default = null): array
     {
@@ -83,7 +86,6 @@ class ArrayCache implements CacheInterface
      * @param  iterable  $values
      * @param  null  $ttl
      * @return bool
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function setMultiple($values, $ttl = null): bool
     {

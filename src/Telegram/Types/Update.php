@@ -197,16 +197,16 @@ class Update
     }
 
     /**
-     * @return int|null
+     * @return Chat|null
      */
-    public function getChatId(): ?int
+    public function getChat(): ?Chat
     {
         if ($this->message !== null) {
-            return $this->message->chat->id;
+            return $this->message->chat;
         }
 
         if ($this->callback_query !== null) {
-            return $this->callback_query->message->chat->id;
+            return $this->callback_query->message->chat;
         }
 
         // TODO: add more

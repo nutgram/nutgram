@@ -9,7 +9,6 @@ use InvalidArgumentException;
 use JsonMapper;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Cache\ArrayCache;
-use SergiX44\Nutgram\Conversation\Conversation;
 use SergiX44\Nutgram\Conversation\ConversationRepository;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
@@ -119,7 +118,7 @@ class Nutgram extends ResolveHandlers
         $this->update = $update;
         $this->container->set(Update::class, $update);
 
-        $chatId = $update->getChatId();
+        $chatId = $update->getChat()->id;
         $userId = $update->getUser()->id;
 
         $conversation = $this->conversation->get($userId, $chatId);
@@ -149,20 +148,43 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  Conversation  $conversation
+     * @param  $callable
+     * @param  int|null  $userId
+     * @param  int|null  $chatId
      * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function conversationStep(Conversation $conversation): self
+    public function stepConversation($callable, ?int $userId = null, ?int $chatId = null): self
     {
-        if ($this->update === null) {
+        if ($this->update === null && ($userId === null || $chatId === null)) {
             throw new InvalidArgumentException('You cannot set a conversation step without processing and update.');
         }
 
-        $chatId = $this->update->getChatId();
-        $userId = $this->update->getUser()->id;
+        $this->conversation->store(
+            $userId ?? $this->update->getUser()->id,
+            $chatId ?? $this->update->getChat()->id,
+            $callable
+        );
 
-        $this->conversation->store($userId, $chatId, $conversation);
+        return $this;
+    }
+
+    /**
+     * @param  int|null  $userId
+     * @param  int|null  $chatId
+     * @return $this
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function endConversation(?int $userId = null, ?int $chatId = null): self
+    {
+        if ($this->update === null && ($userId === null || $chatId === null)) {
+            throw new InvalidArgumentException('You cannot set a conversation step without processing and update.');
+        }
+
+        $this->conversation->delete(
+            $userId,
+            $chatId ?? $this->update->getChat()->id,
+        );
 
         return $this;
     }

@@ -13,7 +13,7 @@ class TestConversation extends \SergiX44\Nutgram\Conversation\Conversation
 
     public function secondStep(\SergiX44\Nutgram\Nutgram $bot)
     {
-        die();
+        $this->end();
     }
 }
 

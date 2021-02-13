@@ -47,16 +47,23 @@ abstract class Conversation
 
     /**
      * @param  string  $step
-     * @return Conversation
+     * @return void
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    protected function next(string $step): Conversation
+    protected function next(string $step): void
     {
         $this->step = $step;
 
-        $this->bot->conversationStep($this);
+        $this->bot->stepConversation([$this, $step]);
+    }
 
-        return $this;
+    /**
+     * @return void
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    protected function end(): void
+    {
+        $this->bot->endConversation();
     }
 
     /**
