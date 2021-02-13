@@ -201,15 +201,10 @@ class Update
      */
     public function getChat(): ?Chat
     {
-        if ($this->message !== null) {
-            return $this->message->chat;
-        }
-
-        if ($this->callback_query !== null) {
-            return $this->callback_query->message->chat;
-        }
-
-        // TODO: add more
-        return null;
+        return match (true) {
+            $this->message !== null => $this->message->chat,
+            $this->callback_query !== null => $this->callback_query->message->chat,
+            default => null
+        };
     }
 }

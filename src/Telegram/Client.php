@@ -25,14 +25,12 @@ trait Client
      */
     public function sendMessage(string $text, ?array $opt = []): Message
     {
-        return $this->request(__FUNCTION__, array_merge([
-            'text' => $text,
-        ], $opt), Message::class);
+        $chat_id = $this->getChatId();
+        return $this->request(__FUNCTION__, compact($text, $chat_id, $opt), Message::class);
     }
 
     /**
-     * @param  int  $timeout
-     * @param  array|null  $parameters
+     * @param  array  $parameters
      * @return mixed
      */
     public function getUpdates(array $parameters = [])
@@ -57,15 +55,11 @@ trait Client
             $body = $response->getBody()->getContents();
             $json = json_decode($body);
 
-            if (is_scalar($json->result)) {
-                return $json->result;
-            }
-
-            if (is_array($json->result)) {
-                return $this->mapper->mapArray($json->result, [], $mapTo);
-            }
-
-            return $this->mapper->map($json->result, new $mapTo);
+            return match ($json->result) {
+                is_scalar($json->result) => $json->result,
+                is_array($json->result) => $this->mapper->mapArray($json->result, [], $mapTo),
+                default => $this->mapper->map($json->result, new $mapTo)
+            };
         }, function ($e) {
             if ($e instanceof RequestException) {
                 $body = $e->getResponse()->getBody()->getContents();

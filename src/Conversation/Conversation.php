@@ -54,7 +54,7 @@ abstract class Conversation
     {
         $this->step = $step;
 
-        $this->bot->stepConversation([$this, $step]);
+        $this->bot->stepConversation($this);
     }
 
     /**

@@ -16,6 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Update;
  */
 abstract class ResolveHandlers extends CollectHandlers
 {
+    use ResolveIds;
 
     /**
      * @var ConversationRepository

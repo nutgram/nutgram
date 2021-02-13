@@ -15,7 +15,7 @@
     }
   ],
   "require": {
-    "php": "^7.4|^8.0",
+    "php": ">=8.0",
     "ext-json": "*",
     "guzzlehttp/guzzle": "^7.2",
     "netresearch/jsonmapper": "^4.0",
