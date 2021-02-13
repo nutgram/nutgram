@@ -163,6 +163,7 @@ class Nutgram extends ResolveHandlers
         $userId = $this->update->getUser()->id;
 
         $this->conversation->store($userId, $chatId, $conversation);
+
         return $this;
     }
 

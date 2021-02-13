@@ -5,13 +5,9 @@ namespace SergiX44\Nutgram\Cache;
 
 use Psr\SimpleCache\CacheInterface;
 
-/**
- * Class ArrayCache
- * @package SergiX44\Nutgram\Cache
- */
 class ArrayCache implements CacheInterface
 {
-    private array $data = [];
+    private array $cache = [];
     private array $expires = [];
 
     /**
@@ -21,21 +17,9 @@ class ArrayCache implements CacheInterface
      */
     public function get($key, $default = null)
     {
-        // delete key if it is already expired => below will detect this as a cache miss
-        if (isset($this->expires[$key]) && $this->now() - $this->expires[$key] > 0) {
-            unset($this->data[$key], $this->expires[$key]);
-        }
+        $this->checkExpire($key);
 
-        if (!array_key_exists($key, $this->data)) {
-            return $default;
-        }
-
-        // remove and append to end of array to keep track of LRU info
-        $value = $this->data[$key];
-        unset($this->data[$key]);
-        $this->data[$key] = $value;
-
-        return $value;
+        return $this->cache[$key] ?? $default;
     }
 
     /**
@@ -46,29 +30,12 @@ class ArrayCache implements CacheInterface
      */
     public function set($key, $value, $ttl = null): bool
     {
-        // unset before setting to ensure this entry will be added to end of array (LRU info)
-        unset($this->data[$key]);
-        $this->data[$key] = $value;
+        $this->delete($key);
 
-        // sort expiration times if TTL is given (first will expire first)
-        unset($this->expires[$key]);
+        $this->cache[$key] = $value;
         if ($ttl !== null) {
-            $this->expires[$key] = $this->now() + $ttl;
-            asort($this->expires);
+            $this->expires[$key] = time() + $ttl;
         }
-
-        // first try to check if there's any expired entry
-        // expiration times are sorted, so we can simply look at the first one
-        reset($this->expires);
-        $key = key($this->expires);
-
-        // check to see if the first in the list of expiring keys is already expired
-        // if the first key is not expired, we have to overwrite by using LRU info
-        if ($key === null || $this->now() - $this->expires[$key] < 0) {
-            reset($this->data);
-            $key = key($this->data);
-        }
-        unset($this->data[$key], $this->expires[$key]);
 
         return true;
     }
@@ -79,7 +46,18 @@ class ArrayCache implements CacheInterface
      */
     public function delete($key): bool
     {
-        unset($this->data[$key], $this->expires[$key]);
+        unset($this->cache[$key], $this->expires[$key]);
+
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function clear(): bool
+    {
+        $this->cache = [];
+        $this->expires = [];
 
         return true;
     }
@@ -123,19 +101,8 @@ class ArrayCache implements CacheInterface
     public function deleteMultiple($keys): bool
     {
         foreach ($keys as $key) {
-            unset($this->data[$key], $this->expires[$key]);
+            unset($this->cache[$key], $this->expires[$key]);
         }
-
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function clear(): bool
-    {
-        $this->data = [];
-        $this->expires = [];
 
         return true;
     }
@@ -146,28 +113,19 @@ class ArrayCache implements CacheInterface
      */
     public function has($key): bool
     {
-        // delete key if it is already expired
-        if (isset($this->expires[$key]) && $this->now() - $this->expires[$key] > 0) {
-            unset($this->data[$key], $this->expires[$key]);
-        }
+        $this->checkExpire($key);
 
-        if (!array_key_exists($key, $this->data)) {
-            return false;
-        }
-
-        // remove and append to end of array to keep track of LRU info
-        $value = $this->data[$key];
-        unset($this->data[$key]);
-        $this->data[$key] = $value;
-
-        return true;
+        return array_key_exists($key, $this->cache);
     }
 
     /**
-     * @return float
+     * @param $key
      */
-    private function now(): float
+    private function checkExpire($key)
     {
-        return hrtime(true) * 1e-9;
+        $expiration = $this->expires[$key] ?? null;
+        if ($expiration !== null && $expiration < time()) {
+            unset($this->cache[$key], $this->expires[$key]);
+        }
     }
 }

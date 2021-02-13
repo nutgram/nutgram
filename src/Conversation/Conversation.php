@@ -119,6 +119,7 @@ abstract class Conversation
     {
         $attributes = get_object_vars($this);
         unset($attributes['bot']);
+
         return $attributes;
     }
 }
