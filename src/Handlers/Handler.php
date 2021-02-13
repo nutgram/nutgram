@@ -36,7 +36,7 @@ class Handler extends MiddlewareChain
     {
         $this->pattern = $pattern;
         $this->callable = $callable;
-        $this->chain = new Link($this);
+        $this->head = new Link($this);
     }
 
     /**

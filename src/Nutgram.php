@@ -105,7 +105,7 @@ class Nutgram extends ResolveHandlers
      */
     public function run()
     {
-        $this->applyGlobalMiddleware();
+        $this->applyGlobalMiddlewares();
         $this->container->get(RunningMode::class)->processUpdates($this);
     }
 
@@ -140,7 +140,7 @@ class Nutgram extends ResolveHandlers
         try {
             /** @var Handler $handler */
             foreach ($handlers as $handler) {
-                $handler->getChain()($this);
+                $handler->getHead()($this);
             }
         } catch (Throwable $e) {
             //TODO

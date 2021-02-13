@@ -97,20 +97,28 @@ abstract class ResolveHandlers extends CollectHandlers
         $handler = new Handler($conversation);
 
         if (!$conversation->skipMiddlewares()) {
-            $handler->middleware($this->chain);
+            $this->applyGlobalMiddlewaresTo($handler);
         }
 
         return [$handler];
     }
 
-    protected function applyGlobalMiddleware(): void
+    /**
+     * @param  Handler  $handler
+     */
+    protected function applyGlobalMiddlewaresTo(Handler $handler): void
     {
-        if ($this->chain !== null) {
-            array_walk_recursive($this->handlers, function ($leaf) {
-                if ($leaf instanceof Handler) {
-                    $leaf->middleware($this->chain);
-                }
-            });
+        foreach ($this->globalMiddlewares as $middleware) {
+            $handler->middleware($middleware);
         }
+    }
+
+    protected function applyGlobalMiddlewares(): void
+    {
+        array_walk_recursive($this->handlers, function ($leaf) {
+            if ($leaf instanceof Handler) {
+                $this->applyGlobalMiddlewaresTo($leaf);
+            }
+        });
     }
 }

@@ -3,16 +3,27 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
-use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Telegram\Types\Message;
 
-abstract class CollectHandlers extends MiddlewareChain
+abstract class CollectHandlers
 {
+    /**
+     * @var array
+     */
+    protected array $globalMiddlewares = [];
 
     /**
      * @var array
      */
     protected array $handlers;
+
+    /**
+     * @param $callable
+     */
+    public function middleware($callable)
+    {
+        array_unshift($this->globalMiddlewares, $callable);
+    }
 
     /**
      * @param  string  $command

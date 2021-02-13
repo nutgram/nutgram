@@ -8,7 +8,7 @@ abstract class MiddlewareChain
     /**
      * @var
      */
-    protected $chain;
+    protected $head;
 
     /**
      * @param $callable
@@ -16,8 +16,8 @@ abstract class MiddlewareChain
      */
     public function middleware($callable): self
     {
-        $next = $this->chain;
-        $this->chain = new Link($callable, $next);
+        $next = $this->head;
+        $this->head = new Link($callable, $next);
 
         return $this;
     }
@@ -25,8 +25,8 @@ abstract class MiddlewareChain
     /**
      * @return mixed
      */
-    public function getChain()
+    public function getHead()
     {
-        return $this->chain;
+        return $this->head;
     }
 }
