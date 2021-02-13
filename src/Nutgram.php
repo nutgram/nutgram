@@ -142,8 +142,13 @@ class Nutgram extends ResolveHandlers
                 $handler->getHead()($this);
             }
         } catch (Throwable $e) {
-            //TODO
-            throw $e;
+            if ($this->onException !== null) {
+                $handler = $this->onException;
+                $handler->setParameters([$e]);
+                $handler($this);
+            } else {
+                throw $e;
+            }
         }
     }
 

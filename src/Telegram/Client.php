@@ -65,10 +65,16 @@ trait Client
                 $body = $e->getResponse()->getBody()->getContents();
                 $json = json_decode($body);
 
-                throw new TelegramException($json->description, $json->error_code);
+                $e = new TelegramException($json->description, $json->error_code);
             }
 
-            throw $e;
+            if ($this->onApiError !== null) {
+                $handler = $this->onApiError;
+                $handler->setParameters([$e]);
+                $handler($this);
+            } else {
+                throw $e;
+            }
         });
 
         return $promise->wait();

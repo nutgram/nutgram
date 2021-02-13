@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Message;
 
 abstract class CollectHandlers
@@ -16,6 +17,10 @@ abstract class CollectHandlers
      * @var array
      */
     protected array $handlers;
+
+    protected Handler $onException;
+
+    protected Handler $onApiError;
 
     /**
      * @param $callable
@@ -56,11 +61,40 @@ abstract class CollectHandlers
         return $this->handlers[Message::class][$pattern] = new Handler($callable);
     }
 
-    public function onCallbackQuery($callable)
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onCallbackQuery($callable): Handler
     {
+        return $this->handlers[CallbackQuery::class][] = new Handler($callable);
     }
 
-    public function onException($callable)
+    /**
+     * @param  string  $pattern
+     * @param $callable
+     * @return Handler
+     */
+    public function onCallbackQueryData(string $pattern, $callable): Handler
     {
+        return $this->handlers[CallbackQuery::class][$pattern] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onException($callable): Handler
+    {
+        return $this->onException = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onApiError($callable): Handler
+    {
+        return $this->onApiError = new Handler($callable);
     }
 }

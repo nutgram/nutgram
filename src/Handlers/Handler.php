@@ -57,6 +57,16 @@ class Handler extends MiddlewareChain
     }
 
     /**
+     * @param  array  $parameters
+     * @return Handler
+     */
+    public function setParameters(array $parameters): Handler
+    {
+        $this->parameters = $parameters;
+        return $this;
+    }
+
+    /**
      * @param  Nutgram  $bot
      * @return mixed
      * @throws \DI\DependencyException
