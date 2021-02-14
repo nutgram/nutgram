@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Nutgram\Telegram\Types\Update;
+use SergiX44\Nutgram\Telegram\Types\User;
 use stdClass;
 
 /**
@@ -18,16 +19,6 @@ use stdClass;
  */
 trait Client
 {
-    /**
-     * @param  string  $text
-     * @param  array|null  $opt
-     * @return Message
-     */
-    public function sendMessage(string $text, ?array $opt = []): Message
-    {
-        $chat_id = $this->getChatId();
-        return $this->request(__FUNCTION__, compact($text, $chat_id, $opt), Message::class);
-    }
 
     /**
      * @param  array  $parameters
@@ -38,6 +29,41 @@ trait Client
         return $this->request(__FUNCTION__, $parameters, Update::class, [
             'timeout' => $parameters['timeout'] + 1,
         ]);
+    }
+
+    /**
+     * @return User
+     */
+    public function getMe(): User
+    {
+        return $this->request(__FUNCTION__, [], User::class);
+    }
+
+    /**
+     * @return bool
+     */
+    public function logOut(): bool
+    {
+        return $this->request(__FUNCTION__);
+    }
+
+    /**
+     * @return bool
+     */
+    public function close(): bool
+    {
+        return $this->request(__FUNCTION__);
+    }
+
+    /**
+     * @param  string  $text
+     * @param  array|null  $opt
+     * @return Message
+     */
+    public function sendMessage(string $text, ?array $opt = []): Message
+    {
+        $chat_id = $this->getChatId();
+        return $this->request(__FUNCTION__, compact($text, $chat_id, $opt), Message::class);
     }
 
     /**

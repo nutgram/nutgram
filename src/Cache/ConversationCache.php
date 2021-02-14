@@ -25,7 +25,7 @@ class ConversationCache extends BotCache
      * @return Conversation|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function get($userId, $chatId): ?Conversation
+    public function get(int $userId, int $chatId): ?Conversation
     {
         $data = $this->cache->get($this->makeKey($userId, $chatId));
         if ($data !== null) {
@@ -42,13 +42,13 @@ class ConversationCache extends BotCache
     }
 
     /**
-     * @param $userId
-     * @param $chatId
+     * @param  int  $userId
+     * @param  int  $chatId
      * @param  Conversation|callable  $conversation
      * @return bool
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function set($userId, $chatId, $conversation): bool
+    public function set(int $userId, int $chatId, $conversation): bool
     {
         if ($conversation instanceof Closure) {
             $conversation = new SerializableClosure($conversation);
@@ -65,7 +65,7 @@ class ConversationCache extends BotCache
      * @return bool
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function delete($userId, $chatId): bool
+    public function delete(int $userId, int $chatId): bool
     {
         return $this->cache->delete($this->makeKey($userId, $chatId));
     }

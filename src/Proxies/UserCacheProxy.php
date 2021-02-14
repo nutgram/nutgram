@@ -19,7 +19,7 @@ trait UserCacheProxy
      * @return mixed
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function getUserData($key, $userId = null, $default = null): mixed
+    public function getUserData($key, ?int $userId = null, $default = null): mixed
     {
         $userId = $userId ?? $this->getUserId();
         return $this->userCache->get($userId, $key, $default);
@@ -28,11 +28,11 @@ trait UserCacheProxy
     /**
      * @param $key
      * @param $value
-     * @param  null  $userId
+     * @param  int|null  $userId
      * @return mixed
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function setUserData($key, $value, $userId = null)
+    public function setUserData($key, $value, ?int $userId = null)
     {
         $userId = $userId ?? $this->getUserId();
         return $this->userCache->set($userId, $key, $value);
@@ -40,11 +40,11 @@ trait UserCacheProxy
 
     /**
      * @param $key
-     * @param  null  $userId
+     * @param  int|null  $userId
      * @return bool
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function deleteUserData($key, $userId = null)
+    public function deleteUserData($key, ?int $userId = null)
     {
         $userId = $userId ?? $this->getUserId();
         return $this->userCache->delete($userId, $key);

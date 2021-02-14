@@ -24,7 +24,7 @@ class UserCache extends BotCache
      * @return mixed
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function get($userId, $key, $default = null)
+    public function get(int $userId, $key, $default = null)
     {
         return $this->cache->get($this->makeKey($userId, $key), $default);
     }
@@ -36,7 +36,7 @@ class UserCache extends BotCache
      * @return bool
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function set($userId, $key, $data): bool
+    public function set(int $userId, $key, $data): bool
     {
         return $this->cache->set($this->makeKey($userId, $key), $data, $this->ttl);
     }
@@ -47,7 +47,7 @@ class UserCache extends BotCache
      * @return bool
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function delete($userId, $key): bool
+    public function delete(int $userId, $key): bool
     {
         return $this->cache->delete($this->makeKey($userId, $key));
     }
