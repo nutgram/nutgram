@@ -10,6 +10,8 @@ use JsonMapper;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Cache\ConversationCache;
+use SergiX44\Nutgram\Cache\GlobalCache;
+use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Proxies\GlobalCacheProxy;
@@ -78,6 +80,8 @@ class Nutgram extends ResolveHandlers
 
         $this->setRunningMode(Polling::class);
         $this->conversationCache = $this->container->get(ConversationCache::class);
+        $this->globalCache = $this->container->get(GlobalCache::class);
+        $this->userCache = $this->container->get(UserCache::class);
     }
 
     /**

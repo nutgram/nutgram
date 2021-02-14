@@ -19,12 +19,13 @@ class GlobalCache extends BotCache
 
     /**
      * @param $key
+     * @param  $default
      * @return mixed
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function get($key)
+    public function get($key, $default = null)
     {
-        return $this->cache->get($this->makeKey($key));
+        return $this->cache->get($this->makeKey($key), $default);
     }
 
     /**

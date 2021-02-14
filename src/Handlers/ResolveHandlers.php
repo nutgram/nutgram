@@ -4,6 +4,8 @@
 namespace SergiX44\Nutgram\Handlers;
 
 use SergiX44\Nutgram\Cache\ConversationCache;
+use SergiX44\Nutgram\Cache\GlobalCache;
+use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversation;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
@@ -23,6 +25,16 @@ abstract class ResolveHandlers extends CollectHandlers
      * @var ConversationCache
      */
     protected ConversationCache $conversationCache;
+
+    /**
+     * @var GlobalCache
+     */
+    protected GlobalCache $globalCache;
+
+    /**
+     * @var UserCache
+     */
+    protected UserCache $userCache;
 
     /**
      * @var Update|null

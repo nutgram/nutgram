@@ -19,32 +19,37 @@ class UserCache extends BotCache
 
     /**
      * @param $userId
+     * @param $key
+     * @param  null  $default
+     * @return mixed
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function get($userId)
+    public function get($userId, $key, $default = null)
     {
-        return $this->cache->get($this->makeKey($userId));
+        return $this->cache->get($this->makeKey($userId, $key), $default);
     }
 
     /**
      * @param $userId
+     * @param $key
      * @param $data
      * @return bool
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function set($userId, $data): bool
+    public function set($userId, $key, $data): bool
     {
-        return $this->cache->set($this->makeKey($userId), $data, $this->ttl);
+        return $this->cache->set($this->makeKey($userId, $key), $data, $this->ttl);
     }
 
     /**
      * @param $userId
+     * @param $key
      * @return bool
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function delete($userId): bool
+    public function delete($userId, $key): bool
     {
-        return $this->cache->delete($this->makeKey($userId));
+        return $this->cache->delete($this->makeKey($userId, $key));
     }
 
 }
