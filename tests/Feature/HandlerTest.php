@@ -1,6 +1,6 @@
 <?php
 
-it('call the message handler', function ($update) {
+it('calls the message handler', function ($update) {
     $bot = getInstance($update);
 
     $test = '';
@@ -14,7 +14,7 @@ it('call the message handler', function ($update) {
     expect($test)->toBe('A');
 })->with('message');
 
-it('call the message handler with a middleware', function ($update) {
+it('calls the message handler with a middleware', function ($update) {
     $bot = getInstance($update);
 
     $test = '';
@@ -31,7 +31,7 @@ it('call the message handler with a middleware', function ($update) {
     expect($test)->toBe('AB');
 })->with('message');
 
-it('call the message handler with multiple middlewares', function ($update) {
+it('calls the message handler with multiple middlewares', function ($update) {
     $bot = getInstance($update);
 
     $test = '';
@@ -56,7 +56,7 @@ it('call the message handler with multiple middlewares', function ($update) {
     expect($test)->toBe('ABCD');
 })->with('message');
 
-it('call the fallback if not match any listener', function ($update) {
+it('calls the fallback if not match any listener', function ($update) {
     $bot = getInstance($update);
 
     $bot->onText('Cia', function () {
