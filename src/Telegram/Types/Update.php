@@ -203,7 +203,19 @@ class Update
     {
         return match (true) {
             $this->message !== null => $this->message->chat,
-            $this->callback_query !== null => $this->callback_query->message->chat,
+            $this->callback_query !== null => $this->callback_query?->message?->chat,
+            default => null
+        };
+    }
+
+    /**
+     * @return Message|null
+     */
+    public function getMessage(): ?Message
+    {
+        return match (true) {
+            $this->message !== null => $this->message,
+            $this->callback_query !== null => $this->callback_query?->message,
             default => null
         };
     }

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SergiX44\Nutgram\Cache;
+namespace SergiX44\Nutgram\Cache\Adapters;
 
 use Psr\SimpleCache\CacheInterface;
 

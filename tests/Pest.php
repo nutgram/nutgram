@@ -11,6 +11,7 @@
 |
 */
 
+uses()->group('Features')->in('Feature');
 // uses(Tests\TestCase::class)->in('Feature');
 
 /*

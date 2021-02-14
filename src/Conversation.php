@@ -1,10 +1,9 @@
 <?php
 
 
-namespace SergiX44\Nutgram\Conversation;
+namespace SergiX44\Nutgram;
 
 use RuntimeException;
-use SergiX44\Nutgram\Nutgram;
 
 /**
  * Class Conversation

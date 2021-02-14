@@ -3,8 +3,9 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
-use SergiX44\Nutgram\Conversation\Conversation;
-use SergiX44\Nutgram\Conversation\ConversationRepository;
+use SergiX44\Nutgram\Cache\ConversationCache;
+use SergiX44\Nutgram\Conversation;
+use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Message;
@@ -16,17 +17,17 @@ use SergiX44\Nutgram\Telegram\Types\Update;
  */
 abstract class ResolveHandlers extends CollectHandlers
 {
-    use ResolveIds;
+    use UpdateProxy;
 
     /**
-     * @var ConversationRepository
+     * @var ConversationCache
      */
-    protected ConversationRepository $conversation;
+    protected ConversationCache $conversationCache;
 
     /**
-     * @var Update
+     * @var Update|null
      */
-    protected Update $update;
+    protected ?Update $update = null;
 
     /**
      * @return array

@@ -1,42 +1,22 @@
 <?php
 
 
-namespace SergiX44\Nutgram\Conversation;
+namespace SergiX44\Nutgram\Cache;
 
 use Closure;
 use Opis\Closure\SerializableClosure;
 use Psr\SimpleCache\CacheInterface;
+use SergiX44\Nutgram\Conversation;
 
-class ConversationRepository
+class ConversationCache extends BotCache
 {
     protected const CONVERSATION_TTL = 43200;
 
     protected const CONVERSATION_PREFIX = 'CONVERSATION';
 
-    /**
-     * @var CacheInterface
-     */
-    private CacheInterface $cache;
-
-    /**
-     * @var int
-     */
-    private int $ttl;
-
     public function __construct(CacheInterface $cache, $ttl = self::CONVERSATION_TTL)
     {
-        $this->cache = $cache;
-        $this->ttl = $ttl;
-    }
-
-    /**
-     * @param $user
-     * @param $chat
-     * @return string
-     */
-    protected function makeKey($user, $chat): string
-    {
-        return implode('_', [self::CONVERSATION_PREFIX, $user, $chat]);
+        parent::__construct($cache, self::CONVERSATION_PREFIX, $ttl);
     }
 
     /**
@@ -47,7 +27,7 @@ class ConversationRepository
      */
     public function get($userId, $chatId): ?Conversation
     {
-        $data = $this->cache->get($this->makeKey($chatId, $userId));
+        $data = $this->cache->get($this->makeKey($userId, $chatId));
         if ($data !== null) {
             $handler = unserialize($data);
 
@@ -68,7 +48,7 @@ class ConversationRepository
      * @return bool
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function store($userId, $chatId, $conversation): bool
+    public function set($userId, $chatId, $conversation): bool
     {
         if ($conversation instanceof Closure) {
             $conversation = new SerializableClosure($conversation);
@@ -87,6 +67,6 @@ class ConversationRepository
      */
     public function delete($userId, $chatId): bool
     {
-        return $this->cache->delete($this->makeKey($chatId, $userId));
+        return $this->cache->delete($this->makeKey($userId, $chatId));
     }
 }

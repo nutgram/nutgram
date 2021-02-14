@@ -8,10 +8,13 @@ use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use JsonMapper;
 use Psr\SimpleCache\CacheInterface;
-use SergiX44\Nutgram\Cache\ArrayCache;
-use SergiX44\Nutgram\Conversation\ConversationRepository;
+use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
+use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
+use SergiX44\Nutgram\Proxies\GlobalCacheProxy;
+use SergiX44\Nutgram\Proxies\UpdateDataProxy;
+use SergiX44\Nutgram\Proxies\UserCacheProxy;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Client;
@@ -20,7 +23,7 @@ use Throwable;
 
 class Nutgram extends ResolveHandlers
 {
-    use Client;
+    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy;
 
     /**
      * @var string
@@ -74,7 +77,7 @@ class Nutgram extends ResolveHandlers
         $this->container->set(CacheInterface::class, $config['cache'] ?? new ArrayCache());
 
         $this->setRunningMode(Polling::class);
-        $this->conversation = $this->container->get(ConversationRepository::class);
+        $this->conversationCache = $this->container->get(ConversationCache::class);
     }
 
     /**
@@ -82,7 +85,7 @@ class Nutgram extends ResolveHandlers
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
      */
-    public function setRunningMode($classOrInstance): void
+    public function setRunningMode(string|RunningMode $classOrInstance): void
     {
         if ($classOrInstance instanceof RunningMode) {
             $this->container->set(RunningMode::class, $classOrInstance);
@@ -111,6 +114,9 @@ class Nutgram extends ResolveHandlers
 
     /**
      * @param  Update  $update
+     * @throws Throwable
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function processUpdate(Update $update): void
@@ -118,10 +124,10 @@ class Nutgram extends ResolveHandlers
         $this->update = $update;
         $this->container->set(Update::class, $update);
 
-        $chatId = $update->getChat()->id;
-        $userId = $update->getUser()->id;
+        $chatId = $this->getChatId();
+        $userId = $this->getUserId();
 
-        $conversation = $this->conversation->get($userId, $chatId);
+        $conversation = $this->conversationCache->get($userId, $chatId);
         if ($conversation !== null) {
             $handlers = $this->continueConversation($conversation);
         } else {
@@ -133,6 +139,9 @@ class Nutgram extends ResolveHandlers
 
     /**
      * @param  array  $handlers
+     * @throws Throwable
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     protected function fireHandlers(array $handlers)
     {
@@ -165,9 +174,9 @@ class Nutgram extends ResolveHandlers
             throw new InvalidArgumentException('You cannot set a conversation step without processing and update.');
         }
 
-        $this->conversation->store(
-            $userId ?? $this->update->getUser()->id,
-            $chatId ?? $this->update->getChat()->id,
+        $this->conversationCache->set(
+            $userId ?? $this->getUserId(),
+            $chatId ?? $this->getChatId(),
             $callable
         );
 
@@ -186,9 +195,9 @@ class Nutgram extends ResolveHandlers
             throw new InvalidArgumentException('You cannot set a conversation step without processing and update.');
         }
 
-        $this->conversation->delete(
-            $userId,
-            $chatId ?? $this->update->getChat()->id,
+        $this->conversationCache->delete(
+            $userId ?? $this->getUserId(),
+            $chatId ?? $this->getChatId(),
         );
 
         return $this;

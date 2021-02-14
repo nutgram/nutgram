@@ -64,6 +64,7 @@ class Polling implements RunningMode
             foreach ($updates as $update) {
                 $offset++;
                 $bot->processUpdate($update);
+                $bot->clearData();
             }
 
             gc_collect_cycles();
