@@ -45,6 +45,10 @@ class Handler extends MiddlewareChain
      */
     public function matching(string $value): bool
     {
+        if ($this->pattern === null) {
+            return true;
+        }
+
         $pattern = str_replace('/', '\/', $this->pattern);
         $regex = '/^'.preg_replace(self::PARAM_NAME_REGEX, '(?<$1>.*)', $pattern).' ?$/miu';
 
@@ -75,5 +79,13 @@ class Handler extends MiddlewareChain
     public function __invoke(Nutgram $bot)
     {
         return call_user_func($bot->resolve($this->callable), $bot, ...$this->parameters);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPattern(): ?string
+    {
+        return $this->pattern;
     }
 }

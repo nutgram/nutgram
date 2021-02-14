@@ -138,6 +138,10 @@ class Nutgram extends ResolveHandlers
             $handlers = $this->resolveHandlers();
         }
 
+        if (empty($handlers) && isset($this->handlers[static::FALLBACK])) {
+            $handlers[] = $this->handlers[static::FALLBACK];
+        }
+
         $this->fireHandlers($handlers);
     }
 

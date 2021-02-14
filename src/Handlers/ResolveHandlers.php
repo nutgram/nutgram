@@ -47,51 +47,35 @@ abstract class ResolveHandlers extends CollectHandlers
     protected function resolveHandlers(): array
     {
         $resolvedHandlers = [];
-        $this->getHandlersByType(Update::class, $resolvedHandlers);
+        $this->filterHandlersBy($resolvedHandlers, Update::class);
         $updateType = $this->update->getType();
 
         if ($updateType === UpdateTypes::MESSAGE) {
-            $this->getHandlersByType(Message::class, $resolvedHandlers);
-            $text = $this->update->message->text;
-            if ($text !== null) {
-                $this->filterHandlersBy(Message::class, $text, $resolvedHandlers);
-            }
+            $text = $this->update->message?->text;
+            $this->filterHandlersBy($resolvedHandlers, Message::class, $text);
         } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
-            $this->getHandlersByType(CallbackQuery::class, $resolvedHandlers);
-            $data = $this->update->callback_query->data;
-            if ($data !== null) {
-                $this->filterHandlersBy(CallbackQuery::class, $data, $resolvedHandlers);
-            }
+            $data = $this->update->callback_query?->data;
+            $this->filterHandlersBy($resolvedHandlers, CallbackQuery::class, $data);
         } else {
-            $this->getHandlersByType($updateType, $resolvedHandlers);
+            $this->filterHandlersBy($resolvedHandlers, $updateType);
         }
 
         return $resolvedHandlers;
     }
 
     /**
-     * @param  string  $type
      * @param  array  $handlers
-     * @return void
-     */
-    protected function getHandlersByType(string $type, array &$handlers): void
-    {
-        $typedHandlers = $this->handlers[$type] ?? null;
-        if ($typedHandlers !== null) {
-            $handlers = array_merge($handlers, $typedHandlers);
-        }
-    }
-
-    /**
      * @param  string  $type
-     * @param  string  $value
-     * @param  array  $handlers
+     * @param  null  $value
      */
-    protected function filterHandlersBy(string $type, string $value, array &$handlers): void
+    protected function filterHandlersBy(array &$handlers, string $type, $value = null): void
     {
         /*** @var Handler $handler */
         foreach ($this->handlers[$type] ?? [] as $handler) {
-            if ($handler->matching($value)) {
+            if (
+                ($value !== null && $handler->matching($value)) ||
+                ($value === null && $handler->getPattern() === null)
+            ) {
                 $handlers[] = $handler;
             }
         }
@@ -103,9 +87,19 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected function continueConversation(Conversation $conversation): array
     {
-        $resolvedHandlers = $this->resolveHandlers();
-        if (!$conversation->skipHandlers() && !empty($resolvedHandlers)) {
-            return $resolvedHandlers;
+        $resolvedHandlers = [];
+
+        if (!$conversation->skipHandlers()) {
+            $resolvedHandlers = $this->resolveHandlers();
+
+            /** @var Handler $handler */
+            foreach ($resolvedHandlers as $handler) {
+                // if we found at least one specific handler,
+                // we should escape the conversation
+                if ($handler->getPattern() !== null) {
+                    return $resolvedHandlers;
+                }
+            }
         }
 
         $handler = new Handler($conversation);
@@ -114,7 +108,9 @@ abstract class ResolveHandlers extends CollectHandlers
             $this->applyGlobalMiddlewaresTo($handler);
         }
 
-        return [$handler];
+        $resolvedHandlers[] = $handler;
+
+        return $resolvedHandlers;
     }
 
     /**

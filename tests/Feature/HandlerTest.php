@@ -55,3 +55,17 @@ it('call the message handler with multiple middlewares', function ($update) {
 
     expect($test)->toBe('ABCD');
 })->with('message');
+
+it('call the fallback if not match any listener', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onText('Cia', function () {
+        throw new Exception();
+    });
+
+    $bot->fallback(function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->run();
+})->with('message');

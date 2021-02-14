@@ -8,6 +8,8 @@ use SergiX44\Nutgram\Telegram\Types\Message;
 
 abstract class CollectHandlers
 {
+    protected const FALLBACK = 'FALLBACK';
+
     /**
      * @var array
      */
@@ -18,9 +20,15 @@ abstract class CollectHandlers
      */
     protected array $handlers;
 
-    protected Handler $onException;
+    /**
+     * @var Handler|null
+     */
+    protected ?Handler $onException = null;
 
-    protected Handler $onApiError;
+    /**
+     * @var Handler|null
+     */
+    protected ?Handler $onApiError = null;
 
     /**
      * @param $callable
@@ -58,7 +66,7 @@ abstract class CollectHandlers
      */
     public function onText(string $pattern, $callable): Handler
     {
-        return $this->handlers[Message::class][$pattern] = new Handler($callable);
+        return $this->handlers[Message::class][$pattern] = new Handler($callable, $pattern);
     }
 
     /**
@@ -77,7 +85,7 @@ abstract class CollectHandlers
      */
     public function onCallbackQueryData(string $pattern, $callable): Handler
     {
-        return $this->handlers[CallbackQuery::class][$pattern] = new Handler($callable);
+        return $this->handlers[CallbackQuery::class][$pattern] = new Handler($callable, $pattern);
     }
 
     /**
@@ -96,5 +104,14 @@ abstract class CollectHandlers
     public function onApiError($callable): Handler
     {
         return $this->onApiError = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function fallback($callable): Handler
+    {
+        return $this->handlers[self::FALLBACK] = new Handler($callable);
     }
 }
