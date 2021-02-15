@@ -122,47 +122,19 @@ class Update
      */
     public function getUser(): ?User
     {
-        if ($this->message !== null) {
-            return $this->message->from ?? null;
-        }
-
-        if ($this->edited_message !== null) {
-            return $this->edited_message->from ?? null;
-        }
-
-        if ($this->channel_post !== null) {
-            return $this->channel_post->from ?? null;
-        }
-
-        if ($this->edited_channel_post !== null) {
-            return $this->edited_channel_post->from ?? null;
-        }
-
-        if ($this->inline_query !== null) {
-            return $this->inline_query->from;
-        }
-
-        if ($this->chosen_inline_result !== null) {
-            return $this->chosen_inline_result->from;
-        }
-
-        if ($this->callback_query !== null) {
-            return $this->callback_query->from;
-        }
-
-        if ($this->shipping_query !== null) {
-            return $this->shipping_query->from;
-        }
-
-        if ($this->pre_checkout_query !== null) {
-            return $this->pre_checkout_query->from;
-        }
-
-        if ($this->poll_answer !== null) {
-            return $this->poll_answer->user;
-        }
-
-        return null;
+        return match (true) {
+            $this->message !== null => $this->message->from,
+            $this->edited_message !== null => $this->edited_message->from,
+            $this->channel_post !== null => $this->channel_post->from,
+            $this->edited_channel_post !== null => $this->edited_channel_post->from,
+            $this->inline_query !== null => $this->inline_query->from,
+            $this->chosen_inline_result !== null => $this->chosen_inline_result->from,
+            $this->callback_query !== null => $this->callback_query->from,
+            $this->shipping_query !== null => $this->shipping_query->from,
+            $this->pre_checkout_query !== null => $this->pre_checkout_query->from,
+            $this->poll_answer !== null => $this->poll_answer->user,
+            default => null,
+        };
     }
 
     /**
@@ -173,6 +145,8 @@ class Update
         return match (true) {
             $this->message !== null => $this->message->chat,
             $this->callback_query !== null => $this->callback_query?->message?->chat,
+            $this->channel_post !== null => $this->channel_post?->chat,
+            $this->edited_channel_post !== null => $this->edited_channel_post?->chat,
             default => null
         };
     }
