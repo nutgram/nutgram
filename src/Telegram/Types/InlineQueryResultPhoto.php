@@ -11,57 +11,57 @@ class InlineQueryResultPhoto
 {
     /**
      * Type of the result, must be photo
-     * @var string
+     * @var string $type
      */
-    public string $type;
+    public $type;
 
     /**
      * Unique identifier for this result, 1-64 bytes
-     * @var string
+     * @var string $id
      */
-    public string $id;
+    public $id;
 
     /**
      * A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
-     * @var string
+     * @var string $photo_url
      */
-    public string $photo_url;
+    public $photo_url;
 
     /**
      * URL of the thumbnail for the photo
-     * @var string
+     * @var string $thumb_url
      */
-    public string $thumb_url;
+    public $thumb_url;
 
     /**
      * Optional. Width of the photo
-     * @var int
+     * @var int $photo_width
      */
-    public int $photo_width;
+    public $photo_width;
 
     /**
      * Optional. Height of the photo
-     * @var int
+     * @var int $photo_height
      */
-    public int $photo_height;
+    public $photo_height;
 
     /**
      * Optional. Title for the result
-     * @var string
+     * @var string $title
      */
-    public string $title;
+    public $title;
 
     /**
      * Optional. Short description of the result
-     * @var string
+     * @var string $description
      */
-    public string $description;
+    public $description;
 
     /**
      * Optional. Caption of the photo to be sent, 0-1024 characters
-     * @var string
+     * @var string $caption
      */
-    public string $caption;
+    public $caption;
 
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
@@ -69,27 +69,27 @@ class InlineQueryResultPhoto
      * if you want Telegram apps to show
      * {@see https://core.telegram.org/bots/api#formatting-options bold, italic, fixed-width text or inline URLs}
      * in your bot's message.
-     * @var string
+     * @var string $parse_mode
      */
-    public string $parse_mode;
+    public $parse_mode;
 
     /**
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
-     * @var MessageEntity[]
+     * @var MessageEntity[] $caption_entities
      */
-    public array $caption_entities;
+    public $caption_entities;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup
+     * @var InlineKeyboardMarkup $reply_markup
      */
-    public InlineKeyboardMarkup $reply_markup;
+    public $reply_markup;
 
     /**
      * Optional. Content of the message to be sent instead of the photo
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent
+     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;
 }

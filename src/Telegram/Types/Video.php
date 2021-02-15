@@ -10,56 +10,56 @@ class Video
 {
     /**
      * Identifier for this file
-     * @var string
+     * @var string $file_id
      */
-    public string $file_id;
+    public $file_id;
 
     /**
      * Unique identifier for this file, which is supposed to be the same over time and for different bots.
      * Can't be used to download or reuse the file.
-     * @var string
+     * @var string $file_unique_id
      */
-    public string $file_unique_id;
+    public $file_unique_id;
 
     /**
      * Video width as defined by sender
-     * @var int
+     * @var int $width
      */
-    public int $width;
+    public $width;
 
     /**
      * Video height as defined by sender
-     * @var int
+     * @var int $height
      */
-    public int $height;
+    public $height;
 
     /**
      * Duration of the video in seconds as defined by sender
-     * @var int
+     * @var int $duration
      */
-    public int $duration;
+    public $duration;
 
     /**
      * Optional. Video thumbnail
-     * @var PhotoSize
+     * @var PhotoSize $thumb
      */
-    public PhotoSize $thumb;
+    public $thumb;
 
     /**
      * Optional. Original filename as defined by sender
-     * @var string
+     * @var string $file_name
      */
-    public string $file_name;
+    public $file_name;
 
     /**
      * Optional. Mime type of a file as defined by sender
-     * @var string
+     * @var string $mime_type
      */
-    public string $mime_type;
+    public $mime_type;
 
     /**
      * Optional. File size
-     * @var int
+     * @var int $file_size
      */
-    public int $file_size;
+    public $file_size;
 }

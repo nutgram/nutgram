@@ -12,67 +12,67 @@ class InlineQueryResultCachedVideo
 {
     /**
      * Type of the result, must be video
-     * @var string
+     * @var string $type
      */
-    public string $type;
-
+    public $type;
+    
     /**
      * Unique identifier for this result, 1-64 bytes
-     * @var string
+     * @var string $id
      */
-    public string $id;
-
+    public $id;
+    
     /**
      * A valid file identifier for the video file
-     * @var string
+     * @var string $video_file_id
      */
-    public string $video_file_id;
-
+    public $video_file_id;
+    
     /**
      * Title for the result
-     * @var string
+     * @var string $title
      */
-    public string $title;
-
+    public $title;
+    
     /**
      * Optional. Short description of the result
-     * @var string
+     * @var string $description
      */
-    public string $description;
-
+    public $description;
+    
     /**
      * Optional. Caption of the video to be sent, 0-1024 characters
-     * @var string
+     * @var string $caption
      */
-    public string $caption;
-
+    public $caption;
+    
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
      * {@see https://core.telegram.org/bots/api#html-style HTML},
      * if you want Telegram apps to show
      * {@see https://core.telegram.org/bots/api#formatting-options bold, italic, fixed-width text or inline URLs}
      * in your bot's message.
-     * @var string
+     * @var string $parse_mode
      */
-    public string $parse_mode;
+    public $parse_mode;
 
     /**
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
-     * @var MessageEntity[]
+     * @var MessageEntity[] $caption_entities
      */
-    public array $caption_entities;
-
+    public $caption_entities;
+    
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup
+     * @var InlineKeyboardMarkup $reply_markup
      */
-    public InlineKeyboardMarkup $reply_markup;
-
+    public $reply_markup;
+    
     /**
      * Optional. Content of the message to be sent instead of the video
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent
+     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;
 }

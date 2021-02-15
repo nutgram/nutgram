@@ -10,19 +10,19 @@ class ShippingOption
 {
     /**
      * Shipping option identifier
-     * @var string
+     * @var string $id
      */
-    public string $id;
-
+    public $id;
+    
     /**
      * Option title
-     * @var string
+     * @var string $title
      */
-    public string $title;
-
+    public $title;
+    
     /**
      * List of price portions
-     * @var LabeledPrice[]
+     * @var LabeledPrice[] $prices
      */
-    public array $prices;
+    public $prices;
 }

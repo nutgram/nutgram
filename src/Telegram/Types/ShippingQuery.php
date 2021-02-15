@@ -10,25 +10,25 @@ class ShippingQuery
 {
     /**
      * Unique query identifier
-     * @var string
+     * @var string $id
      */
-    public string $id;
-
+    public $id;
+    
     /**
      * User who sent the query
-     * @var User
+     * @var User $from
      */
-    public User $from;
-
+    public $from;
+    
     /**
      * Bot specified invoice payload
-     * @var string
+     * @var string $invoice_payload
      */
-    public string $invoice_payload;
-
+    public $invoice_payload;
+    
     /**
      * User specified shipping address
-     * @var ShippingAddress
+     * @var ShippingAddress $shipping_address
      */
-    public ShippingAddress $shipping_address;
+    public $shipping_address;
 }

@@ -13,14 +13,14 @@ class ResponseParameters
      * This number may be greater than 32 bits and some programming languages
      * may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits,
      * so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
-     * @var int
+     * @var int $migrate_to_chat_id
      */
-    public int $migrate_to_chat_id;
-
+    public $migrate_to_chat_id;
+    
     /**
      * Optional. In case of exceeding flood control, the number of seconds
      * left to wait before the request can be repeated.
-     * @var int
+     * @var int $retry_after
      */
-    public int $retry_after;
+    public $retry_after;
 }

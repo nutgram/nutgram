@@ -10,46 +10,46 @@ class SuccessfulPayment
 {
     /**
      * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code
-     * @var string
+     * @var string $currency
      */
-    public string $currency;
-
+    public $currency;
+    
     /**
      * Total price in the smallest units of the currency (integer, not float/double).
      * For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in
      * {@see https://core.telegram.org/bots/payments/currencies.json currencies.json}, it shows the number of
      * digits past the decimal point for each currency (2 for the majority of currencies).
-     * @var int
+     * @var int $total_amount
      */
-    public int $total_amount;
-
+    public $total_amount;
+    
     /**
      * Bot specified invoice payload
-     * @var string
+     * @var string $invoice_payload
      */
-    public string $invoice_payload;
-
+    public $invoice_payload;
+    
     /**
      * Optional. Identifier of the shipping option chosen by the user
-     * @var string
+     * @var string $shipping_option_id
      */
-    public string $shipping_option_id;
-
+    public $shipping_option_id;
+    
     /**
      * Optional. Order info provided by the user
-     * @var OrderInfo
+     * @var OrderInfo $order_info
      */
-    public OrderInfo $order_info;
-
+    public $order_info;
+    
     /**
      * Telegram payment identifier
-     * @var string
+     * @var string $telegram_payment_charge_id
      */
-    public string $telegram_payment_charge_id;
-
+    public $telegram_payment_charge_id;
+    
     /**
      * Provider payment identifier
-     * @var string
+     * @var string $provider_payment_charge_id
      */
-    public string $provider_payment_charge_id;
+    public $provider_payment_charge_id;
 }

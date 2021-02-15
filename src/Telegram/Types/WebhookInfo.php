@@ -10,50 +10,50 @@ class WebhookInfo
 {
     /**
      * Webhook URL, may be empty if webhook is not set up
-     * @var string
+     * @var string $url
      */
-    public string $url;
-
+    public $url;
+    
     /**
      * True, if a custom certificate was provided for webhook certificate checks
-     * @var bool
+     * @var bool $has_custom_certificate
      */
-    public bool $has_custom_certificate;
-
+    public $has_custom_certificate;
+    
     /**
      * Number of updates awaiting delivery
-     * @var int
+     * @var int $pending_update_count
      */
-    public int $pending_update_count;
+    public $pending_update_count;
 
     /**
      * Optional. Currently used webhook IP address
-     * @var string
+     * @var string $ip_address
      */
-    public string $ip_address;
-
+    public $ip_address;
+    
     /**
      * Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
-     * @var int
+     * @var int $last_error_date
      */
-    public int $last_error_date;
-
+    public $last_error_date;
+    
     /**
      * Optional. Error message in human-readable format for the most recent error that happened
      * when trying to deliver an update via webhook
-     * @var string
+     * @var string $last_error_message
      */
-    public string $last_error_message;
-
+    public $last_error_message;
+    
     /**
      * Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
-     * @var int
+     * @var int $max_connections
      */
-    public int $max_connections;
-
+    public $max_connections;
+    
     /**
      * Optional. A list of update types the bot is subscribed to. Defaults to all update types
-     * @var string[]
+     * @var string[] $allowed_updates
      */
-    public array $allowed_updates;
+    public $allowed_updates;
 }

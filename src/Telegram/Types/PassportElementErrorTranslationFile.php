@@ -11,27 +11,27 @@ class PassportElementErrorTranslationFile
 {
     /**
      * Error source, must be translation_file
-     * @var string
+     * @var string $source
      */
-    public string $source;
-
+    public $source;
+    
     /**
      * Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”,
      * “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”,
      * “passport_registration”, “temporary_registration”
-     * @var string
+     * @var string $type
      */
-    public string $type;
-
+    public $type;
+    
     /**
      * Base64-encoded file hash
-     * @var string
+     * @var string $file_hash
      */
-    public string $file_hash;
-
+    public $file_hash;
+    
     /**
      * Error message
-     * @var string
+     * @var string $message
      */
-    public string $message;
+    public $message;
 }

@@ -13,69 +13,69 @@ class InlineQueryResultContact
 {
     /**
      * Type of the result, must be contact
-     * @var string
+     * @var string $type
      */
-    public string $type;
-
+    public $type;
+    
     /**
      * Unique identifier for this result, 1-64 Bytes
-     * @var string
+     * @var string $id
      */
-    public string $id;
-
+    public $id;
+    
     /**
      * Contact's phone number
-     * @var string
+     * @var string $phone_number
      */
-    public string $phone_number;
-
+    public $phone_number;
+    
     /**
      * Contact's first name
-     * @var string
+     * @var string $first_name
      */
-    public string $first_name;
-
+    public $first_name;
+    
     /**
      * Optional. Contact's last name
-     * @var string
+     * @var string $last_name
      */
-    public string $last_name;
-
+    public $last_name;
+    
     /**
      * $vcard Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
-     * @var string
+     * @var string $vcard
      */
-    public string $vcard;
-
+    public $vcard;
+    
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup
+     * @var InlineKeyboardMarkup $reply_markup
      */
-    public InlineKeyboardMarkup $reply_markup;
-
+    public $reply_markup;
+    
     /**
      * Optional. Content of the message to be sent instead of the contact
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent
+     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;
-
+    
     /**
      * Optional. Url of the thumbnail for the result
-     * @var string
+     * @var string $thumb_url
      */
-    public string $thumb_url;
-
+    public $thumb_url;
+    
     /**
      * Optional. Thumbnail width
-     * @var int
+     * @var int $thumb_width
      */
-    public int $thumb_width;
-
+    public $thumb_width;
+    
     /**
      * Optional. Thumbnail height
-     * @var int
+     * @var int $thumb_height
      */
-    public int $thumb_height;
+    public $thumb_height;
 }

@@ -16,45 +16,45 @@ class InlineQueryResultVideo
 {
     /**
      * Type of the result, must be video
-     * @var string
+     * @var string $type
      */
-    public string $type;
+    public $type;
 
     /**
      * Unique identifier for this result, 1-64 bytes
-     * @var string
+     * @var string $id
      */
-    public string $id;
+    public $id;
 
     /**
      * A valid URL for the embedded video player or video file
-     * @var string
+     * @var string $video_url
      */
-    public string $video_url;
+    public $video_url;
 
     /**
      * Mime type of the content of video url, “text/html” or “video/mp4”
-     * @var string
+     * @var string $mime_type
      */
-    public string $mime_type;
+    public $mime_type;
 
     /**
      * URL of the thumbnail (jpeg only) for the video
-     * @var string
+     * @var string $thumb_url
      */
-    public string $thumb_url;
+    public $thumb_url;
 
     /**
      * Title for the result
-     * @var string
+     * @var string $title
      */
-    public string $title;
+    public $title;
 
     /**
      * Optional. Caption of the video to be sent, 0-1024 characters
-     * @var string
+     * @var string $caption
      */
-    public string $caption;
+    public $caption;
 
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
@@ -62,53 +62,53 @@ class InlineQueryResultVideo
      * if you want Telegram apps to show
      * {@see https://core.telegram.org/bots/api#formatting-options bold, italic, fixed-width text or inline URLs}
      * in your bot's message.
-     * @var string
+     * @var string $parse_mode
      */
-    public string $parse_mode;
+    public $parse_mode;
 
     /**
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
-     * @var MessageEntity[]
+     * @var MessageEntity[] $caption_entities
      */
-    public array $caption_entities;
+    public $caption_entities;
 
     /**
      * Optional. Video width
-     * @var int
+     * @var int $video_width
      */
-    public int $video_width;
+    public $video_width;
 
     /**
      * Optional. Video height
-     * @var int
+     * @var int $video_height
      */
-    public int $video_height;
+    public $video_height;
 
     /**
      * Optional. Video duration in seconds
-     * @var int
+     * @var int $video_duration
      */
-    public int $video_duration;
+    public $video_duration;
 
     /**
      * Optional. Short description of the result
-     * @var string
+     * @var string $description
      */
-    public string $description;
+    public $description;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup
+     * @var InlineKeyboardMarkup $reply_markup
      */
-    public InlineKeyboardMarkup $reply_markup;
+    public $reply_markup;
 
     /**
      * Optional. Content of the message to be sent instead of the video.
      * This field is required if InlineQueryResultVideo is used to send
      * an HTML-page as a result (e.g., a YouTube video).
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent
+     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;
 }

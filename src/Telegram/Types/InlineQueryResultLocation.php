@@ -14,89 +14,89 @@ class InlineQueryResultLocation
 {
     /**
      * Type of the result, must be location
-     * @var string
+     * @var string $type
      */
-    public string $type;
+    public $type;
 
     /**
      * Unique identifier for this result, 1-64 Bytes
-     * @var string
+     * @var string $id
      */
-    public string $id;
+    public $id;
 
     /**
      * Location latitude in degrees
-     * @var float
+     * @var double $latitude
      */
-    public float $latitude;
+    public $latitude;
 
     /**
      * Location longitude in degrees
-     * @var float
+     * @var double $longitude
      */
-    public float $longitude;
+    public $longitude;
 
     /**
      * Location title
-     * @var string
+     * @var string $title
      */
-    public string $title;
+    public $title;
 
     /**
      * Optional. The radius of uncertainty for the location, measured in meters; 0-1500
-     * @var float
+     * @var double $horizontal_accuracy
      */
-    public float $horizontal_accuracy;
+    public $horizontal_accuracy;
 
     /**
      * Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
-     * @var int
+     * @var int $live_period
      */
-    public int $live_period;
+    public $live_period;
 
     /**
      * Optional. The direction in which user is moving, in degrees; 1-360. For active live locations only.
-     * @var int
+     * @var int $heading
      */
-    public int $heading;
+    public $heading;
 
     /**
      * Optional. For live locations, a maximum distance for proximity alerts
      * about approaching another chat member, in meters.
      * Must be between 1 and 100000 if specified.
-     * @var int
+     * @var int $proximity_alert_radius
      */
-    public int $proximity_alert_radius;
+    public $proximity_alert_radius;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup
+     * @var InlineKeyboardMarkup $reply_markup
      */
-    public InlineKeyboardMarkup $reply_markup;
+    public $reply_markup;
 
     /**
      * Optional. Content of the message to be sent instead of the location
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent
+     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;
 
     /**
      * Optional. Url of the thumbnail for the result
-     * @var string
+     * @var string $thumb_url
      */
-    public string $thumb_url;
+    public $thumb_url;
 
     /**
      * Optional. Thumbnail width
-     * @var int
+     * @var int $thumb_width
      */
-    public int $thumb_width;
+    public $thumb_width;
 
     /**
      * Optional. Thumbnail height
-     * @var int
+     * @var int $thumb_height
      */
-    public int $thumb_height;
+    public $thumb_height;
 }

@@ -10,27 +10,27 @@ class Invoice
 {
     /**
      * Product name
-     * @var string
+     * @var string $title
      */
-    public string $title;
+    public $title;
 
     /**
      * Product description
-     * @var string
+     * @var string $description
      */
-    public string $description;
+    public $description;
 
     /**
      * Unique bot deep-linking parameter that can be used to generate this invoice
-     * @var string
+     * @var string $start_parameter
      */
-    public string $start_parameter;
+    public $start_parameter;
 
     /**
      * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code
-     * @var string
+     * @var string $currency
      */
-    public string $currency;
+    public $currency;
 
     /**
      * Price of the product in the smallest units of the
@@ -38,7 +38,7 @@ class Invoice
      * For example, for a price of US$ 1.45 pass amount = 145.
      * See the exp parameter in {@see https://core.telegram.org/bots/payments/currencies.json currencies.json},
      * it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
-     * @var int
+     * @var int $total_amount
      */
-    public int $total_amount;
+    public $total_amount;
 }

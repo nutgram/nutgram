@@ -11,25 +11,25 @@ class PassportElementErrorReverseSide
 {
     /**
      * Error source, must be reverse_side
-     * @var string
+     * @var string $source
      */
-    public string $source;
-
+    public $source;
+    
     /**
      * The section of the user's Telegram Passport which has the issue, one of “driver_license”, “identity_card”
-     * @var string
+     * @var string $type
      */
-    public string $type;
-
+    public $type;
+    
     /**
      * Base64-encoded hash of the file with the reverse side of the document
-     * @var string
+     * @var string $file_hash
      */
-    public string $file_hash;
-
+    public $file_hash;
+    
     /**
      * Error message
-     * @var string
+     * @var string $message
      */
-    public string $message;
+    public $message;
 }

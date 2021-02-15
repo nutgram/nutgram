@@ -10,19 +10,19 @@ class GameHighScore
 {
     /**
      * Position in high score table for the game
-     * @var int
+     * @var int $position
      */
-    public int $position;
-
+    public $position;
+    
     /**
      * User
-     * @var User
+     * @var User $user
      */
-    public User $user;
-
+    public $user;
+    
     /**
      * Score
-     * @var int
+     * @var int $score
      */
-    public int $score;
+    public $score;
 }

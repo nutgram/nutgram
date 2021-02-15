@@ -13,64 +13,64 @@ class InlineQueryResultGif
 {
     /**
      * Type of the result, must be gif
-     * @var string
+     * @var string $type
      */
-    public string $type;
+    public $type;
 
     /**
      * Unique identifier for this result, 1-64 bytes
-     * @var string
+     * @var string $id
      */
-    public string $id;
+    public $id;
 
     /**
      * A valid URL for the GIF file. File size must not exceed 1MB
-     * @var string
+     * @var string $gif_url
      */
-    public string $gif_url;
+    public $gif_url;
 
     /**
      * Optional. Width of the GIF
-     * @var int
+     * @var int $gif_width
      */
-    public int $gif_width;
+    public $gif_width;
 
     /**
      * Optional. Height of the GIF
-     * @var int
+     * @var int $gif_height
      */
-    public int $gif_height;
+    public $gif_height;
 
     /**
      * Optional. Duration of the GIF
-     * @var int
+     * @var int $gif_duration
      */
-    public int $gif_duration;
+    public $gif_duration;
 
     /**
      * URL of the static thumbnail for the result (jpeg or gif)
-     * @var string
+     * @var string $thumb_url
      */
-    public string $thumb_url;
+    public $thumb_url;
 
     /**
      * Optional. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”.
      * Defaults to “image/jpeg”
-     * @var string
+     * @var string $thumb_mime_type
      */
-    public string $thumb_mime_type;
+    public $thumb_mime_type;
 
     /**
      * Optional. Title for the result
-     * @var string
+     * @var string $title
      */
-    public string $title;
+    public $title;
 
     /**
      * Optional. Caption of the GIF file to be sent, 0-1024 characters
-     * @var string
+     * @var string $caption
      */
-    public string $caption;
+    public $caption;
 
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
@@ -78,27 +78,27 @@ class InlineQueryResultGif
      * if you want Telegram apps to show
      * {@see https://core.telegram.org/bots/api#formatting-options bold, italic, fixed-width text or inline URLs}
      * in your bot's message.
-     * @var string
+     * @var string $parse_mode
      */
-    public string $parse_mode;
+    public $parse_mode;
 
     /**
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
-     * @var MessageEntity[]
+     * @var MessageEntity[] $caption_entities
      */
-    public array $caption_entities;
+    public $caption_entities;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup
+     * @var InlineKeyboardMarkup $reply_markup
      */
-    public InlineKeyboardMarkup $reply_markup;
+    public $reply_markup;
 
     /**
      * Optional. Content of the message to be sent instead of the GIF animation
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent
+     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;
 }

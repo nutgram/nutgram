@@ -11,25 +11,25 @@ class PassportElementErrorUnspecified
 {
     /**
      * Error source, must be unspecified
-     * @var string
+     * @var string $source
      */
-    public string $source;
-
+    public $source;
+    
     /**
      * Type of element of the user's Telegram Passport which has the issue
-     * @var string
+     * @var string $type
      */
-    public string $type;
-
+    public $type;
+    
     /**
      * Base64-encoded element hash
-     * @var string
+     * @var string $element_hash
      */
-    public string $element_hash;
-
+    public $element_hash;
+    
     /**
      * Error message
-     * @var string
+     * @var string $message
      */
-    public string $message;
+    public $message;
 }

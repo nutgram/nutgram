@@ -10,19 +10,19 @@ class PollAnswer
 {
     /**
      * Unique poll identifier
-     * @var string
+     * @var string $poll_id
      */
-    public string $poll_id;
-
+    public $poll_id;
+    
     /**
      * The user, who changed the answer to the poll
-     * @var User
+     * @var User $user
      */
-    public User $user;
-
+    public $user;
+    
     /**
      * 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote.
-     * @var int[]
+     * @var int[] $option_ids
      */
-    public array $option_ids;
+    public $option_ids;
 }

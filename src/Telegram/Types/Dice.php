@@ -12,13 +12,13 @@ class Dice
 {
     /**
      * Emoji on which the dice throw animation is based
-     * @var string
+     * @var string $emoji
      */
-    public string $emoji;
+    public $emoji;
 
     /**
      * Value of the dice, 1-6 for “🎲” and “🎯” base emoji, 1-5 for “🏀” base emoji
-     * @var int
+     * @var int $value
      */
-    public int $value;
+    public $value;
 }

@@ -13,94 +13,94 @@ class InlineQueryResultVenue
 {
     /**
      * Type of the result, must be venue
-     * @var string
+     * @var string $type
      */
-    public string $type;
+    public $type;
 
     /**
      * Unique identifier for this result, 1-64 Bytes
-     * @var string
+     * @var string $id
      */
-    public string $id;
+    public $id;
 
     /**
      * Latitude of the venue location in degrees
-     * @var float
+     * @var double $latitude
      */
-    public float $latitude;
+    public $latitude;
 
     /**
      * Longitude of the venue location in degrees
-     * @var float
+     * @var double $longitude
      */
-    public float $longitude;
+    public $longitude;
 
     /**
      * Title of the venue
-     * @var string
+     * @var string $title
      */
-    public string $title;
+    public $title;
 
     /**
      * Address of the venue
-     * @var string
+     * @var string $address
      */
-    public string $address;
+    public $address;
 
     /**
      * Optional. Foursquare identifier of the venue if known
-     * @var string
+     * @var string $foursquare_id
      */
-    public string $foursquare_id;
+    public $foursquare_id;
 
     /**
      * $foursquare_type Optional. Foursquare type of the venue. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
-     * @var string
+     * @var string $foursquare_type
      */
-    public string $foursquare_type;
+    public $foursquare_type;
 
     /**
      * Optional. Google Places identifier of the venue
-     * @var string
+     * @var string $google_place_id
      */
-    public string $google_place_id;
+    public $google_place_id;
 
     /**
      * Optional. Google Places type of the venue.
      * (See {@see https://developers.google.com/places/web-service/supported_types supported types}.)
-     * @var string
+     * @var string $google_place_type
      */
-    public string $google_place_type;
+    public $google_place_type;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup
+     * @var InlineKeyboardMarkup $reply_markup
      */
-    public InlineKeyboardMarkup $reply_markup;
+    public $reply_markup;
 
     /**
      * Optional. Content of the message to be sent instead of the venue
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent
+     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;
 
     /**
      * Optional. Url of the thumbnail for the result
-     * @var string
+     * @var string $thumb_url
      */
-    public string $thumb_url;
+    public $thumb_url;
 
     /**
      * Optional. Thumbnail width
-     * @var int
+     * @var int $thumb_width
      */
-    public int $thumb_width;
+    public $thumb_width;
 
     /**
      * Optional. Thumbnail height
-     * @var int
+     * @var int $thumb_height
      */
-    public int $thumb_height;
+    public $thumb_height;
 }

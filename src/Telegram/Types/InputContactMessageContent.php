@@ -11,25 +11,25 @@ class InputContactMessageContent
 {
     /**
      * Contact's phone number
-     * @var string
+     * @var string $phone_number
      */
-    public string $phone_number;
-
+    public $phone_number;
+    
     /**
      * Contact's first name
-     * @var string
+     * @var string $first_name
      */
-    public string $first_name;
-
+    public $first_name;
+    
     /**
      * Optional. Contact's last name
-     * @var string
+     * @var string $last_name
      */
-    public string $last_name;
-
+    public $last_name;
+    
     /**
      * Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
-     * @var string
+     * @var string $vcard
      */
-    public string $vcard;
+    public $vcard;
 }

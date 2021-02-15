@@ -11,40 +11,40 @@ class Game
 {
     /**
      * Title of the game
-     * @var string
+     * @var string $title
      */
-    public string $title;
+    public $title;
 
     /**
      * Description of the game
-     * @var string
+     * @var string $description
      */
-    public string $description;
+    public $description;
 
     /** Photo that will be displayed in the game message in chats.
-     * @var PhotoSize[]
+     * @var PhotoSize[] $photo
      */
-    public array $photo;
+    public $photo;
 
     /**
      * Optional. Brief description of the game or high scores included in the game message.
      * Can be automatically edited to include current high scores for the game when the bot calls
      * {@see https://core.telegram.org/bots/api#setgamescore setGameScore}, or manually edited using
      * {@see https://core.telegram.org/bots/api#editmessagetext editMessageText}. 0-4096 characters.
-     * @var string
+     * @var string $text
      */
-    public string $text;
+    public $text;
 
     /**
      * Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
-     * @var MessageEntity[]
+     * @var MessageEntity[] $text_entities
      */
-    public array $text_entities;
+    public $text_entities;
 
     /**
      * Optional. Animation that will be displayed in the game message in chats.
      * Upload via {@see https://t.me/botfather BotFather}
-     * @var Animation
+     * @var Animation $animation
      */
-    public Animation $animation;
+    public $animation;
 }

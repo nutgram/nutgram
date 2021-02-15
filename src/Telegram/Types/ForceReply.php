@@ -29,16 +29,16 @@ class ForceReply
 {
     /**
      * Shows reply interface to the user, as if they manually selected the bot‘s message and tapped ’Reply'
-     * @var bool
+     * @var bool $force_reply
      */
-    public bool $force_reply;
-
+    public $force_reply;
+    
     /**
      * Optional. Use this parameter if you want to force reply from specific users only.
      * Targets:
      * 1. users that are [at]mentioned in the text of the {@see https://core.telegram.org/bots/api#message Message} object;
      * 2. if the bot's message is a reply (has reply_to_message_id), sender of the original message.
-     * @var bool
+     * @var bool $selective
      */
-    public bool $selective;
+    public $selective;
 }

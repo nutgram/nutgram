@@ -14,27 +14,27 @@ class InlineQueryResultDocument
 {
     /**
      * Type of the result, must be document
-     * @var string
+     * @var string $type
      */
-    public string $type;
+    public $type;
 
     /**
      * Unique identifier for this result, 1-64 bytes
-     * @var string
+     * @var string $id
      */
-    public string $id;
+    public $id;
 
     /**
      * Title for the result
-     * @var string
+     * @var string $title
      */
-    public string $title;
+    public $title;
 
     /**
      * Optional. Caption of the document to be sent, 0-1024 characters
-     * @var string
+     * @var string $caption
      */
-    public string $caption;
+    public $caption;
 
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
@@ -42,63 +42,63 @@ class InlineQueryResultDocument
      * if you want Telegram apps to show
      * {@see https://core.telegram.org/bots/api#formatting-options bold, italic, fixed-width text or inline URLs}
      * in your bot's message.
-     * @var string
+     * @var string $parse_mode
      */
-    public string $parse_mode;
+    public $parse_mode;
 
     /**
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
-     * @var MessageEntity[]
+     * @var MessageEntity[] $caption_entities
      */
-    public array $caption_entities;
+    public $caption_entities;
 
     /**
      * A valid URL for the file
-     * @var string
+     * @var string $document_url
      */
-    public string $document_url;
+    public $document_url;
 
     /**
      * Mime type of the content of the file, either “application/pdf” or “application/zip”
-     * @var string
+     * @var string $mime_type
      */
-    public string $mime_type;
+    public $mime_type;
 
     /**
      * Optional. Short description of the result
-     * @var string
+     * @var string $description
      */
-    public string $description;
+    public $description;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup
+     * @var InlineKeyboardMarkup $reply_markup
      */
-    public InlineKeyboardMarkup $reply_markup;
+    public $reply_markup;
 
     /**
      * Optional. Content of the message to be sent instead of the file
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent
+     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;
 
     /**
      * Optional. URL of the thumbnail (jpeg only) for the file
-     * @var string
+     * @var string $thumb_url
      */
-    public string $thumb_url;
+    public $thumb_url;
 
     /**
      * Optional. Thumbnail width
-     * @var int
+     * @var int $thumb_width
      */
-    public int $thumb_width;
+    public $thumb_width;
 
     /**
      * Optional. Thumbnail height
-     * @var int
+     * @var int $thumb_height
      */
-    public int $thumb_height;
+    public $thumb_height;
 }

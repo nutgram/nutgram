@@ -10,31 +10,31 @@ class Response
 {
     /**
      * Response status
-     * @var bool
+     * @var bool $ok
      */
-    public bool $ok;
-
+    public $ok;
+    
     /**
      * An Integer field but its contents are subject to change in the future.
-     * @var int
+     * @var int $error_code
      */
-    public int $error_code;
-
+    public $error_code;
+    
     /**
      * Optional field with a human-readable description of the result.
-     * @var string
+     * @var string $description
      */
-    public string $description;
-
+    public $description;
+    
     /**
      * Result data
-     * @var object
+     * @var object $result
      */
-    public object $result;
-
+    public $result;
+    
     /**
      * Optional field which can help to automatically handle the error.
-     * @var ResponseParameters
+     * @var ResponseParameters $parameters
      */
-    public ResponseParameters $parameters;
+    public $parameters;
 }

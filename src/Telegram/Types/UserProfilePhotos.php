@@ -10,13 +10,13 @@ class UserProfilePhotos
 {
     /**
      * Total number of profile pictures the target user has
-     * @var int
+     * @var int $total_count
      */
-    public int $total_count;
-
+    public $total_count;
+    
     /**
      * Requested profile pictures (in up to 4 sizes each)
-     * @var PhotoSize[][]
+     * @var PhotoSize[][] $photos
      */
-    public array $photos;
+    public $photos;
 }

@@ -15,7 +15,7 @@ class InlineKeyboardMarkup
     /**
      * Array of button rows, each represented by an Array of
      * {@see https://core.telegram.org/bots/api#inlinekeyboardbutton InlineKeyboardButton} objects
-     * @var InlineKeyboardButton[][]
+     * @var InlineKeyboardButton[][] $inline_keyboard
      */
-    public array $inline_keyboard;
+    public $inline_keyboard;
 }

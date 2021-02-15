@@ -19,39 +19,39 @@ class Update
      * should they get out of order.
      * If there are no new updates for at least a week, then identifier of the next update
      * will be chosen randomly instead of sequentially.
-     * @var int
+     * @var int $update_id
      */
-    public int $update_id;
+    public $update_id;
 
     /**
      * Optional. New incoming message of any kind — text, photo, sticker, etc.
-     * @var Message
+     * @var Message $message
      */
-    public Message $message;
+    public $message;
 
     /**
      * Optional. New version of a message that is known to the bot and was edited
-     * @var Message
+     * @var Message $edited_message
      */
-    public Message $edited_message;
+    public $edited_message;
 
     /**
      * Optional. New incoming channel post of any kind — text, photo, sticker, etc.
-     * @var Message
+     * @var Message $channel_post
      */
-    public Message $channel_post;
+    public $channel_post;
 
     /**
      * Optional. New version of a channel post that is known to the bot and was edited
-     * @var Message
+     * @var Message $edited_channel_post
      */
-    public Message $edited_channel_post;
+    public $edited_channel_post;
 
     /**
      * Optional. New incoming {@see https://core.telegram.org/bots/api#inline-mode inline} query
-     * @var InlineQuery
+     * @var InlineQuery $inline_query
      */
-    public InlineQuery $inline_query;
+    public $inline_query;
 
     /**
      * Optional. The result of an {@see https://core.telegram.org/bots/api#inline-mode inline} query that
@@ -59,46 +59,46 @@ class Update
      * Please see our documentation on the
      * {@see https://core.telegram.org/bots/inline#collecting-feedback feedback collecting} for details on
      * how to enable these updates for your bot.
-     * @var ChosenInlineResult
+     * @var ChosenInlineResult $chosen_inline_result
      */
-    public ChosenInlineResult $chosen_inline_result;
+    public $chosen_inline_result;
 
     /**
      * Optional. New incoming callback query
-     * @var CallbackQuery
+     * @var CallbackQuery $callback_query
      */
-    public CallbackQuery $callback_query;
+    public $callback_query;
 
     /**
      * Optional. New incoming shipping query. Only for invoices with flexible price
-     * @var ShippingQuery
+     * @var ShippingQuery $shipping_query
      */
-    public ShippingQuery $shipping_query;
+    public $shipping_query;
 
     /**
      * Optional. New incoming pre-checkout query. Contains full information about checkout
-     * @var PreCheckoutQuery
+     * @var PreCheckoutQuery $pre_checkout_query
      */
-    public PreCheckoutQuery $pre_checkout_query;
+    public $pre_checkout_query;
 
     /**
      * Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
-     * @var Poll
+     * @var Poll $poll
      */
-    public Poll $poll;
+    public $poll;
 
     /**
      * Optional. A user changed their answer in a non-anonymous poll.
      * Bots receive new votes only in polls that were sent by the bot itself.
-     * @var PollAnswer
+     * @var PollAnswer $poll_answer
      */
-    public PollAnswer $poll_answer;
+    public $poll_answer;
 
     /**
      * Return the current update type
-     * @return string|null
+     * @return bool|string
      */
-    public function getType(): ?string
+    public function getType()
     {
         if ($this->message !== null) {
             return UpdateTypes::MESSAGE;
@@ -144,14 +144,14 @@ class Update
             return UpdateTypes::POLL_ANSWER;
         }
 
-        return null;
+        return false;
     }
 
     /**
      * Get the sender User
      * @return User|null
      */
-    public function getUser(): ?User
+    public function getUser()
     {
         if ($this->message !== null) {
             return $this->message->from ?? null;

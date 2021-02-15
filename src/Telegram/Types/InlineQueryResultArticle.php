@@ -10,69 +10,69 @@ class InlineQueryResultArticle
 {
     /**
      * Type of the result, must be article
-     * @var string
+     * @var string $type
      */
-    public string $type;
-
+    public $type;
+    
     /**
      * Unique identifier for this result, 1-64 Bytes
-     * @var string
+     * @var string $id
      */
-    public string $id;
-
+    public $id;
+    
     /**
      * Title of the result
-     * @var string
+     * @var string $title
      */
-    public string $title;
-
+    public $title;
+    
     /**
      * Content of the message to be sent
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent
+     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;
-
+    
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup
+     * @var InlineKeyboardMarkup $reply_markup
      */
-    public InlineKeyboardMarkup $reply_markup;
-
+    public $reply_markup;
+    
     /**
      * Optional. URL of the result
-     * @var string
+     * @var string $url
      */
-    public string $url;
-
+    public $url;
+    
     /**
      * Optional. Pass True, if you don't want the URL to be shown in the message
-     * @var bool
+     * @var bool $hide_url
      */
-    public bool $hide_url;
-
+    public $hide_url;
+    
     /**
      * Optional. Short description of the result
-     * @var string
+     * @var string $description
      */
-    public string $description;
-
+    public $description;
+    
     /**
      * Optional. Url of the thumbnail for the result
-     * @var string
+     * @var string $thumb_url
      */
-    public string $thumb_url;
-
+    public $thumb_url;
+    
     /**
      * Optional. Thumbnail width
-     * @var int
+     * @var int $thumb_width
      */
-    public int $thumb_width;
-
+    public $thumb_width;
+    
     /**
      * Optional. Thumbnail height
-     * @var int
+     * @var int $thumb_height
      */
-    public int $thumb_height;
+    public $thumb_height;
 }

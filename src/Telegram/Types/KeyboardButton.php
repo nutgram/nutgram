@@ -16,28 +16,28 @@ class KeyboardButton
     /**
      * Text of the button.
      * If none of the optional fields are used, it will be sent to the bot as a message when the button is pressed
-     * @var string
+     * @var string $text
      */
-    public string $text;
-
+    public $text;
+    
     /**
      * Optional. If True, the user's phone number will be sent as a contact when the button is pressed.
      * Available in private chats only
-     * @var bool
+     * @var bool $request_contact
      */
-    public bool $request_contact;
-
+    public $request_contact;
+    
     /**
      * Optional. If True, the user's current location will be sent when the button is pressed.
      * Available in private chats only
-     * @var bool
+     * @var bool $request_location
      */
-    public bool $request_location;
-
+    public $request_location;
+    
     /**
      * Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed.
      * Available in private chats only
-     * @var KeyboardButtonPollType
+     * @var KeyboardButtonPollType $request_poll
      */
-    public KeyboardButtonPollType $request_poll;
+    public $request_poll;
 }

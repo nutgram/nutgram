@@ -10,13 +10,13 @@ class PollOption
 {
     /**
      * Option text, 1-100 characters
-     * @var string
+     * @var string $text
      */
-    public string $text;
-
+    public $text;
+    
     /**
      * Number of users that voted for this option
-     * @var int
+     * @var int $voter_count
      */
-    public int $voter_count;
+    public $voter_count;
 }
