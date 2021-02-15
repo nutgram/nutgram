@@ -31,19 +31,19 @@ class MessageEntity
 
     /**
      * Optional. For “text_link” only, url that will be opened after user taps on the text
-     * @var string
+     * @var string|null
      */
-    public string $url;
+    public ?string $url;
 
     /**
      * Optional. For “text_mention” only, the mentioned user
-     * @var User
+     * @var User|null
      */
-    public User $user;
+    public ?User $user;
 
     /**
      * Optional. For “pre” only, the programming language of the entity text
      * @var string
      */
-    public string $language;
+    public ?string $language;
 }

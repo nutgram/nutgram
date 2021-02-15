@@ -8,6 +8,7 @@ use JsonMapper;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Update;
+use Throwable;
 
 class Polling implements RunningMode
 {
@@ -63,8 +64,13 @@ class Polling implements RunningMode
             /** @var Update $update */
             foreach ($updates as $update) {
                 $offset++;
-                $bot->processUpdate($update);
-                $bot->clearData();
+                try {
+                    $bot->processUpdate($update);
+                } catch (Throwable $e) {
+                    echo $e;
+                } finally {
+                    $bot->clearData();
+                }
             }
 
             gc_collect_cycles();

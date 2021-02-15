@@ -26,48 +26,48 @@ class Chat
 
     /**
      * Optional. Title, for supergroups, channels and group chats
-     * @var string
+     * @var string|null
      */
-    public string $title;
+    public ?string $title;
 
     /**
      * Optional. Username, for private chats, supergroups and channels if available
      * @var string
      */
-    public string $username;
+    public ?string $username;
 
     /**
      * Optional. First name of the other party in a private chat
      * @var string
      */
-    public string $first_name;
+    public ?string $first_name;
 
     /**
      * Optional. Last name of the other party in a private chat
      * @var string
      */
-    public string $last_name;
+    public ?string $last_name;
 
     /**
      * Optional. Chat photo.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      * @var ChatPhoto
      */
-    public ChatPhoto $photo;
+    public ?ChatPhoto $photo;
 
     /**
      * Optional. Bio of the other party in a private chat.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      * @var string
      */
-    public string $bio;
+    public ?string $bio;
 
     /**
      * Optional. Description, for groups, supergroups and channel chats.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      * @var string
      */
-    public string $description;
+    public ?string $description;
 
     /**
      * Optional. Chat invite link, for groups, supergroups and channel chats.
@@ -76,21 +76,21 @@ class Chat
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      * @var string
      */
-    public string $invite_link;
+    public ?string $invite_link;
 
     /**
      * Optional. Pinned message, for supergroups.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      * @var Message
      */
-    public Message $pinned_message;
+    public ?Message $pinned_message;
 
     /**
      * Optional. Default chat member permissions, for groups and supergroups.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      * @var ChatPermissions
      */
-    public ChatPermissions $permissions;
+    public ?ChatPermissions $permissions;
 
     /**
      * Optional. For supergroups, the minimum allowed delay between
@@ -98,14 +98,14 @@ class Chat
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      * @var int
      */
-    public int $slow_mode_delay;
+    public ?int $slow_mode_delay;
 
     /**
      * Optional. For supergroups, name of Group sticker set.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      * @var string
      */
-    public string $sticker_set_name;
+    public ?string $sticker_set_name;
 
     /**
      * Optional. True, if the bot can change group the sticker set.
@@ -124,12 +124,12 @@ class Chat
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      * @var int
      */
-    public int $linked_chat_id;
+    public ?int $linked_chat_id;
 
     /**
      * Optional. For supergroups, the location to which the supergroup is connected.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      * @var ChatLocation
      */
-    public ChatLocation $location;
+    public ?ChatLocation $location;
 }
