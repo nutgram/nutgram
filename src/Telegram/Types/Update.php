@@ -96,62 +96,31 @@ class Update
 
     /**
      * Return the current update type
-     * @return bool|string
+     * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
-        if ($this->message !== null) {
-            return UpdateTypes::MESSAGE;
-        }
-
-        if ($this->edited_message !== null) {
-            return UpdateTypes::EDITED_MESSAGE;
-        }
-
-        if ($this->channel_post !== null) {
-            return UpdateTypes::CHANNEL_POST;
-        }
-
-        if ($this->edited_channel_post !== null) {
-            return UpdateTypes::EDITED_CHANNEL_POST;
-        }
-
-        if ($this->inline_query !== null) {
-            return UpdateTypes::INLINE_QUERY;
-        }
-
-        if ($this->chosen_inline_result !== null) {
-            return UpdateTypes::CHOSEN_INLINE_RESULT;
-        }
-
-        if ($this->callback_query !== null) {
-            return UpdateTypes::CALLBACK_QUERY;
-        }
-
-        if ($this->shipping_query !== null) {
-            return UpdateTypes::SHIPPING_QUERY;
-        }
-
-        if ($this->pre_checkout_query !== null) {
-            return UpdateTypes::PRE_CHECKOUT_QUERY;
-        }
-
-        if ($this->poll !== null) {
-            return UpdateTypes::POLL;
-        }
-
-        if ($this->poll_answer !== null) {
-            return UpdateTypes::POLL_ANSWER;
-        }
-
-        return false;
+        return match (true) {
+            $this->message !== null => UpdateTypes::MESSAGE,
+            $this->edited_message !== null => UpdateTypes::EDITED_MESSAGE,
+            $this->channel_post !== null => UpdateTypes::CHANNEL_POST,
+            $this->edited_channel_post !== null => UpdateTypes::EDITED_CHANNEL_POST,
+            $this->inline_query !== null => UpdateTypes::INLINE_QUERY,
+            $this->chosen_inline_result !== null => UpdateTypes::CHOSEN_INLINE_RESULT,
+            $this->callback_query !== null => UpdateTypes::CALLBACK_QUERY,
+            $this->shipping_query !== null => UpdateTypes::SHIPPING_QUERY,
+            $this->pre_checkout_query !== null => UpdateTypes::PRE_CHECKOUT_QUERY,
+            $this->poll !== null => UpdateTypes::POLL,
+            $this->poll_answer !== null => UpdateTypes::POLL_ANSWER,
+            default => null
+        };
     }
 
     /**
      * Get the sender User
      * @return User|null
      */
-    public function getUser()
+    public function getUser(): ?User
     {
         if ($this->message !== null) {
             return $this->message->from ?? null;
