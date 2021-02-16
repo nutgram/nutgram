@@ -103,7 +103,7 @@ abstract class CollectHandlers
      */
     public function onEditedMessage($callable): Handler
     {
-        return $this->handlers[EditedMessage::class] = new Handler($callable);
+        return $this->handlers[EditedMessage::class][] = new Handler($callable);
     }
 
     /**
@@ -112,7 +112,7 @@ abstract class CollectHandlers
      */
     public function onChannelPost($callable): Handler
     {
-        return $this->handlers[ChannelPost::class] = new Handler($callable);
+        return $this->handlers[ChannelPost::class][] = new Handler($callable);
     }
 
     /**
@@ -121,7 +121,7 @@ abstract class CollectHandlers
      */
     public function onEditedChannelPost($callable): Handler
     {
-        return $this->handlers[EditedChannelPost::class] = new Handler($callable);
+        return $this->handlers[EditedChannelPost::class][] = new Handler($callable);
     }
 
     /**
@@ -130,7 +130,7 @@ abstract class CollectHandlers
      */
     public function onInlineQuery($callable): Handler
     {
-        return $this->handlers[InlineQuery::class] = new Handler($callable);
+        return $this->handlers[InlineQuery::class][] = new Handler($callable);
     }
 
     /**
@@ -139,7 +139,7 @@ abstract class CollectHandlers
      */
     public function onChosenInlineResult($callable): Handler
     {
-        return $this->handlers[ChosenInlineResult::class] = new Handler($callable);
+        return $this->handlers[ChosenInlineResult::class][] = new Handler($callable);
     }
 
     /**
@@ -148,7 +148,7 @@ abstract class CollectHandlers
      */
     public function onShippingQuery($callable): Handler
     {
-        return $this->handlers[ShippingQuery::class] = new Handler($callable);
+        return $this->handlers[ShippingQuery::class][] = new Handler($callable);
     }
 
     /**
@@ -157,7 +157,7 @@ abstract class CollectHandlers
      */
     public function onPreCheckoutQuery($callable): Handler
     {
-        return $this->handlers[PreCheckoutQuery::class] = new Handler($callable);
+        return $this->handlers[PreCheckoutQuery::class][] = new Handler($callable);
     }
 
     /**
@@ -166,7 +166,7 @@ abstract class CollectHandlers
      */
     public function onPoll($callable): Handler
     {
-        return $this->handlers[Poll::class] = new Handler($callable);
+        return $this->handlers[Poll::class][] = new Handler($callable);
     }
 
     /**
@@ -175,7 +175,7 @@ abstract class CollectHandlers
      */
     public function onPollAnswer($callable): Handler
     {
-        return $this->handlers[PollAnswer::class] = new Handler($callable);
+        return $this->handlers[PollAnswer::class][] = new Handler($callable);
     }
 
     /**
