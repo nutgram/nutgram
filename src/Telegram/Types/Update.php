@@ -3,6 +3,9 @@
 namespace SergiX44\Nutgram\Telegram\Types;
 
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\ExtendedTypes\ChannelPost;
+use SergiX44\Nutgram\Telegram\ExtendedTypes\EditedChannelPost;
+use SergiX44\Nutgram\Telegram\ExtendedTypes\EditedMessage;
 
 /**
  * This {@see https://core.telegram.org/bots/api#available-types object} represents an incoming update.
@@ -31,19 +34,19 @@ class Update
 
     /**
      * Optional. New version of a message that is known to the bot and was edited
-     * @var Message $edited_message
+     * @var EditedMessage $edited_message
      */
     public $edited_message;
 
     /**
      * Optional. New incoming channel post of any kind — text, photo, sticker, etc.
-     * @var Message $channel_post
+     * @var ChannelPost $channel_post
      */
     public $channel_post;
 
     /**
      * Optional. New version of a channel post that is known to the bot and was edited
-     * @var Message $edited_channel_post
+     * @var EditedChannelPost $edited_channel_post
      */
     public $edited_channel_post;
 
