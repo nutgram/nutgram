@@ -51,7 +51,11 @@ abstract class ResolveHandlers extends CollectHandlers
         $updateType = $this->update->getType();
 
         if ($updateType === UpdateTypes::MESSAGE) {
-            $text = $this->update->message?->text;
+            if ($this->update?->message?->isCommand()) {
+                $text = $this->update?->message?->getCommand().' '.$this->update?->message?->getArgs();
+            } else {
+                $text = $this->update->message?->text;
+            }
             $this->filterHandlersBy($resolvedHandlers, Message::class, $text);
         } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
             $data = $this->update->callback_query?->data;

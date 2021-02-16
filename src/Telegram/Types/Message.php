@@ -382,28 +382,15 @@ class Message
 
     /**
      * Returns the args as array or as string
-     * @param  bool|int  $asStringorKey  True to get an array of strings;
-     *                                False to get a string;
-     *                                Integer to get the string at the array index position.
-     * @return array|string
+     * @return string|null
      */
-    public function getArgs($asStringorKey = false)
+    public function getArgs(): ?string
     {
         if ($this->text !== null) {
             $commandArray = explode(' ', $this->text);
             array_shift($commandArray);
 
-            if ($asStringorKey === true) {
-                return implode(' ', $commandArray);
-            }
-
-            if ($asStringorKey === false) {
-                return $commandArray;
-            }
-
-            if (is_int($asStringorKey)) {
-                return $commandArray[$asStringorKey];
-            }
+            return implode(' ', $commandArray);
         }
         return null;
     }
