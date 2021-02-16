@@ -97,46 +97,115 @@ trait Client
 
     /**
      * @param $photo
-     * @param  string|int|null  $chat_id
      * @param  array  $opt
      * @return Message
      */
-    public function sendPhoto($photo, string|int|null $chat_id = null, array $opt = []): Message
+    public function sendPhoto($photo, array $opt = []): Message
     {
-        $required = compact('photo', 'chat_id');
-        if (is_resource($photo)) {
-            return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), Message::class);
-        } else {
-            return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
-        }
+        return $this->sendAttachment('photo', $photo, $opt);
     }
 
     /**
      * @param $audio
-     * @param  string|int|null  $chat_id
      * @param  array  $opt
      * @return Message
      */
-    public function sendAudio($audio, string|int|null $chat_id = null, array $opt = []): Message
+    public function sendAudio($audio, array $opt = []): Message
     {
-        $required = compact('audio', 'chat_id');
-        if (is_resource($audio)) {
-            return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), Message::class);
-        } else {
-            return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
-        }
+        return $this->sendAttachment('audio', $audio, $opt);
     }
 
     /**
      * @param $document
-     * @param  string|int|null  $chat_id
      * @param  array  $opt
      * @return Message
      */
-    public function sendDocument($document, string|int|null $chat_id = null, array $opt = []): Message
+    public function sendDocument($document, array $opt = []): Message
     {
-        $required = compact('document', 'chat_id');
-        if (is_resource($document)) {
+        return $this->sendAttachment('document', $document, $opt);
+    }
+
+    /**
+     * @param $video
+     * @param  array  $opt
+     * @return Message
+     */
+    public function sendVideo($video, array $opt = []): Message
+    {
+        return $this->sendAttachment('video', $video, $opt);
+    }
+
+    /**
+     * @param $animation
+     * @param  array  $opt
+     * @return Message
+     */
+    public function sendAnimation($animation, array $opt = []): Message
+    {
+        return $this->sendAttachment('animation', $animation, $opt);
+    }
+
+
+    /**
+     * @param $voice
+     * @param  array  $opt
+     * @return Message
+     */
+    public function sendVoice($voice, array $opt = []): Message
+    {
+        return $this->sendAttachment('voice', $voice, $opt);
+    }
+
+    /**
+     * @param $video_note
+     * @param  array  $opt
+     * @return Message
+     */
+    public function sendVideoNote($video_note, array $opt = []): Message
+    {
+        return $this->sendAttachment('video_note', $video_note, $opt);
+    }
+
+    /**
+     * @param $media
+     * @param  array  $opt
+     * @return array
+     */
+    public function sendMediaGroup(array $media, array $opt = []): array
+    {
+        $required = [
+            'chat_id' => $this->getChatId(),
+            'media' => json_encode($media),
+        ];
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+    }
+
+    /**
+     * @param  float  $latitude
+     * @param  float  $longitude
+     * @param  array|null  $opt
+     * @return Message
+     */
+    public function sendLocation(float $latitude, float $longitude, ?array $opt = []): Message
+    {
+        $chat_id = $this->getChatId();
+        $required = compact('latitude', 'longitude', 'chat_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+    }
+
+    /**
+     * @param  string  $param
+     * @param $value
+     * @param  array  $opt
+     * @return mixed
+     */
+    protected function sendAttachment(string $param, $value, array $opt = []): Message
+    {
+        $required = [
+            'chat_id' => $this->getChatId(),
+            $param => $value,
+        ];
+        if (is_resource($value)) {
             return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), Message::class);
         } else {
             return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
@@ -152,10 +221,13 @@ trait Client
      */
     protected function requestMultipart(string $endpoint, ?array $multipart = null, string $mapTo = stdClass::class, ?array $options = []): mixed
     {
-        $parameters = array_map(fn($name, $value) => [
-            'name' => $name,
-            'value' => $value,
-        ], $multipart);
+        $parameters = [];
+        foreach ($multipart as $name => $contents) {
+            $parameters[] = [
+                'name' => $name,
+                'contents' => $contents,
+            ];
+        }
         $promise = $this->http->postAsync($endpoint, array_merge(['multipart' => $parameters], $options));
         return $this->mapResponse($promise, $mapTo);
     }
