@@ -6,8 +6,12 @@ require 'vendor/autoload.php';
 
 $bot = new Nutgram('TOKEN');
 
-$bot->onText('.*', function ($bot) {
-    $text = $bot->getMessage()->text;
+$bot->onCommand('/start', function (Nutgram $bot) {
+    $bot->sendMessage('Welcome!');
+});
+
+$bot->onText('.*', function (Nutgram $bot) {
+    $text = $bot->message()->text;
     $bot->sendMessage($text);
 });
 
