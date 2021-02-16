@@ -159,6 +159,9 @@ class Update
         return match (true) {
             $this->message !== null => $this->message,
             $this->callback_query !== null => $this->callback_query?->message,
+            $this->edited_message !== null => $this->edited_message,
+            $this->channel_post !== null => $this->channel_post,
+            $this->edited_channel_post !== null => $this->edited_channel_post,
             default => null
         };
     }

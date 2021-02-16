@@ -5,12 +5,15 @@ namespace SergiX44\Nutgram\Proxies;
 
 use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Chat;
+use SergiX44\Nutgram\Telegram\Types\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\Message;
+use SergiX44\Nutgram\Telegram\Types\Update;
 use SergiX44\Nutgram\Telegram\Types\User;
 
 /**
  * Trait UpdateProxy
  * @package SergiX44\Nutgram\Proxies
+ * @property Update $update
  */
 trait UpdateProxy
 {
@@ -51,7 +54,7 @@ trait UpdateProxy
      */
     public function messageId(): ?int
     {
-        return $this->update?->getMessage()?->id;
+        return $this->update?->getMessage()?->message_id;
     }
 
     /**
@@ -68,5 +71,13 @@ trait UpdateProxy
     public function callbackQuery(): ?CallbackQuery
     {
         return $this->update?->callback_query;
+    }
+
+    /**
+     * @return InlineQuery|null
+     */
+    public function inlineQuery(): ?InlineQuery
+    {
+        return $this->update?->inline_query;
     }
 }
