@@ -128,8 +128,8 @@ class Nutgram extends ResolveHandlers
         $this->update = $update;
         $this->container->set(Update::class, $update);
 
-        $chatId = $this->getChatId();
-        $userId = $this->getUserId();
+        $chatId = $this->chatId();
+        $userId = $this->userId();
 
         $conversation = $this->conversationCache->get($userId, $chatId);
         if ($conversation !== null) {
@@ -183,8 +183,8 @@ class Nutgram extends ResolveHandlers
         }
 
         $this->conversationCache->set(
-            $userId ?? $this->getUserId(),
-            $chatId ?? $this->getChatId(),
+            $userId ?? $this->userId(),
+            $chatId ?? $this->chatId(),
             $callable
         );
 
@@ -204,8 +204,8 @@ class Nutgram extends ResolveHandlers
         }
 
         $this->conversationCache->delete(
-            $userId ?? $this->getUserId(),
-            $chatId ?? $this->getChatId(),
+            $userId ?? $this->userId(),
+            $chatId ?? $this->chatId(),
         );
 
         return $this;

@@ -64,7 +64,7 @@ trait Client
      */
     public function sendMessage(string $text, ?array $opt = []): Message
     {
-        $chat_id = $this->getChatId();
+        $chat_id = $this->chatId();
         $required = compact('text', 'chat_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
@@ -174,7 +174,7 @@ trait Client
     public function sendMediaGroup(array $media, array $opt = []): array
     {
         $required = [
-            'chat_id' => $this->getChatId(),
+            'chat_id' => $this->chatId(),
             'media' => json_encode($media),
         ];
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
@@ -188,7 +188,7 @@ trait Client
      */
     public function sendLocation(float $latitude, float $longitude, ?array $opt = []): Message
     {
-        $chat_id = $this->getChatId();
+        $chat_id = $this->chatId();
         $required = compact('latitude', 'longitude', 'chat_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
@@ -202,7 +202,7 @@ trait Client
     protected function sendAttachment(string $param, $value, array $opt = []): Message
     {
         $required = [
-            'chat_id' => $this->getChatId(),
+            'chat_id' => $this->chatId(),
             $param => $value,
         ];
         if (is_resource($value)) {

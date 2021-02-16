@@ -4,8 +4,9 @@
 namespace SergiX44\Nutgram\Proxies;
 
 use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
+use SergiX44\Nutgram\Telegram\Types\Chat;
 use SergiX44\Nutgram\Telegram\Types\Message;
-use SergiX44\Nutgram\Telegram\Types\Update;
+use SergiX44\Nutgram\Telegram\Types\User;
 
 /**
  * Trait UpdateProxy
@@ -14,33 +15,49 @@ use SergiX44\Nutgram\Telegram\Types\Update;
 trait UpdateProxy
 {
     /**
-     * @return Update|null
-     */
-    public function getUpdate(): ?Update
-    {
-        return $this->update;
-    }
-
-    /**
      * @return int|null
      */
-    public function getChatId(): ?int
+    public function chatId(): ?int
     {
         return $this->update?->getChat()?->id;
     }
 
     /**
+     * @return Chat|null
+     */
+    public function chat(): ?Chat
+    {
+        return $this->update?->getChat();
+    }
+
+    /**
      * @return int|null
      */
-    public function getUserId(): ?int
+    public function userId(): ?int
     {
         return $this->update?->getUser()?->id;
     }
 
     /**
+     * @return User|null
+     */
+    public function user(): ?User
+    {
+        return $this->update?->getUser();
+    }
+
+    /**
+     * @return int|null
+     */
+    public function messageId(): ?int
+    {
+        return $this->update?->getMessage()?->id;
+    }
+
+    /**
      * @return Message|null
      */
-    public function getMessage(): ?Message
+    public function message(): ?Message
     {
         return $this->update?->getMessage();
     }
@@ -48,7 +65,7 @@ trait UpdateProxy
     /**
      * @return CallbackQuery|null
      */
-    public function getCallBackQuery(): ?CallbackQuery
+    public function callbackQuery(): ?CallbackQuery
     {
         return $this->update?->callback_query;
     }
