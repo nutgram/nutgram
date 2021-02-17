@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\InlineMode;
+use SergiX44\Nutgram\Telegram\Endpoints\Payments;
 use SergiX44\Nutgram\Telegram\Endpoints\Stickers;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
@@ -23,7 +24,7 @@ use stdClass;
  */
 trait Client
 {
-    use AvailableMethods, UpdatesMessages, Stickers, InlineMode;
+    use AvailableMethods, UpdatesMessages, Stickers, InlineMode, Payments;
 
     /**
      * @param  array  $parameters

@@ -13,4 +13,18 @@ use SergiX44\Nutgram\Telegram\Client;
 trait InlineMode
 {
 
+    /**
+     * @param  array  $results
+     * @param  array|null  $opt
+     * @return bool
+     */
+    public function answerInlineQuery(array $results, ?array $opt = []): bool
+    {
+        $required = [
+            'inline_query_id' => $this->inlineQuery()?->id,
+            'results' => json_encode($results),
+        ];
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+    }
+
 }

@@ -46,4 +46,47 @@ trait Stickers
         return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt));
     }
 
+    /**
+     * @param  string  $name
+     * @param  array|null  $opt
+     * @return bool
+     */
+    public function addStickerToSet(string $name, ?array $opt = []): bool
+    {
+        $user_id = $this->userId();
+        $required = compact('user_id', 'name');
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt));
+    }
+
+    /**
+     * @param  string  $sticker
+     * @param  int  $position
+     * @return bool
+     */
+    public function setStickerPositionInSet(string $sticker, int $position): bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('sticker', 'position'));
+    }
+
+    /**
+     * @param  string  $sticker
+     * @return bool
+     */
+    public function deleteStickerFromSet(string $sticker): bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('sticker'));
+    }
+
+    /**
+     * @param  string  $name
+     * @param  array|null  $opt
+     * @return bool
+     */
+    public function setStickerSetThumb(string $name, ?array $opt = []): bool
+    {
+        $user_id = $this->userId();
+        $required = compact('user_id', 'name');
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt));
+    }
+
 }
