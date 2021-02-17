@@ -27,7 +27,7 @@ abstract class CollectHandlers
     /**
      * @var array
      */
-    protected array $handlers;
+    protected array $handlers = [];
 
     /**
      * @var Handler|null

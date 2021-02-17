@@ -4,7 +4,7 @@ use SergiX44\Nutgram\Nutgram;
 
 require 'vendor/autoload.php';
 
-$bot = new Nutgram('TOKEN');
+$bot = new Nutgram($_ENV['TOKEN']);
 
 $bot->onCommand('/start', function (Nutgram $bot) {
     $bot->sendMessage('Welcome!');
