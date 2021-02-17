@@ -8,7 +8,9 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
+use SergiX44\Nutgram\Telegram\Endpoints\Games;
 use SergiX44\Nutgram\Telegram\Endpoints\InlineMode;
+use SergiX44\Nutgram\Telegram\Endpoints\Passport;
 use SergiX44\Nutgram\Telegram\Endpoints\Payments;
 use SergiX44\Nutgram\Telegram\Endpoints\Stickers;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
@@ -24,7 +26,13 @@ use stdClass;
  */
 trait Client
 {
-    use AvailableMethods, UpdatesMessages, Stickers, InlineMode, Payments;
+    use AvailableMethods,
+        UpdatesMessages,
+        Stickers,
+        InlineMode,
+        Payments,
+        Passport,
+        Games;
 
     /**
      * @param  array  $parameters
