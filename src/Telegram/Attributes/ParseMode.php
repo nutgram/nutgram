@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-class ParseModes
+class ParseMode
 {
     public const MARKDOWN = 'MarkdownV2';
     public const MARKDOWN_LEGACY = 'Markdown';

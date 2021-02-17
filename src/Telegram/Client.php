@@ -194,6 +194,42 @@ trait Client
     }
 
     /**
+     * @param  float  $latitude
+     * @param  float  $longitude
+     * @param  array|null  $opt
+     * @return Message|bool
+     */
+    public function editMessageLiveLocation(float $latitude, float $longitude, ?array $opt = []): Message|bool
+    {
+        $required = compact('latitude', 'longitude');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+    }
+
+    /**
+     * @param  array|null  $opt
+     * @return Message|bool
+     */
+    public function stopMessageLiveLocation(?array $opt = []): Message|bool
+    {
+        return $this->requestJson(__FUNCTION__, $opt, Message::class);
+    }
+
+    /**
+     * @param  float  $latitude
+     * @param  float  $longitude
+     * @param  string  $title
+     * @param  string  $address
+     * @param  array|null  $opt
+     * @return Message
+     */
+    public function sendVenue(float $latitude, float $longitude, string $title, string $address, ?array $opt = []): Message
+    {
+        $chat_id = $this->chatId();
+        $required = compact('latitude', 'longitude', 'chat_id', 'title', 'address');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+    }
+
+    /**
      * @param  string  $param
      * @param $value
      * @param  array  $opt
