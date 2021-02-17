@@ -2,7 +2,7 @@
 
 return [
     // The Telegram BOT api token
-    'token' => 'TOKEN_HERE',
+    'token' => env('TELEGRAM_TOKEN'),
     // Extra or specific configurations
     'config' => [],
 ];

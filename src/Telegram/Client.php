@@ -17,6 +17,7 @@ use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Nutgram\Telegram\Types\Update;
+use SergiX44\Nutgram\Telegram\Types\WebhookInfo;
 use stdClass;
 
 /**
@@ -43,6 +44,34 @@ trait Client
         return $this->requestJson(__FUNCTION__, $parameters, Update::class, [
             'timeout' => $parameters['timeout'] + 1,
         ]);
+    }
+
+    /**
+     * @param  string  $url
+     * @param  array|null  $opt
+     * @return mixed
+     */
+    public function setWebhook(string $url, ?array $opt = []): bool
+    {
+        $required = compact('url');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+    }
+
+    /**
+     * @param  array|null  $opt
+     * @return bool
+     */
+    public function deleteWebhook(?array $opt = []): bool
+    {
+        return $this->requestJson(__FUNCTION__, $opt);
+    }
+
+    /**
+     * @return WebhookInfo
+     */
+    public function getWebhookInfo(): WebhookInfo
+    {
+        return $this->requestJson(__FUNCTION__, mapTo: WebhookInfo::class);
     }
 
     /**
