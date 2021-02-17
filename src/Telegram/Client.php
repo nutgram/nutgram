@@ -7,11 +7,13 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
+use SergiX44\Nutgram\Telegram\Endpoints\InlineMode;
+use SergiX44\Nutgram\Telegram\Endpoints\Stickers;
+use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Message;
-use SergiX44\Nutgram\Telegram\Types\MessageId;
 use SergiX44\Nutgram\Telegram\Types\Update;
-use SergiX44\Nutgram\Telegram\Types\User;
 use stdClass;
 
 /**
@@ -21,6 +23,7 @@ use stdClass;
  */
 trait Client
 {
+    use AvailableMethods, UpdatesMessages, Stickers, InlineMode;
 
     /**
      * @param  array  $parameters
@@ -34,199 +37,18 @@ trait Client
     }
 
     /**
-     * @return User
+     * @param  string  $endpoint
+     * @param  array|null  $parameters
+     * @param  array|null  $options
+     * @return mixed
      */
-    public function getMe(): User
+    public function sendRequest(string $endpoint, ?array $parameters = [], ?array $options = []): mixed
     {
-        return $this->requestJson(__FUNCTION__, mapTo: User::class);
-    }
-
-    /**
-     * @return bool
-     */
-    public function logOut(): bool
-    {
-        return $this->requestJson(__FUNCTION__);
-    }
-
-    /**
-     * @return bool
-     */
-    public function close(): bool
-    {
-        return $this->requestJson(__FUNCTION__);
-    }
-
-    /**
-     * @param  string  $text
-     * @param  array|null  $opt
-     * @return Message
-     */
-    public function sendMessage(string $text, ?array $opt = []): Message
-    {
-        $chat_id = $this->chatId();
-        $required = compact('text', 'chat_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
-    }
-
-    /**
-     * @param  string|int  $chat_id
-     * @param  string|int  $from_chat_id
-     * @param  int  $message_id
-     * @param  array  $opt
-     * @return Message
-     */
-    public function forwardMessage(string|int $chat_id, string|int $from_chat_id, int $message_id, array $opt = []): Message
-    {
-        $required = compact('chat_id', 'from_chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
-    }
-
-    /**
-     * @param  string|int  $chat_id
-     * @param  string|int  $from_chat_id
-     * @param  int  $message_id
-     * @param  array  $opt
-     * @return MessageId
-     */
-    public function copyMessage(string|int $chat_id, string|int $from_chat_id, int $message_id, array $opt = []): MessageId
-    {
-        $required = compact('chat_id', 'from_chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), MessageId::class);
-    }
-
-    /**
-     * @param $photo
-     * @param  array  $opt
-     * @return Message
-     */
-    public function sendPhoto($photo, array $opt = []): Message
-    {
-        return $this->sendAttachment('photo', $photo, $opt);
-    }
-
-    /**
-     * @param $audio
-     * @param  array  $opt
-     * @return Message
-     */
-    public function sendAudio($audio, array $opt = []): Message
-    {
-        return $this->sendAttachment('audio', $audio, $opt);
-    }
-
-    /**
-     * @param $document
-     * @param  array  $opt
-     * @return Message
-     */
-    public function sendDocument($document, array $opt = []): Message
-    {
-        return $this->sendAttachment('document', $document, $opt);
-    }
-
-    /**
-     * @param $video
-     * @param  array  $opt
-     * @return Message
-     */
-    public function sendVideo($video, array $opt = []): Message
-    {
-        return $this->sendAttachment('video', $video, $opt);
-    }
-
-    /**
-     * @param $animation
-     * @param  array  $opt
-     * @return Message
-     */
-    public function sendAnimation($animation, array $opt = []): Message
-    {
-        return $this->sendAttachment('animation', $animation, $opt);
-    }
-
-
-    /**
-     * @param $voice
-     * @param  array  $opt
-     * @return Message
-     */
-    public function sendVoice($voice, array $opt = []): Message
-    {
-        return $this->sendAttachment('voice', $voice, $opt);
-    }
-
-    /**
-     * @param $video_note
-     * @param  array  $opt
-     * @return Message
-     */
-    public function sendVideoNote($video_note, array $opt = []): Message
-    {
-        return $this->sendAttachment('video_note', $video_note, $opt);
-    }
-
-    /**
-     * @param $media
-     * @param  array  $opt
-     * @return array
-     */
-    public function sendMediaGroup(array $media, array $opt = []): array
-    {
-        $required = [
-            'chat_id' => $this->chatId(),
-            'media' => json_encode($media),
-        ];
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
-    }
-
-    /**
-     * @param  float  $latitude
-     * @param  float  $longitude
-     * @param  array|null  $opt
-     * @return Message
-     */
-    public function sendLocation(float $latitude, float $longitude, ?array $opt = []): Message
-    {
-        $chat_id = $this->chatId();
-        $required = compact('latitude', 'longitude', 'chat_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
-    }
-
-    /**
-     * @param  float  $latitude
-     * @param  float  $longitude
-     * @param  array|null  $opt
-     * @return Message|bool
-     */
-    public function editMessageLiveLocation(float $latitude, float $longitude, ?array $opt = []): Message|bool
-    {
-        $required = compact('latitude', 'longitude');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
-    }
-
-    /**
-     * @param  array|null  $opt
-     * @return Message|bool
-     */
-    public function stopMessageLiveLocation(?array $opt = []): Message|bool
-    {
-        return $this->requestJson(__FUNCTION__, $opt, Message::class);
-    }
-
-    /**
-     * @param  float  $latitude
-     * @param  float  $longitude
-     * @param  string  $title
-     * @param  string  $address
-     * @param  array|null  $opt
-     * @return Message
-     */
-    public function sendVenue(float $latitude, float $longitude, string $title, string $address, ?array $opt = []): Message
-    {
-        $chat_id = $this->chatId();
-        $required = compact('latitude', 'longitude', 'chat_id', 'title', 'address');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        return $this->http->postAsync($endpoint, array_merge(['multipart' => $parameters], $options))
+            ->then(function (ResponseInterface $response) {
+                $body = $response->getBody()->getContents();
+                return json_decode($body);
+            })->wait();
     }
 
     /**
