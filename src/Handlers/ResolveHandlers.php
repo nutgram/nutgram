@@ -94,14 +94,14 @@ abstract class ResolveHandlers extends CollectHandlers
         $resolvedHandlers = [];
 
         if (!$conversation->skipHandlers()) {
-            $resolvedHandlers = $this->resolveHandlers();
+            $handlers = $this->resolveHandlers();
 
             /** @var Handler $handler */
-            foreach ($resolvedHandlers as $handler) {
+            foreach ($handlers as $handler) {
                 // if we found at least one specific handler,
                 // we should escape the conversation
                 if ($handler->getPattern() !== null) {
-                    return $resolvedHandlers;
+                    return $handlers;
                 }
             }
         }
