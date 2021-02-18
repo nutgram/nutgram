@@ -17,9 +17,9 @@ trait UpdatesMessages
     /**
      * @param  string  $text
      * @param  array|null  $opt
-     * @return Message|bool
+     * @return Message|bool|null
      */
-    public function editMessageText(string $text, ?array $opt = []): Message|bool
+    public function editMessageText(string $text, ?array $opt = []): Message|bool|null
     {
         $chat_id = $this->chatId();
         $message_id = $this->messageId();
@@ -29,9 +29,9 @@ trait UpdatesMessages
 
     /**
      * @param  array|null  $opt
-     * @return Message|bool
+     * @return Message|bool|null
      */
-    public function editMessageCaption(?array $opt = []): Message|bool
+    public function editMessageCaption(?array $opt = []): Message|bool|null
     {
         $chat_id = $this->chatId();
         $message_id = $this->messageId();
@@ -42,9 +42,9 @@ trait UpdatesMessages
     /**
      * @param  array  $media
      * @param  array|null  $opt
-     * @return Message|bool
+     * @return Message|bool|null
      */
-    public function editMessageMedia(array $media, ?array $opt = []): Message|bool
+    public function editMessageMedia(array $media, ?array $opt = []): Message|bool|null
     {
         $chat_id = $this->chatId();
         $message_id = $this->messageId();
@@ -55,9 +55,9 @@ trait UpdatesMessages
 
     /**
      * @param  array|null  $opt
-     * @return Message|bool
+     * @return Message|bool|null
      */
-    public function editMessageReplyMarkup(?array $opt = []): Message|bool
+    public function editMessageReplyMarkup(?array $opt = []): Message|bool|null
     {
         $chat_id = $this->chatId();
         $message_id = $this->messageId();
@@ -69,9 +69,9 @@ trait UpdatesMessages
      * @param  string|int  $chat_id
      * @param  int  $message_id
      * @param  array|null  $opt
-     * @return Poll
+     * @return Poll|null
      */
-    public function stopPoll(string|int $chat_id, int $message_id, ?array $opt = []): Poll
+    public function stopPoll(string|int $chat_id, int $message_id, ?array $opt = []): ?Poll
     {
         $required = compact('chat_id', 'message_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Poll::class);
@@ -80,9 +80,9 @@ trait UpdatesMessages
     /**
      * @param  string|int  $chat_id
      * @param  int  $message_id
-     * @return bool
+     * @return bool|null
      */
-    public function deleteMessage(string|int $chat_id, int $message_id): bool
+    public function deleteMessage(string|int $chat_id, int $message_id): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id'));
     }

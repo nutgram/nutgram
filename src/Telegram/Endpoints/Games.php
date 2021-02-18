@@ -17,9 +17,9 @@ trait Games
     /**
      * @param  string  $game_short_name
      * @param  array|null  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendGame(string $game_short_name, ?array $opt = []): Message
+    public function sendGame(string $game_short_name, ?array $opt = []): ?Message
     {
         $chat_id = $this->chatId();
         $required = compact('game_short_name', 'chat_id');
@@ -29,9 +29,9 @@ trait Games
     /**
      * @param  int  $score
      * @param  array|null  $opt
-     * @return Message
+     * @return bool|null
      */
-    public function setGameScore(int $score, ?array $opt = []): bool
+    public function setGameScore(int $score, ?array $opt = []): ?bool
     {
         $user_id = $this->userId();
         $required = compact('score', 'user_id');
@@ -40,9 +40,9 @@ trait Games
 
     /**
      * @param  array|null  $opt
-     * @return array
+     * @return array|null
      */
-    public function getGameHighScores(?array $opt = []): array
+    public function getGameHighScores(?array $opt = []): ?array
     {
         return $this->requestJson(__FUNCTION__, array_merge(['user_id' => $this->userId()], $opt), GameHighScore::class);
     }

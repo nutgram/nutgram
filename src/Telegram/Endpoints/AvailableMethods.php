@@ -22,25 +22,25 @@ use SergiX44\Nutgram\Telegram\Types\UserProfilePhotos;
 trait AvailableMethods
 {
     /**
-     * @return User
+     * @return User|null
      */
-    public function getMe(): User
+    public function getMe(): ?User
     {
         return $this->requestJson(__FUNCTION__, mapTo: User::class);
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function logOut(): bool
+    public function logOut(): ?bool
     {
         return $this->requestJson(__FUNCTION__);
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function close(): bool
+    public function close(): ?bool
     {
         return $this->requestJson(__FUNCTION__);
     }
@@ -48,9 +48,9 @@ trait AvailableMethods
     /**
      * @param  string  $text
      * @param  array|null  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendMessage(string $text, ?array $opt = []): Message
+    public function sendMessage(string $text, ?array $opt = []): ?Message
     {
         $chat_id = $this->chatId();
         $required = compact('text', 'chat_id');
@@ -62,9 +62,9 @@ trait AvailableMethods
      * @param  string|int  $from_chat_id
      * @param  int  $message_id
      * @param  array  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function forwardMessage(string|int $chat_id, string|int $from_chat_id, int $message_id, array $opt = []): Message
+    public function forwardMessage(string|int $chat_id, string|int $from_chat_id, int $message_id, array $opt = []): ?Message
     {
         $required = compact('chat_id', 'from_chat_id', 'message_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
@@ -75,9 +75,9 @@ trait AvailableMethods
      * @param  string|int  $from_chat_id
      * @param  int  $message_id
      * @param  array  $opt
-     * @return MessageId
+     * @return MessageId|null
      */
-    public function copyMessage(string|int $chat_id, string|int $from_chat_id, int $message_id, array $opt = []): MessageId
+    public function copyMessage(string|int $chat_id, string|int $from_chat_id, int $message_id, array $opt = []): ?MessageId
     {
         $required = compact('chat_id', 'from_chat_id', 'message_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), MessageId::class);
@@ -86,9 +86,9 @@ trait AvailableMethods
     /**
      * @param $photo
      * @param  array  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendPhoto($photo, array $opt = []): Message
+    public function sendPhoto($photo, array $opt = []): ?Message
     {
         return $this->sendAttachment('photo', $photo, $opt);
     }
@@ -96,9 +96,9 @@ trait AvailableMethods
     /**
      * @param $audio
      * @param  array  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendAudio($audio, array $opt = []): Message
+    public function sendAudio($audio, array $opt = []): ?Message
     {
         return $this->sendAttachment('audio', $audio, $opt);
     }
@@ -106,9 +106,9 @@ trait AvailableMethods
     /**
      * @param $document
      * @param  array  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendDocument($document, array $opt = []): Message
+    public function sendDocument($document, array $opt = []): ?Message
     {
         return $this->sendAttachment('document', $document, $opt);
     }
@@ -116,9 +116,9 @@ trait AvailableMethods
     /**
      * @param $video
      * @param  array  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendVideo($video, array $opt = []): Message
+    public function sendVideo($video, array $opt = []): ?Message
     {
         return $this->sendAttachment('video', $video, $opt);
     }
@@ -126,9 +126,9 @@ trait AvailableMethods
     /**
      * @param $animation
      * @param  array  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendAnimation($animation, array $opt = []): Message
+    public function sendAnimation($animation, array $opt = []): ?Message
     {
         return $this->sendAttachment('animation', $animation, $opt);
     }
@@ -137,9 +137,9 @@ trait AvailableMethods
     /**
      * @param $voice
      * @param  array  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendVoice($voice, array $opt = []): Message
+    public function sendVoice($voice, array $opt = []): ?Message
     {
         return $this->sendAttachment('voice', $voice, $opt);
     }
@@ -147,19 +147,19 @@ trait AvailableMethods
     /**
      * @param $video_note
      * @param  array  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendVideoNote($video_note, array $opt = []): Message
+    public function sendVideoNote($video_note, array $opt = []): ?Message
     {
         return $this->sendAttachment('video_note', $video_note, $opt);
     }
 
     /**
-     * @param $media
+     * @param  array  $media
      * @param  array  $opt
-     * @return array
+     * @return array|null
      */
-    public function sendMediaGroup(array $media, array $opt = []): array
+    public function sendMediaGroup(array $media, array $opt = []): ?array
     {
         $required = [
             'chat_id' => $this->chatId(),
@@ -172,9 +172,9 @@ trait AvailableMethods
      * @param  float  $latitude
      * @param  float  $longitude
      * @param  array|null  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendLocation(float $latitude, float $longitude, ?array $opt = []): Message
+    public function sendLocation(float $latitude, float $longitude, ?array $opt = []): ?Message
     {
         $chat_id = $this->chatId();
         $required = compact('latitude', 'longitude', 'chat_id');
@@ -185,9 +185,9 @@ trait AvailableMethods
      * @param  float  $latitude
      * @param  float  $longitude
      * @param  array|null  $opt
-     * @return Message|bool
+     * @return Message|bool|null
      */
-    public function editMessageLiveLocation(float $latitude, float $longitude, ?array $opt = []): Message|bool
+    public function editMessageLiveLocation(float $latitude, float $longitude, ?array $opt = []): Message|bool|null
     {
         $required = compact('latitude', 'longitude');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
@@ -195,9 +195,9 @@ trait AvailableMethods
 
     /**
      * @param  array|null  $opt
-     * @return Message|bool
+     * @return Message|bool|null
      */
-    public function stopMessageLiveLocation(?array $opt = []): Message|bool
+    public function stopMessageLiveLocation(?array $opt = []): Message|bool|null
     {
         return $this->requestJson(__FUNCTION__, $opt, Message::class);
     }
@@ -208,9 +208,9 @@ trait AvailableMethods
      * @param  string  $title
      * @param  string  $address
      * @param  array|null  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendVenue(float $latitude, float $longitude, string $title, string $address, ?array $opt = []): Message
+    public function sendVenue(float $latitude, float $longitude, string $title, string $address, ?array $opt = []): ?Message
     {
         $chat_id = $this->chatId();
         $required = compact('latitude', 'longitude', 'chat_id', 'title', 'address');
@@ -221,9 +221,9 @@ trait AvailableMethods
      * @param  string  $first_name
      * @param  string  $phone_number
      * @param  array|null  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendContact(string $first_name, string $phone_number, ?array $opt = []): Message
+    public function sendContact(string $first_name, string $phone_number, ?array $opt = []): ?Message
     {
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'first_name', 'phone_number');
@@ -234,9 +234,9 @@ trait AvailableMethods
      * @param  string  $question
      * @param  array  $options
      * @param  array|null  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendPoll(string $question, array $options, ?array $opt = []): Message
+    public function sendPoll(string $question, array $options, ?array $opt = []): ?Message
     {
         $required = [
             'chat_id' => $this->chatId(),
@@ -248,9 +248,9 @@ trait AvailableMethods
 
     /**
      * @param  array|null  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendDice(?array $opt = []): Message
+    public function sendDice(?array $opt = []): ?Message
     {
         $chat_id = $this->chatId();
         $required = compact('chat_id');
@@ -260,9 +260,9 @@ trait AvailableMethods
     /**
      * @param  string  $action
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function sendChatAction(string $action, ?array $opt = []): bool
+    public function sendChatAction(string $action, ?array $opt = []): ?bool
     {
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'action');
@@ -271,9 +271,9 @@ trait AvailableMethods
 
     /**
      * @param  array|null  $opt
-     * @return UserProfilePhotos
+     * @return UserProfilePhotos|null
      */
-    public function getUserProfilePhotos(?array $opt = []): UserProfilePhotos
+    public function getUserProfilePhotos(?array $opt = []): ?UserProfilePhotos
     {
         $user_id = $this->userId();
         $required = compact('user_id');
@@ -282,9 +282,9 @@ trait AvailableMethods
 
     /**
      * @param  string  $file_id
-     * @return File
+     * @return File|null
      */
-    public function getFile(string $file_id): File
+    public function getFile(string $file_id): ?File
     {
         return $this->requestJson(__FUNCTION__, compact('file_id'), File::class);
     }
@@ -293,9 +293,9 @@ trait AvailableMethods
      * @param  string|int  $chat_id
      * @param  int  $user_id
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function kickChatMember(string|int $chat_id, int $user_id, ?array $opt = []): bool
+    public function kickChatMember(string|int $chat_id, int $user_id, ?array $opt = []): ?bool
     {
         $required = compact('chat_id', 'user_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -305,9 +305,9 @@ trait AvailableMethods
      * @param  string|int  $chat_id
      * @param  int  $user_id
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function unbanChatMember(string|int $chat_id, int $user_id, ?array $opt = []): bool
+    public function unbanChatMember(string|int $chat_id, int $user_id, ?array $opt = []): ?bool
     {
         $required = compact('chat_id', 'user_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -318,9 +318,9 @@ trait AvailableMethods
      * @param  int  $user_id
      * @param  ChatPermissions  $permissions
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function restrictChatMember(string|int $chat_id, int $user_id, ChatPermissions $permissions, ?array $opt = []): bool
+    public function restrictChatMember(string|int $chat_id, int $user_id, ChatPermissions $permissions, ?array $opt = []): ?bool
     {
         $required = compact('chat_id', 'user_id');
         $required['permissions'] = json_encode($permissions);
@@ -331,9 +331,9 @@ trait AvailableMethods
      * @param  string|int  $chat_id
      * @param  int  $user_id
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function promoteChatMember(string|int $chat_id, int $user_id, ?array $opt = []): bool
+    public function promoteChatMember(string|int $chat_id, int $user_id, ?array $opt = []): ?bool
     {
         $required = compact('chat_id', 'user_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -344,9 +344,9 @@ trait AvailableMethods
      * @param  int  $user_id
      * @param  string  $custom_title
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function setChatAdministratorCustomTitle(string|int $chat_id, int $user_id, string $custom_title, ?array $opt = []): bool
+    public function setChatAdministratorCustomTitle(string|int $chat_id, int $user_id, string $custom_title, ?array $opt = []): ?bool
     {
         $required = compact('chat_id', 'user_id', 'custom_title');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -356,9 +356,9 @@ trait AvailableMethods
      * @param  string|int  $chat_id
      * @param  ChatPermissions  $permissions
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function setChatPermissions(string|int $chat_id, ChatPermissions $permissions, ?array $opt = []): bool
+    public function setChatPermissions(string|int $chat_id, ChatPermissions $permissions, ?array $opt = []): ?bool
     {
         $required = compact('chat_id');
         $required['permissions'] = json_encode($permissions);
@@ -367,9 +367,9 @@ trait AvailableMethods
 
     /**
      * @param  string|int  $chat_id
-     * @return string
+     * @return string|null
      */
-    public function exportChatInviteLink(string|int $chat_id): string
+    public function exportChatInviteLink(string|int $chat_id): ?string
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
@@ -377,18 +377,18 @@ trait AvailableMethods
     /**
      * @param  string|int  $chat_id
      * @param $photo
-     * @return bool
+     * @return bool|null
      */
-    public function setChatPhoto(string|int $chat_id, $photo): bool
+    public function setChatPhoto(string|int $chat_id, $photo): ?bool
     {
         return $this->requestMultipart(__FUNCTION__, compact('chat_id', 'photo'));
     }
 
     /**
      * @param  string|int  $chat_id
-     * @return bool
+     * @return bool|null
      */
-    public function deleteChatPhoto(string|int $chat_id): bool
+    public function deleteChatPhoto(string|int $chat_id): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
@@ -396,9 +396,9 @@ trait AvailableMethods
     /**
      * @param  string|int  $chat_id
      * @param  string  $title
-     * @return bool
+     * @return bool|null
      */
-    public function setChatTitle(string|int $chat_id, string $title): bool
+    public function setChatTitle(string|int $chat_id, string $title): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'title'));
     }
@@ -406,9 +406,9 @@ trait AvailableMethods
     /**
      * @param  string|int  $chat_id
      * @param  string|null  $description
-     * @return bool
+     * @return bool|null
      */
-    public function setChatDescription(string|int $chat_id, ?string $description = null): bool
+    public function setChatDescription(string|int $chat_id, ?string $description = null): ?bool
     {
         $parameters = compact('chat_id');
         if ($description !== null) {
@@ -421,9 +421,9 @@ trait AvailableMethods
      * @param  string|int  $chat_id
      * @param  int  $message_id
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function pinChatMessage(string|int $chat_id, int $message_id, ?array $opt = []): bool
+    public function pinChatMessage(string|int $chat_id, int $message_id, ?array $opt = []): ?bool
     {
         $required = compact('chat_id', 'message_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -432,54 +432,54 @@ trait AvailableMethods
     /**
      * @param  string|int  $chat_id
      * @param  int  $message_id
-     * @return bool
+     * @return bool|null
      */
-    public function unpinChatMessage(string|int $chat_id, int $message_id): bool
+    public function unpinChatMessage(string|int $chat_id, int $message_id): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id'));
     }
 
     /**
      * @param  string|int  $chat_id
-     * @return bool
+     * @return bool|null
      */
-    public function unpinAllChatMessages(string|int $chat_id): bool
+    public function unpinAllChatMessages(string|int $chat_id): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
     /**
      * @param  string|int  $chat_id
-     * @return bool
+     * @return bool|null
      */
-    public function leaveChat(string|int $chat_id): bool
+    public function leaveChat(string|int $chat_id): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
     /**
      * @param  string|int  $chat_id
-     * @return Chat
+     * @return Chat|null
      */
-    public function getChat(string|int $chat_id): Chat
+    public function getChat(string|int $chat_id): ?Chat
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id'), Chat::class);
     }
 
     /**
      * @param  string|int  $chat_id
-     * @return array
+     * @return array|null
      */
-    public function getChatAdministrators(string|int $chat_id): array
+    public function getChatAdministrators(string|int $chat_id): ?array
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id'), ChatMember::class);
     }
 
     /**
      * @param  string|int  $chat_id
-     * @return int
+     * @return int|null
      */
-    public function getChatMembersCount(string|int $chat_id): int
+    public function getChatMembersCount(string|int $chat_id): ?int
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
@@ -487,9 +487,9 @@ trait AvailableMethods
     /**
      * @param  string|int  $chat_id
      * @param  int  $user_id
-     * @return ChatMember
+     * @return ChatMember|null
      */
-    public function getChatMember(string|int $chat_id, int $user_id): ChatMember
+    public function getChatMember(string|int $chat_id, int $user_id): ?ChatMember
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), ChatMember::class);
     }
@@ -497,27 +497,27 @@ trait AvailableMethods
     /**
      * @param  string|int  $chat_id
      * @param  string  $sticker_set_name
-     * @return bool
+     * @return bool|null
      */
-    public function setChatStickerSet(string|int $chat_id, string $sticker_set_name): bool
+    public function setChatStickerSet(string|int $chat_id, string $sticker_set_name): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'sticker_set_name'));
     }
 
     /**
      * @param  string|int  $chat_id
-     * @return bool
+     * @return bool|null
      */
-    public function deleteChatStickerSet(string|int $chat_id): bool
+    public function deleteChatStickerSet(string|int $chat_id): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
     /**
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function answerCallbackQuery(?array $opt = []): bool
+    public function answerCallbackQuery(?array $opt = []): ?bool
     {
         $required = ['callback_query_id' => $this->callbackQuery()?->id];
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -525,17 +525,17 @@ trait AvailableMethods
 
     /**
      * @param  array  $commands
-     * @return bool
+     * @return bool|null
      */
-    public function setMyCommands(array $commands = []): bool
+    public function setMyCommands(array $commands = []): ?bool
     {
         return $this->requestJson(__FUNCTION__, ['commands' => json_encode($commands)]);
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function getMyCommands(): array
+    public function getMyCommands(): ?array
     {
         return $this->requestJson(__FUNCTION__, mapTo: BotCommand::class);
     }

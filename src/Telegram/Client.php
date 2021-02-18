@@ -49,9 +49,9 @@ trait Client
     /**
      * @param  string  $url
      * @param  array|null  $opt
-     * @return mixed
+     * @return bool|null
      */
-    public function setWebhook(string $url, ?array $opt = []): bool
+    public function setWebhook(string $url, ?array $opt = []): ?bool
     {
         $required = compact('url');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -59,17 +59,17 @@ trait Client
 
     /**
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function deleteWebhook(?array $opt = []): bool
+    public function deleteWebhook(?array $opt = []): ?bool
     {
         return $this->requestJson(__FUNCTION__, $opt);
     }
 
     /**
-     * @return WebhookInfo
+     * @return WebhookInfo|null
      */
-    public function getWebhookInfo(): WebhookInfo
+    public function getWebhookInfo(): ?WebhookInfo
     {
         return $this->requestJson(__FUNCTION__, mapTo: WebhookInfo::class);
     }
@@ -169,10 +169,10 @@ trait Client
             }
 
             if ($this->onApiError !== null) {
-                return $this->fireApiErrorHandler($e);
+                $this->fireApiErrorHandler($e);
+            } else {
+                throw $e;
             }
-
-            throw $e;
         })->wait();
     }
 }

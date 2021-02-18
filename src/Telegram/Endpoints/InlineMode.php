@@ -16,9 +16,9 @@ trait InlineMode
     /**
      * @param  array  $results
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function answerInlineQuery(array $results, ?array $opt = []): bool
+    public function answerInlineQuery(array $results, ?array $opt = []): ?bool
     {
         $required = [
             'inline_query_id' => $this->inlineQuery()?->id,

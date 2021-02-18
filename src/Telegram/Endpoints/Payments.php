@@ -22,7 +22,7 @@ trait Payments
      * @param  string  $currency
      * @param  array  $prices
      * @param  array|null  $opt
-     * @return Message
+     * @return Message|null
      */
     public function sendInvoice(
         string $title,
@@ -33,7 +33,7 @@ trait Payments
         string $currency,
         array $prices,
         ?array $opt = []
-    ): Message {
+    ): ?Message {
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'title', 'description', 'payload', 'provider_token', 'start_parameter', 'currency');
         $required['prices'] = json_encode($prices);
@@ -43,9 +43,9 @@ trait Payments
     /**
      * @param  bool  $ok
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function answerShippingQuery(bool $ok, ?array $opt = []): bool
+    public function answerShippingQuery(bool $ok, ?array $opt = []): ?bool
     {
         $required = [
             'shipping_query_id' => $this->shippingQuery()?->id,
@@ -57,9 +57,9 @@ trait Payments
     /**
      * @param  bool  $ok
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function answerPreCheckoutQuery(bool $ok, ?array $opt = []): bool
+    public function answerPreCheckoutQuery(bool $ok, ?array $opt = []): ?bool
     {
         $required = [
             'pre_checkout_query_id' => $this->preCheckoutQuery()?->id,

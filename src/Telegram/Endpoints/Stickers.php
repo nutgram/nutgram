@@ -17,18 +17,18 @@ trait Stickers
     /**
      * @param $sticker
      * @param  array  $opt
-     * @return Message
+     * @return Message|null
      */
-    public function sendSticker($sticker, array $opt = []): Message
+    public function sendSticker($sticker, array $opt = []): ?Message
     {
         return $this->sendAttachment('sticker', $sticker, $opt);
     }
 
     /**
      * @param  string  $name
-     * @return StickerSet
+     * @return StickerSet|null
      */
-    public function getStickerSet(string $name): StickerSet
+    public function getStickerSet(string $name): ?StickerSet
     {
         return $this->requestJson(__FUNCTION__, compact('name'), StickerSet::class);
     }
@@ -37,9 +37,9 @@ trait Stickers
      * @param  string  $name
      * @param  string  $title
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function createNewStickerSet(string $name, string $title, ?array $opt = []): bool
+    public function createNewStickerSet(string $name, string $title, ?array $opt = []): ?bool
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'name', 'title');
@@ -49,9 +49,9 @@ trait Stickers
     /**
      * @param  string  $name
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function addStickerToSet(string $name, ?array $opt = []): bool
+    public function addStickerToSet(string $name, ?array $opt = []): ?bool
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'name');
@@ -61,18 +61,18 @@ trait Stickers
     /**
      * @param  string  $sticker
      * @param  int  $position
-     * @return bool
+     * @return bool|null
      */
-    public function setStickerPositionInSet(string $sticker, int $position): bool
+    public function setStickerPositionInSet(string $sticker, int $position): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('sticker', 'position'));
     }
 
     /**
      * @param  string  $sticker
-     * @return bool
+     * @return bool|null
      */
-    public function deleteStickerFromSet(string $sticker): bool
+    public function deleteStickerFromSet(string $sticker): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('sticker'));
     }
@@ -80,9 +80,9 @@ trait Stickers
     /**
      * @param  string  $name
      * @param  array|null  $opt
-     * @return bool
+     * @return bool|null
      */
-    public function setStickerSetThumb(string $name, ?array $opt = []): bool
+    public function setStickerSetThumb(string $name, ?array $opt = []): ?bool
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'name');

@@ -15,9 +15,9 @@ trait Passport
     /**
      * @param  int  $user_id
      * @param  array  $errors
-     * @return bool
+     * @return bool|null
      */
-    public function setPassportDataErrors(int $user_id, array $errors): bool
+    public function setPassportDataErrors(int $user_id, array $errors): ?bool
     {
         return $this->requestJson(__FUNCTION__, [
             'user_id' => $user_id,
