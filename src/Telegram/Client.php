@@ -169,12 +169,10 @@ trait Client
             }
 
             if ($this->onApiError !== null) {
-                $handler = $this->onApiError;
-                $handler->setParameters([$e]);
-                $handler($this);
-            } else {
-                throw $e;
+                return $this->fireApiErrorHandler($e);
             }
+
+            throw $e;
         })->wait();
     }
 }

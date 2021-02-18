@@ -48,6 +48,7 @@ class Polling implements RunningMode
         ], $allowedUpdates);
 
         $offset = 1;
+        echo "Listening...\n";
         while (true) {
             $updates = $this->getUpdates(array_merge(['offset' => $offset], $parameters));
 

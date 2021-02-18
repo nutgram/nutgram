@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Nutgram\Telegram\Types\Poll;
 
 /**
@@ -16,52 +17,52 @@ trait UpdatesMessages
     /**
      * @param  string  $text
      * @param  array|null  $opt
-     * @return bool
+     * @return Message|bool
      */
-    public function editMessageText(string $text, ?array $opt = []): bool
+    public function editMessageText(string $text, ?array $opt = []): Message|bool
     {
         $chat_id = $this->chatId();
         $message_id = $this->messageId();
         $required = compact('text', 'chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
      * @param  array|null  $opt
-     * @return bool
+     * @return Message|bool
      */
-    public function editMessageCaption(?array $opt = []): bool
+    public function editMessageCaption(?array $opt = []): Message|bool
     {
         $chat_id = $this->chatId();
         $message_id = $this->messageId();
         $required = compact('chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
      * @param  array  $media
      * @param  array|null  $opt
-     * @return bool
+     * @return Message|bool
      */
-    public function editMessageMedia(array $media, ?array $opt = []): bool
+    public function editMessageMedia(array $media, ?array $opt = []): Message|bool
     {
         $chat_id = $this->chatId();
         $message_id = $this->messageId();
         $media = json_encode($media);
         $required = compact('media', 'chat_id', 'message_id');
-        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
      * @param  array|null  $opt
-     * @return bool
+     * @return Message|bool
      */
-    public function editMessageReplyMarkup(?array $opt = []): bool
+    public function editMessageReplyMarkup(?array $opt = []): Message|bool
     {
         $chat_id = $this->chatId();
         $message_id = $this->messageId();
         $required = compact('chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**

@@ -71,11 +71,27 @@ trait UpdateProxy
     }
 
     /**
+     * @return bool
+     */
+    public function isCallbackQuery(): bool
+    {
+        return $this->update?->callback_query !== null;
+    }
+
+    /**
      * @return CallbackQuery|null
      */
     public function callbackQuery(): ?CallbackQuery
     {
         return $this->update?->callback_query;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInlineQuery(): bool
+    {
+        return $this->update?->inline_query !== null;
     }
 
     /**
@@ -100,6 +116,14 @@ trait UpdateProxy
     public function shippingQuery(): ?ShippingQuery
     {
         return $this->update?->shipping_query;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPreCheckoutQuery(): bool
+    {
+        return $this->update?->pre_checkout_query !== null;
     }
 
     /**

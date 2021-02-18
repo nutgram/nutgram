@@ -23,14 +23,14 @@ abstract class Conversation
     protected bool $skipMiddlewares = false;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected string $step;
+    protected ?string $step = null;
 
     /**
      * @var Nutgram|null
      */
-    private ?Nutgram $bot;
+    protected ?Nutgram $bot;
 
     /**
      * @param  Nutgram  $bot

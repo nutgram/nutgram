@@ -3,11 +3,11 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
-use SergiX44\Nutgram\Telegram\ExtendedTypes\ChannelPost;
-use SergiX44\Nutgram\Telegram\ExtendedTypes\EditedChannelPost;
-use SergiX44\Nutgram\Telegram\ExtendedTypes\EditedMessage;
 use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
+use SergiX44\Nutgram\Telegram\Types\ChannelPost;
 use SergiX44\Nutgram\Telegram\Types\ChosenInlineResult;
+use SergiX44\Nutgram\Telegram\Types\EditedChannelPost;
+use SergiX44\Nutgram\Telegram\Types\EditedMessage;
 use SergiX44\Nutgram\Telegram\Types\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Nutgram\Telegram\Types\Poll;

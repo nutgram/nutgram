@@ -19,6 +19,7 @@ use SergiX44\Nutgram\Proxies\UpdateDataProxy;
 use SergiX44\Nutgram\Proxies\UserCacheProxy;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
+use SergiX44\Nutgram\RunningMode\Webhook;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Update;
 use Throwable;
@@ -126,7 +127,6 @@ class Nutgram extends ResolveHandlers
     public function processUpdate(Update $update): void
     {
         $this->update = $update;
-        $this->container->set(Update::class, $update);
 
         $chatId = $this->chatId();
         $userId = $this->userId();
@@ -171,6 +171,22 @@ class Nutgram extends ResolveHandlers
                 throw $e;
             }
         }
+    }
+
+    /**
+     * @param  Throwable  $e
+     * @return mixed|null
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     */
+    protected function fireApiErrorHandler(Throwable $e)
+    {
+        if ($this->onApiError !== null) {
+            $handler = $this->onApiError;
+            $handler->setParameters([$e]);
+            return $handler($this);
+        }
+        return null;
     }
 
     /**
@@ -229,6 +245,19 @@ class Nutgram extends ResolveHandlers
     public function getConfig(): array
     {
         return $this->config;
+    }
+
+    /**
+     * @return string
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     */
+    public function getUpdateMode(): string
+    {
+        if ($this->container->get(RunningMode::class) instanceof Webhook) {
+            return Webhook::class;
+        }
+        return Polling::class;
     }
 
     /**

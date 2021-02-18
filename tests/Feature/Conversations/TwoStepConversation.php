@@ -9,7 +9,7 @@ use SergiX44\Nutgram\Nutgram;
 
 class TwoStepConversation extends Conversation
 {
-    protected string $step = 'firstStep';
+    protected ?string $step = 'firstStep';
 
     public function firstStep(Nutgram $bot)
     {
