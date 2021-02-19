@@ -23,6 +23,14 @@ use SergiX44\Nutgram\Telegram\Types\User;
 trait UpdateProxy
 {
     /**
+     * @return Update|null
+     */
+    public function update(): ?Update
+    {
+        return $this->update;
+    }
+
+    /**
      * @return int|null
      */
     public function chatId(): ?int
