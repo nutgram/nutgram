@@ -56,3 +56,15 @@ dataset('message', function () {
 
     return [json_decode($file)];
 });
+
+dataset('command_message', function () {
+    $file = file_get_contents(__DIR__.'/Updates/command_message.json');
+
+    return [json_decode($file)];
+});
+
+dataset('callback_query', function () {
+    $file = file_get_contents(__DIR__.'/Updates/callback_query.json');
+
+    return [json_decode($file)];
+});

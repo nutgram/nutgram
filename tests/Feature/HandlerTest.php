@@ -123,3 +123,59 @@ it('calls the right handler and no the generic one', function ($update) {
 
     $bot->run();
 })->with('message');
+
+it('calls the right on command', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onCommand('start', function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->onCommand('end', function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->onMessage(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->run();
+})->with('command_message');
+
+it('parse callback queries', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onCallbackQuery(function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->onMessage(function ($bot) {
+        throw new Exception();
+    });
+
+
+    $bot->fallback(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->run();
+})->with('callback_query');
+
+it('parse callback queries with specific data', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onCallbackQueryData('thedata', function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->onMessage(function ($bot) {
+        throw new Exception();
+    });
+
+
+    $bot->fallback(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->run();
+})->with('callback_query');
