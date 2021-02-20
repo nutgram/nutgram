@@ -62,7 +62,7 @@ class InlineKeyboardButton
      * Optional. Description of the game that will be launched when the user presses the button.
      *
      * NOTE: This type of button MUST always be the first button in the first row.
-     * @var string $callback_game
+     * @var CallbackGame $callback_game
      */
     public $callback_game;
     
