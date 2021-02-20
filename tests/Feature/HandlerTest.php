@@ -56,7 +56,7 @@ it('calls the message handler with multiple middlewares', function ($update) {
     expect($test)->toBe('ABCD');
 })->with('message');
 
-it('calls the fallback if not match any listener', function ($update) {
+it('calls the fallback if not match any handler', function ($update) {
     $bot = getInstance($update);
 
     $bot->onText('Cia', function () {
@@ -65,6 +65,60 @@ it('calls the fallback if not match any listener', function ($update) {
 
     $bot->fallback(function ($bot) {
         expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->run();
+})->with('message');
+
+it('calls the specific fallback and not the general one if not match any handler', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onText('Cia', function () {
+        throw new Exception();
+    });
+
+    $bot->fallback(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Attributes\UpdateTypes::MESSAGE, function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->run();
+})->with('message');
+
+it('calls the right handler and no the fallback', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onText('Ciao', function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->fallback(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Attributes\UpdateTypes::MESSAGE, function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->run();
+})->with('message');
+
+it('calls the right handler and no the generic one', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onText('Ciao', function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->onMessage(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->fallback(function ($bot) {
+        throw new Exception();
     });
 
     $bot->run();

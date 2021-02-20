@@ -3,6 +3,8 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use InvalidArgumentException;
+use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\ChannelPost;
 use SergiX44\Nutgram\Telegram\Types\ChosenInlineResult;
@@ -202,6 +204,19 @@ abstract class CollectHandlers
      */
     public function fallback($callable): Handler
     {
-        return $this->handlers[self::FALLBACK] = new Handler($callable);
+        return $this->handlers[self::FALLBACK][] = new Handler($callable);
+    }
+
+    /**
+     * @param  string  $type
+     * @param $callable
+     * @return Handler
+     */
+    public function fallbackOn(string $type, $callable)
+    {
+        if (!in_array($type, UpdateTypes::get())) {
+            throw new InvalidArgumentException('The paramenter "type" is not a valid update type.');
+        }
+        return $this->handlers[self::FALLBACK][$type] = new Handler($callable, $type);
     }
 }
