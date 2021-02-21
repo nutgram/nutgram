@@ -179,3 +179,28 @@ it('parse callback queries with specific data', function ($update) {
 
     $bot->run();
 })->with('callback_query');
+
+it('calls the exception handler', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onCallbackQueryData('thedata', function ($bot) {
+        throw new RuntimeException('error');
+    });
+
+    $bot->onMessage(function ($bot) {
+        throw new Exception();
+    });
+
+
+    $bot->fallback(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->onException(function ($bot, $e) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($e)->toBeInstanceOf(RuntimeException::class);
+        expect($e->getMessage())->toBe('error');
+    });
+
+    $bot->run();
+})->with('callback_query');

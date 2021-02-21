@@ -19,7 +19,6 @@ use SergiX44\Nutgram\Proxies\UpdateDataProxy;
 use SergiX44\Nutgram\Proxies\UserCacheProxy;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
-use SergiX44\Nutgram\RunningMode\Webhook;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Update;
 use Throwable;
@@ -257,10 +256,7 @@ class Nutgram extends ResolveHandlers
      */
     public function getUpdateMode(): string
     {
-        if ($this->container->get(RunningMode::class) instanceof Webhook) {
-            return Webhook::class;
-        }
-        return Polling::class;
+        return get_class($this->container->get(RunningMode::class));
     }
 
     /**
