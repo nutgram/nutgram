@@ -204,3 +204,21 @@ it('calls the exception handler', function ($update) {
 
     $bot->run();
 })->with('callback_query');
+
+it('calls on edited message', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onCallbackQueryData('thedata', function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->onMessage(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->onEditedMessage(function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->run();
+})->with('edited_message');

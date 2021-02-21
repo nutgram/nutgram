@@ -5,17 +5,6 @@ namespace SergiX44\Nutgram\Handlers;
 
 use InvalidArgumentException;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
-use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
-use SergiX44\Nutgram\Telegram\Types\ChannelPost;
-use SergiX44\Nutgram\Telegram\Types\ChosenInlineResult;
-use SergiX44\Nutgram\Telegram\Types\EditedChannelPost;
-use SergiX44\Nutgram\Telegram\Types\EditedMessage;
-use SergiX44\Nutgram\Telegram\Types\InlineQuery;
-use SergiX44\Nutgram\Telegram\Types\Message;
-use SergiX44\Nutgram\Telegram\Types\Poll;
-use SergiX44\Nutgram\Telegram\Types\PollAnswer;
-use SergiX44\Nutgram\Telegram\Types\PreCheckoutQuery;
-use SergiX44\Nutgram\Telegram\Types\ShippingQuery;
 
 abstract class CollectHandlers
 {
@@ -58,7 +47,7 @@ abstract class CollectHandlers
     {
         $command = "/{$command}";
 
-        return $this->handlers[Message::class][$command] = new Handler($callable, $command);
+        return $this->handlers[UpdateTypes::MESSAGE][$command] = new Handler($callable, $command);
     }
 
     /**
@@ -67,7 +56,7 @@ abstract class CollectHandlers
      */
     public function onMessage($callable): Handler
     {
-        return $this->handlers[Message::class][] = new Handler($callable);
+        return $this->handlers[UpdateTypes::MESSAGE][] = new Handler($callable);
     }
 
     /**
@@ -77,7 +66,7 @@ abstract class CollectHandlers
      */
     public function onText(string $pattern, $callable): Handler
     {
-        return $this->handlers[Message::class][$pattern] = new Handler($callable, $pattern);
+        return $this->handlers[UpdateTypes::MESSAGE][$pattern] = new Handler($callable, $pattern);
     }
 
     /**
@@ -86,7 +75,7 @@ abstract class CollectHandlers
      */
     public function onCallbackQuery($callable): Handler
     {
-        return $this->handlers[CallbackQuery::class][] = new Handler($callable);
+        return $this->handlers[UpdateTypes::CALLBACK_QUERY][] = new Handler($callable);
     }
 
     /**
@@ -96,7 +85,7 @@ abstract class CollectHandlers
      */
     public function onCallbackQueryData(string $pattern, $callable): Handler
     {
-        return $this->handlers[CallbackQuery::class][$pattern] = new Handler($callable, $pattern);
+        return $this->handlers[UpdateTypes::CALLBACK_QUERY][$pattern] = new Handler($callable, $pattern);
     }
 
     /**
@@ -105,7 +94,7 @@ abstract class CollectHandlers
      */
     public function onEditedMessage($callable): Handler
     {
-        return $this->handlers[EditedMessage::class][] = new Handler($callable);
+        return $this->handlers[UpdateTypes::EDITED_MESSAGE][] = new Handler($callable);
     }
 
     /**
@@ -114,7 +103,7 @@ abstract class CollectHandlers
      */
     public function onChannelPost($callable): Handler
     {
-        return $this->handlers[ChannelPost::class][] = new Handler($callable);
+        return $this->handlers[UpdateTypes::CHANNEL_POST][] = new Handler($callable);
     }
 
     /**
@@ -123,7 +112,7 @@ abstract class CollectHandlers
      */
     public function onEditedChannelPost($callable): Handler
     {
-        return $this->handlers[EditedChannelPost::class][] = new Handler($callable);
+        return $this->handlers[UpdateTypes::EDITED_CHANNEL_POST][] = new Handler($callable);
     }
 
     /**
@@ -132,7 +121,7 @@ abstract class CollectHandlers
      */
     public function onInlineQuery($callable): Handler
     {
-        return $this->handlers[InlineQuery::class][] = new Handler($callable);
+        return $this->handlers[UpdateTypes::INLINE_QUERY][] = new Handler($callable);
     }
 
     /**
@@ -141,7 +130,7 @@ abstract class CollectHandlers
      */
     public function onChosenInlineResult($callable): Handler
     {
-        return $this->handlers[ChosenInlineResult::class][] = new Handler($callable);
+        return $this->handlers[UpdateTypes::CHOSEN_INLINE_RESULT][] = new Handler($callable);
     }
 
     /**
@@ -150,7 +139,7 @@ abstract class CollectHandlers
      */
     public function onShippingQuery($callable): Handler
     {
-        return $this->handlers[ShippingQuery::class][] = new Handler($callable);
+        return $this->handlers[UpdateTypes::SHIPPING_QUERY][] = new Handler($callable);
     }
 
     /**
@@ -159,7 +148,7 @@ abstract class CollectHandlers
      */
     public function onPreCheckoutQuery($callable): Handler
     {
-        return $this->handlers[PreCheckoutQuery::class][] = new Handler($callable);
+        return $this->handlers[UpdateTypes::PRE_CHECKOUT_QUERY][] = new Handler($callable);
     }
 
     /**
@@ -168,7 +157,7 @@ abstract class CollectHandlers
      */
     public function onPoll($callable): Handler
     {
-        return $this->handlers[Poll::class][] = new Handler($callable);
+        return $this->handlers[UpdateTypes::POLL][] = new Handler($callable);
     }
 
     /**
@@ -177,7 +166,7 @@ abstract class CollectHandlers
      */
     public function onPollAnswer($callable): Handler
     {
-        return $this->handlers[PollAnswer::class][] = new Handler($callable);
+        return $this->handlers[UpdateTypes::POLL_ANSWER][] = new Handler($callable);
     }
 
     /**

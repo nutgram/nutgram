@@ -9,8 +9,6 @@ use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversation;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
-use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
-use SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Nutgram\Telegram\Types\Update;
 
 /**
@@ -56,15 +54,15 @@ abstract class ResolveHandlers extends CollectHandlers
             } else {
                 $text = $this->update->message?->text;
             }
-            $this->filterHandlersBy($resolvedHandlers, Message::class, $text);
+            $this->filterHandlersBy($resolvedHandlers, $updateType, $text);
             if (empty($resolvedHandlers)) {
-                $this->filterHandlersBy($resolvedHandlers, Message::class);
+                $this->filterHandlersBy($resolvedHandlers, $updateType);
             }
         } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
             $data = $this->update->callback_query?->data;
-            $this->filterHandlersBy($resolvedHandlers, CallbackQuery::class, $data);
+            $this->filterHandlersBy($resolvedHandlers, $updateType, $data);
             if (empty($resolvedHandlers)) {
-                $this->filterHandlersBy($resolvedHandlers, CallbackQuery::class);
+                $this->filterHandlersBy($resolvedHandlers, $updateType);
             }
         } else {
             $this->filterHandlersBy($resolvedHandlers, $updateType);

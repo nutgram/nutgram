@@ -1,0 +1,40 @@
+{
+  "update_id": 62257549,
+  "edited_message": {
+    "message_id": 23762,
+    "from": {
+      "id": 999999999,
+      "is_bot": false,
+      "first_name": "Mario",
+      "username": "super",
+      "language_code": "it"
+    },
+    "chat": {
+      "id": 999999999,
+      "first_name": "Mario",
+      "username": "super",
+      "type": "private"
+    },
+    "date": 1584985181,
+    "edit_date": 1584985245,
+    "reply_to_message": {
+      "message_id": 23758,
+      "from": {
+        "id": 999999999,
+        "is_bot": false,
+        "first_name": "Mario",
+        "username": "super",
+        "language_code": "it"
+      },
+      "chat": {
+        "id": 999999999,
+        "first_name": "Mario",
+        "username": "super",
+        "type": "private"
+      },
+      "date": 1584984830,
+      "text": "This message"
+    },
+    "text": "Editing this message"
+  }
+}
