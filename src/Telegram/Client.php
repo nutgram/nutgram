@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
+use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\Games;
@@ -34,6 +35,11 @@ trait Client
         Payments,
         Passport,
         Games;
+
+    /**
+     * @var Handler|null
+     */
+    protected ?Handler $onApiError = null;
 
     /**
      * @param  array  $parameters
@@ -169,7 +175,7 @@ trait Client
             }
 
             if ($this->onApiError !== null) {
-                $this->fireApiErrorHandler($e);
+                $this->fireApiErrorHandler($this->onApiError, $e);
             } else {
                 throw $e;
             }

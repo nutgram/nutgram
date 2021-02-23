@@ -176,19 +176,16 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
+     * @param  Handler  $handler
      * @param  Throwable  $e
-     * @return mixed|null
+     * @return mixed
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
      */
-    protected function fireApiErrorHandler(Throwable $e)
+    protected function fireApiErrorHandler(Handler $handler, Throwable $e): mixed
     {
-        if ($this->onApiError !== null) {
-            $handler = $this->onApiError;
-            $handler->setParameters([$e]);
-            return $handler($this);
-        }
-        return null;
+        $handler->setParameters([$e]);
+        return $handler($this);
     }
 
     /**
