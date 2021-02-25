@@ -95,21 +95,22 @@ trait Client
     }
 
     /**
+     * @param  string  $endpoint
      * @param  string  $param
      * @param $value
      * @param  array  $opt
-     * @return mixed
+     * @return Message|null
      */
-    protected function sendAttachment(string $param, $value, array $opt = []): Message
+    protected function sendAttachment(string $endpoint, string $param, $value, array $opt = []): ?Message
     {
         $required = [
             'chat_id' => $this->chatId(),
             $param => $value,
         ];
         if (is_resource($value)) {
-            return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), Message::class);
+            return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class);
         } else {
-            return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+            return $this->requestJson($endpoint, array_merge($required, $opt), Message::class);
         }
     }
 
