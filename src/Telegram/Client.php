@@ -133,14 +133,14 @@ trait Client
 
         try {
             $response = $this->http->post($endpoint, array_merge(['multipart' => $parameters], $options));
+            return $this->mapResponse($response, $mapTo);
         } catch (RequestException $exception) {
-            $response = $exception->getResponse();
-            if (!$response instanceof ResponseInterface) {
+            if (!$exception->hasResponse()) {
                 throw $exception;
             }
+            $response = $exception->getResponse();
+            return $this->mapResponse($response, $mapTo, $exception);
         }
-
-        return $this->mapResponse($response, $mapTo);
     }
 
     /**
@@ -156,38 +156,37 @@ trait Client
             $response = $this->http->post($endpoint, array_merge([
                 'json' => $json,
             ], $options));
+            return $this->mapResponse($response, $mapTo);
         } catch (RequestException $exception) {
-            $response = $exception->getResponse();
-            if (!$response instanceof ResponseInterface) {
+            if (!$exception->hasResponse()) {
                 throw $exception;
             }
+            $response = $exception->getResponse();
+            return $this->mapResponse($response, $mapTo, $exception);
         }
-
-        return $this->mapResponse($response, $mapTo);
     }
 
     /**
      * @param  ResponseInterface  $response
      * @param  string  $mapTo
+     * @param  \Exception|null  $clientException
      * @return mixed
      * @throws TelegramException
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
      * @throws \JsonMapper_Exception
      */
-    private function mapResponse(ResponseInterface $response, string $mapTo): mixed
+    private function mapResponse(ResponseInterface $response, string $mapTo, \Exception $clientException = null): mixed
     {
-        $body = $response->getBody()->getContents();
-        $json = json_decode($body);
-        if ($json->ok) {
+        $json = json_decode((string) $response->getBody());
+        if ($json?->ok) {
             return match (true) {
                 is_scalar($json->result) => $json->result,
                 is_array($json->result) => $this->mapper->mapArray($json->result, [], $mapTo),
                 default => $this->mapper->map($json->result, new $mapTo)
             };
-
         } else {
-            $e = new TelegramException($json->description, $json->error_code);
+            $e = new TelegramException($json?->description ?? '', $json?->error_code ?? 0, $clientException);
 
             if ($this->onApiError !== null) {
                 return $this->fireApiErrorHandler($this->onApiError, $e);
