@@ -4,7 +4,6 @@
 namespace SergiX44\Nutgram\Telegram;
 
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Nutgram;
@@ -96,21 +95,22 @@ trait Client
     }
 
     /**
+     * @param  string  $endpoint
      * @param  string  $param
      * @param $value
      * @param  array  $opt
-     * @return mixed
+     * @return Message|null
      */
-    protected function sendAttachment(string $param, $value, array $opt = []): Message
+    protected function sendAttachment(string $endpoint, string $param, $value, array $opt = []): ?Message
     {
         $required = [
             'chat_id' => $this->chatId(),
             $param => $value,
         ];
         if (is_resource($value)) {
-            return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), Message::class);
+            return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class);
         } else {
-            return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+            return $this->requestJson($endpoint, array_merge($required, $opt), Message::class);
         }
     }
 
@@ -130,8 +130,17 @@ trait Client
                 'contents' => $contents,
             ];
         }
-        $promise = $this->http->postAsync($endpoint, array_merge(['multipart' => $parameters], $options));
-        return $this->mapResponse($promise, $mapTo);
+
+        try {
+            $response = $this->http->post($endpoint, array_merge(['multipart' => $parameters], $options));
+            return $this->mapResponse($response, $mapTo);
+        } catch (RequestException $exception) {
+            if (!$exception->hasResponse()) {
+                throw $exception;
+            }
+            $response = $exception->getResponse();
+            return $this->mapResponse($response, $mapTo, $exception);
+        }
     }
 
     /**
@@ -143,42 +152,47 @@ trait Client
      */
     protected function requestJson(string $endpoint, ?array $json = null, string $mapTo = stdClass::class, ?array $options = []): mixed
     {
-        $promise = $this->http->postAsync($endpoint, array_merge([
-            'json' => $json,
-        ], $options));
-
-        return $this->mapResponse($promise, $mapTo);
+        try {
+            $response = $this->http->post($endpoint, array_merge([
+                'json' => $json,
+            ], $options));
+            return $this->mapResponse($response, $mapTo);
+        } catch (RequestException $exception) {
+            if (!$exception->hasResponse()) {
+                throw $exception;
+            }
+            $response = $exception->getResponse();
+            return $this->mapResponse($response, $mapTo, $exception);
+        }
     }
 
     /**
-     * @param  PromiseInterface  $promise
+     * @param  ResponseInterface  $response
      * @param  string  $mapTo
+     * @param  \Exception|null  $clientException
      * @return mixed
+     * @throws TelegramException
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     * @throws \JsonMapper_Exception
      */
-    private function mapResponse(PromiseInterface $promise, string $mapTo): mixed
+    private function mapResponse(ResponseInterface $response, string $mapTo, \Exception $clientException = null): mixed
     {
-        return $promise->then(function (ResponseInterface $response) use ($mapTo) {
-            $body = $response->getBody()->getContents();
-            $json = json_decode($body);
-
+        $json = json_decode((string) $response->getBody());
+        if ($json?->ok) {
             return match (true) {
                 is_scalar($json->result) => $json->result,
                 is_array($json->result) => $this->mapper->mapArray($json->result, [], $mapTo),
                 default => $this->mapper->map($json->result, new $mapTo)
             };
-        }, function ($e) {
-            if ($e instanceof RequestException) {
-                $body = $e->getResponse()->getBody()->getContents();
-                $json = json_decode($body);
-
-                $e = new TelegramException($json->description, $json->error_code);
-            }
+        } else {
+            $e = new TelegramException($json?->description ?? '', $json?->error_code ?? 0, $clientException);
 
             if ($this->onApiError !== null) {
-                $this->fireApiErrorHandler($this->onApiError, $e);
+                return $this->fireApiErrorHandler($this->onApiError, $e);
             } else {
                 throw $e;
             }
-        })->wait();
+        }
     }
 }

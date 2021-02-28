@@ -21,7 +21,7 @@ trait Stickers
      */
     public function sendSticker($sticker, array $opt = []): ?Message
     {
-        return $this->sendAttachment('sticker', $sticker, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'sticker', $sticker, $opt);
     }
 
     /**

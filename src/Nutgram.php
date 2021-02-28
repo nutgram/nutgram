@@ -67,10 +67,10 @@ class Nutgram extends ResolveHandlers
 
         $baseUri = $config['api_url'] ?? 'https://api.telegram.org';
 
-        $this->http = new Guzzle([
+        $this->http = new Guzzle(array_merge($config['client'] ?? [], [
             'base_uri' => "{$baseUri}/bot{$token}/",
-            'timeout' => $config['client_timeout'] ?? 5,
-        ]);
+            'timeout' => $config['timeout'] ?? 5,
+        ]));
 
         $this->mapper = new JsonMapper();
 

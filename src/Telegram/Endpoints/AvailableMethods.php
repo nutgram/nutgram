@@ -90,7 +90,7 @@ trait AvailableMethods
      */
     public function sendPhoto($photo, array $opt = []): ?Message
     {
-        return $this->sendAttachment('photo', $photo, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $opt);
     }
 
     /**
@@ -100,7 +100,7 @@ trait AvailableMethods
      */
     public function sendAudio($audio, array $opt = []): ?Message
     {
-        return $this->sendAttachment('audio', $audio, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $opt);
     }
 
     /**
@@ -110,7 +110,7 @@ trait AvailableMethods
      */
     public function sendDocument($document, array $opt = []): ?Message
     {
-        return $this->sendAttachment('document', $document, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'document', $document, $opt);
     }
 
     /**
@@ -120,7 +120,7 @@ trait AvailableMethods
      */
     public function sendVideo($video, array $opt = []): ?Message
     {
-        return $this->sendAttachment('video', $video, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'video', $video, $opt);
     }
 
     /**
@@ -130,7 +130,7 @@ trait AvailableMethods
      */
     public function sendAnimation($animation, array $opt = []): ?Message
     {
-        return $this->sendAttachment('animation', $animation, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $opt);
     }
 
 
@@ -141,7 +141,7 @@ trait AvailableMethods
      */
     public function sendVoice($voice, array $opt = []): ?Message
     {
-        return $this->sendAttachment('voice', $voice, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $opt);
     }
 
     /**
@@ -151,7 +151,7 @@ trait AvailableMethods
      */
     public function sendVideoNote($video_note, array $opt = []): ?Message
     {
-        return $this->sendAttachment('video_note', $video_note, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $opt);
     }
 
     /**
