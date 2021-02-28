@@ -60,6 +60,16 @@ abstract class CollectHandlers
     }
 
     /**
+     * @param  string  $type
+     * @param $callable
+     * @return Handler
+     */
+    public function onMessageType(string $type, $callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MESSAGE][$type] = new Handler($callable, $type);
+    }
+
+    /**
      * @param  string  $pattern
      * @param $callable
      * @return Handler

@@ -1,5 +1,7 @@
 <?php
 
+use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
+
 it('calls the message handler', function ($update) {
     $bot = getInstance($update);
 
@@ -222,3 +224,17 @@ it('calls on edited message', function ($update) {
 
     $bot->run();
 })->with('edited_message');
+
+it('call the typed message handler', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onMessage(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->onMessageType(MessageTypes::PHOTO, function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->run();
+})->with('photo');

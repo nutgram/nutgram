@@ -54,17 +54,17 @@ abstract class ResolveHandlers extends CollectHandlers
             } else {
                 $text = $this->update->message?->text;
             }
-            $this->filterHandlersBy($resolvedHandlers, $updateType, $text);
-            if (empty($resolvedHandlers)) {
-                $this->filterHandlersBy($resolvedHandlers, $updateType);
+            if ($text !== null) {
+                $this->filterHandlersBy($resolvedHandlers, $updateType, $text);
+            } else {
+                $this->filterHandlersBy($resolvedHandlers, $updateType, $this->update?->message?->getType());
             }
         } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
             $data = $this->update->callback_query?->data;
             $this->filterHandlersBy($resolvedHandlers, $updateType, $data);
-            if (empty($resolvedHandlers)) {
-                $this->filterHandlersBy($resolvedHandlers, $updateType);
-            }
-        } else {
+        }
+
+        if (empty($resolvedHandlers)) {
             $this->filterHandlersBy($resolvedHandlers, $updateType);
         }
 

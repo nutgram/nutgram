@@ -1,0 +1,44 @@
+{
+  "update_id": 144011148,
+  "message": {
+    "message_id": 456901,
+    "from": {
+      "id": 11111111,
+      "is_bot": false,
+      "first_name": "Mario",
+      "username": "Bros",
+      "language_code": "it"
+    },
+    "chat": {
+      "id": 11111111,
+      "first_name": "Mario",
+      "username": "Bros",
+      "type": "private"
+    },
+    "date": 1614555305,
+    "photo": [
+      {
+        "file_id": "SOOOS",
+        "file_unique_id": "SOOOS",
+        "file_size": 26542,
+        "width": 240,
+        "height": 320
+      },
+      {
+        "file_id": "SAAS",
+        "file_unique_id": "SAAS",
+        "file_size": 84913,
+        "width": 720,
+        "height": 960
+      },
+      {
+        "file_id": "SEES",
+        "file_unique_id": "SEES",
+        "file_size": 104893,
+        "width": 600,
+        "height": 800
+      }
+    ],
+    "caption": "asdasdasdasdasdasd"
+  }
+}
