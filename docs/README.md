@@ -9,3 +9,6 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/sergix44/nutgram.svg?style=flat-square)](https://packagist.org/packages/sergix44/nutgram)
 
 > The Telegram bot library that doesn't drive you nuts
+
+This framework tries to make the speed and flexibility of use its strength, it will allow you to quickly make simple bots, but at the same time, it provides more advanced features to handle even the most complicated flows.
+Some of the architectural concepts on which Nutgram is based are heavily influenced by other open source projects such as [Botman](https://github.com/botman/botman) and [Zanzara](https://github.com/badfarm/zanzara), check them out too!

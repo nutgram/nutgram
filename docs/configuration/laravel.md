@@ -1,4 +1,4 @@
 ---
-sort: 4
+sort: 3
 ---
 # Laravel Integration
