@@ -1,4 +1,8 @@
-remote_theme: rundocs/jekyll-rtd-theme
-
 title: Nutgram
 description: The Telegram bot library that doesn't drive you nuts
+
+remote_theme: rundocs/jekyll-rtd-theme
+
+readme_index:
+  with_frontmatter: true
+  show_sorted: false
