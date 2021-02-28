@@ -1,5 +1,5 @@
-<p class="text-center">
-  <img src="https://i.imgur.com/ttzg3qk.png" width="400px">
+<p align="center">
+  <img src="https://i.imgur.com/0KjYtTJ.png" width="400px">
 </p>
 
 # Nutgram
