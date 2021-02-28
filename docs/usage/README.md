@@ -2,6 +2,6 @@
 sort: 3
 ---
 
-# Getting Updates
+# Usage
 
 {% include list.liquid %}
