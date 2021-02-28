@@ -1,11 +1,14 @@
+<p class="text-center">
+  <img src="https://i.imgur.com/ttzg3qk.png" width="400px">
+</p>
+
 # Nutgram
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/sergix44/nutgram.svg?style=flat-square)](https://packagist.org/packages/sergix44/nutgram)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/sergix44/nutgram/Tests?label=tests)](https://github.com/sergix44/nutgram/actions?query=workflow%3ATests+branch%3Amaster)
+[![Test Suite](https://github.com/SergiX44/Nutgram/actions/workflows/php.yml/badge.svg)](https://github.com/SergiX44/Nutgram/actions/workflows/php.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/sergix44/nutgram.svg?style=flat-square)](https://packagist.org/packages/sergix44/nutgram)
 
-
-This is where your description should go. Try and limit it to a paragraph or two. Consider adding a small example.
+> The Telegram bot library that doesn't drive you nuts
 
 ## Installation
 
