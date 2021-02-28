@@ -1,4 +1,4 @@
 ---
-sort: 2
+sort: 1
 ---
 # Installation

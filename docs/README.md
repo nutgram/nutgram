@@ -1,7 +1,3 @@
----
-sort: 1
----
-
 <p class="text-center">
   <img src="https://i.imgur.com/0KjYtTJ.png" width="400px">
 </p>
