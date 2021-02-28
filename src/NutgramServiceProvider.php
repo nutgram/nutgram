@@ -34,6 +34,8 @@ class NutgramServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(Nutgram::class, 'nutgram');
+
+        $this->mergeConfigFrom(__DIR__.'/../laravel/config.php', 'nutgram');
     }
 
     /**
@@ -43,6 +45,6 @@ class NutgramServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../laravel/config.php' => config_path('nutgram.php'),
-        ]);
+        ], 'nutgram');
     }
 }
