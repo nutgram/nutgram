@@ -23,7 +23,7 @@ composer require sergix44/nutgram
 
 ## Usage
 
-- [Official Documentation](https://sergix44.github.io/nutgram/)
+- [Official Documentation](https://sergix44.github.io/Nutgram/)
 
 ## Testing
 
