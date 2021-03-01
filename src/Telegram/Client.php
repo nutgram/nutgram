@@ -47,7 +47,7 @@ trait Client
     public function getUpdates(array $parameters = [])
     {
         return $this->requestJson(__FUNCTION__, $parameters, Update::class, [
-            'timeout' => $parameters['timeout'] + 1,
+            'timeout' => ($parameters['timeout'] ?? 0) + 1,
         ]);
     }
 
