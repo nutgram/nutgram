@@ -46,7 +46,7 @@ class Polling implements RunningMode
         $this->bot = $bot;
 
         $pollingConfig = $bot->getConfig()['polling'] ?? [];
-        $timeout = $pollingConfig['timeout'] ?? $bot->getConfig()['client_timeout'] ?? 10;
+        $timeout = $pollingConfig['timeout'] ?? $bot->getConfig()['timeout'] ?? 10;
         $allowedUpdates = isset($pollingConfig['allowed_updates']) ? ['allowed_updates' => $pollingConfig['allowed_updates']] : [];
 
 
