@@ -29,6 +29,13 @@ bot is in the context of managing an update, so those fields **are automatically
 
 Of course, **you can override them at any time**, simply by specifying them in the `$opt` array.
 
+## Available Handlers
+
+Here a full list of all the handler that listens to specific type of updates:
+
+| Method | Return type |
+| --- | --- |
+
 ## Specific handlers
 
 ### Commands
@@ -47,17 +54,85 @@ $bot->onCommand('start {parameter}', function (Nutgram $bot, $parameter) {
 
 // Called on command "/help"
 $bot->onCommand('help', function (Nutgram $bot) {
-   $bot->sendMessage('Help me!');
+    $bot->sendMessage('Help me!');
 });
 
 $bot->run();
 ```
 
-## Passing and caching data
-
 ## Update Helpers
 
-## Available Handlers
+When dealing with updates, sometimes you may need to access data that is nested in the update structure, which can be
+tedious and produce *a lot* of boilerplate, since the same objects can often be nested in other objects, depending on
+the type of update. For this reason, the framework provides a number of **support methods to quickly access the most
+used data, no matter the update type**, like this:
+
+```php
+use SergiX44\Nutgram\Nutgram;
+
+$bot = new Nutgram($_ENV['TOKEN']);
+
+$bot->onCommand('help', function (Nutgram $bot) {
+    // Get the Update object
+    $bot->update();
+    
+    // Get the Message object
+    $bot->message();
+    
+    // Access the Chat object
+    $bot->chat();
+    
+    // ...
+});
+
+$bot->run();
+```
+
+### Available helpers
+
+| Method | Return type |
+| --- | --- |
+
+## Persisting data
+
+The framework gives you the ability to store data based on the update context: you can store data as **globally**
+or **per-user**:
+
+```php
+use SergiX44\Nutgram\Nutgram;
+
+$bot = new Nutgram($_ENV['TOKEN']);
+
+$bot->setGlobalData('mykey', 'Hi!');
+$bot->setUserData('mykey', 'Ciao!', $userId);
+
+$value = $bot->getGlobalData('mykey'); // Hi!
+$value = $bot->getUserData('mykey', $userId); // Ciao!
+
+// when used inside a context, the $userId can be omitted.
+$bot->onCommand('help', function (Nutgram $bot) {
+    $bot->setUserData('mykey', 'called help!');
+    $value = $bot->getUserData('mykey'); // called help!
+    $bot->sendMessage('Help me!');
+});
+
+$bot->run();
+```
+
+```tip
+If you need to persist data on disk, be sure to choose an appropriate cache adapter!
+```
+
+### Available methods
+
+| Method | Return type |
+| --- | --- |
+| `getGlobalData($key, $default = null)` | The data associated to the `$key`, if null `$default` is returned. |
+| `setGlobalData($key, $value)` | `bool` |
+| `deleteGlobalData($key)` | `bool` |
+| `getUserData($key, ?int $userId = null, $default = null)` | The data associated to the `$key`, if null `$default` is returned. |
+| `setUserData($key, $value, ?int $userId = null)` | `bool` |
+| `deleteUserData($key, ?int $userId = null)` | `bool` |
 
 ```danger
 This documentation page is currently under development!
