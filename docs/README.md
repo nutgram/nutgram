@@ -18,8 +18,6 @@ as [Botman](https://github.com/botman/botman) and [Zanzara](https://github.com/b
 
 use SergiX44\Nutgram\Nutgram;
 
-require 'vendor/autoload.php';
-
 $bot = new Nutgram($_ENV['TOKEN']);
 
 $bot->onCommand('start', function (Nutgram $bot) {
