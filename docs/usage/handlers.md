@@ -32,22 +32,24 @@ Of course, **you can override them at any time**, simply by specifying them in t
 ## Middleware
 
 In the framework context, any handler is threaded like a **link of chain**, so you can easily link together multiple
-handlers (middlewares).
+handlers (middlewares). It applies the same concept that frameworks like Laravel have, allowing you to leverage them to
+separate repeated logic, or perform checks before executing a message handler.
 
 ```php
 use SergiX44\Nutgram\Nutgram;
 
 $bot = new Nutgram($_ENV['TOKEN']);
 
+// global middleware
 $bot->middleware(function (Nutgram $bot, $next) {
-    $bot->sendMessage('I\'m the #1 middleware!!');
+    $bot->sendMessage('I\'m the global middleware!!');
     $next($bot);
 });
 
 $bot->onMessage(function (Nutgram $bot) {
     $bot->sendMessage('I\'m the message handler!!');
 })->middleware(function (Nutgram $bot, $next) {
-    $bot->sendMessage('I\'m the #2 middleware!!');
+    $bot->sendMessage('I\'m the specific middleware!!');
     $next($bot);
 });
 
@@ -58,9 +60,12 @@ In the example above, the sequence of the calls is
 
 ```mermaid
 graph LR
-    #1_middleware-->#2_middleware
-    #2_middleware-->message_handler
+    #global_middleware-->#specific_middleware
+    #specific_middleware-->message_handler
 ```
+
+As the name says, the `global middleware` will be called before *every* message middleware of every handler (or before
+every handler if no middleware specified). The `specific middleware` will be called only before the `message handler`.
 
 The call to `$next($bot)` is needed to proceed through the chain, where `$next` is the next callable, passing the
 current instance of the bot. It is possible at any point to stop the execution of the chain, returning from the
@@ -69,7 +74,7 @@ function, or not calling the method `$next($bot)`:
 ```php
 use SergiX44\Nutgram\Nutgram;
 
-$bot = new Nutgram($_ENV['TOKEN']);;
+$bot = new Nutgram($_ENV['TOKEN']);
 
 $bot->onMessage(function (Nutgram $bot) {
     $bot->sendMessage('I will be never called :(');
@@ -110,7 +115,7 @@ class MyCommand {
 ```php
 use SergiX44\Nutgram\Nutgram;
 
-$bot = new Nutgram($_ENV['TOKEN']);;
+$bot = new Nutgram($_ENV['TOKEN']);
 
 $bot->onCommand('start {param}', MyCommand::class)
     ->middleware(MyMiddleware::class);
@@ -141,6 +146,8 @@ $bot->onCommand('help', function (Nutgram $bot) {
 
 $bot->run();
 ```
+
+## Passing and caching data
 
 ## Update Helpers
 

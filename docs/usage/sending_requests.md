@@ -24,7 +24,7 @@ $message = $bot->sendMessage('Hi!', ['chat_id' => 111222333]);
 
 // Send a message to a channel
 /** @var Message $message */
-$message = $bot->sendMessage('Hi cahnnel!', ['chat_id' => '@mychannel']);
+$message = $bot->sendMessage('Hi channel!', ['chat_id' => '@mychannel']);
 ```
 
 ## Uploading media
