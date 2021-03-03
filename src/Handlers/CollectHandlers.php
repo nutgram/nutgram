@@ -214,7 +214,7 @@ abstract class CollectHandlers
     public function fallbackOn(string $type, $callable)
     {
         if (!in_array($type, UpdateTypes::get())) {
-            throw new InvalidArgumentException('The paramenter "type" is not a valid update type.');
+            throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
         }
         return $this->handlers[self::FALLBACK][$type] = new Handler($callable, $type);
     }

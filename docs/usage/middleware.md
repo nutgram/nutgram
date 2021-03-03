@@ -22,6 +22,7 @@ $bot->middleware(function (Nutgram $bot, $next) {
 $bot->onMessage(function (Nutgram $bot) {
     $bot->sendMessage('I\'m the message handler!!');
 })->middleware(function (Nutgram $bot, $next) {
+
     $bot->sendMessage('I\'m the specific middleware!!');
     $next($bot);
 });
@@ -52,6 +53,7 @@ $bot = new Nutgram($_ENV['TOKEN']);
 $bot->onMessage(function (Nutgram $bot) {
     $bot->sendMessage('I will be never called :(');
 })->middleware(function (Nutgram $bot, $next) {
+
     $bot->sendMessage('Stop!');
     //$next($bot);
 });
@@ -59,16 +61,57 @@ $bot->onMessage(function (Nutgram $bot) {
 $bot->run();
 ```
 
+## Passing data
+
+It's possible to pass data between middlewares, using the method `setData` and `getData` on the bot instance, for
+example, to automatically retrieve data from a database, perform checks, and so on:
+
+```php
+use SergiX44\Nutgram\Nutgram;
+
+$bot = new Nutgram($_ENV['TOKEN']);
+
+// retrieve the user
+$bot->middleware(function (Nutgram $bot, $next) {
+    $user = get_current_user_from_db($bot->userId());
+    $bot->setData('user', $user);
+    $next($bot);
+});
+
+
+$bot->onCommand('admin', function (Nutgram $bot) {
+
+    $user = $bot->getData('user');
+    $bot->sendMessage("Hi admin $user->name!");
+    
+})->middleware(function (Nutgram $bot, $next) {
+
+    $user = $bot->getData('user'); // retrieve the user we have set in the global middleware
+    if ($user->isAdmin) { // if the user is an admin, continue the chain
+        $next($bot);
+    }
+    $bot->sendMessage('You are not an admin >:(');
+});
+
+$bot->onCommand('user', function (Nutgram $bot) {
+    $user = $bot->getData('user');
+    $bot->sendMessage("Hi user $user->name!");
+});
+
+$bot->run();
+```
+
 ## OOP
 
-So far you have seen handlers defined only as closures. But the framework, any definition that accepts a closure, also
-accepts a class-method definition, or invocable classes, like this:
+Also in this case, all the `$callable` can be also defined as class-method or invokable class:
 
 ```php
 use SergiX44\Nutgram\Nutgram;
 
 class MyMiddleware {
-    public function __invoke(Nutgram $bot, $next) {
+
+    public function __invoke(Nutgram $bot, $next) 
+    {
       //do stuff
       $next($bot);
     }
@@ -79,7 +122,9 @@ class MyMiddleware {
 use SergiX44\Nutgram\Nutgram;
 
 class MyCommand {
-    public function __invoke(Nutgram $bot, $param) {
+
+    public function __invoke(Nutgram $bot, $param) 
+    {
       //do stuff
     }
 }
