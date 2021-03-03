@@ -45,7 +45,7 @@ or `Webhook`, based on whether the current instance is running in a cli process,
 To expose the undelying configuration, you need to publish the configuration file:
 
 ```bash
-php artisan vendor:publish --provider="SergiX44\Nutgram\NutgramServiceProvider" --tag="config"
+php artisan vendor:publish --provider="SergiX44\Nutgram\NutgramServiceProvider" --tag="nutgram"
 ```
 
 In the `config/nutgram.php` file, you will find something like that:
