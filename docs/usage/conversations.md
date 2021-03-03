@@ -24,7 +24,7 @@ sequenceDiagram
     Bot-->>User: Reply with the second step
 ```
 
-## Creating Conversation
+## Creating Conversations
 
 To create a conversation, you must define a class that extends the framework `Conversation` class:
 
@@ -119,7 +119,38 @@ class AskIceCreamConversation extends Conversation {
 }
 ```
 
-## Funnel escaping
+## Begin a Conversation
+
+As you have already seen in the previous examples, conversation can be used in replacement for handlers:
+
+```php
+use SergiX44\Nutgram\StartConversation;
+use SergiX44\Nutgram\Nutgram;
+
+$bot = new Nutgram($_ENV['TOKEN']);
+
+$bot->onCommand('start', StartConversation::class);
+
+$bot->run();
+```
+
+But, you can also start a conversation at any time from another handlers, with the `begin` method:
+
+```php
+use SergiX44\Nutgram\StartConversation;
+use SergiX44\Nutgram\Nutgram;
+
+$bot = new Nutgram($_ENV['TOKEN']);
+
+$bot->onCommand('start', function (Nutgram $bot) {
+    // do stuff
+    StartConversation::begin($bot); // the first step will be automatically fired
+});
+
+$bot->run();
+```
+
+## Funnel Escaping
 
 By default, sends a message that match with a typed **specific** handler, the current conversation will be discarded, in
 any case, it may be necessary to force the user inside a funnel (for example in a settings modification flow):
