@@ -14,18 +14,23 @@ class ConversationCache extends BotCache
 
     protected const CONVERSATION_PREFIX = 'CONVERSATION';
 
+    /**
+     * ConversationCache constructor.
+     * @param  CacheInterface  $cache
+     * @param  int  $ttl
+     */
     public function __construct(CacheInterface $cache, $ttl = self::CONVERSATION_TTL)
     {
         parent::__construct($cache, self::CONVERSATION_PREFIX, $ttl);
     }
 
     /**
-     * @param $userId
-     * @param $chatId
-     * @return Conversation|null
+     * @param  int  $userId
+     * @param  int  $chatId
+     * @return callable|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function get(int $userId, int $chatId): ?Conversation
+    public function get(int $userId, int $chatId): ?callable
     {
         $data = $this->cache->get($this->makeKey($userId, $chatId));
         if ($data !== null) {

@@ -351,46 +351,16 @@ class Message
     public $reply_markup;
 
     /**
-     * Check if the message is a command
-     * @return bool
-     */
-    public function isCommand(): bool
-    {
-        return $this->getCommand() !== null;
-    }
-
-    /**
      * Returns only the command string without [at]BotUsername
      * Example:
-     * IN: /hello or /hello[at]MyDearBot
-     * OUT: /hello
-     * @return string
-     */
-    public function getCommand(): ?string
-    {
-        if ($this->text !== null) {
-            $result = preg_match('/^(\/\w+)(@\w+)?(.+)?$/', $this->text, $matches);
-
-            if (!$result) {
-                return null;
-            }
-
-            return $matches[1];
-        }
-        return null;
-    }
-
-    /**
-     * Returns the args as array or as string
+     * IN: /hello param1 param2 or /hello[at]MyDearBot param1 param2
+     * OUT: /hello param1 param2
      * @return string|null
      */
-    public function getArgs(): ?string
+    public function getParsedCommand(): ?string
     {
-        if ($this->text !== null) {
-            $commandArray = explode(' ', $this->text);
-            array_shift($commandArray);
-
-            return implode(' ', $commandArray);
+        if ($this->text !== null && preg_match('/^(\/\w+)(@\w+)?(.+)?$/', $this->text, $matches)) {
+            return $matches[1].($matches[3] ?? '');
         }
         return null;
     }
@@ -406,123 +376,41 @@ class Message
 
     /**
      * Return the current message type
-     * @return false|string
+     * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
-        if ($this->text !== null) {
-            return MessageTypes::TEXT;
-        }
-
-        if ($this->audio !== null) {
-            return MessageTypes::AUDIO;
-        }
-
-        if ($this->document !== null) {
-            return MessageTypes::DOCUMENT;
-        }
-
-        if ($this->animation !== null) {
-            return MessageTypes::ANIMATION;
-        }
-
-        if ($this->game !== null) {
-            return MessageTypes::GAME;
-        }
-
-        if ($this->photo !== null) {
-            return MessageTypes::PHOTO;
-        }
-
-        if ($this->sticker !== null) {
-            return MessageTypes::STICKER;
-        }
-
-        if ($this->video !== null) {
-            return MessageTypes::VIDEO;
-        }
-
-        if ($this->voice !== null) {
-            return MessageTypes::VOICE;
-        }
-
-        if ($this->video_note !== null) {
-            return MessageTypes::VIDEO_NOTE;
-        }
-
-        if ($this->contact !== null) {
-            return MessageTypes::CONTACT;
-        }
-
-        if ($this->location !== null) {
-            return MessageTypes::LOCATION;
-        }
-
-        if ($this->venue !== null) {
-            return MessageTypes::VENUE;
-        }
-
-        if ($this->poll !== null) {
-            return MessageTypes::POLL;
-        }
-
-        if ($this->dice !== null) {
-            return MessageTypes::DICE;
-        }
-
-        if ($this->new_chat_members !== null) {
-            return MessageTypes::NEW_CHAT_MEMBERS;
-        }
-
-        if ($this->left_chat_member !== null) {
-            return MessageTypes::LEFT_CHAT_MEMBER;
-        }
-
-        if ($this->new_chat_title !== null) {
-            return MessageTypes::NEW_CHAT_TITLE;
-        }
-
-        if ($this->new_chat_photo !== null) {
-            return MessageTypes::NEW_CHAT_PHOTO;
-        }
-
-        if ($this->delete_chat_photo !== null) {
-            return MessageTypes::DELETE_CHAT_PHOTO;
-        }
-
-        if ($this->group_chat_created !== null) {
-            return MessageTypes::GROUP_CHAT_CREATED;
-        }
-
-        if ($this->supergroup_chat_created !== null) {
-            return MessageTypes::SUPERGROUP_CHAT_CREATED;
-        }
-
-        if ($this->channel_chat_created !== null) {
-            return MessageTypes::CHANNEL_CHAT_CREATED;
-        }
-
-        if ($this->migrate_to_chat_id !== null) {
-            return MessageTypes::MIGRATE_TO_CHAT_ID;
-        }
-
-        if ($this->migrate_from_chat_id !== null) {
-            return MessageTypes::MIGRATE_FROM_CHAT_ID;
-        }
-
-        if ($this->pinned_message !== null) {
-            return MessageTypes::PINNED_MESSAGE;
-        }
-
-        if ($this->invoice !== null) {
-            return MessageTypes::INVOICE;
-        }
-
-        if ($this->successful_payment !== null) {
-            return MessageTypes::SUCCESSFUL_PAYMENT;
-        }
-
-        return false;
+        return match (true) {
+            $this->text !== null => MessageTypes::TEXT,
+            $this->audio !== null => MessageTypes::AUDIO,
+            $this->document !== null => MessageTypes::DOCUMENT,
+            $this->animation !== null => MessageTypes::ANIMATION,
+            $this->game !== null => MessageTypes::GAME,
+            $this->photo !== null => MessageTypes::PHOTO,
+            $this->sticker !== null => MessageTypes::STICKER,
+            $this->video !== null => MessageTypes::VIDEO,
+            $this->voice !== null => MessageTypes::VOICE,
+            $this->video_note !== null => MessageTypes::VIDEO_NOTE,
+            $this->contact !== null => MessageTypes::CONTACT,
+            $this->location !== null => MessageTypes::LOCATION,
+            $this->venue !== null => MessageTypes::VENUE,
+            $this->poll !== null => MessageTypes::POLL,
+            $this->dice !== null => MessageTypes::DICE,
+            $this->new_chat_members !== null => MessageTypes::NEW_CHAT_MEMBERS,
+            $this->left_chat_member !== null => MessageTypes::LEFT_CHAT_MEMBER,
+            $this->new_chat_title !== null => MessageTypes::NEW_CHAT_TITLE,
+            $this->new_chat_photo !== null => MessageTypes::NEW_CHAT_PHOTO,
+            $this->delete_chat_photo !== null => MessageTypes::DELETE_CHAT_PHOTO,
+            $this->group_chat_created !== null => MessageTypes::GROUP_CHAT_CREATED,
+            $this->supergroup_chat_created !== null => MessageTypes::SUPERGROUP_CHAT_CREATED,
+            $this->channel_chat_created !== null => MessageTypes::CHANNEL_CHAT_CREATED,
+            $this->migrate_to_chat_id !== null => MessageTypes::MIGRATE_TO_CHAT_ID,
+            $this->migrate_from_chat_id !== null => MessageTypes::MIGRATE_FROM_CHAT_ID,
+            $this->pinned_message !== null => MessageTypes::PINNED_MESSAGE,
+            $this->invoice !== null => MessageTypes::INVOICE,
+            $this->successful_payment !== null => MessageTypes::SUCCESSFUL_PAYMENT,
+            default => null
+        };
     }
 
 }

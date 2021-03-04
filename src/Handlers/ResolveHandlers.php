@@ -49,9 +49,8 @@ abstract class ResolveHandlers extends CollectHandlers
         $updateType = $this->update->getType();
 
         if ($updateType === UpdateTypes::MESSAGE) {
-            if ($this->update?->message?->isCommand()) {
-                $text = $this->update?->message?->getCommand().' '.$this->update?->message?->getArgs();
-            } else {
+            $text = $this->update?->message?->getParsedCommand();
+            if ($text === null) {
                 $text = $this->update->message?->text;
             }
             if ($text !== null) {
@@ -91,14 +90,14 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  Conversation  $conversation
+     * @param  $conversation
      * @return array
      */
-    protected function continueConversation(Conversation $conversation): array
+    protected function continueConversation($conversation): array
     {
         $resolvedHandlers = [];
 
-        if (!$conversation->skipHandlers()) {
+        if ($conversation instanceof Conversation && !$conversation->skipHandlers()) {
             $handlers = $this->resolveHandlers();
 
             /** @var Handler $handler */
@@ -113,7 +112,7 @@ abstract class ResolveHandlers extends CollectHandlers
 
         $handler = new Handler($conversation);
 
-        if (!$conversation->skipMiddlewares()) {
+        if (!$conversation instanceof Conversation || !$conversation->skipMiddlewares()) {
             $this->applyGlobalMiddlewaresTo($handler);
         }
 
