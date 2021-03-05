@@ -76,7 +76,7 @@ class Polling implements RunningMode
                 try {
                     $bot->processUpdate($update);
                 } catch (Throwable $e) {
-                    echo $e;
+                    echo "$e\n";
                 } finally {
                     $bot->clearData();
                 }
