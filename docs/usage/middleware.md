@@ -34,8 +34,8 @@ In the example above, the sequence of the calls is
 
 ```mermaid
 graph LR
-    #global_middleware-->#specific_middleware
-    #specific_middleware-->message_handler
+    global_middleware-->specific_middleware
+    specific_middleware-->message_handler
 ```
 
 As the name says, the `global middleware` will be called before *every* message middleware of every handler (or before

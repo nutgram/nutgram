@@ -203,6 +203,7 @@ class MyConversation extends Conversation {
 In this way, your next step will be executed without any middleware before.
 
 The two options before are also stackable:
+
 ```php
 use SergiX44\Nutgram\Conversation;
 use SergiX44\Nutgram\Nutgram;
@@ -221,4 +222,58 @@ class MyConversation extends Conversation {
     
     // ..
 }
+```
+
+## Procedural Usage
+
+It's possible to start a conversation also without a OOP approach, in this way:
+
+```php
+use SergiX44\Nutgram\Nutgram;
+
+$bot = new Nutgram($_ENV['TOKEN']);
+
+$bot->onCommand('start', 'firstStep');
+
+
+function firstStep(Nutgram $bot)
+{
+    // do stuff
+    $bot->stepConversation('secondStep');
+}
+
+function secondStep(Nutgram $bot)
+{
+    // do stuff
+    $bot->endConversation();
+}
+
+$bot->run();
+```
+
+```warning
+Using conversations in this way, you will not be able to skip middlewares or skip handlers! 
+
+By default, it will always allow funnel escaping and will always apply global middlewares.
+```
+
+## Inline Usage
+
+For very short conversations, you can also define the next step as a closure, with the same limitations of the procedural
+usage:
+
+```php
+use SergiX44\Nutgram\Nutgram;
+
+$bot = new Nutgram($_ENV['TOKEN']);
+
+$bot->onCommand('start', function (Nutgram $bot) {
+    // step one
+    $bot->stepConversation(function (Nutgram $bot){
+        // step two
+        $bot->endConversation();
+    });
+});
+
+$bot->run();
 ```

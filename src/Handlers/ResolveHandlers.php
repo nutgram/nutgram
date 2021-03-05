@@ -97,7 +97,7 @@ abstract class ResolveHandlers extends CollectHandlers
     {
         $resolvedHandlers = [];
 
-        if ($conversation instanceof Conversation && !$conversation->skipHandlers()) {
+        if (!$conversation instanceof Conversation || !$conversation->skipHandlers()) {
             $handlers = $this->resolveHandlers();
 
             /** @var Handler $handler */

@@ -59,3 +59,27 @@ function secondStep(Nutgram $bot)
     $bot->setData('test', 2);
     $bot->endConversation();
 }
+
+it('works with inline conversations', function () {
+    $file = file_get_contents(__DIR__.'/../Updates/message.json');
+
+    $bot = getInstance(json_decode($file));
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->setData('test', 1);
+
+        $bot->stepConversation(function (Nutgram $bot){
+            $bot->setData('test', 2);
+            $bot->endConversation();
+        });
+    });
+
+    $bot->run();
+    expect($bot->getData('test'))->toBe(1);
+
+    $bot->run();
+    expect($bot->getData('test'))->toBe(2);
+
+    $bot->run();
+    expect($bot->getData('test'))->toBe(1);
+});
