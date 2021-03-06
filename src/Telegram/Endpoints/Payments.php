@@ -67,5 +67,4 @@ trait Payments
         ];
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
-
 }

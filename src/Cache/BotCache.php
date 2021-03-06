@@ -3,7 +3,6 @@
 
 namespace SergiX44\Nutgram\Cache;
 
-
 use Psr\SimpleCache\CacheInterface;
 
 abstract class BotCache
@@ -37,5 +36,4 @@ abstract class BotCache
     {
         return implode('_', [$this->key, ...func_get_args()]);
     }
-
 }
