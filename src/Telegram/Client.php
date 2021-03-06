@@ -147,8 +147,12 @@ trait Client
      * @param array|null $options
      * @return mixed
      */
-    protected function requestMultipart(string $endpoint, ?array $multipart = null, string $mapTo = stdClass::class,
-                                        ?array $options = []): mixed
+    protected function requestMultipart(
+        string $endpoint,
+        ?array $multipart = null,
+        string $mapTo = stdClass::class,
+        ?array $options = []
+    ): mixed
     {
         $parameters = [];
         foreach ($multipart as $name => $contents) {
@@ -177,8 +181,12 @@ trait Client
      * @param array|null $options
      * @return mixed
      */
-    protected function requestJson(string $endpoint, ?array $json = null, string $mapTo = stdClass::class,
-                                   ?array $options = []): mixed
+    protected function requestJson(
+        string $endpoint,
+        ?array $json = null,
+        string $mapTo = stdClass::class,
+        ?array $options = []
+    ): mixed
     {
         try {
             $response = $this->http->post($endpoint, array_merge([

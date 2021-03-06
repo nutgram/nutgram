@@ -3,7 +3,6 @@
 
 namespace SergiX44\Nutgram\Cache;
 
-
 use Psr\SimpleCache\CacheInterface;
 
 class GlobalCache extends BotCache
@@ -48,5 +47,4 @@ class GlobalCache extends BotCache
     {
         return $this->cache->delete($this->makeKey($key));
     }
-
 }
