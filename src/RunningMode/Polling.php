@@ -76,13 +76,11 @@ class Polling implements RunningMode
                 try {
                     $bot->processUpdate($update);
                 } catch (Throwable $e) {
-                    echo "$e\n";
+                    echo "{$e}\n";
                 } finally {
                     $bot->clearData();
                 }
             }
-
-            gc_collect_cycles();
         }
     }
 

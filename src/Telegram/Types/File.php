@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types;
 
+use SergiX44\Nutgram\Nutgram;
+
 /**
  * This object represents a file ready to be downloaded.
  * The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>.
@@ -35,4 +37,27 @@ class File
      * @var string $file_path
      */
     public $file_path;
+
+    /**
+     * @var Nutgram|null
+     */
+    private ?Nutgram $bot;
+
+    /**
+     * File constructor.
+     * @param  Nutgram  $bot
+     */
+    public function __construct(Nutgram $bot)
+    {
+        $this->bot = $bot;
+    }
+
+    /**
+     * @param  string  $path
+     * @return bool|null
+     */
+    public function to(string $path): ?bool
+    {
+        return $this->bot?->downloadFile($this, $path);
+    }
 }

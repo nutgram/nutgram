@@ -82,6 +82,8 @@ class Nutgram extends ResolveHandlers
         $this->conversationCache = $this->container->get(ConversationCache::class);
         $this->globalCache = $this->container->get(GlobalCache::class);
         $this->userCache = $this->container->get(UserCache::class);
+
+        $this->container->set(__CLASS__, $this);
     }
 
     /**
