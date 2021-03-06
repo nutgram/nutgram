@@ -26,5 +26,4 @@ trait InlineMode
         ];
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
-
 }
