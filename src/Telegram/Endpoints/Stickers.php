@@ -88,5 +88,4 @@ trait Stickers
         $required = compact('user_id', 'name');
         return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt));
     }
-
 }

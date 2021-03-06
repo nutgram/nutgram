@@ -412,5 +412,4 @@ class Message
             default => null
         };
     }
-
 }

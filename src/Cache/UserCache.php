@@ -3,7 +3,6 @@
 
 namespace SergiX44\Nutgram\Cache;
 
-
 use Psr\SimpleCache\CacheInterface;
 
 class UserCache extends BotCache
@@ -51,5 +50,4 @@ class UserCache extends BotCache
     {
         return $this->cache->delete($this->makeKey($userId, $key));
     }
-
 }

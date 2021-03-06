@@ -3,7 +3,6 @@
 
 namespace SergiX44\Nutgram;
 
-
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
