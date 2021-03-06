@@ -4,7 +4,6 @@ use SergiX44\Nutgram\Telegram\Types\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
 
 it('make a correct keyboard', function () {
-
     $expected = [
         'inline_keyboard' => [
             [

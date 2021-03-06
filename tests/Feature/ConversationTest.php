@@ -68,7 +68,7 @@ it('works with inline conversations', function () {
     $bot->onMessage(function (Nutgram $bot) {
         $bot->setData('test', 1);
 
-        $bot->stepConversation(function (Nutgram $bot){
+        $bot->stepConversation(function (Nutgram $bot) {
             $bot->setData('test', 2);
             $bot->endConversation();
         });
