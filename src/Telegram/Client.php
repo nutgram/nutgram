@@ -15,6 +15,7 @@ use SergiX44\Nutgram\Telegram\Endpoints\Payments;
 use SergiX44\Nutgram\Telegram\Endpoints\Stickers;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
+use SergiX44\Nutgram\Telegram\Types\File;
 use SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Nutgram\Telegram\Types\Update;
 use SergiX44\Nutgram\Telegram\Types\WebhookInfo;
@@ -41,7 +42,7 @@ trait Client
     protected ?Handler $onApiError = null;
 
     /**
-     * @param  array  $parameters
+     * @param array $parameters
      * @return mixed
      */
     public function getUpdates(array $parameters = [])
@@ -52,8 +53,8 @@ trait Client
     }
 
     /**
-     * @param  string  $url
-     * @param  array|null  $opt
+     * @param string $url
+     * @param array|null $opt
      * @return bool|null
      */
     public function setWebhook(string $url, ?array $opt = []): ?bool
@@ -63,7 +64,7 @@ trait Client
     }
 
     /**
-     * @param  array|null  $opt
+     * @param array|null $opt
      * @return bool|null
      */
     public function deleteWebhook(?array $opt = []): ?bool
@@ -80,9 +81,9 @@ trait Client
     }
 
     /**
-     * @param  string  $endpoint
-     * @param  array|null  $parameters
-     * @param  array|null  $options
+     * @param string $endpoint
+     * @param array|null $parameters
+     * @param array|null $options
      * @return mixed
      */
     public function sendRequest(string $endpoint, ?array $parameters = [], ?array $options = []): mixed
@@ -95,10 +96,10 @@ trait Client
     }
 
     /**
-     * @param  string  $endpoint
-     * @param  string  $param
+     * @param string $endpoint
+     * @param string $param
      * @param $value
-     * @param  array  $opt
+     * @param array $opt
      * @return Message|null
      */
     protected function sendAttachment(string $endpoint, string $param, $value, array $opt = []): ?Message
@@ -115,13 +116,39 @@ trait Client
     }
 
     /**
-     * @param  string  $endpoint
-     * @param  array|null  $multipart
-     * @param  string  $mapTo
-     * @param  array|null  $options
+     * @param  File $file
+     * @param  string $path
+     * @return bool|null
+     */
+    public function download(File $file, string $path): ?bool
+    {
+        $baseUri = $config['api_url'] ?? 'https://api.telegram.org';
+
+        if (!is_dir(dirname($path))) {
+            mkdir(dirname($path), recursive: true);
+        }
+
+        $in = fopen("{$baseUri}/file/bot{$this->token}/{$file->file_path}", 'rb');
+        $out = fopen($path, 'wb');
+
+        while ($chunk = fread($in, 8192)) {
+            fwrite($out, $chunk, 8192);
+        }
+        fclose($in);
+        fclose($out);
+
+        return file_exists($path);
+    }
+
+    /**
+     * @param string $endpoint
+     * @param array|null $multipart
+     * @param string $mapTo
+     * @param array|null $options
      * @return mixed
      */
-    protected function requestMultipart(string $endpoint, ?array $multipart = null, string $mapTo = stdClass::class, ?array $options = []): mixed
+    protected function requestMultipart(string $endpoint, ?array $multipart = null, string $mapTo = stdClass::class,
+                                        ?array $options = []): mixed
     {
         $parameters = [];
         foreach ($multipart as $name => $contents) {
@@ -144,13 +171,14 @@ trait Client
     }
 
     /**
-     * @param  string  $endpoint
-     * @param  array|null  $json
-     * @param  string  $mapTo
-     * @param  array|null  $options
+     * @param string $endpoint
+     * @param array|null $json
+     * @param string $mapTo
+     * @param array|null $options
      * @return mixed
      */
-    protected function requestJson(string $endpoint, ?array $json = null, string $mapTo = stdClass::class, ?array $options = []): mixed
+    protected function requestJson(string $endpoint, ?array $json = null, string $mapTo = stdClass::class,
+                                   ?array $options = []): mixed
     {
         try {
             $response = $this->http->post($endpoint, array_merge([
@@ -167,9 +195,9 @@ trait Client
     }
 
     /**
-     * @param  ResponseInterface  $response
-     * @param  string  $mapTo
-     * @param  \Exception|null  $clientException
+     * @param ResponseInterface $response
+     * @param string $mapTo
+     * @param \Exception|null $clientException
      * @return mixed
      * @throws TelegramException
      * @throws \DI\DependencyException
