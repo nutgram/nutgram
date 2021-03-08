@@ -16,12 +16,4 @@ class TelegramException extends Exception
     {
         parent::__construct($message, $code, $previous);
     }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return __CLASS__.": Error code {$this->code}, {$this->message}";
-    }
 }

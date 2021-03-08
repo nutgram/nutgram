@@ -26,13 +26,19 @@ class Webhook implements RunningMode
 
     /**
      * @param  Nutgram  $bot
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      * @throws \JsonMapper_Exception
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Throwable
      */
     public function processUpdates(Nutgram $bot)
     {
         $input = file_get_contents('php://input');
-        $update = $this->mapper->map(json_decode($input), new Update());
+        $update = $this->mapper->map(
+            json_decode($input, flags: JSON_THROW_ON_ERROR),
+            $bot->getContainer()->make(Update::class)
+        );
         $bot->processUpdate($update);
     }
 }
