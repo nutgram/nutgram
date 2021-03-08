@@ -56,8 +56,12 @@ class File
      * @param  string  $path
      * @return bool|null
      */
-    public function to(string $path): ?bool
+    public function save(string $path): ?bool
     {
+        if (is_dir($path)) {
+            $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+            $path .= basename($this->file_path);
+        }
         return $this->bot?->downloadFile($this, $path);
     }
 }

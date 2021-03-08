@@ -7,7 +7,6 @@ use Exception;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
-use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\Games;
@@ -37,11 +36,6 @@ trait Client
         Payments,
         Passport,
         Games;
-
-    /**
-     * @var Handler|null
-     */
-    protected ?Handler $onApiError = null;
 
     /**
      * @param  array  $parameters
