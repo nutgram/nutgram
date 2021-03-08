@@ -236,7 +236,7 @@ $bot->onMessage(function (Nutgram $bot) {
 });
 
 // ... and passed to the exception handler
-$bot->onException(function (Nutgram $bot, $exception) {
+$bot->onException(function (Nutgram $bot, \Throwable $exception) {
     echo $exception->getMessage(); // Oh no!
     error_log($exception);
     $bot->sendMessage('Whoops!');
@@ -251,6 +251,7 @@ The same concept of the `onException`, but for outgoing requests:
 
 ```php
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 
 $bot = new Nutgram($_ENV['TOKEN']);
 
@@ -258,7 +259,7 @@ $bot->onMessage(function (Nutgram $bot) {
     $bot->sendMessage('Invalid call!', ['chat_id' => null]);
 });
 
-$bot->onApiError(function (Nutgram $bot, $exception) {
+$bot->onApiError(function (Nutgram $bot, TelegramException $exception) {
     echo $exception->getMessage(); // TelegramException: ...
     error_log($exception);
 });
