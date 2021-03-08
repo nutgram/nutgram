@@ -63,7 +63,7 @@ abstract class ResolveHandlers extends CollectHandlers
             $this->filterHandlersBy($resolvedHandlers, $updateType, $data);
         }
 
-        if (empty($resolvedHandlers)) {
+        if (empty($resolvedHandlers) && $updateType !== null) {
             $this->filterHandlersBy($resolvedHandlers, $updateType);
         }
 
