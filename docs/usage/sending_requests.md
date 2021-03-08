@@ -11,7 +11,6 @@ parameter (present in almost all methods) as an associative array.
 For example:
 
 ```php
-<?php
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Message;
@@ -35,7 +34,6 @@ descriptor to the right method, and the framework will take care of how uploadin
 If you already have the Telegram `file_id`, you can simply specify it.
 
 ```php
-<?php
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Message;
@@ -58,6 +56,57 @@ fclose($video);
 $fileId = $bot->message()->sticker->file_id;
 /** @var Message $message */
 $message = $bot->sendSticker($fileId, ['chat_id' => 111222333]);
+```
+
+## Downloading media
+
+As opposed to uploading, there are some additional methods available that allow you to download files:
+
+```php
+use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Types\File;
+
+$bot = new Nutgram($_ENV['TOKEN']);
+
+$fileId = $bot->message()->sticker->file_id;
+
+// get the File object 
+/** @var File $message */
+$file = $bot->getFile($fileId);
+
+$bot->downloadFile($file, 'path/to/file');
+
+// OR, via helper method
+
+$bot->getFile($fileId)->save('file/or/directory');
+
+```
+
+## Formatting options
+
+The framework give you some helper constants to format your text messages:
+
+```php
+use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Attributes\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Message;
+
+$bot = new Nutgram($_ENV['TOKEN']);
+
+// Send a message formatting in markdown
+/** @var Message $message */
+$message = $bot->sendMessage('*Hi!*', [
+    'chat_id' => 111222333,
+    'parse_mode' => ParseMode::MARKDOWN,
+]);
+
+// Send a message formatting in html
+/** @var Message $message */
+$message = $bot->sendMessage('<i>Hi!</i>', [
+    'chat_id' => 111222333,
+    'parse_mode' => ParseMode::HTML,
+]);
+
 ```
 
 ## Available methods
