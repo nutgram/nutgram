@@ -344,6 +344,7 @@ $bot->run();
 | `preCheckoutQuery()` | `?PreCheckoutQuery` | The current `PreCheckoutQuery` if available, `null` otherwise. |
 | `poll()` | `?Poll` | The current `Poll` if available, `null` otherwise. |
 | `pollAnswer()` | `?PollAnswer` | The current `PollAnswer` if available, `null` otherwise. |
+| `isMyChatMember()` | `bool` | If the current `ChatMemberUpdated` is in the `my_chat_member`. |
 | `chatMember()` | `?ChatMemberUpdated` | The current `ChatMemberUpdated` if available, `null` otherwise. |
 
 ## Persisting data
