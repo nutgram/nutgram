@@ -160,11 +160,11 @@ trait UpdateProxy
     }
 
     /**
-     * @return ChatMemberUpdated|null
+     * @return bool
      */
-    public function myChatMember(): ?ChatMemberUpdated
+    public function isMyChatMember(): bool
     {
-        return $this->update?->my_chat_member;
+        return $this->update?->my_chat_member !== null;
     }
 
     /**
@@ -172,6 +172,6 @@ trait UpdateProxy
      */
     public function chatMember(): ?ChatMemberUpdated
     {
-        return $this->update?->chat_member;
+        return $this->update?->chat_member ?? $this->update?->my_chat_member;
     }
 }

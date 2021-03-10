@@ -50,6 +50,8 @@ Here a full list of all the handler that listens to specific type of updates:
 | `onPreCheckoutQuery($callable)` | **Generic** |  Handles any incoming pre checkout query. | 
 | `onPoll($callable)` | **Generic** |  Handles any incoming poll. | 
 | `onPollAnswer($callable)` | **Generic** |  Handles any incoming poll answer. | 
+| `onMyChatMember($callable)` | **Generic** |  Handles any chat member when updated. | 
+| `onChatMember($callable)` | **Generic** |  Handles any chat member in other chats when updated. | 
 | `onException($callable)` | **Special** |  This handler will be called whenever the handling of an update throws an exception, if undefined the exception will not be caught.<br>Check the next paragraph for more details. | 
 | `onApiError($callable)` | **Special** |  This handler will be called every time a call to Telegram's api fails, if undefined the exception will not be caught.<br>Check the next paragraph for more details. | 
 | `fallback($callable)` | **Special** |  This handler if defined will be called if no handler, specific or generic, has been found for the current update. | 
@@ -342,6 +344,7 @@ $bot->run();
 | `preCheckoutQuery()` | `?PreCheckoutQuery` | The current `PreCheckoutQuery` if available, `null` otherwise. |
 | `poll()` | `?Poll` | The current `Poll` if available, `null` otherwise. |
 | `pollAnswer()` | `?PollAnswer` | The current `PollAnswer` if available, `null` otherwise. |
+| `chatMember()` | `?ChatMemberUpdated` | The current `ChatMemberUpdated` if available, `null` otherwise. |
 
 ## Persisting data
 
