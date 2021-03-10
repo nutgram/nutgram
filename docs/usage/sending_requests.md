@@ -143,6 +143,9 @@ $message = $bot->sendMessage('<i>Hi!</i>', [
 | `setChatAdministratorCustomTitle(string|int $chat_id, int $user_id, string $custom_title, ?array $opt = [])` | `?bool` | [#setchatadministratorcustomtitle](https://core.telegram.org/bots/api#setchatadministratorcustomtitle){:target="_blank"} |
 | `setChatPermissions(string|int $chat_id, ChatPermissions $permissions, ?array $opt = [])` | `?bool` | [#setchatpermissions](https://core.telegram.org/bots/api#setchatpermissions){:target="_blank"} |
 | `exportChatInviteLink(string|int $chat_id)` | `?string` | [#exportchatinvitelink](https://core.telegram.org/bots/api#exportchatinvitelink){:target="_blank"} |
+| `createChatInviteLink(string|int $chat_id, ?array $opt = [])` | `?ChatInviteLink` | [#createchatinvitelink](https://core.telegram.org/bots/api#createchatinvitelink){:target="_blank"} |
+| `editChatInviteLink(string|int $chat_id, string $invite_link, ?array $opt = [])` | `?ChatInviteLink` | [#editchatinvitelink](https://core.telegram.org/bots/api#editchatinvitelink){:target="_blank"} |
+| `revokeChatInviteLink(string|int $chat_id, string $invite_link)` | `?ChatInviteLink` | [#revokechatinvitelink](https://core.telegram.org/bots/api#revokechatinvitelink){:target="_blank"} |
 | `setChatPhoto(string|int $chat_id, $photo)` | `?bool` | [#setchatphoto](https://core.telegram.org/bots/api#setchatphoto){:target="_blank"} |
 | `deleteChatPhoto(string|int $chat_id)` | `?bool` | [#deletechatphoto](https://core.telegram.org/bots/api#deletechatphoto){:target="_blank"} |
 | `setChatTitle(string|int $chat_id, string $title)` | `?bool` | [#setchattitle](https://core.telegram.org/bots/api#setchattitle){:target="_blank"} |

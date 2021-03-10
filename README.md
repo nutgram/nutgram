@@ -7,6 +7,8 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/sergix44/nutgram.svg?style=flat-square)](https://packagist.org/packages/sergix44/nutgram)
 [![Test Suite](https://github.com/SergiX44/Nutgram/actions/workflows/php.yml/badge.svg)](https://github.com/SergiX44/Nutgram/actions/workflows/php.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/sergix44/nutgram.svg?style=flat-square)](https://packagist.org/packages/sergix44/nutgram)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-5.1%09--%20March%204%2C%202021-blue.svg)](https://core.telegram.org/bots/api)
+[![License](https://poser.pugx.org/sergix44/nutgram/license)](//packagist.org/packages/sergix44/nutgram)
 
 > The Telegram bot framework that doesn't drive you nuts
 
