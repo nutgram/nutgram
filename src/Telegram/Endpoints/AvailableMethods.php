@@ -382,7 +382,7 @@ trait AvailableMethods
     public function createChatInviteLink(string|int $chat_id, ?array $opt = []): ?ChatInviteLink
     {
         $required = compact('chat_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt),ChatInviteLink::class);
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), ChatInviteLink::class);
     }
 
     /**
@@ -394,7 +394,7 @@ trait AvailableMethods
     public function editChatInviteLink(string|int $chat_id, string $invite_link, ?array $opt = []): ?ChatInviteLink
     {
         $required = compact('chat_id', 'invite_link');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt),ChatInviteLink::class);
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), ChatInviteLink::class);
     }
 
     /**
@@ -404,7 +404,7 @@ trait AvailableMethods
      */
     public function revokeChatInviteLink(string|int $chat_id, string $invite_link): ?ChatInviteLink
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'invite_link'),ChatInviteLink::class);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'invite_link'), ChatInviteLink::class);
     }
 
     /**

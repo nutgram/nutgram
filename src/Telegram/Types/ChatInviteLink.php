@@ -9,7 +9,7 @@ namespace SergiX44\Nutgram\Telegram\Types;
 class ChatInviteLink
 {
     /**
-     * The invite link. If the link was created by another chat administrator, 
+     * The invite link. If the link was created by another chat administrator,
      * then the second part of the link will be replaced with “…”.
      * @var string $invite_link
      */
@@ -40,7 +40,7 @@ class ChatInviteLink
     public $expire_date;
 
     /**
-     * Optional. Maximum number of users that can be members of the chat simultaneously 
+     * Optional. Maximum number of users that can be members of the chat simultaneously
      * after joining the chat via this invite link; 1-99999
      * @var int $member_limit
      */
