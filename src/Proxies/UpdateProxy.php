@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Proxies;
 
 use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Chat;
+use SergiX44\Nutgram\Telegram\Types\ChatMemberUpdated;
 use SergiX44\Nutgram\Telegram\Types\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\Message;
@@ -156,5 +157,21 @@ trait UpdateProxy
     public function pollAnswer(): ?PollAnswer
     {
         return $this->update?->poll_answer;
+    }
+
+    /**
+     * @return ChatMemberUpdated|null
+     */
+    public function myChatMember(): ?ChatMemberUpdated
+    {
+        return $this->update?->my_chat_member;
+    }
+
+    /**
+     * @return ChatMemberUpdated|null
+     */
+    public function chatMember(): ?ChatMemberUpdated
+    {
+        return $this->update?->chat_member;
     }
 }
