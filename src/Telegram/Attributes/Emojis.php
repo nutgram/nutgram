@@ -9,4 +9,5 @@ class Emojis
     public const BASKETBALL = '🏀';
     public const FOOTBALL = '⚽';
     public const SLOT = '🎰';
+    public const BOWLING = '🎳';
 }

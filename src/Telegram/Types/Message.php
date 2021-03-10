@@ -281,6 +281,12 @@ class Message
     public $channel_chat_created;
 
     /**
+     * Optional. Service message: auto-delete timer settings changed in the chat
+     * @var MessageAutoDeleteTimerChanged $message_auto_delete_timer_changed
+     */
+    public $message_auto_delete_timer_changed;
+
+    /**
      * Optional. The group has been migrated to a supergroup with the specified identifier.
      * This number may be greater than 32 bits and some programming languages
      * may have difficulty/silent defects in interpreting it.
@@ -343,6 +349,24 @@ class Message
      */
     public $proximity_alert_triggered;
 
+    /**
+     * Optional. Service message: voice chat started
+     * @var VoiceChatStarted $voice_chat_started
+     */
+    public $voice_chat_started;
+
+    /**
+     * Optional. Service message: voice chat ended
+     * @var VoiceChatEnded $voice_chat_ended
+     */
+    public $voice_chat_ended;
+
+    /**
+     * Optional. Service message: new participants invited to a voice chat
+     * @var VoiceChatParticipantsInvited $voice_chat_participants_invited
+     */
+    public $voice_chat_participants_invited;
+    
     /**
      * Optional. Optional. Inline keyboard attached to the message.
      * "login_url" buttons are represented as ordinary "url" buttons.

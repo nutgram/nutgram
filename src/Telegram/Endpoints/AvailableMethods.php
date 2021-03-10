@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Chat;
+use SergiX44\Nutgram\Telegram\Types\ChatInviteLink;
 use SergiX44\Nutgram\Telegram\Types\ChatMember;
 use SergiX44\Nutgram\Telegram\Types\ChatPermissions;
 use SergiX44\Nutgram\Telegram\Types\File;
@@ -132,7 +133,6 @@ trait AvailableMethods
     {
         return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $opt);
     }
-
 
     /**
      * @param $voice
@@ -372,6 +372,39 @@ trait AvailableMethods
     public function exportChatInviteLink(string|int $chat_id): ?string
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
+    }
+
+    /**
+     * @param string|int $chat_id
+     * @param array|null $opt
+     * @return ChatInviteLink|null
+     */
+    public function createChatInviteLink(string|int $chat_id, ?array $opt = []): ?ChatInviteLink
+    {
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt),ChatInviteLink::class);
+    }
+
+    /**
+     * @param string|int $chat_id
+     * @param string $invite_link
+     * @param array|null $opt
+     * @return ChatInviteLink|null
+     */
+    public function editChatInviteLink(string|int $chat_id, string $invite_link, ?array $opt = []): ?ChatInviteLink
+    {
+        $required = compact('chat_id', 'invite_link');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt),ChatInviteLink::class);
+    }
+
+    /**
+     * @param string|int $chat_id
+     * @param string $invite_link
+     * @return ChatInviteLink|null
+     */
+    public function revokeChatInviteLink(string|int $chat_id, string $invite_link): ?ChatInviteLink
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'invite_link'),ChatInviteLink::class);
     }
 
     /**
