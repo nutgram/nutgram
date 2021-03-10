@@ -183,6 +183,24 @@ abstract class CollectHandlers
      * @param $callable
      * @return Handler
      */
+    public function onMyChatMember($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MY_CHAT_MEMBER][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onChatMember($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::CHAT_MEMBER][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
     public function onException($callable): Handler
     {
         return $this->onException = new Handler($callable);
