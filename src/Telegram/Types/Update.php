@@ -149,6 +149,8 @@ class Update
             $this->shipping_query !== null => $this->shipping_query->from,
             $this->pre_checkout_query !== null => $this->pre_checkout_query->from,
             $this->poll_answer !== null => $this->poll_answer->user,
+            $this->my_chat_member !== null => $this->my_chat_member->from,
+            $this->chat_member !== null => $this->chat_member->from,
             default => null,
         };
     }
