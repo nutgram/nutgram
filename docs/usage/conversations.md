@@ -102,6 +102,7 @@ class AskIceCreamConversation extends Conversation {
         // if is not a callback query, ask again!
         if (!$bot->isCallbackQuery()) {
             $this->askCupSize($bot);
+            return;
         }
         
         $this->cupSize = $bot->callbackQuery()->data;
