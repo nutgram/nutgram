@@ -164,57 +164,6 @@ trait Client
             return $this->mapResponse($response, $mapTo, $exception);
         }
     }
-
-    /**
-     * @param  string  $endpoint
-     * @param  array|null  $multipart
-     * @param  string  $mapTo
-     * @param  array|null  $options
-     * @return mixed
-     */
-    protected function requestMultipleMultipart(
-        string $endpoint,
-        ?array $multipart = null,
-        string $mapTo = stdClass::class,
-        ?array $options = []
-    ): mixed {
-        $parameters = [];
-
-        foreach ($multipart as $name => $contents) {
-            if (is_array($contents)) {
-                foreach ($contents as $key => $subcontent) {
-                    $parameters[] = [
-                        'name' => $subcontent['type'] . $key,
-                        'contents' => $subcontent['media'],
-                    ];
-                    $media[] = [
-                        'type' => $subcontent['type'],
-                        'media' => 'attach://' . $subcontent['type'] . $key
-                    ];
-                }
-            } else {
-                $parameters[] = [
-                    'name' => $name,
-                    'contents' => $contents,
-                ];
-            }
-        }
-        $parameters[] = [
-            'name' => 'media',
-            'contents' => json_encode($media),
-        ];
-
-        try {
-            $response = $this->http->post($endpoint, array_merge(['multipart' => $parameters], $options));
-            return $this->mapResponse($response, $mapTo);
-        } catch (RequestException $exception) {
-            if (!$exception->hasResponse()) {
-                throw $exception;
-            }
-            $response = $exception->getResponse();
-            return $this->mapResponse($response, $mapTo, $exception);
-        }
-    }
     
     /**
      * @param  string  $endpoint
