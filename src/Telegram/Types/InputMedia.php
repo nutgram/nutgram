@@ -3,7 +3,6 @@
 
 namespace SergiX44\Nutgram\Telegram\Types;
 
-
 abstract class InputMedia
 {
     /**
