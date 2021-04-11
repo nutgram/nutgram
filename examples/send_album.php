@@ -12,15 +12,12 @@ $bot->onText('/from_file', function (Nutgram $bot) {
     $bot->sendMediaGroup([
 		[
 			'type' => 'photo',
-			'media' => 'attach://photoa'
+			'media' => fopen('150.png','r+')
 		],
 		[
 			'type' => 'photo',
-			'media' => 'attach://photob'
+			'media' => fopen('200.png','r+')
 		],
-	],[
-		'photoa' => fopen('150.png','r+'),
-		'photob' => fopen('200.png','r+')
 	]);
 });
 
