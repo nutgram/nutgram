@@ -164,7 +164,7 @@ trait Client
             return $this->mapResponse($response, $mapTo, $exception);
         }
     }
-
+    
     /**
      * @param  string  $endpoint
      * @param  array|null  $json

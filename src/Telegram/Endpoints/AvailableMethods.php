@@ -161,11 +161,11 @@ trait AvailableMethods
      */
     public function sendMediaGroup(array $media, array $opt = []): ?array
     {
-        $required = [
-            'chat_id' => $this->chatId(),
-            'media' => json_encode($media),
-        ];
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+		$required = [
+			'chat_id' => $this->chatId(),
+			'media' => json_encode($media),
+		];
+		return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
