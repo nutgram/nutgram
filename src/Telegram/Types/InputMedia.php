@@ -25,4 +25,12 @@ abstract class InputMedia
      * @var string $caption
      */
     public $caption;
+
+    /**
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        return get_object_vars($this);
+    }
 }

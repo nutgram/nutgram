@@ -165,18 +165,14 @@ trait AvailableMethods
         $inputMedia = [];
         $files = [];
         foreach ($media as $m) {
-            if ($m instanceof InputMedia) {
-                if (is_resource($m->media)) {
-                    $id = uniqid();
-                    $files[$id] = $m->media;
-                    $m->media = "attach://{$id}";
-                }
-            } else {
-                if (is_resource($m['media'])) {
-                    $id = uniqid();
-                    $files[$id] = $m['media'];
-                    $m['media'] = "attach://{$id}";
-                }
+            if ($m instanceof InputMedia && is_resource($m->media)) {
+                $id = uniqid();
+                $files[$id] = $m->media;
+                $m->media = "attach://{$id}";
+            } elseif (is_array($m) && is_resource($m['media'])) {
+                $id = uniqid();
+                $files[$id] = $m['media'];
+                $m['media'] = "attach://{$id}";
             }
 
             $inputMedia[] = $m;
