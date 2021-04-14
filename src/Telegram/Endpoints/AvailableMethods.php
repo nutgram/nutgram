@@ -10,6 +10,7 @@ use SergiX44\Nutgram\Telegram\Types\ChatInviteLink;
 use SergiX44\Nutgram\Telegram\Types\ChatMember;
 use SergiX44\Nutgram\Telegram\Types\ChatPermissions;
 use SergiX44\Nutgram\Telegram\Types\File;
+use SergiX44\Nutgram\Telegram\Types\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Nutgram\Telegram\Types\MessageId;
 use SergiX44\Nutgram\Telegram\Types\User;
@@ -161,11 +162,27 @@ trait AvailableMethods
      */
     public function sendMediaGroup(array $media, array $opt = []): ?array
     {
+        $inputMedia = [];
+        $files = [];
+        foreach ($media as $m) {
+            if ($m instanceof InputMedia && is_resource($m->media)) {
+                $id = uniqid();
+                $files[$id] = $m->media;
+                $m->media = "attach://{$id}";
+            } elseif (is_array($m) && is_resource($m['media'])) {
+                $id = uniqid();
+                $files[$id] = $m['media'];
+                $m['media'] = "attach://{$id}";
+            }
+
+            $inputMedia[] = $m;
+        }
+
         $required = [
             'chat_id' => $this->chatId(),
-            'media' => json_encode($media),
+            'media' => json_encode($inputMedia),
         ];
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $files, $opt), Message::class);
     }
 
     /**
@@ -375,8 +392,8 @@ trait AvailableMethods
     }
 
     /**
-     * @param string|int $chat_id
-     * @param array|null $opt
+     * @param  string|int  $chat_id
+     * @param  array|null  $opt
      * @return ChatInviteLink|null
      */
     public function createChatInviteLink(string|int $chat_id, ?array $opt = []): ?ChatInviteLink
@@ -386,9 +403,9 @@ trait AvailableMethods
     }
 
     /**
-     * @param string|int $chat_id
-     * @param string $invite_link
-     * @param array|null $opt
+     * @param  string|int  $chat_id
+     * @param  string  $invite_link
+     * @param  array|null  $opt
      * @return ChatInviteLink|null
      */
     public function editChatInviteLink(string|int $chat_id, string $invite_link, ?array $opt = []): ?ChatInviteLink
@@ -398,8 +415,8 @@ trait AvailableMethods
     }
 
     /**
-     * @param string|int $chat_id
-     * @param string $invite_link
+     * @param  string|int  $chat_id
+     * @param  string  $invite_link
      * @return ChatInviteLink|null
      */
     public function revokeChatInviteLink(string|int $chat_id, string $invite_link): ?ChatInviteLink
