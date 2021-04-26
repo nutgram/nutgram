@@ -8,8 +8,8 @@ class ChatActions
     public const UPLOAD_PHOTO = 'upload_photo';
     public const RECORD_VIDEO = 'record_video';
     public const UPLOAD_VIDEO = 'upload_video';
-    public const RECORD_AUDIO = 'record_audio';
-    public const UPLOAD_AUDIO = 'upload_audio';
+    public const RECORD_VOICE = 'record_voice';
+    public const UPLOAD_VOICE = 'upload_voice';
     public const UPLOAD_DOCUMENT = 'upload_document';
     public const FIND_LOCATION = 'find_location';
     public const RECORD_VIDEO_NOTE = 'record_video_note';

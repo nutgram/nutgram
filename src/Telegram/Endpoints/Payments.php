@@ -18,7 +18,6 @@ trait Payments
      * @param  string  $description
      * @param  string  $payload
      * @param  string  $provider_token
-     * @param  string  $start_parameter
      * @param  string  $currency
      * @param  array  $prices
      * @param  array|null  $opt
@@ -29,13 +28,12 @@ trait Payments
         string $description,
         string $payload,
         string $provider_token,
-        string $start_parameter,
         string $currency,
         array $prices,
         ?array $opt = []
     ): ?Message {
         $chat_id = $this->chatId();
-        $required = compact('chat_id', 'title', 'description', 'payload', 'provider_token', 'start_parameter', 'currency');
+        $required = compact('chat_id', 'title', 'description', 'payload', 'provider_token', 'currency');
         $required['prices'] = json_encode($prices);
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }

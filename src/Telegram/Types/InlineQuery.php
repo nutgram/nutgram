@@ -22,12 +22,6 @@ class InlineQuery
     public $from;
     
     /**
-     * Optional. Sender location, only for bots that request user location
-     * @var Location $location
-     */
-    public $location;
-    
-    /**
      * Text of the query (up to 256 characters)
      * @var string $query
      */
@@ -38,4 +32,20 @@ class InlineQuery
      * @var string $offset
      */
     public $offset;
+
+    /**
+     * Optional. Type of the chat, from which the inline query was sent.
+     * Can be either “sender” for a private chat with the inline query sender,
+     * “private”, “group”, “supergroup”, or “channel”.
+     * The chat type should be always known for requests sent from official clients and most third-party clients,
+     * unless the request was sent from a secret chat
+     * @var string $chat_type
+     */
+    public $chat_type;
+
+    /**
+     * Optional. Sender location, only for bots that request user location
+     * @var Location $location
+     */
+    public $location;
 }
