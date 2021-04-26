@@ -350,6 +350,12 @@ class Message
     public $proximity_alert_triggered;
 
     /**
+     * Optional. Service message: voice chat scheduled
+     * @var VoiceChatScheduled $voice_chat_scheduled
+     */
+    public $voice_chat_scheduled;
+
+    /**
      * Optional. Service message: voice chat started
      * @var VoiceChatStarted $voice_chat_started
      */
