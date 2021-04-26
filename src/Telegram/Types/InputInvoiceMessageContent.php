@@ -3,7 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types;
 
 /**
- * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of an 
+ * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of an
  * invoice message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputinvoicemessagecontent
  */
@@ -34,7 +34,7 @@ class InputInvoiceMessageContent
     public $provider_token;
     
     /**
-     * Three-letter ISO 4217 currency code, 
+     * Three-letter ISO 4217 currency code,
      * see {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies}
      * @var string $currency
      */
@@ -47,34 +47,34 @@ class InputInvoiceMessageContent
     public $prices;
     
     /**
-     * Optional. The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). 
-     * For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. 
-     * See the exp parameter in {@see https://core.telegram.org/bots/payments/currencies.json currencies.json}, 
-     * it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). 
+     * Optional. The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double).
+     * For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`.
+     * See the exp parameter in {@see https://core.telegram.org/bots/payments/currencies.json currencies.json},
+     * it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
      * Defaults to 0
      * @var integer $max_tip_amount
      */
     public $max_tip_amount;
     
     /**
-     * Optional. A JSON-serialized array of suggested amounts of tip in the smallest units of the currency 
-     * (integer, not float/double). At most 4 suggested tip amounts can be specified. 
-     * The suggested tip amounts must be positive, passed in a strictly increased order 
+     * Optional. A JSON-serialized array of suggested amounts of tip in the smallest units of the currency
+     * (integer, not float/double). At most 4 suggested tip amounts can be specified.
+     * The suggested tip amounts must be positive, passed in a strictly increased order
      * and must not exceed max_tip_amount.
      * @var int[] $suggested_tip_amounts
      */
     public $suggested_tip_amounts;
     
     /**
-     * Optional. A JSON-serialized object for data about the invoice, which will be shared with the payment provider. 
+     * Optional. A JSON-serialized object for data about the invoice, which will be shared with the payment provider.
      * A detailed description of the required fields should be provided by the payment provider.
      * @var string $provider_data
      */
     public $provider_data;
     
     /**
-     * Optional. URL of the product photo for the invoice. 
-     * Can be a photo of the goods or a marketing image for a service. 
+     * Optional. URL of the product photo for the invoice.
+     * Can be a photo of the goods or a marketing image for a service.
      * People like it better when they see what they are paying for.
      * @var string $photo_url
      */
