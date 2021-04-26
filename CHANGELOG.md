@@ -2,6 +2,7 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
-## 1.0.0 - 202X-XX-XX
+## 0.7.0 - 2021-04-26
 
-- initial release
+### Changed
+- Update to Bot Api 5.2
