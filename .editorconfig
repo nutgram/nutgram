@@ -1,0 +1,16 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+max_line_length = 120
+
+[*.php]
+ij_php_phpdoc_param_spaces_between_type_and_name = 2
+ij_php_phpdoc_param_spaces_between_tag_and_type = 2
+ij_php_else_if_style = combine
+ij_php_phpdoc_wrap_long_lines = true
