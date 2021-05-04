@@ -34,6 +34,27 @@ trait Stickers
     }
 
     /**
+     * Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet
+     * and addStickerToSet methods (can be used multiple times).
+     * Returns the uploaded {@see https://core.telegram.org/bots/api#file File} on success.
+     * @see https://core.telegram.org/bots/api#uploadstickerfile
+     * @param  mixed  $png_sticker PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
+     * @param  array|null  $opt
+     * @return File|null
+     */
+    public function uploadStickerFile(mixed $png_sticker, ?array $opt = []): ?File
+    {
+        $user_id = $this->userId();
+        $required = compact('user_id', 'png_sticker');
+
+        if (is_resource($png_sticker)) {
+            return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), File::class);
+        }
+
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), File::class);
+    }
+
+    /**
      * @param  string  $name
      * @param  string  $title
      * @param  array|null  $opt
