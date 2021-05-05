@@ -45,7 +45,7 @@ abstract class CollectHandlers
      */
     public function onCommand(string $command, $callable): Handler
     {
-        $command = "/{$command}";
+        $command = "/$command";
 
         return $this->handlers[UpdateTypes::MESSAGE][$command] = new Handler($callable, $command);
     }
@@ -229,7 +229,7 @@ abstract class CollectHandlers
      * @param $callable
      * @return Handler
      */
-    public function fallbackOn(string $type, $callable)
+    public function fallbackOn(string $type, $callable): Handler
     {
         if (!in_array($type, UpdateTypes::get())) {
             throw new InvalidArgumentException('The parameter "type" is not a valid update type.');

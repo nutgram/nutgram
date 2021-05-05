@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Proxies;
 
+use Psr\SimpleCache\InvalidArgumentException;
 use SergiX44\Nutgram\Nutgram;
 
 /**
@@ -14,10 +15,10 @@ trait UserCacheProxy
 {
     /**
      * @param  $key
-     * @param  $userId
-     * @param  $default
+     * @param  int|null  $userId
+     * @param  null  $default
      * @return mixed
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function getUserData($key, ?int $userId = null, $default = null): mixed
     {
@@ -29,10 +30,10 @@ trait UserCacheProxy
      * @param $key
      * @param $value
      * @param  int|null  $userId
-     * @return mixed
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return bool
+     * @throws InvalidArgumentException
      */
-    public function setUserData($key, $value, ?int $userId = null)
+    public function setUserData($key, $value, ?int $userId = null): bool
     {
         $userId = $userId ?? $this->userId();
         return $this->userCache->set($userId, $key, $value);
@@ -42,9 +43,9 @@ trait UserCacheProxy
      * @param $key
      * @param  int|null  $userId
      * @return bool
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function deleteUserData($key, ?int $userId = null)
+    public function deleteUserData($key, ?int $userId = null): bool
     {
         $userId = $userId ?? $this->userId();
         return $this->userCache->delete($userId, $key);

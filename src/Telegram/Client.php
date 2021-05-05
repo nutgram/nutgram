@@ -3,8 +3,11 @@
 
 namespace SergiX44\Nutgram\Telegram;
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
+use JsonMapper_Exception;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
@@ -41,7 +44,7 @@ trait Client
      * @param  array  $parameters
      * @return mixed
      */
-    public function getUpdates(array $parameters = [])
+    public function getUpdates(array $parameters = []): mixed
     {
         return $this->requestJson(__FUNCTION__, $parameters, Update::class, [
             'timeout' => ($parameters['timeout'] ?? 0) + 1,
@@ -102,9 +105,9 @@ trait Client
         ];
         if (is_resource($value)) {
             return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class);
-        } else {
-            return $this->requestJson($endpoint, array_merge($required, $opt), Message::class);
         }
+
+        return $this->requestJson($endpoint, array_merge($required, $opt), Message::class);
     }
 
     /**
@@ -120,7 +123,7 @@ trait Client
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
-        $in = fopen("{$baseUri}/file/bot{$this->token}/{$file->file_path}", 'rb');
+        $in = fopen("$baseUri/file/bot$this->token/$file->file_path", 'rb');
         $out = fopen($path, 'wb');
 
         while ($chunk = fread($in, 8192)) {
@@ -144,7 +147,8 @@ trait Client
         ?array $multipart = null,
         string $mapTo = stdClass::class,
         ?array $options = []
-    ): mixed {
+    ): mixed
+    {
         $parameters = [];
         foreach ($multipart as $name => $contents) {
             $parameters[] = [
@@ -164,7 +168,7 @@ trait Client
             return $this->mapResponse($response, $mapTo, $exception);
         }
     }
-    
+
     /**
      * @param  string  $endpoint
      * @param  array|null  $json
@@ -177,7 +181,8 @@ trait Client
         ?array $json = null,
         string $mapTo = stdClass::class,
         ?array $options = []
-    ): mixed {
+    ): mixed
+    {
         try {
             $response = $this->http->post($endpoint, array_merge([
                 'json' => $json,
@@ -198,9 +203,9 @@ trait Client
      * @param  Exception|null  $clientException
      * @return mixed
      * @throws TelegramException
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
-     * @throws \JsonMapper_Exception
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws JsonMapper_Exception
      */
     private function mapResponse(ResponseInterface $response, string $mapTo, Exception $clientException = null): mixed
     {
@@ -209,7 +214,7 @@ trait Client
             $instance = $this->container->make($mapTo);
             return match (true) {
                 is_scalar($json->result) => $json->result,
-                is_array($json->result) => array_map(fn ($obj) => $this->mapper->map($obj, $instance), $json->result),
+                is_array($json->result) => array_map(fn($obj) => $this->mapper->map($obj, $instance), $json->result),
                 default => $this->mapper->map($json->result, $instance)
             };
         }

@@ -17,9 +17,9 @@ class ArrayCache implements CacheInterface
     /**
      * @param  string  $key
      * @param  null  $default
-     * @return mixed|null
+     * @return mixed
      */
-    public function get($key, $default = null)
+    public function get($key, $default = null): mixed
     {
         $this->checkExpire($key);
 
@@ -123,7 +123,7 @@ class ArrayCache implements CacheInterface
     /**
      * @param $key
      */
-    private function checkExpire($key)
+    private function checkExpire($key): void
     {
         $expiration = $this->expires[$key] ?? null;
         if ($expiration !== null && $expiration < time()) {

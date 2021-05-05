@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\Cache;
 
 use Psr\SimpleCache\CacheInterface;
+use Psr\SimpleCache\InvalidArgumentException;
 
 class GlobalCache extends BotCache
 {
@@ -20,9 +21,9 @@ class GlobalCache extends BotCache
      * @param $key
      * @param  $default
      * @return mixed
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function get($key, $default = null)
+    public function get($key, $default = null): mixed
     {
         return $this->cache->get($this->makeKey($key), $default);
     }
@@ -31,7 +32,7 @@ class GlobalCache extends BotCache
      * @param $key
      * @param $data
      * @return bool
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function set($key, $data): bool
     {
@@ -41,7 +42,7 @@ class GlobalCache extends BotCache
     /**
      * @param $key
      * @return bool
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function delete($key): bool
     {

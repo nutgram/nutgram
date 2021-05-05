@@ -8,7 +8,7 @@ abstract class MiddlewareChain
     /**
      * @var
      */
-    protected $head;
+    protected mixed $head;
 
     /**
      * @param $callable
@@ -25,7 +25,7 @@ abstract class MiddlewareChain
     /**
      * @return mixed
      */
-    public function getHead()
+    public function getHead(): mixed
     {
         return $this->head;
     }
