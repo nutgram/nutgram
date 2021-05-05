@@ -147,8 +147,7 @@ trait Client
         ?array $multipart = null,
         string $mapTo = stdClass::class,
         ?array $options = []
-    ): mixed
-    {
+    ): mixed {
         $parameters = [];
         foreach ($multipart as $name => $contents) {
             $parameters[] = [
@@ -181,8 +180,7 @@ trait Client
         ?array $json = null,
         string $mapTo = stdClass::class,
         ?array $options = []
-    ): mixed
-    {
+    ): mixed {
         try {
             $response = $this->http->post($endpoint, array_merge([
                 'json' => $json,

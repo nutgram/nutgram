@@ -92,9 +92,12 @@ trait AvailableMethods
      * @param  array  $opt
      * @return Message|null
      */
-    public function forwardMessage(string|int $chat_id, string|int $from_chat_id, int $message_id,
-                                   array $opt = []): ?Message
-    {
+    public function forwardMessage(
+        string|int $chat_id,
+        string|int $from_chat_id,
+        int $message_id,
+        array $opt = []
+    ): ?Message {
         $required = compact('chat_id', 'from_chat_id', 'message_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
@@ -113,9 +116,12 @@ trait AvailableMethods
      * @param  array  $opt
      * @return MessageId|null
      */
-    public function copyMessage(string|int $chat_id, string|int $from_chat_id, int $message_id,
-                                array $opt = []): ?MessageId
-    {
+    public function copyMessage(
+        string|int $chat_id,
+        string|int $from_chat_id,
+        int $message_id,
+        array $opt = []
+    ): ?MessageId {
         $required = compact('chat_id', 'from_chat_id', 'message_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), MessageId::class);
     }
@@ -340,9 +346,13 @@ trait AvailableMethods
      * @param  array|null  $opt
      * @return Message|null
      */
-    public function sendVenue(float $latitude, float $longitude, string $title, string $address,
-                              ?array $opt = []): ?Message
-    {
+    public function sendVenue(
+        float $latitude,
+        float $longitude,
+        string $title,
+        string $address,
+        ?array $opt = []
+    ): ?Message {
         $chat_id = $this->chatId();
         $required = compact('latitude', 'longitude', 'chat_id', 'title', 'address');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
@@ -509,9 +519,12 @@ trait AvailableMethods
      * @param  array|null  $opt
      * @return bool|null
      */
-    public function restrictChatMember(string|int $chat_id, int $user_id, ChatPermissions $permissions,
-                                       ?array $opt = []): ?bool
-    {
+    public function restrictChatMember(
+        string|int $chat_id,
+        int $user_id,
+        ChatPermissions $permissions,
+        ?array $opt = []
+    ): ?bool {
         $required = compact('chat_id', 'user_id');
         $required['permissions'] = json_encode($permissions);
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -545,9 +558,12 @@ trait AvailableMethods
      * @param  array|null  $opt
      * @return bool|null
      */
-    public function setChatAdministratorCustomTitle(string|int $chat_id, int $user_id, string $custom_title,
-                                                    ?array $opt = []): ?bool
-    {
+    public function setChatAdministratorCustomTitle(
+        string|int $chat_id,
+        int $user_id,
+        string $custom_title,
+        ?array $opt = []
+    ): ?bool {
         $required = compact('chat_id', 'user_id', 'custom_title');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }

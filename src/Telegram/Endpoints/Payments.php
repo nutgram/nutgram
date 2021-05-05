@@ -39,8 +39,7 @@ trait Payments
         string $currency,
         array $prices,
         ?array $opt = []
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'title', 'description', 'payload', 'provider_token', 'currency');
         $required['prices'] = json_encode($prices, JSON_THROW_ON_ERROR);
