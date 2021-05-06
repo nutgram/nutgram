@@ -3,9 +3,14 @@
 
 namespace SergiX44\Nutgram\RunningMode;
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use JsonMapper;
+use JsonMapper_Exception;
+use Psr\SimpleCache\InvalidArgumentException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Update;
+use Throwable;
 
 class Webhook implements RunningMode
 {
@@ -26,13 +31,13 @@ class Webhook implements RunningMode
 
     /**
      * @param  Nutgram  $bot
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
-     * @throws \JsonMapper_Exception
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     * @throws \Throwable
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws JsonMapper_Exception
+     * @throws InvalidArgumentException
+     * @throws Throwable
      */
-    public function processUpdates(Nutgram $bot)
+    public function processUpdates(Nutgram $bot): void
     {
         $input = file_get_contents('php://input');
         $update = $this->mapper->map(

@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram;
 
+use Psr\SimpleCache\InvalidArgumentException;
 use RuntimeException;
 
 /**
@@ -47,7 +48,7 @@ abstract class Conversation
     /**
      * @param  string  $step
      * @return void
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function next(string $step): void
     {
@@ -58,7 +59,7 @@ abstract class Conversation
 
     /**
      * @return void
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function end(): void
     {

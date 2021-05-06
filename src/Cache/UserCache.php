@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\Cache;
 
 use Psr\SimpleCache\CacheInterface;
+use Psr\SimpleCache\InvalidArgumentException;
 
 class UserCache extends BotCache
 {
@@ -17,23 +18,23 @@ class UserCache extends BotCache
     }
 
     /**
-     * @param $userId
+     * @param  int  $userId
      * @param $key
      * @param  null  $default
      * @return mixed
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function get(int $userId, $key, $default = null)
+    public function get(int $userId, $key, $default = null): mixed
     {
         return $this->cache->get($this->makeKey($userId, $key), $default);
     }
 
     /**
-     * @param $userId
+     * @param  int  $userId
      * @param $key
      * @param $data
      * @return bool
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function set(int $userId, $key, $data): bool
     {
@@ -41,10 +42,10 @@ class UserCache extends BotCache
     }
 
     /**
-     * @param $userId
+     * @param  int  $userId
      * @param $key
      * @return bool
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function delete(int $userId, $key): bool
     {
