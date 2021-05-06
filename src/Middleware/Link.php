@@ -3,6 +3,8 @@
 
 namespace SergiX44\Nutgram\Middleware;
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use SergiX44\Nutgram\Nutgram;
 
 class Link
@@ -31,10 +33,10 @@ class Link
     /**
      * @param  Nutgram  $bot
      * @return mixed
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
-    public function __invoke(Nutgram $bot)
+    public function __invoke(Nutgram $bot): mixed
     {
         return call_user_func($bot->resolve($this->callable), $bot, $this->next);
     }

@@ -3,6 +3,8 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use SergiX44\Nutgram\Middleware\Link;
 use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Nutgram;
@@ -69,10 +71,10 @@ class Handler extends MiddlewareChain
     /**
      * @param  Nutgram  $bot
      * @return mixed
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
-    public function __invoke(Nutgram $bot)
+    public function __invoke(Nutgram $bot): mixed
     {
         return call_user_func($bot->resolve($this->callable), $bot, ...$this->parameters);
     }

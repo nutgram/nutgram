@@ -1,0 +1,21 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+max_line_length = 120
+
+[*.php]
+ij_php_phpdoc_param_spaces_between_type_and_name = 2
+ij_php_phpdoc_param_spaces_between_tag_and_type = 2
+ij_php_phpdoc_wrap_long_lines = true
+ij_php_else_if_style = combine
+ij_php_align_multiline_parameters = false
+ij_php_method_parameters_right_paren_on_new_line = true
+ij_php_method_parameters_new_line_after_left_paren = true
+ij_php_space_before_short_closure_left_parenthesis = true
+ij_php_space_before_closure_left_parenthesis = true

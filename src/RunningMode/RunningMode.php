@@ -7,5 +7,5 @@ use SergiX44\Nutgram\Nutgram;
 
 interface RunningMode
 {
-    public function processUpdates(Nutgram $bot);
+    public function processUpdates(Nutgram $bot): void;
 }

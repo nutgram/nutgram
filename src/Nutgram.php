@@ -4,6 +4,8 @@
 namespace SergiX44\Nutgram;
 
 use DI\Container;
+use DI\DependencyException;
+use DI\NotFoundException;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use JsonMapper;
@@ -57,8 +59,8 @@ class Nutgram extends ResolveHandlers
      * Nutgram constructor.
      * @param  string  $token
      * @param  array  $config
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
     public function __construct(string $token, array $config = [])
     {
@@ -69,7 +71,7 @@ class Nutgram extends ResolveHandlers
         $baseUri = $config['api_url'] ?? 'https://api.telegram.org';
 
         $this->http = new Guzzle(array_merge($config['client'] ?? [], [
-            'base_uri' => "{$baseUri}/bot{$token}/",
+            'base_uri' => "$baseUri/bot$token/",
             'timeout' => $config['timeout'] ?? 5,
         ]));
 
@@ -89,8 +91,8 @@ class Nutgram extends ResolveHandlers
 
     /**
      * @param  string|RunningMode  $classOrInstance
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
     public function setRunningMode(string|RunningMode $classOrInstance): void
     {
@@ -110,10 +112,10 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
-    public function run()
+    public function run(): void
     {
         $this->applyGlobalMiddlewares();
         $this->container->get(RunningMode::class)->processUpdates($this);
@@ -122,8 +124,8 @@ class Nutgram extends ResolveHandlers
     /**
      * @param  Update  $update
      * @throws Throwable
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function processUpdate(Update $update): void
@@ -157,10 +159,10 @@ class Nutgram extends ResolveHandlers
     /**
      * @param  array  $handlers
      * @throws Throwable
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
-    protected function fireHandlers(array $handlers)
+    protected function fireHandlers(array $handlers): void
     {
         try {
             /** @var Handler $handler */
@@ -182,8 +184,8 @@ class Nutgram extends ResolveHandlers
      * @param  Handler  $handler
      * @param  Throwable  $e
      * @return mixed
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
     protected function fireApiErrorHandler(Handler $handler, Throwable $e): mixed
     {
@@ -251,8 +253,8 @@ class Nutgram extends ResolveHandlers
 
     /**
      * @return string
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
     public function getUpdateMode(): string
     {
@@ -262,8 +264,8 @@ class Nutgram extends ResolveHandlers
     /**
      * @param $callable
      * @return callable|mixed
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
     public function resolve($callable)
     {

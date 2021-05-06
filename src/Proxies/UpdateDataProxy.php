@@ -14,9 +14,9 @@ trait UpdateDataProxy
     /**
      * @param $key
      * @param  null  $default
-     * @return mixed|null
+     * @return mixed
      */
-    public function getData($key, $default = null)
+    public function getData($key, $default = null): mixed
     {
         return $this->store[$key] ?? $default;
     }
@@ -26,7 +26,7 @@ trait UpdateDataProxy
      * @param $value
      * @return mixed
      */
-    public function setData($key, $value)
+    public function setData($key, $value): mixed
     {
         return $this->store[$key] = $value;
     }
@@ -34,7 +34,7 @@ trait UpdateDataProxy
     /**
      * @param $key
      */
-    public function deleteData($key)
+    public function deleteData($key): void
     {
         unset($this->store[$key]);
     }

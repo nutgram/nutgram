@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\RunningMode;
 
+use Psr\SimpleCache\InvalidArgumentException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Update;
 use Throwable;
@@ -12,9 +13,9 @@ class Polling implements RunningMode
 
     /**
      * @param  Nutgram  $bot
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function processUpdates(Nutgram $bot)
+    public function processUpdates(Nutgram $bot): void
     {
         $pollingConfig = $bot->getConfig()['polling'] ?? [];
         $timeout = $pollingConfig['timeout'] ?? $bot->getConfig()['timeout'] ?? 10;
@@ -47,7 +48,7 @@ class Polling implements RunningMode
                 try {
                     $bot->processUpdate($update);
                 } catch (Throwable $e) {
-                    echo "{$e}\n";
+                    echo "$e\n";
                 } finally {
                     $bot->clearData();
                 }
