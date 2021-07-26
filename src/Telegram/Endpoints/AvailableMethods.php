@@ -271,11 +271,11 @@ trait AvailableMethods
             if ($m instanceof InputMedia && is_resource($m->media)) {
                 $id = uniqid();
                 $files[$id] = $m->media;
-                $m->media = "attach://{$id}";
+                $m->media = "attach://$id";
             } elseif (is_array($m) && is_resource($m['media'])) {
                 $id = uniqid();
                 $files[$id] = $m['media'];
-                $m['media'] = "attach://{$id}";
+                $m['media'] = "attach://$id";
             }
 
             $inputMedia[] = $m;
