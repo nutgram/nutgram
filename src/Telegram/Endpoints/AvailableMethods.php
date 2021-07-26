@@ -271,11 +271,11 @@ trait AvailableMethods
             if ($m instanceof InputMedia && is_resource($m->media)) {
                 $id = uniqid();
                 $files[$id] = $m->media;
-                $m->media = "attach://{$id}";
+                $m->media = "attach://$id";
             } elseif (is_array($m) && is_resource($m['media'])) {
                 $id = uniqid();
                 $files[$id] = $m['media'];
-                $m['media'] = "attach://{$id}";
+                $m['media'] = "attach://$id";
             }
 
             $inputMedia[] = $m;
@@ -481,8 +481,26 @@ trait AvailableMethods
      * @param  int  $user_id Unique identifier of the target user
      * @param  array|null  $opt
      * @return bool|null
+     * @deprecated Use {@see banChatMember} instead.
      */
     public function kickChatMember(string|int $chat_id, int $user_id, ?array $opt = []): ?bool
+    {
+        return $this->banChatMember($chat_id, $user_id, $opt);
+    }
+
+    /**
+     * Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels,
+     * the user will not be able to return to the chat on their own using invite links, etc., unless
+     * {@see https://core.telegram.org/bots/api#unbanchatmember unbanned} first. The bot must be an administrator in
+     * the chat for this to work and must have the appropriate admin rights. Returns True on success.
+     * @see https://core.telegram.org/bots/api#kickchatmember
+     * @param  string|int  $chat_id Unique identifier for the target group or username of the target supergroup or
+     *     channel (in the format [at]channelusername)
+     * @param  int  $user_id Unique identifier of the target user
+     * @param  array|null  $opt
+     * @return bool|null
+     */
+    public function banChatMember(string|int $chat_id, int $user_id, ?array $opt = []): ?bool
     {
         $required = compact('chat_id', 'user_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -810,8 +828,21 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup or
      *     channel (in the format [at]channelusername)
      * @return int|null
+     * @deprecated Use {@see getChatMemberCount} instead.
      */
     public function getChatMembersCount(string|int $chat_id): ?int
+    {
+        return $this->getChatMemberCount($chat_id);
+    }
+
+    /**
+     * Use this method to get the number of members in a chat. Returns Int on success.
+     * @see https://core.telegram.org/bots/api#getchatmemberscount
+     * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup or
+     *     channel (in the format [at]channelusername)
+     * @return int|null
+     */
+    public function getChatMemberCount(string|int $chat_id): ?int
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
@@ -884,23 +915,39 @@ trait AvailableMethods
     /**
      * Use this method to change the list of the bot's commands. Returns True on success.
      * @see https://core.telegram.org/bots/api#setmycommands
-     * @param  array  $commands A list of bot commands to be set as the list of the bot's commands. At most 100
+     * @param  BotCommand[]  $commands A list of bot commands to be set as the list of the bot's commands. At most 100
      *     commands can be specified.
+     * @param  array|null  $opt
      * @return bool|null
      */
-    public function setMyCommands(array $commands = []): ?bool
+    public function setMyCommands(array $commands = [], ?array $opt = []): ?bool
     {
-        return $this->requestJson(__FUNCTION__, ['commands' => json_encode($commands)]);
+        $required = ['commands' => json_encode($commands)];
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+    }
+
+    /**
+     * Use this method to delete the list of the bot's commands for the given scope and user language.
+     * After deletion, {@see https://core.telegram.org/bots/api#determining-list-of-commands higher level commands}
+     * will be shown to affected users. Returns True on success.
+     * @see https://core.telegram.org/bots/api#deletemycommands
+     * @param  array|null  $opt
+     * @return bool
+     */
+    public function deleteMyCommands(?array $opt = []): bool
+    {
+        return $this->requestJson(__FUNCTION__, $opt);
     }
 
     /**
      * Use this method to get the current list of the bot's commands. Requires no parameters. Returns Array of
      * {@see https://core.telegram.org/bots/api#botcommand BotCommand} on success.
      * @see https://core.telegram.org/bots/api#getmycommands
-     * @return array|null
+     * @param  array|null  $opt
+     * @return BotCommand[]|null
      */
-    public function getMyCommands(): ?array
+    public function getMyCommands(?array $opt = []): ?array
     {
-        return $this->requestJson(__FUNCTION__, mapTo: BotCommand::class);
+        return $this->requestJson(__FUNCTION__, $opt, BotCommand::class);
     }
 }
