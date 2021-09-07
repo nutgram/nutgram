@@ -5,7 +5,7 @@ namespace SergiX44\Nutgram\RunningMode;
 
 use Psr\SimpleCache\InvalidArgumentException;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\Update;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use Throwable;
 
 class Polling implements RunningMode
