@@ -10,6 +10,7 @@ use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use JsonMapper;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Cache\ConversationCache;
@@ -41,9 +42,9 @@ class Nutgram extends ResolveHandlers
     private array $config;
 
     /**
-     * @var Guzzle
+     * @var ClientInterface
      */
-    private Guzzle $http;
+    private ClientInterface $http;
 
     /**
      * @var JsonMapper
