@@ -27,6 +27,9 @@ class Handler extends MiddlewareChain
      */
     private array $parameters = [];
 
+    /**
+     * @var callable $callable
+     */
     private $callable;
 
     /**

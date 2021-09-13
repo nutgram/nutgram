@@ -45,27 +45,26 @@ abstract class ResolveHandlers extends CollectHandlers
     protected function resolveHandlers(): array
     {
         $resolvedHandlers = [];
-        $this->filterHandlersBy($resolvedHandlers, Update::class);
         $updateType = $this->update->getType();
 
         if ($updateType === UpdateTypes::MESSAGE) {
-            $text = $this->update?->message?->getParsedCommand();
-            if ($text === null) {
-                $text = $this->update->message?->text;
-            }
+            $text = $this->update?->message?->getParsedCommand() ?? $this->update->message?->text;
+
             if ($text !== null) {
-                $this->filterHandlersBy($resolvedHandlers, $updateType, $text);
+                $this->addHandlersBy($resolvedHandlers, $updateType, value: $text);
             } else {
-                $this->filterHandlersBy($resolvedHandlers, $updateType, $this->update?->message?->getType());
+                $this->addHandlersBy($resolvedHandlers, $updateType, $this->update?->message?->getType());
             }
         } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
             $data = $this->update->callback_query?->data;
-            $this->filterHandlersBy($resolvedHandlers, $updateType, $data);
+            $this->addHandlersBy($resolvedHandlers, $updateType, value: $data);
         }
 
         if (empty($resolvedHandlers) && $updateType !== null) {
-            $this->filterHandlersBy($resolvedHandlers, $updateType);
+            $this->addHandlersBy($resolvedHandlers, $updateType);
         }
+
+        $this->addHandlersBy($resolvedHandlers, Update::class);
 
         return $resolvedHandlers;
     }
@@ -73,12 +72,21 @@ abstract class ResolveHandlers extends CollectHandlers
     /**
      * @param  array  $handlers
      * @param  string  $type
+     * @param  string|null  $subType
      * @param  null  $value
      */
-    protected function filterHandlersBy(array &$handlers, string $type, $value = null): void
+    protected function addHandlersBy(array &$handlers, string $type, ?string $subType = null, $value = null): void
     {
-        /*** @var Handler $handler */
-        foreach ($this->handlers[$type] ?? [] as $handler) {
+        $typedHandlers = $this->handlers[$type] ?? [];
+
+        if ($subType !== null && isset($typedHandlers[$subType])) {
+            $typedHandlers = $typedHandlers[$subType];
+            if (!is_array($typedHandlers)) {
+                $typedHandlers = [$subType => $typedHandlers];
+            }
+        }
+
+        array_walk_recursive($typedHandlers, static function (Handler $handler) use (&$handlers, $value) {
             if (
                 ($value !== null && $handler->getPattern() === $value) ||
                 ($value === null && $handler->getPattern() === null) ||
@@ -86,7 +94,7 @@ abstract class ResolveHandlers extends CollectHandlers
             ) {
                 $handlers[] = $handler;
             }
-        }
+        });
     }
 
     /**
