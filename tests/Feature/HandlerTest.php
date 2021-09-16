@@ -239,7 +239,7 @@ it('call the typed message handler', function ($update) {
     $bot->run();
 })->with('photo');
 
-it('calls the typed message handler: text', function($update){
+it('calls the typed message handler: text', function ($update) {
     $bot = getInstance($update);
 
     $bot->onMessageType(MessageTypes::TEXT, function ($bot) {
