@@ -50,11 +50,11 @@ class ConversationCache extends BotCache
     /**
      * @param  int  $userId
      * @param  int  $chatId
-     * @param  callable|Conversation  $conversation
+     * @param  callable|Conversation|SerializableClosure  $conversation
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function set(int $userId, int $chatId, $conversation): bool
+    public function set(int $userId, int $chatId, callable|Conversation|SerializableClosure $conversation): bool
     {
         if ($conversation instanceof Closure) {
             $conversation = new SerializableClosure($conversation);
