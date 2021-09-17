@@ -252,7 +252,7 @@ it('calls the typed message handler: text', function ($update) {
 it('the catch all handler text not called for media', function ($update) {
     $bot = getInstance($update);
 
-    $bot->onText('.*',function ($bot) {
+    $bot->onText('.*', function ($bot) {
         throw new Exception();
     });
 
