@@ -248,3 +248,17 @@ it('calls the typed message handler: text', function ($update) {
 
     $bot->run();
 })->with('text');
+
+it('the catch all handler text not called for media', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onText('.*',function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->onMessageType(MessageTypes::PHOTO, function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->run();
+})->with('photo');
