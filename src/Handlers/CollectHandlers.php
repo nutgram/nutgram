@@ -77,11 +77,7 @@ abstract class CollectHandlers
      */
     public function onMessageType(string $type, $callable): Handler
     {
-        if ($type === MessageTypes::TEXT) {
-            return $this->handlers[UpdateTypes::MESSAGE][$type]['base'] = new Handler($callable, $type);
-        }
-
-        return $this->handlers[UpdateTypes::MESSAGE][$type] = new Handler($callable, $type);
+        return $this->handlers[UpdateTypes::MESSAGE][$type][] = new Handler($callable, $type);
     }
 
     /**
