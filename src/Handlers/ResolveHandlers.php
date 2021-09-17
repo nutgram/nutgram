@@ -45,27 +45,28 @@ abstract class ResolveHandlers extends CollectHandlers
     protected function resolveHandlers(): array
     {
         $resolvedHandlers = [];
-        $this->filterHandlersBy($resolvedHandlers, Update::class);
         $updateType = $this->update->getType();
 
         if ($updateType === UpdateTypes::MESSAGE) {
-            $text = $this->update?->message?->getParsedCommand();
-            if ($text === null) {
-                $text = $this->update->message?->text;
-            }
+            $text = $this->update?->message?->getParsedCommand() ?? $this->update->message?->text;
+
             if ($text !== null) {
-                $this->filterHandlersBy($resolvedHandlers, $updateType, $text);
-            } else {
-                $this->filterHandlersBy($resolvedHandlers, $updateType, $this->update?->message?->getType());
+                $this->addHandlersBy($resolvedHandlers, $updateType, $this->update?->message?->getType(), $text);
+            }
+
+            if (count($resolvedHandlers) === 0) {
+                $this->addHandlersBy($resolvedHandlers, $updateType, $this->update?->message?->getType());
             }
         } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
             $data = $this->update->callback_query?->data;
-            $this->filterHandlersBy($resolvedHandlers, $updateType, $data);
+            $this->addHandlersBy($resolvedHandlers, $updateType, value: $data);
         }
 
         if (empty($resolvedHandlers) && $updateType !== null) {
-            $this->filterHandlersBy($resolvedHandlers, $updateType);
+            $this->addHandlersBy($resolvedHandlers, $updateType);
         }
+
+        $this->addHandlersBy($resolvedHandlers, Update::class);
 
         return $resolvedHandlers;
     }
@@ -73,14 +74,28 @@ abstract class ResolveHandlers extends CollectHandlers
     /**
      * @param  array  $handlers
      * @param  string  $type
+     * @param  string|null  $subType
      * @param  null  $value
      */
-    protected function filterHandlersBy(array &$handlers, string $type, $value = null): void
+    protected function addHandlersBy(array &$handlers, string $type, ?string $subType = null, $value = null): void
     {
-        /*** @var Handler $handler */
-        foreach ($this->handlers[$type] ?? [] as $handler) {
+        $typedHandlers = $this->handlers[$type] ?? [];
+
+        if ($subType !== null && isset($typedHandlers[$subType])) {
+            if ($typedHandlers[$subType] instanceof Handler) {
+                $typedHandlers = [$typedHandlers[$subType]];
+            } else {
+                $typedHandlers = $typedHandlers[$subType];
+            }
+        }
+
+        /** @var Handler|array $handler */
+        foreach ($typedHandlers as $handler) {
+            if (is_array($handler)) {
+                continue;
+            }
             if (
-                ($value !== null && $handler->getPattern() === $value) ||
+                ($subType !== null && $handler->getPattern() === $subType) ||
                 ($value === null && $handler->getPattern() === null) ||
                 ($value !== null && $handler->matching($value))
             ) {
