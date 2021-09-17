@@ -51,8 +51,10 @@ abstract class ResolveHandlers extends CollectHandlers
             $text = $this->update?->message?->getParsedCommand() ?? $this->update->message?->text;
 
             if ($text !== null) {
-                $this->addHandlersBy($resolvedHandlers, $updateType, value: $text);
-            } else {
+                $this->addHandlersBy($resolvedHandlers, $updateType, $this->update?->message?->getType(), $text);
+            }
+
+            if (count($resolvedHandlers) === 0) {
                 $this->addHandlersBy($resolvedHandlers, $updateType, $this->update?->message?->getType());
             }
         } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
@@ -80,21 +82,26 @@ abstract class ResolveHandlers extends CollectHandlers
         $typedHandlers = $this->handlers[$type] ?? [];
 
         if ($subType !== null && isset($typedHandlers[$subType])) {
-            $typedHandlers = $typedHandlers[$subType];
-            if (!is_array($typedHandlers)) {
-                $typedHandlers = [$subType => $typedHandlers];
+            if ($typedHandlers[$subType] instanceof Handler) {
+                $typedHandlers = [$typedHandlers[$subType]];
+            } else {
+                $typedHandlers = $typedHandlers[$subType];
             }
         }
 
-        array_walk_recursive($typedHandlers, static function (Handler $handler) use (&$handlers, $value) {
+        /** @var Handler|array $handler */
+        foreach ($typedHandlers as $handler) {
+            if (is_array($handler)) {
+                continue;
+            }
             if (
-                ($value !== null && $handler->getPattern() === $value) ||
+                ($subType !== null && $handler->getPattern() === $subType) ||
                 ($value === null && $handler->getPattern() === null) ||
                 ($value !== null && $handler->matching($value))
             ) {
                 $handlers[] = $handler;
             }
-        });
+        }
     }
 
     /**
