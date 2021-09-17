@@ -238,3 +238,41 @@ it('call the typed message handler', function ($update) {
 
     $bot->run();
 })->with('photo');
+
+it('calls the typed message handler: text', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onMessageType(MessageTypes::TEXT, function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->run();
+})->with('text');
+
+it('calls the onMessageTypeText handler and onText handlers', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onMessageType(MessageTypes::TEXT, function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->onText('.*', function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->run();
+})->with('text');
+
+it('the catch all handler text not called for media', function ($update) {
+    $bot = getInstance($update);
+
+    $bot->onText('.*', function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->onMessageType(MessageTypes::PHOTO, function ($bot) {
+        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+    });
+
+    $bot->run();
+})->with('photo');

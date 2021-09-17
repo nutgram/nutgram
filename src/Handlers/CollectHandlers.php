@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\Handlers;
 
 use InvalidArgumentException;
+use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 
 abstract class CollectHandlers
@@ -47,7 +48,17 @@ abstract class CollectHandlers
     {
         $command = "/$command";
 
-        return $this->handlers[UpdateTypes::MESSAGE][$command] = new Handler($callable, $command);
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command] = new Handler($callable, $command);
+    }
+
+    /**
+     * @param  string  $pattern
+     * @param $callable
+     * @return Handler
+     */
+    public function onText(string $pattern, $callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$pattern] = new Handler($callable, $pattern);
     }
 
     /**
@@ -66,17 +77,7 @@ abstract class CollectHandlers
      */
     public function onMessageType(string $type, $callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][$type] = new Handler($callable, $type);
-    }
-
-    /**
-     * @param  string  $pattern
-     * @param $callable
-     * @return Handler
-     */
-    public function onText(string $pattern, $callable): Handler
-    {
-        return $this->handlers[UpdateTypes::MESSAGE][$pattern] = new Handler($callable, $pattern);
+        return $this->handlers[UpdateTypes::MESSAGE][$type][] = new Handler($callable, $type);
     }
 
     /**

@@ -1,0 +1,23 @@
+{
+    "update_id": 123456789,
+    "message": {
+        "message_id": 123456,
+        "from": {
+            "id": 12345678,
+            "is_bot": false,
+            "first_name": "Mario",
+            "last_name": "Bros",
+            "username": "MarioLovesPeach",
+            "language_code": "it"
+        },
+        "chat": {
+            "id": 12345678,
+            "first_name": "Mario",
+            "last_name": "Bros",
+            "username": "MarioLovesPeach",
+            "type": "private"
+        },
+        "date": 1631818904,
+        "text": "aaaaaaaaaa"
+    }
+}

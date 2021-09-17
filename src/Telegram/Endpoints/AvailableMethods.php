@@ -269,11 +269,11 @@ trait AvailableMethods
         $files = [];
         foreach ($media as $m) {
             if ($m instanceof InputMedia && is_resource($m->media)) {
-                $id = uniqid();
+                $id = uniqid(more_entropy:  true);
                 $files[$id] = $m->media;
                 $m->media = "attach://$id";
             } elseif (is_array($m) && is_resource($m['media'])) {
-                $id = uniqid();
+                $id = uniqid(more_entropy:  true);
                 $files[$id] = $m['media'];
                 $m['media'] = "attach://$id";
             }

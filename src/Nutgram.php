@@ -10,6 +10,7 @@ use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use JsonMapper;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Cache\ConversationCache;
@@ -41,9 +42,9 @@ class Nutgram extends ResolveHandlers
     private array $config;
 
     /**
-     * @var Guzzle
+     * @var ClientInterface
      */
-    private Guzzle $http;
+    private ClientInterface $http;
 
     /**
      * @var JsonMapper
@@ -147,10 +148,11 @@ class Nutgram extends ResolveHandlers
         }
 
         if (empty($handlers) && !empty($this->handlers[static::FALLBACK])) {
-            $this->filterHandlersBy($handlers, static::FALLBACK, $this->update->getType());
-            if (empty($handlers)) {
-                $this->filterHandlersBy($handlers, static::FALLBACK);
-            }
+            $this->addHandlersBy($handlers, static::FALLBACK, value: $this->update->getType());
+        }
+
+        if (empty($handlers)) {
+            $this->addHandlersBy($handlers, static::FALLBACK);
         }
 
         $this->fireHandlers($handlers);
