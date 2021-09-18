@@ -276,3 +276,19 @@ it('the catch all handler text not called for media', function ($update) {
 
     $bot->run();
 })->with('photo');
+
+test('commands can have descriptions', function ($update) {
+    $bot = getInstance($update);
+
+    $cmd1 = $bot->onCommand('hELp', static function ($bot) {
+    })->setDescription('test');
+
+    $cmd2 = $bot->onCommand('start {param}', static function ($bot) {
+    })->setDescription('test2');
+
+    expect($cmd1->getName())->toBe('help');
+    expect($cmd1->getDescription())->toBe('test');
+
+    expect($cmd2->getName())->toBe('start');
+    expect($cmd2->getDescription())->toBe('test2');
+})->with('command_message');
