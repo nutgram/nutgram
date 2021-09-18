@@ -43,5 +43,4 @@ class Command extends Handler
     {
         return new BotCommand($this->getName(), $this->getDescription());
     }
-
 }
