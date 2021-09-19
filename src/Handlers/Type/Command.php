@@ -7,7 +7,7 @@ use SergiX44\Nutgram\Telegram\Types\BotCommand;
 
 class Command extends Handler
 {
-    protected string $description;
+    protected ?string $description = null;
 
     /**
      * @return string
@@ -19,11 +19,19 @@ class Command extends Handler
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
-        return $this->description ?? "{$this->getName()} command";
+        return $this->description;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHidden(): bool
+    {
+        return empty($this->getDescription());
     }
 
     /**

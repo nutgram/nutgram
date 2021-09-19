@@ -295,9 +295,9 @@ class Nutgram extends ResolveHandlers
     public function registerMyCommands(?array $opt = []): bool|null
     {
         $commands = [];
-        array_walk_recursive($this->handlers, static function ($leaf) use (&$commands) {
-            if ($leaf instanceof Command) {
-                $commands[] = $leaf->toBotCommand();
+        array_walk_recursive($this->handlers, static function ($handler) use (&$commands) {
+            if ($handler instanceof Command && !$handler->isHidden()) {
+                $commands[] = $handler->toBotCommand();
             }
         });
 
