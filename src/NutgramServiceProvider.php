@@ -6,6 +6,11 @@ namespace SergiX44\Nutgram;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use SergiX44\Nutgram\Laravel\Commands\HookInfoCommand;
+use SergiX44\Nutgram\Laravel\Commands\HookRemoveCommand;
+use SergiX44\Nutgram\Laravel\Commands\HookSetCommand;
+use SergiX44\Nutgram\Laravel\Commands\RegisterCommandsCommand;
+use SergiX44\Nutgram\Laravel\Commands\RunCommand;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\Webhook;
 
@@ -42,8 +47,16 @@ class NutgramServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->commands([
+            RunCommand::class,
+            RegisterCommandsCommand::class,
+            HookInfoCommand::class,
+            HookRemoveCommand::class,
+            HookSetCommand::class,
+        ]);
+
         $this->publishes([
-            __DIR__.'/../laravel/config.php' => config_path('nutgram.php'),
+            __DIR__ . '/../laravel/config.php' => config_path('nutgram.php'),
         ], 'nutgram');
     }
 }
