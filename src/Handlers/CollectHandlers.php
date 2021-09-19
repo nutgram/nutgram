@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\Handlers;
 
 use InvalidArgumentException;
+use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 
@@ -42,13 +43,13 @@ abstract class CollectHandlers
     /**
      * @param  string  $command
      * @param $callable
-     * @return Handler
+     * @return Command
      */
-    public function onCommand(string $command, $callable): Handler
+    public function onCommand(string $command, $callable): Command
     {
         $command = "/$command";
 
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command] = new Handler($callable, $command);
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command] = new Command($callable, $command);
     }
 
     /**
@@ -77,6 +78,9 @@ abstract class CollectHandlers
      */
     public function onMessageType(string $type, $callable): Handler
     {
+        if (!in_array($type, MessageTypes::all(), true)) {
+            throw new InvalidArgumentException('The parameter "type" is not a valid message type.');
+        }
         return $this->handlers[UpdateTypes::MESSAGE][$type][] = new Handler($callable, $type);
     }
 
@@ -232,7 +236,7 @@ abstract class CollectHandlers
      */
     public function fallbackOn(string $type, $callable): Handler
     {
-        if (!in_array($type, UpdateTypes::get())) {
+        if (!in_array($type, UpdateTypes::all(), true)) {
             throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
         }
         return $this->handlers[self::FALLBACK][$type] = new Handler($callable, $type);

@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
+use ReflectionClass;
+
 class UpdateTypes
 {
     public const MESSAGE = 'message';
@@ -19,24 +21,10 @@ class UpdateTypes
     public const CHAT_MEMBER = 'chat_member';
 
     /**
-     * @return string[]
+     * @return array
      */
-    public static function get(): array
+    public static function all(): array
     {
-        return [
-            self::MESSAGE,
-            self::EDITED_MESSAGE,
-            self::CHANNEL_POST,
-            self::EDITED_CHANNEL_POST,
-            self::INLINE_QUERY,
-            self::CHOSEN_INLINE_RESULT,
-            self::CALLBACK_QUERY,
-            self::SHIPPING_QUERY,
-            self::PRE_CHECKOUT_QUERY,
-            self::POLL,
-            self::POLL_ANSWER,
-            self::MY_CHAT_MEMBER,
-            self::CHAT_MEMBER,
-        ];
+        return (new ReflectionClass(__CLASS__))->getConstants();
     }
 }

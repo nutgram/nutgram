@@ -20,17 +20,17 @@ class Handler extends MiddlewareChain
     /**
      * @var string|null
      */
-    private ?string $pattern;
+    protected ?string $pattern;
 
     /**
      * @var array
      */
-    private array $parameters = [];
+    protected array $parameters = [];
 
     /**
      * @var callable $callable
      */
-    private $callable;
+    protected $callable;
 
     /**
      * Handler constructor.
