@@ -78,6 +78,9 @@ abstract class CollectHandlers
      */
     public function onMessageType(string $type, $callable): Handler
     {
+        if (!in_array($type, MessageTypes::all(), true)) {
+            throw new InvalidArgumentException('The parameter "type" is not a valid message type.');
+        }
         return $this->handlers[UpdateTypes::MESSAGE][$type][] = new Handler($callable, $type);
     }
 
@@ -233,7 +236,7 @@ abstract class CollectHandlers
      */
     public function fallbackOn(string $type, $callable): Handler
     {
-        if (!in_array($type, UpdateTypes::get())) {
+        if (!in_array($type, UpdateTypes::all(), true)) {
             throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
         }
         return $this->handlers[self::FALLBACK][$type] = new Handler($callable, $type);

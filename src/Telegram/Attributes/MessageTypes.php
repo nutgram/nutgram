@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
+use ReflectionClass;
+
 class MessageTypes
 {
     public const TEXT = 'text';
@@ -32,4 +34,12 @@ class MessageTypes
     public const PINNED_MESSAGE = 'pinned_message';
     public const INVOICE = 'invoice';
     public const SUCCESSFUL_PAYMENT = 'successful_payment';
+
+    /**
+     * @return array
+     */
+    public static function all(): array
+    {
+        return (new ReflectionClass(__CLASS__))->getConstants();
+    }
 }
