@@ -18,6 +18,7 @@ use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
+use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Proxies\GlobalCacheProxy;
 use SergiX44\Nutgram\Proxies\UpdateDataProxy;
 use SergiX44\Nutgram\Proxies\UserCacheProxy;
@@ -286,5 +287,20 @@ class Nutgram extends ResolveHandlers
         }
 
         return $callable;
+    }
+
+    /**
+     * Set my commands call to Telegram using all the registered commands
+     */
+    public function registerMyCommands(?array $opt = []): bool|null
+    {
+        $commands = [];
+        array_walk_recursive($this->handlers, static function ($handler) use (&$commands) {
+            if ($handler instanceof Command && !$handler->isHidden()) {
+                $commands[] = $handler->toBotCommand();
+            }
+        });
+
+        return $this->setMyCommands($commands, $opt);
     }
 }

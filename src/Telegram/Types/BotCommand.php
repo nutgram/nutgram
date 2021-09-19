@@ -13,10 +13,20 @@ class BotCommand
      * @var string $command
      */
     public $command;
-    
+
     /**
      * Description of the command, 3-256 characters.
      * @var string $description
      */
     public $description;
+
+    /**
+     * @param  string  $command
+     * @param  string  $description
+     */
+    public function __construct(string $command, string $description)
+    {
+        $this->command = $command;
+        $this->description = $description;
+    }
 }
