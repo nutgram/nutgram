@@ -300,5 +300,4 @@ test('commands can have descriptions', function ($update) {
     expect($cmd3->getName())->toBe('end');
     expect($cmd3->getDescription())->toBeNull();
     expect($cmd3->isHidden())->toBeTrue();
-
 })->with('command_message');
