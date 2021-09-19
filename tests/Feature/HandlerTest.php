@@ -297,5 +297,4 @@ test('commands can have descriptions', function ($update) {
 
     expect($cmd3->getName())->toBe('end');
     expect($cmd3->getDescription())->toBe('end command');
-
 })->with('command_message');
