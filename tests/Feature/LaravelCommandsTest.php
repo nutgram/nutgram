@@ -40,7 +40,6 @@ test('nugram:register-commands registers the bot commands', function () {
     $this->artisan(RegisterCommandsCommand::class)
         ->expectsOutput('Bot commands set.')
         ->assertExitCode(0);
-
 });
 
 test('nugram:hook:info prints the webhook info', function () {
@@ -106,4 +105,3 @@ test('nugram:hook:set set the bot webhook', function () {
         ->expectsOutput('Bot webhook set with url: https://foo.bar/hook')
         ->assertExitCode(0);
 });
-
