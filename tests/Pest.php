@@ -1,5 +1,9 @@
 <?php
 
+use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Tests\Fixtures\TestingRunningMode;
+use SergiX44\Nutgram\Tests\TestCase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -11,8 +15,9 @@
 |
 */
 
-uses()->group('Features')->in('Feature');
-// uses(Tests\TestCase::class)->in('Feature');
+uses(TestCase::class)
+    ->group('Features')
+    ->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -39,9 +44,6 @@ uses()->group('Features')->in('Feature');
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
-
-use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Tests\Fixtures\TestingRunningMode;
 
 function getInstance($update = null): Nutgram
 {
