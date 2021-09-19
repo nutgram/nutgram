@@ -281,14 +281,21 @@ test('commands can have descriptions', function ($update) {
     $bot = getInstance($update);
 
     $cmd1 = $bot->onCommand('hELp', static function ($bot) {
-    })->setDescription('test');
+    })->description('test');
 
     $cmd2 = $bot->onCommand('start {param}', static function ($bot) {
-    })->setDescription('test2');
+    })->description('test2');
+
+    $cmd3 = $bot->onCommand('end', static function ($bot) {
+    });
 
     expect($cmd1->getName())->toBe('help');
     expect($cmd1->getDescription())->toBe('test');
 
     expect($cmd2->getName())->toBe('start');
     expect($cmd2->getDescription())->toBe('test2');
+
+    expect($cmd3->getName())->toBe('end');
+    expect($cmd3->getDescription())->toBe('end command');
+
 })->with('command_message');

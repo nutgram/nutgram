@@ -7,7 +7,7 @@ use SergiX44\Nutgram\Telegram\Types\BotCommand;
 
 class Command extends Handler
 {
-    protected string $description = '';
+    protected string $description;
 
     /**
      * @return string
@@ -23,14 +23,14 @@ class Command extends Handler
      */
     public function getDescription(): string
     {
-        return $this->description;
+        return $this->description ?? "{$this->getName()} command";
     }
 
     /**
      * @param  string  $description
      * @return Command
      */
-    public function setDescription(string $description): Command
+    public function description(string $description): Command
     {
         $this->description = $description;
         return $this;
