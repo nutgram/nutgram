@@ -187,6 +187,5 @@ trait UpdateProxy
         return $entity !== null &&
             $entity->offset === 0 &&
             $entity->type === 'bot_command';
-
     }
 }
