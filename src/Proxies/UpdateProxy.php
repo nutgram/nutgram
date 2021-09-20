@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\ChatMemberUpdated;
 use SergiX44\Nutgram\Telegram\Types\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\Message;
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Poll;
 use SergiX44\Nutgram\Telegram\Types\PollAnswer;
 use SergiX44\Nutgram\Telegram\Types\PreCheckoutQuery;
@@ -173,5 +174,19 @@ trait UpdateProxy
     public function chatMember(): ?ChatMemberUpdated
     {
         return $this->update?->chat_member ?? $this->update?->my_chat_member;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCommand(): bool
+    {
+        /** @var MessageEntity $entity */
+        $entity = $this->update?->message?->entities[0] ?? null;
+
+        return $entity !== null &&
+            $entity->offset === 0 &&
+            $entity->type === 'bot_command';
+
     }
 }

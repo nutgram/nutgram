@@ -1,0 +1,30 @@
+{
+    "update_id": 144064961,
+    "message": {
+        "message_id": 428640,
+        "from": {
+            "id": 10081232,
+            "is_bot": false,
+            "first_name": "Luca",
+            "last_name": "Patera",
+            "username": "Lukasss93",
+            "language_code": "it"
+        },
+        "chat": {
+            "id": 10081232,
+            "first_name": "Luca",
+            "last_name": "Patera",
+            "username": "Lukasss93",
+            "type": "private"
+        },
+        "date": 1632176928,
+        "text": "aa /test",
+        "entities": [
+            {
+                "offset": 2,
+                "length": 5,
+                "type": "bot_command"
+            }
+        ]
+    }
+}
