@@ -26,7 +26,7 @@ abstract class Conversation
     /**
      * @var string|null
      */
-    protected ?string $step = null;
+    protected ?string $step = 'start';
 
     /**
      * @var Nutgram|null
@@ -43,6 +43,14 @@ abstract class Conversation
         $instance($bot);
 
         return $instance;
+    }
+
+    /**
+     * @param  Nutgram  $bot
+     */
+    public function start(Nutgram $bot)
+    {
+        throw new RuntimeException('Attempt to start an empty conversation.');
     }
 
     /**
@@ -63,7 +71,15 @@ abstract class Conversation
      */
     protected function end(): void
     {
+        $this->closing($this->bot);
         $this->bot->endConversation();
+    }
+
+    /**
+     * @param  Nutgram  $bot
+     */
+    public function closing(Nutgram $bot)
+    {
     }
 
     /**
@@ -72,12 +88,12 @@ abstract class Conversation
      */
     public function __invoke(Nutgram $bot)
     {
-        if ($this->step !== null) {
+        if (method_exists($this, $this->step)) {
             $this->bot = $bot;
             $method = $this->step;
             $this->$method($this->bot);
         } else {
-            throw new RuntimeException('Conversation step not defined.');
+            throw new RuntimeException("Conversation step '$this->step' not found.");
         }
     }
 
