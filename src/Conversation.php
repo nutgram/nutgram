@@ -78,7 +78,7 @@ abstract class Conversation
     /**
      * @param  Nutgram  $bot
      */
-    public function closing(Nutgram $bot)
+    protected function closing(Nutgram $bot)
     {
     }
 
@@ -95,6 +95,15 @@ abstract class Conversation
         } else {
             throw new RuntimeException("Conversation step '$this->step' not found.");
         }
+    }
+
+    /**
+     * @param  Nutgram  $bot
+     */
+    public function terminate(Nutgram $bot): void
+    {
+        $this->bot = $bot;
+        $this->end();
     }
 
     /**
