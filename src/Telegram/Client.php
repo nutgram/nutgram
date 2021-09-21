@@ -123,16 +123,7 @@ trait Client
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
-        $in = fopen("$baseUri/file/bot$this->token/$file->file_path", 'rb');
-        $out = fopen($path, 'wb');
-
-        while ($chunk = fread($in, 8192)) {
-            fwrite($out, $chunk, 8192);
-        }
-        fclose($in);
-        fclose($out);
-
-        return file_exists($path);
+        return copy("$baseUri/file/bot$this->token/$file->file_path", $path);
     }
 
     /**
