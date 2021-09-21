@@ -7,7 +7,6 @@ use SergiX44\Nutgram\Nutgram;
 
 class ConversationWithDefault extends Conversation
 {
-
     public function start(Nutgram $bot)
     {
         $bot->setData('test', $bot->getData('test', 0) + 1);
