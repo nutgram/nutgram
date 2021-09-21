@@ -10,7 +10,7 @@ All notable changes to `nutgram` will be documented in this file.
 - Added new laravel command: `nutgram:hook:info`
 - Added new laravel command: `nutgram:hook:remove`
 - Added new laravel command: `nutgram:hook:set`
-- Added isCommand helper
+- Added `isCommand` helper
 
 ### Changed
 - Code quality improvements
