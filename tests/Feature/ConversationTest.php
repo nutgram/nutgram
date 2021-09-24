@@ -1,13 +1,14 @@
 <?php
 
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithClosing;
+use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithClosingMultipleSteps;
+use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithDefault;
 use SergiX44\Nutgram\Tests\Feature\Conversations\OneStepNotCompletedConversation;
 use SergiX44\Nutgram\Tests\Feature\Conversations\TwoStepConversation;
 
-it('calls the conversation steps', function () {
-    $file = file_get_contents(__DIR__.'/../Updates/message.json');
-
-    $bot = getInstance(json_decode($file));
+it('calls the conversation steps', function ($update) {
+    $bot = getInstance($update);
     $bot->onMessage(TwoStepConversation::class);
     $bot->run();
     expect($bot->getData('test'))->toBe(1);
@@ -17,24 +18,47 @@ it('calls the conversation steps', function () {
 
     $bot->run();
     expect($bot->getData('test'))->toBe(1);
-});
+})->with('message');
 
-it('calls the same handler if not end or next step called', function () {
-    $file = file_get_contents(__DIR__.'/../Updates/message.json');
+it('calls the default conversation step', function ($update) {
+    $bot = getInstance($update);
+    $bot->onMessage(ConversationWithDefault::class);
+    $bot->run();
 
-    $bot = getInstance(json_decode($file));
+    expect($bot->getData('test'))->toBe(1);
+})->with('message');
+
+it('calls the closing handler', function ($update) {
+    $bot = getInstance($update);
+    $bot->onMessage(ConversationWithClosing::class);
+    $bot->run();
+
+    expect($bot->getData('test'))->toBe(2);
+})->with('message');
+
+it('calls the closing handler with multiple steps', function ($update) {
+    $bot = getInstance($update);
+    $bot->onMessage(ConversationWithClosingMultipleSteps::class);
+
+    $bot->run();
+    expect($bot->getData('test'))->toBe(1);
+
+    $bot->run();
+    expect($bot->getData('test'))->toBe(3);
+})->with('message');
+
+it('calls the same handler if not end or next step called', function ($update) {
+    $bot = getInstance($update);
     $bot->onMessage(OneStepNotCompletedConversation::class);
     $bot->run();
     $bot->run();
     $bot->run();
 
     expect($bot->getData('test'))->toBe(4);
-});
+})->with('message');
 
-it('calls the conversation steps without class', function () {
-    $file = file_get_contents(__DIR__.'/../Updates/message.json');
-
-    $bot = getInstance(json_decode($file));
+it('calls the conversation steps without class', function ($update) {
+    $bot = getInstance($update);
 
     $bot->onMessage('firstStep');
 
@@ -46,7 +70,7 @@ it('calls the conversation steps without class', function () {
 
     $bot->run();
     expect($bot->getData('test'))->toBe(1);
-});
+})->with('message');
 
 function firstStep(Nutgram $bot)
 {
@@ -60,10 +84,8 @@ function secondStep(Nutgram $bot)
     $bot->endConversation();
 }
 
-it('works with inline conversations', function () {
-    $file = file_get_contents(__DIR__.'/../Updates/message.json');
-
-    $bot = getInstance(json_decode($file));
+it('works with inline conversations', function ($update) {
+    $bot = getInstance($update);
 
     $bot->onMessage(function (Nutgram $bot) {
         $bot->setData('test', 1);
@@ -82,4 +104,4 @@ it('works with inline conversations', function () {
 
     $bot->run();
     expect($bot->getData('test'))->toBe(1);
-});
+})->with('message');
