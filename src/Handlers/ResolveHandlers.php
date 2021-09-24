@@ -120,6 +120,9 @@ abstract class ResolveHandlers extends CollectHandlers
                 // if we found at least one specific handler,
                 // we should escape the conversation
                 if ($handler->getPattern() !== null) {
+                    if ($conversation instanceof Conversation) {
+                        $conversation->terminate($this);
+                    }
                     return $handlers;
                 }
             }

@@ -81,7 +81,7 @@ abstract class CollectHandlers
         if (!in_array($type, MessageTypes::all(), true)) {
             throw new InvalidArgumentException('The parameter "type" is not a valid message type.');
         }
-        return $this->handlers[UpdateTypes::MESSAGE][$type][] = new Handler($callable, $type);
+        return $this->handlers[UpdateTypes::MESSAGE][$type][] = new Handler($callable);
     }
 
     /**

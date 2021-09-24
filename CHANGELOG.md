@@ -2,6 +2,13 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.12.0 - 2021-09-25
+
+### Added
+- Added default step to conversation
+- Added `closing` method to conversation
+
+
 ## 0.11.0 - 2021-09-21
 
 ### Added

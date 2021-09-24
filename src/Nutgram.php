@@ -205,15 +205,14 @@ class Nutgram extends ResolveHandlers
      */
     public function stepConversation($callable, ?int $userId = null, ?int $chatId = null): self
     {
+        $userId = $userId ?? $this->userId();
+        $chatId = $chatId ?? $this->chatId();
+
         if ($this->update === null && ($userId === null || $chatId === null)) {
             throw new InvalidArgumentException('You cannot set a conversation step without processing and update.');
         }
 
-        $this->conversationCache->set(
-            $userId ?? $this->userId(),
-            $chatId ?? $this->chatId(),
-            $callable
-        );
+        $this->conversationCache->set($userId, $chatId, $callable);
 
         return $this;
     }
@@ -226,14 +225,14 @@ class Nutgram extends ResolveHandlers
      */
     public function endConversation(?int $userId = null, ?int $chatId = null): self
     {
+        $userId = $userId ?? $this->userId();
+        $chatId = $chatId ?? $this->chatId();
+
         if ($this->update === null && ($userId === null || $chatId === null)) {
-            throw new InvalidArgumentException('You cannot set a conversation step without processing and update.');
+            throw new InvalidArgumentException('You cannot end a conversation without userId and chatId.');
         }
 
-        $this->conversationCache->delete(
-            $userId ?? $this->userId(),
-            $chatId ?? $this->chatId(),
-        );
+        $this->conversationCache->delete($userId, $chatId);
 
         return $this;
     }
