@@ -112,11 +112,12 @@ abstract class InlineMenu extends Conversation
 
         if (isset($this->callbacks[$data]) && $this->bot->isCallbackQuery()) {
             $this->bot->answerCallbackQuery();
-            $this->step = $data;
+            $this->step = $this->callbacks[$data];
         } elseif (isset($this->orNext)) {
             $this->step = $this->orNext;
         } else {
             $this->end();
+            return null;
         }
 
         return $this($this->bot);
