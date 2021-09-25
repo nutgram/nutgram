@@ -108,17 +108,15 @@ abstract class InlineMenu extends Conversation
      */
     public function handleStep(): mixed
     {
-        if ($this->bot->isCallbackQuery()) {
-            $this->bot->answerCallbackQuery();
+        $data = $this->bot->callbackQuery()?->data;
 
-            $data = $this->bot->callbackQuery()?->data;
-            if (isset($this->callbacks[$data])) {
-                $this->step = $this->callbacks[$data];
-            } elseif (isset($this->orNext)) {
-                $this->step = $this->orNext;
-            } else {
-                $this->end();
-            }
+        if (isset($this->callbacks[$data]) && $this->bot->isCallbackQuery()) {
+            $this->bot->answerCallbackQuery();
+            $this->step = $data;
+        } elseif (isset($this->orNext)) {
+            $this->step = $this->orNext;
+        } else {
+            $this->end();
         }
 
         return $this($this->bot);
