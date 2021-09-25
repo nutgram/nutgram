@@ -2,6 +2,11 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.13.1 - 2021-09-26
+
+### Fixed
+- Reopen behaviour
+
 ## 0.13.0 - 2021-09-25
 
 ### Added
