@@ -54,7 +54,7 @@ abstract class InlineMenu extends Conversation
      * @param  array  $opt
      * @return InlineMenu
      */
-    public function menuText(string $text, array $opt = []): self
+    protected function menuText(string $text, array $opt = []): self
     {
         $this->text = $text;
         $this->opt = $opt;
@@ -64,7 +64,7 @@ abstract class InlineMenu extends Conversation
     /**
      * @return $this
      */
-    public function clearButtons(): self
+    protected function clearButtons(): self
     {
         $this->buttons = InlineKeyboardMarkup::make();
         return $this;
@@ -74,7 +74,7 @@ abstract class InlineMenu extends Conversation
      * @param  InlineKeyboardButton  $buttons
      * @return InlineMenu
      */
-    public function addButtonRow(...$buttons): self
+    protected function addButtonRow(...$buttons): self
     {
         foreach ($buttons as $button) {
             if ($button->callback_data === null) {
@@ -103,7 +103,7 @@ abstract class InlineMenu extends Conversation
      * @param  string|null  $orNext
      * @return InlineMenu
      */
-    public function orNext(?string $orNext): self
+    protected function orNext(?string $orNext): self
     {
         $this->orNext = $orNext;
         return $this;
@@ -131,15 +131,18 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param  bool  $forceSend
+     * @param  bool  $reopen
      * @param  bool  $noHandlers
      * @param  bool  $noMiddlewares
      * @return mixed
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function showMenu(bool $forceSend = false, bool $noHandlers = false, bool $noMiddlewares = false): void
+    protected function showMenu(bool $reopen = false, bool $noHandlers = false, bool $noMiddlewares = false): void
     {
-        if ($forceSend || !$this->messageId || !$this->chatId) {
+        if ($reopen || !$this->messageId || !$this->chatId) {
+            if ($reopen) {
+                $this->closeMenu();
+            }
             $message = $this->bot->sendMessage($this->text, array_merge([
                 'reply_markup' => $this->buttons,
             ], $this->opt));
@@ -158,12 +161,21 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
+     * @return bool
+     */
+    protected function closeMenu(): bool
+    {
+        if ($this->messageId && $this->chatId) {
+            return $this->bot->deleteMessage($this->chatId, $this->messageId);
+        }
+        return false;
+    }
+
+    /**
      * @param  Nutgram  $bot
      */
     protected function closing(Nutgram $bot)
     {
-        if ($this->messageId && $this->chatId) {
-            $this->bot->deleteMessage($this->chatId, $this->messageId);
-        }
+        $this->closeMenu();
     }
 }
