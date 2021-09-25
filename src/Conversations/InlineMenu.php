@@ -84,6 +84,7 @@ abstract class InlineMenu extends Conversation
                 throw new InvalidArgumentException("The method $method does not exists.");
             }
 
+            $button->callback_data = $callbackData;
             $this->callbacks[$callbackData] = $method;
         }
 
@@ -103,6 +104,7 @@ abstract class InlineMenu extends Conversation
 
     /**
      * @return mixed
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function handleStep(): mixed
     {
@@ -114,6 +116,8 @@ abstract class InlineMenu extends Conversation
                 $this->step = $this->callbacks[$data];
             } elseif (isset($this->orNext)) {
                 $this->step = $this->orNext;
+            } else {
+                $this->end();
             }
         }
 
