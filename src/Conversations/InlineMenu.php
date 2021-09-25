@@ -39,6 +39,11 @@ abstract class InlineMenu extends Conversation
      */
     protected string $orNext;
 
+    /**
+     * @var array
+     */
+    protected array $opt = [];
+
     public function __construct()
     {
         $this->buttons = InlineKeyboardMarkup::make();
@@ -46,11 +51,13 @@ abstract class InlineMenu extends Conversation
 
     /**
      * @param  string  $text
+     * @param  array  $opt
      * @return InlineMenu
      */
-    public function menuText(string $text): self
+    public function menuText(string $text, array $opt = []): self
     {
         $this->text = $text;
+        $this->opt = $opt;
         return $this;
     }
 
@@ -125,22 +132,21 @@ abstract class InlineMenu extends Conversation
 
     /**
      * @param  bool  $forceSend
-     * @param  array  $opt
      * @param  bool  $noHandlers
      * @param  bool  $noMiddlewares
      * @return mixed
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function showMenu(array $opt = [], bool $forceSend = false, bool $noHandlers = false, bool $noMiddlewares = false): void
+    public function showMenu(bool $forceSend = false, bool $noHandlers = false, bool $noMiddlewares = false): void
     {
         if ($forceSend || !$this->messageId || !$this->chatId) {
             $message = $this->bot->sendMessage($this->text, array_merge([
                 'reply_markup' => $this->buttons,
-            ], $opt));
+            ], $this->opt));
         } else {
             $message = $this->bot->editMessageText($this->text, array_merge([
                 'reply_markup' => $this->buttons,
-            ], $opt));
+            ], $this->opt));
         }
 
         $this->messageId = $message->message_id;
@@ -151,6 +157,9 @@ abstract class InlineMenu extends Conversation
             ->next('handleStep');
     }
 
+    /**
+     * @param  Nutgram  $bot
+     */
     protected function closing(Nutgram $bot)
     {
         if ($this->messageId && $this->chatId) {
