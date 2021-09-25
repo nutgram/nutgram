@@ -2,6 +2,12 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.13.0 - 2021-09-25
+
+### Added
+- Added conversation menu
+
+
 ## 0.12.0 - 2021-09-25
 
 ### Added

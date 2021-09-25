@@ -30,7 +30,7 @@ class InlineKeyboardMarkup implements JsonSerializable
     }
 
     /**
-     * @param  mixed  ...$buttons
+     * @param  InlineKeyboardButton  ...$buttons
      * @return InlineKeyboardMarkup
      */
     public function addRow(...$buttons): static
@@ -40,18 +40,10 @@ class InlineKeyboardMarkup implements JsonSerializable
     }
 
     /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return json_encode($this->inline_keyboard);
-    }
-
-    /**
      * @return mixed|InlineKeyboardButton[][]
      */
     public function jsonSerialize()
     {
-        return ['inline_keyboard' => $this->inline_keyboard];
+        return ['inline_keyboard' => $this->inline_keyboard ?? []];
     }
 }
