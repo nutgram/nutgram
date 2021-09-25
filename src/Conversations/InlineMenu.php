@@ -52,7 +52,6 @@ abstract class InlineMenu extends Conversation
     public function addButtonRow(...$buttons): self
     {
         foreach ($buttons as $button) {
-
             if ($button->callback_data === null) {
                 continue;
             }
