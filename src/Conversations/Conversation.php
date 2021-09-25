@@ -1,10 +1,11 @@
 <?php
 
 
-namespace SergiX44\Nutgram;
+namespace SergiX44\Nutgram\Conversations;
 
 use Psr\SimpleCache\InvalidArgumentException;
 use RuntimeException;
+use SergiX44\Nutgram\Nutgram;
 
 /**
  * Class Conversation
@@ -85,20 +86,22 @@ abstract class Conversation
     /**
      * Invokes the correct conversation step.
      * @param  Nutgram  $bot
+     * @return mixed
      */
-    public function __invoke(Nutgram $bot)
+    public function __invoke(Nutgram $bot): mixed
     {
         if (method_exists($this, $this->step)) {
             $this->bot = $bot;
             $method = $this->step;
-            $this->$method($this->bot);
-        } else {
-            throw new RuntimeException("Conversation step '$this->step' not found.");
+            return $this->$method($this->bot);
         }
+
+        throw new RuntimeException("Conversation step '$this->step' not found.");
     }
 
     /**
      * @param  Nutgram  $bot
+     * @throws InvalidArgumentException
      */
     public function terminate(Nutgram $bot): void
     {

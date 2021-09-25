@@ -3,7 +3,7 @@
 
 namespace SergiX44\Nutgram\Tests\Feature\Conversations;
 
-use SergiX44\Nutgram\Conversation;
+use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
 class TwoStepConversation extends Conversation
