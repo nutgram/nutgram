@@ -38,7 +38,7 @@ abstract class Conversation
      * @param  Nutgram  $bot
      * @return static
      */
-    public static function begin(Nutgram $bot): Conversation
+    public static function begin(Nutgram $bot): self
     {
         $instance = new static();
         $instance($bot);
@@ -113,7 +113,7 @@ abstract class Conversation
      * @param  bool  $skipHandlers
      * @return Conversation
      */
-    protected function setSkipHandlers(bool $skipHandlers): Conversation
+    protected function setSkipHandlers(bool $skipHandlers): self
     {
         $this->skipHandlers = $skipHandlers;
 
@@ -124,7 +124,7 @@ abstract class Conversation
      * @param  bool  $skipMiddlewares
      * @return Conversation
      */
-    protected function setSkipMiddlewares(bool $skipMiddlewares): Conversation
+    protected function setSkipMiddlewares(bool $skipMiddlewares): self
     {
         $this->skipMiddlewares = $skipMiddlewares;
 

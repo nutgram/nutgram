@@ -19,7 +19,7 @@ abstract class InlineMenu extends Conversation
 
     protected array $callbacks = [];
 
-    protected ?string $fallbackStep;
+    protected string $orNext;
 
     public function __construct()
     {
@@ -30,9 +30,18 @@ abstract class InlineMenu extends Conversation
      * @param  string  $text
      * @return InlineMenu
      */
-    public function menuText(string $text): InlineMenu
+    public function menuText(string $text): self
     {
         $this->text = $text;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function clearButtons(): self
+    {
+        $this->buttons = InlineKeyboardMarkup::make();
         return $this;
     }
 
@@ -40,10 +49,19 @@ abstract class InlineMenu extends Conversation
      * @param  InlineKeyboardButton  $buttons
      * @return InlineMenu
      */
-    public function addButtonRow(...$buttons): InlineMenu
+    public function addButtonRow(...$buttons): self
     {
         foreach ($buttons as $button) {
-            [$callbackData, $method] = explode($button->callback_data, '@');
+
+            if ($button->callback_data === null) {
+                continue;
+            }
+
+            if (str_starts_with($button->callback_data, '@')) {
+                $button->callback_data = $button->text.$button->callback_data;
+            }
+
+            [$callbackData, $method] = explode('@', $button->callback_data ?? $button->text);
 
             if (!method_exists($this, $method)) {
                 throw new InvalidArgumentException("The method $method does not exists.");
@@ -57,16 +75,19 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param  string|null  $fallbackStep
+     * @param  string|null  $orNext
      * @return InlineMenu
      */
-    public function fallbackStep(?string $fallbackStep): InlineMenu
+    public function orNext(?string $orNext): self
     {
-        $this->fallbackStep = $fallbackStep;
+        $this->orNext = $orNext;
         return $this;
     }
 
-    public function handleStep()
+    /**
+     * @return mixed
+     */
+    public function handleStep(): mixed
     {
         if ($this->bot->isCallbackQuery()) {
             $this->bot->answerCallbackQuery();
@@ -74,30 +95,37 @@ abstract class InlineMenu extends Conversation
             $data = $this->bot->callbackQuery()?->data;
             if (isset($this->callbacks[$data])) {
                 $this->step = $this->callbacks[$data];
-            } elseif ($this->fallbackStep !== null) {
-                $this->step = $this->fallbackStep;
+            } elseif (isset($this->orNext)) {
+                $this->step = $this->orNext;
             }
         }
 
         return $this($this->bot);
     }
 
-    public function showMenu(bool $forceSend = false, bool $noHandlers = false, bool $noMiddlewares = false)
+    /**
+     * @param  bool  $forceSend
+     * @param  array  $opt
+     * @param  bool  $noHandlers
+     * @param  bool  $noMiddlewares
+     * @return mixed
+     */
+    public function showMenu(bool $forceSend = false, array $opt = [], bool $noHandlers = false, bool $noMiddlewares = false): mixed
     {
         if ($forceSend || !$this->messageId || !$this->chatId) {
-            $message = $this->bot->sendMessage($this->text, [
+            $message = $this->bot->sendMessage($this->text, array_merge([
                 'reply_markup' => $this->buttons,
-            ]);
+            ], $opt));
         } else {
-            $message = $this->bot->editMessageText($this->text, [
+            $message = $this->bot->editMessageText($this->text, array_merge([
                 'reply_markup' => $this->buttons,
-            ]);
+            ], $opt));
         }
 
         $this->messageId = $message->message_id;
         $this->chatId = $message->chat?->id;
 
-        $this->setSkipHandlers($noHandlers)
+        return $this->setSkipHandlers($noHandlers)
             ->setSkipMiddlewares($noMiddlewares)
             ->next('handleStep');
     }
