@@ -78,7 +78,7 @@ abstract class InlineMenu extends Conversation
             }
         }
 
-        return $this->__invoke($this->bot);
+        return $this($this->bot);
     }
 
     public function send(bool $forceSend = false)
