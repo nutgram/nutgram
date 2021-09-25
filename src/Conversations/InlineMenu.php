@@ -9,16 +9,34 @@ use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
 
 abstract class InlineMenu extends Conversation
 {
+    /**
+     * @var int|null
+     */
     protected ?int $messageId = null;
 
+    /**
+     * @var int|null
+     */
     protected ?int $chatId = null;
 
+    /**
+     * @var string
+     */
     protected string $text;
 
+    /**
+     * @var InlineKeyboardMarkup
+     */
     protected InlineKeyboardMarkup $buttons;
 
+    /**
+     * @var array
+     */
     protected array $callbacks = [];
 
+    /**
+     * @var string
+     */
     protected string $orNext;
 
     public function __construct()
@@ -108,8 +126,9 @@ abstract class InlineMenu extends Conversation
      * @param  bool  $noHandlers
      * @param  bool  $noMiddlewares
      * @return mixed
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function showMenu(bool $forceSend = false, array $opt = [], bool $noHandlers = false, bool $noMiddlewares = false): mixed
+    public function showMenu(array $opt = [], bool $forceSend = false, bool $noHandlers = false, bool $noMiddlewares = false): void
     {
         if ($forceSend || !$this->messageId || !$this->chatId) {
             $message = $this->bot->sendMessage($this->text, array_merge([
@@ -124,7 +143,7 @@ abstract class InlineMenu extends Conversation
         $this->messageId = $message->message_id;
         $this->chatId = $message->chat?->id;
 
-        return $this->setSkipHandlers($noHandlers)
+        $this->setSkipHandlers($noHandlers)
             ->setSkipMiddlewares($noMiddlewares)
             ->next('handleStep');
     }
