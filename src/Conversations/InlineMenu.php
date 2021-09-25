@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Conversations;
 
 use InvalidArgumentException;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
 
@@ -81,10 +82,30 @@ abstract class InlineMenu extends Conversation
         return $this($this->bot);
     }
 
-    public function send(bool $forceSend = false)
+    public function showMenu(bool $forceSend = false, bool $noHandlers = false, bool $noMiddlewares = false)
     {
-        // todo
+        if ($forceSend || !$this->messageId || !$this->chatId) {
+            $message = $this->bot->sendMessage($this->text, [
+                'reply_markup' => $this->buttons,
+            ]);
+        } else {
+            $message = $this->bot->editMessageText($this->text, [
+                'reply_markup' => $this->buttons,
+            ]);
+        }
 
-        $this->next('handleStep');
+        $this->messageId = $message->message_id;
+        $this->chatId = $message->chat?->id;
+
+        $this->setSkipHandlers($noHandlers)
+            ->setSkipMiddlewares($noMiddlewares)
+            ->next('handleStep');
+    }
+
+    protected function closing(Nutgram $bot)
+    {
+        if ($this->messageId && $this->chatId) {
+            $this->bot->deleteMessage($this->chatId, $this->messageId);
+        }
     }
 }
