@@ -29,14 +29,12 @@ sequenceDiagram
 To create a conversation, you must define a class that extends the framework `Conversation` class:
 
 ```php
-use SergiX44\Nutgram\Conversation;
+use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
 class MyConversation extends Conversation {
     
-    protected ?string $step = 'firstStep';
-    
-    public function firstStep(Nutgram $bot)
+    public function start(Nutgram $bot)
     {
         $bot->sendMessage('This is the first step!');
         $this->next('secondStep');    
@@ -57,20 +55,38 @@ $bot->run();
 ```
 
 - **Wait wait, whats going on here?**
-    - When the user type *"/start"* for the first time, the first step of conversation is invoked (based on the `$step`
-      property, defined in the class).
+    - When the user type *"/start"* for the first time, the first step of conversation is invoked, by default is
+      the `start` method.
     - At the end of the first step, we define the next step of the conversation, setting the name of the next function,
       that will be **serialized to cache**.
     - In the second step, we are ending the conversation.
 
 ```note
-If a conversation is not explicitly terminated with the `end()`, at the user next message will repeat the lastest saved step
+If a conversation is not explicitly terminated with the `end()`, at the user next message will repeat the lastest saved step!
+```
+
+If you want to customize the name of the first step, you just need to override the `$step` property from conversation:
+
+```php
+use SergiX44\Nutgram\Conversations\Conversations\Conversation;
+use SergiX44\Nutgram\Nutgram;
+
+class MyConversation extends Conversation {
+    
+    protected ?string $step = 'myStart';
+    
+    public function myStart(Nutgram $bot)
+    {
+        $bot->sendMessage('This is the first step!');  
+    }
+    
+    // ...
 ```
 
 A more complete example:
 
 ```php
-use SergiX44\Nutgram\Conversation;
+use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
 class AskIceCreamConversation extends Conversation {
@@ -157,7 +173,7 @@ By default, sends a message that match with a typed **specific** handler, the cu
 any case, it may be necessary to force the user inside a funnel (for example in a settings modification flow):
 
 ```php
-use SergiX44\Nutgram\Conversation;
+use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
 class MyConversation extends Conversation {
@@ -183,7 +199,7 @@ By default, global middlewares are also applied before the conversation step, th
 you want to be avoided (e.g. in a registration flow):
 
 ```php
-use SergiX44\Nutgram\Conversation;
+use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
 class MyConversation extends Conversation {
@@ -206,7 +222,7 @@ In this way, your next step will be executed without any middleware before.
 The two options before are also stackable:
 
 ```php
-use SergiX44\Nutgram\Conversation;
+use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
 class MyConversation extends Conversation {
@@ -260,8 +276,8 @@ By default, it will always allow funnel escaping and will always apply global mi
 
 ## Inline Usage
 
-For very short conversations, you can also define the next step as a closure, with the same limitations of the procedural
-usage:
+For very short conversations, you can also define the next step as a closure, with the same limitations of the
+procedural usage:
 
 ```php
 use SergiX44\Nutgram\Nutgram;
