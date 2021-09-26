@@ -81,6 +81,35 @@ $bot->onCommand('help', function (Nutgram $bot) {
 $bot->run();
 ```
 
+#### Automatically register bot commands
+
+The framework can also automatically set the bot commands for you, if you configure the description on it:
+
+```php
+use SergiX44\Nutgram\Nutgram;
+
+$bot = new Nutgram($_ENV['TOKEN']);
+
+// Called on command "/start"
+// It's possible to set a description for each command
+// this WILL be automatically registered
+$bot->onCommand('start', function (Nutgram $bot) {
+    return $bot->sendMessage('Hello, world!');
+})->description('The start command!');
+
+// Called on command "/secret"
+// this WILL NOT be automatically registered
+$bot->onCommand('secret', function (Nutgram $bot) {
+    return $bot->sendMessage('Shhh');
+});
+
+// automatically calls the setMyCommands method
+$bot->registerMyCommands();
+```
+And the result will be:
+
+![commands](https://i.imgur.com/65ofrw7.png)
+
 ### `onText`
 
 For text messages, is possible also put parameters to match a regex, or to match part of text:
