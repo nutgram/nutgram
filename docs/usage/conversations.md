@@ -88,6 +88,8 @@ A more complete example:
 ```php
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
 
 class AskIceCreamConversation extends Conversation {
     
@@ -98,17 +100,9 @@ class AskIceCreamConversation extends Conversation {
     public function askCupSize(Nutgram $bot)
     {
         $bot->sendMessage('How big should be you ice cream cup?', [
-            'reply_markup' => json_encode([
-                'inline_keyboard' => [
-                    [
-                        ['text' => 'Small', 'callback_data' => 'S'],
-                        ['text' => 'Medium', 'callback_data' => 'M'],
-                    ], [
-                        ['text' => 'Big', 'callback_data' => 'L'],
-                        ['text' => 'Super Big', 'callback_data' => 'XL'],
-                    ],
-                ],
-            ])
+            'reply_markup' => InlineKeyboardMarkup::make()
+                ->addRow(InlineKeyboardButton::make('Small', callback_data: 'S'), InlineKeyboardButton::make('Medium', callback_data: 'M'))
+                ->addRow(InlineKeyboardButton::make('Big', callback_data: 'L'), InlineKeyboardButton::make('Super Big', callback_data: 'XL')),
         ]);
         $this->next('askFlavors');    
     }
@@ -240,6 +234,37 @@ class MyConversation extends Conversation {
     // ..
 }
 ```
+
+## Ending a conversation
+
+You can define a method that will be called once the current conversation is terminated:
+
+```php
+use SergiX44\Nutgram\Conversations\Conversation;
+use SergiX44\Nutgram\Nutgram;
+
+class MyConversation extends Conversation {
+    
+    public function step(Nutgram $bot)
+    {
+        $bot->sendMessage('Time to say goodbye!');
+        $this->end();    
+    }
+    /**
+    * This method will be called!
+    */
+    public function closing(Nutgram $bot)
+    {
+        $bot->sendMessage('Bye!');
+    }
+}
+```
+
+The `closing` method will be called every time a conversation is terminated, due to explicit call to `end`, or because
+[funnel escaping](conversations.md#funnel-escaping).
+
+This is useful for shutting stuff down, saving to a database or simply let the user know that the conversation is
+terminated.
 
 ## Procedural Usage
 
