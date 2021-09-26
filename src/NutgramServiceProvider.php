@@ -67,7 +67,7 @@ class NutgramServiceProvider extends ServiceProvider
         ], 'nutgram');
 
         if (config('nutgram.routes', false)) {
-            $bot = $this->app['nutgram'];
+            $bot = $this->app->make(Nutgram::class);
             require file_exists(self::$ROUTES) ? base_path(self::$ROUTES) : __DIR__.'/../laravel/routes.php';
         }
     }
