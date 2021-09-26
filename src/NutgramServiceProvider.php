@@ -66,9 +66,9 @@ class NutgramServiceProvider extends ServiceProvider
             __DIR__ . '/../laravel/routes.php' => base_path(self::$ROUTES),
         ], 'nutgram');
 
-        if (config('nutgram.routes', false) && file_exists(self::$ROUTES)) {
+        if (config('nutgram.routes', false)) {
             $bot = $this->app['nutgram'];
-            require base_path(self::$ROUTES);
+            require file_exists(self::$ROUTES) ? base_path(self::$ROUTES) : __DIR__.'/../laravel/routes.php';
         }
     }
 }
