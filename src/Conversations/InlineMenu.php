@@ -152,8 +152,8 @@ abstract class InlineMenu extends Conversation
             ], $this->opt));
         }
 
-        $this->messageId = $message->message_id;
-        $this->chatId = $message->chat?->id;
+        $this->messageId = $message?->message_id ?? $this->messageId;
+        $this->chatId = $message?->chat?->id ?? $this->chatId;
 
         $this->setSkipHandlers($noHandlers)
             ->setSkipMiddlewares($noMiddlewares)
