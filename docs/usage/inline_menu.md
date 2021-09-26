@@ -4,7 +4,32 @@ sort: 9
 
 # Inline Menu
 
-WIP
+The `InlineMenu` class extends [Conversation](conversations.md) and help you to provide an easy interface to
+create inline menu messages in your bot.
+
+#### Methods
+
+- `menuText(string $text, array $opt = [])`<br>
+  Set the message text and the optional message parameters
+
+- `addButtonRow(... InlineKeyboardButton $buttons)`<br>
+  Set a row of buttons to the current message<br>
+  When you use a button with `callback_data`, you must set
+  the value as `callbackData@methodName` and create a method with the name `methodName`
+
+- `clearButtons()`<br>
+  Remove the buttons from the current message
+
+- `orNext(?string $orNext)`<br>
+  Call a method if there is no matching handlers
+
+- `showMenu(bool $reopen = false, bool $noHandlers = false, bool $noMiddlewares = false)`<br>
+  Send the message with buttons
+
+- `closeMenu()`<br>
+  Close the menu deleting the current message
+
+### Example
 
 ```php
 class ChooseColorMenu extends InlineMenu
@@ -40,4 +65,6 @@ class ChooseColorMenu extends InlineMenu
 }
 ```
 
-![example](https://i.imgur.com/3QMY10B.gifexample)
+Result:
+
+![example](https://i.imgur.com/IQ63ruH.gif)
