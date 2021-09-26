@@ -14,8 +14,14 @@ use SergiX44\Nutgram\Laravel\Commands\RunCommand;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\Webhook;
 
+/**
+ * The Nutgram Service Provider for Laravel.
+ */
 class NutgramServiceProvider extends ServiceProvider
 {
+    /** @var string */
+    public static string $ROUTES = 'routes/telegram.php';
+
     /**
      * Register the bot instance
      */
@@ -57,6 +63,12 @@ class NutgramServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../laravel/config.php' => config_path('nutgram.php'),
+            __DIR__ . '/../laravel/routes.php' => base_path(self::$ROUTES),
         ], 'nutgram');
+
+        if (config('nutgram.routes', false) && file_exists(self::$ROUTES)) {
+            $bot = $this->app['nutgram'];
+            require base_path(self::$ROUTES);
+        }
     }
 }
