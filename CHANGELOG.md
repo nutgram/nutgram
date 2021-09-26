@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.14.0 - 2021-09-26
+
+### Changed
+- Updated documentation
+- Improved Laravel integration
+
+### Fixed
+- Inline menu error when updating the same messages
+
 ## 0.13.1 - 2021-09-26
 
 ### Fixed
