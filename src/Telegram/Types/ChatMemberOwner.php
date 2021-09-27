@@ -7,7 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types;
  * that owns the chat and has all administrator privileges.
  * @see https://core.telegram.org/bots/api#chatmemberowner
  */
-class ChatMemberOwner extends ChatMember
+trait ChatMemberOwner
 {
     /**
      * The member's status in the chat, always “creator”
