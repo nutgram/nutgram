@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types;
 
 use RuntimeException;
+use SergiX44\Nutgram\Telegram\Attributes\ChatMemberStatus;
 use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
 
 /**
@@ -36,13 +37,13 @@ class ChatMember
     public function getType(): ?string
     {
         return match ($this->status) {
-            'creator' => ChatMemberType::OWNER,
-            'administrator' => ChatMemberType::ADMINISTRATOR,
-            'member' => ChatMemberType::MEMBER,
-            'restricted' => ChatMemberType::RESTRICTED,
-            'left' => ChatMemberType::LEFT,
-            'kicked' => ChatMemberType::BANNED,
-            default => throw new RuntimeException('Invalid ChatMember type'),
+            ChatMemberStatus::CREATOR => ChatMemberType::OWNER,
+            ChatMemberStatus::ADMINISTRATOR => ChatMemberType::ADMINISTRATOR,
+            ChatMemberStatus::MEMBER => ChatMemberType::MEMBER,
+            ChatMemberStatus::RESTRICTED => ChatMemberType::RESTRICTED,
+            ChatMemberStatus::LEFT => ChatMemberType::LEFT,
+            ChatMemberStatus::KICKED => ChatMemberType::BANNED,
+            default => throw new RuntimeException('Invalid ChatMemberStatus type'),
         };
     }
 }
