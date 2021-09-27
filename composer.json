@@ -2,8 +2,13 @@
   "name": "sergix44/nutgram",
   "description": "The Telegram bot library that doesn't drive you nuts",
   "keywords": [
-    "sergix44",
-    "nutgram"
+    "nutgram",
+    "telegram",
+    "bot",
+    "api",
+    "library",
+    "framework",
+    "laravel"
   ],
   "homepage": "https://github.com/SergiX44/Nutgram",
   "license": "MIT",
@@ -11,6 +16,11 @@
     {
       "name": "Sergio Brighenti",
       "email": "sergio@brighenti.me",
+      "role": "Developer"
+    },
+    {
+      "name": "Luca Patera",
+      "email": "luca.patera@outlook.it",
       "role": "Developer"
     }
   ],
@@ -24,8 +34,9 @@
     "psr/simple-cache": "^1.0"
   },
   "require-dev": {
+    "roave/security-advisories": "dev-latest",
     "orchestra/testbench": "^4.0 || ^5.0 || ^6.0",
-    "pestphp/pest": "^1.0"
+    "pestphp/pest": "^1.1"
   },
   "autoload": {
     "psr-4": {

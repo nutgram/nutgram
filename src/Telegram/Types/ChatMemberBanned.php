@@ -8,7 +8,7 @@ namespace SergiX44\Nutgram\Telegram\Types;
  *
  * @see https://core.telegram.org/bots/api#chatmemberbanned
  */
-class ChatMemberBanned extends ChatMember
+trait ChatMemberBanned
 {
     /**
      * The member's status in the chat, always “kicked”
