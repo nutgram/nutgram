@@ -8,7 +8,7 @@ namespace SergiX44\Nutgram\Telegram\Types;
  *
  * @see https://core.telegram.org/bots/api#chatmemberleft
  */
-class ChatMemberLeft extends ChatMember
+trait ChatMemberLeft
 {
     /**
      * The member's status in the chat, always “left”
