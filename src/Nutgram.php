@@ -66,28 +66,28 @@ class Nutgram extends ResolveHandlers
      */
     public function __construct(string $token, array $config = [])
     {
+        if (empty($token)) {
+            throw new InvalidArgumentException('The token cannot be empty.');
+        }
+
         $this->token = $token;
         $this->config = $config;
         $this->container = new Container();
 
         $baseUri = $config['api_url'] ?? 'https://api.telegram.org';
 
-        $this->http = new Guzzle(array_merge($config['client'] ?? [], [
+        $this->http = $this->container->get(Guzzle::class, array_merge($config['client'] ?? [], [
             'base_uri' => "$baseUri/bot$token/",
             'timeout' => $config['timeout'] ?? 5,
         ]));
+        $this->mapper = $this->container->get(JsonMapper::class);
 
-        $this->mapper = new JsonMapper();
-
-        $this->container->set(Guzzle::class, $this->http);
-        $this->container->set(JsonMapper::class, $this->mapper);
         $this->container->set(CacheInterface::class, $config['cache'] ?? new ArrayCache());
-
-        $this->setRunningMode(Polling::class);
         $this->conversationCache = $this->container->get(ConversationCache::class);
         $this->globalCache = $this->container->get(GlobalCache::class);
         $this->userCache = $this->container->get(UserCache::class);
 
+        $this->setRunningMode(Polling::class);
         $this->container->set(__CLASS__, $this);
     }
 

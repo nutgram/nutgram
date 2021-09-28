@@ -47,7 +47,7 @@ uses(TestCase::class)
 
 function getInstance($update = null): Nutgram
 {
-    $bot = new Nutgram($_ENV['TOKEN'] ?? 'FAKE');
+    $bot = new Nutgram($_ENV['TELEGRAM_TOKEN'] ?? 'FAKE');
     $bot->setRunningMode(new TestingRunningMode($update));
 
     return $bot;

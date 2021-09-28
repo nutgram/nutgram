@@ -16,6 +16,6 @@
         </include>
     </coverage>
     <php>
-        <env name="TOKEN" value="TELEGRAM_TOKEN_HERE" force="true" />
+        <env name="TELEGRAM_TOKEN" value="TELEGRAM_TOKEN_HERE" force="true" />
     </php>
 </phpunit>
