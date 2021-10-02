@@ -81,6 +81,9 @@ class Nutgram extends ResolveHandlers
             'timeout' => $config['timeout'] ?? 5,
         ]));
         $this->mapper = $this->container->get(JsonMapper::class);
+        $this->mapper->undefinedPropertyHandler = static function ($object, $propName, $jsonValue) {
+            $object->{$propName} = $jsonValue;
+        };
 
         $this->container->set(CacheInterface::class, $config['cache'] ?? new ArrayCache());
         $this->conversationCache = $this->container->get(ConversationCache::class);
