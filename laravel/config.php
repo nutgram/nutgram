@@ -7,7 +7,6 @@ return [
     // Extra or specific configurations
     'config' => [],
 
-
     // Set if the service provider should automatically load
     // handlers from /routes/telegram.php
     'routes' => true,
