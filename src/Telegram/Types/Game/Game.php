@@ -4,7 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Game;
 
 use SergiX44\Nutgram\Telegram\Types\Media\Animation;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
-use SergiX44\Nutgram\Telegram\Types\MessageEntity;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * This object represents a game.

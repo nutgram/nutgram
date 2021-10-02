@@ -7,7 +7,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputVenueMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
-use SergiX44\Nutgram\Telegram\Types\MessageEntity;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * Represents a link to a video file stored on the Telegram servers.

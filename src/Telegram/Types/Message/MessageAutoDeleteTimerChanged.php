@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 /**
  * This object represents a service message about a change in auto-delete timer settings.

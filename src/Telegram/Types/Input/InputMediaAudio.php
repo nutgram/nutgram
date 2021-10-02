@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Nutgram\Telegram\Types\MessageEntity;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * Represents an audio file to be treated as music to be sent.

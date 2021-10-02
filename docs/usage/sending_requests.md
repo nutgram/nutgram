@@ -12,8 +12,7 @@ For example:
 
 ```php
 
-use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\Message;
+use SergiX44\Nutgram\Nutgram;use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 $bot = new Nutgram($_ENV['TOKEN']);
 
@@ -35,8 +34,7 @@ If you already have the Telegram `file_id`, you can simply specify it.
 
 ```php
 
-use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\Message;
+use SergiX44\Nutgram\Nutgram;use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 $bot = new Nutgram($_ENV['TOKEN']);
 
@@ -86,9 +84,7 @@ $bot->getFile($fileId)->save('file/or/directory');
 The framework give you some helper constants to format your text messages:
 
 ```php
-use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Attributes\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\Message;
+use SergiX44\Nutgram\Nutgram;use SergiX44\Nutgram\Telegram\Attributes\ParseMode;use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 $bot = new Nutgram($_ENV['TOKEN']);
 

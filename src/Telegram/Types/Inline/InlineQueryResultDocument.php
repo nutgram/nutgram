@@ -7,7 +7,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputVenueMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
-use SergiX44\Nutgram\Telegram\Types\MessageEntity;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * Represents a link to a file. By default, this file will be sent by the user with an optional caption.

@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types;
 
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+
 /**
  * This object contains information about a poll.
  * @see https://core.telegram.org/bots/api#poll

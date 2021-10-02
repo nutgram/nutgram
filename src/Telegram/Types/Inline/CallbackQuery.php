@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
-use SergiX44\Nutgram\Telegram\Types\Message;
+use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\User;
 
 /**

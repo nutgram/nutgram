@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Nutgram\Telegram\Types\MessageEntity;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.

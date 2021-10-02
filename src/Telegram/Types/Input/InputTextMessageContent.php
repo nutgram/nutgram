@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Nutgram\Telegram\Types\MessageEntity;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content}

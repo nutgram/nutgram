@@ -1,6 +1,8 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Message;
+
+use SergiX44\Nutgram\Telegram\Types\User;
 
 /**
  * This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
@@ -16,31 +18,31 @@ class MessageEntity
      * @var string $type
      */
     public $type;
-    
+
     /**
      * Offset in UTF-16 code units to the start of the entity
      * @var int $offset
      */
     public $offset;
-    
+
     /**
      * Length of the entity in UTF-16 code units
      * @var int $length
      */
     public $length;
-    
+
     /**
      * Optional. For “text_link” only, url that will be opened after user taps on the text
      * @var string $url
      */
     public $url;
-    
+
     /**
      * Optional. For “text_mention” only, the mentioned user
      * @var User $user
      */
     public $user;
-    
+
     /**
      * Optional. For “pre” only, the programming language of the entity text
      * @var string $language

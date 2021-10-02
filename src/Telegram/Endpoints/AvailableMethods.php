@@ -12,8 +12,8 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatPermissions;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
-use SergiX44\Nutgram\Telegram\Types\Message;
-use SergiX44\Nutgram\Telegram\Types\MessageId;
+use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageId;
 use SergiX44\Nutgram\Telegram\Types\User;
 use SergiX44\Nutgram\Telegram\Types\UserProfilePhotos;
 

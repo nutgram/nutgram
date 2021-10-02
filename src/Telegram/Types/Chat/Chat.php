@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
-use SergiX44\Nutgram\Telegram\Types\Message;
+use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 /**
  * This object represents a chat.

@@ -1,10 +1,11 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Game\Game;
+use SergiX44\Nutgram\Telegram\Types\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
 use SergiX44\Nutgram\Telegram\Types\Location\ProximityAlertTriggered;
@@ -18,6 +19,15 @@ use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 use SergiX44\Nutgram\Telegram\Types\Media\Video;
 use SergiX44\Nutgram\Telegram\Types\Media\VideoNote;
 use SergiX44\Nutgram\Telegram\Types\Media\Voice;
+use SergiX44\Nutgram\Telegram\Types\PassportData;
+use SergiX44\Nutgram\Telegram\Types\Poll;
+use SergiX44\Nutgram\Telegram\Types\Sticker;
+use SergiX44\Nutgram\Telegram\Types\SuccessfulPayment;
+use SergiX44\Nutgram\Telegram\Types\User;
+use SergiX44\Nutgram\Telegram\Types\VoiceChatEnded;
+use SergiX44\Nutgram\Telegram\Types\VoiceChatParticipantsInvited;
+use SergiX44\Nutgram\Telegram\Types\VoiceChatScheduled;
+use SergiX44\Nutgram\Telegram\Types\VoiceChatStarted;
 
 /**
  * This object represents a message.
