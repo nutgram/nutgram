@@ -12,17 +12,16 @@ class ReplyKeyboardMarkup
 {
     /**
      * Array of button rows, each represented by an Array of KeyboardButton objects
-     * @var KeyBoardButton[][] $keyboard
+     * @var \SergiX44\Nutgram\Telegram\Types\Keyboard\KeyBoardButton[][] $keyboard
      */
-    public $keyboard;
+    public array $keyboard;
 
     /**
      * Optional. Requests clients to resize the keyboard vertically for optimal fit
      * (e.g., make the keyboard smaller if there are just two rows of buttons).
      * Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
-     * @var bool $resize_keyboard
      */
-    public $resize_keyboard;
+    public ?bool $resize_keyboard = null;
 
     /**
      * Optional. Requests clients to hide the keyboard as soon as it's been used.
@@ -30,15 +29,13 @@ class ReplyKeyboardMarkup
      * letter-keyboard in the chat – the user can press a special button in the input field to
      * see the custom keyboard again.
      * Defaults to false.
-     * @var bool $one_time_keyboard
      */
-    public $one_time_keyboard;
+    public ?bool $one_time_keyboard = null;
 
     /**
      * Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters
-     * @var string $input_field_placeholder
      */
-    public $input_field_placeholder;
+    public ?string $input_field_placeholder = null;
 
     /**
      * Optional. Use this parameter if you want to show the keyboard to specific users only.
@@ -49,7 +46,6 @@ class ReplyKeyboardMarkup
      * bot replies to the request with a keyboard to select the new language.
      * Other users in the group don’t see the keyboard.
      * @ee https://core.telegram.org/bots/api#message Message
-     * @var bool $selective
      */
-    public $selective;
+    public ?bool $selective = null;
 }

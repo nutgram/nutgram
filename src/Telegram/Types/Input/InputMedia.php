@@ -7,9 +7,8 @@ abstract class InputMedia
 {
     /**
      * Type of the result
-     * @var string $type
      */
-    public $type;
+    public string $type;
 
     /**
      * File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended),
@@ -18,13 +17,12 @@ abstract class InputMedia
      * @see https://core.telegram.org/bots/api#sending-files More info on Sending Files
      * @var string|resource $media
      */
-    public $media;
+    public mixed $media;
 
     /**
      * Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
-     * @var string $caption
      */
-    public $caption;
+    public ?string $caption = null;
 
     /**
      * @return array

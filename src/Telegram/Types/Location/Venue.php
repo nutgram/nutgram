@@ -10,45 +10,38 @@ class Venue
 {
     /**
      * Venue location
-     * @var Location $location
      */
-    public $location;
+    public Location $location;
 
     /**
      * Name of the venue
-     * @var string $title
      */
-    public $title;
+    public string $title;
 
     /**
      * Address of the venue
-     * @var string $address
      */
-    public $address;
+    public string $address;
 
     /**
      * Optional. Foursquare identifier of the venue
-     * @var string $foursquare_id
      */
-    public $foursquare_id;
+    public ?string $foursquare_id = null;
 
     /**
      * Optional. Foursquare type of the venue.
      * (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
-     * @var string $foursquare_type
      */
-    public $foursquare_type;
+    public ?string $foursquare_type = null;
 
     /**
      * Optional. Google Places identifier of the venue
-     * @var string $google_place_id
      */
-    public $google_place_id;
+    public ?string $google_place_id = null;
 
     /**
      * Optional. Google Places type of the venue.
      * (See {@see https://developers.google.com/places/web-service/supported_types supported types}.)
-     * @var string $google_place_type
      */
-    public $google_place_type;
+    public ?string $google_place_type = null;
 }

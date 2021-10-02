@@ -14,7 +14,6 @@ use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Media\Contact;
 use SergiX44\Nutgram\Telegram\Types\Media\Dice;
 use SergiX44\Nutgram\Telegram\Types\Media\Document;
-use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 use SergiX44\Nutgram\Telegram\Types\Media\Video;
 use SergiX44\Nutgram\Telegram\Types\Media\VideoNote;
 use SergiX44\Nutgram\Telegram\Types\Media\Voice;
@@ -37,254 +36,219 @@ class Message
 {
     /**
      * Unique message identifier inside this chat
-     * @var int $message_id
      */
-    public $message_id;
+    public int $message_id;
 
     /**
      * Optional. Sender, can be empty for messages sent to channels
-     * @var User $from
      */
-    public $from;
+    public ?User $from = null;
 
     /**
      * Optional. Sender of the message, sent on behalf of a chat. The channel itself for channel messages.
      * The supergroup itself for messages from anonymous group administrators.
      * The linked channel for messages automatically forwarded to the discussion group
-     * @var Chat $sender_chat
      */
-    public $sender_chat;
+    public ?Chat $sender_chat = null;
 
     /**
      * Date the message was sent in Unix time
-     * @var int $date
      */
-    public $date;
+    public int $date;
 
     /**
      * Conversation the message belongs to
-     * @var Chat $chat
      */
-    public $chat;
+    public Chat $chat;
 
     /**
      * Optional. For forwarded messages, sender of the original message
-     * @var User $forward_from
      */
-    public $forward_from;
+    public ?User $forward_from = null;
 
     /**
      * Optional. For messages forwarded from a channel, information about the original channel
-     * @var Chat $forward_from_chat
      */
-    public $forward_from_chat;
+    public ?Chat $forward_from_chat = null;
 
     /**
      * Optional. For forwarded channel posts, identifier of the original message in the channel
-     * @var int $forward_from_message_id
      */
-    public $forward_from_message_id;
+    public ?int $forward_from_message_id = null;
 
     /**
      * Optional. Signature of the post author for messages forwarded from channels
-     * @var string $forward_signature
      */
-    public $forward_signature;
+    public ?string $forward_signature = null;
 
     /**
      * Optional. Sender's name for messages forwarded from users who
      * disallow adding a link to their account in forwarded messages
-     * @var string $forward_sender_name
      */
-    public $forward_sender_name;
+    public ?string $forward_sender_name = null;
 
     /**
      * Optional. Sender's name for messages forwarded from users who disallow
      * adding a link to their account in forwarded messages
-     * @var int $forward_date
      */
-    public $forward_date;
+    public ?int $forward_date = null;
 
     /**
      * Optional. For replies, the original message.
      * Note that the Message object in this field will not contain further
      * reply_to_message fields even if it itself is a reply.
-     * @var Message $reply_to_message
      */
-    public $reply_to_message;
+    public ?Message $reply_to_message = null;
 
     /**
      * Optional. Bot through which the message was sent
-     * @var User $via_bot
      */
-    public $via_bot;
+    public ?User $via_bot = null;
 
     /**
      * Optional. Date the message was last edited in Unix time
-     * @var int $edit_date
      */
-    public $edit_date;
+    public ?int $edit_date = null;
 
     /**
      * Optional. The unique identifier of a media message group this message belongs to
-     * @var string $media_group_id
      */
-    public $media_group_id;
+    public ?string $media_group_id = null;
 
     /**
      * Optional. Signature of the post author for messages in channels,
      * or the custom title of an anonymous group administrator
-     * @var string $author_signature
      */
-    public $author_signature;
+    public ?string $author_signature = null;
 
     /**
      * Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters
-     * @var string $text
      */
-    public $text;
+    public ?string $text = null;
 
     /**
      * Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
-     * @var MessageEntity[] $entities
+     * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $entities
      */
-    public $entities;
+    public ?array $entities = null;
 
     /**
      * Optional. Message is an animation, information about the animation.
      * For backward compatibility, when this field is set, the document field will also be set
-     * @var Animation $animation
      */
-    public $animation;
+    public ?Animation $animation = null;
 
     /**
      * Optional. Message is an audio file, information about the file
-     * @var Audio $audio
      */
-    public $audio;
+    public ?Audio $audio = null;
 
     /**
      * Optional. Message is a general file, information about the file
-     * @var Document $document
      */
-    public $document;
+    public ?Document $document = null;
 
     /**
      * Optional. Message is a game, information about the game.
      * @see https://core.telegram.org/bots/api#games More about games »
-     * @var Game $game
      */
-    public $game;
+    public ?Game $game = null;
 
     /**
      * Optional. Message is a photo, available sizes of the photo
-     * @var PhotoSize[] $photo
+     * @var \SergiX44\Nutgram\Telegram\Types\Media\PhotoSize[] $photo
      */
-    public $photo;
+    public ?array $photo = null;
 
     /**
      * Optional. Message is a sticker, information about the sticker
-     * @var Sticker $sticker
      */
-    public $sticker;
+    public ?Sticker $sticker = null;
 
     /**
      * Optional. Message is a video, information about the video
-     * @var Video $video
      */
-    public $video;
+    public ?Video $video = null;
 
     /**
      * Optional. Message is a voice message, information about the file
-     * @var Voice $voice
      */
-    public $voice;
+    public ?Voice $voice = null;
 
     /**
      * Optional. Message is a video note, information about the video message
      * @see https://telegram.org/blog/video-messages-and-telescope video note
-     * @var VideoNote $video_note
      */
-    public $video_note;
+    public ?VideoNote $video_note = null;
 
     /**
      * Optional. Caption for the document, photo or video, 0-1024 characters
-     * @var string $caption
      */
-    public $caption;
+    public ?string $caption = null;
 
     /**
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
-     * @var MessageEntity[] $caption_entities
+     * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $caption_entities
      */
-    public $caption_entities;
+    public ?array $caption_entities = null;
 
     /**
      * Optional. Message is a shared contact, information about the contact
-     * @var Contact $contact
      */
-    public $contact;
+    public ?Contact $contact = null;
 
     /**
      * Optional. Message is a shared location, information about the location
-     * @var Location $location
      */
-    public $location;
+    public ?Location $location = null;
 
     /**
      * Optional. Message is a venue, information about the venue
-     * @var Venue $venue
      */
-    public $venue;
+    public ?Venue $venue = null;
 
     /**
      * Optional. Message is a native poll, information about the poll
-     * @var Poll $poll
      */
-    public $poll;
+    public ?Poll $poll = null;
 
     /**
      * Optional. Message is a dice with random value from 1 to 6
-     * @var Dice $dice
      */
-    public $dice;
+    public ?Dice $dice = null;
 
     /**
      * Optional. New members that were added to the group or supergroup
      * and information about them (the bot itself may be one of these members)
-     * @var User[] $new_chat_members
+     * @var \SergiX44\Nutgram\Telegram\Types\User\User[] $new_chat_members
      */
-    public $new_chat_members;
+    public ?array $new_chat_members = null;
 
     /**
      * Optional. A member was removed from the group, information about them (this member may be the bot itself)
-     * @var User $left_chat_member
      */
-    public $left_chat_member;
+    public ?User $left_chat_member = null;
 
     /**
      * Optional. A chat title was changed to this value
-     * @var string $new_chat_title
      */
-    public $new_chat_title;
+    public ?string $new_chat_title = null;
 
     /**
      * Optional. A chat photo was change to this value
-     * @var PhotoSize[] $new_chat_photo
+     * @var \SergiX44\Nutgram\Telegram\Types\Media\PhotoSize[] $new_chat_photo
      */
-    public $new_chat_photo;
+    public ?array $new_chat_photo = null;
 
     /**
      * Optional. Service message: the chat photo was deleted
-     * @var bool $delete_chat_photo
      */
-    public $delete_chat_photo;
+    public ?bool $delete_chat_photo = null;
 
     /**
      * Optional. Service message: the group has been created
-     * @var bool $group_chat_created
      */
-    public $group_chat_created;
+    public ?bool $group_chat_created = null;
 
     /**
      * Optional. Service message: the supergroup has been created.
@@ -292,24 +256,21 @@ class Message
      * because bot can’t be a member of a supergroup when it is created.
      * It can only be found in reply_to_message if someone replies to a
      * very first message in a directly created supergroup.
-     * @var bool $supergroup_chat_created
      */
-    public $supergroup_chat_created;
+    public ?bool $supergroup_chat_created = null;
 
     /**
      * Optional. Service message: the channel has been created.
      * This field can‘t be received in a message coming through updates,
      * because bot can’t be a member of a channel when it is created.
      * It can only be found in reply_to_message if someone replies to a very first message in a channel.
-     * @var bool $channel_chat_created
      */
-    public $channel_chat_created;
+    public ?bool $channel_chat_created = null;
 
     /**
      * Optional. Service message: auto-delete timer settings changed in the chat
-     * @var MessageAutoDeleteTimerChanged $message_auto_delete_timer_changed
      */
-    public $message_auto_delete_timer_changed;
+    public ?MessageAutoDeleteTimerChanged $message_auto_delete_timer_changed = null;
 
     /**
      * Optional. The group has been migrated to a supergroup with the specified identifier.
@@ -317,9 +278,8 @@ class Message
      * may have difficulty/silent defects in interpreting it.
      * But it smaller than 52 bits, so a signed 64 bit integer or
      * double-precision float type are safe for storing this identifier.
-     * @var int $migrate_to_chat_id
      */
-    public $migrate_to_chat_id;
+    public ?int $migrate_to_chat_id = null;
 
     /**
      * Optional. The supergroup has been migrated from a group with the specified identifier.
@@ -327,83 +287,71 @@ class Message
      * may have difficulty/silent defects in interpreting it.
      * But it smaller than 52 bits, so a signed 64 bit integer or
      * double-precision float type are safe for storing this identifier.
-     * @var int $migrate_from_chat_id
      */
-    public $migrate_from_chat_id;
+    public ?int $migrate_from_chat_id = null;
 
     /**
      * Optional. Specified message was pinned.
      * Note that the Message object in this field will not contain
      * further reply_to_message fields even if it is itself a reply.
-     * @var Message $pinned_message
      */
-    public $pinned_message;
+    public ?Message $pinned_message = null;
 
     /**
      * Optional. Message is an invoice for a payment, information about the invoice.
      * @see https://core.telegram.org/bots/api#payments invoice
      * @see https://core.telegram.org/bots/api#payments More about payments
-     * @var Invoice $invoice
      */
-    public $invoice;
+    public ?Invoice $invoice = null;
 
     /**
      * Optional. Message is a service message about a successful payment, information about the payment.
      * @see https://core.telegram.org/bots/api#payments More about payments
-     * @var SuccessfulPayment $successful_payment
      */
-    public $successful_payment;
+    public ?SuccessfulPayment $successful_payment = null;
 
     /**
      * Optional. The domain name of the website on which the user has logged in.
      * @see https://core.telegram.org/widgets/login More about Telegram Login
-     * @var string $connected_website
      */
-    public $connected_website;
+    public ?string $connected_website = null;
 
     /**
      * Optional. Telegram Passport data
-     * @var PassportData $passport_data
      */
-    public $passport_data;
+    public ?PassportData $passport_data = null;
 
     /**
      * Optional. Service message.
      * A user in the chat triggered another user's proximity alert while sharing Live Location.
-     * @var ProximityAlertTriggered $proximity_alert_triggered
      */
-    public $proximity_alert_triggered;
+    public ?ProximityAlertTriggered $proximity_alert_triggered = null;
 
     /**
      * Optional. Service message: voice chat scheduled
-     * @var VoiceChatScheduled $voice_chat_scheduled
      */
-    public $voice_chat_scheduled;
+    public ?VoiceChatScheduled $voice_chat_scheduled = null;
 
     /**
      * Optional. Service message: voice chat started
-     * @var VoiceChatStarted $voice_chat_started
      */
-    public $voice_chat_started;
+    public ?VoiceChatStarted $voice_chat_started = null;
 
     /**
      * Optional. Service message: voice chat ended
-     * @var VoiceChatEnded $voice_chat_ended
      */
-    public $voice_chat_ended;
+    public ?VoiceChatEnded $voice_chat_ended = null;
 
     /**
      * Optional. Service message: new participants invited to a voice chat
-     * @var VoiceChatParticipantsInvited $voice_chat_participants_invited
      */
-    public $voice_chat_participants_invited;
+    public ?VoiceChatParticipantsInvited $voice_chat_participants_invited = null;
 
     /**
      * Optional. Optional. Inline keyboard attached to the message.
      * "login_url" buttons are represented as ordinary "url" buttons.
-     * @var InlineKeyboardMarkup $reply_markup
      */
-    public $reply_markup;
+    public ?InlineKeyboardMarkup $reply_markup = null;
 
     /**
      * Returns only the command string without [at]BotUsername

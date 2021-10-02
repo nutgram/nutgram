@@ -15,21 +15,18 @@ class ChosenInlineResult
 {
     /**
      * The unique identifier for the result that was chosen
-     * @var string $result_id
      */
-    public $result_id;
+    public string $result_id;
 
     /**
      * The user that chose the result
-     * @var User $from
      */
-    public $from;
+    public User $from;
 
     /**
      * Optional. Sender location, only for bots that require user location
-     * @var Location $location
      */
-    public $location;
+    public ?Location $location = null;
 
     /**
      * Optional. Identifier of the sent inline message.
@@ -37,13 +34,11 @@ class ChosenInlineResult
      * attached to the message.
      * Will be also received in {@see https://core.telegram.org/bots/api#callbackquery callback} queries
      * and can be used to {@see https://core.telegram.org/bots/api#updating-messages edit} the message.
-     * @var string $inline_message_id
      */
-    public $inline_message_id;
+    public ?string $inline_message_id = null;
 
     /**
      * The query that was used to obtain the result
-     * @var string $query
      */
-    public $query;
+    public string $query;
 }

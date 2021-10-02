@@ -7,7 +7,6 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputVenueMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
-use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers.
@@ -20,33 +19,28 @@ class InlineQueryResultCachedMpeg4Gif
 {
     /**
      * Type of the result, must be mpeg4_gif
-     * @var string $type
      */
-    public $type;
+    public string $type;
 
     /**
      * Unique identifier for this result, 1-64 bytes
-     * @var string $id
      */
-    public $id;
+    public string $id;
 
     /**
      * A valid file identifier for the MP4 file
-     * @var string $mpeg4_file_id
      */
-    public $mpeg4_file_id;
+    public string $mpeg4_file_id;
 
     /**
      * Optional. Title for the result
-     * @var string $title
      */
-    public $title;
+    public ?string $title = null;
 
     /**
      * Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters
-     * @var string $caption
      */
-    public $caption;
+    public ?string $caption = null;
 
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
@@ -54,27 +48,24 @@ class InlineQueryResultCachedMpeg4Gif
      * if you want Telegram apps to show
      * {@see https://core.telegram.org/bots/api#formatting-options bold, italic, fixed-width text or inline URLs}
      * in your bot's message.
-     * @var string $parse_mode
      */
-    public $parse_mode;
+    public ?string $parse_mode = null;
 
     /**
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
-     * @var MessageEntity[] $caption_entities
+     * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $caption_entities
      */
-    public $caption_entities;
+    public ?array $caption_entities = null;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup $reply_markup
      */
-    public $reply_markup;
+    public ?InlineKeyboardMarkup $reply_markup = null;
 
     /**
      * Optional. Content of the message to be sent instead of the video animation
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
-    public $input_message_content;
+    public InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent|null $input_message_content;
 }

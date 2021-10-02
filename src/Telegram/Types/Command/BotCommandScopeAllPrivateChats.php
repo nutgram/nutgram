@@ -12,7 +12,6 @@ class BotCommandScopeAllPrivateChats
 {
     /**
      * Scope type, must be all_private_chats
-     * @var string $type
      */
-    public $type;
+    public string $type;
 }

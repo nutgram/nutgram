@@ -17,9 +17,9 @@ class InlineKeyboardMarkup implements JsonSerializable
     /**
      * Array of button rows, each represented by an Array of
      * {@see https://core.telegram.org/bots/api#inlinekeyboardbutton InlineKeyboardButton} objects
-     * @var InlineKeyboardButton[][] $inline_keyboard
+     * @var \SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton[][] $inline_keyboard
      */
-    public $inline_keyboard;
+    public array $inline_keyboard;
 
     /**
      * @return InlineKeyboardMarkup
@@ -40,7 +40,7 @@ class InlineKeyboardMarkup implements JsonSerializable
     }
 
     /**
-     * @return mixed|InlineKeyboardButton[][]
+     * @return InlineKeyboardButton[][]
      */
     public function jsonSerialize()
     {

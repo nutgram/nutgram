@@ -12,32 +12,27 @@ class PhotoSize
 {
     /**
      * Unique identifier for this file
-     * @var string $file_id
      */
-    public $file_id;
+    public string $file_id;
 
     /**
      * Unique identifier for this file, which is supposed to be the same over time and for different bots.
      * Can't be used to download or reuse the file.
-     * @var string $file_unique_id
      */
-    public $file_unique_id;
+    public string $file_unique_id;
 
     /**
      * Photo width
-     * @var int $width
      */
-    public $width;
+    public int $width;
 
     /**
      * Photo height
-     * @var int $height
      */
-    public $height;
+    public int $height;
 
     /**
      * Optional. File size
-     * @var int $file_size
      */
-    public $file_size;
+    public ?int $file_size = null;
 }

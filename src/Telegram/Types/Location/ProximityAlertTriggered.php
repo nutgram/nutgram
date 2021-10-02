@@ -14,19 +14,16 @@ class ProximityAlertTriggered
 {
     /**
      * User that triggered the alert
-     * @var User $traveler
      */
-    public $traveler;
+    public User $traveler;
 
     /**
      * User that set the alert
-     * @var User $watcher
      */
-    public $watcher;
+    public User $watcher;
 
     /**
      * The distance between the users
-     * @var int $distance
      */
-    public $distance;
+    public int $distance;
 }

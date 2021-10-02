@@ -11,32 +11,27 @@ class PassportElementErrorDataField
 {
     /**
      * Error source, must be data
-     * @var string $source
      */
-    public $source;
+    public string $source;
 
     /**
      * The section of the user's Telegram Passport which has the error, one of “personal_details”,
      * “passport”, “driver_license”, “identity_card”, “internal_passport”, “address”
-     * @var string $type
      */
-    public $type;
+    public string $type;
 
     /**
      * Name of the data field which has the error
-     * @var string $field_name
      */
-    public $field_name;
+    public string $field_name;
 
     /**
      * Base64-encoded data hash
-     * @var string $data_hash
      */
-    public $data_hash;
+    public string $data_hash;
 
     /**
      * Error message
-     * @var string $message
      */
-    public $message;
+    public string $message;
 }

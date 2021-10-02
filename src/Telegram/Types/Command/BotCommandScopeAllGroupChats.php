@@ -12,7 +12,6 @@ class BotCommandScopeAllGroupChats
 {
     /**
      * Scope type, must be all_group_chats
-     * @var string $type
      */
-    public $type;
+    public string $type;
 }

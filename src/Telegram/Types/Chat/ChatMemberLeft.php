@@ -12,7 +12,6 @@ trait ChatMemberLeft
 {
     /**
      * The member's status in the chat, always “left”
-     * @var string $status
      */
-    public $status;
+    public string $status;
 }

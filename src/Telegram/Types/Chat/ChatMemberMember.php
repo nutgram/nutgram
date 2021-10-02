@@ -11,7 +11,6 @@ trait ChatMemberMember
 {
     /**
      * The member's status in the chat, always “member”
-     * @var string $status
      */
-    public $status;
+    public string $status;
 }
