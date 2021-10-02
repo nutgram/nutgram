@@ -2,12 +2,12 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-use SergiX44\Nutgram\Telegram\Types\ChatMemberAdministrator;
-use SergiX44\Nutgram\Telegram\Types\ChatMemberBanned;
-use SergiX44\Nutgram\Telegram\Types\ChatMemberLeft;
-use SergiX44\Nutgram\Telegram\Types\ChatMemberMember;
-use SergiX44\Nutgram\Telegram\Types\ChatMemberOwner;
-use SergiX44\Nutgram\Telegram\Types\ChatMemberRestricted;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberAdministrator;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberBanned;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberLeft;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberMember;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberRestricted;
 
 class ChatMemberType
 {

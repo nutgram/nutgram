@@ -18,7 +18,7 @@ your users perform a series of steps.
 sequenceDiagram
     User-->>Bot: Send a message
     Note over Bot: run the first step, and serializes the conversation
-    Bot-->>User: Reply with the first step   
+    Bot-->>User: Reply with the first step
     User-->>Bot: Send reply to the first step
     Note over Bot: deserializes the conversation, run the second step and the conversation ends
     Bot-->>User: Reply with the second step
@@ -33,13 +33,13 @@ use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
 class MyConversation extends Conversation {
-    
+
     public function start(Nutgram $bot)
     {
         $bot->sendMessage('This is the first step!');
-        $this->next('secondStep');    
+        $this->next('secondStep');
     }
-    
+
     public function secondStep(Nutgram $bot)
     {
         $bot->sendMessage('Bye!');
@@ -72,31 +72,28 @@ use SergiX44\Nutgram\Conversations\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
 class MyConversation extends Conversation {
-    
+
     protected ?string $step = 'myStart';
-    
+
     public function myStart(Nutgram $bot)
     {
-        $bot->sendMessage('This is the first step!');  
+        $bot->sendMessage('This is the first step!');
     }
-    
+
     // ...
 ```
 
 A more complete example:
 
 ```php
-use SergiX44\Nutgram\Conversations\Conversation;
-use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\InlineKeyboardButton;
-use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Conversations\Conversation;use SergiX44\Nutgram\Nutgram;use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 class AskIceCreamConversation extends Conversation {
-    
+
     protected ?string $step = 'askCupSize';
-    
+
     public $cupSize;
-    
+
     public function askCupSize(Nutgram $bot)
     {
         $bot->sendMessage('How big should be you ice cream cup?', [
@@ -104,9 +101,9 @@ class AskIceCreamConversation extends Conversation {
                 ->addRow(InlineKeyboardButton::make('Small', callback_data: 'S'), InlineKeyboardButton::make('Medium', callback_data: 'M'))
                 ->addRow(InlineKeyboardButton::make('Big', callback_data: 'L'), InlineKeyboardButton::make('Super Big', callback_data: 'XL')),
         ]);
-        $this->next('askFlavors');    
+        $this->next('askFlavors');
     }
-    
+
     public function askFlavors(Nutgram $bot)
     {
         // if is not a callback query, ask again!
@@ -114,13 +111,13 @@ class AskIceCreamConversation extends Conversation {
             $this->askCupSize($bot);
             return;
         }
-        
+
         $this->cupSize = $bot->callbackQuery()->data;
-    
+
         $bot->sendMessage('What flavors do you like?');
         $this->next('recap');
-    }    
-    
+    }
+
     public function recap(Nutgram $bot)
     {
         $flavors = $bot->message()->text;
@@ -171,16 +168,16 @@ use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
 class MyConversation extends Conversation {
-    
+
     // ..
-    
+
     public function step(Nutgram $bot)
     {
         $bot->sendMessage('This is the first step!');
         $this->setSkipHandlers(true)
-            ->next('secondStep');    
+            ->next('secondStep');
     }
-    
+
     // ..
 }
 ```
@@ -197,16 +194,16 @@ use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
 class MyConversation extends Conversation {
-    
+
     // ..
-    
+
     public function step(Nutgram $bot)
     {
         $bot->sendMessage('This is the first step!');
         $this->setSkipMiddlewares(true)
-            ->next('secondStep');    
+            ->next('secondStep');
     }
-    
+
     // ..
 }
 ```
@@ -220,17 +217,17 @@ use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
 class MyConversation extends Conversation {
-    
+
     // ..
-    
+
     public function step(Nutgram $bot)
     {
         $bot->sendMessage('This is the first step!');
         $this->setSkipHandlers(true)
             ->setSkipMiddlewares(true)
-            ->next('secondStep');    
+            ->next('secondStep');
     }
-    
+
     // ..
 }
 ```
@@ -244,11 +241,11 @@ use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
 class MyConversation extends Conversation {
-    
+
     public function step(Nutgram $bot)
     {
         $bot->sendMessage('Time to say goodbye!');
-        $this->end();    
+        $this->end();
     }
     /**
     * This method will be called!
@@ -294,7 +291,7 @@ $bot->run();
 ```
 
 ```warning
-Using conversations in this way, you will not be able to skip middlewares or skip handlers! 
+Using conversations in this way, you will not be able to skip middlewares or skip handlers!
 
 By default, it will always allow funnel escaping and will always apply global middlewares.
 ```

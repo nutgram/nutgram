@@ -1,7 +1,7 @@
 <?php
 
-use SergiX44\Nutgram\Telegram\Types\InlineKeyboardButton;
-use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 it('make a correct keyboard', function () {
     $expected = [

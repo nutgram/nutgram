@@ -104,4 +104,9 @@ it('works with inline conversations', function ($update) {
 
     $bot->run();
     expect($bot->getData('test'))->toBe(1);
+    <<<<
+    <<< HEAD
 })->with('message');
+=======
+});
+>>>>>>> 475af68 (Apply fixes from StyleCI)
