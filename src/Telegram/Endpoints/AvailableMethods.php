@@ -14,8 +14,8 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageId;
-use SergiX44\Nutgram\Telegram\Types\User;
-use SergiX44\Nutgram\Telegram\Types\UserProfilePhotos;
+use SergiX44\Nutgram\Telegram\Types\User\User;
+use SergiX44\Nutgram\Telegram\Types\User\UserProfilePhotos;
 
 /**
  * Trait AvailableMethods

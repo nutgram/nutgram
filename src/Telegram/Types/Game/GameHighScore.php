@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Game;
 
-use SergiX44\Nutgram\Telegram\Types\User;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object represents one row of the high scores table for a game.

@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Poll;
 
-use SergiX44\Nutgram\Telegram\Types\User;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object represents an answer of a user in a non-anonymous poll.

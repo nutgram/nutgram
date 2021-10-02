@@ -5,7 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Chat;
 use RuntimeException;
 use SergiX44\Nutgram\Telegram\Attributes\ChatMemberStatus;
 use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
-use SergiX44\Nutgram\Telegram\Types\User;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object contains information about one member of a chat. Currently, the following 6 types of chat members are

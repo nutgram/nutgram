@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
-use SergiX44\Nutgram\Telegram\Types\User;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object represents changes in the status of a chat member.

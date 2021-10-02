@@ -3,7 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
-use SergiX44\Nutgram\Telegram\Types\User;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object represents an incoming callback query from a callback button

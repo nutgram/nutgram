@@ -3,7 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
-use SergiX44\Nutgram\Telegram\Types\User;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * Represents a result of an inline query that was chosen by the user and sent to their chat partner.

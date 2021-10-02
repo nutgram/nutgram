@@ -3,7 +3,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Location;
 
-use SergiX44\Nutgram\Telegram\Types\User;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object represents the content of a service message, sent whenever a user in the chat

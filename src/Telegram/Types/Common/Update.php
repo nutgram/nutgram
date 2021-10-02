@@ -16,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingQuery;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollAnswer;
-use SergiX44\Nutgram\Telegram\Types\User;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This {@see https://core.telegram.org/bots/api#available-types object} represents an incoming update.
