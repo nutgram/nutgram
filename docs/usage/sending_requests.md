@@ -63,14 +63,13 @@ $message = $bot->sendSticker($fileId, ['chat_id' => 111222333]);
 As opposed to uploading, there are some additional methods available that allow you to download files:
 
 ```php
-use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\File;
+use SergiX44\Nutgram\Nutgram;use SergiX44\Nutgram\Telegram\Types\Media\File;
 
 $bot = new Nutgram($_ENV['TOKEN']);
 
 $fileId = $bot->message()->sticker->file_id;
 
-// get the File object 
+// get the File object
 /** @var File $message */
 $file = $bot->getFile($fileId);
 

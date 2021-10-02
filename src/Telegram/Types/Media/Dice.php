@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Media;
 
 /**
  * This object represents a dice with a random value from 1 to 6 for currently supported base emoji.

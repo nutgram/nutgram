@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Media;
 
 /**
  * This object represents an audio file to be treated as music by the Telegram clients.

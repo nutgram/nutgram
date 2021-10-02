@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types;
 
+use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
+
 /**
  * This object represents a sticker.
  * @see https://core.telegram.org/bots/api#sticker

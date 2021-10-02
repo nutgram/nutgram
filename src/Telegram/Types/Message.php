@@ -6,6 +6,18 @@ use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Game\Game;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Location\Location;
+use SergiX44\Nutgram\Telegram\Types\Location\ProximityAlertTriggered;
+use SergiX44\Nutgram\Telegram\Types\Location\Venue;
+use SergiX44\Nutgram\Telegram\Types\Media\Animation;
+use SergiX44\Nutgram\Telegram\Types\Media\Audio;
+use SergiX44\Nutgram\Telegram\Types\Media\Contact;
+use SergiX44\Nutgram\Telegram\Types\Media\Dice;
+use SergiX44\Nutgram\Telegram\Types\Media\Document;
+use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
+use SergiX44\Nutgram\Telegram\Types\Media\Video;
+use SergiX44\Nutgram\Telegram\Types\Media\VideoNote;
+use SergiX44\Nutgram\Telegram\Types\Media\Voice;
 
 /**
  * This object represents a message.

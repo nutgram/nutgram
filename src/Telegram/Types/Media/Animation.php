@@ -1,12 +1,12 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Media;
 
 /**
- * This object represents a video file.
- * @see https://core.telegram.org/bots/api#video
+ * This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
+ * @see https://core.telegram.org/bots/api#animation
  */
-class Video
+class Animation
 {
     /**
      * Identifier for this file
@@ -15,8 +15,7 @@ class Video
     public $file_id;
 
     /**
-     * Unique identifier for this file, which is supposed to be the same over time and for different bots.
-     * Can't be used to download or reuse the file.
+     * Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
      * @var string $file_unique_id
      */
     public $file_unique_id;
@@ -40,19 +39,19 @@ class Video
     public $duration;
 
     /**
-     * Optional. Video thumbnail
+     * Optional. Animation thumbnail as defined by sender
      * @var PhotoSize $thumb
      */
     public $thumb;
 
     /**
-     * Optional. Original filename as defined by sender
+     * Optional. Original animation filename as defined by sender
      * @var string $file_name
      */
     public $file_name;
 
     /**
-     * Optional. Mime type of a file as defined by sender
+     * Optional. MIME type of the file as defined by sender
      * @var string $mime_type
      */
     public $mime_type;
