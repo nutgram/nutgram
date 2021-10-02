@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Poll;
 
 /**
  * This object contains information about one answer option in a poll.
@@ -13,7 +13,7 @@ class PollOption
      * @var string $text
      */
     public $text;
-    
+
     /**
      * Number of users that voted for this option
      * @var int $voter_count

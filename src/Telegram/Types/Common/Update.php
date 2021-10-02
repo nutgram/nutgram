@@ -14,8 +14,8 @@ use SergiX44\Nutgram\Telegram\Types\Message\EditedMessage;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingQuery;
-use SergiX44\Nutgram\Telegram\Types\Poll;
-use SergiX44\Nutgram\Telegram\Types\PollAnswer;
+use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
+use SergiX44\Nutgram\Telegram\Types\Poll\PollAnswer;
 use SergiX44\Nutgram\Telegram\Types\User;
 
 /**

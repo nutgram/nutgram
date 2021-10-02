@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Poll;
 
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 

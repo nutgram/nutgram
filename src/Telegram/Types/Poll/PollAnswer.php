@@ -1,6 +1,8 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Poll;
+
+use SergiX44\Nutgram\Telegram\Types\User;
 
 /**
  * This object represents an answer of a user in a non-anonymous poll.
@@ -13,13 +15,13 @@ class PollAnswer
      * @var string $poll_id
      */
     public $poll_id;
-    
+
     /**
      * The user, who changed the answer to the poll
      * @var User $user
      */
     public $user;
-    
+
     /**
      * 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote.
      * @var int[] $option_ids
