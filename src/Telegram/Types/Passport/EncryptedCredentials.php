@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
 /**
  * Contains data required for decrypting and authenticating
@@ -18,13 +18,13 @@ class EncryptedCredentials
      * @var string $data
      */
     public $data;
-    
+
     /**
      * Base64-encoded data hash for data authentication
      * @var string $hash
      */
     public $hash;
-    
+
     /**
      * Base64-encoded secret, encrypted with the bot's public RSA key, required for data decryption
      * @var string $secret

@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
 /**
  * Contains information about Telegram Passport data shared with the bot by the user.
@@ -13,7 +13,7 @@ class PassportData
      * @var EncryptedPassportElement[] $data
      */
     public $data;
-    
+
     /**
      * Encrypted credentials required to decrypt the data
      * @var EncryptedCredentials $credentials

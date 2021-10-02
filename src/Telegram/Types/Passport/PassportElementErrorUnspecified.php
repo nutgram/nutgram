@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
 /**
  * Represents an issue in an unspecified place.
@@ -14,19 +14,19 @@ class PassportElementErrorUnspecified
      * @var string $source
      */
     public $source;
-    
+
     /**
      * Type of element of the user's Telegram Passport which has the issue
      * @var string $type
      */
     public $type;
-    
+
     /**
      * Base64-encoded element hash
      * @var string $element_hash
      */
     public $element_hash;
-    
+
     /**
      * Error message
      * @var string $message
