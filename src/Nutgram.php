@@ -76,10 +76,12 @@ class Nutgram extends ResolveHandlers
 
         $baseUri = $config['api_url'] ?? 'https://api.telegram.org';
 
-        $this->http = $this->container->make(Guzzle::class, array_merge($config['client'] ?? [], [
-            'base_uri' => "$baseUri/bot$token/",
-            'timeout' => $config['timeout'] ?? 5,
-        ]));
+        $this->http = $this->container->make(Guzzle::class, [
+            'config' => array_merge($config['client'] ?? [], [
+                'base_uri' => "$baseUri/bot$token/",
+                'timeout' => $config['timeout'] ?? 5,
+            ])
+        ]);
         $this->mapper = $this->container->get(JsonMapper::class);
         $this->mapper->undefinedPropertyHandler = static function ($object, $propName, $jsonValue) {
             $object->{$propName} = $jsonValue;
