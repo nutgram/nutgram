@@ -1,6 +1,8 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Input;
+
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content}
@@ -14,7 +16,7 @@ class InputTextMessageContent
      * @var string $message_text
      */
     public $message_text;
-    
+
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
      * {@see https://core.telegram.org/bots/api#html-style HTML},
@@ -30,7 +32,7 @@ class InputTextMessageContent
      * @var MessageEntity[] $caption_entities
      */
     public $entities;
-    
+
     /**
      * Optional. Disables link previews for links in the sent message
      * @var string $disable_web_page_preview

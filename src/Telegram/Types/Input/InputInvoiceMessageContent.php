@@ -1,6 +1,8 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Input;
+
+use SergiX44\Nutgram\Telegram\Types\LabeledPrice;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of an

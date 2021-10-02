@@ -1,12 +1,14 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Input;
+
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents a general file to be sent.
- * @see https://core.telegram.org/bots/api#inputmediadocument
+ * Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
+ * @see https://core.telegram.org/bots/api#inputmediaanimation
  */
-class InputMediaDocument extends InputMedia
+class InputMediaAnimation extends InputMedia
 {
     /**
      * Optional. Thumbnail of the file sent;
@@ -38,9 +40,20 @@ class InputMediaDocument extends InputMedia
     public $caption_entities;
 
     /**
-     * Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data.
-     * Always true, if the document is sent as part of an album.
-     * @var bool $disable_content_type_detection
+     * Optional. Video width
+     * @var int $width
      */
-    public $disable_content_type_detection;
+    public $width;
+
+    /**
+     * Optional. Video height
+     * @var int $height
+     */
+    public $height;
+
+    /**
+     * Optional. Video duration
+     * @var int $duration
+     */
+    public $duration;
 }

@@ -3,10 +3,10 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
-use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
-use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
-use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
-use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\Input\InputVenueMessageContent;
 
 /**
  * Represents a venue. By default, the venue will be sent by the user.

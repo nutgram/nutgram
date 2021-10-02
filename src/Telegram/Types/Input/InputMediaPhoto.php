@@ -1,6 +1,8 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Input;
+
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
  * Represents a photo to be sent.

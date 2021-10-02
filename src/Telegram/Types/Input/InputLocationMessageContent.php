@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content}
@@ -14,7 +14,7 @@ class InputLocationMessageContent
      * @var double $latitude
      */
     public $latitude;
-    
+
     /**
      * Longitude of the location in degrees
      * @var double $longitude

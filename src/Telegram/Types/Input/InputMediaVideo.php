@@ -1,12 +1,14 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Input;
+
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents an audio file to be treated as music to be sent.
- * @see https://core.telegram.org/bots/api#inputmediaaudio
+ * Represents a video to be sent.
+ * @see https://core.telegram.org/bots/api#inputmediavideo
  */
-class InputMediaAudio extends InputMedia
+class InputMediaVideo extends InputMedia
 {
     /**
      * Optional. Thumbnail of the file sent;
@@ -38,20 +40,26 @@ class InputMediaAudio extends InputMedia
     public $caption_entities;
 
     /**
-     * Optional. Duration of the audio in seconds
+     * Optional. Video width
+     * @var int $width
+     */
+    public $width;
+
+    /**
+     * Optional. Video height
+     * @var int $height
+     */
+    public $height;
+
+    /**
+     * Optional. Video duration
      * @var int $duration
      */
     public $duration;
 
     /**
-     * Optional. Performer of the audio
-     * @var string $performer
+     * Optional. Pass True, if the uploaded video is suitable for streaming
+     * @var bool $supports_streaming
      */
-    public $performer;
-
-    /**
-     * Optional. Title of the audio
-     * @var string $title
-     */
-    public $title;
+    public $supports_streaming;
 }

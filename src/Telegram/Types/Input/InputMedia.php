@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 abstract class InputMedia
 {

@@ -1,12 +1,14 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Input;
+
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
- * @see https://core.telegram.org/bots/api#inputmediaanimation
+ * Represents an audio file to be treated as music to be sent.
+ * @see https://core.telegram.org/bots/api#inputmediaaudio
  */
-class InputMediaAnimation extends InputMedia
+class InputMediaAudio extends InputMedia
 {
     /**
      * Optional. Thumbnail of the file sent;
@@ -38,20 +40,20 @@ class InputMediaAnimation extends InputMedia
     public $caption_entities;
 
     /**
-     * Optional. Video width
-     * @var int $width
-     */
-    public $width;
-
-    /**
-     * Optional. Video height
-     * @var int $height
-     */
-    public $height;
-
-    /**
-     * Optional. Video duration
+     * Optional. Duration of the audio in seconds
      * @var int $duration
      */
     public $duration;
+
+    /**
+     * Optional. Performer of the audio
+     * @var string $performer
+     */
+    public $performer;
+
+    /**
+     * Optional. Title of the audio
+     * @var string $title
+     */
+    public $title;
 }
