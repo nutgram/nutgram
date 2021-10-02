@@ -4,7 +4,7 @@
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
-use SergiX44\Nutgram\Telegram\Types\GameHighScore;
+use SergiX44\Nutgram\Telegram\Types\Game\GameHighScore;
 use SergiX44\Nutgram\Telegram\Types\Message;
 
 /**

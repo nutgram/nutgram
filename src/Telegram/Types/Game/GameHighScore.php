@@ -1,6 +1,8 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Game;
+
+use SergiX44\Nutgram\Telegram\Types\User;
 
 /**
  * This object represents one row of the high scores table for a game.
@@ -13,13 +15,13 @@ class GameHighScore
      * @var int $position
      */
     public $position;
-    
+
     /**
      * User
      * @var User $user
      */
     public $user;
-    
+
     /**
      * Score
      * @var int $score

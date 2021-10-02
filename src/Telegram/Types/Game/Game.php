@@ -1,6 +1,10 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Game;
+
+use SergiX44\Nutgram\Telegram\Types\Animation;
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
+use SergiX44\Nutgram\Telegram\Types\PhotoSize;
 
 /**
  * This object represents a game.

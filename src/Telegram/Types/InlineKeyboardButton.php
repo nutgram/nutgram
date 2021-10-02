@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types;
 
 use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\Common\LoginUrl;
+use SergiX44\Nutgram\Telegram\Types\Game\CallbackGame;
 
 /**
  * This object represents one button of an inline keyboard. You MUST use exactly one of the optional fields.
