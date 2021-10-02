@@ -4,8 +4,8 @@ namespace SergiX44\Nutgram\Conversations;
 
 use InvalidArgumentException;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\InlineKeyboardButton;
-use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 abstract class InlineMenu extends Conversation
 {

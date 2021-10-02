@@ -25,7 +25,7 @@ use SergiX44\Nutgram\Proxies\UserCacheProxy;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Client;
-use SergiX44\Nutgram\Telegram\Types\Update;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use Throwable;
 
 class Nutgram extends ResolveHandlers
