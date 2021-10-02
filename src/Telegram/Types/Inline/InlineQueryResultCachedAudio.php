@@ -1,16 +1,26 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents a link to a photo. By default, this photo will be sent by the user with optional caption.
- * Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
- * @see https://core.telegram.org/bots/api#inlinequeryresultphoto
+ * Represents a link to an mp3 audio file stored on the Telegram servers.
+ * By default, this audio file will be sent by the user.
+ * Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
+ *
+ * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ * @see https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
  */
-class InlineQueryResultPhoto
+class InlineQueryResultCachedAudio
 {
     /**
-     * Type of the result, must be photo
+     * Type of the result, must be audio
      * @var string $type
      */
     public $type;
@@ -22,43 +32,13 @@ class InlineQueryResultPhoto
     public $id;
 
     /**
-     * A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
-     * @var string $photo_url
+     * A valid file identifier for the audio file
+     * @var string $audio_file_id
      */
-    public $photo_url;
+    public $audio_file_id;
 
     /**
-     * URL of the thumbnail for the photo
-     * @var string $thumb_url
-     */
-    public $thumb_url;
-
-    /**
-     * Optional. Width of the photo
-     * @var int $photo_width
-     */
-    public $photo_width;
-
-    /**
-     * Optional. Height of the photo
-     * @var int $photo_height
-     */
-    public $photo_height;
-
-    /**
-     * Optional. Title for the result
-     * @var string $title
-     */
-    public $title;
-
-    /**
-     * Optional. Short description of the result
-     * @var string $description
-     */
-    public $description;
-
-    /**
-     * Optional. Caption of the photo to be sent, 0-1024 characters
+     * Optional. Caption, 0-1024 characters
      * @var string $caption
      */
     public $caption;
@@ -88,7 +68,7 @@ class InlineQueryResultPhoto
     public $reply_markup;
 
     /**
-     * Optional. Content of the message to be sent instead of the photo
+     * Optional. Content of the message to be sent instead of the audio
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;

@@ -1,6 +1,9 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\Location;
+use SergiX44\Nutgram\Telegram\Types\User;
 
 /**
  * Represents a result of an inline query that was chosen by the user and sent to their chat partner.
@@ -15,19 +18,19 @@ class ChosenInlineResult
      * @var string $result_id
      */
     public $result_id;
-    
+
     /**
      * The user that chose the result
      * @var User $from
      */
     public $from;
-    
+
     /**
      * Optional. Sender location, only for bots that require user location
      * @var Location $location
      */
     public $location;
-    
+
     /**
      * Optional. Identifier of the sent inline message.
      * Available only if there is an {@see https://core.telegram.org/bots/api#inlinekeyboardmarkup inline keyboard}
@@ -37,7 +40,7 @@ class ChosenInlineResult
      * @var string $inline_message_id
      */
     public $inline_message_id;
-    
+
     /**
      * The query that was used to obtain the result
      * @var string $query

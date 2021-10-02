@@ -1,6 +1,12 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
 
 /**
  * Represents a location on a map. By default, the location will be sent by the user.

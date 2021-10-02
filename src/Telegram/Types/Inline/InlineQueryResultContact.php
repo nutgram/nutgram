@@ -1,6 +1,12 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
 
 /**
  * Represents a contact with a phone number. By default, this contact will be sent by the user.
@@ -16,37 +22,37 @@ class InlineQueryResultContact
      * @var string $type
      */
     public $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 Bytes
      * @var string $id
      */
     public $id;
-    
+
     /**
      * Contact's phone number
      * @var string $phone_number
      */
     public $phone_number;
-    
+
     /**
      * Contact's first name
      * @var string $first_name
      */
     public $first_name;
-    
+
     /**
      * Optional. Contact's last name
      * @var string $last_name
      */
     public $last_name;
-    
+
     /**
      * $vcard Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
      * @var string $vcard
      */
     public $vcard;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
@@ -54,25 +60,25 @@ class InlineQueryResultContact
      * @var InlineKeyboardMarkup $reply_markup
      */
     public $reply_markup;
-    
+
     /**
      * Optional. Content of the message to be sent instead of the contact
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;
-    
+
     /**
      * Optional. Url of the thumbnail for the result
      * @var string $thumb_url
      */
     public $thumb_url;
-    
+
     /**
      * Optional. Thumbnail width
      * @var int $thumb_width
      */
     public $thumb_width;
-    
+
     /**
      * Optional. Thumbnail height
      * @var int $thumb_height

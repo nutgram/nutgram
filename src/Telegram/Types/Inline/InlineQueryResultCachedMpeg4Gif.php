@@ -1,20 +1,25 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents a link to a voice recording in an .ogg container encoded with OPUS.
- * By default, this voice recording will be sent by the user.
- * Alternatively, you can use input_message_content to send a message with the
- * specified content instead of the the voice message.
- *
- * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
- * @see https://core.telegram.org/bots/api#inlinequeryresultvoice
+ * Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers.
+ * By default, this animated MPEG-4 file will be sent by the user with an optional caption.
+ * Alternatively, you can use input_message_content to send a message with the specified content instead of the
+ * animation.
+ * @see https://core.telegram.org/bots/api#inlinequeryresultcachedmpeg4gif
  */
-class InlineQueryResultVoice
+class InlineQueryResultCachedMpeg4Gif
 {
     /**
-     * Type of the result, must be voice
+     * Type of the result, must be mpeg4_gif
      * @var string $type
      */
     public $type;
@@ -26,19 +31,19 @@ class InlineQueryResultVoice
     public $id;
 
     /**
-     * A valid URL for the voice recording
-     * @var string $voice_url
+     * A valid file identifier for the MP4 file
+     * @var string $mpeg4_file_id
      */
-    public $voice_url;
+    public $mpeg4_file_id;
 
     /**
-     * Recording title
+     * Optional. Title for the result
      * @var string $title
      */
     public $title;
 
     /**
-     * Optional. Caption, 0-1024 characters
+     * Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters
      * @var string $caption
      */
     public $caption;
@@ -60,12 +65,6 @@ class InlineQueryResultVoice
     public $caption_entities;
 
     /**
-     * Optional. Recording duration in seconds
-     * @var int $voice_duration
-     */
-    public $voice_duration;
-
-    /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
@@ -74,7 +73,7 @@ class InlineQueryResultVoice
     public $reply_markup;
 
     /**
-     *Optional. Content of the message to be sent instead of the voice recording
+     * Optional. Content of the message to be sent instead of the video animation
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;

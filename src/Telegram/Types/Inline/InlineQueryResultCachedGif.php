@@ -1,41 +1,52 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents a link to an mp3 audio file stored on the Telegram servers.
- * By default, this audio file will be sent by the user.
- * Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
- *
- * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
- * @see https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
+ * Represents a link to an animated GIF file stored on the Telegram servers.
+ * By default, this animated GIF file will be sent by the user with an optional caption.
+ * Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
+ * @see https://core.telegram.org/bots/api#inlinequeryresultcachedgif
  */
-class InlineQueryResultCachedAudio
+class InlineQueryResultCachedGif
 {
     /**
-     * Type of the result, must be audio
+     * Type of the result, must be gif
      * @var string $type
      */
     public $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 bytes
      * @var string $id
      */
     public $id;
-    
+
     /**
-     * A valid file identifier for the audio file
-     * @var string $audio_file_id
+     * A valid file identifier for the GIF file
+     * @var string $gif_file_id
      */
-    public $audio_file_id;
-    
+    public $gif_file_id;
+
     /**
-     * Optional. Caption, 0-1024 characters
+     * Optional. Title for the result
+     * @var string $title
+     */
+    public $title;
+
+    /**
+     * Optional. Caption of the GIF file to be sent, 0-1024 characters
      * @var string $caption
      */
     public $caption;
-    
+
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
      * {@see https://core.telegram.org/bots/api#html-style HTML},
@@ -51,7 +62,7 @@ class InlineQueryResultCachedAudio
      * @var MessageEntity[] $caption_entities
      */
     public $caption_entities;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
@@ -59,9 +70,9 @@ class InlineQueryResultCachedAudio
      * @var InlineKeyboardMarkup $reply_markup
      */
     public $reply_markup;
-    
+
     /**
-     * Optional. Content of the message to be sent instead of the audio
+     * Optional. Content of the message to be sent instead of the GIF animation
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;

@@ -1,16 +1,23 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents a link to a file stored on the Telegram servers.
- * By default, this file will be sent by the user with an optional caption.
+ * Represents a link to a file. By default, this file will be sent by the user with an optional caption.
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the file.
+ * Currently, only .PDF and .ZIP files can be sent using this method.
  *
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
- * @see https://core.telegram.org/bots/api#inlinequeryresultcacheddocument
+ * @see https://core.telegram.org/bots/api#inlinequeryresultdocument
  */
-class InlineQueryResultCachedDocument
+class InlineQueryResultDocument
 {
     /**
      * Type of the result, must be document
@@ -29,18 +36,6 @@ class InlineQueryResultCachedDocument
      * @var string $title
      */
     public $title;
-
-    /**
-     * A valid file identifier for the file
-     * @var string $document_file_id
-     */
-    public $document_file_id;
-
-    /**
-     * Optional. Short description of the result
-     * @var string $description
-     */
-    public $description;
 
     /**
      * Optional. Caption of the document to be sent, 0-1024 characters
@@ -65,6 +60,24 @@ class InlineQueryResultCachedDocument
     public $caption_entities;
 
     /**
+     * A valid URL for the file
+     * @var string $document_url
+     */
+    public $document_url;
+
+    /**
+     * Mime type of the content of the file, either “application/pdf” or “application/zip”
+     * @var string $mime_type
+     */
+    public $mime_type;
+
+    /**
+     * Optional. Short description of the result
+     * @var string $description
+     */
+    public $description;
+
+    /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
@@ -77,4 +90,22 @@ class InlineQueryResultCachedDocument
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;
+
+    /**
+     * Optional. URL of the thumbnail (jpeg only) for the file
+     * @var string $thumb_url
+     */
+    public $thumb_url;
+
+    /**
+     * Optional. Thumbnail width
+     * @var int $thumb_width
+     */
+    public $thumb_width;
+
+    /**
+     * Optional. Thumbnail height
+     * @var int $thumb_height
+     */
+    public $thumb_height;
 }

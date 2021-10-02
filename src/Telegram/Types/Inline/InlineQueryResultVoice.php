@@ -1,17 +1,24 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents a link to a voice message stored on the Telegram servers.
- * By default, this voice message will be sent by the user.
- * Alternatively, you can use input_message_content to send a message with the specified content instead of the voice
- * message.
+ * Represents a link to a voice recording in an .ogg container encoded with OPUS.
+ * By default, this voice recording will be sent by the user.
+ * Alternatively, you can use input_message_content to send a message with the
+ * specified content instead of the the voice message.
  *
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
- * @see https://core.telegram.org/bots/api#inlinequeryresultcachedvoice
+ * @see https://core.telegram.org/bots/api#inlinequeryresultvoice
  */
-class InlineQueryResultCachedVoice
+class InlineQueryResultVoice
 {
     /**
      * Type of the result, must be voice
@@ -26,13 +33,13 @@ class InlineQueryResultCachedVoice
     public $id;
 
     /**
-     * A valid file identifier for the voice message
-     * @var string $voice_file_id
+     * A valid URL for the voice recording
+     * @var string $voice_url
      */
-    public $voice_file_id;
+    public $voice_url;
 
     /**
-     * Voice message title
+     * Recording title
      * @var string $title
      */
     public $title;
@@ -60,6 +67,12 @@ class InlineQueryResultCachedVoice
     public $caption_entities;
 
     /**
+     * Optional. Recording duration in seconds
+     * @var int $voice_duration
+     */
+    public $voice_duration;
+
+    /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
@@ -68,7 +81,7 @@ class InlineQueryResultCachedVoice
     public $reply_markup;
 
     /**
-     * Optional. Content of the message to be sent instead of the voice message
+     *Optional. Content of the message to be sent instead of the voice recording
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;

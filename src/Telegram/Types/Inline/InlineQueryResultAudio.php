@@ -1,17 +1,25 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents a link to a photo stored on the Telegram servers.
- * By default, this photo will be sent by the user with an optional caption.
- * Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
- * @see https://core.telegram.org/bots/api#inlinequeryresultcachedphoto
+ * Represents a link to an mp3 audio file. By default, this audio file will be sent by the user.
+ * Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
+ *
+ * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ * @see https://core.telegram.org/bots/api#inlinequeryresultaudio
  */
-class InlineQueryResultCachedPhoto
+class InlineQueryResultAudio
 {
     /**
-     * Type of the result, must be photo
+     * Type of the result, must be audio
      * @var string $type
      */
     public $type;
@@ -23,25 +31,19 @@ class InlineQueryResultCachedPhoto
     public $id;
 
     /**
-     * A valid file identifier of the photo
-     * @var string $photo_file_id
+     * A valid URL for the audio file
+     * @var string $audio_url
      */
-    public $photo_file_id;
+    public $audio_url;
 
     /**
-     * Optional. Title for the result
+     * Title
      * @var string $title
      */
     public $title;
 
     /**
-     * Optional. Short description of the result
-     * @var string $description
-     */
-    public $description;
-
-    /**
-     * Optional. Caption of the photo to be sent, 0-1024 characters
+     * Optional. Caption, 0-1024 characters
      * @var string $caption
      */
     public $caption;
@@ -63,6 +65,18 @@ class InlineQueryResultCachedPhoto
     public $caption_entities;
 
     /**
+     * Optional. Performer
+     * @var string $performer
+     */
+    public $performer;
+
+    /**
+     * Optional. Audio duration in seconds
+     * @var int $audio_duration
+     */
+    public $audio_duration;
+
+    /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
@@ -71,7 +85,7 @@ class InlineQueryResultCachedPhoto
     public $reply_markup;
 
     /**
-     *  Optional. Content of the message to be sent instead of the photo
+     *Optional. Content of the message to be sent instead of the audio
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;

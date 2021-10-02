@@ -3,14 +3,14 @@
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
-use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Channel\ChannelPost;
 use SergiX44\Nutgram\Telegram\Types\Channel\EditedChannelPost;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
-use SergiX44\Nutgram\Telegram\Types\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\EditedMessage;
-use SergiX44\Nutgram\Telegram\Types\InlineQuery;
+use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
+use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
+use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Nutgram\Telegram\Types\Poll;
 use SergiX44\Nutgram\Telegram\Types\PollAnswer;

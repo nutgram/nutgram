@@ -1,14 +1,22 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents a link to an animated GIF file stored on the Telegram servers.
- * By default, this animated GIF file will be sent by the user with an optional caption.
- * Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
- * @see https://core.telegram.org/bots/api#inlinequeryresultcachedgif
+ * Represents a link to an animated GIF file.
+ * By default, this animated GIF file will be sent by the user with optional caption.
+ * Alternatively, you can use input_message_content to send a message with
+ * the specified content instead of the animation.
+ * @see https://core.telegram.org/bots/api#inlinequeryresultgif
  */
-class InlineQueryResultCachedGif
+class InlineQueryResultGif
 {
     /**
      * Type of the result, must be gif
@@ -23,10 +31,41 @@ class InlineQueryResultCachedGif
     public $id;
 
     /**
-     * A valid file identifier for the GIF file
-     * @var string $gif_file_id
+     * A valid URL for the GIF file. File size must not exceed 1MB
+     * @var string $gif_url
      */
-    public $gif_file_id;
+    public $gif_url;
+
+    /**
+     * Optional. Width of the GIF
+     * @var int $gif_width
+     */
+    public $gif_width;
+
+    /**
+     * Optional. Height of the GIF
+     * @var int $gif_height
+     */
+    public $gif_height;
+
+    /**
+     * Optional. Duration of the GIF
+     * @var int $gif_duration
+     */
+    public $gif_duration;
+
+    /**
+     * URL of the static thumbnail for the result (jpeg or gif)
+     * @var string $thumb_url
+     */
+    public $thumb_url;
+
+    /**
+     * Optional. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”.
+     * Defaults to “image/jpeg”
+     * @var string $thumb_mime_type
+     */
+    public $thumb_mime_type;
 
     /**
      * Optional. Title for the result

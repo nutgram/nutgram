@@ -1,51 +1,60 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents a link to a video file stored on the Telegram servers.
- * By default, this video file will be sent by the user with an optional caption.
- * Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
- * @see https://core.telegram.org/bots/api#inlinequeryresultcachedvideo
+ * Represents a link to a file stored on the Telegram servers.
+ * By default, this file will be sent by the user with an optional caption.
+ * Alternatively, you can use input_message_content to send a message with the specified content instead of the file.
+ *
+ * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ * @see https://core.telegram.org/bots/api#inlinequeryresultcacheddocument
  */
-class InlineQueryResultCachedVideo
+class InlineQueryResultCachedDocument
 {
     /**
-     * Type of the result, must be video
+     * Type of the result, must be document
      * @var string $type
      */
     public $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 bytes
      * @var string $id
      */
     public $id;
-    
-    /**
-     * A valid file identifier for the video file
-     * @var string $video_file_id
-     */
-    public $video_file_id;
-    
+
     /**
      * Title for the result
      * @var string $title
      */
     public $title;
-    
+
+    /**
+     * A valid file identifier for the file
+     * @var string $document_file_id
+     */
+    public $document_file_id;
+
     /**
      * Optional. Short description of the result
      * @var string $description
      */
     public $description;
-    
+
     /**
-     * Optional. Caption of the video to be sent, 0-1024 characters
+     * Optional. Caption of the document to be sent, 0-1024 characters
      * @var string $caption
      */
     public $caption;
-    
+
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
      * {@see https://core.telegram.org/bots/api#html-style HTML},
@@ -61,7 +70,7 @@ class InlineQueryResultCachedVideo
      * @var MessageEntity[] $caption_entities
      */
     public $caption_entities;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
@@ -69,9 +78,9 @@ class InlineQueryResultCachedVideo
      * @var InlineKeyboardMarkup $reply_markup
      */
     public $reply_markup;
-    
+
     /**
-     * Optional. Content of the message to be sent instead of the video
+     * Optional. Content of the message to be sent instead of the file
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;

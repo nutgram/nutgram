@@ -1,18 +1,23 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents a link to an animated GIF file.
- * By default, this animated GIF file will be sent by the user with optional caption.
- * Alternatively, you can use input_message_content to send a message with
- * the specified content instead of the animation.
- * @see https://core.telegram.org/bots/api#inlinequeryresultgif
+ * Represents a link to a photo. By default, this photo will be sent by the user with optional caption.
+ * Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
+ * @see https://core.telegram.org/bots/api#inlinequeryresultphoto
  */
-class InlineQueryResultGif
+class InlineQueryResultPhoto
 {
     /**
-     * Type of the result, must be gif
+     * Type of the result, must be photo
      * @var string $type
      */
     public $type;
@@ -24,41 +29,28 @@ class InlineQueryResultGif
     public $id;
 
     /**
-     * A valid URL for the GIF file. File size must not exceed 1MB
-     * @var string $gif_url
+     * A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
+     * @var string $photo_url
      */
-    public $gif_url;
+    public $photo_url;
 
     /**
-     * Optional. Width of the GIF
-     * @var int $gif_width
-     */
-    public $gif_width;
-
-    /**
-     * Optional. Height of the GIF
-     * @var int $gif_height
-     */
-    public $gif_height;
-
-    /**
-     * Optional. Duration of the GIF
-     * @var int $gif_duration
-     */
-    public $gif_duration;
-
-    /**
-     * URL of the static thumbnail for the result (jpeg or gif)
+     * URL of the thumbnail for the photo
      * @var string $thumb_url
      */
     public $thumb_url;
 
     /**
-     * Optional. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”.
-     * Defaults to “image/jpeg”
-     * @var string $thumb_mime_type
+     * Optional. Width of the photo
+     * @var int $photo_width
      */
-    public $thumb_mime_type;
+    public $photo_width;
+
+    /**
+     * Optional. Height of the photo
+     * @var int $photo_height
+     */
+    public $photo_height;
 
     /**
      * Optional. Title for the result
@@ -67,7 +59,13 @@ class InlineQueryResultGif
     public $title;
 
     /**
-     * Optional. Caption of the GIF file to be sent, 0-1024 characters
+     * Optional. Short description of the result
+     * @var string $description
+     */
+    public $description;
+
+    /**
+     * Optional. Caption of the photo to be sent, 0-1024 characters
      * @var string $caption
      */
     public $caption;
@@ -97,7 +95,7 @@ class InlineQueryResultGif
     public $reply_markup;
 
     /**
-     * Optional. Content of the message to be sent instead of the GIF animation
+     * Optional. Content of the message to be sent instead of the photo
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;

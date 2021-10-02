@@ -1,18 +1,24 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\InputContactMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputLocationMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputTextMessageContent;
+use SergiX44\Nutgram\Telegram\Types\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\MessageEntity;
 
 /**
- * Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers.
- * By default, this animated MPEG-4 file will be sent by the user with an optional caption.
- * Alternatively, you can use input_message_content to send a message with the specified content instead of the
- * animation.
- * @see https://core.telegram.org/bots/api#inlinequeryresultcachedmpeg4gif
+ * Represents a link to a photo stored on the Telegram servers.
+ * By default, this photo will be sent by the user with an optional caption.
+ * Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
+ * @see https://core.telegram.org/bots/api#inlinequeryresultcachedphoto
  */
-class InlineQueryResultCachedMpeg4Gif
+class InlineQueryResultCachedPhoto
 {
     /**
-     * Type of the result, must be mpeg4_gif
+     * Type of the result, must be photo
      * @var string $type
      */
     public $type;
@@ -24,10 +30,10 @@ class InlineQueryResultCachedMpeg4Gif
     public $id;
 
     /**
-     * A valid file identifier for the MP4 file
-     * @var string $mpeg4_file_id
+     * A valid file identifier of the photo
+     * @var string $photo_file_id
      */
-    public $mpeg4_file_id;
+    public $photo_file_id;
 
     /**
      * Optional. Title for the result
@@ -36,7 +42,13 @@ class InlineQueryResultCachedMpeg4Gif
     public $title;
 
     /**
-     * Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters
+     * Optional. Short description of the result
+     * @var string $description
+     */
+    public $description;
+
+    /**
+     * Optional. Caption of the photo to be sent, 0-1024 characters
      * @var string $caption
      */
     public $caption;
@@ -66,7 +78,7 @@ class InlineQueryResultCachedMpeg4Gif
     public $reply_markup;
 
     /**
-     * Optional. Content of the message to be sent instead of the video animation
+     *  Optional. Content of the message to be sent instead of the photo
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
     public $input_message_content;

@@ -1,6 +1,9 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
+
+use SergiX44\Nutgram\Telegram\Types\Location;
+use SergiX44\Nutgram\Telegram\Types\User;
 
 /**
  * This object represents an incoming inline query.
@@ -14,19 +17,19 @@ class InlineQuery
      * @var string $id
      */
     public $id;
-    
+
     /**
      * Sender
      * @var User $from
      */
     public $from;
-    
+
     /**
      * Text of the query (up to 256 characters)
      * @var string $query
      */
     public $query;
-    
+
     /**
      * Offset of the results to be returned, can be controlled by the bot
      * @var string $offset
