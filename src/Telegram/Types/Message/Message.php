@@ -24,10 +24,10 @@ use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\User\User;
-use SergiX44\Nutgram\Telegram\Types\VoiceChatEnded;
-use SergiX44\Nutgram\Telegram\Types\VoiceChatParticipantsInvited;
-use SergiX44\Nutgram\Telegram\Types\VoiceChatScheduled;
-use SergiX44\Nutgram\Telegram\Types\VoiceChatStarted;
+use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatEnded;
+use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatParticipantsInvited;
+use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatScheduled;
+use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatStarted;
 
 /**
  * This object represents a message.

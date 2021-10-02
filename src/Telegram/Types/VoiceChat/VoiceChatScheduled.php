@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\VoiceChat;
 
 /**
  * This object represents a service message about a voice chat scheduled in the chat.
