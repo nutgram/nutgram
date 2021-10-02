@@ -7,6 +7,7 @@ use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
 use SergiX44\Nutgram\Telegram\Types\ChosenInlineResult;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Nutgram\Telegram\Types\MessageEntity;
@@ -14,7 +15,6 @@ use SergiX44\Nutgram\Telegram\Types\Poll;
 use SergiX44\Nutgram\Telegram\Types\PollAnswer;
 use SergiX44\Nutgram\Telegram\Types\PreCheckoutQuery;
 use SergiX44\Nutgram\Telegram\Types\ShippingQuery;
-use SergiX44\Nutgram\Telegram\Types\Update;
 use SergiX44\Nutgram\Telegram\Types\User;
 
 /**

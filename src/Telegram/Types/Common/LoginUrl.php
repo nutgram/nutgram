@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Common;
 
 /**
  * This object represents a parameter of the inline keyboard button used to automatically authorize a user.
@@ -26,13 +26,13 @@ class LoginUrl
      * @var string $url
      */
     public $url;
-    
+
     /**
      * Optional. New text of the button in forwarded messages.
      * @var string $forward_text
      */
     public $forward_text;
-    
+
     /**
      * Optional. Optional. Username of a bot, which will be used for user authorization.
      * See Setting up a bot for more details.
@@ -44,7 +44,7 @@ class LoginUrl
      * @var string $bot_username
      */
     public $bot_username;
-    
+
     /**
      * Optional. Pass True to request the permission for your bot to send messages to the user.
      * @var bool $request_write_access

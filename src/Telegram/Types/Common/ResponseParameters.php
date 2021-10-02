@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Common;
 
 /**
  * Contains information about why a request was unsuccessfull.
@@ -16,7 +16,7 @@ class ResponseParameters
      * @var int $migrate_to_chat_id
      */
     public $migrate_to_chat_id;
-    
+
     /**
      * Optional. In case of exceeding flood control, the number of seconds
      * left to wait before the request can be repeated.

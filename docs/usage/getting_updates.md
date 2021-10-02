@@ -55,7 +55,7 @@ $bot->setRunningMode(Webhook::class);
 
 // ...
 
-$bot->run(); // after this, the script continues execution 
+$bot->run(); // after this, the script continues execution
 ```
 
 After processing the current update, the script continues execution, **BUT** you shouldn't put long operations after the
@@ -72,11 +72,11 @@ You can also use the low level telegram methods, and take over the whole update 
 
 ```php
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\Update;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 $bot = new Nutgram($_ENV['TOKEN']);
 
-// Retrieve te list of pending updates..
+// Retrieve te list of pending updates...
 $updates = $bot->getUpdates();
 
 /** @var Update $update */

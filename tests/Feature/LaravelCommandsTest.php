@@ -8,7 +8,7 @@ use SergiX44\Nutgram\Laravel\Commands\RegisterCommandsCommand;
 use SergiX44\Nutgram\Laravel\Commands\RunCommand;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Polling;
-use SergiX44\Nutgram\Telegram\Types\WebhookInfo;
+use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 
 test('nugram:run runs the bot in polling mode', function () {
     config(['nutgram.token' => 'TEST']);
