@@ -22,7 +22,7 @@ use SergiX44\Nutgram\Telegram\Types\Passport\PassportData;
 use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
-use SergiX44\Nutgram\Telegram\Types\Sticker;
+use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\User;
 use SergiX44\Nutgram\Telegram\Types\VoiceChatEnded;
 use SergiX44\Nutgram\Telegram\Types\VoiceChatParticipantsInvited;
