@@ -12,7 +12,6 @@ class BotCommandScopeAllChatAdministrators
 {
     /**
      * Scope type, must be all_chat_administrators
-     * @var string $type
      */
-    public $type;
+    public string $type;
 }

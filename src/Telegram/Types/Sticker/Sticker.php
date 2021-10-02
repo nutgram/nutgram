@@ -12,61 +12,51 @@ class Sticker
 {
     /**
      * Identifier for this file
-     * @var string $file_id
      */
-    public $file_id;
+    public string $file_id;
 
     /**
      * Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
-     * @var string $file_unique_id
      */
-    public $file_unique_id;
+    public string $file_unique_id;
 
     /**
      * Sticker width
-     * @var int $width
      */
-    public $width;
+    public int $width;
 
     /**
      * Sticker height
-     * @var int $height
      */
-    public $height;
+    public int $height;
 
     /**
      * True, if the sticker is {@see https://telegram.org/blog/animated-stickers animated}
-     * @var bool $is_animated
      */
-    public $is_animated;
+    public bool $is_animated;
 
     /**
      * Optional. Sticker thumbnail in .webp or .jpg format
-     * @var PhotoSize $thumb
      */
-    public $thumb;
+    public ?PhotoSize $thumb = null;
 
     /**
      * Optional. Emoji associated with the sticker
-     * @var string $emoji
      */
-    public $emoji;
+    public ?string $emoji = null;
 
     /**
      * Optional. Name of the sticker set to which the sticker belongs
-     * @var string $set_name
      */
-    public $set_name;
+    public ?string $set_name = null;
 
     /**
      * Optional. For mask stickers, the position where the mask should be placed
-     * @var MaskPosition $mask_position
      */
-    public $mask_position;
+    public ?MaskPosition $mask_position = null;
 
     /**
      * Optional. File size
-     * @var int $file_size
      */
-    public $file_size;
+    public ?int $file_size = null;
 }

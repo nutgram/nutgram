@@ -10,15 +10,13 @@ class BotCommand
 {
     /**
      * Text of the command, 1-32 characters. Can contain only lowercase English letters, digits and underscores.
-     * @var string $command
      */
-    public $command;
+    public string $command;
 
     /**
      * Description of the command, 3-256 characters.
-     * @var string $description
      */
-    public $description;
+    public string $description;
 
     /**
      * @param  string  $command

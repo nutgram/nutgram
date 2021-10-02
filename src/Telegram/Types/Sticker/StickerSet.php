@@ -12,37 +12,32 @@ class StickerSet
 {
     /**
      * Sticker set name
-     * @var string $name
      */
-    public $name;
+    public string $name;
 
     /**
      * Sticker set title
-     * @var string $title
      */
-    public $title;
+    public string $title;
 
     /**
      * True, if the sticker is animated
-     * @var bool $is_animated
      */
-    public $is_animated;
+    public bool $is_animated;
 
     /**
      * True, if the sticker set contains masks
-     * @var bool $contains_masks
      */
-    public $contains_masks;
+    public bool $contains_masks;
 
     /**
      * List of all set stickers
-     * @var Sticker[] $stickers
+     * @var \SergiX44\Nutgram\Telegram\Types\Sticker\Sticker[] $stickers
      */
-    public $stickers;
+    public array $stickers;
 
     /**
      * Optional. Sticker set thumbnail in the .WEBP or .TGS format
-     * @var PhotoSize $thumb
      */
-    public $thumb;
+    public ?PhotoSize $thumb = null;
 }

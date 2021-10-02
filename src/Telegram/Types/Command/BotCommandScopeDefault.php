@@ -13,7 +13,6 @@ class BotCommandScopeDefault
 {
     /**
      * Scope type, must be default
-     * @var string $type
      */
-    public $type;
+    public string $type;
 }

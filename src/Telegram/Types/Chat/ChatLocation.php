@@ -13,13 +13,11 @@ class ChatLocation
 {
     /**
      * The location to which the supergroup is connected. Can't be a live location.
-     * @var Location $location
      */
-    public $location;
+    public Location $location;
 
     /**
      * Location address; 1-64 characters, as defined by the chat owner
-     * @var string $address
      */
-    public $address;
+    public string $address;
 }

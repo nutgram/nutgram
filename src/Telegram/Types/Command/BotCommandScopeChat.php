@@ -12,14 +12,12 @@ class BotCommandScopeChat
 {
     /**
      * Scope type, must be chat
-     * @var string $type
      */
-    public $type;
+    public string $type;
 
     /**
      * Unique identifier for the target chat or username
      * of the target supergroup (in the format  &#64;supergroupusername)
-     * @var int|string $chat_id
      */
-    public $chat_id;
+    public int|string $chat_id;
 }

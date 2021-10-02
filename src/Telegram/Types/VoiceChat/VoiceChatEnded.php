@@ -10,7 +10,6 @@ class VoiceChatEnded
 {
     /**
      * Voice chat duration; in seconds
-     * @var int $duration
      */
-    public $duration;
+    public int $duration;
 }

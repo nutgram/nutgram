@@ -23,31 +23,27 @@ class LoginUrl
      * and the integrity of the data as described in Checking authorization.
      * @see https://core.telegram.org/widgets/login#receiving-authorization-data Receiving authorization data
      * @see https://core.telegram.org/widgets/login#checking-authorization Checking authorization
-     * @var string $url
      */
-    public $url;
+    public string $url;
 
     /**
      * Optional. New text of the button in forwarded messages.
-     * @var string $forward_text
      */
-    public $forward_text;
+    public ?string $forward_text = null;
 
     /**
-     * Optional. Optional. Username of a bot, which will be used for user authorization.
+     * Optional. Username of a bot, which will be used for user authorization.
      * See Setting up a bot for more details.
      * If not specified, the current bot's username will be assumed.
      * The url's domain must be the same as the domain linked with the bot.
      * See Linking your domain to the bot for more details.
      * @see https://core.telegram.org/widgets/login#setting-up-a-bot Setting up a bot
      * @see https://core.telegram.org/widgets/login#linking-your-domain-to-the-bot Linking your domain to the bot
-     * @var string $bot_username
      */
-    public $bot_username;
+    public ?string $bot_username = null;
 
     /**
      * Optional. Pass True to request the permission for your bot to send messages to the user.
-     * @var bool $request_write_access
      */
-    public $request_write_access;
+    public ?bool $request_write_access = null;
 }

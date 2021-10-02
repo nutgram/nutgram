@@ -10,25 +10,21 @@ class OrderInfo
 {
     /**
      * Optional. User name
-     * @var string $name
      */
-    public $name;
+    public ?string $name = null;
 
     /**
      * Optional. User's phone number
-     * @var string $phone_number
      */
-    public $phone_number;
+    public ?string $phone_number = null;
 
     /**
      * Optional. User email
-     * @var string $email
      */
-    public $email;
+    public ?string $email = null;
 
     /**
      * Optional. User shipping address
-     * @var ShippingAddress $shipping_address
      */
-    public $shipping_address;
+    public ?ShippingAddress $shipping_address = null;
 }

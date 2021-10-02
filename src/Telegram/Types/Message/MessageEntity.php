@@ -15,37 +15,31 @@ class MessageEntity
      * italic (italic text), code (monowidth string), pre (monowidth block),
      * text_link (for clickable text URLs), text_mention (for users without usernames)
      * @see https://telegram.org/blog/edit#new-mentions without usernames
-     * @var string $type
      */
-    public $type;
+    public string $type;
 
     /**
      * Offset in UTF-16 code units to the start of the entity
-     * @var int $offset
      */
-    public $offset;
+    public int $offset;
 
     /**
      * Length of the entity in UTF-16 code units
-     * @var int $length
      */
-    public $length;
+    public int $length;
 
     /**
      * Optional. For “text_link” only, url that will be opened after user taps on the text
-     * @var string $url
      */
-    public $url;
+    public ?string $url = null;
 
     /**
      * Optional. For “text_mention” only, the mentioned user
-     * @var User $user
      */
-    public $user;
+    public ?User $user = null;
 
     /**
      * Optional. For “pre” only, the programming language of the entity text
-     * @var string $language
      */
-    public $language;
+    public ?string $language = null;
 }

@@ -10,19 +10,17 @@ class ShippingOption
 {
     /**
      * Shipping option identifier
-     * @var string $id
      */
-    public $id;
+    public string $id;
 
     /**
      * Option title
-     * @var string $title
      */
-    public $title;
+    public string $title;
 
     /**
      * List of price portions
-     * @var LabeledPrice[] $prices
+     * @var \SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice[] $prices
      */
-    public $prices;
+    public array $prices;
 }
