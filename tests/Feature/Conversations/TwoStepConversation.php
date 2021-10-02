@@ -3,12 +3,8 @@
 
 namespace SergiX44\Nutgram\Tests\Feature\Conversations;
 
-<<<<
-<<< HEAD
+
 use SergiX44\Nutgram\Conversations\Conversation;
-=======
-use SergiX44\Nutgram\Conversation;
->>>>>>> 475af68 (Apply fixes from StyleCI)
 use SergiX44\Nutgram\Nutgram;
 
 class TwoStepConversation extends Conversation
