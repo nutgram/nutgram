@@ -3,6 +3,8 @@
 namespace SergiX44\Nutgram\Telegram\Types;
 
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Types\Channel\ChannelPost;
+use SergiX44\Nutgram\Telegram\Types\Channel\EditedChannelPost;
 
 /**
  * This {@see https://core.telegram.org/bots/api#available-types object} represents an incoming update.
