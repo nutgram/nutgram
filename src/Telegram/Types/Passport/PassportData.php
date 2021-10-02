@@ -10,13 +10,11 @@ class PassportData
 {
     /**
      * Array with information about documents and other Telegram Passport elements that was shared with the bot
-     * @var EncryptedPassportElement[] $data
      */
-    public $data;
+    public array $data;
 
     /**
      * Encrypted credentials required to decrypt the data
-     * @var EncryptedCredentials $credentials
      */
-    public $credentials;
+    public EncryptedCredentials $credentials;
 }

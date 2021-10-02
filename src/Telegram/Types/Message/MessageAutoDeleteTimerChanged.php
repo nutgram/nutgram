@@ -10,7 +10,6 @@ class MessageAutoDeleteTimerChanged
 {
     /**
      * New auto-delete time for messages in the chat
-     * @var int $message_auto_delete_time
      */
-    public $message_auto_delete_time;
+    public int $message_auto_delete_time;
 }

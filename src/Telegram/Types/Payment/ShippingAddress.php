@@ -10,37 +10,31 @@ class ShippingAddress
 {
     /**
      * ISO 3166-1 alpha-2 country code
-     * @var string $country_code
      */
-    public $country_code;
+    public string $country_code;
 
     /**
      * State, if applicable
-     * @var string $state
      */
-    public $state;
+    public string $state;
 
     /**
      * City
-     * @var string $city
      */
-    public $city;
+    public string $city;
 
     /**
      * First line for the address
-     * @var string $street_line1
      */
-    public $street_line1;
+    public string $street_line1;
 
     /**
      * Second line for the address
-     * @var string $street_line2
      */
-    public $street_line2;
+    public string $street_line2;
 
     /**
      * Address post code
-     * @var string $post_code
      */
-    public $post_code;
+    public string $post_code;
 }

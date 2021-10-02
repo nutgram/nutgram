@@ -19,69 +19,58 @@ class InlineQueryResultContact
 {
     /**
      * Type of the result, must be contact
-     * @var string $type
      */
-    public $type;
+    public string $type;
 
     /**
      * Unique identifier for this result, 1-64 Bytes
-     * @var string $id
      */
-    public $id;
+    public string $id;
 
     /**
      * Contact's phone number
-     * @var string $phone_number
      */
-    public $phone_number;
+    public string $phone_number;
 
     /**
      * Contact's first name
-     * @var string $first_name
      */
-    public $first_name;
+    public string $first_name;
 
     /**
      * Optional. Contact's last name
-     * @var string $last_name
      */
-    public $last_name;
+    public ?string $last_name = null;
 
     /**
-     * $vcard Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
-     * @var string $vcard
+     * Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
      */
-    public $vcard;
+    public ?string $vcard = null;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup $reply_markup
      */
-    public $reply_markup;
+    public ?InlineKeyboardMarkup $reply_markup = null;
 
     /**
      * Optional. Content of the message to be sent instead of the contact
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
-    public $input_message_content;
+    public InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent|null $input_message_content;
 
     /**
      * Optional. Url of the thumbnail for the result
-     * @var string $thumb_url
      */
-    public $thumb_url;
+    public ?string $thumb_url = null;
 
     /**
      * Optional. Thumbnail width
-     * @var int $thumb_width
      */
-    public $thumb_width;
+    public ?int $thumb_width = null;
 
     /**
      * Optional. Thumbnail height
-     * @var int $thumb_height
      */
-    public $thumb_height;
+    public ?int $thumb_height = null;
 }

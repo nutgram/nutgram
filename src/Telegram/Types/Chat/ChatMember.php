@@ -30,9 +30,8 @@ class ChatMember
 
     /**
      * Information about the user
-     * @var User $user
      */
-    public $user;
+    public User $user;
 
 
     public function getType(): ?string

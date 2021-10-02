@@ -11,7 +11,6 @@ class MessageId
 {
     /**
      * Unique message identifier
-     * @var int $message_id
      */
-    public $message_id;
+    public int $message_id;
 }

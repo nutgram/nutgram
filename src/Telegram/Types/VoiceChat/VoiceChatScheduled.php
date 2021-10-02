@@ -10,7 +10,6 @@ class VoiceChatScheduled
 {
     /**
      * Point in time (Unix timestamp) when the voice chat is supposed to be started by a chat administrator
-     * @var int $start_date
      */
-    public $start_date;
+    public int $start_date;
 }

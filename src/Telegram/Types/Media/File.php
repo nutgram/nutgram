@@ -16,27 +16,23 @@ class File
 {
     /**
      * Identifier for this file
-     * @var string $file_id
      */
-    public $file_id;
+    public string $file_id;
 
     /**
      * Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
-     * @var string $file_unique_id
      */
-    public $file_unique_id;
+    public string $file_unique_id;
 
     /**
      * Optional. File size, if known
-     * @var int $file_size
      */
-    public $file_size;
+    public ?int $file_size = null;
 
     /**
      * Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
-     * @var string $file_path
      */
-    public $file_path;
+    public ?string $file_path = null;
 
     /**
      * @var Nutgram|null

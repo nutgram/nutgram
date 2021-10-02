@@ -19,94 +19,80 @@ class InlineQueryResultVenue
 {
     /**
      * Type of the result, must be venue
-     * @var string $type
      */
-    public $type;
+    public string $type;
 
     /**
      * Unique identifier for this result, 1-64 Bytes
-     * @var string $id
      */
-    public $id;
+    public string $id;
 
     /**
      * Latitude of the venue location in degrees
-     * @var double $latitude
      */
-    public $latitude;
+    public float $latitude;
 
     /**
      * Longitude of the venue location in degrees
-     * @var double $longitude
      */
-    public $longitude;
+    public float $longitude;
 
     /**
      * Title of the venue
-     * @var string $title
      */
-    public $title;
+    public string $title;
 
     /**
      * Address of the venue
-     * @var string $address
      */
-    public $address;
+    public string $address;
 
     /**
      * Optional. Foursquare identifier of the venue if known
-     * @var string $foursquare_id
      */
-    public $foursquare_id;
+    public ?string $foursquare_id = null;
 
     /**
-     * $foursquare_type Optional. Foursquare type of the venue. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
-     * @var string $foursquare_type
+     * Optional. Foursquare type of the venue. (For example, “arts_entertainment/default”,
+     * “arts_entertainment/aquarium” or “food/icecream”.)
      */
-    public $foursquare_type;
+    public ?string $foursquare_type = null;
 
     /**
      * Optional. Google Places identifier of the venue
-     * @var string $google_place_id
      */
-    public $google_place_id;
+    public ?string $google_place_id = null;
 
     /**
      * Optional. Google Places type of the venue.
      * (See {@see https://developers.google.com/places/web-service/supported_types supported types}.)
-     * @var string $google_place_type
      */
-    public $google_place_type;
+    public ?string $google_place_type = null;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup $reply_markup
      */
-    public $reply_markup;
+    public ?InlineKeyboardMarkup $reply_markup = null;
 
     /**
      * Optional. Content of the message to be sent instead of the venue
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
-    public $input_message_content;
+    public InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent|null $input_message_content;
 
     /**
      * Optional. Url of the thumbnail for the result
-     * @var string $thumb_url
      */
-    public $thumb_url;
+    public ?string $thumb_url = null;
 
     /**
      * Optional. Thumbnail width
-     * @var int $thumb_width
      */
-    public $thumb_width;
+    public ?int $thumb_width = null;
 
     /**
      * Optional. Thumbnail height
-     * @var int $thumb_height
      */
-    public $thumb_height;
+    public ?int $thumb_height = null;
 }

@@ -15,27 +15,23 @@ class InlineQueryResultGame
 {
     /**
      * Type of the result, must be game
-     * @var string $type
      */
-    public $type;
+    public string $type;
 
     /**
      * Unique identifier for this result, 1-64 bytes
-     * @var string $id
      */
-    public $id;
+    public string $id;
 
     /**
      * Short name of the game
-     * @var string $game_short_name
      */
-    public $game_short_name;
+    public string $game_short_name;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup $reply_markup
      */
-    public $reply_markup;
+    public ?InlineKeyboardMarkup $reply_markup = null;
 }

@@ -16,69 +16,58 @@ class InlineQueryResultArticle
 {
     /**
      * Type of the result, must be article
-     * @var string $type
      */
-    public $type;
+    public string $type;
 
     /**
      * Unique identifier for this result, 1-64 Bytes
-     * @var string $id
      */
-    public $id;
+    public string $id;
 
     /**
      * Title of the result
-     * @var string $title
      */
-    public $title;
+    public string $title;
 
     /**
      * Content of the message to be sent
-     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
      */
-    public $input_message_content;
+    public InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
      * attached to the message
-     * @var InlineKeyboardMarkup $reply_markup
      */
-    public $reply_markup;
+    public ?InlineKeyboardMarkup $reply_markup = null;
 
     /**
      * Optional. URL of the result
-     * @var string $url
      */
-    public $url;
+    public ?string $url = null;
 
     /**
      * Optional. Pass True, if you don't want the URL to be shown in the message
-     * @var bool $hide_url
      */
-    public $hide_url;
+    public ?bool $hide_url = null;
 
     /**
      * Optional. Short description of the result
-     * @var string $description
      */
-    public $description;
+    public ?string $description = null;
 
     /**
      * Optional. Url of the thumbnail for the result
-     * @var string $thumb_url
      */
-    public $thumb_url;
+    public ?string $thumb_url = null;
 
     /**
      * Optional. Thumbnail width
-     * @var int $thumb_width
      */
-    public $thumb_width;
+    public ?int $thumb_width = null;
 
     /**
      * Optional. Thumbnail height
-     * @var int $thumb_height
      */
-    public $thumb_height;
+    public ?int $thumb_height = null;
 }
