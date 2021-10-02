@@ -76,7 +76,7 @@ class Nutgram extends ResolveHandlers
 
         $baseUri = $config['api_url'] ?? 'https://api.telegram.org';
 
-        $this->http = $this->container->get(Guzzle::class, array_merge($config['client'] ?? [], [
+        $this->http = $this->container->make(Guzzle::class, array_merge($config['client'] ?? [], [
             'base_uri' => "$baseUri/bot$token/",
             'timeout' => $config['timeout'] ?? 5,
         ]));
