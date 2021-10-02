@@ -1,7 +1,9 @@
 <?php
 
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Chat;
+
+use SergiX44\Nutgram\Telegram\Types\Location;
 
 /**
  * Represents a location to which a chat is connected.

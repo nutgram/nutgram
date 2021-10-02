@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member} that has some additional privileges.

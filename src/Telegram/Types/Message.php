@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types;
 
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 
 /**
  * This object represents a message.
@@ -372,7 +373,7 @@ class Message
      * @var VoiceChatParticipantsInvited $voice_chat_participants_invited
      */
     public $voice_chat_participants_invited;
-    
+
     /**
      * Optional. Optional. Inline keyboard attached to the message.
      * "login_url" buttons are represented as ordinary "url" buttons.

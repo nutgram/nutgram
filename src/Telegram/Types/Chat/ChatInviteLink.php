@@ -1,6 +1,8 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Chat;
+
+use SergiX44\Nutgram\Telegram\Types\User;
 
 /**
  * Represents an invite link for a chat.

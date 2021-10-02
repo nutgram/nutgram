@@ -4,8 +4,8 @@
 namespace SergiX44\Nutgram\Proxies;
 
 use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
-use SergiX44\Nutgram\Telegram\Types\Chat;
-use SergiX44\Nutgram\Telegram\Types\ChatMemberUpdated;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
 use SergiX44\Nutgram\Telegram\Types\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\Message;
