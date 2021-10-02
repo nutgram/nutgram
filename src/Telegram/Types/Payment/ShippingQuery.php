@@ -1,6 +1,8 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Payment;
+
+use SergiX44\Nutgram\Telegram\Types\User;
 
 /**
  * This object contains information about an incoming shipping query.
@@ -13,19 +15,19 @@ class ShippingQuery
      * @var string $id
      */
     public $id;
-    
+
     /**
      * User who sent the query
      * @var User $from
      */
     public $from;
-    
+
     /**
      * Bot specified invoice payload
      * @var string $invoice_payload
      */
     public $invoice_payload;
-    
+
     /**
      * User specified shipping address
      * @var ShippingAddress $shipping_address

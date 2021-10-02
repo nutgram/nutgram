@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 /**
  * This object represents one shipping option.
@@ -13,13 +13,13 @@ class ShippingOption
      * @var string $id
      */
     public $id;
-    
+
     /**
      * Option title
      * @var string $title
      */
     public $title;
-    
+
     /**
      * List of price portions
      * @var LabeledPrice[] $prices

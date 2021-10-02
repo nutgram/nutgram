@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 /**
  * This object represents a portion of the price for goods or services.
@@ -13,7 +13,7 @@ class LabeledPrice
      * @var string $label
      */
     public $label;
-    
+
     /**
      * Price of the product in the smallest units of the
      * {@see https://core.telegram.org/bots/payments#supported-currencies currency} (integer, not float/double).

@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 /**
  * This object represents information about an order.
@@ -13,19 +13,19 @@ class OrderInfo
      * @var string $name
      */
     public $name;
-    
+
     /**
      * Optional. User's phone number
      * @var string $phone_number
      */
     public $phone_number;
-    
+
     /**
      * Optional. User email
      * @var string $email
      */
     public $email;
-    
+
     /**
      * Optional. User shipping address
      * @var ShippingAddress $shipping_address
