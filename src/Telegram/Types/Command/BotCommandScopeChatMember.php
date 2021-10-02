@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Command;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#botcommandscope scope}
