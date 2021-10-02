@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 /**
  * This object represents type of a poll, which is allowed to be created

@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 /**
  * This object represents one button of the reply keyboard.
@@ -19,21 +19,21 @@ class KeyboardButton
      * @var string $text
      */
     public $text;
-    
+
     /**
      * Optional. If True, the user's phone number will be sent as a contact when the button is pressed.
      * Available in private chats only
      * @var bool $request_contact
      */
     public $request_contact;
-    
+
     /**
      * Optional. If True, the user's current location will be sent when the button is pressed.
      * Available in private chats only
      * @var bool $request_location
      */
     public $request_location;
-    
+
     /**
      * Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed.
      * Available in private chats only

@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 /**
  * This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).

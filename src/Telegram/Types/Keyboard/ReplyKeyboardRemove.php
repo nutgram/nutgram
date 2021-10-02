@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 /**
  * Upon receiving a message with this object, Telegram clients will remove
@@ -20,7 +20,7 @@ class ReplyKeyboardRemove
      * @var bool $remove_keyboard
      */
     public $remove_keyboard;
-    
+
     /**
      * Optional. Optional. Use this parameter if you want to remove the keyboard for specific users only.
      * Targets:
