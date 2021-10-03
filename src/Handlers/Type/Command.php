@@ -3,7 +3,7 @@
 namespace SergiX44\Nutgram\Handlers\Type;
 
 use SergiX44\Nutgram\Handlers\Handler;
-use SergiX44\Nutgram\Telegram\Types\BotCommand;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 
 class Command extends Handler
 {
