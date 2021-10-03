@@ -14,7 +14,7 @@ class HookSetCommand extends Command
     public function handle(): int
     {
         $url = $this->argument('url');
-        $ip = $this->argument('ip');
+        $ip = $this->option('ip');
 
         app(Nutgram::class)->setWebhook($url, array_filter(compact('ip')));
 
