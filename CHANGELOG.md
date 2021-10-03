@@ -2,6 +2,12 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.15.0 - 2021-10-03
+
+### Changed
+
+- Refactor telegram types.
+
 ## 0.14.1 - 2021-09-27
 
 ### Fixed
