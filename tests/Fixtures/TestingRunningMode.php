@@ -6,7 +6,7 @@ namespace SergiX44\Nutgram\Tests\Fixtures;
 use JsonMapper;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\RunningMode;
-use SergiX44\Nutgram\Telegram\Types\Update;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 class TestingRunningMode implements RunningMode
 {

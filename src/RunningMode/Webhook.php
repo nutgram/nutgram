@@ -9,25 +9,11 @@ use JsonMapper;
 use JsonMapper_Exception;
 use Psr\SimpleCache\InvalidArgumentException;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\Update;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use Throwable;
 
 class Webhook implements RunningMode
 {
-
-    /**
-     * @var JsonMapper
-     */
-    private JsonMapper $mapper;
-
-    /**
-     * Webhook constructor.
-     * @param  JsonMapper  $mapper
-     */
-    public function __construct(JsonMapper $mapper)
-    {
-        $this->mapper = $mapper;
-    }
 
     /**
      * @param  Nutgram  $bot
@@ -40,10 +26,12 @@ class Webhook implements RunningMode
     public function processUpdates(Nutgram $bot): void
     {
         $input = file_get_contents('php://input');
-        $update = $this->mapper->map(
-            json_decode($input, flags: JSON_THROW_ON_ERROR),
-            $bot->getContainer()->make(Update::class)
-        );
+        $update = $bot->getContainer()
+            ->get(JsonMapper::class)
+            ->map(
+                json_decode($input, flags: JSON_THROW_ON_ERROR),
+                $bot->getContainer()->make(Update::class)
+            );
         $bot->processUpdate($update);
     }
 }

@@ -3,19 +3,19 @@
 
 namespace SergiX44\Nutgram\Proxies;
 
-use SergiX44\Nutgram\Telegram\Types\CallbackQuery;
-use SergiX44\Nutgram\Telegram\Types\Chat;
-use SergiX44\Nutgram\Telegram\Types\ChatMemberUpdated;
-use SergiX44\Nutgram\Telegram\Types\ChosenInlineResult;
-use SergiX44\Nutgram\Telegram\Types\InlineQuery;
-use SergiX44\Nutgram\Telegram\Types\Message;
-use SergiX44\Nutgram\Telegram\Types\MessageEntity;
-use SergiX44\Nutgram\Telegram\Types\Poll;
-use SergiX44\Nutgram\Telegram\Types\PollAnswer;
-use SergiX44\Nutgram\Telegram\Types\PreCheckoutQuery;
-use SergiX44\Nutgram\Telegram\Types\ShippingQuery;
-use SergiX44\Nutgram\Telegram\Types\Update;
-use SergiX44\Nutgram\Telegram\Types\User;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
+use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
+use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
+use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
+use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
+use SergiX44\Nutgram\Telegram\Types\Payment\ShippingQuery;
+use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
+use SergiX44\Nutgram\Telegram\Types\Poll\PollAnswer;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * Trait UpdateProxy

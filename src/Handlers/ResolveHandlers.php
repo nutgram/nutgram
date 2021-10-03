@@ -9,7 +9,7 @@ use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversation;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
-use SergiX44\Nutgram\Telegram\Types\Update;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 /**
  * Trait ResolveHandlers

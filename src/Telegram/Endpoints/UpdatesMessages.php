@@ -4,8 +4,8 @@
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
-use SergiX44\Nutgram\Telegram\Types\Message;
-use SergiX44\Nutgram\Telegram\Types\Poll;
+use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 
 /**
  * Trait UpdatesMessages
