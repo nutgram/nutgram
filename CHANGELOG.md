@@ -2,6 +2,13 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.15.1 - 2021-10-03
+
+### Fixed
+
+- Fix wrong telegram.php route file
+- Fix missing ip argument in nutgram:hook:set
+
 ## 0.15.0 - 2021-10-03
 
 ### Changed

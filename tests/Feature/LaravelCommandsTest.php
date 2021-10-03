@@ -10,7 +10,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 
-test('nugram:run runs the bot in polling mode', function () {
+test('nutgram:run runs the bot in polling mode', function () {
     config(['nutgram.token' => 'TEST']);
 
     $bot = app(Nutgram::class);
@@ -24,7 +24,7 @@ test('nugram:run runs the bot in polling mode', function () {
     expect($bot->getUpdateMode())->toBe(Polling::class);
 });
 
-test('nugram:register-commands registers the bot commands', function () {
+test('nutgram:register-commands registers the bot commands', function () {
     $bot = getInstance();
 
     $bot->onCommand('start', static function () {
@@ -42,7 +42,7 @@ test('nugram:register-commands registers the bot commands', function () {
         ->assertExitCode(0);
 });
 
-test('nugram:hook:info prints the webhook info', function () {
+test('nutgram:hook:info prints the webhook info', function () {
     $this->mock(Nutgram::class, function (MockInterface $mock) {
         $webhookInfo = new WebhookInfo();
         $webhookInfo->url = '';
@@ -71,7 +71,7 @@ test('nugram:hook:info prints the webhook info', function () {
         ->assertExitCode(0);
 });
 
-test('nugram:hook:remove removes the bot webhook', function () {
+test('nutgram:hook:remove removes the bot webhook', function () {
     $this->mock(Nutgram::class, function (MockInterface $mock) {
         $mock->shouldReceive('deleteWebhook')->with([
             'drop_pending_updates' => false,
@@ -83,7 +83,7 @@ test('nugram:hook:remove removes the bot webhook', function () {
         ->assertExitCode(0);
 });
 
-test('nugram:hook:remove removes the bot webhook and the pending updates', function () {
+test('nutgram:hook:remove removes the bot webhook and the pending updates', function () {
     $this->mock(Nutgram::class, function (MockInterface $mock) {
         $mock->shouldReceive('deleteWebhook')->with([
             'drop_pending_updates' => true,
@@ -96,9 +96,9 @@ test('nugram:hook:remove removes the bot webhook and the pending updates', funct
         ->assertExitCode(0);
 });
 
-test('nugram:hook:set set the bot webhook', function () {
+test('nutgram:hook:set sets the bot webhook', function () {
     $this->mock(Nutgram::class, function (MockInterface $mock) {
-        $mock->shouldReceive('setWebhook')->with('https://foo.bar/hook')->andReturn(0);
+        $mock->shouldReceive('setWebhook')->with('https://foo.bar/hook', [])->andReturn(0);
     });
 
     $this->artisan(HookSetCommand::class, ['url' => 'https://foo.bar/hook'])
