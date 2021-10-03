@@ -20,13 +20,15 @@ use SergiX44\Nutgram\RunningMode\Webhook;
 class NutgramServiceProvider extends ServiceProvider
 {
     /** @var string */
-    public static string $ROUTES = 'routes/telegram.php';
+    public string $telegramRoutes;
 
     /**
      * Register the bot instance
      */
     public function register()
     {
+        $this->telegramRoutes = $this->app->basePath('routes/telegram.php');
+
         $this->app->singleton(Nutgram::class, function (Application $app) {
             $config = array_merge([
                 'cache' => $app->make(Cache::class),
@@ -63,12 +65,12 @@ class NutgramServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../laravel/config.php' => config_path('nutgram.php'),
-            __DIR__ . '/../laravel/routes.php' => base_path(self::$ROUTES),
+            __DIR__ . '/../laravel/routes.php' => $this->telegramRoutes,
         ], 'nutgram');
 
         if (config('nutgram.routes', false)) {
             $bot = $this->app->make(Nutgram::class);
-            require file_exists(self::$ROUTES) ? base_path(self::$ROUTES) : __DIR__.'/../laravel/routes.php';
+            require file_exists($this->telegramRoutes) ? $this->telegramRoutes : __DIR__ . '/../laravel/routes.php';
         }
     }
 }
