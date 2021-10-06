@@ -214,7 +214,7 @@ class Nutgram extends ResolveHandlers
         $chatId = $chatId ?? $this->chatId();
 
         if ($this->update === null && ($userId === null || $chatId === null)) {
-            throw new InvalidArgumentException('You cannot set a conversation step without processing and update.');
+            throw new InvalidArgumentException('You cannot step a conversation without userId and chatId.');
         }
 
         $this->conversationCache->set($userId, $chatId, $callable);

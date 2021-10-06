@@ -35,27 +35,27 @@ Here a full list of all the handler that listens to specific type of updates:
 
 | Handler Method | Type | Description |
 | --- | --- | --- |
-| `onCommand(string $command, $callable)` | **Specific** | Handles text messages that begin with `/`.<br>Automatically parses commands like `cmd@botname`. | 
-| `onText(string $pattern, $callable)` | **Specific** |  Handles text messages that match the given pattern (regex or parameters). | 
+| `onCommand(string $command, $callable)` | **Specific** | Handles text messages that begin with `/`.<br>Automatically parses commands like `cmd@botname`. |
+| `onText(string $pattern, $callable)` | **Specific** |  Handles text messages that match the given pattern (regex or parameters). |
 | `onMessageType(string $type, $callable)` | **Specific** |  Handles messages defined by type. |
 | `onCallbackQueryData(string $pattern, $callable)` | **Specific** |  Handles callback query with a specific pattern, similar to `onText`. |
-| `onMessage($callable)` | **Generic** |  Handles any incoming message. | 
-| `onCallbackQuery($callable)` | **Generic** |  Handles any incoming callback query. |  
-| `onEditedMessage($callable)` | **Generic** |  Handles any incoming edited message. | 
-| `onChannelPost($callable)` | **Generic** |  Handles any message posted in a channel where the bot is administrator. | 
-| `onEditedChannelPost($callable)` | **Generic** |  Handles any message edited in a channel where the bot is administrator. | 
-| `onInlineQuery($callable)` | **Generic** |  Handles any incoming inline query. | 
-| `onChosenInlineResult($callable)` | **Generic** |  Handles any incoming chosen inline result. | 
-| `onShippingQuery($callable)` | **Generic** |  Handles any incoming shipping query. | 
-| `onPreCheckoutQuery($callable)` | **Generic** |  Handles any incoming pre checkout query. | 
-| `onPoll($callable)` | **Generic** |  Handles any incoming poll. | 
-| `onPollAnswer($callable)` | **Generic** |  Handles any incoming poll answer. | 
-| `onMyChatMember($callable)` | **Generic** |  Handles any chat member when updated. | 
-| `onChatMember($callable)` | **Generic** |  Handles any chat member in other chats when updated. | 
-| `onException($callable)` | **Special** |  This handler will be called whenever the handling of an update throws an exception, if undefined the exception will not be caught.<br>Check the next paragraph for more details. | 
-| `onApiError($callable)` | **Special** |  This handler will be called every time a call to Telegram's api fails, if undefined the exception will not be caught.<br>Check the next paragraph for more details. | 
-| `fallback($callable)` | **Special** |  This handler if defined will be called if no handler, specific or generic, has been found for the current update. | 
-| `fallbackOn(string $type, $callable)` | **Special** |  This handler has the same behavior as the previous one, but allows you to put a filter on the type of updates it can handle. | 
+| `onMessage($callable)` | **Generic** |  Handles any incoming message. |
+| `onCallbackQuery($callable)` | **Generic** |  Handles any incoming callback query. |
+| `onEditedMessage($callable)` | **Generic** |  Handles any incoming edited message. |
+| `onChannelPost($callable)` | **Generic** |  Handles any message posted in a channel where the bot is administrator. |
+| `onEditedChannelPost($callable)` | **Generic** |  Handles any message edited in a channel where the bot is administrator. |
+| `onInlineQuery($callable)` | **Generic** |  Handles any incoming inline query. |
+| `onChosenInlineResult($callable)` | **Generic** |  Handles any incoming chosen inline result. |
+| `onShippingQuery($callable)` | **Generic** |  Handles any incoming shipping query. |
+| `onPreCheckoutQuery($callable)` | **Generic** |  Handles any incoming pre checkout query. |
+| `onPoll($callable)` | **Generic** |  Handles any incoming poll. |
+| `onPollAnswer($callable)` | **Generic** |  Handles any incoming poll answer. |
+| `onMyChatMember($callable)` | **Generic** |  Handles any chat member when updated. |
+| `onChatMember($callable)` | **Generic** |  Handles any chat member in other chats when updated. |
+| `onException($callable)` | **Special** |  This handler will be called whenever the handling of an update throws an exception, if undefined the exception will not be caught.<br>Check the next paragraph for more details. |
+| `onApiError($callable)` | **Special** |  This handler will be called every time a call to Telegram's api fails, if undefined the exception will not be caught.<br>Check the next paragraph for more details. |
+| `fallback($callable)` | **Special** |  This handler if defined will be called if no handler, specific or generic, has been found for the current update. |
+| `fallbackOn(string $type, $callable)` | **Special** |  This handler has the same behavior as the previous one, but allows you to put a filter on the type of updates it can handle. |
 
 ## Specific & Special Handlers
 
@@ -198,9 +198,41 @@ $bot->onCallbackQueryData('cancel', function (Nutgram $bot) {
 $bot->run();
 ```
 
+The same thing also applies for custom parameters:
+
+```php
+use SergiX44\Nutgram\Nutgram;
+
+$bot = new Nutgram($_ENV['TOKEN']);
+
+$bot->onCommand('start', function (Nutgram $bot) {
+    $bot->sendMessage('Choose an option:', [
+        'reply_markup' => json_encode([
+            'inline_keyboard' => [
+                [
+                    ['text' => 'One', 'callback_data' => 'number 1'],
+                    ['text' => 'Two', 'callback_data' => 'number 2'],
+                    ['text' => 'Cancel', 'callback_data' => 'cancel'],
+                ],
+            ],
+        ])
+    ]);
+});
+
+$bot->onCallbackQueryData('number {param}', function (Nutgram $bot, $param) {
+    $bot->sendMessage($param); // 1 or 2
+});
+
+$bot->onCallbackQueryData('cancel', function (Nutgram $bot) {
+    $bot->sendMessage('Canceled!');
+});
+
+$bot->run();
+```
+
 ### `fallback`
 
-This handler, if defined, will be called every time an `Update` will not match any other defined handler: 
+This handler, if defined, will be called every time an `Update` will not match any other defined handler:
 
 ```php
 use SergiX44\Nutgram\Nutgram;
@@ -250,7 +282,7 @@ the [UpdateTypes::class](https://github.com/SergiX44/Nutgram/blob/master/src/Tel
 
 ### `onException`
 
-This handler, if defined, will be called if something on your other handlers goes wrong, passing the `$exception` as 
+This handler, if defined, will be called if something on your other handlers goes wrong, passing the `$exception` as
 second argument:
 
 ```php
@@ -308,7 +340,7 @@ use SergiX44\Nutgram\Nutgram;
 
 class MyCommand {
 
-    public function __invoke(Nutgram $bot, $param) 
+    public function __invoke(Nutgram $bot, $param)
     {
       //do stuff
     }
@@ -337,15 +369,15 @@ use SergiX44\Nutgram\Nutgram;
 
 $bot = new Nutgram($_ENV['TOKEN']);
 
-$bot->onCommand('help', function (Nutgram $bot) {    
+$bot->onCommand('help', function (Nutgram $bot) {
     // Get the Message object
     $bot->message();
-    
+
     // Access the Chat object
     $bot->chat();
 });
 
-$bot->onCommand('my_chat', function (Nutgram $bot) {    
+$bot->onCommand('my_chat', function (Nutgram $bot) {
     $bot->sendMessage('Your chat id is ' . $bot->chatId());
 });
 

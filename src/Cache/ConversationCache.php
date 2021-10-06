@@ -7,7 +7,7 @@ use Closure;
 use Opis\Closure\SerializableClosure;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
-use SergiX44\Nutgram\Conversation;
+use SergiX44\Nutgram\Conversations\Conversation;
 
 class ConversationCache extends BotCache
 {
