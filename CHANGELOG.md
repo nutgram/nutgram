@@ -2,6 +2,12 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.15.2 - 2021-10-07
+
+### Fixed
+- Fixed namespaces
+- Fixed missing documentation
+
 ## 0.15.1 - 2021-10-03
 
 ### Fixed
