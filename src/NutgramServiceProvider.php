@@ -29,12 +29,14 @@ class NutgramServiceProvider extends ServiceProvider
     {
         $this->telegramRoutes = $this->app->basePath('routes/telegram.php');
 
+        $this->mergeConfigFrom(__DIR__.'/../laravel/config.php', 'nutgram');
+
         $this->app->singleton(Nutgram::class, function (Application $app) {
             $config = array_merge([
                 'cache' => $app->make(Cache::class),
             ], config('nutgram.config'));
 
-            $bot = new Nutgram(config('nutgram.token'), $config);
+            $bot = new Nutgram(config('nutgram.token', '123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11'), $config);
 
             if ($app->runningInConsole()) {
                 $bot->setRunningMode(Polling::class);
@@ -46,8 +48,6 @@ class NutgramServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(Nutgram::class, 'nutgram');
-
-        $this->mergeConfigFrom(__DIR__.'/../laravel/config.php', 'nutgram');
     }
 
     /**
@@ -55,22 +55,24 @@ class NutgramServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->commands([
-            RunCommand::class,
-            RegisterCommandsCommand::class,
-            HookInfoCommand::class,
-            HookRemoveCommand::class,
-            HookSetCommand::class,
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                RunCommand::class,
+                RegisterCommandsCommand::class,
+                HookInfoCommand::class,
+                HookRemoveCommand::class,
+                HookSetCommand::class,
+            ]);
 
-        $this->publishes([
-            __DIR__ . '/../laravel/config.php' => config_path('nutgram.php'),
-            __DIR__ . '/../laravel/routes.php' => $this->telegramRoutes,
-        ], 'nutgram');
+            $this->publishes([
+                __DIR__.'/../laravel/config.php' => config_path('nutgram.php'),
+                __DIR__.'/../laravel/routes.php' => $this->telegramRoutes,
+            ], 'nutgram');
+        }
 
         if (config('nutgram.routes', false)) {
             $bot = $this->app->make(Nutgram::class);
-            require file_exists($this->telegramRoutes) ? $this->telegramRoutes : __DIR__ . '/../laravel/routes.php';
+            require file_exists($this->telegramRoutes) ? $this->telegramRoutes : __DIR__.'/../laravel/routes.php';
         }
     }
 }
