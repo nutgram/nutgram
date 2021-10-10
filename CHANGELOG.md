@@ -2,6 +2,11 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.15.3 - 2021-10-10
+
+### Fixed
+- Error on laravel auto-discover.
+
 ## 0.15.2 - 2021-10-07
 
 ### Fixed
