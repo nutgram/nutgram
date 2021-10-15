@@ -33,7 +33,7 @@ trait ChatMemberRestricted
     /**
      * True, if the user is allowed to pin messages; groups and supergroups only
      */
-    public bool $can_pin_messages;
+    public ?bool $can_pin_messages = null;
 
     /**
      * True, if the user can send text messages, contacts, locations and venues
