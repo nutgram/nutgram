@@ -2,6 +2,11 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.15.5 - 2021-10-16
+
+### Fixed
+- Error with type conflict.
+
 ## 0.15.3 - 2021-10-10
 
 ### Fixed
