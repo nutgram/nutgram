@@ -18,12 +18,12 @@ trait ChatMemberRestricted
     /**
      * True, if the user is a member of the chat at the moment of the request
      */
-    public ?bool $is_member = null;
+    public bool $is_member;
 
     /**
      * True, if the user is allowed to change the chat title, photo and other settings
      */
-    public ?bool $can_change_info = null;
+    public bool $can_change_info;
 
     /**
      * True, if the user is allowed to invite new users to the chat
