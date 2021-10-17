@@ -2,15 +2,25 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.15.6 - 2021-10-17
+
+### Fixed
+- Error with type conflict
+
 ## 0.15.5 - 2021-10-16
 
 ### Fixed
-- Error with type conflict.
+- Error with type conflict
+
+## 0.15.4 - 2021-10-10
+
+### Fixed
+- Fixed nullable token on Laravel provider
 
 ## 0.15.3 - 2021-10-10
 
 ### Fixed
-- Error on laravel auto-discover.
+- Error on laravel auto-discover
 
 ## 0.15.2 - 2021-10-07
 
@@ -29,7 +39,7 @@ All notable changes to `nutgram` will be documented in this file.
 
 ### Changed
 
-- Refactor telegram types.
+- Refactor telegram types
 
 ## 0.14.1 - 2021-09-27
 
