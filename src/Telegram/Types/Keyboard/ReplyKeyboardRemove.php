@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
+use JsonSerializable;
+
 /**
  * Upon receiving a message with this object, Telegram clients will remove
  * the current custom keyboard and display the default letter-keyboard.
@@ -11,7 +13,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
  * @see https://core.telegram.org/bots/api#replykeyboardmarkup ReplyKeyboardMarkup
  * @see https://core.telegram.org/bots/api#replykeyboardremove
  */
-class ReplyKeyboardRemove
+class ReplyKeyboardRemove implements JsonSerializable
 {
     /**
      * Required. Requests clients to remove the custom keyboard (user will not be able to summon this keyboard;
@@ -31,4 +33,23 @@ class ReplyKeyboardRemove
      * @see https://core.telegram.org/bots/api#message Message
      */
     public ?bool $selective = null;
+
+    public function __construct(bool $remove_keyboard, ?bool $selective = null)
+    {
+        $this->remove_keyboard = $remove_keyboard;
+        $this->selective = $selective;
+    }
+
+    public static function make(bool $remove_keyboard, ?bool $selective = null): self
+    {
+        return new self($remove_keyboard, $selective);
+    }
+
+    public function jsonSerialize()
+    {
+        return array_filter([
+            'remove_keyboard' => $this->remove_keyboard,
+            'selective' => $this->selective,
+        ]);
+    }
 }
