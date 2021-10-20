@@ -2,6 +2,11 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.15.7 - 2021-10-20
+
+### Fixed
+- Fix missing JsonSerializable to other keyboards
+
 ## 0.15.6 - 2021-10-17
 
 ### Fixed
