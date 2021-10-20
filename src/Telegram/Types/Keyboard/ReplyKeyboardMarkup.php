@@ -52,13 +52,11 @@ class ReplyKeyboardMarkup implements JsonSerializable
     public ?bool $selective = null;
 
     public function __construct(
-        array $keyboard,
         ?bool $resize_keyboard = null,
         ?bool $one_time_keyboard = null,
         ?string $input_field_placeholder = null,
         ?bool $selective = null,
     ) {
-        $this->keyboard = $keyboard;
         $this->resize_keyboard = $resize_keyboard;
         $this->one_time_keyboard = $one_time_keyboard;
         $this->input_field_placeholder = $input_field_placeholder;
@@ -66,14 +64,12 @@ class ReplyKeyboardMarkup implements JsonSerializable
     }
 
     public static function make(
-        array $keyboard,
         ?bool $resize_keyboard = null,
         ?bool $one_time_keyboard = null,
         ?string $input_field_placeholder = null,
         ?bool $selective = null,
     ): self {
         return new self(
-            $keyboard,
             $resize_keyboard,
             $one_time_keyboard,
             $input_field_placeholder,
@@ -81,10 +77,20 @@ class ReplyKeyboardMarkup implements JsonSerializable
         );
     }
 
+    /**
+     * @param  KeyboardButton  ...$buttons
+     * @return $this
+     */
+    public function addRow(...$buttons): static
+    {
+        $this->keyboard[] = $buttons;
+        return $this;
+    }
+
     public function jsonSerialize()
     {
         return array_filter([
-            'keyboard' => [$this->keyboard],
+            'keyboard' => $this->keyboard ?? [],
             'resize_keyboard' => $this->resize_keyboard,
             'one_time_keyboard' => $this->one_time_keyboard,
             'input_field_placeholder' => $this->input_field_placeholder,
