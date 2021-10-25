@@ -10,8 +10,15 @@ class InputFile
      */
     protected $resource;
 
+    /**
+     * @var string|null
+     */
     protected ?string $filename;
 
+    /**
+     * @param $resource
+     * @param  string|null  $filename
+     */
     public function __construct($resource, ?string $filename = null)
     {
         $this->filename = $filename;
@@ -22,6 +29,16 @@ class InputFile
         } else {
             throw new \InvalidArgumentException('Invalid resource specified.');
         }
+    }
+
+    /**
+     * @param $resource
+     * @param  string|null  $filename
+     * @return InputFile
+     */
+    public static function make($resource, ?string $filename = null): InputFile
+    {
+        return new self($resource, $filename);
     }
 
     public function __destruct()
