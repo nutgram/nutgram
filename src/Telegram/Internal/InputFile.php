@@ -43,7 +43,9 @@ class InputFile
 
     public function __destruct()
     {
-        @fclose($this->resource);
+        if (is_resource($this->resource)) {
+            fclose($this->resource);
+        }
     }
 
     /**
