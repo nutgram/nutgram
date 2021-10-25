@@ -148,7 +148,7 @@ trait Client
     ): mixed {
         $parameters = [];
         foreach ($multipart as $name => $contents) {
-            $param[] = [
+            $param = [
                 'name' => $name,
             ];
 
