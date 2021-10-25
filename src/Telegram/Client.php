@@ -19,6 +19,7 @@ use SergiX44\Nutgram\Telegram\Endpoints\Payments;
 use SergiX44\Nutgram\Telegram\Endpoints\Stickers;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
+use SergiX44\Nutgram\Telegram\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
@@ -101,9 +102,15 @@ trait Client
     {
         $required = [
             'chat_id' => $this->chatId(),
-            $param => $value,
         ];
+
+        if ($value instanceof InputFile) {
+            $required[$param] = $value;
+            return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class);
+        }
+
         if (is_resource($value)) {
+            $required[$param] = new InputFile($value);
             return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class);
         }
 
@@ -141,10 +148,18 @@ trait Client
     ): mixed {
         $parameters = [];
         foreach ($multipart as $name => $contents) {
-            $parameters[] = [
+            $param[] = [
                 'name' => $name,
-                'contents' => $contents,
             ];
+
+            if ($contents instanceof InputFile) {
+                $param['contents'] = $contents->getResource();
+                $param['filename'] = $contents->getFilename();
+            } else {
+                $param['contents'] = $contents;
+            }
+
+            $parameters[] = $param;
         }
 
         try {
@@ -203,7 +218,7 @@ trait Client
             $instance = $this->container->make($mapTo);
             return match (true) {
                 is_scalar($json->result) => $json->result,
-                is_array($json->result) => array_map(fn ($obj) => $this->mapper->map($obj, $instance), $json->result),
+                is_array($json->result) => array_map(fn($obj) => $this->mapper->map($obj, $instance), $json->result),
                 default => $this->mapper->map($json->result, $instance)
             };
         }
