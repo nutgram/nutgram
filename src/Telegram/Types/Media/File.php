@@ -60,4 +60,12 @@ class File
         }
         return $this->bot?->downloadFile($this, $path);
     }
+
+    /**
+     * @return string
+     */
+    public function url(): string
+    {
+        return $this->bot?->downloadUrl($this);
+    }
 }
