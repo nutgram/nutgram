@@ -1,7 +1,11 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Internal;
+namespace SergiX44\Nutgram\Telegram\Types\Internal;
 
+/**
+ * This object represents the contents of a file to be uploaded. Must be posted using
+ * multipart/form-data in the usual way that files are uploaded via the browser.
+ */
 class InputFile
 {
 
@@ -52,7 +56,7 @@ class InputFile
      * @param  string|null  $filename
      * @return InputFile
      */
-    public function setFilename(?string $filename): InputFile
+    public function filename(?string $filename): InputFile
     {
         $this->filename = $filename;
         return $this;
@@ -73,14 +77,10 @@ class InputFile
     {
         $metadata = stream_get_meta_data($this->resource);
 
-        if ($this->filename === null && !isset($metadata['uri'])) {
-            return uniqid(more_entropy: true);
-        }
-
         if ($this->filename === null && isset($metadata['uri'])) {
-            return $metadata['uri'];
+            return basename($metadata['uri']);
         }
 
-        return $this->filename;
+        return basename($this->filename ?? uniqid(more_entropy: true));
     }
 }
