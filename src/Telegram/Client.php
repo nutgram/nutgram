@@ -117,13 +117,25 @@ trait Client
      */
     public function downloadFile(File $file, string $path): ?bool
     {
-        $baseUri = $config['api_url'] ?? 'https://api.telegram.org';
-
         if (!is_dir(dirname($path)) && !mkdir($concurrentDirectory = dirname($path), true, true) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
-        return copy("$baseUri/file/bot$this->token/$file->file_path", $path);
+        return copy($this->downloadUrl($file), $path);
+    }
+
+    /**
+     * @param  File  $file
+     * @return string
+     */
+    public function downloadUrl(File $file): string
+    {
+        if (isset($config['is_local']) && $config['is_local']) {
+            return $file->file_path;
+        }
+
+        $baseUri = $config['api_url'] ?? self::DEFAULT_API_URL;
+        return "$baseUri/file/bot$this->token/$file->file_path";
     }
 
     /**

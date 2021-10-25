@@ -32,6 +32,8 @@ class Nutgram extends ResolveHandlers
 {
     use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy;
 
+    protected const DEFAULT_API_URL = 'https://api.telegram.org';
+
     /**
      * @var string
      */
@@ -74,7 +76,7 @@ class Nutgram extends ResolveHandlers
         $this->config = $config;
         $this->container = new Container();
 
-        $baseUri = $config['api_url'] ?? 'https://api.telegram.org';
+        $baseUri = $config['api_url'] ?? self::DEFAULT_API_URL;
 
         $this->http = $this->container->make(Guzzle::class, [
             'config' => array_merge($config['client'] ?? [], [
