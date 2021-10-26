@@ -2,6 +2,17 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.15.9 - 2021-10-26
+
+### Added
+
+- InputFile object to upload files
+- Method to return the full url of a file
+
+### Fixed
+
+- Fixed in memory streams uploads
+
 ## 0.15.8 - 2021-10-20
 
 ### Fixed
