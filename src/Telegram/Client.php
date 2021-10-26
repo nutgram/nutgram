@@ -21,6 +21,7 @@ use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use stdClass;
@@ -101,9 +102,15 @@ trait Client
     {
         $required = [
             'chat_id' => $this->chatId(),
-            $param => $value,
         ];
+
+        if ($value instanceof InputFile) {
+            $required[$param] = $value;
+            return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class);
+        }
+
         if (is_resource($value)) {
+            $required[$param] = new InputFile($value);
             return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class);
         }
 
@@ -117,13 +124,25 @@ trait Client
      */
     public function downloadFile(File $file, string $path): ?bool
     {
-        $baseUri = $config['api_url'] ?? 'https://api.telegram.org';
-
         if (!is_dir(dirname($path)) && !mkdir($concurrentDirectory = dirname($path), true, true) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
-        return copy("$baseUri/file/bot$this->token/$file->file_path", $path);
+        return copy($this->downloadUrl($file), $path);
+    }
+
+    /**
+     * @param  File  $file
+     * @return string
+     */
+    public function downloadUrl(File $file): string
+    {
+        if (isset($config['is_local']) && $config['is_local']) {
+            return $file->file_path;
+        }
+
+        $baseUri = $config['api_url'] ?? self::DEFAULT_API_URL;
+        return "$baseUri/file/bot$this->token/$file->file_path";
     }
 
     /**
@@ -141,10 +160,18 @@ trait Client
     ): mixed {
         $parameters = [];
         foreach ($multipart as $name => $contents) {
-            $parameters[] = [
+            $param = [
                 'name' => $name,
-                'contents' => $contents,
             ];
+
+            if ($contents instanceof InputFile) {
+                $param['contents'] = $contents->getResource();
+                $param['filename'] = $contents->getFilename();
+            } else {
+                $param['contents'] = $contents;
+            }
+
+            $parameters[] = $param;
         }
 
         try {
