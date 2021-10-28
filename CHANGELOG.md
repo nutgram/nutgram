@@ -2,6 +2,12 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.15.10 - 2021-10-29
+
+### Fixed
+
+- Fix invalid file_id
+
 ## 0.15.9 - 2021-10-26
 
 ### Added
