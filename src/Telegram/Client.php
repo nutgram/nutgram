@@ -102,15 +102,11 @@ trait Client
     {
         $required = [
             'chat_id' => $this->chatId(),
+            $param => $value,
         ];
 
-        if ($value instanceof InputFile) {
-            $required[$param] = $value;
-            return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class);
-        }
-
-        if (is_resource($value)) {
-            $required[$param] = new InputFile($value);
+        if (is_resource($value) || $value instanceof InputFile) {
+            $required[$param] = $value instanceof InputFile ? $value : new InputFile($value);
             return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class);
         }
 
