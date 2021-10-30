@@ -166,7 +166,7 @@ abstract class InlineMenu extends Conversation
     protected function closeMenu(): bool
     {
         if ($this->messageId && $this->chatId) {
-            return $this->bot->deleteMessage($this->chatId, $this->messageId);
+            return $this->bot->deleteMessage($this->chatId, $this->messageId) ?? false;
         }
         return false;
     }
