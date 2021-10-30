@@ -182,9 +182,10 @@ class Nutgram extends ResolveHandlers
                 if (isset($this->handlers[static::EXCEPTION])) {
                     $this->handlers[static::EXCEPTION]->setParameters([$e]);
                     $this->handlers[static::EXCEPTION]($this);
-                } else {
-                    throw $e;
+                    continue;
                 }
+
+                throw $e;
             }
         }
     }
