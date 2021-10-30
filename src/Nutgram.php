@@ -82,7 +82,7 @@ class Nutgram extends ResolveHandlers
             'config' => array_merge($config['client'] ?? [], [
                 'base_uri' => "$baseUri/bot$token/",
                 'timeout' => $config['timeout'] ?? 5,
-            ])
+            ]),
         ]);
         $this->mapper = $this->container->get(JsonMapper::class);
         $this->mapper->undefinedPropertyHandler = static function ($object, $propName, $jsonValue) {
@@ -174,18 +174,17 @@ class Nutgram extends ResolveHandlers
      */
     protected function fireHandlers(array $handlers): void
     {
-        try {
-            /** @var Handler $handler */
-            foreach ($handlers as $handler) {
+        /** @var Handler $handler */
+        foreach ($handlers as $handler) {
+            try {
                 $handler->getHead()($this);
-            }
-        } catch (Throwable $e) {
-            if ($this->onException !== null) {
-                $handler = $this->onException;
-                $handler->setParameters([$e]);
-                $handler($this);
-            } else {
-                throw $e;
+            } catch (Throwable $e) {
+                if (isset($this->handlers[static::EXCEPTION])) {
+                    $this->handlers[static::EXCEPTION]->setParameters([$e]);
+                    $this->handlers[static::EXCEPTION]($this);
+                } else {
+                    throw $e;
+                }
             }
         }
     }

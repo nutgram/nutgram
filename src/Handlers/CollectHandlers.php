@@ -11,6 +11,8 @@ use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 abstract class CollectHandlers
 {
     protected const FALLBACK = 'FALLBACK';
+    protected const EXCEPTION = 'EXCEPTION';
+    protected const API_ERROR = 'API_ERROR';
 
     /**
      * @var array
@@ -21,16 +23,6 @@ abstract class CollectHandlers
      * @var array
      */
     protected array $handlers = [];
-
-    /**
-     * @var Handler|null
-     */
-    protected ?Handler $onException = null;
-
-    /**
-     * @var Handler|null
-     */
-    protected ?Handler $onApiError = null;
 
     /**
      * @param $callable
@@ -208,7 +200,7 @@ abstract class CollectHandlers
      */
     public function onException($callable): Handler
     {
-        return $this->onException = new Handler($callable);
+        return $this->handlers[self::EXCEPTION] = new Handler($callable);
     }
 
     /**
@@ -217,7 +209,17 @@ abstract class CollectHandlers
      */
     public function onApiError($callable): Handler
     {
-        return $this->onApiError = new Handler($callable);
+        return $this->handlers[self::API_ERROR][] = new Handler($callable);
+    }
+
+    /**
+     * @param  string  $pattern
+     * @param $callable
+     * @return Handler
+     */
+    public function onApiErrorMatches(string $pattern, $callable): Handler
+    {
+        return $this->handlers[self::API_ERROR][$pattern] = new Handler($callable, $pattern);
     }
 
     /**
