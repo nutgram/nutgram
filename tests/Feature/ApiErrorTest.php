@@ -36,7 +36,7 @@ it('calls the specific api error handler', function ($responseBody) {
 
 it('calls the generic api error handler if not matched', function ($responseBody) {
     $bot = getInstance(responses: [
-        new Response(403, body: $responseBody)
+        new Response(400, body: $responseBody)
     ]);
 
     $bot->onApiError(function ($bot, $e) {
