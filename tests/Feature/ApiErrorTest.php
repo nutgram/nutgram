@@ -14,7 +14,6 @@ it('calls the api error handler', function ($responseBody) {
     $msg = $bot->sendMessage('hi');
 
     expect($msg)->toBeNull();
-
 })->with('response_user_deactivated');
 
 it('calls the specific api error handler', function ($responseBody) {
@@ -33,7 +32,6 @@ it('calls the specific api error handler', function ($responseBody) {
     $msg = $bot->sendMessage('hi');
 
     expect($msg)->toBeNull();
-
 })->with('response_user_deactivated');
 
 it('calls the generic api error handler if not matched', function ($responseBody) {
@@ -52,5 +50,4 @@ it('calls the generic api error handler if not matched', function ($responseBody
     $msg = $bot->sendMessage('hi');
 
     expect($msg)->toBeNull();
-
 })->with('response_wrong_file_id');
