@@ -209,7 +209,7 @@ abstract class CollectHandlers
             return $this->handlers[self::EXCEPTION][$callableOrException] = new Handler($callable, $callableOrException);
         }
 
-        throw new InvalidArgumentException('Invalid argument supplied.');
+        throw new InvalidArgumentException('Invalid arguments supplied. Only ($class, $callable) and ($callable) definition is supported.');
     }
 
     /**
