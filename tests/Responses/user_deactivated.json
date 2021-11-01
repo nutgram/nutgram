@@ -1,0 +1,5 @@
+{
+    "ok": false,
+    "error_code": 403,
+    "description": "Forbidden: user is deactivated"
+}

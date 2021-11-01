@@ -155,12 +155,12 @@ class Nutgram extends ResolveHandlers
             $handlers = $this->resolveHandlers();
         }
 
-        if (empty($handlers) && !empty($this->handlers[static::FALLBACK])) {
-            $this->addHandlersBy($handlers, static::FALLBACK, value: $this->update->getType());
+        if (empty($handlers) && !empty($this->handlers[self::FALLBACK])) {
+            $this->addHandlersBy($handlers, self::FALLBACK, value: $this->update->getType());
         }
 
         if (empty($handlers)) {
-            $this->addHandlersBy($handlers, static::FALLBACK);
+            $this->addHandlersBy($handlers, self::FALLBACK);
         }
 
         $this->fireHandlers($handlers);
@@ -179,9 +179,9 @@ class Nutgram extends ResolveHandlers
             try {
                 $handler->getHead()($this);
             } catch (Throwable $e) {
-                if (isset($this->handlers[static::EXCEPTION])) {
-                    $this->handlers[static::EXCEPTION]->setParameters([$e]);
-                    $this->handlers[static::EXCEPTION]($this);
+                if (isset($this->handlers[self::EXCEPTION])) {
+                    $this->handlers[self::EXCEPTION]->setParameters([$e]);
+                    $this->handlers[self::EXCEPTION]($this);
                     continue;
                 }
 
@@ -191,16 +191,25 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  Handler  $handler
      * @param  Throwable  $e
      * @return mixed
-     * @throws DependencyException
-     * @throws NotFoundException
      */
-    protected function fireApiErrorHandler(Handler $handler, Throwable $e): mixed
+    protected function fireApiErrorHandler(Throwable $e): mixed
     {
-        $handler->setParameters([$e]);
-        return $handler($this);
+        $handlers = [];
+
+        $this->addHandlersBy($handlers, self::API_ERROR, value: $e->getMessage());
+
+        if (empty($handlers)) {
+            $this->addHandlersBy($handlers, self::API_ERROR);
+        }
+
+        foreach ($handlers as $handler) {
+            $handler->setParameters([$e]);
+            return $handler($this);
+        }
+
+        return null;
     }
 
     /**
