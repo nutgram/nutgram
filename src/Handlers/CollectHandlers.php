@@ -11,6 +11,8 @@ use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 abstract class CollectHandlers
 {
     protected const FALLBACK = 'FALLBACK';
+    protected const EXCEPTION = 'EXCEPTION';
+    protected const API_ERROR = 'API_ERROR';
 
     /**
      * @var array
@@ -21,16 +23,6 @@ abstract class CollectHandlers
      * @var array
      */
     protected array $handlers = [];
-
-    /**
-     * @var Handler|null
-     */
-    protected ?Handler $onException = null;
-
-    /**
-     * @var Handler|null
-     */
-    protected ?Handler $onApiError = null;
 
     /**
      * @param $callable
@@ -203,21 +195,39 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param $callable
+     * @param  callable|string  $callableOrException
+     * @param  callable|null  $callable
      * @return Handler
      */
-    public function onException($callable): Handler
+    public function onException($callableOrException, $callable = null): Handler
     {
-        return $this->onException = new Handler($callable);
+        if (is_callable($callableOrException)) {
+            return $this->handlers[self::EXCEPTION][] = new Handler($callableOrException);
+        }
+
+        if (is_string($callableOrException) && is_callable($callable)) {
+            return $this->handlers[self::EXCEPTION][$callableOrException] = new Handler($callable, $callableOrException);
+        }
+
+        throw new InvalidArgumentException('Invalid arguments supplied. Only ($class, $callable) and ($callable) definition is supported.');
     }
 
     /**
-     * @param $callable
+     * @param callable|string $callableOrPattern
+     * @param  callable|null  $callable
      * @return Handler
      */
-    public function onApiError($callable): Handler
+    public function onApiError($callableOrPattern, $callable = null): Handler
     {
-        return $this->onApiError = new Handler($callable);
+        if (is_callable($callableOrPattern)) {
+            return $this->handlers[self::API_ERROR][] = new Handler($callableOrPattern);
+        }
+
+        if (is_string($callableOrPattern) && is_callable($callable)) {
+            return $this->handlers[self::API_ERROR][$callableOrPattern] = new Handler($callable, $callableOrPattern);
+        }
+
+        throw new InvalidArgumentException('Invalid arguments supplied. Only ($pattern, $callable) and ($callable) definition is supported.');
     }
 
     /**
