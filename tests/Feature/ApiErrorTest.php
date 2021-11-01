@@ -62,5 +62,4 @@ it('throws exception if no handler specified', function ($responseBody) {
     ]);
 
     $bot->sendMessage('hi');
-
 })->with('response_wrong_file_id')->expectException(TelegramException::class);
