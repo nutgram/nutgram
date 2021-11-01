@@ -195,12 +195,21 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param $callable
+     * @param  callable|string  $callableOrException
+     * @param  callable|null  $callable
      * @return Handler
      */
-    public function onException($callable): Handler
+    public function onException($callableOrException, $callable = null): Handler
     {
-        return $this->handlers[self::EXCEPTION] = new Handler($callable);
+        if (is_callable($callableOrException)) {
+            return $this->handlers[self::EXCEPTION][] = new Handler($callableOrException);
+        }
+
+        if (is_string($callableOrException) && is_callable($callable)) {
+            return $this->handlers[self::EXCEPTION][$callableOrException] = new Handler($callable, $callableOrException);
+        }
+
+        throw new InvalidArgumentException('Invalid argument supplied.');
     }
 
     /**

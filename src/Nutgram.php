@@ -25,6 +25,7 @@ use SergiX44\Nutgram\Proxies\UserCacheProxy;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use Throwable;
 
@@ -179,9 +180,8 @@ class Nutgram extends ResolveHandlers
             try {
                 $handler->getHead()($this);
             } catch (Throwable $e) {
-                if (isset($this->handlers[self::EXCEPTION])) {
-                    $this->handlers[self::EXCEPTION]->setParameters([$e]);
-                    $this->handlers[self::EXCEPTION]($this);
+                if (!empty($this->handlers[self::EXCEPTION])) {
+                    $this->fireExceptionHandlerBy(self::EXCEPTION, $e);
                     continue;
                 }
 
@@ -191,25 +191,30 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
+     * @param  string  $type
      * @param  Throwable  $e
      * @return mixed
+     * @throws DependencyException
+     * @throws NotFoundException
      */
-    protected function fireApiErrorHandler(Throwable $e): mixed
+    protected function fireExceptionHandlerBy(string $type, Throwable $e): mixed
     {
         $handlers = [];
 
-        $this->addHandlersBy($handlers, self::API_ERROR, value: $e->getMessage());
+        if ($e instanceof TelegramException) {
+            $this->addHandlersBy($handlers, $type, value: $e->getMessage());
+        } else {
+            $this->addHandlersBy($handlers, $type, $e::class);
+        }
+
 
         if (empty($handlers)) {
-            $this->addHandlersBy($handlers, self::API_ERROR);
+            $this->addHandlersBy($handlers, $type);
         }
 
-        foreach ($handlers as $handler) {
-            $handler->setParameters([$e]);
-            return $handler($this);
-        }
-
-        return null;
+        /** @var Handler $handler */
+        $handler = reset($handlers)->setParameters($e);
+        return $handler($this);
     }
 
     /**
@@ -276,7 +281,7 @@ class Nutgram extends ResolveHandlers
      */
     public function getUpdateMode(): string
     {
-        return get_class($this->container->get(RunningMode::class));
+        return $this->container->get(RunningMode::class)::class;
     }
 
     /**
