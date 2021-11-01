@@ -213,22 +213,21 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param $callable
+     * @param callable|string $callableOrPattern
+     * @param  callable|null  $callable
      * @return Handler
      */
-    public function onApiError($callable): Handler
+    public function onApiError($callableOrPattern, $callable = null): Handler
     {
-        return $this->handlers[self::API_ERROR][] = new Handler($callable);
-    }
+        if (is_callable($callableOrPattern)) {
+            return $this->handlers[self::API_ERROR][] = new Handler($callableOrPattern);
+        }
 
-    /**
-     * @param  string  $pattern
-     * @param $callable
-     * @return Handler
-     */
-    public function onApiErrorMatches(string $pattern, $callable): Handler
-    {
-        return $this->handlers[self::API_ERROR][$pattern] = new Handler($callable, $pattern);
+        if (is_string($callableOrPattern) && is_callable($callable)) {
+            return $this->handlers[self::API_ERROR][$callableOrPattern] = new Handler($callable, $callableOrPattern);
+        }
+
+        throw new InvalidArgumentException('Invalid arguments supplied. Only ($pattern, $callable) and ($callable) definition is supported.');
     }
 
     /**

@@ -27,7 +27,7 @@ it('calls the specific api error handler', function ($responseBody) {
         throw $e;
     });
 
-    $bot->onApiErrorMatches('.*deactivated.*', function ($bot, $e) {
+    $bot->onApiError('.*deactivated.*', function ($bot, $e) {
         expect($e->getMessage())->toBe('Forbidden: user is deactivated');
         expect($e)->toBeInstanceOf(TelegramException::class);
     });
@@ -47,7 +47,7 @@ it('calls the generic api error handler if not matched', function ($responseBody
         expect($e)->toBeInstanceOf(TelegramException::class);
     });
 
-    $bot->onApiErrorMatches('.*deactivated.*', function ($bot, $e) {
+    $bot->onApiError('.*deactivated.*', function ($bot, $e) {
         throw $e;
     });
 
