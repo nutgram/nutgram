@@ -14,11 +14,10 @@ class HookSetCommand extends Command
     public function handle(): int
     {
         $url = $this->argument('url');
+        $ip = $this->option('ip');
+        $max_connections = (int)$this->option('max-connections');
 
-        app(Nutgram::class)->setWebhook($url, array_filter([
-            'ip' => $this->option('ip'),
-            'max-connections' => (int) $this->option('max-connections')
-        ]));
+        app(Nutgram::class)->setWebhook($url, array_filter(compact('ip', 'max_connections')));
 
         $this->info("Bot webhook set with url: $url");
 
