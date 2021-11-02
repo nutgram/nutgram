@@ -7,16 +7,18 @@ use SergiX44\Nutgram\Nutgram;
 
 class HookSetCommand extends Command
 {
-    protected $signature = 'nutgram:hook:set {url} {--ip=}';
+    protected $signature = 'nutgram:hook:set {url} {--ip=} {--max-connections=50}';
 
     protected $description = 'Set the bot webhook';
 
     public function handle(): int
     {
         $url = $this->argument('url');
-        $ip = $this->option('ip');
 
-        app(Nutgram::class)->setWebhook($url, array_filter(compact('ip')));
+        app(Nutgram::class)->setWebhook($url, array_filter([
+            'ip' => $this->option('ip'),
+            'max-connections' => (int) $this->option('max-connections')
+        ]));
 
         $this->info("Bot webhook set with url: $url");
 
