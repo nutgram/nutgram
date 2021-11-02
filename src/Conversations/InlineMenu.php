@@ -35,9 +35,9 @@ abstract class InlineMenu extends Conversation
     protected array $callbacks = [];
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected string $orNext;
+    protected ?string $orNext;
 
     /**
      * @var array
@@ -67,6 +67,8 @@ abstract class InlineMenu extends Conversation
     protected function clearButtons(): self
     {
         $this->buttons = InlineKeyboardMarkup::make();
+        $this->callbacks = [];
+        $this->orNext = null;
         return $this;
     }
 
@@ -77,7 +79,7 @@ abstract class InlineMenu extends Conversation
     protected function addButtonRow(...$buttons): self
     {
         foreach ($buttons as $button) {
-            if ($button->callback_data === null) {
+            if ($button->callback_data === null || !str_contains($button->callback_data, '@')) {
                 continue;
             }
 
@@ -85,7 +87,7 @@ abstract class InlineMenu extends Conversation
                 $button->callback_data = $button->text.$button->callback_data;
             }
 
-            [$callbackData, $method] = explode('@', $button->callback_data ?? $button->text);
+            @[$callbackData, $method] = explode('@', $button->callback_data ?? $button->text);
 
             if (!method_exists($this, $method)) {
                 throw new InvalidArgumentException("The method $method does not exists.");
@@ -120,14 +122,16 @@ abstract class InlineMenu extends Conversation
         if (isset($this->callbacks[$data]) && $this->bot->isCallbackQuery()) {
             $this->bot->answerCallbackQuery();
             $this->step = $this->callbacks[$data];
-        } elseif (isset($this->orNext)) {
-            $this->step = $this->orNext;
-        } else {
-            $this->end();
-            return null;
+            return $this($this->bot, $data);
         }
 
-        return $this($this->bot);
+        if (isset($this->orNext)) {
+            $this->step = $this->orNext;
+            return $this($this->bot);
+        }
+
+        $this->end();
+        return null;
     }
 
     /**
