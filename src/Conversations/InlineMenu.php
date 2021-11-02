@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Conversations;
 
 use InvalidArgumentException;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
@@ -170,7 +171,11 @@ abstract class InlineMenu extends Conversation
     protected function closeMenu(): bool
     {
         if ($this->messageId && $this->chatId) {
-            return $this->bot->deleteMessage($this->chatId, $this->messageId) ?? false;
+            try {
+                return $this->bot->deleteMessage($this->chatId, $this->messageId) ?? false;
+            } catch (TelegramException) {
+                return false;
+            }
         }
         return false;
     }

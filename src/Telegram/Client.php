@@ -192,6 +192,11 @@ trait Client
      * @param  string  $mapTo
      * @param  array|null  $options
      * @return mixed
+     * @throws DependencyException
+     * @throws JsonMapper_Exception
+     * @throws NotFoundException
+     * @throws TelegramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function requestJson(
         string $endpoint,
