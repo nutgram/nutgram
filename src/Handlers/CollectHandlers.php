@@ -201,15 +201,11 @@ abstract class CollectHandlers
      */
     public function onException($callableOrException, $callable = null): Handler
     {
-        if (is_callable($callableOrException)) {
-            return $this->handlers[self::EXCEPTION][] = new Handler($callableOrException);
-        }
-
-        if (is_string($callableOrException) && is_callable($callable)) {
+        if ($callable !== null) {
             return $this->handlers[self::EXCEPTION][$callableOrException] = new Handler($callable, $callableOrException);
         }
 
-        throw new InvalidArgumentException('Invalid arguments supplied. Only ($class, $callable) and ($callable) definition is supported.');
+        return $this->handlers[self::EXCEPTION][] = new Handler($callableOrException);
     }
 
     /**
@@ -219,15 +215,11 @@ abstract class CollectHandlers
      */
     public function onApiError($callableOrPattern, $callable = null): Handler
     {
-        if (is_callable($callableOrPattern)) {
-            return $this->handlers[self::API_ERROR][] = new Handler($callableOrPattern);
-        }
-
-        if (is_string($callableOrPattern) && is_callable($callable)) {
+        if ($callable !== null) {
             return $this->handlers[self::API_ERROR][$callableOrPattern] = new Handler($callable, $callableOrPattern);
         }
 
-        throw new InvalidArgumentException('Invalid arguments supplied. Only ($pattern, $callable) and ($callable) definition is supported.');
+        return $this->handlers[self::API_ERROR][] = new Handler($callableOrPattern);
     }
 
     /**
