@@ -98,7 +98,9 @@ test('nutgram:hook:remove removes the bot webhook and the pending updates', func
 
 test('nutgram:hook:set sets the bot webhook', function () {
     $this->mock(Nutgram::class, function (MockInterface $mock) {
-        $mock->shouldReceive('setWebhook')->with('https://foo.bar/hook', [])->andReturn(0);
+        $mock->shouldReceive('setWebhook')->with('https://foo.bar/hook', [
+            'max_connections' => 50,
+        ])->andReturn(0);
     });
 
     $this->artisan(HookSetCommand::class, ['url' => 'https://foo.bar/hook'])

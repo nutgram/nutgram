@@ -1,5 +1,7 @@
 <?php
 
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Tests\Fixtures\TestingRunningMode;
 use SergiX44\Nutgram\Tests\TestCase;
@@ -45,9 +47,15 @@ uses(TestCase::class)
 |
 */
 
-function getInstance($update = null): Nutgram
+function getInstance($update = null, $responses = []): Nutgram
 {
-    $bot = new Nutgram($_ENV['TELEGRAM_TOKEN'] ?? 'FAKE');
+    $mock = new MockHandler($responses);
+    $bot = new Nutgram($_ENV['TELEGRAM_TOKEN'] ?? 'FAKE', [
+        'client' => [
+            'handler' => HandlerStack::create($mock),
+        ],
+        'api_url' => 'http://localhost/'
+    ]);
     $bot->setRunningMode(new TestingRunningMode($update));
 
     return $bot;
@@ -78,25 +86,36 @@ dataset('edited_message', function () {
 });
 
 dataset('photo', function () {
-    $file = file_get_contents(__DIR__ . '/Updates/photo.json');
+    $file = file_get_contents(__DIR__.'/Updates/photo.json');
 
     return [json_decode($file)];
 });
 
 dataset('text', function () {
-    $file = file_get_contents(__DIR__ . '/Updates/text.json');
+    $file = file_get_contents(__DIR__.'/Updates/text.json');
 
     return [json_decode($file)];
 });
 
 dataset('command', function () {
-    $file = file_get_contents(__DIR__ . '/Updates/command.json');
+    $file = file_get_contents(__DIR__.'/Updates/command.json');
 
     return [json_decode($file)];
 });
 
 dataset('not_command', function () {
-    $file = file_get_contents(__DIR__ . '/Updates/not_command.json');
+    $file = file_get_contents(__DIR__.'/Updates/not_command.json');
 
     return [json_decode($file)];
+});
+
+dataset('response_user_deactivated', function () {
+    $file = file_get_contents(__DIR__.'/Responses/user_deactivated.json');
+    return [$file];
+});
+
+dataset('response_wrong_file_id', function () {
+    $file = file_get_contents(__DIR__.'/Responses/wrong_file_id.json');
+
+    return [$file];
 });

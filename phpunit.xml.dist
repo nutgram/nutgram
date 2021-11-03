@@ -11,11 +11,15 @@
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
-            <directory suffix=".php">./app</directory>
             <directory suffix=".php">./src</directory>
         </include>
+        <exclude>
+            <directory suffix=".php">./tests</directory>
+            <directory suffix=".php">./src/Telegram/Endpoints</directory>
+            <directory suffix=".php">./src/Telegram/Types</directory>
+        </exclude>
     </coverage>
     <php>
-        <env name="TELEGRAM_TOKEN" value="TELEGRAM_TOKEN_HERE" force="true" />
+        <env name="TELEGRAM_TOKEN" value="TELEGRAM_TOKEN_HERE" force="true"/>
     </php>
 </phpunit>

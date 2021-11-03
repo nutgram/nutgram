@@ -1,0 +1,5 @@
+{
+    "ok": false,
+    "error_code": 400,
+    "description": "Bad Request: wrong file_id or the file is temporarily unavailable"
+}

@@ -120,7 +120,11 @@ trait Client
      */
     public function downloadFile(File $file, string $path): ?bool
     {
-        if (!is_dir(dirname($path)) && !mkdir($concurrentDirectory = dirname($path), true, true) && !is_dir($concurrentDirectory)) {
+        if (!is_dir(dirname($path)) && !mkdir(
+            $concurrentDirectory = dirname($path),
+            true,
+            true
+        ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -188,6 +192,11 @@ trait Client
      * @param  string  $mapTo
      * @param  array|null  $options
      * @return mixed
+     * @throws DependencyException
+     * @throws JsonMapper_Exception
+     * @throws NotFoundException
+     * @throws TelegramException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function requestJson(
         string $endpoint,
@@ -233,8 +242,8 @@ trait Client
 
         $e = new TelegramException($json?->description ?? '', $json?->error_code ?? 0, $clientException);
 
-        if ($this->onApiError !== null) {
-            return $this->fireApiErrorHandler($this->onApiError, $e);
+        if (!empty($this->handlers[self::API_ERROR])) {
+            return $this->fireExceptionHandlerBy(self::API_ERROR, $e);
         }
 
         throw $e;

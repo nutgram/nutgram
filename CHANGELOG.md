@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 0.16.0 - 2021-11-03
+
+### Added
+- Auto-inject callback_data for InlineMenus.
+- Maximum connections options.
+- By type exceptions handlers.
+
+### Fixed
+- Error with closing the menu.
+
 ## 0.15.10 - 2021-10-29
 
 ### Fixed

@@ -65,7 +65,7 @@ class Handler extends MiddlewareChain
      * @param  array  $parameters
      * @return Handler
      */
-    public function setParameters(array $parameters): Handler
+    public function setParameters(...$parameters): Handler
     {
         $this->parameters = $parameters;
         return $this;

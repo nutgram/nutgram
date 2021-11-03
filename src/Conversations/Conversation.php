@@ -86,14 +86,15 @@ abstract class Conversation
     /**
      * Invokes the correct conversation step.
      * @param  Nutgram  $bot
+     * @param  mixed  ...$parameters
      * @return mixed
      */
-    public function __invoke(Nutgram $bot): mixed
+    public function __invoke(Nutgram $bot, ...$parameters): mixed
     {
         if (method_exists($this, $this->step)) {
             $this->bot = $bot;
             $method = $this->step;
-            return $this->$method($this->bot);
+            return $this->$method($this->bot, ...$parameters);
         }
 
         throw new RuntimeException("Conversation step '$this->step' not found.");
