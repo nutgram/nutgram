@@ -269,11 +269,11 @@ trait AvailableMethods
         $files = [];
         foreach ($media as $m) {
             if ($m instanceof InputMedia && is_resource($m->media)) {
-                $id = uniqid(more_entropy:  true);
+                $id = uniqid(more_entropy: true);
                 $files[$id] = $m->media;
                 $m->media = "attach://$id";
             } elseif (is_array($m) && is_resource($m['media'])) {
-                $id = uniqid(more_entropy:  true);
+                $id = uniqid(more_entropy: true);
                 $files[$id] = $m['media'];
                 $m['media'] = "attach://$id";
             }
@@ -672,6 +672,36 @@ trait AvailableMethods
     public function revokeChatInviteLink(string|int $chat_id, string $invite_link): ?ChatInviteLink
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'invite_link'), ChatInviteLink::class);
+    }
+
+    /**
+     * Use this method to approve a chat join request.
+     * The bot must be an administrator in the chat for this to work and must
+     * have the can_invite_users administrator right. Returns True on success.
+     * @param  string|int  $chat_id Unique identifier of the target chat or username of the target channel (in the
+     *     format [at]channelusername)
+     * @param  int  $user_id Unique identifier of the target user
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#approvechatjoinrequest
+     */
+    public function approveChatJoinRequest(string|int $chat_id, int $user_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), true);
+    }
+
+    /**
+     * Use this method to decline a chat join request.
+     * The bot must be an administrator in the chat for this to work and must
+     * have the can_invite_users administrator right. Returns True on success.
+     * @param  string|int  $chat_id Unique identifier of the target chat or username of the target channel (in the
+     *     format [at]channelusername)
+     * @param  int  $user_id Unique identifier of the target user
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#declinechatjoinrequest
+     */
+    public function declineChatJoinRequest(string|int $chat_id, int $user_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), true);
     }
 
     /**

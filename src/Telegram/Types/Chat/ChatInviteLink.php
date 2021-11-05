@@ -22,6 +22,11 @@ class ChatInviteLink
     public User $creator;
 
     /**
+     * True, if users joining the chat via the link need to be approved by chat administrators
+     */
+    public bool $creates_join_request;
+
+    /**
      * True, if the link is primary
      */
     public bool $is_primary;
@@ -30,6 +35,11 @@ class ChatInviteLink
      * True, if the link is revoked
      */
     public bool $is_revoked;
+
+    /**
+     * Optional. Invite link name
+     */
+    public ?string $name = null;
 
     /**
      * Optional. Point in time (Unix timestamp) when the link will expire or has been expired
@@ -41,4 +51,9 @@ class ChatInviteLink
      * after joining the chat via this invite link; 1-99999
      */
     public ?int $member_limit = null;
+
+    /**
+     * Optional. Number of pending join requests created using this link
+     */
+    public ?int $pending_join_request_count;
 }
