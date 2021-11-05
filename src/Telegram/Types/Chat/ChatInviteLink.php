@@ -55,5 +55,5 @@ class ChatInviteLink
     /**
      * Optional. Number of pending join requests created using this link
      */
-    public ?int $pending_join_request_count;
+    public ?int $pending_join_request_count = null;
 }

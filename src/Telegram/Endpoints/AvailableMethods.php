@@ -686,7 +686,7 @@ trait AvailableMethods
      */
     public function approveChatJoinRequest(string|int $chat_id, int $user_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), true);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'));
     }
 
     /**
@@ -701,7 +701,7 @@ trait AvailableMethods
      */
     public function declineChatJoinRequest(string|int $chat_id, int $user_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), true);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'));
     }
 
     /**
