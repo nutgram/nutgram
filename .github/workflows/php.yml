@@ -1,48 +1,76 @@
 name: Test Suite
 
 on:
-  push:
-    branches: [ master, dev ]
-  pull_request:
-    branches: [ master, dev ]
+    push:
+        branches: [ master, dev ]
+    pull_request:
+        branches: [ master, dev ]
 
 jobs:
-  tests:
+    tests:
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                php: [ 8.0, 8.1 ]
 
-    runs-on: ubuntu-latest
+        name: PHP ${{ matrix.php }}
+        steps:
+            -   uses: actions/checkout@v2
 
-    strategy:
-      fail-fast: false
-      matrix:
-        php: [ 8.0, 8.1 ]
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
 
-    name: PHP ${{ matrix.php }}
-    steps:
-    - uses: actions/checkout@v2
+            -   name: Validate composer.json and composer.lock
+                run: composer validate
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php }}
+            -   name: Cache Composer packages
+                id: composer-cache
+                uses: actions/cache@v2
+                with:
+                    path: vendor
+                    key: ${{ runner.os }}-php-${{ hashFiles('**/composer.json') }}
+                    restore-keys: |
+                        ${{ runner.os }}-php-
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+            -   name: Install dependencies
+                if: steps.composer-cache.outputs.cache-hit != 'true'
+                run: composer install --no-progress --no-ansi
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.json') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+            -   name: Run test suite
+                run: composer run-script test
 
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --no-progress --no-ansi
+            -   name: Run Psalm
+                run: composer run-script psalm
+    static-analysis:
+        runs-on: ubuntu-latest
+        name: Psalm
+        steps:
+            -   uses: actions/checkout@v2
 
-    - name: Run test suite
-      run: composer run-script test
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.0'
+                    coverage: none
 
-    - name: Run Psalm
-      run: composer run-script psalm
+            -   name: Validate composer.json and composer.lock
+                run: composer validate
+
+            -   name: Cache Composer packages
+                id: composer-cache
+                uses: actions/cache@v2
+                with:
+                    path: vendor
+                    key: ${{ runner.os }}-php-${{ hashFiles('**/composer.json') }}
+                    restore-keys: |
+                        ${{ runner.os }}-php-
+
+            -   name: Install dependencies
+                if: steps.composer-cache.outputs.cache-hit != 'true'
+                run: composer install --no-progress --no-ansi
+
+            -   name: Run Psalm
+                run: composer run-script psalm
