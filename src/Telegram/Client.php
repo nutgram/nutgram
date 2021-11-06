@@ -44,10 +44,20 @@ trait Client
         Games;
 
     /**
-     * @param  array  $parameters
-     * @return mixed
+     * Use this method to receive incoming updates using long polling.
+     * An Array of Update objects is returned.
+     * @see https://core.telegram.org/bots/api#getupdates
+     * @see https://en.wikipedia.org/wiki/Push_technology#Long_polling
+     * @param  array{offset?: int, limit?: int, timeout?: int, allowed_updates?: array<string>}  $parameters
+     * @return array|null
+     * @throws DependencyException
+     * @throws GuzzleException
+     * @throws JsonException
+     * @throws JsonMapper_Exception
+     * @throws NotFoundException
+     * @throws TelegramException
      */
-    public function getUpdates(array $parameters = []): mixed
+    public function getUpdates(array $parameters = []): ?array
     {
         return $this->requestJson(__FUNCTION__, $parameters, Update::class, [
             'timeout' => ($parameters['timeout'] ?? 0) + 1,
@@ -56,8 +66,14 @@ trait Client
 
     /**
      * @param  string  $url
-     * @param  array|null  $opt
+     * @param  null|array{certificate?: mixed, ip_address?: string, max_connections?: int, allowed_updates?: array<string>, drop_pending_updates?: bool}  $opt
      * @return bool|null
+     * @throws DependencyException
+     * @throws GuzzleException
+     * @throws JsonException
+     * @throws JsonMapper_Exception
+     * @throws NotFoundException
+     * @throws TelegramException
      */
     public function setWebhook(string $url, ?array $opt = []): ?bool
     {
@@ -66,8 +82,14 @@ trait Client
     }
 
     /**
-     * @param  array|null  $opt
+     * @param  null|array{drop_pending_updates?: bool}  $opt
      * @return bool|null
+     * @throws DependencyException
+     * @throws GuzzleException
+     * @throws JsonException
+     * @throws JsonMapper_Exception
+     * @throws NotFoundException
+     * @throws TelegramException
      */
     public function deleteWebhook(?array $opt = []): ?bool
     {
@@ -76,6 +98,12 @@ trait Client
 
     /**
      * @return WebhookInfo|null
+     * @throws DependencyException
+     * @throws GuzzleException
+     * @throws JsonException
+     * @throws JsonMapper_Exception
+     * @throws NotFoundException
+     * @throws TelegramException
      */
     public function getWebhookInfo(): ?WebhookInfo
     {
@@ -87,6 +115,12 @@ trait Client
      * @param  array|null  $parameters
      * @param  array|null  $options
      * @return mixed
+     * @throws DependencyException
+     * @throws GuzzleException
+     * @throws JsonException
+     * @throws JsonMapper_Exception
+     * @throws NotFoundException
+     * @throws TelegramException
      */
     public function sendRequest(string $endpoint, ?array $parameters = [], ?array $options = []): mixed
     {
@@ -99,6 +133,12 @@ trait Client
      * @param $value
      * @param  array  $opt
      * @return Message|null
+     * @throws DependencyException
+     * @throws GuzzleException
+     * @throws JsonException
+     * @throws JsonMapper_Exception
+     * @throws NotFoundException
+     * @throws TelegramException
      */
     protected function sendAttachment(string $endpoint, string $param, $value, array $opt = []): ?Message
     {
@@ -123,10 +163,10 @@ trait Client
     public function downloadFile(File $file, string $path): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            true,
-            true
-        ) && !is_dir($concurrentDirectory)) {
+                $concurrentDirectory = dirname($path),
+                true,
+                true
+            ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
