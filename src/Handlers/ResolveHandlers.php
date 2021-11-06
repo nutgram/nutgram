@@ -75,9 +75,9 @@ abstract class ResolveHandlers extends CollectHandlers
      * @param  array  $handlers
      * @param  string  $type
      * @param  string|null  $subType
-     * @param  null  $value
+     * @param  string|null  $value
      */
-    protected function addHandlersBy(array &$handlers, string $type, ?string $subType = null, $value = null): void
+    protected function addHandlersBy(array &$handlers, string $type, ?string $subType = null, ?string $value = null): void
     {
         $typedHandlers = $this->handlers[$type] ?? [];
 

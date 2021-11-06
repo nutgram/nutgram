@@ -43,3 +43,6 @@ jobs:
 
     - name: Run test suite
       run: composer run-script test
+
+    - name: Run Psalm
+      run: composer run-script psalm

@@ -6,7 +6,9 @@ namespace SergiX44\Nutgram\Telegram;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use JsonException;
 use JsonMapper_Exception;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -121,10 +123,10 @@ trait Client
     public function downloadFile(File $file, string $path): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            true,
-            true
-        ) && !is_dir($concurrentDirectory)) {
+                $concurrentDirectory = dirname($path),
+                true,
+                true
+            ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -133,15 +135,15 @@ trait Client
 
     /**
      * @param  File  $file
-     * @return string
+     * @return string|null
      */
-    public function downloadUrl(File $file): string
+    public function downloadUrl(File $file): string|null
     {
-        if (isset($config['is_local']) && $config['is_local']) {
+        if (isset($this->config['is_local']) && $this->config['is_local']) {
             return $file->file_path;
         }
 
-        $baseUri = $config['api_url'] ?? self::DEFAULT_API_URL;
+        $baseUri = $this->config['api_url'] ?? self::DEFAULT_API_URL;
         return "$baseUri/file/bot$this->token/$file->file_path";
     }
 
@@ -151,6 +153,12 @@ trait Client
      * @param  string  $mapTo
      * @param  array|null  $options
      * @return mixed
+     * @throws DependencyException
+     * @throws GuzzleException
+     * @throws JsonException
+     * @throws JsonMapper_Exception
+     * @throws NotFoundException
+     * @throws TelegramException
      */
     protected function requestMultipart(
         string $endpoint,
@@ -181,8 +189,7 @@ trait Client
             if (!$exception->hasResponse()) {
                 throw $exception;
             }
-            $response = $exception->getResponse();
-            return $this->mapResponse($response, $mapTo, $exception);
+            return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
         }
     }
 
@@ -193,10 +200,11 @@ trait Client
      * @param  array|null  $options
      * @return mixed
      * @throws DependencyException
+     * @throws GuzzleException
+     * @throws JsonException
      * @throws JsonMapper_Exception
      * @throws NotFoundException
      * @throws TelegramException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function requestJson(
         string $endpoint,
@@ -213,8 +221,7 @@ trait Client
             if (!$exception->hasResponse()) {
                 throw $exception;
             }
-            $response = $exception->getResponse();
-            return $this->mapResponse($response, $mapTo, $exception);
+            return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
         }
     }
 
@@ -223,24 +230,31 @@ trait Client
      * @param  string  $mapTo
      * @param  Exception|null  $clientException
      * @return mixed
-     * @throws TelegramException
      * @throws DependencyException
-     * @throws NotFoundException
+     * @throws JsonException
      * @throws JsonMapper_Exception
+     * @throws NotFoundException
+     * @throws TelegramException
      */
     private function mapResponse(ResponseInterface $response, string $mapTo, Exception $clientException = null): mixed
     {
         $json = json_decode((string) $response->getBody(), flags: JSON_THROW_ON_ERROR);
         if ($json?->ok) {
+            if (is_scalar($json->result)) {
+                return $json->result;
+            }
             $instance = $this->container->make($mapTo);
             return match (true) {
-                is_scalar($json->result) => $json->result,
                 is_array($json->result) => array_map(fn ($obj) => $this->mapper->map($obj, $instance), $json->result),
                 default => $this->mapper->map($json->result, $instance)
             };
         }
 
-        $e = new TelegramException($json?->description ?? '', $json?->error_code ?? 0, $clientException);
+        $e = new TelegramException(
+            $json?->description ?? 'Client exception',
+            $json?->error_code ?? 0,
+            $clientException
+        );
 
         if (!empty($this->handlers[self::API_ERROR])) {
             return $this->fireExceptionHandlerBy(self::API_ERROR, $e);

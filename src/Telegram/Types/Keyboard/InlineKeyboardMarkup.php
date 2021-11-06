@@ -39,10 +39,11 @@ class InlineKeyboardMarkup implements JsonSerializable
         return $this;
     }
 
+
     /**
-     * @return InlineKeyboardButton[][]
+     * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return ['inline_keyboard' => $this->inline_keyboard ?? []];
     }

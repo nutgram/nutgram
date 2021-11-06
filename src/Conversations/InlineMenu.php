@@ -139,7 +139,7 @@ abstract class InlineMenu extends Conversation
      * @param  bool  $reopen
      * @param  bool  $noHandlers
      * @param  bool  $noMiddlewares
-     * @return mixed
+     * @return void
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function showMenu(bool $reopen = false, bool $noHandlers = false, bool $noMiddlewares = false): void
