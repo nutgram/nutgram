@@ -14,7 +14,7 @@ class ReplyKeyboardMarkup implements JsonSerializable
 {
     /**
      * Array of button rows, each represented by an Array of KeyboardButton objects
-     * @var \SergiX44\Nutgram\Telegram\Types\Keyboard\KeyBoardButton[][] $keyboard
+     * @var \SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton[][] $keyboard
      */
     public array $keyboard;
 

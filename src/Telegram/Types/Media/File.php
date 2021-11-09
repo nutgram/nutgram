@@ -62,9 +62,9 @@ class File
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function url(): string
+    public function url(): string|null
     {
         return $this->bot?->downloadUrl($this);
     }
