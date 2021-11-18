@@ -6,6 +6,7 @@ use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Types\Channel\ChannelPost;
 use SergiX44\Nutgram\Telegram\Types\Channel\EditedChannelPost;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
 use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
@@ -107,6 +108,12 @@ class Update
      * explicitly specify “chat_member” in the list of allowed_updates to receive these updates.
      */
     public ?ChatMemberUpdated $chat_member = null;
+
+    /**
+     * Optional. A request to join the chat has been sent.
+     * The bot must have the can_invite_users administrator right in the chat to receive these updates.
+     */
+    public ?ChatJoinRequest $chat_join_request = null;
 
     /**
      * Return the current update type
