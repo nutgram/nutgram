@@ -56,18 +56,19 @@ trait UpdatesMessages
      * On success, if the edited message was sent by the bot,
      * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagemedia
-     * @param  array  $mediaArray  An object for a new media content of the message
+     * @param  array  $mediaArray An object for a new media content of the message
      * @param  array|null  $opt
+     * @param  array  $clientOpt
      * @return Message|bool|null
      * @throws \JsonException
      */
-    public function editMessageMedia(array $mediaArray, ?array $opt = []): Message|bool|null
+    public function editMessageMedia(array $mediaArray, ?array $opt = [], array $clientOpt = []): Message|bool|null
     {
         $chat_id = $this->chatId();
         $message_id = $this->messageId();
         $media = json_encode($mediaArray, JSON_THROW_ON_ERROR);
         $required = compact('media', 'chat_id', 'message_id');
-        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), Message::class);
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), Message::class, $clientOpt);
     }
 
     /**

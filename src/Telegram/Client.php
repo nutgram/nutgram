@@ -27,6 +27,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use stdClass;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Trait Client
@@ -66,7 +67,8 @@ trait Client
 
     /**
      * @param  string  $url
-     * @param  null|array{certificate?: mixed, ip_address?: string, max_connections?: int, allowed_updates?: array<string>, drop_pending_updates?: bool}  $opt
+     * @param  null|array{certificate?: mixed, ip_address?: string, max_connections?: int, allowed_updates?:
+     *     array<string>, drop_pending_updates?: bool}  $opt
      * @return bool|null
      * @throws DependencyException
      * @throws GuzzleException
@@ -130,8 +132,9 @@ trait Client
     /**
      * @param  string  $endpoint
      * @param  string  $param
-     * @param $value
+     * @param  mixed  $value
      * @param  array  $opt
+     * @param  array  $clientOpt
      * @return Message|null
      * @throws DependencyException
      * @throws GuzzleException
@@ -140,8 +143,13 @@ trait Client
      * @throws NotFoundException
      * @throws TelegramException
      */
-    protected function sendAttachment(string $endpoint, string $param, $value, array $opt = []): ?Message
-    {
+    protected function sendAttachment(
+        string $endpoint,
+        string $param,
+        mixed $value,
+        array $opt = [],
+        array $clientOpt = []
+    ): ?Message {
         $required = [
             'chat_id' => $this->chatId(),
             $param => $value,
@@ -149,7 +157,7 @@ trait Client
 
         if (is_resource($value) || $value instanceof InputFile) {
             $required[$param] = $value instanceof InputFile ? $value : new InputFile($value);
-            return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class);
+            return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class, $clientOpt);
         }
 
         return $this->requestJson($endpoint, array_merge($required, $opt), Message::class);
@@ -158,19 +166,22 @@ trait Client
     /**
      * @param  File  $file
      * @param  string  $path
+     * @param  array  $clientOpt
      * @return bool|null
+     * @throws GuzzleException
      */
-    public function downloadFile(File $file, string $path): ?bool
+    public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            true,
-            true
-        ) && !is_dir($concurrentDirectory)) {
+                $concurrentDirectory = dirname($path),
+                true,
+                true
+            ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
-        return copy($this->downloadUrl($file), $path);
+        $response = $this->http->get($this->downloadUrl($file), array_merge(['sink' => $path], $clientOpt));
+        return $response->getStatusCode() === Response::HTTP_OK;
     }
 
     /**
@@ -278,7 +289,7 @@ trait Client
      */
     private function mapResponse(ResponseInterface $response, string $mapTo, Exception $clientException = null): mixed
     {
-        $json = json_decode((string) $response->getBody(), flags: JSON_THROW_ON_ERROR);
+        $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
         if ($json?->ok) {
             if (is_scalar($json->result)) {
                 return $json->result;
