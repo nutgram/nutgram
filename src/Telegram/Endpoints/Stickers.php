@@ -25,11 +25,12 @@ trait Stickers
      *     upload a new one using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array  $opt
+     * @param  array  $clientOpt
      * @return Message|null
      */
-    public function sendSticker(mixed $sticker, array $opt = []): ?Message
+    public function sendSticker(mixed $sticker, array $opt = [], array $clientOpt = []): ?Message
     {
-        return $this->sendAttachment(__FUNCTION__, 'sticker', $sticker, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'sticker', $sticker, $opt, $clientOpt);
     }
 
     /**
@@ -49,17 +50,20 @@ trait Stickers
      * and addStickerToSet methods (can be used multiple times).
      * Returns the uploaded {@see https://core.telegram.org/bots/api#file File} on success.
      * @see https://core.telegram.org/bots/api#uploadstickerfile
-     * @param  mixed  $png_sticker PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
+     * @param  mixed  $png_sticker PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not
+     *     exceed 512px, and either width or height must be exactly 512px.
+     *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array|null  $opt
+     * @param  array  $clientOpt
      * @return File|null
      */
-    public function uploadStickerFile(mixed $png_sticker, ?array $opt = []): ?File
+    public function uploadStickerFile(mixed $png_sticker, ?array $opt = [], array $clientOpt = []): ?File
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'png_sticker');
 
         if (is_resource($png_sticker)) {
-            return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), File::class);
+            return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), File::class, $clientOpt);
         }
 
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), File::class);
@@ -76,13 +80,14 @@ trait Stickers
      *     contain only english letters, digits and underscores. Must begin with a letter, can't contain consecutive
      *     underscores and must end in “_by_<bot username>”. <bot_username> is case insensitive. 1-64 characters.
      * @param  array|null  $opt
+     * @param  array  $clientOpt
      * @return bool|null
      */
-    public function createNewStickerSet(string $name, string $title, ?array $opt = []): ?bool
+    public function createNewStickerSet(string $name, string $title, ?array $opt = [], array $clientOpt = []): ?bool
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'name', 'title');
-        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), options: $clientOpt);
     }
 
     /**
@@ -94,13 +99,14 @@ trait Stickers
      * @see https://core.telegram.org/bots/api#addstickertoset
      * @param  string  $name Sticker set name
      * @param  array|null  $opt
+     * @param  array  $clientOpt
      * @return bool|null
      */
-    public function addStickerToSet(string $name, ?array $opt = []): ?bool
+    public function addStickerToSet(string $name, ?array $opt = [], array $clientOpt = []): ?bool
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'name');
-        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), options: $clientOpt);
     }
 
     /**
@@ -133,12 +139,13 @@ trait Stickers
      * @see https://core.telegram.org/bots/api#setstickersetthumb
      * @param  string  $name Sticker set name
      * @param  array|null  $opt
+     * @param  array  $clientOpt
      * @return bool|null
      */
-    public function setStickerSetThumb(string $name, ?array $opt = []): ?bool
+    public function setStickerSetThumb(string $name, ?array $opt = [], array $clientOpt = []): ?bool
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'name');
-        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), options: $clientOpt);
     }
 }
