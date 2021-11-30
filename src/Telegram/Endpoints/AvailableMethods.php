@@ -136,11 +136,12 @@ trait AvailableMethods
      *     must not exceed 10000 in total. Width and height ratio must be at most 20.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array  $opt
+     * @param  array  $clientOpt
      * @return Message|null
      */
-    public function sendPhoto(mixed $photo, array $opt = []): ?Message
+    public function sendPhoto(mixed $photo, array $opt = [], array $clientOpt = []): ?Message
     {
-        return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $opt, $clientOpt);
     }
 
     /**
@@ -156,11 +157,12 @@ trait AvailableMethods
      *     Internet, or upload a new one using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array  $opt
+     * @param  array  $clientOpt
      * @return Message|null
      */
-    public function sendAudio(mixed $audio, array $opt = []): ?Message
+    public function sendAudio(mixed $audio, array $opt = [], array $clientOpt = []): ?Message
     {
-        return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $opt, $clientOpt);
     }
 
     /**
@@ -173,11 +175,12 @@ trait AvailableMethods
      *     a new one using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array  $opt
+     * @param  array  $clientOpt
      * @return Message|null
      */
-    public function sendDocument(mixed $document, array $opt = []): ?Message
+    public function sendDocument(mixed $document, array $opt = [], array $clientOpt = []): ?Message
     {
-        return $this->sendAttachment(__FUNCTION__, 'document', $document, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'document', $document, $opt, $clientOpt);
     }
 
     /**
@@ -191,11 +194,12 @@ trait AvailableMethods
      *     a new video using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array  $opt
+     * @param  array  $clientOpt
      * @return Message|null
      */
-    public function sendVideo(mixed $video, array $opt = []): ?Message
+    public function sendVideo(mixed $video, array $opt = [], array $clientOpt = []): ?Message
     {
-        return $this->sendAttachment(__FUNCTION__, 'video', $video, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'video', $video, $opt, $clientOpt);
     }
 
     /**
@@ -208,11 +212,12 @@ trait AvailableMethods
      *     Internet, or upload a new animation using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array  $opt
+     * @param  array  $clientOpt
      * @return Message|null
      */
-    public function sendAnimation(mixed $animation, array $opt = []): ?Message
+    public function sendAnimation(mixed $animation, array $opt = [], array $clientOpt = []): ?Message
     {
-        return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $opt, $clientOpt);
     }
 
     /**
@@ -228,11 +233,12 @@ trait AvailableMethods
      *     a new one using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array  $opt
+     * @param  array  $clientOpt
      * @return Message|null
      */
-    public function sendVoice(mixed $voice, array $opt = []): ?Message
+    public function sendVoice(mixed $voice, array $opt = [], array $clientOpt = []): ?Message
     {
-        return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $opt, $clientOpt);
     }
 
     /**
@@ -246,11 +252,12 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}. Sending video notes by
      *     a URL is currently unsupported
      * @param  array  $opt
+     * @param  array  $clientOpt
      * @return Message|null
      */
-    public function sendVideoNote(mixed $video_note, array $opt = []): ?Message
+    public function sendVideoNote(mixed $video_note, array $opt = [], array $clientOpt = []): ?Message
     {
-        return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $opt);
+        return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $opt, $clientOpt);
     }
 
     /**
@@ -260,10 +267,11 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendmediagroup
      * @param  array  $media An array describing messages to be sent, must include 2-10 items
      * @param  array  $opt
+     * @param  array  $clientOpt
      * @return array|null
      * @throws JsonException
      */
-    public function sendMediaGroup(array $media, array $opt = []): ?array
+    public function sendMediaGroup(array $media, array $opt = [], array $clientOpt = []): ?array
     {
         $inputMedia = [];
         $files = [];
@@ -285,7 +293,7 @@ trait AvailableMethods
             'chat_id' => $this->chatId(),
             'media' => json_encode($inputMedia, JSON_THROW_ON_ERROR),
         ];
-        return $this->requestMultipart(__FUNCTION__, array_merge($required, $files, $opt), Message::class);
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $files, $opt), Message::class, $clientOpt);
     }
 
     /**
@@ -712,11 +720,12 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target channel (in the
      *     format [at]channelusername)
      * @param  mixed  $photo New chat photo, uploaded using multipart/form-data
+     * @param  array  $clientOpt
      * @return bool|null
      */
-    public function setChatPhoto(string|int $chat_id, mixed $photo): ?bool
+    public function setChatPhoto(string|int $chat_id, mixed $photo, array $clientOpt = []): ?bool
     {
-        return $this->requestMultipart(__FUNCTION__, compact('chat_id', 'photo'));
+        return $this->requestMultipart(__FUNCTION__, compact('chat_id', 'photo'), options: $clientOpt);
     }
 
     /**
