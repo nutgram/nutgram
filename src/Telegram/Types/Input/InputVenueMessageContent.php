@@ -2,12 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content}
  * of a venue message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputvenuemessagecontent
  */
-class InputVenueMessageContent
+class InputVenueMessageContent extends BaseType
 {
     /**
      * Latitude of the venue in degrees

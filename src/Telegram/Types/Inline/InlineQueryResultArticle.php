@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
@@ -12,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * Represents a link to an article or web page.
  * @see https://core.telegram.org/bots/api#inlinequeryresultarticle
  */
-class InlineQueryResultArticle
+class InlineQueryResultArticle extends BaseType
 {
     /**
      * Type of the result, must be article

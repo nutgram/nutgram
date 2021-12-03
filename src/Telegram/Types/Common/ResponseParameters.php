@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * Contains information about why a request was unsuccessfull.
  * @see https://core.telegram.org/bots/api#responseparameters
  */
-class ResponseParameters
+class ResponseParameters extends BaseType
 {
     /**
      * Optional. The group has been migrated to a supergroup with the specified identifier.

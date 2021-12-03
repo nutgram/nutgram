@@ -2,12 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * Represents an issue with the selfie with a document.
  * The error is considered resolved when the file with the selfie changes.
  * @see https://core.telegram.org/bots/api#passportelementerrorreverseside
  */
-class PassportElementErrorSelfie
+class PassportElementErrorSelfie extends BaseType
 {
     /**
      * Error source, must be selfie

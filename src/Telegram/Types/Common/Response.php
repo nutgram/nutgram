@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * Response from an API request
  * @see https://core.telegram.org/bots/api#making-requests
  */
-class Response
+class Response extends BaseType
 {
     /**
      * Response status

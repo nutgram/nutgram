@@ -2,13 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 
 /**
  * This object represents a sticker.
  * @see https://core.telegram.org/bots/api#stickerset
  */
-class StickerSet
+class StickerSet extends BaseType
 {
     /**
      * Sticker set name

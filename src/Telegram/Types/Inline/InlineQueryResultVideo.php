@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
@@ -18,7 +19,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * you must replace its content using input_message_content.
  * @see https://core.telegram.org/bots/api#inlinequeryresultvideo
  */
-class InlineQueryResultVideo
+class InlineQueryResultVideo extends BaseType
 {
     /**
      * Type of the result, must be video

@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Channel\ChannelPost;
 use SergiX44\Nutgram\Telegram\Types\Channel\EditedChannelPost;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
@@ -24,7 +25,7 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  * At most ONE of the optional parameters can be present in any given update.
  * @see https://core.telegram.org/bots/api#update
  */
-class Update
+class Update extends BaseType
 {
     /**
      * The update‘s unique identifier.

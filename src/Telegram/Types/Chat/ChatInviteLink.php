@@ -2,13 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * Represents an invite link for a chat.
  * @see https://core.telegram.org/bots/api#chatinvitelink
  */
-class ChatInviteLink
+class ChatInviteLink extends BaseType
 {
     /**
      * The invite link. If the link was created by another chat administrator,

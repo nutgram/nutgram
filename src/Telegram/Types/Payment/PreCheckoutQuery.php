@@ -2,13 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object contains information about an incoming pre-checkout query.
  * @see https://core.telegram.org/bots/api#precheckoutquery
  */
-class PreCheckoutQuery
+class PreCheckoutQuery extends BaseType
 {
     /**
      * Unique query identifier

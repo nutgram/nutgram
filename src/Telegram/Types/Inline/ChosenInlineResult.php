@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -11,7 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  * via {@see https://t.me/botfather @Botfather} in order to receive these objects in updates.
  * @see https://core.telegram.org/bots/api#choseninlineresult
  */
-class ChosenInlineResult
+class ChosenInlineResult extends BaseType
 {
     /**
      * The unique identifier for the result that was chosen

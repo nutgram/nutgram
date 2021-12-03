@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object contains basic information about an invoice.
  * @see https://core.telegram.org/bots/api#invoice
  */
-class Invoice
+class Invoice extends BaseType
 {
     /**
      * Product name

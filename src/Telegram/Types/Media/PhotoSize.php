@@ -2,13 +2,15 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents one size of a photo or a file / sticker thumbnail.
  * @see https://core.telegram.org/bots/api#document file
  * @see https://core.telegram.org/bots/api#sticker sticker
  * @see https://core.telegram.org/bots/api#photosize
  */
-class PhotoSize
+class PhotoSize extends BaseType
 {
     /**
      * Unique identifier for this file

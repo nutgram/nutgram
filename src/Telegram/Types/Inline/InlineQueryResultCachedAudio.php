@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
@@ -16,7 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
  * @see https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
  */
-class InlineQueryResultCachedAudio
+class InlineQueryResultCachedAudio extends BaseType
 {
     /**
      * Type of the result, must be audio

@@ -2,13 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
  * @see https://core.telegram.org/bots/api#messageentity
  */
-class MessageEntity
+class MessageEntity extends BaseType
 {
     /**
      * Type of the entity. Can be mention ([at]username), hashtag, bot_command, url, email, bold (bold text),

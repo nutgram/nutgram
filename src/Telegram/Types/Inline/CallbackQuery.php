@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -20,7 +21,7 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  * even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
  * @see https://core.telegram.org/bots/api#callbackquery
  */
-class CallbackQuery
+class CallbackQuery extends BaseType
 {
     /**
      * Unique identifier for this query

@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Location;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents a point on the map.
  * @see https://core.telegram.org/bots/api#location
  */
-class Location
+class Location extends BaseType
 {
     /**
      * Longitude as defined by sender

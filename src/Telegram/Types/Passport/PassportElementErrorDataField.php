@@ -2,12 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when
  * the field's value changes. Class PassportElementErrorDataField
  * @see https://core.telegram.org/bots/api#passportelementerrordatafield
  */
-class PassportElementErrorDataField
+class PassportElementErrorDataField extends BaseType
 {
     /**
      * Error source, must be data

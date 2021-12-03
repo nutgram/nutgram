@@ -2,12 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of an
  * invoice message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputinvoicemessagecontent
  */
-class InputInvoiceMessageContent
+class InputInvoiceMessageContent extends BaseType
 {
     /**
      * Product name, 1-32 characters
