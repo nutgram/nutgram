@@ -625,8 +625,7 @@ trait AvailableMethods
      */
     public function unbanChatSenderChat(string|int $chat_id, int $sender_chat_id): ?bool
     {
-        $required = compact('chat_id', 'sender_chat_id');
-        return $this->requestJson(__FUNCTION__, $required);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'sender_chat_id'));
     }
 
     /**
