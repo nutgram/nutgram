@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 1.2.0 - 2021-12-09
+
+### Added
+- Support for bot api 5.5.
+
+## 1.1.1 - 2021-12-03
+
+### Fixed
+- Mapping issue with array of objects.
+
 ## 1.1.0 - 2021-11-30
 
 ### Added
