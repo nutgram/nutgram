@@ -22,16 +22,16 @@ trait Testable
     /**
      * @param  mixed  $update
      * @param  array  $responses
-     * @return Nutgram|Testable
+     * @return Nutgram
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
      */
-    public static function fake(mixed $update = null, array $responses = []): self
+    public static function fake(mixed $update = null, array $responses = []): static
     {
         $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);
 
-        $bot = new self(__CLASS__, [
+        $bot = new static(__CLASS__, [
             'client' => ['handler' => $handlerStack],
             'api_url' => '',
         ]);
