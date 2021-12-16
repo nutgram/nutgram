@@ -1,9 +1,10 @@
 <?php
 
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 
 it('calls the message handler', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $test = '';
 
@@ -17,7 +18,7 @@ it('calls the message handler', function ($update) {
 })->with('message');
 
 it('calls the message handler with a middleware', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $test = '';
 
@@ -34,7 +35,7 @@ it('calls the message handler with a middleware', function ($update) {
 })->with('message');
 
 it('calls the message handler with multiple middlewares', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $test = '';
 
@@ -59,21 +60,21 @@ it('calls the message handler with multiple middlewares', function ($update) {
 })->with('message');
 
 it('calls the fallback if not match any handler', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onText('Cia', function () {
         throw new Exception();
     });
 
     $bot->fallback(function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->run();
 })->with('message');
 
 it('calls the specific fallback and not the general one if not match any handler', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onText('Cia', function () {
         throw new Exception();
@@ -84,17 +85,17 @@ it('calls the specific fallback and not the general one if not match any handler
     });
 
     $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Attributes\UpdateTypes::MESSAGE, function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->run();
 })->with('message');
 
 it('calls the right handler and no the fallback', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onText('Ciao', function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->fallback(function ($bot) {
@@ -109,10 +110,10 @@ it('calls the right handler and no the fallback', function ($update) {
 })->with('message');
 
 it('calls the right handler and no the generic one', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onText('Ciao', function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->onMessage(function ($bot) {
@@ -127,10 +128,10 @@ it('calls the right handler and no the generic one', function ($update) {
 })->with('message');
 
 it('calls the right on command', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onCommand('start', function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->onCommand('end', function ($bot) {
@@ -145,10 +146,10 @@ it('calls the right on command', function ($update) {
 })->with('command_message');
 
 it('parse callback queries', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onCallbackQuery(function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->onMessage(function ($bot) {
@@ -164,10 +165,10 @@ it('parse callback queries', function ($update) {
 })->with('callback_query');
 
 it('parse callback queries with specific data', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onCallbackQueryData('thedata', function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->onMessage(function ($bot) {
@@ -183,7 +184,7 @@ it('parse callback queries with specific data', function ($update) {
 })->with('callback_query');
 
 it('calls the exception handler', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onCallbackQueryData('thedata', function ($bot) {
         throw new RuntimeException('error');
@@ -199,7 +200,7 @@ it('calls the exception handler', function ($update) {
     });
 
     $bot->onException(function ($bot, $e) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
         expect($e)->toBeInstanceOf(RuntimeException::class);
         expect($e->getMessage())->toBe('error');
     });
@@ -208,7 +209,7 @@ it('calls the exception handler', function ($update) {
 })->with('callback_query');
 
 it('calls the specific exception handler', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onCallbackQueryData('thedata', function ($bot) {
         throw new RuntimeException('error');
@@ -228,7 +229,7 @@ it('calls the specific exception handler', function ($update) {
     });
 
     $bot->onException(RuntimeException::class, function ($bot, $e) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
         expect($e)->toBeInstanceOf(RuntimeException::class);
         expect($e->getMessage())->toBe('error');
     });
@@ -237,7 +238,7 @@ it('calls the specific exception handler', function ($update) {
 })->with('callback_query');
 
 it('calls on edited message', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onCallbackQueryData('thedata', function ($bot) {
         throw new Exception();
@@ -248,66 +249,66 @@ it('calls on edited message', function ($update) {
     });
 
     $bot->onEditedMessage(function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->run();
 })->with('edited_message');
 
 it('call the typed message handler', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onMessage(function ($bot) {
         throw new Exception();
     });
 
     $bot->onMessageType(MessageTypes::PHOTO, function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->run();
 })->with('photo');
 
 it('calls the typed message handler: text', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onMessageType(MessageTypes::TEXT, function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->run();
 })->with('text');
 
 it('calls the onMessageTypeText handler and onText handlers', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onMessageType(MessageTypes::TEXT, function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->onText('.*', function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->run();
 })->with('text');
 
 it('the catch all handler text not called for media', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onText('.*', function ($bot) {
         throw new Exception();
     });
 
     $bot->onMessageType(MessageTypes::PHOTO, function ($bot) {
-        expect($bot)->toBeInstanceOf(\SergiX44\Nutgram\Nutgram::class);
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->run();
 })->with('photo');
 
 test('commands can have descriptions', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $cmd1 = $bot->onCommand('hELp', static function ($bot) {
     })->description('test');

@@ -27,11 +27,12 @@ use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
+use SergiX44\Nutgram\Testing\Testable;
 use Throwable;
 
 class Nutgram extends ResolveHandlers
 {
-    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy;
+    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy, Testable;
 
     protected const DEFAULT_API_URL = 'https://api.telegram.org';
 

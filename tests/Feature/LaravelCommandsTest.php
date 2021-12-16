@@ -25,7 +25,7 @@ test('nutgram:run runs the bot in polling mode', function () {
 });
 
 test('nutgram:register-commands registers the bot commands', function () {
-    $bot = getInstance();
+    $bot = Nutgram::fake();
 
     $bot->onCommand('start', static function () {
     })->description('start command');
