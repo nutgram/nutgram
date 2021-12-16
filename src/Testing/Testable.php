@@ -58,5 +58,4 @@ trait Testable
     {
         return $this->testingHistory;
     }
-
 }

@@ -9,7 +9,6 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 class Fake implements RunningMode
 {
-
     private mixed $update;
 
     /**
