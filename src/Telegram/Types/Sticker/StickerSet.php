@@ -21,9 +21,14 @@ class StickerSet
     public string $title;
 
     /**
-     * True, if the sticker is animated
+     * True, if the sticker set contains animated stickers
      */
     public bool $is_animated;
+
+    /**
+     * True, if the sticker set contains video stickers
+     */
+    public bool $is_video;
 
     /**
      * True, if the sticker set contains masks
