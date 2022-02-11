@@ -5,7 +5,6 @@ namespace SergiX44\Nutgram\RunningMode;
 
 use DI\DependencyException;
 use DI\NotFoundException;
-use JetBrains\PhpStorm\Pure;
 use JsonMapper;
 use JsonMapper_Exception;
 use Psr\SimpleCache\InvalidArgumentException;
