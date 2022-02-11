@@ -41,7 +41,7 @@ class Webhook implements RunningMode
      */
     public function processUpdates(Nutgram $bot): void
     {
-        if ($this->safeMode && !$this->isSafe()){
+        if ($this->safeMode && !$this->isSafe()) {
             return;
         }
 
@@ -70,7 +70,7 @@ class Webhook implements RunningMode
                 return true;
             }
         }
-       return false;
+        return false;
     }
 
     /**
