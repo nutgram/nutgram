@@ -5,13 +5,11 @@ namespace SergiX44\Nutgram\RunningMode;
 
 use DI\DependencyException;
 use DI\NotFoundException;
-use Illuminate\Http\Response;
 use JsonMapper;
 use JsonMapper_Exception;
 use Psr\SimpleCache\InvalidArgumentException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
 class Webhook implements RunningMode
