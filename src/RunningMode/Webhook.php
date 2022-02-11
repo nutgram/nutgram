@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\RunningMode;
 
 use DI\DependencyException;
 use DI\NotFoundException;
+use JetBrains\PhpStorm\Pure;
 use JsonMapper;
 use JsonMapper_Exception;
 use Psr\SimpleCache\InvalidArgumentException;
@@ -61,16 +62,26 @@ class Webhook implements RunningMode
      */
     public function isSafe(): bool
     {
-        $ip_dec = (float)sprintf("%u", ip2long($_SERVER['REMOTE_ADDR']));
+        $ip = $this->ipToLong($_SERVER['REMOTE_ADDR']);
 
         foreach ($this->telegramIpRanges as $ipRange) {
             // Make sure the IP is valid.
-            if ($ip_dec >= (float)sprintf("%u", ip2long($ipRange['lower'])) &&
-                $ip_dec <= (float)sprintf("%u", ip2long($ipRange['upper']))) {
+            if ($ip >= $this->ipToLong($ipRange['lower']) &&
+                $ip <= $this->ipToLong($ipRange['upper'])) {
                 return true;
             }
         }
        return false;
+    }
+
+
+    /**
+     * @param $ip
+     * @return float
+     */
+    private function ipToLong($ip): float
+    {
+        return (float)sprintf("%u", ip2long($ip));
     }
 
     /**
@@ -88,4 +99,5 @@ class Webhook implements RunningMode
     {
         $this->safeMode = $safeMode;
     }
+
 }
