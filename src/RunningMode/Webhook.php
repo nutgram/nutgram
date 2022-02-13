@@ -65,7 +65,7 @@ class Webhook implements RunningMode
 
         foreach ($this->telegramIpRanges as $ipRange) {
             // Make sure the IP is valid.
-            if ($ip >= $ipRange['lower'] && $ip <= ipRange['upper']) {
+            if ($ip >= $ipRange['lower'] && $ip <= $ipRange['upper']) {
                 return true;
             }
         }
