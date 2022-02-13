@@ -55,6 +55,4 @@ class FakeNutgram extends Nutgram
     {
         dd($method);
     }
-
-
 }
