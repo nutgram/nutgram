@@ -18,5 +18,5 @@ it('works as mocked instance', function () {
 //
 //    $bot->sendMessage('gne');
 //
-//    $bot::assertSendMessageCalled();
+//    $bot->assertSendMessageCalled();
 });
