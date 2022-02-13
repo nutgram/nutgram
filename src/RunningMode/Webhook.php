@@ -41,7 +41,7 @@ class Webhook implements RunningMode
      */
     public function processUpdates(Nutgram $bot): void
     {
-        if ($this->safeMode && !$this->isSafe()){
+        if ($this->safeMode && !$this->isSafe()) {
             return;
         }
 
@@ -61,26 +61,15 @@ class Webhook implements RunningMode
      */
     public function isSafe(): bool
     {
-        $ip = $this->ipToLong($_SERVER['REMOTE_ADDR']);
+        $ip = $_SERVER['REMOTE_ADDR'];
 
         foreach ($this->telegramIpRanges as $ipRange) {
             // Make sure the IP is valid.
-            if ($ip >= $this->ipToLong($ipRange['lower']) &&
-                $ip <= $this->ipToLong($ipRange['upper'])) {
+            if ($ip >= $ipRange['lower'] && $ip <= ipRange['upper']) {
                 return true;
             }
         }
-       return false;
-    }
-
-
-    /**
-     * @param $ip
-     * @return float
-     */
-    private function ipToLong($ip): float
-    {
-        return (float)sprintf("%u", ip2long($ip));
+        return false;
     }
 
     /**
