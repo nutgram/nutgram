@@ -27,12 +27,12 @@ use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
-use SergiX44\Nutgram\Testing\Testable;
+use SergiX44\Nutgram\Testing\FakeNutgram;
 use Throwable;
 
 class Nutgram extends ResolveHandlers
 {
-    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy, Testable;
+    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy;
 
     protected const DEFAULT_API_URL = 'https://api.telegram.org';
 
@@ -98,6 +98,16 @@ class Nutgram extends ResolveHandlers
 
         $this->setRunningMode(Polling::class);
         $this->container->set(__CLASS__, $this);
+    }
+
+    /**
+     * @param  mixed  $update
+     * @param  array  $responses
+     * @return FakeNutgram
+     */
+    public static function fake(mixed $update = null, array $responses = []): FakeNutgram
+    {
+        return FakeNutgram::instance($update, $responses);
     }
 
     /**

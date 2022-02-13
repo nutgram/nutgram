@@ -9,3 +9,15 @@ it('return the right running mode', function ($update) {
 
     expect($bot->getUpdateMode())->toBe(Fake::class);
 })->with('callback_query');
+
+it('works as mocked instance', function () {
+
+//    $bot = Nutgram::fake()
+//        ->withUpdate()
+//        ->withResponse();
+//
+//    $bot->sendMessage('gne');
+//
+//    $bot::assertSendMessageCalled();
+
+});
