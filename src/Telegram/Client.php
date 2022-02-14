@@ -296,8 +296,10 @@ trait Client
             }
             $instance = $this->container->make($mapTo);
             return match (true) {
-                is_array($json->result) => array_map(fn ($obj) => $this->mapper->map($obj, clone $instance),
-                    $json->result),
+                is_array($json->result) => array_map(
+                    fn ($obj) => $this->mapper->map($obj, clone $instance),
+                    $json->result
+                ),
                 default => $this->mapper->map($json->result, $instance)
             };
         }
