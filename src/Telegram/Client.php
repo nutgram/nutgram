@@ -287,7 +287,7 @@ trait Client
      * @throws NotFoundException
      * @throws TelegramException
      */
-    private function mapResponse(ResponseInterface $response, string $mapTo, Exception $clientException = null): mixed
+    protected function mapResponse(ResponseInterface $response, string $mapTo, Exception $clientException = null): mixed
     {
         $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
         if ($json?->ok) {
@@ -296,7 +296,8 @@ trait Client
             }
             $instance = $this->container->make($mapTo);
             return match (true) {
-                is_array($json->result) => array_map(fn ($obj) => $this->mapper->map($obj, clone $instance), $json->result),
+                is_array($json->result) => array_map(fn ($obj) => $this->mapper->map($obj, clone $instance),
+                    $json->result),
                 default => $this->mapper->map($json->result, $instance)
             };
         }

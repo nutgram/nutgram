@@ -9,6 +9,8 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
+use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use function PHPUnit\Framework\assertEquals;
 
 /**
  * @method assertSendMessageCalled
@@ -51,10 +53,38 @@ class FakeNutgram extends Nutgram
      * @param  mixed|null  $update
      * @return FakeNutgram
      */
-    public function withUpdate(mixed $update = null): self
+    public function receivesRaw(mixed $update = null): self
     {
+        $update = json_decode(json_encode($update));
         $this->setRunningMode(new Fake($update));
+        $this->run();
         return $this;
+    }
+
+    public function receives(string $text): self
+    {
+        return $this->receivesRaw([
+            'update_id' => 1,
+            'message' => [
+                'message_id' => 1,
+                'from' => [
+                    'id' => 1,
+                    'is_bot' => false,
+                    'first_name' => 'Test',
+                    'last_name' => 'User',
+                    'username' => 'test_user',
+                ],
+                'chat' => [
+                    'id' => 1,
+                    'first_name' => 'Test',
+                    'last_name' => 'User',
+                    'username' => 'test_user',
+                    'type' => 'private',
+                ],
+                'date' => 1,
+                'text' => $text,
+            ],
+        ]);
     }
 
     /**
@@ -134,5 +164,84 @@ class FakeNutgram extends Nutgram
     private function assertApiMethodCalled($method, $arguments)
     {
         dd($method);
+    }
+
+    /**
+     * @template T
+     * @param  int  $index
+     * @param  class-string<T>|null  $type
+     * @return T|array
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     * @throws \JsonException
+     * @throws \JsonMapper_Exception
+     * @throws \SergiX44\Nutgram\Telegram\Exceptions\TelegramException
+     */
+    public function getHistoryItemResponse(int $index = 0, string $type = null): mixed
+    {
+        $response = $this->getRequestHistory()[0]['response'];
+
+        if ($type === null) {
+            return json_decode((string)$response->getBody(), true);
+        }
+
+        return $this->mapResponse($response, $type);
+    }
+
+    public function sendMessage(string $text, ?array $opt = []): ?Message
+    {
+        $this->mockHandler->append(new Response(200, [], json_encode([
+            'ok' => true,
+            'result' =>
+                [
+                    'message_id' => 1,
+                    'from' =>
+                        [
+                            'id' => 1,
+                            'is_bot' => false,
+                            'first_name' => 'First',
+                            'last_name' => 'Last',
+                            'username' => 'username',
+                            'language_code' => 'en-US',
+                        ],
+                    'chat' =>
+                        [
+                            'id' => 1,
+                            'first_name' => 'First',
+                            'last_name' => 'Last',
+                            'username' => 'username',
+                            'type' => 'private',
+                        ],
+                    'date' => 1,
+                    'text' => $text,
+                ],
+        ], JSON_THROW_ON_ERROR)));
+
+        return parent::sendMessage($text, $opt);
+    }
+
+    protected int $historyIndex = 0;
+
+    public function assertRaw(string $text): self
+    {
+        $response = $this->getRequestHistory()[$this->historyIndex]['response'];
+        $response = (string)$response->getBody();
+
+        assertEquals($text, $response);
+
+        $this->historyIndex++;
+        return $this;
+    }
+
+    public function assertReply(string $text): self
+    {
+        $response = $this->getRequestHistory()[$this->historyIndex]['response'];
+        $response = (string)$response->getBody();
+        $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+
+        assertEquals($text, $response['result']['text']);
+
+        $this->historyIndex++;
+        return $this;
     }
 }

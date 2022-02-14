@@ -32,6 +32,10 @@ class NutgramServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../laravel/config.php', 'nutgram');
 
         $this->app->singleton(Nutgram::class, function (Application $app) {
+            if ($app->runningUnitTests()) {
+                return Nutgram::fake();
+            }
+
             $config = array_merge([
                 'cache' => $app->make(Cache::class),
             ], config('nutgram.config'));
