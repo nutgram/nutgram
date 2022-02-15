@@ -3,13 +3,14 @@
 
 namespace SergiX44\Nutgram;
 
-use DI\Container;
-use DI\DependencyException;
-use DI\NotFoundException;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use JsonMapper;
+use League\Container\Container;
+use League\Container\ReflectionContainer;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
@@ -65,8 +66,8 @@ class Nutgram extends ResolveHandlers
      * Nutgram constructor.
      * @param  string  $token
      * @param  array  $config
-     * @throws DependencyException
-     * @throws NotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __construct(string $token, array $config = [])
     {
@@ -77,27 +78,28 @@ class Nutgram extends ResolveHandlers
         $this->token = $token;
         $this->config = $config;
         $this->container = new Container();
+        $this->container->delegate(new ReflectionContainer());
 
         $baseUri = $config['api_url'] ?? self::DEFAULT_API_URL;
 
-        $this->http = $this->container->make(Guzzle::class, [
-            'config' => array_merge($config['client'] ?? [], [
-                'base_uri' => "$baseUri/bot$token/",
-                'timeout' => $config['timeout'] ?? 5,
-            ]),
-        ]);
+        $this->http = new Guzzle(array_merge($config['client'] ?? [], [
+            'base_uri' => "$baseUri/bot$token/",
+            'timeout' => $config['timeout'] ?? 5,
+        ]));
+        $this->container->addShared(ClientInterface::class, $this->http);
+
         $this->mapper = $this->container->get(JsonMapper::class);
-        $this->mapper->undefinedPropertyHandler = static function ($object, $propName, $jsonValue) {
+        $this->mapper->undefinedPropertyHandler = static function ($object, $propName, $jsonValue): void {
             $object->{$propName} = $jsonValue;
         };
 
-        $this->container->set(CacheInterface::class, $config['cache'] ?? new ArrayCache());
+        $this->container->addShared(CacheInterface::class, $config['cache'] ?? new ArrayCache());
         $this->conversationCache = $this->container->get(ConversationCache::class);
         $this->globalCache = $this->container->get(GlobalCache::class);
         $this->userCache = $this->container->get(UserCache::class);
 
-        $this->setRunningMode(Polling::class);
-        $this->container->set(__CLASS__, $this);
+        $this->container->addShared(RunningMode::class, Polling::class);
+        $this->container->addShared(__CLASS__, $this);
     }
 
     /**
@@ -112,16 +114,12 @@ class Nutgram extends ResolveHandlers
 
     /**
      * @param  string|RunningMode  $classOrInstance
-     * @throws DependencyException
-     * @throws NotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function setRunningMode(string|RunningMode $classOrInstance): void
     {
-        if ($classOrInstance instanceof RunningMode) {
-            $this->container->set(RunningMode::class, $classOrInstance);
-        } else {
-            $this->container->set(RunningMode::class, $this->container->get($classOrInstance));
-        }
+        $this->container->extend(RunningMode::class)->setConcrete($classOrInstance);
     }
 
     /**
@@ -129,12 +127,13 @@ class Nutgram extends ResolveHandlers
      */
     public function setCache(CacheInterface $cache): void
     {
-        $this->container->set(CacheInterface::class, $cache);
+        $this->container->extend(CacheInterface::class)
+            ->setConcrete($cache);
     }
 
     /**
-     * @throws DependencyException
-     * @throws NotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function run(): void
     {
@@ -145,8 +144,6 @@ class Nutgram extends ResolveHandlers
     /**
      * @param  Update  $update
      * @throws Throwable
-     * @throws DependencyException
-     * @throws NotFoundException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function processUpdate(Update $update): void
@@ -181,8 +178,6 @@ class Nutgram extends ResolveHandlers
     /**
      * @param  array  $handlers
      * @throws Throwable
-     * @throws DependencyException
-     * @throws NotFoundException
      */
     protected function fireHandlers(array $handlers): void
     {
@@ -205,8 +200,6 @@ class Nutgram extends ResolveHandlers
      * @param  string  $type
      * @param  Throwable  $e
      * @return mixed
-     * @throws DependencyException
-     * @throws NotFoundException
      */
     protected function fireExceptionHandlerBy(string $type, Throwable $e): mixed
     {
@@ -287,8 +280,8 @@ class Nutgram extends ResolveHandlers
 
     /**
      * @return string
-     * @throws DependencyException
-     * @throws NotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getUpdateMode(): string
     {
@@ -297,20 +290,20 @@ class Nutgram extends ResolveHandlers
 
     /**
      * @param $callable
-     * @return callable|mixed
-     * @throws DependencyException
-     * @throws NotFoundException
+     * @return callable
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function resolve($callable)
+    public function resolve($callable): callable
     {
         // if is a class definition, resolve it to an instance through the container
         if (is_array($callable) && count($callable) === 2 && is_string($callable[0]) && class_exists($callable[0])) {
-            $callable[0] = $this->container->make($callable[0]);
+            $callable[0] = $this->container->get($callable[0]);
         }
 
         // if passing a class, we probably want resolve that and call the __invoke method
         if (is_string($callable) && class_exists($callable)) {
-            $callable = $this->container->make($callable);
+            $callable = $this->container->get($callable);
         }
 
         if (!is_callable($callable)) {

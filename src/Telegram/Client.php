@@ -3,13 +3,12 @@
 
 namespace SergiX44\Nutgram\Telegram;
 
-use DI\DependencyException;
-use DI\NotFoundException;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use JsonException;
-use JsonMapper_Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
@@ -51,11 +50,10 @@ trait Client
      * @see https://en.wikipedia.org/wiki/Push_technology#Long_polling
      * @param  array{offset?: int, limit?: int, timeout?: int, allowed_updates?: array<string>}  $parameters
      * @return array|null
-     * @throws DependencyException
+     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws JsonMapper_Exception
-     * @throws NotFoundException
+     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     public function getUpdates(array $parameters = []): ?array
@@ -67,14 +65,12 @@ trait Client
 
     /**
      * @param  string  $url
-     * @param  null|array{certificate?: mixed, ip_address?: string, max_connections?: int, allowed_updates?:
-     *     array<string>, drop_pending_updates?: bool}  $opt
+     * @param  null|array{certificate?: mixed, ip_address?: string, max_connections?: int, allowed_updates?:array<string>, drop_pending_updates?: bool}  $opt
      * @return bool|null
-     * @throws DependencyException
+     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws JsonMapper_Exception
-     * @throws NotFoundException
+     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     public function setWebhook(string $url, ?array $opt = []): ?bool
@@ -86,11 +82,10 @@ trait Client
     /**
      * @param  null|array{drop_pending_updates?: bool}  $opt
      * @return bool|null
-     * @throws DependencyException
+     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws JsonMapper_Exception
-     * @throws NotFoundException
+     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     public function deleteWebhook(?array $opt = []): ?bool
@@ -100,11 +95,10 @@ trait Client
 
     /**
      * @return WebhookInfo|null
-     * @throws DependencyException
+     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws JsonMapper_Exception
-     * @throws NotFoundException
+     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     public function getWebhookInfo(): ?WebhookInfo
@@ -117,11 +111,10 @@ trait Client
      * @param  array|null  $parameters
      * @param  array|null  $options
      * @return mixed
-     * @throws DependencyException
+     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws JsonMapper_Exception
-     * @throws NotFoundException
+     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     public function sendRequest(string $endpoint, ?array $parameters = [], ?array $options = []): mixed
@@ -136,11 +129,10 @@ trait Client
      * @param  array  $opt
      * @param  array  $clientOpt
      * @return Message|null
-     * @throws DependencyException
+     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws JsonMapper_Exception
-     * @throws NotFoundException
+     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     protected function sendAttachment(
@@ -204,11 +196,10 @@ trait Client
      * @param  string  $mapTo
      * @param  array|null  $options
      * @return mixed
-     * @throws DependencyException
+     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws JsonMapper_Exception
-     * @throws NotFoundException
+     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     protected function requestMultipart(
@@ -250,11 +241,10 @@ trait Client
      * @param  string  $mapTo
      * @param  array|null  $options
      * @return mixed
-     * @throws DependencyException
+     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws JsonMapper_Exception
-     * @throws NotFoundException
+     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     protected function requestJson(
@@ -281,20 +271,19 @@ trait Client
      * @param  string  $mapTo
      * @param  Exception|null  $clientException
      * @return mixed
-     * @throws DependencyException
      * @throws JsonException
-     * @throws JsonMapper_Exception
-     * @throws NotFoundException
      * @throws TelegramException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function mapResponse(ResponseInterface $response, string $mapTo, Exception $clientException = null): mixed
     {
-        $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
+        $json = json_decode((string) $response->getBody(), flags: JSON_THROW_ON_ERROR);
         if ($json?->ok) {
             if (is_scalar($json->result)) {
                 return $json->result;
             }
-            $instance = $this->container->make($mapTo);
+            $instance = $this->container->get($mapTo);
             return match (true) {
                 is_array($json->result) => array_map(
                     fn ($obj) => $this->mapper->map($obj, clone $instance),
