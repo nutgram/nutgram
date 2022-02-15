@@ -11,7 +11,6 @@ it('return the right running mode', function ($update) {
 })->with('callback_query');
 
 it('works as mocked instance', function ($update) {
-
     $bot = Nutgram::fake()
         ->hears($update)
         ->willReceive(['text' => 'test'])
@@ -25,5 +24,4 @@ it('works as mocked instance', function ($update) {
     $bot->assertSendMessageCalled(2)
         ->assertSendMessageContains('test')
         ->assertSendMessageContains('sos', 1);
-
 })->with('message');
