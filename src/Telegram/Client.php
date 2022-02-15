@@ -165,10 +165,10 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-                $concurrentDirectory = dirname($path),
-                true,
-                true
-            ) && !is_dir($concurrentDirectory)) {
+            $concurrentDirectory = dirname($path),
+            true,
+            true
+        ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -285,7 +285,7 @@ trait Client
             }
             $instance = $this->container->get($mapTo);
             return match (true) {
-                is_array($json->result) => array_map(fn($obj) => $this->mapper->map($obj, clone $instance), $json->result),
+                is_array($json->result) => array_map(fn ($obj) => $this->mapper->map($obj, clone $instance), $json->result),
                 default => $this->mapper->map($json->result, $instance)
             };
         }
