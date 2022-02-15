@@ -14,11 +14,10 @@ class Polling implements RunningMode
     /**
      * @param  Nutgram  $bot
      * @throws InvalidArgumentException
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \JsonException
-     * @throws \JsonMapper_Exception
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \SergiX44\Nutgram\Telegram\Exceptions\TelegramException
      */
     public function processUpdates(Nutgram $bot): void

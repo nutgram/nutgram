@@ -3,8 +3,8 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
-use DI\DependencyException;
-use DI\NotFoundException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Middleware\Link;
 use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Nutgram;
@@ -15,7 +15,7 @@ class Handler extends MiddlewareChain
      * regular expression to capture named parameters but not quantifiers
      * captures {name}, but not {1}, {1,}, or {1,2}.
      */
-    protected const PARAM_NAME_REGEX = '/\{((?:(?!\d+,?\d+?)\w)+?)\}/';
+    protected const PARAM_NAME_REGEX = '/{((?:(?!\d+,?\d+?)\w)+?)}/';
 
     /**
      * @var string|null
@@ -74,8 +74,8 @@ class Handler extends MiddlewareChain
     /**
      * @param  Nutgram  $bot
      * @return mixed
-     * @throws DependencyException
-     * @throws NotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __invoke(Nutgram $bot): mixed
     {

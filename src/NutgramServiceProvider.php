@@ -51,9 +51,9 @@ class NutgramServiceProvider extends ServiceProvider
     }
 
     /**
-     * Load bot commands and callbacks
+     *  Load bot commands and callbacks
      */
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([

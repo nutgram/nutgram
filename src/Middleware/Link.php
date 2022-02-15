@@ -3,8 +3,8 @@
 
 namespace SergiX44\Nutgram\Middleware;
 
-use DI\DependencyException;
-use DI\NotFoundException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Nutgram;
 
 class Link
@@ -33,8 +33,8 @@ class Link
     /**
      * @param  Nutgram  $bot
      * @return mixed
-     * @throws DependencyException
-     * @throws NotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __invoke(Nutgram $bot): mixed
     {

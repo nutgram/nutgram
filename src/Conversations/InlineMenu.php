@@ -181,7 +181,9 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram  $bot
+     *
+     * @return void
      */
     protected function closing(Nutgram $bot)
     {
