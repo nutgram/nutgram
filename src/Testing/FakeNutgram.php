@@ -6,14 +6,18 @@ use Exception;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
-use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\RunningMode\RunningMode;
+use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertSame;
 
 /**
- * @method assertSendMessageCalled
+ * @method assertSendMessageCalled(int $times): self
+ * @method assertSendMessageContains(mixed $expected, ?int $index = 0): self
  */
 class FakeNutgram extends Nutgram
 {
@@ -28,6 +32,11 @@ class FakeNutgram extends Nutgram
     protected array $testingHistory = [];
 
     /**
+     * @var bool
+     */
+    private bool $hasRun = false;
+
+    /**
      * @param  mixed  $update
      * @param  array  $responses
      * @return FakeNutgram
@@ -38,7 +47,7 @@ class FakeNutgram extends Nutgram
         $handlerStack = HandlerStack::create($mock);
 
         $bot = new self(__CLASS__, [
-            'client' => ['handler' => $handlerStack],
+            'client' => ['handler' => $handlerStack, 'base_uri' => ''],
             'api_url' => '',
         ]);
 
@@ -47,59 +56,6 @@ class FakeNutgram extends Nutgram
         $bot->setMockHandler($mock);
 
         return $bot;
-    }
-
-    /**
-     * @param  mixed|null  $update
-     * @return FakeNutgram
-     */
-    public function receivesRaw(mixed $update = null): self
-    {
-        $update = json_decode(json_encode($update));
-        $this->setRunningMode(new Fake($update));
-        $this->run();
-        return $this;
-    }
-
-    public function receives(string $text): self
-    {
-        return $this->receivesRaw([
-            'update_id' => 1,
-            'message' => [
-                'message_id' => 1,
-                'from' => [
-                    'id' => 1,
-                    'is_bot' => false,
-                    'first_name' => 'Test',
-                    'last_name' => 'User',
-                    'username' => 'test_user',
-                ],
-                'chat' => [
-                    'id' => 1,
-                    'first_name' => 'Test',
-                    'last_name' => 'User',
-                    'username' => 'test_user',
-                    'type' => 'private',
-                ],
-                'date' => 1,
-                'text' => $text,
-            ],
-        ]);
-    }
-
-    /**
-     * @param  mixed  $body
-     * @param  int  $status
-     * @param  array  $headers
-     * @return FakeNutgram
-     */
-    public function withResponse(
-        mixed $body = ['ok' => false, 'result' => null],
-        int $status = 200,
-        array $headers = [],
-    ): self {
-        $this->mockHandler->append(new Response($status, $headers, is_string($body) ? $body : json_encode($body, JSON_THROW_ON_ERROR)));
-        return $this;
     }
 
     /**
@@ -130,20 +86,56 @@ class FakeNutgram extends Nutgram
     }
 
     /**
+     * @param  mixed  $update
+     * @return $this
+     */
+    public function hears(mixed $update): static
+    {
+        $update = is_string($update) ? json_decode($update, flags: JSON_THROW_ON_ERROR) : $update;
+        $this->getContainer()->get(RunningMode::class)->setUpdate($update);
+
+        return $this;
+    }
+
+    /**
+     * @param  object|array  $result
+     * @param  bool  $ok
+     * @return $this
+     * @throws \JsonException
+     */
+    public function willReceive(object|array $result, bool $ok = true): self
+    {
+        $body = json_encode(compact('ok', 'result'), JSON_THROW_ON_ERROR);
+        $this->mockHandler->append(new Response($ok ? 200 : 400, [], $body));
+
+        return $this;
+    }
+
+    /**
      * @param  string  $name
      * @param  array  $arguments
-     * @return void
-     * @throws Exception
+     * @return self
+     * @throws \JsonException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function __call(string $name, array $arguments)
+    public function __call(string $name, array $arguments): self
     {
+        if (!$this->hasRun) {
+            $this->run();
+            $this->hasRun = true;
+        }
+
         $lowerName = strtolower($name);
 
         // begin assertion
         match (str_starts_with($lowerName, 'assert')) {
             str_ends_with($lowerName, 'called') => $this->assertApiMethodCalled($this->extractName($name, 'called'), $arguments),
+            str_ends_with($lowerName, 'contains') => $this->assertApiMethodContains($this->extractName($name, 'contains'), $arguments),
             default => throw new Exception('Invalid assertion')
         };
+
+        return $this;
     }
 
     /**
@@ -157,91 +149,44 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param $method
-     * @param $arguments
+     * @param  string  $method
+     * @param  array  $arguments
      * @return void
      */
-    private function assertApiMethodCalled($method, $arguments)
+    private function assertApiMethodCalled(string $method, array $arguments): void
     {
-        dd($method);
+        [$expected,] = $arguments;
+
+        $actual = 0;
+        foreach ($this->testingHistory as $reqRes) {
+            /** @var Request $request */
+            [$request,] = array_values($reqRes);
+
+            if ($request->getUri()->getPath() === $method) {
+                $actual++;
+            }
+        }
+
+        assertEquals($expected, $actual);
     }
 
     /**
-     * @template T
-     * @param  int  $index
-     * @param  class-string<T>|null  $type
-     * @return T|array
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @param  string  $method
+     * @param  array  $arguments
+     * @return void
      * @throws \JsonException
-     * @throws \JsonMapper_Exception
-     * @throws \SergiX44\Nutgram\Telegram\Exceptions\TelegramException
      */
-    public function getHistoryItemResponse(int $index = 0, string $type = null): mixed
+    private function assertApiMethodContains(string $method, array $arguments): void
     {
-        $response = $this->getRequestHistory()[0]['response'];
+        $reqRes = $this->testingHistory[$arguments[1] ?? 0];
 
-        if ($type === null) {
-            return json_decode((string)$response->getBody(), true);
-        }
+        /** @var Request $request */
+        [$request,] = array_values($reqRes);
 
-        return $this->mapResponse($response, $type);
-    }
+        assertSame($method, $request->getUri()->getPath());
 
-    public function sendMessage(string $text, ?array $opt = []): ?Message
-    {
-        $this->mockHandler->append(new Response(200, [], json_encode([
-            'ok' => true,
-            'result' =>
-                [
-                    'message_id' => 1,
-                    'from' =>
-                        [
-                            'id' => 1,
-                            'is_bot' => false,
-                            'first_name' => 'First',
-                            'last_name' => 'Last',
-                            'username' => 'username',
-                            'language_code' => 'en-US',
-                        ],
-                    'chat' =>
-                        [
-                            'id' => 1,
-                            'first_name' => 'First',
-                            'last_name' => 'Last',
-                            'username' => 'username',
-                            'type' => 'private',
-                        ],
-                    'date' => 1,
-                    'text' => $text,
-                ],
-        ], JSON_THROW_ON_ERROR)));
+        $data = json_decode((string) $request->getBody(), true, flags: JSON_THROW_ON_ERROR);
 
-        return parent::sendMessage($text, $opt);
-    }
-
-    protected int $historyIndex = 0;
-
-    public function assertRaw(string $text): self
-    {
-        $response = $this->getRequestHistory()[$this->historyIndex]['response'];
-        $response = (string)$response->getBody();
-
-        assertEquals($text, $response);
-
-        $this->historyIndex++;
-        return $this;
-    }
-
-    public function assertReply(string $text): self
-    {
-        $response = $this->getRequestHistory()[$this->historyIndex]['response'];
-        $response = (string)$response->getBody();
-        $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
-
-        assertEquals($text, $response['result']['text']);
-
-        $this->historyIndex++;
-        return $this;
+        assertContains($arguments[0] ?? [], $data);
     }
 }

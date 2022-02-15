@@ -82,10 +82,10 @@ class Nutgram extends ResolveHandlers
 
         $baseUri = $config['api_url'] ?? self::DEFAULT_API_URL;
 
-        $this->http = new Guzzle(array_merge($config['client'] ?? [], [
+        $this->http = new Guzzle(array_merge([
             'base_uri' => "$baseUri/bot$token/",
             'timeout' => $config['timeout'] ?? 5,
-        ]));
+        ], $config['client'] ?? []));
         $this->container->addShared(ClientInterface::class, $this->http);
 
         $this->mapper = $this->container->get(JsonMapper::class);

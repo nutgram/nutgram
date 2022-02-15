@@ -9,15 +9,13 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 class Fake implements RunningMode
 {
-    private mixed $update;
 
     /**
      * Fake running mode constructor.
-     * @param $update
+     * @param  string|null  $update
      */
-    public function __construct(mixed $update)
+    public function __construct(private mixed $update = null)
     {
-        $this->update = $update;
     }
 
     public function processUpdates(Nutgram $bot): void
@@ -27,5 +25,15 @@ class Fake implements RunningMode
             ->map($this->update, new Update());
 
         $bot->processUpdate($update);
+    }
+
+    /**
+     * @param  mixed  $update
+     * @return Fake
+     */
+    public function setUpdate(mixed $update): Fake
+    {
+        $this->update = $update;
+        return $this;
     }
 }

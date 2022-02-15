@@ -10,13 +10,20 @@ it('return the right running mode', function ($update) {
     expect($bot->getUpdateMode())->toBe(Fake::class);
 })->with('callback_query');
 
-it('works as mocked instance', function () {
+it('works as mocked instance', function ($update) {
 
-//    $bot = Nutgram::fake()
-//        ->withUpdate()
-//        ->withResponse();
-//
-//    $bot->sendMessage('gne');
-//
-//    $bot->assertSendMessageCalled();
-});
+    $bot = Nutgram::fake()
+        ->hears($update)
+        ->willReceive(['text' => 'test'])
+        ->willReceive(['text' => 'test']);
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->sendMessage('test');
+        $bot->sendMessage('sos');
+    });
+
+    $bot->assertSendMessageCalled(2)
+        ->assertSendMessageContains('test')
+        ->assertSendMessageContains('sos', 1);
+
+})->with('message');
