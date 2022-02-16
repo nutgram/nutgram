@@ -83,5 +83,4 @@ class Webhook implements RunningMode
     {
         $this->safeMode = $safeMode;
     }
-
 }
