@@ -2,7 +2,6 @@
 
 namespace SergiX44\Nutgram\Testing;
 
-use Exception;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -15,10 +14,7 @@ use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertSame;
 
-/**
- * @method assertSendMessageCalled(int $times): self
- * @method assertSendMessageContains(mixed $expected, ?int $index = 0): self
- */
+
 class FakeNutgram extends Nutgram
 {
     /**
@@ -30,11 +26,6 @@ class FakeNutgram extends Nutgram
      * @var array
      */
     protected array $testingHistory = [];
-
-    /**
-     * @var bool
-     */
-    private bool $hasRun = false;
 
     /**
      * @param  mixed  $update
@@ -113,33 +104,6 @@ class FakeNutgram extends Nutgram
 
     /**
      * @param  string  $name
-     * @param  array  $arguments
-     * @return self
-     * @throws \JsonException
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
-    public function __call(string $name, array $arguments): self
-    {
-        if (!$this->hasRun) {
-            $this->run();
-            $this->hasRun = true;
-        }
-
-        $lowerName = strtolower($name);
-
-        // begin assertion
-        match (str_starts_with($lowerName, 'assert')) {
-            str_ends_with($lowerName, 'called') => $this->assertApiMethodCalled($this->extractName($name, 'called'), $arguments),
-            str_ends_with($lowerName, 'contains') => $this->assertApiMethodContains($this->extractName($name, 'contains'), $arguments),
-            default => throw new Exception('Invalid assertion')
-        };
-
-        return $this;
-    }
-
-    /**
-     * @param  string  $name
      * @param  string  $string
      * @return string
      */
@@ -150,13 +114,11 @@ class FakeNutgram extends Nutgram
 
     /**
      * @param  string  $method
-     * @param  array  $arguments
-     * @return void
+     * @param  int  $times
+     * @return FakeNutgram
      */
-    private function assertApiMethodCalled(string $method, array $arguments): void
+    public function assertApiMethodCalled(string $method, int $times): self
     {
-        [$expected,] = $arguments;
-
         $actual = 0;
         foreach ($this->testingHistory as $reqRes) {
             /** @var Request $request */
@@ -167,26 +129,30 @@ class FakeNutgram extends Nutgram
             }
         }
 
-        assertEquals($expected, $actual);
+        assertEquals($times, $actual);
+
+        return $this;
     }
 
     /**
      * @param  string  $method
-     * @param  array  $arguments
-     * @return void
-     * @throws \JsonException
+     * @param  mixed  $data
+     * @param  int  $index
+     * @return FakeNutgram
      */
-    private function assertApiMethodContains(string $method, array $arguments): void
+    public function assertApiRequestContains(string $method, mixed $data, int $index = 0): self
     {
-        $reqRes = $this->testingHistory[$arguments[1] ?? 0];
+        $reqRes = $this->testingHistory[$index];
 
         /** @var Request $request */
         [$request,] = array_values($reqRes);
 
         assertSame($method, $request->getUri()->getPath());
 
-        $data = json_decode((string) $request->getBody(), true, flags: JSON_THROW_ON_ERROR);
+        $actual = json_decode((string) $request->getBody(), true, flags: JSON_THROW_ON_ERROR);
 
-        assertContains($arguments[0] ?? [], $data);
+        assertContains($data, $actual);
+
+        return $this;
     }
 }

@@ -21,7 +21,10 @@ it('works as mocked instance', function ($update) {
         $bot->sendMessage('sos');
     });
 
-    $bot->assertSendMessageCalled(2)
-        ->assertSendMessageContains('test')
-        ->assertSendMessageContains('sos', 1);
+    $bot->run();
+
+    $bot->assertApiMethodCalled('sendMessage', 2)
+        ->assertApiRequestContains('sendMessage', 'test')
+        ->assertApiRequestContains('sendMessage', 'sos', 1);
+
 })->with('message');
