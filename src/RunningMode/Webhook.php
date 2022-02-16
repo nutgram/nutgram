@@ -57,12 +57,11 @@ class Webhook implements RunningMode
      */
     public function isSafe(): bool
     {
-        $ip_dec = (float)sprintf("%u", ip2long($_SERVER['REMOTE_ADDR']));
+        $ip = $_SERVER['REMOTE_ADDR'];
 
         foreach ($this->telegramIpRanges as $ipRange) {
             // Make sure the IP is valid.
-            if ($ip_dec >= (float)sprintf("%u", ip2long($ipRange['lower'])) &&
-                $ip_dec <= (float)sprintf("%u", ip2long($ipRange['upper']))) {
+            if ($ip >= $ipRange['lower'] && $ip <= $ipRange['upper']) {
                 return true;
             }
         }
@@ -84,4 +83,5 @@ class Webhook implements RunningMode
     {
         $this->safeMode = $safeMode;
     }
+
 }
