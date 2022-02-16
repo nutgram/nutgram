@@ -14,7 +14,6 @@ use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertSame;
 
-
 class FakeNutgram extends Nutgram
 {
     /**

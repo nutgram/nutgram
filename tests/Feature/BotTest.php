@@ -26,5 +26,4 @@ it('works as mocked instance', function ($update) {
     $bot->assertApiMethodCalled('sendMessage', 2)
         ->assertApiRequestContains('sendMessage', 'test')
         ->assertApiRequestContains('sendMessage', 'sos', 1);
-
 })->with('message');
