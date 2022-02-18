@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\RunningMode;
 
+use Closure;
 use JsonMapper;
 use JsonMapper_Exception;
 use Psr\SimpleCache\InvalidArgumentException;
@@ -14,11 +15,11 @@ class Webhook implements RunningMode
 {
 
     /**
-     * @var array|\string[][]
+     * @var array|string[]
      */
-    protected array $telegramIpRanges = [
-        ['lower' => '149.154.160.0', 'upper' => '149.154.175.255'], // literally 149.154.160.0/20
-        ['lower' => '91.108.4.0', 'upper' => '91.108.7.255'],    // literally 91.108.4.0/22
+    public const TELEGRAM_IPV4_RANGES = [
+        '149.154.160.0' => '149.154.175.255', // literally 149.154.160.0/20
+        '91.108.4.0' => '91.108.7.255',    // literally 91.108.4.0/22
     ];
 
 
@@ -27,6 +28,19 @@ class Webhook implements RunningMode
      * @var bool
      */
     protected bool $safeMode = false;
+
+    /**
+     * @var Closure
+     */
+    protected Closure $resolveIp;
+
+    /**
+     * @param  Closure|null  $resolveIp
+     */
+    public function __construct(?Closure $resolveIp = null)
+    {
+        $this->resolveIp = $resolveIp ?? static fn() => $_SERVER['REMOTE_ADDR'];
+    }
 
 
     /**
@@ -37,7 +51,8 @@ class Webhook implements RunningMode
      */
     public function processUpdates(Nutgram $bot): void
     {
-        if ($this->safeMode && !$this->isSafe()) {
+
+        if ($this->safeMode && !$this->isSafeIpv4()) {
             return;
         }
 
@@ -55,13 +70,17 @@ class Webhook implements RunningMode
     /**
      * @return bool
      */
-    public function isSafe(): bool
+    public function isSafeIpv4(): bool
     {
-        $ip = $_SERVER['REMOTE_ADDR'];
+        $ip = ip2long(call_user_func($this->resolveIp));
 
-        foreach ($this->telegramIpRanges as $ipRange) {
-            // Make sure the IP is valid.
-            if ($ip >= $ipRange['lower'] && $ip <= $ipRange['upper']) {
+        if ($ip === false) {
+            return false;
+        }
+
+        foreach (self::TELEGRAM_IPV4_RANGES as $lower => $upper) {
+            // Make sure the IPv4 is valid.
+            if ($ip >= ip2long($lower) && $ip <= ip2long($upper)) {
                 return true;
             }
         }
@@ -78,9 +97,21 @@ class Webhook implements RunningMode
 
     /**
      * @param  bool  $safeMode
+     * @return self
      */
-    public function setSafeMode(bool $safeMode): void
+    public function setSafeMode(bool $safeMode): self
     {
         $this->safeMode = $safeMode;
+        return $this;
+    }
+
+    /**
+     * @param  Closure  $resolveIp
+     * @return Webhook
+     */
+    public function requestIpFrom(Closure $resolveIp): Webhook
+    {
+        $this->resolveIp = $resolveIp;
+        return $this;
     }
 }
