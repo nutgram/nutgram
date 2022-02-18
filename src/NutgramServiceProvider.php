@@ -41,7 +41,12 @@ class NutgramServiceProvider extends ServiceProvider
             if ($app->runningInConsole()) {
                 $bot->setRunningMode(Polling::class);
             } else {
-                $bot->setRunningMode(Webhook::class);
+                $webhook = (new Webhook())
+                    ->setSafeMode(config('nutgram.safe-mode', false))
+                    // take into account the trust proxy Laravel configuration
+                    ->requestIpFrom(fn () => request()?->ip());
+
+                $bot->setRunningMode($webhook);
             }
 
             return $bot;
