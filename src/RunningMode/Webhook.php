@@ -39,7 +39,7 @@ class Webhook implements RunningMode
      */
     public function __construct(?Closure $resolveIp = null)
     {
-        $this->resolveIp = $resolveIp ?? static fn() => $_SERVER['REMOTE_ADDR'];
+        $this->resolveIp = $resolveIp ?? static fn () => $_SERVER['REMOTE_ADDR'];
     }
 
 
@@ -51,7 +51,6 @@ class Webhook implements RunningMode
      */
     public function processUpdates(Nutgram $bot): void
     {
-
         if ($this->safeMode && !$this->isSafeIpv4()) {
             return;
         }

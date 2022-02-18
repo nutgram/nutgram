@@ -44,7 +44,7 @@ class NutgramServiceProvider extends ServiceProvider
                 $webhook = (new Webhook())
                     ->setSafeMode(config('nutgram.safe-mode', false))
                     // take into account the trust proxy Laravel configuration
-                    ->requestIpFrom(fn() => request()?->ip());
+                    ->requestIpFrom(fn () => request()?->ip());
 
                 $bot->setRunningMode($webhook);
             }
