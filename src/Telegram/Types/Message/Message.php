@@ -399,8 +399,8 @@ class Message
         return match (true) {
             $this->text !== null => MessageTypes::TEXT,
             $this->audio !== null => MessageTypes::AUDIO,
-            $this->document !== null => MessageTypes::DOCUMENT,
             $this->animation !== null => MessageTypes::ANIMATION,
+            $this->document !== null => MessageTypes::DOCUMENT,
             $this->game !== null => MessageTypes::GAME,
             $this->photo !== null => MessageTypes::PHOTO,
             $this->sticker !== null => MessageTypes::STICKER,
