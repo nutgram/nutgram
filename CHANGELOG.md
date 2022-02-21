@@ -2,6 +2,11 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 1.4.1 - 2022-02-21
+
+### Fixed
+- Fixed wrong handler with "animation" message
+
 ## 1.4.0 - 2022-02-18
 
 ### Added
