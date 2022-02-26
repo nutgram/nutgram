@@ -95,6 +95,13 @@ class Message extends BaseType
     public ?int $forward_date = null;
 
     /**
+     * Optional. True, if the message is a channel post that was automatically forwarded
+     * to the connected discussion group
+     * @var int|null
+     */
+    public ?int $is_automatic_forward = null;
+
+    /**
      * Optional. For replies, the original message.
      * Note that the Message object in this field will not contain further
      * reply_to_message fields even if it itself is a reply.
@@ -110,6 +117,12 @@ class Message extends BaseType
      * Optional. Date the message was last edited in Unix time
      */
     public ?int $edit_date = null;
+
+    /**
+     * Optional. True, if the message can't be forwarded
+     * @var bool|null
+     */
+    public ?bool $has_protected_content = null;
 
     /**
      * Optional. The unique identifier of a media message group this message belongs to
@@ -387,8 +400,8 @@ class Message extends BaseType
         return match (true) {
             $this->text !== null => MessageTypes::TEXT,
             $this->audio !== null => MessageTypes::AUDIO,
-            $this->document !== null => MessageTypes::DOCUMENT,
             $this->animation !== null => MessageTypes::ANIMATION,
+            $this->document !== null => MessageTypes::DOCUMENT,
             $this->game !== null => MessageTypes::GAME,
             $this->photo !== null => MessageTypes::PHOTO,
             $this->sticker !== null => MessageTypes::STICKER,

@@ -47,7 +47,9 @@ abstract class Conversation
     }
 
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram  $bot
+     *
+     * @return never
      */
     public function start(Nutgram $bot)
     {
@@ -77,7 +79,9 @@ abstract class Conversation
     }
 
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram  $bot
+     *
+     * @return void
      */
     protected function closing(Nutgram $bot)
     {

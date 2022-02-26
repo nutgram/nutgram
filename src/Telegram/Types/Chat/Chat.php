@@ -58,6 +58,13 @@ class Chat extends BaseType
     public ?string $bio = null;
 
     /**
+     * Optional. True, if privacy settings of the other party in the private chat allows to use tg://user?id=<user_id>
+     * links only in chats with the user. Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * @var bool|null
+     */
+    public ?bool $has_private_forwards = null;
+
+    /**
      * Optional. Description, for groups, supergroups and channel chats.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
@@ -89,6 +96,20 @@ class Chat extends BaseType
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?int $slow_mode_delay = null;
+
+    /**
+     * Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * @var int|null
+     */
+    public ?int $message_auto_delete_time = null;
+
+    /**
+     * Optional. True, if messages from the chat can't be forwarded to other chats.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * @var bool|null
+     */
+    public ?bool $has_protected_content = null;
 
     /**
      * Optional. For supergroups, name of Group sticker set.

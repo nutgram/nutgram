@@ -28,10 +28,10 @@
         "php": ">=8.0",
         "ext-json": "*",
         "guzzlehttp/guzzle": "^7.2",
+        "league/container": "^4.2",
         "netresearch/jsonmapper": "^4.0",
         "opis/closure": "^3.6",
-        "php-di/php-di": "^6.3",
-        "psr/simple-cache": "^1.0"
+        "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
     },
     "require-dev": {
         "orchestra/testbench": "^4.0 || ^5.0 || ^6.0",
@@ -55,7 +55,10 @@
         "psalm": "vendor/bin/psalm"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
