@@ -2,12 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents a file uploaded to Telegram Passport.
  * Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
  * @see https://core.telegram.org/bots/api#passportfile
  */
-class PassportFile
+class PassportFile extends BaseType
 {
     /**
      * Unique identifier for this file

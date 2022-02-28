@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * Describes actions that a non-administrator user is allowed to take in a chat.
  * @see https://core.telegram.org/bots/api#chatpermissions
  */
-class ChatPermissions
+class ChatPermissions extends BaseType
 {
     /**
      * Optional. True, if the user is allowed to send text messages, contacts, locations and venues
@@ -14,7 +16,8 @@ class ChatPermissions
     public ?bool $can_send_messages = null;
 
     /**
-     * Optional. True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
+     * Optional. True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes,
+     * implies can_send_messages
      */
     public ?bool $can_send_media_messages = null;
 

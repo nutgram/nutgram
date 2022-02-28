@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * Contains data required for decrypting and authenticating
  * {@see https://core.telegram.org/bots/api#encryptedpassportelement EncryptedPassportElement}.
@@ -9,7 +11,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Passport;
  * for a complete description of the data decryption and authentication processes.
  * @see https://core.telegram.org/bots/api#encryptedcredentials
  */
-class EncryptedCredentials
+class EncryptedCredentials extends BaseType
 {
     /**
      * Base64-encoded encrypted JSON-serialized data with unique user's payload, data hashes and secrets required for

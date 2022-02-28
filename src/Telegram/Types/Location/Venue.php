@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Location;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents a venue.
  * @see https://core.telegram.org/bots/api#venue
  */
-class Venue
+class Venue extends BaseType
 {
     /**
      * Venue location

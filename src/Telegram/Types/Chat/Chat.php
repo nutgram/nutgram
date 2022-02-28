@@ -2,13 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 /**
  * This object represents a chat.
  * @see https://core.telegram.org/bots/api#chat
  */
-class Chat
+class Chat extends BaseType
 {
     /**
      * Unique identifier for this chat.

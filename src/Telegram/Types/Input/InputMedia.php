@@ -3,7 +3,9 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-abstract class InputMedia
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
+abstract class InputMedia extends BaseType
 {
     /**
      * Type of the result

@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * Contains information about documents or other Telegram Passport elements shared with the bot by the user.
  * @see https://core.telegram.org/bots/api#encryptedpassportelement
  */
-class EncryptedPassportElement
+class EncryptedPassportElement extends BaseType
 {
     /**
      * Element type. One of “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport”,

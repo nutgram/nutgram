@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Location;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
@@ -10,7 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  * triggers a proximity alert set by another user.
  * @see https://core.telegram.org/bots/api#proximityalerttriggered
  */
-class ProximityAlertTriggered
+class ProximityAlertTriggered extends BaseType
 {
     /**
      * User that triggered the alert

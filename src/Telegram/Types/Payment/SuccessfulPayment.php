@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object contains basic information about a successful payment.
  * @see https://core.telegram.org/bots/api#successfulpayment
  */
-class SuccessfulPayment
+class SuccessfulPayment extends BaseType
 {
     /**
      * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code

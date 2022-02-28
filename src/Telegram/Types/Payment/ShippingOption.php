@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents one shipping option.
  * @see https://core.telegram.org/bots/api#shippingoption
  */
-class ShippingOption
+class ShippingOption extends BaseType
 {
     /**
      * Shipping option identifier

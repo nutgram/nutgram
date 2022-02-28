@@ -2,13 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * Represents a join request sent to a chat.
  * @see https://core.telegram.org/bots/api#chatjoinrequest
  */
-class ChatJoinRequest
+class ChatJoinRequest extends BaseType
 {
     /**
      * Chat to which the request was sent

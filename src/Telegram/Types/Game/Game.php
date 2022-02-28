@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Game;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\Animation;
 
 /**
@@ -9,7 +10,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Animation;
  * Use BotFather to create and edit games, their short names will act as unique identifiers.
  * @see https://core.telegram.org/bots/api#game
  */
-class Game
+class Game extends BaseType
 {
     /**
      * Title of the game

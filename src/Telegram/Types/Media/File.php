@@ -3,7 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
 use GuzzleHttp\Exception\GuzzleException;
-use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents a file ready to be downloaded.
@@ -13,7 +13,7 @@ use SergiX44\Nutgram\Nutgram;
  * getFile}. Maximum file size to download is 20 MB
  * @see https://core.telegram.org/bots/api#file
  */
-class File
+class File extends BaseType
 {
     /**
      * Identifier for this file
@@ -35,20 +35,6 @@ class File
      * Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
      */
     public ?string $file_path = null;
-
-    /**
-     * @var Nutgram|null
-     */
-    private ?Nutgram $bot;
-
-    /**
-     * File constructor.
-     * @param  Nutgram  $bot
-     */
-    public function __construct(Nutgram $bot)
-    {
-        $this->bot = $bot;
-    }
 
     /**
      * @param  string  $path

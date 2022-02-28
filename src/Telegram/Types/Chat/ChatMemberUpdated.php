@@ -2,13 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object represents changes in the status of a chat member.
  * @see https://core.telegram.org/bots/api#chatmemberupdated
  */
-class ChatMemberUpdated
+class ChatMemberUpdated extends BaseType
 {
     /**
      * Chat the user belongs to
