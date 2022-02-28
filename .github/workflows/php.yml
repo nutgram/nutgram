@@ -13,8 +13,14 @@ jobs:
             fail-fast: false
             matrix:
                 php: [ 8.0, 8.1 ]
+                laravel: [8.*, 9.*]
+                include:
+                    -   laravel: 9.*
+                        testbench: 7.*
+                    -   laravel: 8.*
+                        testbench: 6.*
 
-        name: PHP ${{ matrix.php }}
+        name: PHP ${{ matrix.php }} + Laravel ${{ matrix.laravel }}
         steps:
             -   uses: actions/checkout@v2
 
@@ -37,7 +43,9 @@ jobs:
 
             -   name: Install dependencies
                 if: steps.composer-cache.outputs.cache-hit != 'true'
-                run: composer install --no-progress --no-ansi
+                run: |
+                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+                    composer update --prefer-dist --no-interaction --no-suggest
 
             -   name: Run test suite
                 run: composer run-script test
