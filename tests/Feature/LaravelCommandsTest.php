@@ -59,14 +59,14 @@ test('nutgram:hook:info prints the webhook info', function () {
 
     $this->artisan(HookInfoCommand::class)
         ->expectsTable(['Info', 'Value'], [
-            ['url', '',],
-            ['has_custom_certificate', 'false',],
-            ['pending_update_count', 0,],
-            ['ip_address', '',],
-            ['last_error_date', '',],
-            ['last_error_message', '',],
-            ['max_connections', '',],
-            ['allowed_updates', '',],
+            ['url', ''],
+            ['has_custom_certificate', 'false'],
+            ['pending_update_count', 0],
+            ['ip_address', null],
+            ['last_error_date', null],
+            ['last_error_message', null],
+            ['max_connections', null],
+            ['allowed_updates', ''],
         ])
         ->assertExitCode(0);
 });
