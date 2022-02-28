@@ -377,7 +377,7 @@ class Message extends BaseType
     public function getParsedCommand(): ?string
     {
         if ($this->text !== null && preg_match('/^(\/\w+)(@\w+)?(.+)?$/', $this->text, $matches)) {
-            return $matches[1].($matches[3] ?? '');
+            return $matches[1] . ($matches[3] ?? '');
         }
         return null;
     }
@@ -428,5 +428,29 @@ class Message extends BaseType
             $this->successful_payment !== null => MessageTypes::SUCCESSFUL_PAYMENT,
             default => null
         };
+    }
+
+    /**
+     * Delete the current message
+     * @return bool|null
+     */
+    public function delete(): ?bool
+    {
+        return $this->bot->deleteMessage($this->chat->id, $this->message_id);
+    }
+
+    /**
+     * Edit the current message text
+     * @param  string  $text
+     * @param  array|null  $opt
+     * @see Nutgram::editMessageText
+     * @return Message|bool|null
+     */
+    public function editText(string $text, ?array $opt = []): Message|bool|null
+    {
+        return $this->bot->editMessageText($text, array_merge([
+            'chat_id' => $this->chat->id,
+            'message_id' => $this->message_id
+        ], $opt));
     }
 }

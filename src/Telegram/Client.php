@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Traits\Macroable;
 use JsonException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -41,7 +42,8 @@ trait Client
         InlineMode,
         Payments,
         Passport,
-        Games;
+        Games,
+        Macroable;
 
     /**
      * Use this method to receive incoming updates using long polling.

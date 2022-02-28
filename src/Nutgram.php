@@ -4,7 +4,6 @@
 namespace SergiX44\Nutgram;
 
 use GuzzleHttp\Client as Guzzle;
-use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
 use JsonMapper;
 use League\Container\Container;
@@ -33,7 +32,7 @@ use Throwable;
 
 class Nutgram extends ResolveHandlers
 {
-    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy, Macroable;
+    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy;
 
     protected const DEFAULT_API_URL = 'https://api.telegram.org';
 
