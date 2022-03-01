@@ -13,11 +13,17 @@ it('return the right running mode', function ($update) {
 it('works as mocked instance', function ($update) {
     $bot = Nutgram::fake()
         ->hears($update)
-        ->willReceivePartial(['text' => 'aaa']);
+        ->willReceivePartial(['text' => 'aaa'])
+        ->willReceivePartial(['chat' => ['id' => 123]]);
 
     $bot->onMessage(function (Nutgram $bot) {
-        $bot->sendMessage('test');
-        $bot->sendMessage('sos');
+        $message = $bot->sendMessage('test');
+
+        expect($message->text)->toBe('aaa');
+
+        $message = $bot->sendMessage('sos');
+
+        expect($message->chat->id)->toBe(123);
     });
 
     $bot->run();

@@ -48,7 +48,7 @@ class TypeFaker
         foreach ($properties as $property) {
             $typeName = $property->getType()?->getName();
 
-            if (array_key_exists($property->name, $partial)) {
+            if (array_key_exists($property->name, $partial) && !is_array($partial[$property->name])) {
                 $instance->{$property->name} = $partial[$property->name];
                 continue;
             }
