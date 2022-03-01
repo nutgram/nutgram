@@ -3,6 +3,18 @@
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
 use ReflectionClass;
+use SergiX44\Nutgram\Telegram\Types\Channel\ChannelPost;
+use SergiX44\Nutgram\Telegram\Types\Channel\EditedChannelPost;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
+use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
+use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
+use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
+use SergiX44\Nutgram\Telegram\Types\Message\EditedMessage;
+use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
+use SergiX44\Nutgram\Telegram\Types\Payment\ShippingQuery;
+use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
+use SergiX44\Nutgram\Telegram\Types\Poll\PollAnswer;
 
 class UpdateTypes
 {
@@ -26,5 +38,27 @@ class UpdateTypes
     public static function all(): array
     {
         return (new ReflectionClass(__CLASS__))->getConstants();
+    }
+
+    /**
+     * @param  string  $type
+     * @return string
+     */
+    public static function classOf(string $type): string
+    {
+        return match ($type) {
+            self::MESSAGE => Message::class,
+            self::EDITED_MESSAGE => EditedMessage::class,
+            self::CHANNEL_POST => ChannelPost::class,
+            self::EDITED_CHANNEL_POST => EditedChannelPost::class,
+            self::INLINE_QUERY => InlineQuery::class,
+            self::CHOSEN_INLINE_RESULT => ChosenInlineResult::class,
+            self::CALLBACK_QUERY => CallbackQuery::class,
+            self::SHIPPING_QUERY => ShippingQuery::class,
+            self::PRE_CHECKOUT_QUERY => PreCheckoutQuery::class,
+            self::POLL => Poll::class,
+            self::POLL_ANSWER => PollAnswer::class,
+            self::MY_CHAT_MEMBER, self::CHAT_MEMBER => ChatMemberUpdated::class,
+        };
     }
 }

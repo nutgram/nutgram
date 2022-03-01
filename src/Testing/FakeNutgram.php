@@ -7,12 +7,15 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use InvalidArgumentException;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\RequestInterface;
 use ReflectionClass;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\RunningMode\RunningMode;
+use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 class FakeNutgram extends Nutgram
 {
@@ -30,6 +33,8 @@ class FakeNutgram extends Nutgram
      * @var array
      */
     protected array $partialReceives = [];
+
+    protected TypeFaker $typeFaker;
 
     /**
      * @param  mixed  $update
@@ -58,15 +63,15 @@ class FakeNutgram extends Nutgram
      */
     protected function bindToInstance(HandlerStack $handlerStack): void
     {
-        $typeFaker = new TypeFaker($this->getContainer());
+        $this->typeFaker = new TypeFaker($this->getContainer());
 
-        $handlerStack->push(function (callable $handler) use ($typeFaker) {
-            return function (RequestInterface $request, array $options) use ($typeFaker, $handler) {
+        $handlerStack->push(function (callable $handler) {
+            return function (RequestInterface $request, array $options) use ($handler) {
                 if ($this->mockHandler->count() === 0) {
                     [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
                     $reflectionClass = new ReflectionClass(self::class);
                     $method = $reflectionClass->getMethod($request->getUri());
-                    $instance = $typeFaker->fakeFor(
+                    $instance = $this->typeFaker->fakeInstanceOf(
                         $method->getReturnType()?->getName(),
                         $partialResult
                     );
@@ -102,12 +107,30 @@ class FakeNutgram extends Nutgram
     }
 
     /**
+     * @param  string  $type
+     * @param  array  $partialAttributes
+     * @return $this
+     */
+    public function hears(string $type, array $partialAttributes = []): static
+    {
+        if (!in_array($type, UpdateTypes::all(), true)) {
+            throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
+        }
+
+        /** @var Update $update */
+        $update = $this->getContainer()->get(Update::class);
+
+        $update->{$type} = $this->typeFaker->fakeInstanceOf(UpdateTypes::classOf($type), $partialAttributes);
+
+        return $this->hearsUpdate($update);
+    }
+
+    /**
      * @param  mixed  $update
      * @return $this
      */
-    public function hears(mixed $update): static
+    public function hearsUpdate(Update $update): static
     {
-        $update = is_string($update) ? json_decode($update, flags: JSON_THROW_ON_ERROR) : $update;
         $this->getContainer()->get(RunningMode::class)->setUpdate($update);
 
         return $this;

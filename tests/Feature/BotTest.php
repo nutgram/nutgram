@@ -2,6 +2,7 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
+use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 
 it('return the right running mode', function ($update) {
     /** @var \SergiX44\Nutgram\Nutgram $bot */
@@ -12,7 +13,7 @@ it('return the right running mode', function ($update) {
 
 it('works as mocked instance', function ($update) {
     $bot = Nutgram::fake()
-        ->hears($update)
+        ->hears(UpdateTypes::MESSAGE)
         ->willReceivePartial(['text' => 'aaa'])
         ->willReceivePartial(['chat' => ['id' => 123]]);
 

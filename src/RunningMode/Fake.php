@@ -20,9 +20,13 @@ class Fake implements RunningMode
 
     public function processUpdates(Nutgram $bot): void
     {
-        $update = $bot->getContainer()
-            ->get(JsonMapper::class)
-            ->map($this->update, $bot->getContainer()->get(Update::class));
+        if ($this->update instanceof Update) {
+            $update = $this->update;
+        } else {
+            $update = $bot->getContainer()
+                ->get(JsonMapper::class)
+                ->map($this->update, $bot->getContainer()->get(Update::class));
+        }
 
         $bot->processUpdate($update);
     }

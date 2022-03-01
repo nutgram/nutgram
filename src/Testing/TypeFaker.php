@@ -39,7 +39,22 @@ class TypeFaker
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \ReflectionException
      */
-    public function fakeFor(string $class, array $partial = []): mixed
+    public function fakeInstanceOf(string $class, array $partial = []): mixed
+    {
+        return $this->fakeInstance($class, $partial);
+    }
+
+    /**
+     * @template T
+     * @param  class-string<T>  $class
+     * @param  array  $partial
+     * @param  string|null  $original
+     * @return T
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \ReflectionException
+     */
+    private function fakeInstance(string $class, array $partial = [], string $original = null)
     {
         $reflectionClass = new ReflectionClass($class);
 
@@ -58,12 +73,8 @@ class TypeFaker
                 continue;
             }
 
-            if ($property->getType()->allowsNull()) {
-                continue;
-            }
-
-            if (class_exists($typeName)) {
-                $instance->{$property->name} = $this->fakeFor($typeName, $partial[$property->name] ?? []);
+            if (class_exists($typeName) && $typeName !== $original) {
+                $instance->{$property->name} = $this->fakeInstance($typeName, $partial[$property->name] ?? [], $class);
                 continue;
             }
 
@@ -71,9 +82,11 @@ class TypeFaker
                 'int' => $this->faker->numberBetween(),
                 'string' => $this->faker->text(16),
                 'bool' => $this->faker->boolean(),
+                'float' => $this->faker->randomFloat(),
                 default => null
             };
         }
+
         return $instance;
     }
 }
