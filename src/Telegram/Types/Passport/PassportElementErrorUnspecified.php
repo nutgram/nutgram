@@ -2,12 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * Represents an issue in an unspecified place.
  * The error is considered resolved when new data is added.
  * @see https://core.telegram.org/bots/api#passportelementerrorunspecified
  */
-class PassportElementErrorUnspecified
+class PassportElementErrorUnspecified extends BaseType
 {
     /**
      * Error source, must be unspecified

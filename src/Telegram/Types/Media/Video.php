@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents a video file.
  * @see https://core.telegram.org/bots/api#video
  */
-class Video
+class Video extends BaseType
 {
     /**
      * Identifier for this file

@@ -2,13 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Poll;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object represents an answer of a user in a non-anonymous poll.
  * @see https://core.telegram.org/bots/api#pollanswer
  */
-class PollAnswer
+class PollAnswer extends BaseType
 {
     /**
      * Unique poll identifier

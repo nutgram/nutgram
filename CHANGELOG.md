@@ -2,6 +2,27 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 1.4.1 - 2022-02-21
+
+### Fixed
+- Fixed wrong handler with "animation" message
+
+## 1.4.0 - 2022-02-18
+
+### Added
+- Webhook safe mode.
+
+### Changed
+- Replace service container implementation.
+
+### Fixed
+- Dependency conflict on Laravel 9.
+
+## 1.3.0 - 2022-02-07
+
+### Added
+- Support for bot api 5.6/5.7.
+
 ## 1.2.0 - 2021-12-09
 
 ### Added

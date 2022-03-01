@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents an audio file to be treated as music by the Telegram clients.
  * @see https://core.telegram.org/bots/api#audio
  */
-class Audio
+class Audio extends BaseType
 {
     /**
      * Identifier for this file

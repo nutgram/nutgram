@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -10,7 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  * When the user sends an empty query, your bot could return some default or trending results.
  * @see https://core.telegram.org/bots/api#inlinequery
  */
-class InlineQuery
+class InlineQuery extends BaseType
 {
     /**
      * Unique identifier for this query

@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents a chat photo.
  * @see https://core.telegram.org/bots/api#chatphoto
  */
-class ChatPhoto
+class ChatPhoto extends BaseType
 {
     /**
      * File identifier of small (160x160) chat photo.

@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents a parameter of the inline keyboard button used to automatically authorize a user.
  * Serves as a great replacement for the Telegram Login Widget when the user is coming from Telegram.
@@ -12,7 +14,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Common;
  * @see https://t.me/discussbot [at]discussbot
  * @see https://core.telegram.org/bots/api#loginurl
  */
-class LoginUrl
+class LoginUrl extends BaseType
 {
     /**
      * An HTTP URL to be opened with user authorization data added to the query string when the button is

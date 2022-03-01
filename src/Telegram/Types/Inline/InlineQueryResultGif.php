@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
@@ -15,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * the specified content instead of the animation.
  * @see https://core.telegram.org/bots/api#inlinequeryresultgif
  */
-class InlineQueryResultGif
+class InlineQueryResultGif extends BaseType
 {
     /**
      * Type of the result, must be gif

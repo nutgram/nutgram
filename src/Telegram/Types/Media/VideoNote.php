@@ -2,13 +2,15 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents a video message (available in Telegram apps as of v.4.0).
  * @see https://telegram.org/blog/video-messages-and-telescope video message
  * @see https://telegram.org/blog/video-messages-and-telescope v.4.0
  * @see https://core.telegram.org/bots/api#videonote
  */
-class VideoNote
+class VideoNote extends BaseType
 {
     /**
      * Identifier for this file
@@ -16,7 +18,8 @@ class VideoNote
     public string $file_id;
 
     /**
-     * Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+     * Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be
+     * used to download or reuse the file.
      */
     public string $file_unique_id;
 

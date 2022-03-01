@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Chat;
 use RuntimeException;
 use SergiX44\Nutgram\Telegram\Attributes\ChatMemberStatus;
 use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
@@ -19,7 +20,7 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  *
  * @see https://core.telegram.org/bots/api#chatmember
  */
-class ChatMember
+class ChatMember extends BaseType
 {
     use ChatMemberOwner;
     use ChatMemberAdministrator;

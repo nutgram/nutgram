@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object describes the position on faces where a mask should be placed by default.
  * @see https://core.telegram.org/bots/api#maskposition
  */
-class MaskPosition
+class MaskPosition extends BaseType
 {
     /**
      * The part of the face relative to which the mask should be placed.

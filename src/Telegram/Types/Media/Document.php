@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents a general file (as opposed to
  * {@see https://core.telegram.org/bots/api#photosize photos},
@@ -9,7 +11,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Media;
  * {@see https://core.telegram.org/bots/api#audio audio files}).
  * @see https://core.telegram.org/bots/api#document
  */
-class Document
+class Document extends BaseType
 {
     /**
      * Identifier for this file
@@ -17,7 +19,8 @@ class Document
     public string $file_id;
 
     /**
-     * Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+     * Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be
+     * used to download or reuse the file.
      */
     public string $file_unique_id;
 

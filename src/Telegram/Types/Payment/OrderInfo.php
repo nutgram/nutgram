@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents information about an order.
  * @see https://core.telegram.org/bots/api#orderinfo
  */
-class OrderInfo
+class OrderInfo extends BaseType
 {
     /**
      * Optional. User name

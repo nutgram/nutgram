@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\User;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * This object represents a Telegram user or bot.
  * @see https://core.telegram.org/bots/api#user
  */
-class User
+class User extends BaseType
 {
     /**
      * Unique identifier for this user or bot

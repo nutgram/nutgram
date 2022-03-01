@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Game\Game;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -32,7 +33,7 @@ use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatStarted;
  * This object represents a message.
  * @see https://core.telegram.org/bots/api#message
  */
-class Message
+class Message extends BaseType
 {
     /**
      * Unique message identifier inside this chat
@@ -376,7 +377,7 @@ class Message
     public function getParsedCommand(): ?string
     {
         if ($this->text !== null && preg_match('/^(\/\w+)(@\w+)?(.+)?$/', $this->text, $matches)) {
-            return $matches[1].($matches[3] ?? '');
+            return $matches[1] . ($matches[3] ?? '');
         }
         return null;
     }
@@ -399,8 +400,8 @@ class Message
         return match (true) {
             $this->text !== null => MessageTypes::TEXT,
             $this->audio !== null => MessageTypes::AUDIO,
-            $this->document !== null => MessageTypes::DOCUMENT,
             $this->animation !== null => MessageTypes::ANIMATION,
+            $this->document !== null => MessageTypes::DOCUMENT,
             $this->game !== null => MessageTypes::GAME,
             $this->photo !== null => MessageTypes::PHOTO,
             $this->sticker !== null => MessageTypes::STICKER,
@@ -427,5 +428,29 @@ class Message
             $this->successful_payment !== null => MessageTypes::SUCCESSFUL_PAYMENT,
             default => null
         };
+    }
+
+    /**
+     * Delete the current message
+     * @return bool|null
+     */
+    public function delete(): ?bool
+    {
+        return $this->bot->deleteMessage($this->chat->id, $this->message_id);
+    }
+
+    /**
+     * Edit the current message text
+     * @param  string  $text
+     * @param  array|null  $opt
+     * @see Nutgram::editMessageText
+     * @return Message|bool|null
+     */
+    public function editText(string $text, ?array $opt = []): Message|bool|null
+    {
+        return $this->bot->editMessageText($text, array_merge([
+            'chat_id' => $this->chat->id,
+            'message_id' => $this->message_id
+        ], $opt));
     }
 }

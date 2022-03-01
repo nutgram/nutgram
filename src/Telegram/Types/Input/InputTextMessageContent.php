@@ -2,12 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content}
  * of a text message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputtextmessagecontent
  */
-class InputTextMessageContent
+class InputTextMessageContent extends BaseType
 {
     /**
      * Text of the message to be sent, 1-4096 characters

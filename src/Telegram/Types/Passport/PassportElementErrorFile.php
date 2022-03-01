@@ -2,12 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
 /**
  * Represents an issue with a document scan. The error is considered resolved when the file with the document scan
  * changes. Class PassportElementErrorFile
  * @see https://core.telegram.org/bots/api#passportelementerrorfile
  */
-class PassportElementErrorFile
+class PassportElementErrorFile extends BaseType
 {
     /**
      * Error source, must be file
