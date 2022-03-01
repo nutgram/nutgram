@@ -93,7 +93,7 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param MockHandler  $mockHandler
+     * @param  MockHandler  $mockHandler
      */
     public function setMockHandler(MockHandler $mockHandler): static
     {
@@ -178,6 +178,13 @@ class FakeNutgram extends Nutgram
         $actual = json_decode((string) $request->getBody(), true, flags: JSON_THROW_ON_ERROR);
 
         Assert::assertContains($data, $actual);
+
+        return $this;
+    }
+
+    public function fireUp(): self
+    {
+        $this->run();
 
         return $this;
     }
