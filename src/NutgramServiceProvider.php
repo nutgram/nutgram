@@ -13,6 +13,7 @@ use SergiX44\Nutgram\Laravel\Commands\RegisterCommandsCommand;
 use SergiX44\Nutgram\Laravel\Commands\RunCommand;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\Webhook;
+use SergiX44\Nutgram\Testing\FakeNutgram;
 
 /**
  * The Nutgram Service Provider for Laravel.
@@ -52,6 +53,7 @@ class NutgramServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(Nutgram::class, 'nutgram');
+        $this->app->alias(Nutgram::class, FakeNutgram::class);
     }
 
     /**

@@ -34,6 +34,7 @@
         "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
     },
     "require-dev": {
+        "fakerphp/faker": "^1.19",
         "orchestra/testbench": "^4.0 || ^5.0 || ^6.0",
         "pestphp/pest": "^1.1",
         "pestphp/pest-plugin-mock": "^1.0",
@@ -57,7 +58,8 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "composer/package-versions-deprecated": true
         }
     },
     "extra": {

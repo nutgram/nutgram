@@ -7,12 +7,12 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Assert;
+use Psr\Http\Message\RequestInterface;
+use ReflectionClass;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\RunningMode\RunningMode;
-use function PHPUnit\Framework\assertContains;
-use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertSame;
 
 class FakeNutgram extends Nutgram
 {
@@ -25,6 +25,11 @@ class FakeNutgram extends Nutgram
      * @var array
      */
     protected array $testingHistory = [];
+
+    /**
+     * @var array
+     */
+    protected array $partialReceives = [];
 
     /**
      * @param  mixed  $update
@@ -42,7 +47,7 @@ class FakeNutgram extends Nutgram
         ]);
 
         $bot->setRunningMode(new Fake($update));
-        $bot->setupHistoryContainer($handlerStack);
+        $bot->bindToInstance($handlerStack);
         $bot->setMockHandler($mock);
 
         return $bot;
@@ -51,8 +56,27 @@ class FakeNutgram extends Nutgram
     /**
      * @param  HandlerStack  $handlerStack
      */
-    protected function setupHistoryContainer(HandlerStack $handlerStack): void
+    protected function bindToInstance(HandlerStack $handlerStack): void
     {
+        $typeFaker = new TypeFaker($this->getContainer());
+
+        $handlerStack->push(function (callable $handler) use ($typeFaker) {
+            return function (RequestInterface $request, array $options) use ($typeFaker, $handler) {
+                if ($this->mockHandler->count() === 0) {
+                    $refl = new ReflectionClass(self::class);
+                    $method = $refl->getMethod($request->getUri());
+                    $instance = $typeFaker->fakeFor($method->getReturnType()->getName(),
+                        array_pop($this->partialReceives) ?? []);
+
+                    $this->mockHandler->append(new Response(body: json_encode([
+                        'ok' => true,
+                        'result' => $instance
+                    ], JSON_THROW_ON_ERROR)));
+                }
+                return $handler($request, $options);
+            };
+        }, 'handles_empty_queue');
+
         $history = Middleware::history($this->testingHistory);
         $handlerStack->push($history);
     }
@@ -88,12 +112,12 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  object|array  $result
+     * @param  array  $result
      * @param  bool  $ok
      * @return $this
      * @throws \JsonException
      */
-    public function willReceive(object|array $result, bool $ok = true): self
+    public function willReceive(array $result, bool $ok = true): self
     {
         $body = json_encode(compact('ok', 'result'), JSON_THROW_ON_ERROR);
         $this->mockHandler->append(new Response($ok ? 200 : 400, [], $body));
@@ -102,13 +126,14 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  string  $name
-     * @param  string  $string
-     * @return string
+     * @param  array  $result
+     * @return $this
      */
-    private function extractName(string $name, string $string): string
+    public function willReceivePartial(array $result): self
     {
-        return lcfirst(str_ireplace(['assert', $string], '', $name));
+        array_unshift($this->partialReceives, $result);
+
+        return $this;
     }
 
     /**
@@ -128,7 +153,7 @@ class FakeNutgram extends Nutgram
             }
         }
 
-        assertEquals($times, $actual);
+        Assert::assertEquals($times, $actual);
 
         return $this;
     }
@@ -146,11 +171,11 @@ class FakeNutgram extends Nutgram
         /** @var Request $request */
         [$request,] = array_values($reqRes);
 
-        assertSame($method, $request->getUri()->getPath());
+        Assert::assertSame($method, $request->getUri()->getPath());
 
         $actual = json_decode((string) $request->getBody(), true, flags: JSON_THROW_ON_ERROR);
 
-        assertContains($data, $actual);
+        Assert::assertContains($data, $actual);
 
         return $this;
     }
