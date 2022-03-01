@@ -41,10 +41,10 @@ class TypeFaker
      */
     public function fakeFor(string $class, array $partial = []): mixed
     {
-        $refl = new ReflectionClass($class);
+        $reflectionClass = new ReflectionClass($class);
 
         $instance = $this->container->get($class);
-        $properties = $refl->getProperties(ReflectionProperty::IS_PUBLIC);
+        $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PUBLIC);
         foreach ($properties as $property) {
             $typeName = $property->getType()->getName();
 

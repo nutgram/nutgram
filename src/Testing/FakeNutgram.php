@@ -63,15 +63,16 @@ class FakeNutgram extends Nutgram
         $handlerStack->push(function (callable $handler) use ($typeFaker) {
             return function (RequestInterface $request, array $options) use ($typeFaker, $handler) {
                 if ($this->mockHandler->count() === 0) {
-                    $refl = new ReflectionClass(self::class);
-                    $method = $refl->getMethod($request->getUri());
+                    [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
+                    $reflectionClass = new ReflectionClass(self::class);
+                    $method = $reflectionClass->getMethod($request->getUri());
                     $instance = $typeFaker->fakeFor(
                         $method->getReturnType()->getName(),
-                        array_pop($this->partialReceives) ?? []
+                        $partialResult
                     );
 
                     $this->mockHandler->append(new Response(body: json_encode([
-                        'ok' => true,
+                        'ok' => $ok,
                         'result' => $instance
                     ], JSON_THROW_ON_ERROR)));
                 }
@@ -131,9 +132,9 @@ class FakeNutgram extends Nutgram
      * @param  array  $result
      * @return $this
      */
-    public function willReceivePartial(array $result): self
+    public function willReceivePartial(array $result, bool $ok = true): self
     {
-        array_unshift($this->partialReceives, $result);
+        array_unshift($this->partialReceives, [$result, $ok]);
 
         return $this;
     }
