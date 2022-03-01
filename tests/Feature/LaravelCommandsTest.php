@@ -28,7 +28,7 @@ test('nutgram:register-commands registers the bot commands', function () {
 
 test('nutgram:hook:info prints the webhook info', function () {
     $this->mock(Nutgram::class, function (MockInterface $mock) {
-        $webhookInfo = new WebhookInfo(getInstance());
+        $webhookInfo = Nutgram::fake()->getContainer()->get(WebhookInfo::class);
         $webhookInfo->url = '';
         $webhookInfo->has_custom_certificate = false;
         $webhookInfo->pending_update_count = 0;

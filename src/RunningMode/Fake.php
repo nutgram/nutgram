@@ -22,7 +22,7 @@ class Fake implements RunningMode
     {
         $update = $bot->getContainer()
             ->get(JsonMapper::class)
-            ->map($this->update, new Update());
+            ->map($this->update, $bot->getContainer()->get(Update::class));
 
         $bot->processUpdate($update);
     }
