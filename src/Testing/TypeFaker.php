@@ -75,5 +75,4 @@ class TypeFaker
         }
         return $instance;
     }
-
 }

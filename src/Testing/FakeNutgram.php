@@ -65,8 +65,10 @@ class FakeNutgram extends Nutgram
                 if ($this->mockHandler->count() === 0) {
                     $refl = new ReflectionClass(self::class);
                     $method = $refl->getMethod($request->getUri());
-                    $instance = $typeFaker->fakeFor($method->getReturnType()->getName(),
-                        array_pop($this->partialReceives) ?? []);
+                    $instance = $typeFaker->fakeFor(
+                        $method->getReturnType()->getName(),
+                        array_pop($this->partialReceives) ?? []
+                    );
 
                     $this->mockHandler->append(new Response(body: json_encode([
                         'ok' => true,
