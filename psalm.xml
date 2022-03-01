@@ -18,5 +18,10 @@
                 <referencedClass name="Psr\SimpleCache\InvalidArgumentException"/>
             </errorLevel>
         </InvalidThrow>
+        <UndefinedMethod>
+            <errorLevel type="suppress">
+                <referencedMethod name="ReflectionType::getName" />
+            </errorLevel>
+        </UndefinedMethod>
     </issueHandlers>
 </psalm>

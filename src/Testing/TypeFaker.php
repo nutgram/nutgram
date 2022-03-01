@@ -46,7 +46,7 @@ class TypeFaker
         $instance = $this->container->get($class);
         $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PUBLIC);
         foreach ($properties as $property) {
-            $typeName = $property->getType()->getName();
+            $typeName = $property->getType()?->getName();
 
             if (array_key_exists($property->name, $partial)) {
                 $instance->{$property->name} = $partial[$property->name];
@@ -70,7 +70,8 @@ class TypeFaker
             $instance->{$property->name} = match ($typeName) {
                 'int' => $this->faker->numberBetween(),
                 'string' => $this->faker->text(16),
-                'bool' => $this->faker->boolean()
+                'bool' => $this->faker->boolean(),
+                default => null
             };
         }
         return $instance;

@@ -67,7 +67,7 @@ class FakeNutgram extends Nutgram
                     $reflectionClass = new ReflectionClass(self::class);
                     $method = $reflectionClass->getMethod($request->getUri());
                     $instance = $typeFaker->fakeFor(
-                        $method->getReturnType()->getName(),
+                        $method->getReturnType()?->getName(),
                         $partialResult
                     );
 
@@ -93,8 +93,7 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  MockHandler  $mockHandler
-     * @return FakeNutgram
+     * @param MockHandler  $mockHandler
      */
     public function setMockHandler(MockHandler $mockHandler): static
     {
