@@ -18,34 +18,39 @@ class TypeFaker
 
     /**
      * @template T
-     * @param  class-string<T>  $class
+     * @param  class-string<T>  $type
      * @param  array  $partial
-     * @return T
+     * @param  bool  $fillNullable
+     * @return T|string|int|bool|array|null|float
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \ReflectionException
      */
-    public function fakeInstanceOf(string $class, array $partial = []): mixed
+    public function fakeInstanceOf(string $type, array $partial = [], bool $fillNullable = true): mixed
     {
-        if (class_exists($class)) {
-            return $this->fakeInstance($class, $partial);
+        if (class_exists($type)) {
+            return $this->fakeInstance($type, $partial, $fillNullable);
         }
 
-        return $this->randomScalarOf($class);
+        return $this->randomScalarOf($type);
     }
 
     /**
      * @template T
      * @param  class-string<T>  $class
-     * @param  array  $partial
+     * @param  array  $additional
      * @param  array  $resolveStack
      * @return T
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \ReflectionException
      */
-    private function fakeInstance(string $class, array $partial = [], array $resolveStack = [])
-    {
+    private function fakeInstance(
+        string $class,
+        array $additional = [],
+        bool $fillNullable = true,
+        array $resolveStack = []
+    ) {
         $reflectionClass = new ReflectionClass($class);
 
         $instance = $this->container->get($class);
@@ -55,19 +60,21 @@ class TypeFaker
             $isNullable = $property->getType()?->allowsNull();
 
             // if specified by the user
-            if (array_key_exists($property->name, $partial) && !is_array($partial[$property->name])) {
-                $instance->{$property->name} = $partial[$property->name];
+            if (array_key_exists($property->name, $additional) && !is_array($additional[$property->name])) {
+                $instance->{$property->name} = $additional[$property->name];
+                continue;
+            }
+
+            if ($isNullable && !$fillNullable && !array_key_exists($property->name, $additional)) {
+                $instance->{$property->name} = null;
                 continue;
             }
 
             // if is a class, try to resolve it
             if ($this->shouldInstantiate($typeName, $resolveStack, $isNullable)) {
                 $resolveStack[] = $typeName;
-                $instance->{$property->name} = $this->fakeInstance(
-                    $typeName,
-                    $partial[$property->name] ?? [],
-                    $resolveStack
-                );
+                $instance->{$property->name} = $this->fakeInstance($typeName, $additional[$property->name] ?? [],
+                    $fillNullable, $resolveStack);
                 continue;
             }
 
@@ -76,7 +83,8 @@ class TypeFaker
                 $typeArray = str_ireplace('[]', '', $matches[1], $nesting);
                 if ($this->shouldInstantiate($typeArray, $resolveStack, $isNullable)) {
                     $resolveStack[] = $typeArray;
-                    $arrayInstance = $this->fakeInstance($typeArray, $partial[$property->name] ?? [], $resolveStack);
+                    $arrayInstance = $this->fakeInstance($typeArray, $additional[$property->name] ?? [], $fillNullable,
+                        $resolveStack);
                     $instance->{$property->name} = $this->wrap($arrayInstance, $nesting);
                     continue;
                 }
@@ -138,10 +146,8 @@ class TypeFaker
      */
     public function randomString(int $length = 8): string
     {
-        return substr(str_shuffle(str_repeat(
-            $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            ceil($length / strlen($x))
-        )), 1, $length);
+        return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            ceil($length / strlen($x)))), 1, $length);
     }
 
     /**

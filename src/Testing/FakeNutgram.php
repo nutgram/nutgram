@@ -38,6 +38,9 @@ class FakeNutgram extends Nutgram
      */
     protected array $partialReceives = [];
 
+    /**
+     * @var TypeFaker
+     */
     protected TypeFaker $typeFaker;
 
     /**
@@ -113,43 +116,7 @@ class FakeNutgram extends Nutgram
      * @param  array  $partialAttributes
      * @return $this
      */
-    public function hearMessageType(string $type = MessageTypes::TEXT, array $partialAttributes = []): self
-    {
-        if (!in_array($type, MessageTypes::all(), true)) {
-            throw new InvalidArgumentException('The parameter "type" is not a valid message type.');
-        }
-
-        /** @var Message $message */
-        $message = $this->getContainer()->get(Message::class);
-
-        $reflectedMessage = new ReflectionObject($message);
-
-        $nullProperties = array_diff(MessageTypes::all(), [$type]);
-
-        foreach ($reflectedMessage->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            if (in_array($property->name, $nullProperties, true)) {
-                continue;
-            }
-            $message->{$property->name} = $this->typeFaker->fakeInstanceOf(
-                $property->getType()?->getName(),
-                $partialAttributes
-            );
-        }
-
-        /** @var Update $update */
-        $update = $this->getContainer()->get(Update::class);
-
-        $update->message = $message;
-
-        return $this->hearUpdate($update);
-    }
-
-    /**
-     * @param  string  $type
-     * @param  array  $partialAttributes
-     * @return $this
-     */
-    public function hearUpdateType(string $type, array $partialAttributes = []): self
+    public function hearUpdateType(string $type, array $partialAttributes = [], bool $fillNullableFields = false): self
     {
         if (!in_array($type, UpdateTypes::all(), true)) {
             throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
@@ -163,7 +130,7 @@ class FakeNutgram extends Nutgram
             ->getType()
             ?->getName();
 
-        $update->{$type} = $this->typeFaker->fakeInstanceOf($class, $partialAttributes);
+        $update->{$type} = $this->typeFaker->fakeInstanceOf($class, $partialAttributes, $fillNullableFields);
 
         return $this->hearUpdate($update);
     }

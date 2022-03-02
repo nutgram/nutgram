@@ -12,14 +12,16 @@ it('return the right running mode', function ($update) {
     expect($bot->getUpdateMode())->toBe(Fake::class);
 })->with('callback_query');
 
-it('works as mocked instance', function ($update) {
+it('works as mocked instance', function () {
     $bot = Nutgram::fake()
-        ->hearMessageType(MessageTypes::ANIMATION)
+        ->hearUpdateType(UpdateTypes::MESSAGE, ['text' => '/testing', 'from' => ['username' => 'XD']])
         ->willReceivePartial(['text' => 'aaa'])
         ->willReceivePartial(['chat' => ['id' => 123]]);
 
-    $bot->onMessage(function (Nutgram $bot) {
+    $bot->onCommand('testing',function (Nutgram $bot) {
         $message = $bot->sendMessage('test');
+
+        expect($bot->user()->username)->toBe('XD');
 
         expect($message->text)->toBe('aaa');
 
@@ -32,4 +34,4 @@ it('works as mocked instance', function ($update) {
         ->assertApiMethodCalled('sendMessage', 2)
         ->assertApiRequestContains('sendMessage', 'test')
         ->assertApiRequestContains('sendMessage', 'sos', 1);
-})->with('message');
+});
