@@ -7,19 +7,17 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Testing\Assert as LaraUnit;
 use InvalidArgumentException;
-use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Assert as PHPUnit;
 use Psr\Http\Message\RequestInterface;
 use ReflectionClass;
 use ReflectionObject;
-use ReflectionProperty;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\RunningMode\RunningMode;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
-use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 class FakeNutgram extends Nutgram
 {
@@ -176,7 +174,7 @@ class FakeNutgram extends Nutgram
      * @param  int  $times
      * @return FakeNutgram
      */
-    public function assertApiMethodCalled(string $method, int $times): self
+    public function assertCalled(string $method, int $times = 1): self
     {
         $actual = 0;
         foreach ($this->testingHistory as $reqRes) {
@@ -188,29 +186,29 @@ class FakeNutgram extends Nutgram
             }
         }
 
-        Assert::assertEquals($times, $actual);
+        PHPUnit::assertEquals($times, $actual);
 
         return $this;
     }
 
     /**
      * @param  string  $method
-     * @param  mixed  $data
+     * @param  array  $expected
      * @param  int  $index
      * @return FakeNutgram
      */
-    public function assertApiRequestContains(string $method, mixed $data, int $index = 0): self
+    public function assertContains(string $method, array $expected, int $index = 0): self
     {
         $reqRes = $this->testingHistory[$index];
 
         /** @var Request $request */
         [$request,] = array_values($reqRes);
 
-        Assert::assertSame($method, $request->getUri()->getPath());
+        PHPUnit::assertSame($method, $request->getUri()->getPath());
 
-        $actual = json_decode((string) $request->getBody(), true, flags: JSON_THROW_ON_ERROR);
+        $actual = json_decode((string)$request->getBody(), true, flags: JSON_THROW_ON_ERROR);
 
-        Assert::assertContains($data, $actual);
+        LaraUnit::assertArraySubset($expected, $actual);
 
         return $this;
     }

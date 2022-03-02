@@ -31,7 +31,7 @@ it('works as mocked instance', function () {
     });
 
     $bot->fireUp()
-        ->assertApiMethodCalled('sendMessage', 2)
-        ->assertApiRequestContains('sendMessage', 'test')
-        ->assertApiRequestContains('sendMessage', 'sos', 1);
+        ->assertCalled('sendMessage', 2)
+        ->assertContains('sendMessage', 'test')
+        ->assertContains('sendMessage', 'sos', 1);
 });

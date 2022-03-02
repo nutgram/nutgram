@@ -28,15 +28,16 @@
         "php": ">=8.0",
         "ext-json": "*",
         "guzzlehttp/guzzle": "^7.2",
-        "illuminate/macroable": ">=8.0",
+        "illuminate/macroable": "^8.0|^9.0",
         "league/container": "^4.2",
         "netresearch/jsonmapper": "^4.0",
         "opis/closure": "^3.6",
-        "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
+        "psr/simple-cache": "^1.0|^2.0|^3.0"
     },
     "require-dev": {
         "ext-reflection": "*",
-        "orchestra/testbench": ">=6.0",
+        "illuminate/testing": "^8.0|^9.0",
+        "orchestra/testbench": "^6.0|^7.0",
         "pestphp/pest": "^1.1",
         "pestphp/pest-plugin-mock": "^1.0",
         "roave/security-advisories": "dev-latest",
