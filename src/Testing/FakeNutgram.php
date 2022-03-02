@@ -130,8 +130,10 @@ class FakeNutgram extends Nutgram
             if (in_array($property->name, $nullProperties, true)) {
                 continue;
             }
-            $message->{$property->name} = $this->typeFaker->fakeInstanceOf($property->getType()?->getName(),
-                $partialAttributes);
+            $message->{$property->name} = $this->typeFaker->fakeInstanceOf(
+                $property->getType()?->getName(),
+                $partialAttributes
+            );
         }
 
         /** @var Update $update */
