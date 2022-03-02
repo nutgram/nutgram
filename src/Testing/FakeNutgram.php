@@ -11,11 +11,15 @@ use InvalidArgumentException;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\RequestInterface;
 use ReflectionClass;
+use ReflectionObject;
+use ReflectionProperty;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\RunningMode\RunningMode;
+use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
+use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 class FakeNutgram extends Nutgram
 {
@@ -69,8 +73,7 @@ class FakeNutgram extends Nutgram
             return function (RequestInterface $request, array $options) use ($handler) {
                 if ($this->mockHandler->count() === 0) {
                     [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
-                    $reflectionClass = new ReflectionClass(self::class);
-                    $method = $reflectionClass->getMethod($request->getUri());
+                    $method = (new ReflectionClass(self::class))->getMethod($request->getUri());
                     $instance = $this->typeFaker->fakeInstanceOf(
                         $method->getReturnType()?->getName(),
                         $partialResult
@@ -85,8 +88,7 @@ class FakeNutgram extends Nutgram
             };
         }, 'handles_empty_queue');
 
-        $history = Middleware::history($this->testingHistory);
-        $handlerStack->push($history);
+        $handlerStack->push(Middleware::history($this->testingHistory));
     }
 
     /**
@@ -100,7 +102,7 @@ class FakeNutgram extends Nutgram
     /**
      * @param  MockHandler  $mockHandler
      */
-    public function setMockHandler(MockHandler $mockHandler): static
+    public function setMockHandler(MockHandler $mockHandler): self
     {
         $this->mockHandler = $mockHandler;
         return $this;
@@ -111,7 +113,41 @@ class FakeNutgram extends Nutgram
      * @param  array  $partialAttributes
      * @return $this
      */
-    public function hears(string $type, array $partialAttributes = []): static
+    public function hearMessageType(string $type = MessageTypes::TEXT, array $partialAttributes = []): self
+    {
+        if (!in_array($type, MessageTypes::all(), true)) {
+            throw new InvalidArgumentException('The parameter "type" is not a valid message type.');
+        }
+
+        /** @var Message $message */
+        $message = $this->getContainer()->get(Message::class);
+
+        $reflectedMessage = new ReflectionObject($message);
+
+        $nullProperties = array_diff(MessageTypes::all(), [$type]);
+
+        foreach ($reflectedMessage->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
+            if (in_array($property->name, $nullProperties, true)) {
+                continue;
+            }
+            $message->{$property->name} = $this->typeFaker->fakeInstanceOf($property->getType()?->getName(),
+                $partialAttributes);
+        }
+
+        /** @var Update $update */
+        $update = $this->getContainer()->get(Update::class);
+
+        $update->message = $message;
+
+        return $this->hearUpdate($update);
+    }
+
+    /**
+     * @param  string  $type
+     * @param  array  $partialAttributes
+     * @return $this
+     */
+    public function hearUpdateType(string $type, array $partialAttributes = []): self
     {
         if (!in_array($type, UpdateTypes::all(), true)) {
             throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
@@ -120,16 +156,21 @@ class FakeNutgram extends Nutgram
         /** @var Update $update */
         $update = $this->getContainer()->get(Update::class);
 
-        $update->{$type} = $this->typeFaker->fakeInstanceOf(UpdateTypes::classOf($type), $partialAttributes);
+        $class = (new ReflectionObject($update))
+            ->getProperty($type)
+            ->getType()
+            ?->getName();
 
-        return $this->hearsUpdate($update);
+        $update->{$type} = $this->typeFaker->fakeInstanceOf($class, $partialAttributes);
+
+        return $this->hearUpdate($update);
     }
 
     /**
      * @param  mixed  $update
      * @return $this
      */
-    public function hearsUpdate(Update $update): static
+    public function hearUpdate(Update $update): self
     {
         $this->getContainer()->get(RunningMode::class)->setUpdate($update);
 

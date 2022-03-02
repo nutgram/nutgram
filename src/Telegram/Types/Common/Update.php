@@ -136,6 +136,7 @@ class Update extends BaseType
             $this->poll_answer !== null => UpdateTypes::POLL_ANSWER,
             $this->my_chat_member !== null => UpdateTypes::MY_CHAT_MEMBER,
             $this->chat_member !== null => UpdateTypes::CHAT_MEMBER,
+            $this->chat_join_request !== null => UpdateTypes::CHAT_JOIN_REQUEST,
             default => null
         };
     }

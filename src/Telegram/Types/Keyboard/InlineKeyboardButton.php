@@ -82,7 +82,7 @@ class InlineKeyboardButton implements JsonSerializable
      * @param  bool  $pay
      */
     public function __construct(
-        string $text,
+        string $text = '',
         ?string $url = null,
         ?LoginUrl $login_url = null,
         ?string $callback_data = null,
@@ -113,7 +113,7 @@ class InlineKeyboardButton implements JsonSerializable
      * @return InlineKeyboardButton
      */
     public static function make(
-        string $text,
+        string $text = '',
         ?string $url = null,
         ?LoginUrl $login_url = null,
         ?string $callback_data = null,

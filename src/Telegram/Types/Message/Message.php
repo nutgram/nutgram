@@ -426,6 +426,13 @@ class Message extends BaseType
             $this->pinned_message !== null => MessageTypes::PINNED_MESSAGE,
             $this->invoice !== null => MessageTypes::INVOICE,
             $this->successful_payment !== null => MessageTypes::SUCCESSFUL_PAYMENT,
+            $this->message_auto_delete_timer_changed !== null => MessageTypes::MESSAGE_AUTO_DELETE_TIMER_CHANGED,
+            $this->connected_website !== null => MessageTypes::CONNECTED_WEBSITE,
+            $this->proximity_alert_triggered !== null => MessageTypes::PROXIMITY_ALERT_TRIGGERED,
+            $this->voice_chat_scheduled !== null => MessageTypes::VOICE_CHAT_SCHEDULED,
+            $this->voice_chat_started !== null => MessageTypes::VOICE_CHAT_STARTED,
+            $this->voice_chat_ended !== null => MessageTypes::VOICE_CHAT_ENDED,
+            $this->voice_chat_participants_invited !== null => MessageTypes::VOICE_CHAT_PARTICIPANTS_INVITED,
             default => null
         };
     }
