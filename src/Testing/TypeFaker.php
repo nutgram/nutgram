@@ -54,7 +54,7 @@ class TypeFaker
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \ReflectionException
      */
-    private function fakeInstance(string $class, array $partial = [], string $original = null)
+    private function fakeInstance(string $class, array $partial = [], array $resolveStack = [])
     {
         $reflectionClass = new ReflectionClass($class);
 
@@ -68,13 +68,9 @@ class TypeFaker
                 continue;
             }
 
-            if ($typeName === 'array') {
-                $instance->{$property->name} = []; // TODO: handle array properly
-                continue;
-            }
-
-            if (class_exists($typeName) && $typeName !== $original) {
-                $instance->{$property->name} = $this->fakeInstance($typeName, $partial[$property->name] ?? [], $class);
+            if (class_exists($typeName) && (!in_array($typeName, $resolveStack, true) || !$property->getType()->allowsNull())) {
+                $resolveStack[] = $typeName;
+                $instance->{$property->name} = $this->fakeInstance($typeName, $partial[$property->name] ?? [], $resolveStack);
                 continue;
             }
 
@@ -83,6 +79,7 @@ class TypeFaker
                 'string' => $this->faker->text(16),
                 'bool' => $this->faker->boolean(),
                 'float' => $this->faker->randomFloat(),
+                'array' => [],
                 default => null
             };
         }
