@@ -73,8 +73,12 @@ class TypeFaker
             // if is a class, try to resolve it
             if ($this->shouldInstantiate($typeName, $resolveStack, $isNullable)) {
                 $resolveStack[] = $typeName;
-                $instance->{$property->name} = $this->fakeInstance($typeName, $additional[$property->name] ?? [],
-                    $fillNullable, $resolveStack);
+                $instance->{$property->name} = $this->fakeInstance(
+                    $typeName,
+                    $additional[$property->name] ?? [],
+                    $fillNullable,
+                    $resolveStack
+                );
                 continue;
             }
 
@@ -83,8 +87,12 @@ class TypeFaker
                 $typeArray = str_ireplace('[]', '', $matches[1], $nesting);
                 if ($this->shouldInstantiate($typeArray, $resolveStack, $isNullable)) {
                     $resolveStack[] = $typeArray;
-                    $arrayInstance = $this->fakeInstance($typeArray, $additional[$property->name] ?? [], $fillNullable,
-                        $resolveStack);
+                    $arrayInstance = $this->fakeInstance(
+                        $typeArray,
+                        $additional[$property->name] ?? [],
+                        $fillNullable,
+                        $resolveStack
+                    );
                     $instance->{$property->name} = $this->wrap($arrayInstance, $nesting);
                     continue;
                 }
@@ -146,8 +154,10 @@ class TypeFaker
      */
     public function randomString(int $length = 8): string
     {
-        return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            ceil($length / strlen($x)))), 1, $length);
+        return substr(str_shuffle(str_repeat(
+            $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            ceil($length / strlen($x))
+        )), 1, $length);
     }
 
     /**
