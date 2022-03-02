@@ -5,22 +5,16 @@ namespace SergiX44\Nutgram\Testing;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Testing\Assert as LaraUnit;
-use InvalidArgumentException;
-use PHPUnit\Framework\Assert as PHPUnit;
 use Psr\Http\Message\RequestInterface;
 use ReflectionClass;
-use ReflectionObject;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
-use SergiX44\Nutgram\RunningMode\RunningMode;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
-use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 class FakeNutgram extends Nutgram
 {
+    use Hears, Asserts;
+
     /**
      * @var MockHandler
      */
@@ -110,41 +104,6 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  string  $type
-     * @param  array  $partialAttributes
-     * @return $this
-     */
-    public function hearUpdateType(string $type, array $partialAttributes = [], bool $fillNullableFields = false): self
-    {
-        if (!in_array($type, UpdateTypes::all(), true)) {
-            throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
-        }
-
-        /** @var Update $update */
-        $update = $this->getContainer()->get(Update::class);
-
-        $class = (new ReflectionObject($update))
-            ->getProperty($type)
-            ->getType()
-            ?->getName();
-
-        $update->{$type} = $this->typeFaker->fakeInstanceOf($class, $partialAttributes, $fillNullableFields);
-
-        return $this->hearUpdate($update);
-    }
-
-    /**
-     * @param  mixed  $update
-     * @return $this
-     */
-    public function hearUpdate(Update $update): self
-    {
-        $this->getContainer()->get(RunningMode::class)->setUpdate($update);
-
-        return $this;
-    }
-
-    /**
      * @param  array  $result
      * @param  bool  $ok
      * @return $this
@@ -175,77 +134,6 @@ class FakeNutgram extends Nutgram
     public function reply(): self
     {
         $this->run();
-
-        return $this;
-    }
-
-    /**
-     * @param  string  $method
-     * @param  int  $times
-     * @return FakeNutgram
-     */
-    public function assertCalled(string $method, int $times = 1): self
-    {
-        $actual = 0;
-        foreach ($this->testingHistory as $reqRes) {
-            /** @var Request $request */
-            [$request,] = array_values($reqRes);
-
-            if ($request->getUri()->getPath() === $method) {
-                $actual++;
-            }
-        }
-
-        PHPUnit::assertEquals($times, $actual);
-
-        return $this;
-    }
-
-    /**
-     * @param  string  $method
-     * @param  array  $expected
-     * @param  int  $index
-     * @return FakeNutgram
-     */
-    public function assertReply(string $method, array $expected, int $index = 0): self
-    {
-        $reqRes = $this->testingHistory[$index];
-
-        /** @var Request $request */
-        [$request,] = array_values($reqRes);
-
-        PHPUnit::assertSame($method, $request->getUri()->getPath());
-
-        $actual = json_decode((string) $request->getBody(), true, flags: JSON_THROW_ON_ERROR);
-
-        LaraUnit::assertArraySubset($expected, $actual);
-
-        return $this;
-    }
-
-    /**
-     * @return FakeNutgram
-     */
-    public function assertNoReply(): self
-    {
-        PHPUnit::assertEmpty($this->testingHistory);
-
-        return $this;
-    }
-
-    /**
-     * @param  callable  $closure
-     * @param  int  $index
-     * @return $this
-     */
-    public function assertRaw(callable $closure, int $index = 0): self
-    {
-        $reqRes = $this->testingHistory[$index];
-
-        /** @var Request $request */
-        [$request,] = array_values($reqRes);
-
-        PHPUnit::assertTrue($closure($request));
 
         return $this;
     }

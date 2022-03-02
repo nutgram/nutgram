@@ -31,10 +31,21 @@ it('works as mocked instance', function () {
 
     $bot->reply()
         ->assertCalled('sendMessage', 2)
-        ->assertReply('sendMessage', ['text' => 'test'])
-        ->assertReply('sendMessage', ['text' => 'sos'], 1);
+        ->assertReply(['text' => 'test'])
+        ->assertReply(['text' => 'sos'], 1);
 });
 
+it('reply text works as mocked instance', function () {
+    $bot = Nutgram::fake()
+        ->hearText('/test');
+
+    $bot->onCommand('test', function (Nutgram $bot) {
+        $bot->sendMessage('test');
+    });
+
+    $bot->reply()
+        ->assertReplyText('test');
+});
 
 
 it('no reply works as mocked instance', function () {
