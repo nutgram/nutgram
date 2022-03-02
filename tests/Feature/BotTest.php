@@ -29,8 +29,22 @@ it('works as mocked instance', function () {
         expect($message->chat->id)->toBe(123);
     });
 
-    $bot->fireUp()
+    $bot->reply()
         ->assertCalled('sendMessage', 2)
-        ->assertContains('sendMessage', ['text' => 'test'])
-        ->assertContains('sendMessage', ['text' => 'sos'], 1);
+        ->assertReply('sendMessage', ['text' => 'test'])
+        ->assertReply('sendMessage', ['text' => 'sos'], 1);
+});
+
+
+
+it('no reply works as mocked instance', function () {
+    $bot = Nutgram::fake()
+        ->hearUpdateType(UpdateTypes::MESSAGE, ['text' => '/not_test']);
+
+    $bot->onCommand('test', function (Nutgram $bot) {
+        $bot->sendMessage('test');
+    });
+
+    $bot->reply()
+        ->assertNoReply();
 });

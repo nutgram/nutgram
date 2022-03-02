@@ -170,6 +170,16 @@ class FakeNutgram extends Nutgram
     }
 
     /**
+     * @return $this
+     */
+    public function reply(): self
+    {
+        $this->run();
+
+        return $this;
+    }
+
+    /**
      * @param  string  $method
      * @param  int  $times
      * @return FakeNutgram
@@ -197,7 +207,7 @@ class FakeNutgram extends Nutgram
      * @param  int  $index
      * @return FakeNutgram
      */
-    public function assertContains(string $method, array $expected, int $index = 0): self
+    public function assertReply(string $method, array $expected, int $index = 0): self
     {
         $reqRes = $this->testingHistory[$index];
 
@@ -206,16 +216,19 @@ class FakeNutgram extends Nutgram
 
         PHPUnit::assertSame($method, $request->getUri()->getPath());
 
-        $actual = json_decode((string)$request->getBody(), true, flags: JSON_THROW_ON_ERROR);
+        $actual = json_decode((string) $request->getBody(), true, flags: JSON_THROW_ON_ERROR);
 
         LaraUnit::assertArraySubset($expected, $actual);
 
         return $this;
     }
 
-    public function fireUp(): self
+    /**
+     * @return FakeNutgram
+     */
+    public function assertNoReply(): self
     {
-        $this->run();
+        PHPUnit::assertEmpty($this->testingHistory);
 
         return $this;
     }
