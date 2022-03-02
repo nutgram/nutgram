@@ -63,8 +63,11 @@ class TypeFaker
             // if is a class, try to resolve it
             if ($this->shouldInstantiate($typeName, $resolveStack, $isNullable)) {
                 $resolveStack[] = $typeName;
-                $instance->{$property->name} = $this->fakeInstance($typeName, $partial[$property->name] ?? [],
-                    $resolveStack);
+                $instance->{$property->name} = $this->fakeInstance(
+                    $typeName,
+                    $partial[$property->name] ?? [],
+                    $resolveStack
+                );
                 continue;
             }
 
@@ -135,8 +138,10 @@ class TypeFaker
      */
     public function randomString(int $length = 8): string
     {
-        return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            ceil($length / strlen($x)))), 1, $length);
+        return substr(str_shuffle(str_repeat(
+            $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            ceil($length / strlen($x))
+        )), 1, $length);
     }
 
     /**
