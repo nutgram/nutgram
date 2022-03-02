@@ -2,7 +2,6 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 
 it('return the right running mode', function ($update) {
@@ -32,6 +31,6 @@ it('works as mocked instance', function () {
 
     $bot->fireUp()
         ->assertCalled('sendMessage', 2)
-        ->assertContains('sendMessage', 'test')
-        ->assertContains('sendMessage', 'sos', 1);
+        ->assertContains('sendMessage', ['text' => 'test'])
+        ->assertContains('sendMessage', ['text' => 'sos'], 1);
 });
