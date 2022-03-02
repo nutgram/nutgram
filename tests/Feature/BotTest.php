@@ -18,7 +18,7 @@ it('works as mocked instance', function () {
         ->willReceivePartial(['text' => 'aaa'])
         ->willReceivePartial(['chat' => ['id' => 123]]);
 
-    $bot->onCommand('testing',function (Nutgram $bot) {
+    $bot->onCommand('testing', function (Nutgram $bot) {
         $message = $bot->sendMessage('test');
 
         expect($bot->user()->username)->toBe('XD');
