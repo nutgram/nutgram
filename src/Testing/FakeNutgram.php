@@ -232,4 +232,21 @@ class FakeNutgram extends Nutgram
 
         return $this;
     }
+
+    /**
+     * @param  callable  $closure
+     * @param  int  $index
+     * @return $this
+     */
+    public function assertRaw(callable $closure, int $index = 0): self
+    {
+        $reqRes = $this->testingHistory[$index];
+
+        /** @var Request $request */
+        [$request,] = array_values($reqRes);
+
+        PHPUnit::assertTrue($closure($request));
+
+        return $this;
+    }
 }
