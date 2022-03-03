@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
@@ -10,7 +11,7 @@ use JsonSerializable;
  * @see https://core.telegram.org/bots#keyboards Introduction to bots
  * @see https://core.telegram.org/bots/api#replykeyboardmarkup
  */
-class ReplyKeyboardMarkup implements JsonSerializable
+class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
 {
     /**
      * Array of button rows, each represented by an Array of KeyboardButton objects
@@ -57,6 +58,7 @@ class ReplyKeyboardMarkup implements JsonSerializable
         ?string $input_field_placeholder = null,
         ?bool $selective = null,
     ) {
+        parent::__construct();
         $this->resize_keyboard = $resize_keyboard;
         $this->one_time_keyboard = $one_time_keyboard;
         $this->input_field_placeholder = $input_field_placeholder;

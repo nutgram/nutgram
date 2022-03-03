@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Common\LoginUrl;
 use SergiX44\Nutgram\Telegram\Types\Game\CallbackGame;
 
@@ -10,7 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\Game\CallbackGame;
  * This object represents one button of an inline keyboard. You MUST use exactly one of the optional fields.
  * @see https://core.telegram.org/bots/api#inlinekeyboardbutton
  */
-class InlineKeyboardButton implements JsonSerializable
+class InlineKeyboardButton extends BaseType implements JsonSerializable
 {
     /**
      * Label text on the button
@@ -91,6 +92,7 @@ class InlineKeyboardButton implements JsonSerializable
         ?CallbackGame $callback_game = null,
         ?bool $pay = null
     ) {
+        parent::__construct();
         $this->text = $text;
         $this->url = $url;
         $this->login_url = $login_url;

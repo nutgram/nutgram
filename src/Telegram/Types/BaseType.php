@@ -11,7 +11,7 @@ abstract class BaseType
 
     protected ?Nutgram $bot;
 
-    public function __construct(Nutgram $bot)
+    public function __construct(?Nutgram $bot = null)
     {
         $this->bot = $bot;
     }
