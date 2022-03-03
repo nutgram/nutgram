@@ -6,7 +6,6 @@ use GuzzleHttp\Psr7\Request;
 use Illuminate\Testing\Assert as LaraUnit;
 use JsonException;
 use PHPUnit\Framework\Assert as PHPUnit;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * @mixin FakeNutgram
@@ -59,19 +58,13 @@ trait Asserts
      */
     public function assertReply(array $expected, int $index = 0): self
     {
-        array_walk_recursive($expected, static function (&$leaf) {
-            if ($leaf instanceof BaseType) {
-                $leaf = $leaf->toArray();
-            }
-        });
-
         $reqRes = $this->testingHistory[$index];
 
         /** @var Request $request */
         [$request,] = array_values($reqRes);
 
         try {
-            $actual = json_decode((string) $request->getBody(), true, flags: JSON_THROW_ON_ERROR);
+            $actual = json_decode((string)$request->getBody(), true, flags: JSON_THROW_ON_ERROR);
         } catch (JsonException) {
             $actual = [];
         }
