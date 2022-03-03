@@ -64,6 +64,7 @@ trait Asserts
         [$request,] = array_values($reqRes);
 
         try {
+            $expected = json_decode(json_encode($expected), true);
             $actual = json_decode((string)$request->getBody(), true, flags: JSON_THROW_ON_ERROR);
         } catch (JsonException) {
             $actual = [];
