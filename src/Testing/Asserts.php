@@ -70,7 +70,7 @@ trait Asserts
             $actual = [];
         }
 
-        LaraUnit::assertArraySubset($expected, $actual, msg: 'Content not found in the request');
+        LaraUnit::assertArraySubset($expected, $actual, msg: 'Sub array not found in the request body');
 
         return $this;
     }
@@ -108,7 +108,7 @@ trait Asserts
      */
     public function assertNoConversation(int $userId, int $chatId): self
     {
-        PHPUnit::assertNull($this->getConversation($userId, $chatId));
+        PHPUnit::assertNull($this->getConversation($userId, $chatId), 'Found an active conversation');
 
         return $this;
     }
@@ -118,7 +118,7 @@ trait Asserts
      */
     public function assertNoReply(): self
     {
-        PHPUnit::assertEmpty($this->testingHistory);
+        PHPUnit::assertEmpty($this->testingHistory, 'A reply was sent');
 
         return $this;
     }
