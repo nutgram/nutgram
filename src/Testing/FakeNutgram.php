@@ -136,13 +136,23 @@ class FakeNutgram extends Nutgram
     {
         $this->testingHistory = [];
 
-        $this->getContainer()
-            ->get(CacheInterface::class)
-            ->clear();
-
         $this->run();
 
         $this->partialReceives = [];
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function clearCache(): self
+    {
+        $this->getContainer()
+            ->get(CacheInterface::class)
+            ->clear();
 
         return $this;
     }

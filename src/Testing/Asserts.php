@@ -46,7 +46,7 @@ trait Asserts
             }
         }
 
-        PHPUnit::assertEquals($times, $actual);
+        PHPUnit::assertEquals($times, $actual, "The method '$method' was called $actual instead of $times");
 
         return $this;
     }
@@ -70,7 +70,7 @@ trait Asserts
             $actual = [];
         }
 
-        LaraUnit::assertArraySubset($expected, $actual);
+        LaraUnit::assertArraySubset($expected, $actual, msg: 'Content not found in the request');
 
         return $this;
     }
@@ -95,7 +95,7 @@ trait Asserts
      */
     public function assertActiveConversation(int $userId, int $chatId): self
     {
-        PHPUnit::assertNotNull($this->getConversation($userId, $chatId));
+        PHPUnit::assertNotNull($this->getConversation($userId, $chatId), 'No active conversation found');
 
         return $this;
     }

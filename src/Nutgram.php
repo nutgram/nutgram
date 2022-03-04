@@ -63,6 +63,11 @@ class Nutgram extends ResolveHandlers
     protected ContainerInterface $container;
 
     /**
+     * @var bool
+     */
+    private bool $middlewareApplied = false;
+
+    /**
      * Nutgram constructor.
      * @param  string  $token
      * @param  array  $config
@@ -137,7 +142,10 @@ class Nutgram extends ResolveHandlers
      */
     public function run(): void
     {
-        $this->applyGlobalMiddlewares();
+        if (!$this->middlewareApplied) {
+            $this->applyGlobalMiddleware();
+            $this->middlewareApplied = true;
+        }
         $this->container->get(RunningMode::class)->processUpdates($this);
     }
 
