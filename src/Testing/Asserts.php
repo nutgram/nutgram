@@ -65,7 +65,7 @@ trait Asserts
 
         try {
             $expected = json_decode(json_encode($expected), true);
-            $actual = json_decode((string)$request->getBody(), true, flags: JSON_THROW_ON_ERROR);
+            $actual = json_decode((string) $request->getBody(), true, flags: JSON_THROW_ON_ERROR);
         } catch (JsonException) {
             $actual = [];
         }
@@ -78,11 +78,37 @@ trait Asserts
     /**
      * @param  string  $expected
      * @param  int  $index
-     * @return self
+     * @return $this
      */
     public function assertReplyText(string $expected, int $index = 0): self
     {
         $this->assertReply(['text' => $expected], $index);
+
+        return $this;
+    }
+
+    /**
+     * @param  int  $userId
+     * @param  int  $chatId
+     * @return $this
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function assertActiveConversation(int $userId, int $chatId): self
+    {
+        PHPUnit::assertNotNull($this->getConversation($userId, $chatId));
+
+        return $this;
+    }
+
+    /**
+     * @param  int  $userId
+     * @param  int  $chatId
+     * @return $this
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function assertNoConversation(int $userId, int $chatId): self
+    {
+        PHPUnit::assertNull($this->getConversation($userId, $chatId));
 
         return $this;
     }

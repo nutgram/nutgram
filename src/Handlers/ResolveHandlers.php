@@ -77,8 +77,12 @@ abstract class ResolveHandlers extends CollectHandlers
      * @param  string|null  $subType
      * @param  string|null  $value
      */
-    protected function addHandlersBy(array &$handlers, string $type, ?string $subType = null, ?string $value = null): void
-    {
+    protected function addHandlersBy(
+        array &$handlers,
+        string $type,
+        ?string $subType = null,
+        ?string $value = null
+    ): void {
         $typedHandlers = $this->handlers[$type] ?? [];
 
         if ($subType !== null && isset($typedHandlers[$subType])) {
@@ -102,6 +106,21 @@ abstract class ResolveHandlers extends CollectHandlers
                 $handlers[] = $handler;
             }
         }
+    }
+
+    /**
+     * @param  int|null  $userId
+     * @param  int|null  $chatId
+     * @return callable|null
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    protected function getConversation(?int $userId, ?int $chatId): ?callable
+    {
+        if ($chatId === null || $userId === null) {
+            return null;
+        }
+
+        return $this->conversationCache->get($userId, $chatId);
     }
 
     /**

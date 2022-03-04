@@ -150,13 +150,7 @@ class Nutgram extends ResolveHandlers
     {
         $this->update = $update;
 
-        $chatId = $this->chatId();
-        $userId = $this->userId();
-
-        $conversation = null;
-        if ($chatId !== null && $userId !== null) {
-            $conversation = $this->conversationCache->get($userId, $chatId);
-        }
+        $conversation = $this->getConversation($this->userId(), $this->chatId());
 
         if ($conversation !== null) {
             $handlers = $this->continueConversation($conversation);

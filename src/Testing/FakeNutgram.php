@@ -7,6 +7,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
+use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
@@ -133,7 +134,15 @@ class FakeNutgram extends Nutgram
      */
     public function reply(): self
     {
+        $this->testingHistory = [];
+
+        $this->getContainer()
+            ->get(CacheInterface::class)
+            ->clear();
+
         $this->run();
+
+        $this->partialReceives = [];
 
         return $this;
     }
