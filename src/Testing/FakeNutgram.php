@@ -202,9 +202,9 @@ class FakeNutgram extends Nutgram
     /**
      * @return $this
      */
-    public function rememberUserAndChat($toggle = true): self
+    public function willStartConversation($remember = true): self
     {
-        $this->rememberUserAndChat = $toggle;
+        $this->rememberUserAndChat = $remember;
         return $this;
     }
 }
