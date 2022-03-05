@@ -8,6 +8,8 @@ use Illuminate\Testing\Assert as LaraUnit;
 use InvalidArgumentException;
 use JsonException;
 use PHPUnit\Framework\Assert as PHPUnit;
+use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 /**
  * @mixin FakeNutgram
@@ -61,12 +63,14 @@ trait Asserts
      */
     public function assertReply(string|array $method, ?array $expected = null, int $index = 0): self
     {
+        $method = !is_array($method) ? [$method] : $method;
+
         $reqRes = $this->testingHistory[$index];
 
         /** @var Request $request */
         [$request,] = array_values($reqRes);
 
-        PHPUnit::assertContains($request->getUri()->getPath(), Arr::wrap($method), 'Method name not found');
+        PHPUnit::assertContains($request->getUri()->getPath(), $method, 'Method name not found');
 
         if ($expected !== null) {
             try {
@@ -88,35 +92,9 @@ trait Asserts
      * @param  string|null  $forceMethod
      * @return $this
      */
-    public function assertMessage(array $expected, int $index = 0, ?string $forceMethod = null): self
+    public function assertReplyMessage(array $expected, int $index = 0, ?string $forceMethod = null): self
     {
-        $allowed = $forceMethod ?? [
-                'sendMessage',
-                'forwardMessage',
-                'sendPhoto',
-                'sendAudio',
-                'sendDocument',
-                'sendVideo',
-                'sendAnimation',
-                'sendVoice',
-                'sendVideoNote',
-                'sendLocation',
-                'editMessageLiveLocation',
-                'stopMessageLiveLocation',
-                'sendVenue',
-                'sendContact',
-                'sendPoll',
-                'sendDice',
-                'sendGame',
-                'sendInvoice',
-                'sendSticker',
-                'editMessageText',
-                'editMessageCaption',
-                'editMessageMedia',
-                'editMessageReplyMarkup',
-            ];
-
-        return $this->assertReply($allowed, $expected, $index);
+        return $this->assertReply($forceMethod ?? $this->methodsReturnTypes[Message::class] ?? [], $expected, $index);
     }
 
     /**
@@ -126,25 +104,7 @@ trait Asserts
      */
     public function assertReplyText(string $expected, int $index = 0): self
     {
-        return $this->assertMessage(['text' => $expected], $index, 'sendMessage');
-    }
-
-    /**
-     * @param  int|null  $chatId
-     * @param  int|null  $messageId
-     * @param  int  $index
-     * @return $this
-     */
-    public function assertDeletedMessage(?int $chatId = null, ?int $messageId = null, int $index = 0): self
-    {
-        if ($chatId !== null && $messageId !== null) {
-            return $this->assertReply('deleteMessage', [
-                'chat_id' => $chatId,
-                'message_id' => $messageId,
-            ], $index);
-        }
-
-        return $this->assertReply('deleteMessage', index: $index);
+        return $this->assertReplyMessage(['text' => $expected], $index);
     }
 
     /**

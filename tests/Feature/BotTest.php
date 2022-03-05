@@ -73,6 +73,5 @@ it('delete message works as mocked instance', function () {
 
     $bot->reply()
         ->assertReplyText('test')
-        ->assertDeletedMessage(123, 321, 1)
-        ->assertDeletedMessage(index: 1);
+        ->assertReply('deleteMessage', index: 1);
 });

@@ -9,8 +9,12 @@ use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
+use ReflectionMethod;
+use ReflectionNamedType;
+use ReflectionUnionType;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
+use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -55,6 +59,11 @@ class FakeNutgram extends Nutgram
     private ?Chat $storedChat = null;
 
     /**
+     * @var array
+     */
+    private array $methodsReturnTypes = [];
+
+    /**
      * @param  mixed  $update
      * @param  array  $responses
      * @return FakeNutgram
@@ -81,6 +90,21 @@ class FakeNutgram extends Nutgram
      */
     protected function bindToInstance(HandlerStack $handlerStack): void
     {
+        $properties = (new ReflectionClass(Client::class))->getMethods(ReflectionMethod::IS_PUBLIC);
+
+        foreach ($properties as $property) {
+            $return = $property->getReturnType();
+            if ($return instanceof ReflectionNamedType) {
+                $this->methodsReturnTypes[$property->getReturnType()?->getName()][] = $property->getName();
+            }
+
+            if ($return instanceof ReflectionUnionType) {
+                foreach ($return->getTypes() as $type) {
+                    $this->methodsReturnTypes[$type->getName()][] = $property->getName();
+                }
+            }
+        }
+
         $this->typeFaker = new TypeFaker($this->getContainer());
 
         $handlerStack->push(function (callable $handler) {
