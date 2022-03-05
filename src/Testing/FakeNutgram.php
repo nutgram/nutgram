@@ -11,6 +11,8 @@ use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 class FakeNutgram extends Nutgram
 {
@@ -35,6 +37,22 @@ class FakeNutgram extends Nutgram
      * @var TypeFaker
      */
     protected TypeFaker $typeFaker;
+
+
+    /**
+     * @var bool
+     */
+    private bool $rememberUserAndChat = false;
+
+    /**
+     * @var User|null
+     */
+    private ?User $storedUser = null;
+
+    /**
+     * @var Chat|null
+     */
+    private ?Chat $storedChat = null;
 
     /**
      * @param  mixed  $update
@@ -154,6 +172,15 @@ class FakeNutgram extends Nutgram
             ->get(CacheInterface::class)
             ->clear();
 
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function rememberUserAndChat($toggle = true): self
+    {
+        $this->rememberUserAndChat = $toggle;
         return $this;
     }
 }

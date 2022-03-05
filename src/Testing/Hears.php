@@ -6,7 +6,9 @@ use InvalidArgumentException;
 use ReflectionObject;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * @mixin FakeNutgram
@@ -19,6 +21,17 @@ trait Hears
      */
     public function hearUpdate(Update $update): self
     {
+        if ($this->rememberUserAndChat) {
+            if ($this->storedUser === null || $this->storedChat === null) {
+                $this->storedUser = $update->getUser();
+                $this->storedChat = $update->getChat();
+            }
+
+            $update->setUser($this->storedUser);
+            $update->setChat($this->storedChat);
+        }
+
+
         $this->getContainer()->get(RunningMode::class)->setUpdate($update);
 
         return $this;

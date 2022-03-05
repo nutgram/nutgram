@@ -165,6 +165,28 @@ class Update extends BaseType
     }
 
     /**
+     * @return User|null
+     */
+    public function setUser(?User $user): ?User
+    {
+        return match (true) {
+            $this->message !== null => $this->message->from = $user,
+            $this->edited_message !== null => $this->edited_message->from = $user,
+            $this->channel_post !== null => $this->channel_post->from = $user,
+            $this->edited_channel_post !== null => $this->edited_channel_post->from = $user,
+            $this->inline_query !== null => $this->inline_query->from = $user,
+            $this->chosen_inline_result !== null => $this->chosen_inline_result->from = $user,
+            $this->callback_query !== null => $this->callback_query->from = $user,
+            $this->shipping_query !== null => $this->shipping_query->from = $user,
+            $this->pre_checkout_query !== null => $this->pre_checkout_query->from = $user,
+            $this->poll_answer !== null => $this->poll_answer->user = $user,
+            $this->my_chat_member !== null => $this->my_chat_member->from = $user,
+            $this->chat_member !== null => $this->chat_member->from = $user,
+            default => null,
+        };
+    }
+
+    /**
      * @return Chat|null
      */
     public function getChat(): ?Chat
@@ -174,6 +196,21 @@ class Update extends BaseType
             $this->callback_query !== null => $this->callback_query?->message?->chat,
             $this->channel_post !== null => $this->channel_post?->chat,
             $this->edited_channel_post !== null => $this->edited_channel_post?->chat,
+            default => null
+        };
+    }
+
+    /**
+     * @param  Chat|null  $chat
+     * @return Chat|null
+     */
+    public function setChat(?Chat $chat): ?Chat
+    {
+        return match (true) {
+            $this->message !== null => $this->message->chat = $chat,
+            $this->callback_query !== null => $this->callback_query->message->chat = $chat,
+            $this->channel_post !== null => $this->channel_post->chat = $chat,
+            $this->edited_channel_post !== null => $this->edited_channel_post->chat = $chat,
             default => null
         };
     }
