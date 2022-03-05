@@ -31,8 +31,8 @@ it('works as mocked instance', function () {
 
     $bot->reply()
         ->assertCalled('sendMessage', 2)
-        ->assertReply(['text' => 'test'])
-        ->assertReply(['text' => 'sos'], 1);
+        ->assertReply('sendMessage', ['text' => 'test'])
+        ->assertReply('sendMessage', ['text' => 'sos'], 1);
 });
 
 it('reply text works as mocked instance', function () {
@@ -47,7 +47,6 @@ it('reply text works as mocked instance', function () {
         ->assertReplyText('test');
 });
 
-
 it('no reply works as mocked instance', function () {
     $bot = Nutgram::fake()
         ->hearUpdateType(UpdateTypes::MESSAGE, ['text' => '/not_test']);
@@ -58,4 +57,22 @@ it('no reply works as mocked instance', function () {
 
     $bot->reply()
         ->assertNoReply();
+});
+
+it('delete message works as mocked instance', function () {
+    $bot = Nutgram::fake()
+        ->hearText('/test')
+        ->willReceivePartial([
+            'chat' => ['id' => 123],
+            'message_id' => 321
+        ]);
+
+    $bot->onCommand('test', function (Nutgram $bot) {
+        $bot->sendMessage('test')?->delete();
+    });
+
+    $bot->reply()
+        ->assertReplyText('test')
+        ->assertDeletedMessage(123, 321, 1)
+        ->assertDeletedMessage(index: 1);
 });

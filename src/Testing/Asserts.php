@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Testing;
 
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Testing\Assert as LaraUnit;
 use InvalidArgumentException;
 use JsonException;
@@ -53,27 +54,69 @@ trait Asserts
     }
 
     /**
-     * @param  array  $expected
+     * @param  string|string[]  $method
+     * @param  array|null  $expected
      * @param  int  $index
      * @return $this
      */
-    public function assertReply(array $expected, int $index = 0): self
+    public function assertReply(string|array $method, ?array $expected = null, int $index = 0): self
     {
         $reqRes = $this->testingHistory[$index];
 
         /** @var Request $request */
         [$request,] = array_values($reqRes);
 
-        try {
-            $expected = json_decode(json_encode($expected), true);
-            $actual = json_decode((string) $request->getBody(), true, flags: JSON_THROW_ON_ERROR);
-        } catch (JsonException) {
-            $actual = [];
+        PHPUnit::assertContains($request->getUri()->getPath(), Arr::wrap($method), 'Method name not found');
+
+        if ($expected !== null) {
+            try {
+                $expected = json_decode(json_encode($expected), true);
+                $actual = json_decode((string)$request->getBody(), true, flags: JSON_THROW_ON_ERROR);
+            } catch (JsonException) {
+                $actual = [];
+            }
+
+            LaraUnit::assertArraySubset($expected, $actual, msg: 'Sub array not found in the request body');
         }
 
-        LaraUnit::assertArraySubset($expected, $actual, msg: 'Sub array not found in the request body');
-
         return $this;
+    }
+
+    /**
+     * @param  array  $expected
+     * @param  int  $index
+     * @param  string|null  $forceMethod
+     * @return $this
+     */
+    public function assertMessage(array $expected, int $index = 0, ?string $forceMethod = null): self
+    {
+        $allowed = $forceMethod ?? [
+                'sendMessage',
+                'forwardMessage',
+                'sendPhoto',
+                'sendAudio',
+                'sendDocument',
+                'sendVideo',
+                'sendAnimation',
+                'sendVoice',
+                'sendVideoNote',
+                'sendLocation',
+                'editMessageLiveLocation',
+                'stopMessageLiveLocation',
+                'sendVenue',
+                'sendContact',
+                'sendPoll',
+                'sendDice',
+                'sendGame',
+                'sendInvoice',
+                'sendSticker',
+                'editMessageText',
+                'editMessageCaption',
+                'editMessageMedia',
+                'editMessageReplyMarkup',
+            ];
+
+        return $this->assertReply($allowed, $expected, $index);
     }
 
     /**
@@ -83,9 +126,25 @@ trait Asserts
      */
     public function assertReplyText(string $expected, int $index = 0): self
     {
-        $this->assertReply(['text' => $expected], $index);
+        return $this->assertMessage(['text' => $expected], $index, 'sendMessage');
+    }
 
-        return $this;
+    /**
+     * @param  int|null  $chatId
+     * @param  int|null  $messageId
+     * @param  int  $index
+     * @return $this
+     */
+    public function assertDeletedMessage(?int $chatId = null, ?int $messageId = null, int $index = 0): self
+    {
+        if ($chatId !== null && $messageId !== null) {
+            return $this->assertReply('deleteMessage', [
+                'chat_id' => $chatId,
+                'message_id' => $messageId,
+            ], $index);
+        }
+
+        return $this->assertReply('deleteMessage', index: $index);
     }
 
     /**

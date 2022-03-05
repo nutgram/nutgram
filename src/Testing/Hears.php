@@ -6,9 +6,7 @@ use InvalidArgumentException;
 use ReflectionObject;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
-use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
-use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * @mixin FakeNutgram
@@ -17,7 +15,7 @@ trait Hears
 {
     /**
      * @param  mixed  $update
-     * @return self
+     * @return $this
      */
     public function hearUpdate(Update $update): self
     {
@@ -40,7 +38,7 @@ trait Hears
     /**
      * @param  string  $type
      * @param  array  $partialAttributes
-     * @return self
+     * @return $this
      */
     public function hearUpdateType(string $type, array $partialAttributes = [], bool $fillNullableFields = false): self
     {
@@ -62,11 +60,23 @@ trait Hears
     }
 
     /**
+     * @param  array  $value
+     * @return $this
+     */
+    public function hearMessage(array $value): self
+    {
+        return $this->hearUpdateType(
+            UpdateTypes::MESSAGE,
+            array_merge(['from' => []], $value)
+        );
+    }
+
+    /**
      * @param  string  $value
-     * @return self
+     * @return $this
      */
     public function hearText(string $value): self
     {
-        return $this->hearUpdateType(UpdateTypes::MESSAGE, ['from' => [], 'text' => $value]);
+        return $this->hearMessage(['text' => $value]);
     }
 }
