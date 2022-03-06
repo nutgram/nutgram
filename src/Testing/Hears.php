@@ -79,4 +79,16 @@ trait Hears
     {
         return $this->hearMessage(['text' => $value]);
     }
+
+    /**
+     * @param  string  $value
+     * @return $this
+     */
+    public function hearCallbackQueryData(string $value): self
+    {
+        return $this->hearUpdateType(UpdateTypes::CALLBACK_QUERY, [
+            'message' => ['from' => []],
+            'data' => $value,
+        ]);
+    }
 }
