@@ -41,7 +41,7 @@ composer require nutgram/nutgram
 
 ## Usage
 
-- [Official Documentation](https://sergix44.github.io/Nutgram/)
+- [Official Documentation](https://nutgram.dev)
 
 ## Testing
 
@@ -56,6 +56,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Credits
 
 - [Sergio Brighenti](https://github.com/SergiX44)
+- [Luca Patera](https://github.com/Lukasss93)
 - [All Contributors](../../contributors)
 
 ## License
