@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Testing;
 
+use Closure;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -79,54 +80,63 @@ class FakeNutgram extends Nutgram
         ]);
 
         $bot->setRunningMode(new Fake($update));
-        $bot->bindToInstance($handlerStack);
-        $bot->setMockHandler($mock);
+
+        Closure::bind(function () use ($handlerStack, $mock) {
+            $this->mockHandler = $mock;
+            $this->typeFaker = new TypeFaker($this->getContainer());
+
+            $properties = (new ReflectionClass(Client::class))->getMethods(ReflectionMethod::IS_PUBLIC);
+
+            foreach ($properties as $property) {
+                $return = $property->getReturnType();
+                if ($return instanceof ReflectionNamedType) {
+                    $this->methodsReturnTypes[$property->getReturnType()?->getName()][] = $property->getName();
+                }
+
+                if ($return instanceof ReflectionUnionType) {
+                    foreach ($return->getTypes() as $type) {
+                        $this->methodsReturnTypes[$type->getName()][] = $property->getName();
+                    }
+                }
+            }
+            $handlerStack->push(Middleware::history($this->testingHistory));
+            $handlerStack->push(function (callable $handler) {
+                return function (RequestInterface $request, array $options) use ($handler) {
+                    if ($this->mockHandler->count() === 0) {
+                        [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
+                        $return = (new ReflectionClass(self::class))
+                            ->getMethod($request->getUri())
+                            ->getReturnType();
+
+                        $instance = null;
+                        if ($return instanceof ReflectionNamedType) {
+                            $instance = $this->typeFaker->fakeInstanceOf(
+                                $return->getName(),
+                                $partialResult
+                            );
+                        } elseif ($return instanceof ReflectionUnionType) {
+                            foreach ($return->getTypes() as $type) {
+                                $instance = $this->typeFaker->fakeInstanceOf(
+                                    $type,
+                                    $partialResult
+                                );
+                                if (is_object($instance)) {
+                                    break;
+                                }
+                            }
+                        }
+
+                        $this->mockHandler->append(new Response(body: json_encode([
+                            'ok' => $ok,
+                            'result' => $instance,
+                        ], JSON_THROW_ON_ERROR)));
+                    }
+                    return $handler($request, $options);
+                };
+            }, 'handles_empty_queue');
+        }, $bot)();
 
         return $bot;
-    }
-
-    /**
-     * @param  HandlerStack  $handlerStack
-     */
-    protected function bindToInstance(HandlerStack $handlerStack): void
-    {
-        $properties = (new ReflectionClass(Client::class))->getMethods(ReflectionMethod::IS_PUBLIC);
-
-        foreach ($properties as $property) {
-            $return = $property->getReturnType();
-            if ($return instanceof ReflectionNamedType) {
-                $this->methodsReturnTypes[$property->getReturnType()?->getName()][] = $property->getName();
-            }
-
-            if ($return instanceof ReflectionUnionType) {
-                foreach ($return->getTypes() as $type) {
-                    $this->methodsReturnTypes[$type->getName()][] = $property->getName();
-                }
-            }
-        }
-
-        $this->typeFaker = new TypeFaker($this->getContainer());
-
-        $handlerStack->push(function (callable $handler) {
-            return function (RequestInterface $request, array $options) use ($handler) {
-                if ($this->mockHandler->count() === 0) {
-                    [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
-                    $method = (new ReflectionClass(self::class))->getMethod($request->getUri());
-                    $instance = $this->typeFaker->fakeInstanceOf(
-                        $method->getReturnType()?->getName(),
-                        $partialResult
-                    );
-
-                    $this->mockHandler->append(new Response(body: json_encode([
-                        'ok' => $ok,
-                        'result' => $instance
-                    ], JSON_THROW_ON_ERROR)));
-                }
-                return $handler($request, $options);
-            };
-        }, 'handles_empty_queue');
-
-        $handlerStack->push(Middleware::history($this->testingHistory));
     }
 
     /**
@@ -135,15 +145,6 @@ class FakeNutgram extends Nutgram
     public function getRequestHistory(): array
     {
         return $this->testingHistory;
-    }
-
-    /**
-     * @param  MockHandler  $mockHandler
-     */
-    public function setMockHandler(MockHandler $mockHandler): self
-    {
-        $this->mockHandler = $mockHandler;
-        return $this;
     }
 
     /**
