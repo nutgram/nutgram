@@ -4,11 +4,12 @@
 
 # Nutgram
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/sergix44/nutgram.svg?style=flat-square)](https://packagist.org/packages/sergix44/nutgram)
-[![Test Suite](https://github.com/SergiX44/Nutgram/actions/workflows/php.yml/badge.svg)](https://github.com/SergiX44/Nutgram/actions/workflows/php.yml)
-[![Total Downloads](https://img.shields.io/packagist/dt/sergix44/nutgram.svg?style=flat-square)](https://packagist.org/packages/sergix44/nutgram)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/nutgram/nutgram.svg?style=flat-square)](https://packagist.org/packages/nutgram/nutgram)
+[![Test Suite](https://github.com/nutgram/nutgram/actions/workflows/php.yml/badge.svg)](https://github.com/nutgram/nutgram/actions/workflows/php.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/86c4ca3dae8f64db80f7/maintainability)](https://codeclimate.com/github/nutgram/nutgram/maintainability)
+[![Total Downloads](https://img.shields.io/packagist/dt/nutgram/nutgram.svg?style=flat-square)](https://packagist.org/packages/nutgram/nutgram)
 [![API](https://img.shields.io/badge/Telegram%20Bot%20API-5.7%09--%20January%2031,%202022-blue.svg)](https://core.telegram.org/bots/api)
-[![License](https://poser.pugx.org/sergix44/nutgram/license)](//packagist.org/packages/sergix44/nutgram)
+[![License](https://poser.pugx.org/nutgram/nutgram/license)](//packagist.org/packages/nutgram/nutgram)
 
 > The Telegram bot framework that doesn't drive you nuts
 
@@ -36,12 +37,12 @@ $bot->run();
 You can install the package via composer:
 
 ```bash
-composer require sergix44/nutgram
+composer require nutgram/nutgram
 ```
 
 ## Usage
 
-- [Official Documentation](https://sergix44.github.io/Nutgram/)
+- [Official Documentation](https://nutgram.dev)
 
 ## Testing
 
@@ -56,6 +57,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Credits
 
 - [Sergio Brighenti](https://github.com/SergiX44)
+- [Luca Patera](https://github.com/Lukasss93)
 - [All Contributors](../../contributors)
 
 ## License
