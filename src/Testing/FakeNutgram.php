@@ -2,7 +2,6 @@
 
 namespace SergiX44\Nutgram\Testing;
 
-use Closure;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -81,7 +80,8 @@ class FakeNutgram extends Nutgram
 
         $bot->setRunningMode(new Fake($update));
 
-        Closure::bind(function () use ($handlerStack, $mock) {
+        (function () use ($handlerStack, $mock) {
+            /** @psalm-scope-this SergiX44\Nutgram\Testing\FakeNutgram */
             $this->mockHandler = $mock;
             $this->typeFaker = new TypeFaker($this->getContainer());
 
@@ -134,7 +134,7 @@ class FakeNutgram extends Nutgram
                     return $handler($request, $options);
                 };
             }, 'handles_empty_queue');
-        }, $bot)();
+        })->call($bot);
 
         return $bot;
     }
