@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Testing;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\SimpleCache\CacheInterface;
@@ -207,5 +208,44 @@ class FakeNutgram extends Nutgram
     {
         $this->rememberUserAndChat = $remember;
         return $this;
+    }
+
+    public function dump(): self
+    {
+        print(str_repeat('-', 25));
+        print("\e[32m Nutgram Request History Dump \e[39m");
+        print(str_repeat('-', 25) . PHP_EOL);
+
+        if (count($this->getRequestHistory()) > 0) {
+            foreach ($this->getRequestHistory() as $i => $item) {
+                /** @var Request $request */
+                [$request,] = array_values($item);
+
+                $requestIndex = "[$i] > ";
+                print($requestIndex . "\e[34m" . $request->getUri()->getPath() . "\e[39m" . PHP_EOL);
+                print(str_repeat(' ', strlen($requestIndex)));
+                print($request->getBody());
+
+                if ($i < count($this->getRequestHistory()) - 1) {
+                    print(PHP_EOL);
+                }
+            }
+        } else {
+            print('Request history empty');
+        }
+
+        print(PHP_EOL);
+        print(str_repeat('-', 80) . PHP_EOL);
+        print(PHP_EOL);
+        flush();
+        ob_flush();
+
+        return $this;
+    }
+
+    public function dd(): self
+    {
+        $this->dump();
+        die();
     }
 }
