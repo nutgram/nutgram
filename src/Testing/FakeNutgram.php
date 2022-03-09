@@ -254,4 +254,30 @@ class FakeNutgram extends Nutgram
         $this->dump();
         die();
     }
+
+    /**
+     * @param  string|string[]  $middleware
+     * @return $this
+     */
+    public function withoutMiddleware(string|array $middleware): self
+    {
+        $middleware = !is_array($middleware) ? [$middleware] : $middleware;
+        $this->globalMiddlewares = array_filter($this->globalMiddlewares, function ($item) use ($middleware) {
+            return !in_array($item, $middleware, true);
+        });
+
+        return $this;
+    }
+
+    /**
+     * @param  string|string[]  $middleware
+     * @return $this
+     */
+    public function overrideMiddleware(string|array $middleware): self
+    {
+        $middleware = !is_array($middleware) ? [$middleware] : $middleware;
+        $this->globalMiddlewares = $middleware;
+
+        return $this;
+    }
 }
