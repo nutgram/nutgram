@@ -210,6 +210,9 @@ class FakeNutgram extends Nutgram
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function dump(): self
     {
         print(str_repeat('-', 25));
@@ -221,10 +224,10 @@ class FakeNutgram extends Nutgram
                 /** @var Request $request */
                 [$request,] = array_values($item);
 
-                $requestIndex = "[$i] > ";
+                $requestIndex = "[$i] ";
                 print($requestIndex . "\e[34m" . $request->getUri()->getPath() . "\e[39m" . PHP_EOL);
-                print(str_repeat(' ', strlen($requestIndex)));
-                print($request->getBody());
+                $content = json_encode(json_decode($request->getBody(), true), JSON_PRETTY_PRINT);
+                print(preg_replace('/"(.+)":/', "\"\e[33m\${1}\e[39m\":", $content));
 
                 if ($i < count($this->getRequestHistory()) - 1) {
                     print(PHP_EOL);
@@ -243,6 +246,9 @@ class FakeNutgram extends Nutgram
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function dd(): self
     {
         $this->dump();
