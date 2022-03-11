@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\Proxies;
 
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
@@ -174,6 +175,14 @@ trait UpdateProxy
     public function chatMember(): ?ChatMemberUpdated
     {
         return $this->update?->chat_member ?? $this->update?->my_chat_member;
+    }
+
+    /**
+     * @return ChatJoinRequest|null
+     */
+    public function chatJoinRequest(): ?ChatJoinRequest
+    {
+        return $this->update?->chat_join_request;
     }
 
     /**
