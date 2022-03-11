@@ -60,12 +60,12 @@ class TypeFaker
             $isNullable = $property->getType()?->allowsNull();
 
             // if specified by the user
-            if (array_key_exists($property->name, $additional) && !is_array($additional[$property->name])) {
+            if (isset($additional[$property->name]) && !is_array($additional[$property->name])) {
                 $instance->{$property->name} = $additional[$property->name];
                 continue;
             }
 
-            if ($isNullable && !$fillNullable && !array_key_exists($property->name, $additional)) {
+            if ($isNullable && !$fillNullable && !isset($additional[$property->name])) {
                 $instance->{$property->name} = null;
                 continue;
             }
@@ -98,7 +98,7 @@ class TypeFaker
                 }
             }
 
-            $instance->{$property->name} = $this->randomScalarOf($typeName);
+            $instance->{$property->name} = self::randomScalarOf($typeName);
         }
 
         return $instance;
@@ -136,13 +136,13 @@ class TypeFaker
      * @return string|int|bool|array|float|null
      * @throws \Exception
      */
-    public function randomScalarOf(string $type): string|int|bool|array|null|float
+    public static function randomScalarOf(string $type): string|int|bool|array|null|float
     {
         return match ($type) {
-            'int' => $this->randomInt(),
-            'string' => $this->randomString(),
-            'bool' => (bool) $this->randomInt(0, 1),
-            'float' => $this->randomFloat(),
+            'int' => self::randomInt(),
+            'string' => self::randomString(),
+            'bool' => self::randomInt(0, 1) === 1,
+            'float' => self::randomFloat(),
             'array' => [], // fallback
             default => null
         };
@@ -152,7 +152,7 @@ class TypeFaker
      * @param  int  $length
      * @return string
      */
-    public function randomString(int $length = 8): string
+    public static function randomString(int $length = 8): string
     {
         return substr(str_shuffle(str_repeat(
             $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
@@ -166,7 +166,7 @@ class TypeFaker
      * @return int
      * @throws \Exception
      */
-    public function randomInt(int $min = 0, int $max = PHP_INT_MAX): int
+    public static function randomInt(int $min = 0, int $max = PHP_INT_MAX): int
     {
         return random_int($min, $max);
     }
@@ -175,8 +175,8 @@ class TypeFaker
      * @return float
      * @throws \Exception
      */
-    public function randomFloat(): float
+    public static function randomFloat(): float
     {
-        return abs(1 - $this->randomInt() / $this->randomInt());
+        return abs(1 - self::randomInt() / self::randomInt());
     }
 }
