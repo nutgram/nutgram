@@ -160,6 +160,7 @@ class Update extends BaseType
             $this->poll_answer !== null => $this->poll_answer->user,
             $this->my_chat_member !== null => $this->my_chat_member->from,
             $this->chat_member !== null => $this->chat_member->from,
+            $this->chat_join_request !== null => $this->chat_join_request->from,
             default => null,
         };
     }
@@ -182,6 +183,7 @@ class Update extends BaseType
             $this->poll_answer !== null => $this->poll_answer->user = $user,
             $this->my_chat_member !== null => $this->my_chat_member->from = $user,
             $this->chat_member !== null => $this->chat_member->from = $user,
+            $this->chat_join_request !== null => $this->chat_join_request->from = $user,
             default => null,
         };
     }
@@ -196,6 +198,7 @@ class Update extends BaseType
             $this->callback_query !== null => $this->callback_query?->message?->chat,
             $this->channel_post !== null => $this->channel_post?->chat,
             $this->edited_channel_post !== null => $this->edited_channel_post?->chat,
+            $this->chat_join_request !== null => $this->chat_join_request?->chat,
             default => null
         };
     }
@@ -211,6 +214,7 @@ class Update extends BaseType
             $this->callback_query !== null => $this->callback_query->message->chat = $chat,
             $this->channel_post !== null => $this->channel_post->chat = $chat,
             $this->edited_channel_post !== null => $this->edited_channel_post->chat = $chat,
+            $this->chat_join_request !== null => $this->chat_join_request->chat = $chat,
             default => null
         };
     }
