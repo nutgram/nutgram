@@ -28,6 +28,7 @@ use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
+use SergiX44\Nutgram\Testing\FakeNutgram;
 use Throwable;
 
 class Nutgram extends ResolveHandlers
@@ -62,6 +63,11 @@ class Nutgram extends ResolveHandlers
     protected ContainerInterface $container;
 
     /**
+     * @var bool
+     */
+    private bool $middlewareApplied = false;
+
+    /**
      * Nutgram constructor.
      * @param  string  $token
      * @param  array  $config
@@ -81,10 +87,10 @@ class Nutgram extends ResolveHandlers
 
         $baseUri = $config['api_url'] ?? self::DEFAULT_API_URL;
 
-        $this->http = new Guzzle(array_merge($config['client'] ?? [], [
+        $this->http = new Guzzle(array_merge([
             'base_uri' => "$baseUri/bot$token/",
             'timeout' => $config['timeout'] ?? 5,
-        ]));
+        ], $config['client'] ?? []));
         $this->container->addShared(ClientInterface::class, $this->http);
 
         $this->mapper = $this->container->get(JsonMapper::class);
@@ -99,6 +105,16 @@ class Nutgram extends ResolveHandlers
 
         $this->container->addShared(RunningMode::class, Polling::class);
         $this->container->addShared(__CLASS__, $this);
+    }
+
+    /**
+     * @param  mixed  $update
+     * @param  array  $responses
+     * @return FakeNutgram
+     */
+    public static function fake(mixed $update = null, array $responses = []): FakeNutgram
+    {
+        return FakeNutgram::instance($update, $responses);
     }
 
     /**
@@ -126,7 +142,10 @@ class Nutgram extends ResolveHandlers
      */
     public function run(): void
     {
-        $this->applyGlobalMiddlewares();
+        if (!$this->middlewareApplied) {
+            $this->applyGlobalMiddleware();
+            $this->middlewareApplied = true;
+        }
         $this->container->get(RunningMode::class)->processUpdates($this);
     }
 
@@ -139,13 +158,7 @@ class Nutgram extends ResolveHandlers
     {
         $this->update = $update;
 
-        $chatId = $this->chatId();
-        $userId = $this->userId();
-
-        $conversation = null;
-        if ($chatId !== null && $userId !== null) {
-            $conversation = $this->conversationCache->get($userId, $chatId);
-        }
+        $conversation = $this->getConversation($this->userId(), $this->chatId());
 
         if ($conversation !== null) {
             $handlers = $this->continueConversation($conversation);

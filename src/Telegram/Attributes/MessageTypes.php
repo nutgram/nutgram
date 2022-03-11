@@ -34,6 +34,13 @@ class MessageTypes
     public const PINNED_MESSAGE = 'pinned_message';
     public const INVOICE = 'invoice';
     public const SUCCESSFUL_PAYMENT = 'successful_payment';
+    public const MESSAGE_AUTO_DELETE_TIMER_CHANGED = 'message_auto_delete_timer_changed';
+    public const CONNECTED_WEBSITE = 'connected_website';
+    public const PROXIMITY_ALERT_TRIGGERED = 'proximity_alert_triggered';
+    public const VOICE_CHAT_SCHEDULED = 'voice_chat_scheduled';
+    public const VOICE_CHAT_STARTED = 'voice_chat_started';
+    public const VOICE_CHAT_ENDED = 'voice_chat_ended';
+    public const VOICE_CHAT_PARTICIPANTS_INVITED = 'voice_chat_participants_invited';
 
     /**
      * @return array

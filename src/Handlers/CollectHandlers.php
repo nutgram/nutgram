@@ -195,6 +195,15 @@ abstract class CollectHandlers
     }
 
     /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onChatJoinRequest($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::CHAT_JOIN_REQUEST][] = new Handler($callable);
+    }
+
+    /**
      * @param  callable|string  $callableOrException
      * @param  callable|null  $callable
      * @return Handler

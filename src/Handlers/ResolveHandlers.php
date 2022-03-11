@@ -77,8 +77,12 @@ abstract class ResolveHandlers extends CollectHandlers
      * @param  string|null  $subType
      * @param  string|null  $value
      */
-    protected function addHandlersBy(array &$handlers, string $type, ?string $subType = null, ?string $value = null): void
-    {
+    protected function addHandlersBy(
+        array &$handlers,
+        string $type,
+        ?string $subType = null,
+        ?string $value = null
+    ): void {
         $typedHandlers = $this->handlers[$type] ?? [];
 
         if ($subType !== null && isset($typedHandlers[$subType])) {
@@ -102,6 +106,21 @@ abstract class ResolveHandlers extends CollectHandlers
                 $handlers[] = $handler;
             }
         }
+    }
+
+    /**
+     * @param  int|null  $userId
+     * @param  int|null  $chatId
+     * @return callable|null
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    protected function getConversation(?int $userId, ?int $chatId): ?callable
+    {
+        if ($chatId === null || $userId === null) {
+            return null;
+        }
+
+        return $this->conversationCache->get($userId, $chatId);
     }
 
     /**
@@ -131,7 +150,7 @@ abstract class ResolveHandlers extends CollectHandlers
         $handler = new Handler($conversation);
 
         if (!$conversation instanceof Conversation || !$conversation->skipMiddlewares()) {
-            $this->applyGlobalMiddlewaresTo($handler);
+            $this->applyGlobalMiddlewareTo($handler);
         }
 
         $resolvedHandlers[] = $handler;
@@ -142,18 +161,18 @@ abstract class ResolveHandlers extends CollectHandlers
     /**
      * @param  Handler  $handler
      */
-    protected function applyGlobalMiddlewaresTo(Handler $handler): void
+    protected function applyGlobalMiddlewareTo(Handler $handler): void
     {
         foreach ($this->globalMiddlewares as $middleware) {
             $handler->middleware($middleware);
         }
     }
 
-    protected function applyGlobalMiddlewares(): void
+    protected function applyGlobalMiddleware(): void
     {
         array_walk_recursive($this->handlers, function ($leaf) {
             if ($leaf instanceof Handler) {
-                $this->applyGlobalMiddlewaresTo($leaf);
+                $this->applyGlobalMiddlewareTo($leaf);
             }
         });
     }

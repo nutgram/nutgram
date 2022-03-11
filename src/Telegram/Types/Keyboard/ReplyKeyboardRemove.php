@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * Upon receiving a message with this object, Telegram clients will remove
@@ -13,7 +14,7 @@ use JsonSerializable;
  * @see https://core.telegram.org/bots/api#replykeyboardmarkup ReplyKeyboardMarkup
  * @see https://core.telegram.org/bots/api#replykeyboardremove
  */
-class ReplyKeyboardRemove implements JsonSerializable
+class ReplyKeyboardRemove extends BaseType implements JsonSerializable
 {
     /**
      * Required. Requests clients to remove the custom keyboard (user will not be able to summon this keyboard;
@@ -36,6 +37,7 @@ class ReplyKeyboardRemove implements JsonSerializable
 
     public function __construct(bool $remove_keyboard, ?bool $selective = null)
     {
+        parent::__construct();
         $this->remove_keyboard = $remove_keyboard;
         $this->selective = $selective;
     }

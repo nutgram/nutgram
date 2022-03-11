@@ -5,27 +5,11 @@ use SergiX44\Nutgram\Laravel\Commands\HookInfoCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookRemoveCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookSetCommand;
 use SergiX44\Nutgram\Laravel\Commands\RegisterCommandsCommand;
-use SergiX44\Nutgram\Laravel\Commands\RunCommand;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 
-test('nutgram:run runs the bot in polling mode', function () {
-    config(['nutgram.token' => 'TEST']);
-
-    $bot = app(Nutgram::class);
-
-    $this->mock(Nutgram::class, function (MockInterface $mock) {
-        $mock->shouldReceive('run')->andReturns();
-    });
-
-    $this->artisan(RunCommand::class);
-
-    expect($bot->getUpdateMode())->toBe(Polling::class);
-});
-
 test('nutgram:register-commands registers the bot commands', function () {
-    $bot = getInstance();
+    $bot = Nutgram::fake();
 
     $bot->onCommand('start', static function () {
     })->description('start command');
@@ -44,7 +28,7 @@ test('nutgram:register-commands registers the bot commands', function () {
 
 test('nutgram:hook:info prints the webhook info', function () {
     $this->mock(Nutgram::class, function (MockInterface $mock) {
-        $webhookInfo = new WebhookInfo(getInstance());
+        $webhookInfo = Nutgram::fake()->getContainer()->get(WebhookInfo::class);
         $webhookInfo->url = '';
         $webhookInfo->has_custom_certificate = false;
         $webhookInfo->pending_update_count = 0;

@@ -123,7 +123,7 @@ class ArrayCache implements CacheInterface
     /**
      * @param $key
      */
-    private function checkExpire($key): void
+    private function checkExpire(string $key): void
     {
         $expiration = $this->expires[$key] ?? null;
         if ($expiration !== null && $expiration < time()) {

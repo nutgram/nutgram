@@ -8,7 +8,7 @@ use SergiX44\Nutgram\Tests\Feature\Conversations\OneStepNotCompletedConversation
 use SergiX44\Nutgram\Tests\Feature\Conversations\TwoStepConversation;
 
 it('calls the conversation steps', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
     $bot->onMessage(TwoStepConversation::class);
     $bot->run();
     expect($bot->getData('test'))->toBe(1);
@@ -21,7 +21,7 @@ it('calls the conversation steps', function ($update) {
 })->with('message');
 
 it('calls the default conversation step', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
     $bot->onMessage(ConversationWithDefault::class);
     $bot->run();
 
@@ -29,7 +29,7 @@ it('calls the default conversation step', function ($update) {
 })->with('message');
 
 it('calls the closing handler', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
     $bot->onMessage(ConversationWithClosing::class);
     $bot->run();
 
@@ -37,7 +37,7 @@ it('calls the closing handler', function ($update) {
 })->with('message');
 
 it('calls the closing handler with multiple steps', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
     $bot->onMessage(ConversationWithClosingMultipleSteps::class);
 
     $bot->run();
@@ -48,7 +48,7 @@ it('calls the closing handler with multiple steps', function ($update) {
 })->with('message');
 
 it('calls the same handler if not end or next step called', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
     $bot->onMessage(OneStepNotCompletedConversation::class);
     $bot->run();
     $bot->run();
@@ -58,7 +58,7 @@ it('calls the same handler if not end or next step called', function ($update) {
 })->with('message');
 
 it('calls the conversation steps without class', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onMessage('firstStep');
 
@@ -85,7 +85,7 @@ function secondStep(Nutgram $bot)
 }
 
 it('works with inline conversations', function ($update) {
-    $bot = getInstance($update);
+    $bot = Nutgram::fake($update);
 
     $bot->onMessage(function (Nutgram $bot) {
         $bot->setData('test', 1);

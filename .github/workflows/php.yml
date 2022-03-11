@@ -49,9 +49,6 @@ jobs:
 
             -   name: Run test suite
                 run: composer run-script test
-
-            -   name: Run Psalm
-                run: composer run-script psalm
     static-analysis:
         runs-on: ubuntu-latest
         name: Psalm

@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents one button of the reply keyboard.
@@ -13,7 +14,7 @@ use JsonSerializable;
  * Older clients will ignore them.
  * @see https://core.telegram.org/bots/api#keyboardbutton
  */
-class KeyboardButton implements JsonSerializable
+class KeyboardButton extends BaseType implements JsonSerializable
 {
     /**
      * Text of the button.
@@ -45,6 +46,7 @@ class KeyboardButton implements JsonSerializable
         ?bool $request_location = null,
         ?KeyboardButtonPollType $request_poll = null,
     ) {
+        parent::__construct();
         $this->text = $text;
         $this->request_contact = $request_contact;
         $this->request_location = $request_location;

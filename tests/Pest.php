@@ -1,9 +1,5 @@
 <?php
 
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Tests\Fixtures\TestingRunningMode;
 use SergiX44\Nutgram\Tests\TestCase;
 
 /*
@@ -46,20 +42,6 @@ uses(TestCase::class)
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
-
-function getInstance($update = null, $responses = []): Nutgram
-{
-    $mock = new MockHandler($responses);
-    $bot = new Nutgram($_ENV['TELEGRAM_TOKEN'] ?? 'FAKE', [
-        'client' => [
-            'handler' => HandlerStack::create($mock),
-        ],
-        'api_url' => 'http://localhost/'
-    ]);
-    $bot->setRunningMode(new TestingRunningMode($update));
-
-    return $bot;
-}
 
 dataset('message', function () {
     $file = file_get_contents(__DIR__.'/Updates/message.json');

@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents an
@@ -12,7 +13,7 @@ use JsonSerializable;
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.
  * @see https://core.telegram.org/bots/api#inlinekeyboardmarkup
  */
-class InlineKeyboardMarkup implements JsonSerializable
+class InlineKeyboardMarkup extends BaseType implements JsonSerializable
 {
     /**
      * Array of button rows, each represented by an Array of
@@ -20,6 +21,11 @@ class InlineKeyboardMarkup implements JsonSerializable
      * @var \SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton[][] $inline_keyboard
      */
     public array $inline_keyboard;
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     /**
      * @return InlineKeyboardMarkup
