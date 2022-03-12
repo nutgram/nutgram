@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Traits\Macroable;
 use JsonException;
+use JsonSerializable;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -219,6 +220,8 @@ trait Client
             if ($contents instanceof InputFile) {
                 $param['contents'] = $contents->getResource();
                 $param['filename'] = $contents->getFilename();
+            } elseif ($contents instanceof JsonSerializable) {
+                $param['contents'] = json_encode($contents);
             } else {
                 $param['contents'] = $contents;
             }
