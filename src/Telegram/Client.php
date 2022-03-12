@@ -211,23 +211,21 @@ trait Client
         string $mapTo = stdClass::class,
         ?array $options = []
     ): mixed {
-        $parameters = [];
-        foreach ($multipart as $name => $contents) {
-            $param = [
+        $parameters = array_walk($multipart, fn ($name, $contents) => match (true) {
+            $contents instanceof InputFile => [
                 'name' => $name,
-            ];
-
-            if ($contents instanceof InputFile) {
-                $param['contents'] = $contents->getResource();
-                $param['filename'] = $contents->getFilename();
-            } elseif ($contents instanceof JsonSerializable) {
-                $param['contents'] = json_encode($contents);
-            } else {
-                $param['contents'] = $contents;
-            }
-
-            $parameters[] = $param;
-        }
+                'contents' => $contents->getResource(),
+                'filename' => $contents->getFilename(),
+            ],
+            $contents instanceof JsonSerializable => [
+                'name' => $name,
+                'contents' => json_encode($contents),
+            ],
+            default => [
+                'name' => $name,
+                'contents' => $contents,
+            ]
+        });
 
         try {
             $response = $this->http->post($endpoint, array_merge(['multipart' => $parameters], $options));
@@ -283,7 +281,7 @@ trait Client
      */
     protected function mapResponse(ResponseInterface $response, string $mapTo, Exception $clientException = null): mixed
     {
-        $json = json_decode((string) $response->getBody(), flags: JSON_THROW_ON_ERROR);
+        $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
         if ($json?->ok) {
             if (is_scalar($json->result)) {
                 return $json->result;
