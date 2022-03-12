@@ -211,7 +211,7 @@ trait Client
         string $mapTo = stdClass::class,
         ?array $options = []
     ): mixed {
-        $parameters = array_walk($multipart, fn ($name, $contents) => match (true) {
+        $parameters = array_map(fn ($name, $contents) => match (true) {
             $contents instanceof InputFile => [
                 'name' => $name,
                 'contents' => $contents->getResource(),
@@ -225,7 +225,7 @@ trait Client
                 'name' => $name,
                 'contents' => $contents,
             ]
-        });
+        }, array_keys($multipart), $multipart);
 
         try {
             $response = $this->http->post($endpoint, array_merge(['multipart' => $parameters], $options));
