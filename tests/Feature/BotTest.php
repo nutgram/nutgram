@@ -90,11 +90,13 @@ it('copy message works as mocked instance', function () {
 
     $bot->reply()
         ->assertReplyText('test')
-        ->assertReply('copyMessage', expected: [
+        ->assertReply(
+            'copyMessage',
+            expected: [
             'message_id' => '321',
             'chat_id' => 111111,
             'from_chat_id' => 123
-        ], index: 1
+        ],
+            index: 1
         );
-
 });
