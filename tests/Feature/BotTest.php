@@ -75,3 +75,26 @@ it('delete message works as mocked instance', function () {
         ->assertReplyText('test')
         ->assertReply('deleteMessage', index: 1);
 });
+
+it('copy message works as mocked instance', function () {
+    $bot = Nutgram::fake()
+        ->hearText('/test')
+        ->willReceivePartial([
+            'chat' => ['id' => 123],
+            'message_id' => 321
+        ]);
+
+    $bot->onCommand('test', function (Nutgram $bot) {
+        $bot->sendMessage('test')?->copy(111111);
+    });
+
+    $bot->reply()
+        ->assertReplyText('test')
+        ->assertReply('copyMessage', expected: [
+            'message_id' => '321',
+            'chat_id' => 111111,
+            'from_chat_id' => 123
+        ], index: 1
+        );
+
+});
