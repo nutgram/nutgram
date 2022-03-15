@@ -469,7 +469,6 @@ class Message extends BaseType
      */
     public function copy(string|int $chatId, ?array $opt = []): ?MessageId
     {
-        return $this->bot->copyMessage($chatId,$this->chat->id, $this->message_id,$opt);
+        return $this->bot->copyMessage($chatId, $this->chat->id, $this->message_id, $opt);
     }
-
 }
