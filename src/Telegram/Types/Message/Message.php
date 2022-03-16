@@ -466,6 +466,7 @@ class Message extends BaseType
      * @param  string|int  $chatId
      * @param  array|null  $opt
      * @return MessageId|null
+     * @see Nutgram::copyMessage
      */
     public function copy(string|int $chatId, ?array $opt = []): ?MessageId
     {
@@ -476,9 +477,10 @@ class Message extends BaseType
      * Forward the current message
      * @param  string|int  $chatId
      * @param  array|null  $opt
-     * @return Message
+     * @return Message|null
+     * @see Nutgram::forwardMessage
      */
-    public function forward(string|int $chatId, ?array $opt = []): Message
+    public function forward(string|int $chatId, ?array $opt = []): ?Message
     {
         return $this->bot->forwardMessage($chatId, $this->chat->id, $this->message_id, $opt);
     }
