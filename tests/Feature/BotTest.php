@@ -77,15 +77,20 @@ it('delete message works as mocked instance', function () {
 });
 
 it('copy message works as mocked instance', function () {
+
+    $chatId = 1111111;
+    $fromChatId = 123;
+    $messageId = 321;
+
     $bot = Nutgram::fake()
         ->hearText('/test')
         ->willReceivePartial([
-            'chat' => ['id' => 123],
-            'message_id' => 321
+            'chat' => ['id' => $fromChatId],
+            'message_id' => $messageId
         ]);
 
-    $bot->onCommand('test', function (Nutgram $bot) {
-        $bot->sendMessage('test')?->copy(111111);
+    $bot->onCommand('test', function (Nutgram $bot) use ($chatId) {
+        $bot->sendMessage('test')?->copy($chatId);
     });
 
     $bot->reply()
@@ -93,10 +98,41 @@ it('copy message works as mocked instance', function () {
         ->assertReply(
             'copyMessage',
             expected: [
-            'message_id' => '321',
-            'chat_id' => 111111,
-            'from_chat_id' => 123
-        ],
+                'message_id' => $messageId,
+                'chat_id' => $chatId,
+                'from_chat_id' => $fromChatId
+            ],
             index: 1
         );
+});
+
+it('forward message works as mocked instance', function () {
+    $chatId = 1111111;
+    $fromChatId = 123;
+    $messageId = 321;
+
+
+    $bot = Nutgram::fake()
+        ->hearText('/test')
+        ->willReceivePartial([
+            'chat' => ['id' => $fromChatId],
+            'message_id' => $messageId
+        ]);
+
+    $bot->onCommand('test', function (Nutgram $bot) use ($chatId) {
+        $bot->sendMessage('test')?->forward($chatId);
+    });
+
+    $bot->reply()
+        ->assertReplyText('test')
+        ->assertReply(
+            'forwardMessage',
+            expected: [
+                'message_id' => $messageId,
+                'chat_id' => $chatId,
+                'from_chat_id' => $fromChatId
+            ],
+            index: 1
+        );
+
 });
