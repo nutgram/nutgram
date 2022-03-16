@@ -77,7 +77,6 @@ it('delete message works as mocked instance', function () {
 });
 
 it('copy message works as mocked instance', function () {
-
     $chatId = 1111111;
     $fromChatId = 123;
     $messageId = 321;
@@ -134,5 +133,4 @@ it('forward message works as mocked instance', function () {
             ],
             index: 1
         );
-
 });
