@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 2.0 - 2022-03-14
+
+### Added
+- All types extend the `BaseType` class
+- `Nutgram` and `BaseType` extends [Macroable](https://nutgram.dev/docs/usage/extend) class
+- Added [testing system](https://nutgram.dev/docs/testing/introduction)
+- Added helpers method to `Message` type: `delete()` and `editText()`
+
 ## 1.4.1 - 2022-02-21
 
 ### Fixed
