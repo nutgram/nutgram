@@ -4,6 +4,7 @@ use Mockery\MockInterface;
 use SergiX44\Nutgram\Laravel\Commands\HookInfoCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookRemoveCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookSetCommand;
+use SergiX44\Nutgram\Laravel\Commands\ListCommand;
 use SergiX44\Nutgram\Laravel\Commands\RegisterCommandsCommand;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
@@ -118,5 +119,27 @@ test('nutgram:hook:set sets the bot webhook', function () {
 
     $this->artisan(HookSetCommand::class, ['url' => 'https://foo.bar/hook'])
         ->expectsOutput('Bot webhook set with url: https://foo.bar/hook')
+        ->assertExitCode(0);
+});
+
+test('nutgram:list with no handlers registered', function () {
+    $this->swap(Nutgram::class, Nutgram::fake());
+
+    $this
+        ->artisan(ListCommand::class)
+        ->expectsOutput('No handlers have been registered.')
+        ->assertExitCode(0);
+});
+
+test('nutgram:list with handler registered', function () {
+    $bot = Nutgram::fake();
+    $bot->onCommand('start', static function () {
+    });
+
+    $this->swap(Nutgram::class, $bot);
+
+    $this
+        ->artisan(ListCommand::class)
+        ->doesntExpectOutput('No handlers have been registered.')
         ->assertExitCode(0);
 });
