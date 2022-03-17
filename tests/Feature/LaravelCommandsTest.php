@@ -55,6 +55,35 @@ test('nutgram:hook:info prints the webhook info', function () {
         ->assertExitCode(0);
 });
 
+test('nutgram:hook:info prints the webhook info with error', function () {
+    $this->mock(Nutgram::class, function (MockInterface $mock) {
+        $webhookInfo = Nutgram::fake()->getContainer()->get(WebhookInfo::class);
+        $webhookInfo->url = '';
+        $webhookInfo->has_custom_certificate = false;
+        $webhookInfo->pending_update_count = 1;
+        $webhookInfo->ip_address = '1.2.3.4';
+        $webhookInfo->last_error_date = 1647554568;
+        $webhookInfo->last_error_message = 'foobar';
+        $webhookInfo->max_connections = 50;
+        $webhookInfo->allowed_updates = null;
+
+        $mock->shouldReceive('getWebhookInfo')->andReturn($webhookInfo);
+    });
+
+    $this->artisan(HookInfoCommand::class)
+        ->expectsTable(['Info', 'Value'], [
+            ['url', ''],
+            ['has_custom_certificate', 'false'],
+            ['pending_update_count', 1],
+            ['ip_address', '1.2.3.4'],
+            ['last_error_date', '2022-03-17 22:02:48 UTC'],
+            ['last_error_message', 'foobar'],
+            ['max_connections', 50],
+            ['allowed_updates', ''],
+        ])
+        ->assertExitCode(0);
+});
+
 test('nutgram:hook:remove removes the bot webhook', function () {
     $this->mock(Nutgram::class, function (MockInterface $mock) {
         $mock->shouldReceive('deleteWebhook')->with([
