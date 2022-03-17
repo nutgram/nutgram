@@ -75,7 +75,8 @@ class ListCommand extends Command
         $signature = Str::lower($signature);
 
         return match (Str::before($signature, '.')) {
-            'message' => value(function () use ($signature) {
+            'message' => value(
+                function () use ($signature) {
                 $subHandlerSignature = Str::after($signature, 'message.');
                 [$subHandlerName, $subHandlerKey] = array_pad(explode('.', $subHandlerSignature), 2, null);
 
@@ -92,7 +93,8 @@ class ListCommand extends Command
                 }
 
                 return 'onMessageType';
-            }),
+            }
+            ),
             'edited_message' => 'onEditedMessage',
             'channel_post' => 'onChannelPost',
             'edited_channel_post' => 'onEditedChannelPost',
@@ -128,7 +130,6 @@ class ListCommand extends Command
         }
 
         return sprintf("MessageTypes::%s", Str::upper($subHandlerName));
-
     }
 
     protected function getCallableName($callable): string
