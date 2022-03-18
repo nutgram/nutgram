@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use SergiX44\Nutgram\Laravel\Commands\HookInfoCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookRemoveCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookSetCommand;
+use SergiX44\Nutgram\Laravel\Commands\ListCommand;
 use SergiX44\Nutgram\Laravel\Commands\RegisterCommandsCommand;
 use SergiX44\Nutgram\Laravel\Commands\RunCommand;
 use SergiX44\Nutgram\RunningMode\Polling;
@@ -76,6 +77,7 @@ class NutgramServiceProvider extends ServiceProvider
                 HookInfoCommand::class,
                 HookRemoveCommand::class,
                 HookSetCommand::class,
+                ListCommand::class,
             ]);
 
             $this->publishes([
