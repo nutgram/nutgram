@@ -103,7 +103,8 @@ class NutgramServiceProvider extends ServiceProvider
      */
     public function registerMacros(): void
     {
-        Nutgram::macro('downloadFileToDisk',
+        Nutgram::macro(
+            'downloadFileToDisk',
             function (File $file, string $path, string $disk = null, array $clientOpt = []): string {
                 /** @var Nutgram $this */
                 if (is_dir($path)) {
@@ -118,7 +119,8 @@ class NutgramServiceProvider extends ServiceProvider
                     ->throw();
 
                 return $savedPath;
-            });
+            }
+        );
 
         File::macro('saveToDisk', function (string $path, string $disk = null, array $clientOpt = []): string {
             /** @var File $this */
