@@ -12,6 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * When the link expires, a new one can be requested by calling {@see https://core.telegram.org/bots/api#getfile
  * getFile}. Maximum file size to download is 20 MB
  * @see https://core.telegram.org/bots/api#file
+ * @method string saveToDisk(string $path, string $disk = null, array $clientOpt = []) [LARAVEL ONLY] Saves file to disk
  */
 class File extends BaseType
 {

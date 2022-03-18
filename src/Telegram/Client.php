@@ -34,6 +34,8 @@ use Symfony\Component\HttpFoundation\Response;
  * Trait Client
  * @package SergiX44\Nutgram\Telegram
  * @mixin Nutgram
+ * @method string downloadFileToDisk(File $file, string $path, string $disk = null, array $clientOpt = []) [LARAVEL
+ *     ONLY] Saves File to disk
  */
 trait Client
 {

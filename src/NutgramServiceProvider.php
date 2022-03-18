@@ -5,6 +5,8 @@ namespace SergiX44\Nutgram;
 
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use SergiX44\Nutgram\Laravel\Commands\HookInfoCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookRemoveCommand;
@@ -14,6 +16,7 @@ use SergiX44\Nutgram\Laravel\Commands\RegisterCommandsCommand;
 use SergiX44\Nutgram\Laravel\Commands\RunCommand;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\Webhook;
+use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 
 /**
@@ -90,5 +93,47 @@ class NutgramServiceProvider extends ServiceProvider
             $bot = $this->app->make(Nutgram::class);
             require file_exists($this->telegramRoutes) ? $this->telegramRoutes : __DIR__.'/../laravel/routes.php';
         }
+
+        $this->registerMacros();
+    }
+
+    /**
+     * Register the bot macros
+     * @return void
+     */
+    public function registerMacros(): void
+    {
+        Nutgram::macro('downloadFileToDisk',
+            function (File $file, string $path, string $disk = null, array $clientOpt = []): string {
+                /** @var Nutgram $this */
+                if (is_dir($path)) {
+                    $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+                    $path .= basename($file->file_path);
+                }
+
+                $savedPath = Storage::disk($disk)->path($path);
+
+                Http::withOptions(array_merge(['sink' => $savedPath, $clientOpt]))
+                    ->get($this->downloadUrl($file))
+                    ->throw();
+
+                return $savedPath;
+            });
+
+        File::macro('saveToDisk', function (string $path, string $disk = null, array $clientOpt = []): string {
+            /** @var File $this */
+            if (is_dir($path)) {
+                $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+                $path .= basename($this->file_path);
+            }
+
+            $savedPath = Storage::disk($disk)->path($path);
+
+            Http::withOptions(array_merge(['sink' => $savedPath, $clientOpt]))
+                ->get($this->downloadUrl($this))
+                ->throw();
+
+            return $savedPath;
+        });
     }
 }
