@@ -7,7 +7,6 @@ use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 
 test('the Nutgram::downloadFileToDisk method save File to Laravel disk', function () {
-
     $disk = 'local';
     $storedFileName = 'text.txt';
     $storedFileContent = 'Hello World';
@@ -35,7 +34,6 @@ test('the Nutgram::downloadFileToDisk method save File to Laravel disk', functio
 });
 
 test('the File::saveToDisk method save File to Laravel disk', function () {
-
     $disk = 'local';
     $storedFileName = 'text.txt';
     $storedFileContent = 'Hello World';
