@@ -2,9 +2,22 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 2.1 - 2022-03-20
+
+### Added
+
+- Added `copy` method to `Message` type
+- Added `forward` method to `Message` type
+- Added a new Laravel command: `nutgram:list`
+
+### Changed
+
+- Added date format to `last_error_date` field in `nutgram:hook:info` command
+
 ## 2.0 - 2022-03-14
 
 ### Added
+
 - All types extend the `BaseType` class
 - `Nutgram` and `BaseType` extends [Macroable](https://nutgram.dev/docs/usage/extend) class
 - Added [testing system](https://nutgram.dev/docs/testing/introduction)
