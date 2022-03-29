@@ -57,8 +57,10 @@ class FormDataParser
             if (isset($headers['content-disposition']['filename'])) {
                 $formDataFile = new OutgoingResource();
                 $formDataFile->name = $headers['content-disposition']['filename'];
-                $formDataFile->type = array_key_exists('content-type',
-                    $headers) ? $headers['content-type'] : 'application/octet-stream';
+                $formDataFile->type = array_key_exists(
+                    'content-type',
+                    $headers
+                ) ? $headers['content-type'] : 'application/octet-stream';
                 $formDataFile->size = mb_strlen($value, '8bit');
                 $formDataFile->error = UPLOAD_ERR_OK;
                 $formDataFile->tmp_name = null;
