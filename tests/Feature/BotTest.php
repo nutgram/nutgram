@@ -140,7 +140,6 @@ it('forward message works as mocked instance', function () {
 });
 
 it('sends file works as mocked instance', function () {
-
     echo __DIR__.'../TestCase.php';
     ob_flush();
 
