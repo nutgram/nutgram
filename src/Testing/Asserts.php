@@ -3,12 +3,10 @@
 namespace SergiX44\Nutgram\Testing;
 
 use GuzzleHttp\Psr7\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Testing\Assert as LaraUnit;
 use InvalidArgumentException;
 use JsonException;
 use PHPUnit\Framework\Assert as PHPUnit;
-use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 /**
@@ -75,7 +73,7 @@ trait Asserts
         if ($expected !== null) {
             try {
                 $expected = json_decode(json_encode($expected), true);
-                $actual = json_decode((string)$request->getBody(), true, flags: JSON_THROW_ON_ERROR);
+                $actual = FakeNutgram::getActualData($request, $expected);
             } catch (JsonException) {
                 $actual = [];
             }

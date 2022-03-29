@@ -7,6 +7,8 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use InvalidArgumentException;
+use JsonException;
 use Psr\Http\Message\RequestInterface;
 use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
@@ -212,6 +214,7 @@ class FakeNutgram extends Nutgram
 
     /**
      * @return $this
+     * @throws JsonException
      */
     public function dump(): self
     {
@@ -225,8 +228,8 @@ class FakeNutgram extends Nutgram
                 [$request,] = array_values($item);
 
                 $requestIndex = "[$i] ";
-                print($requestIndex . "\e[34m" . $request->getUri()->getPath() . "\e[39m" . PHP_EOL);
-                $content = json_encode(json_decode($request->getBody(), true), JSON_PRETTY_PRINT);
+                print($requestIndex."\e[34m".$request->getUri()->getPath()."\e[39m".PHP_EOL);
+                $content = json_encode(FakeNutgram::getActualData($request), JSON_PRETTY_PRINT);
                 print(preg_replace('/"(.+)":/', "\"\e[33m\${1}\e[39m\":", $content));
 
                 if ($i < count($this->getRequestHistory()) - 1) {
@@ -279,5 +282,49 @@ class FakeNutgram extends Nutgram
         $this->globalMiddlewares = $middleware;
 
         return $this;
+    }
+
+    /**
+     * Get the actual data from the request.
+     * @param  Request  $request
+     * @param  array  $mapping
+     * @return array
+     * @throws JsonException
+     */
+    public static function getActualData(Request $request, array $mapping = []): array
+    {
+        //get content type
+        $contentType = $request->getHeaderLine('Content-Type');
+
+        //get body
+        $body = (string)$request->getBody();
+
+        //get data from json
+        if (str_contains($contentType, 'application/json')) {
+            return json_decode($body, true, flags: JSON_THROW_ON_ERROR);
+        }
+
+        //get data from form data
+        if (str_contains($contentType, 'multipart/form-data')) {
+            $formData = FormDataParser::parse($request);
+            $params = $formData->params;
+
+            //remap types lost in the form data parser
+            if (count($mapping) > 0) {
+                foreach ($params as $key => &$value) {
+                    if (array_key_exists($key, $mapping)) {
+                        $value = match (gettype($mapping[$key])) {
+                            'integer' => filter_var($value, FILTER_VALIDATE_INT),
+                            'double' => filter_var($value, FILTER_VALIDATE_FLOAT),
+                            'boolean' => filter_var($value, FILTER_VALIDATE_BOOLEAN),
+                            default => $value,
+                        };
+                    }
+                }
+            }
+            return array_merge($params, $formData->files);
+        }
+
+        throw new InvalidArgumentException("Content-Type '$contentType' not supported");
     }
 }
