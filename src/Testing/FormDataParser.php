@@ -133,9 +133,9 @@ class FormDataParser
     /**
      * Formatted bytes to bytes
      * @param  string  $formattedBytes
-     * @return int|null
+     * @return int
      */
-    protected function toBytes(string $formattedBytes): ?int
+    protected function toBytes(string $formattedBytes): int
     {
         $units = ['B', 'K', 'M', 'G', 'T', 'P'];
         $unitsExtended = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
@@ -145,7 +145,7 @@ class FormDataParser
 
         //B or no suffix
         if (is_numeric($suffix[0])) {
-            return preg_replace('/[^\d]/', '', $formattedBytes);
+            return (int)preg_replace('/[^\d]/', '', $formattedBytes);
         }
 
         $exponent = array_flip($units)[$suffix] ?? null;
@@ -154,7 +154,7 @@ class FormDataParser
         }
 
         if ($exponent === null) {
-            return null;
+            return 0;
         }
 
         return $number * (1024 ** $exponent);
