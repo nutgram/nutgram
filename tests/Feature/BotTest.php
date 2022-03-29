@@ -1,8 +1,12 @@
 <?php
 
+use GuzzleHttp\Psr7\Request;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Testing\FormDataParser;
+use SergiX44\Nutgram\Testing\OutgoingResource;
 
 it('return the right running mode', function ($update) {
     /** @var \SergiX44\Nutgram\Nutgram $bot */
@@ -133,4 +137,36 @@ it('forward message works as mocked instance', function () {
             ],
             index: 1
         );
+});
+
+it('sends file works as mocked instance', function () {
+
+    echo __DIR__.'../TestCase.php';
+    ob_flush();
+
+    $file = fopen(__DIR__.DIRECTORY_SEPARATOR.'ApiErrorTest.php', 'rb');
+
+    $bot = Nutgram::fake()
+        ->hearText('/test');
+
+    $bot->onCommand('test', function (Nutgram $bot) use ($file) {
+        $bot->sendDocument(InputFile::make($file), [
+            'caption' => 'test',
+            'reply_to_message_id' => 123,
+            'allow_sending_without_reply' => true,
+        ]);
+    });
+
+    $bot->reply()
+        ->assertReply('sendDocument', [
+            'caption' => 'test',
+            'reply_to_message_id' => 123,
+            'allow_sending_without_reply' => true,
+        ])
+        ->assertRaw(function (Request $request) {
+            /** @var OutgoingResource $document */
+            $document = FormDataParser::parse($request)->files['document'];
+
+            return is_resource($document->tmp_resource);
+        });
 });
