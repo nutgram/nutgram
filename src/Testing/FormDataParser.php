@@ -67,8 +67,10 @@ class FormDataParser
 
                 $this->files[$headers['content-disposition']['name']] = new OutgoingResource(
                     name: $headers['content-disposition']['filename'],
-                    type: array_key_exists('content-type',
-                        $headers) ? $headers['content-type'] : 'application/octet-stream',
+                    type: array_key_exists(
+                        'content-type',
+                        $headers
+                    ) ? $headers['content-type'] : 'application/octet-stream',
                     size: mb_strlen($value, '8bit'),
                     error: $error,
                     tmp_resource: $tmpResource
