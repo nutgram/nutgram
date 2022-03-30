@@ -163,6 +163,6 @@ it('sends file works as mocked instance', function () {
             /** @var OutgoingResource $document */
             $document = FormDataParser::parse($request)->files['document'];
 
-            return is_resource($document->tmp_resource);
+            return is_resource($document->getTmpResource());
         });
 });
