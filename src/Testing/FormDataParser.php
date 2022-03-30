@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Testing;
 
 use GuzzleHttp\Psr7\Request;
+use Throwable;
 
 class FormDataParser
 {
@@ -55,33 +56,23 @@ class FormDataParser
                 continue;
             }
             if (isset($headers['content-disposition']['filename'])) {
-                $formDataFile = new OutgoingResource();
-                $formDataFile->name = $headers['content-disposition']['filename'];
-                $formDataFile->type = array_key_exists(
-                    'content-type',
-                    $headers
-                ) ? $headers['content-type'] : 'application/octet-stream';
-                $formDataFile->size = mb_strlen($value, '8bit');
-                $formDataFile->error = UPLOAD_ERR_OK;
-                $formDataFile->tmp_name = null;
-
-                $tmpResource = tmpfile();
-                if ($tmpResource === false) {
-                    $formDataFile->error = UPLOAD_ERR_CANT_WRITE;
-                } else {
-                    $tmpResourceMetaData = stream_get_meta_data($tmpResource);
-                    $tmpFileName = $tmpResourceMetaData['uri'];
-                    if (empty($tmpFileName)) {
-                        $formDataFile->error = UPLOAD_ERR_CANT_WRITE;
-                        @fclose($tmpResource);
-                    } else {
-                        fwrite($tmpResource, $value);
-                        $formDataFile->tmp_name = $tmpFileName;
-                        $formDataFile->tmp_resource = $tmpResource;
-                    }
+                try {
+                    $tmpResource = fopen('php://memory', 'rwb+');
+                    fwrite($tmpResource, $value);
+                    $error = UPLOAD_ERR_OK;
+                } catch (Throwable) {
+                    $error = UPLOAD_ERR_CANT_WRITE;
+                    $tmpResource = null;
                 }
 
-                $this->files[$headers['content-disposition']['name']] = $formDataFile;
+                $this->files[$headers['content-disposition']['name']] = new OutgoingResource(
+                    name: $headers['content-disposition']['filename'],
+                    type: array_key_exists('content-type',
+                        $headers) ? $headers['content-type'] : 'application/octet-stream',
+                    size: mb_strlen($value, '8bit'),
+                    error: $error,
+                    tmp_resource: $tmpResource
+                );
             } else {
                 $this->params[$headers['content-disposition']['name']] = $value;
             }
