@@ -126,37 +126,4 @@ class FormDataParser
 
         return $headers;
     }
-
-    /**
-     * Formatted bytes to bytes
-     * @param  string  $formattedBytes
-     * @return float
-     */
-    protected function toBytes(string $formattedBytes): float
-    {
-        $val = trim($formattedBytes);
-        if (is_numeric($val)) {
-            return (float)$val;
-        }
-
-        $last = strtolower($val[strlen($val) - 1]);
-        $val = substr($val, 0, -1);
-
-        $val = (float)$val;
-        switch ($last) {
-            case 't':
-                $val *= 1024;
-            // no break
-            case 'g':
-                $val *= 1024;
-            // no break
-            case 'm':
-                $val *= 1024;
-            // no break
-            case 'k':
-                $val *= 1024;
-        }
-
-        return $val;
-    }
 }

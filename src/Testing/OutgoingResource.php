@@ -10,7 +10,7 @@ class OutgoingResource implements JsonSerializable
 
     public ?string $type;
 
-    public float $size;
+    public int $size;
 
     public int $error;
 
