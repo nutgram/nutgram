@@ -45,13 +45,6 @@ class InputFile
         return new self($resource, $filename);
     }
 
-    public function __destruct()
-    {
-        if (is_resource($this->resource)) {
-            fclose($this->resource);
-        }
-    }
-
     /**
      * @param  string|null  $filename
      * @return InputFile
