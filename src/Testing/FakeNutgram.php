@@ -311,7 +311,7 @@ class FakeNutgram extends Nutgram
 
             //remap types lost in the form data parser
             if (count($mapping) > 0) {
-                foreach ($params as $key => &$value) {
+                array_walk_recursive($params, function (&$value, $key) use ($mapping) {
                     if (array_key_exists($key, $mapping)) {
                         $value = match (gettype($mapping[$key])) {
                             'integer' => filter_var($value, FILTER_VALIDATE_INT),
@@ -320,7 +320,7 @@ class FakeNutgram extends Nutgram
                             default => $value,
                         };
                     }
-                }
+                });
             }
             return array_merge($params, $formData->files);
         }

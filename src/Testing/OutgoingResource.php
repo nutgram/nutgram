@@ -10,7 +10,7 @@ class OutgoingResource implements JsonSerializable
 
     public ?string $type;
 
-    public int $size;
+    public float $size;
 
     public int $error;
 
@@ -21,6 +21,6 @@ class OutgoingResource implements JsonSerializable
 
     public function jsonSerialize()
     {
-        return sprintf("OutgoingResource{%s}", $this->name);
+        return sprintf("%s{%s}", basename(__CLASS__), $this->name);
     }
 }

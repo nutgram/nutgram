@@ -65,25 +65,22 @@ class FormDataParser
                 $formDataFile->error = UPLOAD_ERR_OK;
                 $formDataFile->tmp_name = null;
 
-                if ($formDataFile->size > $this->toBytes(ini_get('upload_max_filesize'))) {
-                    $formDataFile->error = UPLOAD_ERR_INI_SIZE;
+                $tmpResource = tmpfile();
+                if ($tmpResource === false) {
+                    $formDataFile->error = UPLOAD_ERR_CANT_WRITE;
                 } else {
-                    $tmpResource = tmpfile();
-                    if ($tmpResource === false) {
+                    $tmpResourceMetaData = stream_get_meta_data($tmpResource);
+                    $tmpFileName = $tmpResourceMetaData['uri'];
+                    if (empty($tmpFileName)) {
                         $formDataFile->error = UPLOAD_ERR_CANT_WRITE;
+                        @fclose($tmpResource);
                     } else {
-                        $tmpResourceMetaData = stream_get_meta_data($tmpResource);
-                        $tmpFileName = $tmpResourceMetaData['uri'];
-                        if (empty($tmpFileName)) {
-                            $formDataFile->error = UPLOAD_ERR_CANT_WRITE;
-                            @fclose($tmpResource);
-                        } else {
-                            fwrite($tmpResource, $value);
-                            $formDataFile->tmp_name = $tmpFileName;
-                            $formDataFile->tmp_resource = $tmpResource;
-                        }
+                        fwrite($tmpResource, $value);
+                        $formDataFile->tmp_name = $tmpFileName;
+                        $formDataFile->tmp_resource = $tmpResource;
                     }
                 }
+
                 $this->files[$headers['content-disposition']['name']] = $formDataFile;
             } else {
                 $this->params[$headers['content-disposition']['name']] = $value;
@@ -133,30 +130,33 @@ class FormDataParser
     /**
      * Formatted bytes to bytes
      * @param  string  $formattedBytes
-     * @return int
+     * @return float
      */
-    protected function toBytes(string $formattedBytes): int
+    protected function toBytes(string $formattedBytes): float
     {
-        $units = ['B', 'K', 'M', 'G', 'T', 'P'];
-        $unitsExtended = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-
-        $number = (int)preg_replace("/[^0-9]+/", "", $formattedBytes);
-        $suffix = preg_replace("/[^a-zA-Z]+/", "", $formattedBytes);
-
-        //B or no suffix
-        if (is_numeric($suffix[0])) {
-            return (int)preg_replace('/[^\d]/', '', $formattedBytes);
+        $val = trim($formattedBytes);
+        if (is_numeric($val)) {
+            return (float)$val;
         }
 
-        $exponent = array_flip($units)[$suffix] ?? null;
-        if ($exponent === null) {
-            $exponent = array_flip($unitsExtended)[$suffix] ?? null;
+        $last = strtolower($val[strlen($val) - 1]);
+        $val = substr($val, 0, -1);
+
+        $val = (float)$val;
+        switch ($last) {
+            case 't':
+                $val *= 1024;
+            // no break
+            case 'g':
+                $val *= 1024;
+            // no break
+            case 'm':
+                $val *= 1024;
+            // no break
+            case 'k':
+                $val *= 1024;
         }
 
-        if ($exponent === null) {
-            return 0;
-        }
-
-        return $number * (1024 ** $exponent);
+        return $val;
     }
 }
