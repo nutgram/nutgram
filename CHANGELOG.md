@@ -2,6 +2,12 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 2.1.1 - 2022-03-31
+
+### Fixed
+
+- Fix assertions with multipart requests
+
 ## 2.1 - 2022-03-20
 
 ### Added
