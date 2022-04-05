@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+    - name: Documentation issue
+      url: https://github.com/nutgram/docs/issues
+      about: Please report documentation issues on the doc repository.
+    - name: Security issue
+      url: mailto:sergio@brighenti.me
+      about: Please report security issues via email.
