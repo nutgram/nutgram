@@ -4,9 +4,9 @@
 namespace SergiX44\Nutgram\RunningMode;
 
 use Closure;
-use JsonMapper;
 use JsonMapper_Exception;
 use Psr\SimpleCache\InvalidArgumentException;
+use SergiX44\Nutgram\Mapper\JsonMapper;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use Throwable;
@@ -58,10 +58,7 @@ class Webhook implements RunningMode
         $input = file_get_contents('php://input');
         $update = $bot->getContainer()
             ->get(JsonMapper::class)
-            ->map(
-                json_decode($input, flags: JSON_THROW_ON_ERROR),
-                $bot->getContainer()->get(Update::class)
-            );
+            ->hydrate(json_decode($input, flags: JSON_THROW_ON_ERROR), $bot->getContainer()->get(Update::class));
         $bot->processUpdate($update);
     }
 

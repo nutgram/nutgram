@@ -3,7 +3,7 @@
 
 namespace SergiX44\Nutgram\RunningMode;
 
-use JsonMapper;
+use SergiX44\Nutgram\Mapper\JsonMapper;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
@@ -25,7 +25,7 @@ class Fake implements RunningMode
         } else {
             $update = $bot->getContainer()
                 ->get(JsonMapper::class)
-                ->map($this->update, $bot->getContainer()->get(Update::class));
+                ->hydrate($this->update, $bot->getContainer()->get(Update::class));
         }
 
         $bot->processUpdate($update);
