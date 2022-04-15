@@ -3,7 +3,7 @@
 
 namespace SergiX44\Nutgram\RunningMode;
 
-use SergiX44\Nutgram\Mapper\JsonMapper;
+use SergiX44\Nutgram\Hydrator\Hydrator;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
@@ -18,14 +18,22 @@ class Fake implements RunningMode
     {
     }
 
+    /**
+     * @param  Nutgram  $bot
+     * @return void
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Throwable
+     */
     public function processUpdates(Nutgram $bot): void
     {
         if ($this->update instanceof Update) {
             $update = $this->update;
         } else {
             $update = $bot->getContainer()
-                ->get(JsonMapper::class)
-                ->hydrate($this->update, $bot->getContainer()->get(Update::class));
+                ->get(Hydrator::class)
+                ->hydrate($this->update, $bot->getContainer()->getNew(Update::class));
         }
 
         $bot->processUpdate($update);

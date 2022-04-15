@@ -19,8 +19,8 @@ use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\Command;
-use SergiX44\Nutgram\Mapper\JsonMapper;
-use SergiX44\Nutgram\Mapper\Mapper;
+use SergiX44\Nutgram\Hydrator\JsonMapper;
+use SergiX44\Nutgram\Hydrator\Hydrator;
 use SergiX44\Nutgram\Proxies\GlobalCacheProxy;
 use SergiX44\Nutgram\Proxies\UpdateDataProxy;
 use SergiX44\Nutgram\Proxies\UserCacheProxy;
@@ -54,9 +54,9 @@ class Nutgram extends ResolveHandlers
     private ClientInterface $http;
 
     /**
-     * @var Mapper
+     * @var Hydrator
      */
-    private Mapper $mapper;
+    private Hydrator $mapper;
 
     /**
      * @var ContainerInterface
@@ -94,8 +94,8 @@ class Nutgram extends ResolveHandlers
         ], $config['client'] ?? []));
         $this->container->addShared(ClientInterface::class, $this->http);
 
-        $this->container->addShared(Mapper::class)->setConcrete($config['mapper'] ?? JsonMapper::class);
-        $this->mapper = $this->container->get(JsonMapper::class);
+        $this->container->addShared(Hydrator::class)->setConcrete($config['mapper'] ?? JsonMapper::class);
+        $this->mapper = $this->container->get(Hydrator::class);
 
         $this->container->addShared(CacheInterface::class, $config['cache'] ?? new ArrayCache());
         $this->conversationCache = $this->container->get(ConversationCache::class);

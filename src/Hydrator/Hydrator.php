@@ -1,8 +1,8 @@
 <?php
 
-namespace SergiX44\Nutgram\Mapper;
+namespace SergiX44\Nutgram\Hydrator;
 
-interface Mapper
+interface Hydrator
 {
     /**
      * @param  array|object  $data

@@ -1,17 +1,14 @@
 <?php
 
-namespace SergiX44\Nutgram\Mapper;
+namespace SergiX44\Nutgram\Hydrator;
 
-class JsonMapper implements Mapper
+class JsonMapper implements Hydrator
 {
     private \JsonMapper $mapper;
 
-    /**
-     * @param  \JsonMapper  $mapper
-     */
-    public function __construct(\JsonMapper $mapper)
+    public function __construct()
     {
-        $this->mapper = $mapper;
+        $this->mapper = new \JsonMapper();
         $this->mapper->undefinedPropertyHandler = static function ($object, $propName, $jsonValue): void {
             $object->{$propName} = $jsonValue;
         };
