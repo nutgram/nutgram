@@ -94,6 +94,7 @@ class Nutgram extends ResolveHandlers
         ], $config['client'] ?? []));
         $this->container->addShared(ClientInterface::class, $this->http);
 
+        $this->container->addShared(Mapper::class)->setConcrete($config['mapper'] ?? JsonMapper::class);
         $this->mapper = $this->container->get(JsonMapper::class);
 
         $this->container->addShared(CacheInterface::class, $config['cache'] ?? new ArrayCache());
