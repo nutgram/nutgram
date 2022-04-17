@@ -34,13 +34,4 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 abstract class InlineQueryResult extends BaseType
 {
-    /**
-     * Type of the result
-     */
-    public string $type;
-
-    /**
-     * Unique identifier for this result, 1-64 Bytes
-     */
-    public string $id;
 }

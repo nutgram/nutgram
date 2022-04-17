@@ -45,10 +45,9 @@ trait InlineMode
      */
     public function answerWebAppQuery(string $web_app_query_id, InlineQueryResult $result): ?SentWebAppMessage
     {
-        $opt = [
+        return $this->requestJson(__FUNCTION__, [
             'web_app_query_id' => $web_app_query_id,
             'result' => json_encode($result, JSON_THROW_ON_ERROR),
-        ];
-        return $this->requestJson(__FUNCTION__, $opt, SentWebAppMessage::class);
+        ], SentWebAppMessage::class);
     }
 }
