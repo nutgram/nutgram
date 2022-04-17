@@ -19,7 +19,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * you must replace its content using input_message_content.
  * @see https://core.telegram.org/bots/api#inlinequeryresultvideo
  */
-class InlineQueryResultVideo extends BaseType
+class InlineQueryResultVideo extends InlineQueryResult
 {
     /**
      * Type of the result, must be video

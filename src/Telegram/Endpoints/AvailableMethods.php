@@ -6,10 +6,12 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 use JsonException;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMember;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatPermissions;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
+use SergiX44\Nutgram\Telegram\Types\Command\MenuButton;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
@@ -489,24 +491,6 @@ trait AvailableMethods
      * @param  int  $user_id Unique identifier of the target user
      * @param  array|null  $opt
      * @return bool|null
-     * @deprecated Use {@see banChatMember} instead.
-     */
-    public function kickChatMember(string|int $chat_id, int $user_id, ?array $opt = []): ?bool
-    {
-        return $this->banChatMember($chat_id, $user_id, $opt);
-    }
-
-    /**
-     * Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels,
-     * the user will not be able to return to the chat on their own using invite links, etc., unless
-     * {@see https://core.telegram.org/bots/api#unbanchatmember unbanned} first. The bot must be an administrator in
-     * the chat for this to work and must have the appropriate admin rights. Returns True on success.
-     * @see https://core.telegram.org/bots/api#kickchatmember
-     * @param  string|int  $chat_id Unique identifier for the target group or username of the target supergroup or
-     *     channel (in the format [at]channelusername)
-     * @param  int  $user_id Unique identifier of the target user
-     * @param  array|null  $opt
-     * @return bool|null
      */
     public function banChatMember(string|int $chat_id, int $user_id, ?array $opt = []): ?bool
     {
@@ -901,19 +885,6 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup or
      *     channel (in the format [at]channelusername)
      * @return int|null
-     * @deprecated Use {@see getChatMemberCount} instead.
-     */
-    public function getChatMembersCount(string|int $chat_id): ?int
-    {
-        return $this->getChatMemberCount($chat_id);
-    }
-
-    /**
-     * Use this method to get the number of members in a chat. Returns Int on success.
-     * @see https://core.telegram.org/bots/api#getchatmemberscount
-     * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup or
-     *     channel (in the format [at]channelusername)
-     * @return int|null
      */
     public function getChatMemberCount(string|int $chat_id): ?int
     {
@@ -1022,5 +993,55 @@ trait AvailableMethods
     public function getMyCommands(?array $opt = []): ?array
     {
         return $this->requestJson(__FUNCTION__, $opt, BotCommand::class);
+    }
+
+    /**
+     * Use this method to change the bot's menu button in a private chat, or the default menu button.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#setchatmenubutton
+     * @param  array|null  $opt
+     * @return bool|null
+     */
+    public function setChatMenuButton(?array $opt = []): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, $opt);
+    }
+
+    /**
+     * Use this method to get the current value of the bot's menu button in a private chat, or the default menu button.
+     * Returns {@see https://core.telegram.org/bots/api#menubutton MenuButton} on success.
+     * @see https://core.telegram.org/bots/api#getchatmenubutton
+     * @param  array|null  $opt
+     * @return MenuButton|null
+     */
+    public function getChatMenuButton(?array $opt = []): ?MenuButton
+    {
+        return $this->requestJson(__FUNCTION__, $opt, MenuButton::class);
+    }
+
+    /**
+     * Use this method to change the default administrator rights requested by the bot
+     * when it's added as an administrator to groups or channels.
+     * These rights will be suggested to users, but they are are free to modify the list before adding the bot.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#setmydefaultadministratorrights
+     * @param  array|null  $opt
+     * @return bool|null
+     */
+    public function setMyDefaultAdministratorRights(?array $opt = []): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, $opt);
+    }
+
+    /**
+     * Use this method to get the current default administrator rights of the bot.
+     * Returns {@see https://core.telegram.org/bots/api#chatadministratorrights ChatAdministratorRights} on success.
+     * @see https://core.telegram.org/bots/api#getmydefaultadministratorrights
+     * @param  array|null  $opt
+     * @return ChatAdministratorRights|null
+     */
+    public function getMyDefaultAdministratorRights(?array $opt = []): ?ChatAdministratorRights
+    {
+        return $this->requestJson(__FUNCTION__, $opt, ChatAdministratorRights::class);
     }
 }

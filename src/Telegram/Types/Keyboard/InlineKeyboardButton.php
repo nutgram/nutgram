@@ -6,6 +6,7 @@ use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Common\LoginUrl;
 use SergiX44\Nutgram\Telegram\Types\Game\CallbackGame;
+use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 /**
  * This object represents one button of an inline keyboard. You MUST use exactly one of the optional fields.
@@ -34,6 +35,15 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
      * query to the bot when button is pressed, 1-64 bytes
      */
     public ?string $callback_data = null;
+
+    /**
+     * Optional. Description of the {@see https://core.telegram.org/bots/webapps Web App}
+     * that will be launched when the user presses the button.
+     * The Web App will be able to send an arbitrary message on behalf of the user using
+     * the method {@see https://core.telegram.org/bots/api#answerwebappquery answerWebAppQuery}.
+     * Available only in private chats between a user and the bot.
+     */
+    public ?WebAppInfo $web_app;
 
     /**
      * Optional. If set, pressing the button will prompt the user to select one of their chats,
@@ -71,17 +81,6 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
      */
     public ?bool $pay = null;
 
-    /**
-     * InlineKeyboardButton constructor.
-     * @param  string  $text
-     * @param  string|null  $url
-     * @param  LoginUrl|null  $login_url
-     * @param  string|null  $callback_data
-     * @param  string|null  $switch_inline_query
-     * @param  string|null  $switch_inline_query_current_chat
-     * @param  CallbackGame|null  $callback_game
-     * @param  bool  $pay
-     */
     public function __construct(
         string $text = '',
         ?string $url = null,
@@ -90,7 +89,8 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?string $switch_inline_query = null,
         ?string $switch_inline_query_current_chat = null,
         ?CallbackGame $callback_game = null,
-        ?bool $pay = null
+        ?bool $pay = null,
+        ?WebAppInfo $web_app = null,
     ) {
         parent::__construct();
         $this->text = $text;
@@ -101,19 +101,9 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         $this->switch_inline_query_current_chat = $switch_inline_query_current_chat;
         $this->callback_game = $callback_game;
         $this->pay = $pay;
+        $this->web_app = $web_app;
     }
 
-    /**
-     * @param  string  $text
-     * @param  string|null  $url
-     * @param  LoginUrl|null  $login_url
-     * @param  string|null  $callback_data
-     * @param  string|null  $switch_inline_query
-     * @param  string|null  $switch_inline_query_current_chat
-     * @param  CallbackGame|null  $callback_game
-     * @param  bool|null  $pay
-     * @return InlineKeyboardButton
-     */
     public static function make(
         string $text = '',
         ?string $url = null,
@@ -122,7 +112,8 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?string $switch_inline_query = null,
         ?string $switch_inline_query_current_chat = null,
         ?CallbackGame $callback_game = null,
-        ?bool $pay = null
+        ?bool $pay = null,
+        ?WebAppInfo $web_app = null,
     ): InlineKeyboardButton {
         return new self(
             $text,
@@ -132,7 +123,8 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
             $switch_inline_query,
             $switch_inline_query_current_chat,
             $callback_game,
-            $pay
+            $pay,
+            $web_app,
         );
     }
 
@@ -150,6 +142,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
             'switch_inline_query_current_chat' => $this->switch_inline_query_current_chat,
             'callback_game' => $this->callback_game,
             'pay' => $this->pay,
+            'web_app' => $this->web_app,
         ]);
     }
 }

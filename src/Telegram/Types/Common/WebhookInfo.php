@@ -42,6 +42,12 @@ class WebhookInfo extends BaseType
     public ?string $last_error_message = null;
 
     /**
+     * Optional. Unix time of the most recent error that happened
+     * when trying to synchronize available updates with Telegram datacenters
+     */
+    public ?int $last_synchronization_error_date = null;
+
+    /**
      * Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
      */
     public ?int $max_connections = null;

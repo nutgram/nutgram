@@ -15,7 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
  * @see https://core.telegram.org/bots/api#inlinequeryresultcachedvideo
  */
-class InlineQueryResultCachedVideo extends BaseType
+class InlineQueryResultCachedVideo extends InlineQueryResult
 {
     /**
      * Type of the result, must be video

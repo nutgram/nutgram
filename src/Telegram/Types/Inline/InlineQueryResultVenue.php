@@ -16,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
  * @see https://core.telegram.org/bots/api#inlinequeryresultvenue
  */
-class InlineQueryResultVenue extends BaseType
+class InlineQueryResultVenue extends InlineQueryResult
 {
     /**
      * Type of the result, must be venue

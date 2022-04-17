@@ -16,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * specified content instead of the animation.
  * @see https://core.telegram.org/bots/api#inlinequeryresultmpeg4gif
  */
-class InlineQueryResultMpeg4Gif extends BaseType
+class InlineQueryResultMpeg4Gif extends InlineQueryResult
 {
     /**
      * Type of the result, must be mpeg4_gif

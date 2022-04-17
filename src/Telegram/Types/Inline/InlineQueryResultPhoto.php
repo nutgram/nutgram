@@ -14,7 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
  * @see https://core.telegram.org/bots/api#inlinequeryresultphoto
  */
-class InlineQueryResultPhoto extends BaseType
+class InlineQueryResultPhoto extends InlineQueryResult
 {
     /**
      * Type of the result, must be photo

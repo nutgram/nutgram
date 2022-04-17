@@ -24,10 +24,11 @@ use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\User\User;
-use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatEnded;
-use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatParticipantsInvited;
-use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatScheduled;
-use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatStarted;
+use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatEnded;
+use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatParticipantsInvited;
+use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatScheduled;
+use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatStarted;
+use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppData;
 
 /**
  * This object represents a message.
@@ -344,22 +345,27 @@ class Message extends BaseType
     /**
      * Optional. Service message: voice chat scheduled
      */
-    public ?VoiceChatScheduled $voice_chat_scheduled = null;
+    public ?VideoChatScheduled $video_chat_scheduled = null;
 
     /**
      * Optional. Service message: voice chat started
      */
-    public ?VoiceChatStarted $voice_chat_started = null;
+    public ?VideoChatStarted $video_chat_started = null;
 
     /**
      * Optional. Service message: voice chat ended
      */
-    public ?VoiceChatEnded $voice_chat_ended = null;
+    public ?VideoChatEnded $video_chat_ended = null;
 
     /**
      * Optional. Service message: new participants invited to a voice chat
      */
-    public ?VoiceChatParticipantsInvited $voice_chat_participants_invited = null;
+    public ?VideoChatParticipantsInvited $video_chat_participants_invited = null;
+
+    /**
+     * Optional. Service message: data sent by a Web App
+     */
+    public ?WebAppData $web_app_data = null;
 
     /**
      * Optional. Optional. Inline keyboard attached to the message.
@@ -377,7 +383,7 @@ class Message extends BaseType
     public function getParsedCommand(): ?string
     {
         if ($this->text !== null && preg_match('/^(\/\w+)(@\w+)?(.+)?$/', $this->text, $matches)) {
-            return $matches[1] . ($matches[3] ?? '');
+            return $matches[1].($matches[3] ?? '');
         }
         return null;
     }
@@ -429,10 +435,10 @@ class Message extends BaseType
             $this->message_auto_delete_timer_changed !== null => MessageTypes::MESSAGE_AUTO_DELETE_TIMER_CHANGED,
             $this->connected_website !== null => MessageTypes::CONNECTED_WEBSITE,
             $this->proximity_alert_triggered !== null => MessageTypes::PROXIMITY_ALERT_TRIGGERED,
-            $this->voice_chat_scheduled !== null => MessageTypes::VOICE_CHAT_SCHEDULED,
-            $this->voice_chat_started !== null => MessageTypes::VOICE_CHAT_STARTED,
-            $this->voice_chat_ended !== null => MessageTypes::VOICE_CHAT_ENDED,
-            $this->voice_chat_participants_invited !== null => MessageTypes::VOICE_CHAT_PARTICIPANTS_INVITED,
+            $this->video_chat_scheduled !== null => MessageTypes::VIDEO_CHAT_SCHEDULED,
+            $this->video_chat_started !== null => MessageTypes::VIDEO_CHAT_STARTED,
+            $this->video_chat_ended !== null => MessageTypes::VIDEO_CHAT_ENDED,
+            $this->video_chat_participants_invited !== null => MessageTypes::VIDEO_CHAT_PARTICIPANTS_INVITED,
             default => null
         };
     }
