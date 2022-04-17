@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
+use RuntimeException;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -14,10 +15,17 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * Otherwise the default menu button is applied. By default, the menu button opens the list of bot commands.
  * @see https://core.telegram.org/bots/api#menubutton
  */
-abstract class MenuButton extends BaseType
+class MenuButton extends BaseType
 {
-    /**
-     * Type of the button
-     */
-    public string $type;
+    use MenuButtonCommands, MenuButtonWebApp, MenuButtonDefault;
+
+    public function getType(): ?string
+    {
+        return match ($this->type) {
+            'commands' => MenuButtonCommands::class,
+            'webapp' => MenuButtonWebApp::class,
+            'default' => MenuButtonDefault::class,
+            default => throw new RuntimeException('Invalid MenuButton type'),
+        };
+    }
 }
