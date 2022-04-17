@@ -12,7 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * Older clients will not display any inline results if a game result is among them.
  * @see https://core.telegram.org/bots/api#inlinequeryresultgame
  */
-class InlineQueryResultGame extends BaseType
+class InlineQueryResultGame extends InlineQueryResult
 {
     /**
      * Type of the result, must be game

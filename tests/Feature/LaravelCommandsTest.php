@@ -36,6 +36,7 @@ test('nutgram:hook:info prints the webhook info', function () {
         $webhookInfo->ip_address = null;
         $webhookInfo->last_error_date = null;
         $webhookInfo->last_error_message = null;
+        $webhookInfo->last_synchronization_error_date = null;
         $webhookInfo->max_connections = null;
         $webhookInfo->allowed_updates = null;
 
@@ -43,14 +44,16 @@ test('nutgram:hook:info prints the webhook info', function () {
     });
 
     $this->artisan(HookInfoCommand::class)
+
         ->expectsTable(['Info', 'Value'], [
             ['url', ''],
             ['has_custom_certificate', 'false'],
             ['pending_update_count', 0],
-            ['ip_address', null],
-            ['last_error_date', null],
-            ['last_error_message', null],
-            ['max_connections', null],
+            ['ip_address', ''],
+            ['last_error_date', ''],
+            ['last_error_message', ''],
+            ['last_synchronization_error_date', ''],
+            ['max_connections', ''],
             ['allowed_updates', ''],
         ])
         ->assertExitCode(0);
@@ -65,6 +68,7 @@ test('nutgram:hook:info prints the webhook info with error', function () {
         $webhookInfo->ip_address = '1.2.3.4';
         $webhookInfo->last_error_date = 1647554568;
         $webhookInfo->last_error_message = 'foobar';
+        $webhookInfo->last_synchronization_error_date = 1647554568;
         $webhookInfo->max_connections = 50;
         $webhookInfo->allowed_updates = null;
 
@@ -79,6 +83,7 @@ test('nutgram:hook:info prints the webhook info with error', function () {
             ['ip_address', '1.2.3.4'],
             ['last_error_date', '2022-03-17 22:02:48 UTC'],
             ['last_error_message', 'foobar'],
+            ['last_synchronization_error_date', '2022-03-17 22:02:48 UTC'],
             ['max_connections', 50],
             ['allowed_updates', ''],
         ])

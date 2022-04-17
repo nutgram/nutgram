@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 /**
  * This object represents one button of the reply keyboard.
@@ -40,17 +41,27 @@ class KeyboardButton extends BaseType implements JsonSerializable
      */
     public ?KeyboardButtonPollType $request_poll = null;
 
+    /**
+     * Optional. If specified, the described {@see https://core.telegram.org/bots/webapps Web App}
+     * will be launched when the button is pressed.
+     * The Web App will be able to send a “web_app_data” service message.
+     * Available in private chats only.
+     */
+    public ?WebAppInfo $web_app;
+
     public function __construct(
         string $text,
         ?bool $request_contact = null,
         ?bool $request_location = null,
         ?KeyboardButtonPollType $request_poll = null,
+        ?WebAppInfo $web_app = null,
     ) {
         parent::__construct();
         $this->text = $text;
         $this->request_contact = $request_contact;
         $this->request_location = $request_location;
         $this->request_poll = $request_poll;
+        $this->web_app = $web_app;
     }
 
     public static function make(
@@ -58,12 +69,14 @@ class KeyboardButton extends BaseType implements JsonSerializable
         ?bool $request_contact = null,
         ?bool $request_location = null,
         ?KeyboardButtonPollType $request_poll = null,
+        ?WebAppInfo $web_app = null,
     ): self {
         return new self(
             $text,
             $request_contact,
             $request_location,
             $request_poll,
+            $web_app,
         );
     }
 
@@ -74,6 +87,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
             'request_contact' => $this->request_contact,
             'request_location' => $this->request_location,
             'request_poll' => $this->request_poll,
+            'web_app' => $this->web_app,
         ]);
     }
 }

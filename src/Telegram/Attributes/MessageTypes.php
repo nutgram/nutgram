@@ -37,10 +37,10 @@ class MessageTypes
     public const MESSAGE_AUTO_DELETE_TIMER_CHANGED = 'message_auto_delete_timer_changed';
     public const CONNECTED_WEBSITE = 'connected_website';
     public const PROXIMITY_ALERT_TRIGGERED = 'proximity_alert_triggered';
-    public const VOICE_CHAT_SCHEDULED = 'voice_chat_scheduled';
-    public const VOICE_CHAT_STARTED = 'voice_chat_started';
-    public const VOICE_CHAT_ENDED = 'voice_chat_ended';
-    public const VOICE_CHAT_PARTICIPANTS_INVITED = 'voice_chat_participants_invited';
+    public const VIDEO_CHAT_SCHEDULED = 'video_chat_scheduled';
+    public const VIDEO_CHAT_STARTED = 'video_chat_started';
+    public const VIDEO_CHAT_ENDED = 'video_chat_ended';
+    public const VIDEO_CHAT_PARTICIPANTS_INVITED = 'video_chat_participants_invited';
 
     /**
      * @return array
