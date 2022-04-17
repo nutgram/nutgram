@@ -68,7 +68,8 @@ trait Client
 
     /**
      * @param  string  $url
-     * @param  null|array{certificate?: mixed, ip_address?: string, max_connections?: int, allowed_updates?:array<string>, drop_pending_updates?: bool}  $opt
+     * @param  null|array{certificate?: mixed, ip_address?: string, max_connections?: int,
+     *     allowed_updates?:array<string>, drop_pending_updates?: bool}  $opt
      * @return bool|null
      * @throws ContainerExceptionInterface
      * @throws GuzzleException
@@ -276,23 +277,15 @@ trait Client
      * @return mixed
      * @throws JsonException
      * @throws TelegramException
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     protected function mapResponse(ResponseInterface $response, string $mapTo, Exception $clientException = null): mixed
     {
         $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
         if ($json?->ok) {
-            if (is_scalar($json->result)) {
-                return $json->result;
-            }
-            $instance = $this->container->get($mapTo);
             return match (true) {
-                is_array($json->result) => array_map(
-                    fn ($obj) => $this->mapper->map($obj, clone $instance),
-                    $json->result
-                ),
-                default => $this->mapper->map($json->result, $instance)
+                is_scalar($json->result) => $json->result,
+                is_array($json->result) => $this->mapper->hydrateArray($json->result, $this->container->getNew($mapTo)),
+                default => $this->mapper->hydrate($json->result, $this->container->getNew($mapTo))
             };
         }
 
