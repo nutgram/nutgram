@@ -2,6 +2,12 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.0.0 - 2022-04-17
+
+### Added
+
+- Support for bot api 6.0
+
 ## 2.1.1 - 2022-03-31
 
 ### Fixed
