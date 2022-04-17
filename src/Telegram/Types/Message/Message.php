@@ -28,10 +28,6 @@ use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatEnded;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatParticipantsInvited;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatScheduled;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatStarted;
-use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatEnded;
-use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatParticipantsInvited;
-use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatScheduled;
-use SergiX44\Nutgram\Telegram\Types\VoiceChat\VoiceChatStarted;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppData;
 
 /**

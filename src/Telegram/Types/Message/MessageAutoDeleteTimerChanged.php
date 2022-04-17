@@ -6,7 +6,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents a service message about a change in auto-delete timer settings.
- * @see https://core.telegram.org/bots/api#voicechatended
+ * @see https://core.telegram.org/bots/api#messageautodeletetimerchanged
  */
 class MessageAutoDeleteTimerChanged extends BaseType
 {
