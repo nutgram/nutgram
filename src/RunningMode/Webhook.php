@@ -6,7 +6,6 @@ namespace SergiX44\Nutgram\RunningMode;
 use Closure;
 use JsonMapper_Exception;
 use Psr\SimpleCache\InvalidArgumentException;
-use SergiX44\Nutgram\Hydrator\JsonMapper;
 use SergiX44\Nutgram\Hydrator\Hydrator;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
