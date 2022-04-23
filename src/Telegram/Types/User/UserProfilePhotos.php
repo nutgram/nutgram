@@ -2,7 +2,9 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\User;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 
 /**
  * This object represent a user's profile pictures.
@@ -19,5 +21,6 @@ class UserProfilePhotos extends BaseType
      * Requested profile pictures (in up to 4 sizes each)
      * @var \SergiX44\Nutgram\Telegram\Types\Media\PhotoSize[][] $photos
      */
+    #[ArrayType(PhotoSize::class)]
     public array $photos;
 }

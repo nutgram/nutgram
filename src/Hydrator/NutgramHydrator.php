@@ -2,14 +2,13 @@
 
 namespace SergiX44\Nutgram\Hydrator;
 
-class SunriseHydrator implements Hydrator
+class NutgramHydrator implements Hydrator
 {
-    private \Sunrise\Hydrator\Hydrator $mapper;
+    private \SergiX44\Hydrator\Hydrator $mapper;
 
     public function __construct()
     {
-        $this->mapper = new \Sunrise\Hydrator\Hydrator();
-        $this->mapper->aliasSupport(false);
+        $this->mapper = new \SergiX44\Hydrator\Hydrator();
     }
 
     /**

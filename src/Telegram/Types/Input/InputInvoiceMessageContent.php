@@ -2,7 +2,9 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of an
@@ -42,6 +44,7 @@ class InputInvoiceMessageContent extends BaseType
      * etc.)
      * @var \SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice[] $prices
      */
+    #[ArrayType(LabeledPrice::class)]
     public array $prices;
 
     /**

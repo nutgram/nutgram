@@ -21,7 +21,7 @@ use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Hydrator\Hydrator;
 use SergiX44\Nutgram\Hydrator\JsonMapper;
-use SergiX44\Nutgram\Hydrator\SunriseHydrator;
+use SergiX44\Nutgram\Hydrator\NutgramHydrator;
 use SergiX44\Nutgram\Proxies\GlobalCacheProxy;
 use SergiX44\Nutgram\Proxies\UpdateDataProxy;
 use SergiX44\Nutgram\Proxies\UserCacheProxy;

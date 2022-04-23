@@ -2,8 +2,10 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Game;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\Animation;
+use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 
 /**
  * This object represents a game.
@@ -25,6 +27,7 @@ class Game extends BaseType
     /** Photo that will be displayed in the game message in chats.
      * @var \SergiX44\Nutgram\Telegram\Types\Media\PhotoSize[] $photo
      */
+    #[ArrayType(PhotoSize::class)]
     public array $photo;
 
     /**
