@@ -17,6 +17,7 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
      * Array of button rows, each represented by an Array of KeyboardButton objects
      * @var \SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton[][] $keyboard
      */
+    #[ArrayType(KeyboardButton::class, depth: 2)]
     public array $keyboard;
 
     /**
