@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -24,5 +25,6 @@ class ShippingOption extends BaseType
      * List of price portions
      * @var \SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice[] $prices
      */
+    #[ArrayType(LabeledPrice::class)]
     public array $prices;
 }

@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -20,6 +21,7 @@ class InlineKeyboardMarkup extends BaseType implements JsonSerializable
      * {@see https://core.telegram.org/bots/api#inlinekeyboardbutton InlineKeyboardButton} objects
      * @var \SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton[][] $inline_keyboard
      */
+    #[ArrayType(InlineKeyboardButton::class, depth: 2)]
     public array $inline_keyboard;
 
     public function __construct()

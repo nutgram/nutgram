@@ -2,7 +2,9 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Poll;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * This object contains information about a poll.
@@ -24,6 +26,7 @@ class Poll extends BaseType
      * List of poll options
      * @var \SergiX44\Nutgram\Telegram\Types\Poll\PollOption[] $options
      */
+    #[ArrayType(PollOption::class)]
     public array $options;
 
     /**
@@ -68,6 +71,7 @@ class Poll extends BaseType
      * Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $explanation_entities
      */
+    #[ArrayType(MessageEntity::class)]
     public array $explanation_entities;
 
     /**

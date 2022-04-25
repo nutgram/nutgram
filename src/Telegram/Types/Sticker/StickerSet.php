@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 
@@ -40,6 +41,7 @@ class StickerSet extends BaseType
      * List of all set stickers
      * @var \SergiX44\Nutgram\Telegram\Types\Sticker\Sticker[] $stickers
      */
+    #[ArrayType(Sticker::class)]
     public array $stickers;
 
     /**
