@@ -2,13 +2,15 @@
 
 namespace SergiX44\Nutgram\Hydrator;
 
-class JsonMapper implements Hydrator
+use JsonMapper;
+
+class LegacyHydrator implements Hydrator
 {
-    private \JsonMapper $mapper;
+    private JsonMapper $mapper;
 
     public function __construct()
     {
-        $this->mapper = new \JsonMapper();
+        $this->mapper = new JsonMapper();
         $this->mapper->undefinedPropertyHandler = static function ($object, $propName, $jsonValue): void {
             $object->{$propName} = $jsonValue;
         };

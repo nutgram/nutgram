@@ -20,7 +20,6 @@ use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Hydrator\Hydrator;
-use SergiX44\Nutgram\Hydrator\JsonMapper;
 use SergiX44\Nutgram\Hydrator\NutgramHydrator;
 use SergiX44\Nutgram\Proxies\GlobalCacheProxy;
 use SergiX44\Nutgram\Proxies\UpdateDataProxy;
@@ -95,7 +94,7 @@ class Nutgram extends ResolveHandlers
         ], $config['client'] ?? []));
         $this->container->addShared(ClientInterface::class, $this->http);
 
-        $this->container->addShared(Hydrator::class)->setConcrete($config['mapper'] ?? JsonMapper::class);
+        $this->container->addShared(Hydrator::class)->setConcrete($config['mapper'] ?? NutgramHydrator::class);
         $this->mapper = $this->container->get(Hydrator::class);
 
         $this->container->addShared(CacheInterface::class, $config['cache'] ?? new ArrayCache());
