@@ -218,7 +218,7 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param callable|string $callableOrPattern
+     * @param  callable|string  $callableOrPattern
      * @param  callable|null  $callable
      * @return Handler
      */
@@ -251,5 +251,21 @@ abstract class CollectHandlers
             throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
         }
         return $this->handlers[self::FALLBACK][$type] = new Handler($callable, $type);
+    }
+
+    /**
+     * @param  bool  $exception
+     * @param  bool  $apiError
+     * @return void
+     */
+    public function clearErrorHandlers(bool $exception = true, bool $apiError = true): void
+    {
+        if ($exception) {
+            $this->handlers[self::EXCEPTION] = [];
+        }
+
+        if ($apiError) {
+            $this->handlers[self::API_ERROR] = [];
+        }
     }
 }

@@ -208,6 +208,22 @@ it('calls the exception handler', function ($update) {
     $bot->run();
 })->with('callback_query');
 
+it('doesnt call the exception handler when cleared', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onCallbackQueryData('thedata', function ($bot) {
+        throw new RuntimeException('error');
+    });
+
+    $bot->onException(function ($bot, $e) {
+        throw new Exception('should not be called');
+    });
+
+    $bot->clearErrorHandlers(exception: true);
+
+    $bot->reply();
+})->with('callback_query')->expectException(RuntimeException::class);
+
 it('calls the specific exception handler', function ($update) {
     $bot = Nutgram::fake($update);
 

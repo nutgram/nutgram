@@ -19,6 +19,21 @@ it('calls the api error handler', function ($responseBody) {
     expect($msg)->toBeNull();
 })->with('response_user_deactivated');
 
+it('doesnt call the api error handler when cleared', function ($responseBody) {
+    $bot = Nutgram::fake(responses: [
+        new Response(403, body: $responseBody),
+    ]);
+
+    $bot->onApiError(function ($bot, $e) {
+        expect($e->getMessage())->toBe('Forbidden: user is deactivated');
+        expect($e)->toBeInstanceOf(TelegramException::class);
+    });
+
+    $bot->clearErrorHandlers(apiError: true);
+
+    $bot->sendMessage('hi');
+})->with('response_user_deactivated')->expectException(TelegramException::class);
+
 it('calls the specific api error handler', function ($responseBody) {
     $bot = Nutgram::fake(responses: [
         new Response(403, body: $responseBody),
