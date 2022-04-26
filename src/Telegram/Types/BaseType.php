@@ -5,9 +5,6 @@ namespace SergiX44\Nutgram\Telegram\Types;
 use Illuminate\Support\Traits\Macroable;
 use SergiX44\Nutgram\Nutgram;
 
-/**
- * @mixin Nutgram
- */
 abstract class BaseType
 {
     use Macroable {
