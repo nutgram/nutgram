@@ -17,7 +17,7 @@ trait ChatMemberOwner
     /**
      * True, if the user's presence in the chat is hidden
      */
-    public bool $is_anonymous;
+    public ?bool $is_anonymous = null;
 
     /**
      * Optional. Custom title for this user
