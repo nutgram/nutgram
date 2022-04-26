@@ -2,6 +2,29 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.1.2 - 2022-04-26
+
+### Fixed
+
+- Fixed missing nullable fields
+- Fixed wrong phpdoc on BaseType trait
+
+## 3.1.1 - 2022-04-25
+
+### Fixed
+
+- Wrong json mapper namespace
+
+## 3.1.0 - 2022-04-25
+
+### Added
+
+- Added a way to disable error handlers
+
+### Changed
+
+- Changed json mapper implementation
+
 ## 3.0.0 - 2022-04-17
 
 ### Added
