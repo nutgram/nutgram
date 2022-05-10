@@ -43,8 +43,9 @@ trait Games
     public function setGameScore(int $score, ?array $opt = []): ?bool
     {
         $user_id = $this->userId();
+        $target = $this->targetChatMessageOrInlineMessageId();
         $required = compact('score', 'user_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, array_merge($target, $required, $opt));
     }
 
     /**
@@ -57,6 +58,9 @@ trait Games
      */
     public function getGameHighScores(?array $opt = []): ?array
     {
-        return $this->requestJson(__FUNCTION__, array_merge(['user_id' => $this->userId()], $opt), GameHighScore::class);
+        $user_id = $this->userId();
+        $target = $this->targetChatMessageOrInlineMessageId();
+        $required = compact('user_id');
+        return $this->requestJson(__FUNCTION__, array_merge($target, $required, $opt), GameHighScore::class);
     }
 }

@@ -301,4 +301,24 @@ trait Client
 
         throw $e;
     }
+
+    /**
+     * Returns the inline_message_id or
+     * chat_id + message_id combination based on the current update.
+     * The array is empty if none of them are set.
+     * @return array
+     */
+    private function targetChatMessageOrInlineMessageId(): array
+    {
+        $inlineMessageId = $this->inlineMessageId();
+
+        if ($inlineMessageId !== null) {
+            return ['inline_message_id' => $inlineMessageId];
+        }
+
+        return array_filter([
+            'chat_id' => $this->chatId(),
+            'message_id' => $this->messageId(),
+        ]);
+    }
 }
