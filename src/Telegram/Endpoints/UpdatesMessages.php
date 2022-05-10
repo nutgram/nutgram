@@ -25,10 +25,9 @@ trait UpdatesMessages
      */
     public function editMessageText(string $text, ?array $opt = []): Message|bool|null
     {
-        $chat_id = $this->chatId();
-        $message_id = $this->messageId();
-        $required = compact('text', 'chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        $target = $this->targetChatMessageOrInlineMessageId();
+        $required = compact('text');
+        return $this->requestJson(__FUNCTION__, array_merge($target, $required, $opt), Message::class);
     }
 
     /**
@@ -41,10 +40,8 @@ trait UpdatesMessages
      */
     public function editMessageCaption(?array $opt = []): Message|bool|null
     {
-        $chat_id = $this->chatId();
-        $message_id = $this->messageId();
-        $required = compact('chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        $target = $this->targetChatMessageOrInlineMessageId();
+        return $this->requestJson(__FUNCTION__, array_merge($target, $opt), Message::class);
     }
 
     /**
@@ -64,11 +61,10 @@ trait UpdatesMessages
      */
     public function editMessageMedia(array $mediaArray, ?array $opt = [], array $clientOpt = []): Message|bool|null
     {
-        $chat_id = $this->chatId();
-        $message_id = $this->messageId();
+        $target = $this->targetChatMessageOrInlineMessageId();
         $media = json_encode($mediaArray, JSON_THROW_ON_ERROR);
-        $required = compact('media', 'chat_id', 'message_id');
-        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), Message::class, $clientOpt);
+        $required = compact('media');
+        return $this->requestMultipart(__FUNCTION__, array_merge($target, $required, $opt), Message::class, $clientOpt);
     }
 
     /**
@@ -81,10 +77,8 @@ trait UpdatesMessages
      */
     public function editMessageReplyMarkup(?array $opt = []): Message|bool|null
     {
-        $chat_id = $this->chatId();
-        $message_id = $this->messageId();
-        $required = compact('chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        $target = $this->targetChatMessageOrInlineMessageId();
+        return $this->requestJson(__FUNCTION__, array_merge($target, $opt), Message::class);
     }
 
     /**

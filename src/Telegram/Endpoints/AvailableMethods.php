@@ -329,7 +329,8 @@ trait AvailableMethods
     public function editMessageLiveLocation(float $latitude, float $longitude, ?array $opt = []): Message|bool|null
     {
         $required = compact('latitude', 'longitude');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        $target = $this->targetChatMessageOrInlineMessageId();
+        return $this->requestJson(__FUNCTION__, array_merge($target, $required, $opt), Message::class);
     }
 
     /**
@@ -342,7 +343,8 @@ trait AvailableMethods
      */
     public function stopMessageLiveLocation(?array $opt = []): Message|bool|null
     {
-        return $this->requestJson(__FUNCTION__, $opt, Message::class);
+        $target = $this->targetChatMessageOrInlineMessageId();
+        return $this->requestJson(__FUNCTION__, array_merge($target, $opt), Message::class);
     }
 
     /**

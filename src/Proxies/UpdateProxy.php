@@ -186,6 +186,15 @@ trait UpdateProxy
     }
 
     /**
+     * @return string|null
+     */
+    public function inlineMessageId(): ?string
+    {
+        return $this->chosenInlineResult()?->inline_message_id ??
+            $this->callbackQuery()?->inline_message_id;
+    }
+
+    /**
      * @return bool
      */
     public function isCommand(): bool
