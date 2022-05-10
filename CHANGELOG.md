@@ -2,6 +2,12 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.1.3 - 2022-05-10
+
+### Fixed
+
+- Handling autowire of inline_message_id field
+
 ## 3.1.2 - 2022-04-26
 
 ### Fixed
