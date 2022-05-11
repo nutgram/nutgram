@@ -47,16 +47,26 @@ class Polling implements RunningMode
                 continue;
             }
 
-            /** @var Update $update */
-            foreach ($updates as $update) {
-                $offset++;
-                try {
-                    $bot->processUpdate($update);
-                } catch (Throwable $e) {
-                    echo "$e\n";
-                } finally {
-                    $bot->clearData();
-                }
+            $offset += count($updates);
+
+            $this->fire($bot, $updates);
+        }
+    }
+
+    /**
+     * @param  Nutgram  $bot
+     * @param  Update[]  $updates
+     * @return void
+     */
+    protected function fire(Nutgram $bot, ?array $updates): void
+    {
+        foreach ($updates as $update) {
+            try {
+                $bot->processUpdate($update);
+            } catch (Throwable $e) {
+                echo "$e\n";
+            } finally {
+                $bot->clearData();
             }
         }
     }

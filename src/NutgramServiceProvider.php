@@ -42,17 +42,15 @@ class NutgramServiceProvider extends ServiceProvider
                 'cache' => $app->make(Cache::class),
             ], config('nutgram.config'));
 
-            $bot = new Nutgram(config('nutgram.token') ?? '123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11', $config);
+            $bot = new Nutgram(config('nutgram.token', 'MISSING-TOKEN'), $config);
 
             if ($app->runningInConsole()) {
                 $bot->setRunningMode(Polling::class);
             } else {
-                $safeMode = config('nutgram.safe_mode', false);
-                $webhook = (new Webhook())->setSafeMode($safeMode);
-
-                if ($safeMode) {
+                $webhook = Webhook::class;
+                if (config('nutgram.safe_mode', false)) {
                     // take into account the trust proxy Laravel configuration
-                    $webhook->requestIpFrom(fn () => request()?->ip());
+                    $webhook = new Webhook(fn () => $app->make('request')?->ip());
                 }
 
                 $bot->setRunningMode($webhook);
@@ -87,7 +85,7 @@ class NutgramServiceProvider extends ServiceProvider
         }
 
         if (config('nutgram.routes', false)) {
-            $bot = $this->app->make(Nutgram::class);
+            $bot = $this->app->get(Nutgram::class);
             require file_exists($this->telegramRoutes) ? $this->telegramRoutes : __DIR__.'/../laravel/routes.php';
         }
     }

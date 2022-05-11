@@ -131,8 +131,7 @@ class Nutgram extends ResolveHandlers
      */
     public function setCache(CacheInterface $cache): void
     {
-        $this->container->extend(CacheInterface::class)
-            ->setConcrete($cache);
+        $this->container->extend(CacheInterface::class)->setConcrete($cache);
     }
 
     /**
