@@ -439,6 +439,7 @@ class Message extends BaseType
             $this->video_chat_started !== null => MessageTypes::VIDEO_CHAT_STARTED,
             $this->video_chat_ended !== null => MessageTypes::VIDEO_CHAT_ENDED,
             $this->video_chat_participants_invited !== null => MessageTypes::VIDEO_CHAT_PARTICIPANTS_INVITED,
+            $this->web_app_data !== null => MessageTypes::WEB_APP_DATA,
             default => null
         };
     }
