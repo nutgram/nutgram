@@ -89,7 +89,7 @@ class Nutgram extends ResolveHandlers
         $baseUri = sprintf('%s/bot%s/%s',
             $config['api_url'] ?? self::DEFAULT_API_URL,
             $token,
-            $config['test_env'] ? 'test/' : ''
+            $config['test_env'] ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle(array_merge([
