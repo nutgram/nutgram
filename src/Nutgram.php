@@ -86,7 +86,8 @@ class Nutgram extends ResolveHandlers
         $this->container = new Container();
         $this->container->delegate(new ReflectionContainer());
 
-        $baseUri = sprintf('%s/bot%s/%s',
+        $baseUri = sprintf(
+            '%s/bot%s/%s',
             $config['api_url'] ?? self::DEFAULT_API_URL,
             $token,
             $config['test_env'] ?? false ? 'test/' : ''
