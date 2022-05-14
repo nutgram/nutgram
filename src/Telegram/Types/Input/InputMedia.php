@@ -25,12 +25,4 @@ abstract class InputMedia extends BaseType
      * Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
      */
     public ?string $caption = null;
-
-    /**
-     * @return array
-     */
-    public function __serialize(): array
-    {
-        return get_object_vars($this);
-    }
 }
