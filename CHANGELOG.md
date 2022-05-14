@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.2.0 - 2022-05-14
+
+### Added
+- Support for Telegram test environment
+- Minor additions and fixes
+
+### Fixed
+- Serialization issue on the types
+
 ## 3.1.3 - 2022-05-10
 
 ### Fixed
