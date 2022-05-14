@@ -25,7 +25,7 @@ trait UpdatesMessages
      */
     public function editMessageText(string $text, ?array $opt = []): Message|bool|null
     {
-        $target = $this->targetChatMessageOrInlineMessageId();
+        $target = $this->targetChatMessageOrInlineMessageId($opt);
         $required = compact('text');
         return $this->requestJson(__FUNCTION__, array_merge($target, $required, $opt), Message::class);
     }
@@ -40,7 +40,7 @@ trait UpdatesMessages
      */
     public function editMessageCaption(?array $opt = []): Message|bool|null
     {
-        $target = $this->targetChatMessageOrInlineMessageId();
+        $target = $this->targetChatMessageOrInlineMessageId($opt);
         return $this->requestJson(__FUNCTION__, array_merge($target, $opt), Message::class);
     }
 
@@ -61,7 +61,7 @@ trait UpdatesMessages
      */
     public function editMessageMedia(array $mediaArray, ?array $opt = [], array $clientOpt = []): Message|bool|null
     {
-        $target = $this->targetChatMessageOrInlineMessageId();
+        $target = $this->targetChatMessageOrInlineMessageId($opt);
         $media = json_encode($mediaArray, JSON_THROW_ON_ERROR);
         $required = compact('media');
         return $this->requestMultipart(__FUNCTION__, array_merge($target, $required, $opt), Message::class, $clientOpt);
@@ -77,7 +77,7 @@ trait UpdatesMessages
      */
     public function editMessageReplyMarkup(?array $opt = []): Message|bool|null
     {
-        $target = $this->targetChatMessageOrInlineMessageId();
+        $target = $this->targetChatMessageOrInlineMessageId($opt);
         return $this->requestJson(__FUNCTION__, array_merge($target, $opt), Message::class);
     }
 

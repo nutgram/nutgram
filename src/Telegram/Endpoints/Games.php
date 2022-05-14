@@ -43,7 +43,7 @@ trait Games
     public function setGameScore(int $score, ?array $opt = []): ?bool
     {
         $user_id = $this->userId();
-        $target = $this->targetChatMessageOrInlineMessageId();
+        $target = $this->targetChatMessageOrInlineMessageId($opt);
         $required = compact('score', 'user_id');
         return $this->requestJson(__FUNCTION__, array_merge($target, $required, $opt));
     }
@@ -59,7 +59,7 @@ trait Games
     public function getGameHighScores(?array $opt = []): ?array
     {
         $user_id = $this->userId();
-        $target = $this->targetChatMessageOrInlineMessageId();
+        $target = $this->targetChatMessageOrInlineMessageId($opt);
         $required = compact('user_id');
         return $this->requestJson(__FUNCTION__, array_merge($target, $required, $opt), GameHighScore::class);
     }

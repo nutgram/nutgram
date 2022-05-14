@@ -306,13 +306,14 @@ trait Client
      * Returns the inline_message_id or
      * chat_id + message_id combination based on the current update.
      * The array is empty if none of them are set.
+     * @param  array  $opt
      * @return array
      */
-    private function targetChatMessageOrInlineMessageId(): array
+    private function targetChatMessageOrInlineMessageId(array $opt = []): array
     {
         $inlineMessageId = $this->inlineMessageId();
 
-        if ($inlineMessageId !== null) {
+        if ($inlineMessageId !== null && !isset($opt['chat_id']) && !isset($opt['message_id'])) {
             return ['inline_message_id' => $inlineMessageId];
         }
 
