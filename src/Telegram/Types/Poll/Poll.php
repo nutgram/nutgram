@@ -72,7 +72,7 @@ class Poll extends BaseType
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $explanation_entities
      */
     #[ArrayType(MessageEntity::class)]
-    public array $explanation_entities;
+    public ?array $explanation_entities = null;
 
     /**
      * Optional. Amount of time in seconds the poll will be active after creation
