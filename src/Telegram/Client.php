@@ -28,7 +28,6 @@ use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use stdClass;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Trait Client
@@ -176,8 +175,7 @@ trait Client
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
-        $response = $this->http->get($this->downloadUrl($file), array_merge(['sink' => $path], $clientOpt));
-        return $response->getStatusCode() === Response::HTTP_OK;
+        return $this->downloadMode->downloadPath($this, $this->downloadUrl($file), $path, ['clientOpt' => $clientOpt]);
     }
 
     /**
@@ -186,12 +184,7 @@ trait Client
      */
     public function downloadUrl(File $file): string|null
     {
-        if (isset($this->config['is_local']) && $this->config['is_local']) {
-            return $file->file_path;
-        }
-
-        $baseUri = $this->config['api_url'] ?? self::DEFAULT_API_URL;
-        return "$baseUri/file/bot$this->token/$file->file_path";
+        return $this->downloadMode->buildPath($this, $file->file_path);
     }
 
     /**

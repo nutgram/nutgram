@@ -16,6 +16,9 @@ use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
+use SergiX44\Nutgram\DownloadMode\DownloadMode;
+use SergiX44\Nutgram\DownloadMode\Local;
+use SergiX44\Nutgram\DownloadMode\Remote;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\Command;
@@ -36,7 +39,7 @@ class Nutgram extends ResolveHandlers
 {
     use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy;
 
-    protected const DEFAULT_API_URL = 'https://api.telegram.org';
+    public const DEFAULT_API_URL = 'https://api.telegram.org';
 
     /**
      * @var string
@@ -62,6 +65,11 @@ class Nutgram extends ResolveHandlers
      * @var ContainerInterface
      */
     protected ContainerInterface $container;
+
+    /**
+     * @var DownloadMode
+     */
+    protected DownloadMode $downloadMode;
 
     /**
      * @var bool
@@ -106,6 +114,14 @@ class Nutgram extends ResolveHandlers
         $this->conversationCache = $this->container->get(ConversationCache::class);
         $this->globalCache = $this->container->get(GlobalCache::class);
         $this->userCache = $this->container->get(UserCache::class);
+
+        if (!empty($config['download_mode'])) {
+            $this->downloadMode = new $config['download_mode'];
+        } elseif (isset($this->config['is_local']) && $this->config['is_local']) {
+            $this->downloadMode = new Local();
+        } else {
+            $this->downloadMode = new Remote();
+        }
 
         $this->container->addShared(RunningMode::class, Polling::class);
         $this->container->addShared(__CLASS__, $this);
@@ -331,5 +347,21 @@ class Nutgram extends ResolveHandlers
         });
 
         return $this->setMyCommands($commands, $opt);
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    /**
+     * @return ClientInterface
+     */
+    public function getHttp(): ClientInterface
+    {
+        return $this->http;
     }
 }
