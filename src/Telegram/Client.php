@@ -176,6 +176,10 @@ trait Client
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
+        if ($this->config['is_local'] ?? false) {
+            return copy($this->downloadUrl($file), $path);
+        }
+
         $response = $this->http->get($this->downloadUrl($file), array_merge(['sink' => $path], $clientOpt));
         return $response->getStatusCode() === Response::HTTP_OK;
     }
@@ -187,6 +191,10 @@ trait Client
     public function downloadUrl(File $file): string|null
     {
         if (isset($this->config['is_local']) && $this->config['is_local']) {
+            if (isset($this->config['local_path_transformer'])) {
+                return call_user_func($this->resolve($this->config['local_path_transformer']), $file->file_path);
+            }
+
             return $file->file_path;
         }
 
