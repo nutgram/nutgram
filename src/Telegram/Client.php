@@ -169,11 +169,15 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            true,
-            true
-        ) && !is_dir($concurrentDirectory)) {
+                $concurrentDirectory = dirname($path),
+                true,
+                true
+            ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
+        }
+
+        if ($this->config['is_local'] ?? false) {
+            return copy($this->downloadUrl($file), $path);
         }
 
         $response = $this->http->get($this->downloadUrl($file), array_merge(['sink' => $path], $clientOpt));
