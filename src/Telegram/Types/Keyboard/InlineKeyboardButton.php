@@ -92,8 +92,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?CallbackGame $callback_game = null,
         ?bool $pay = null,
         ?WebAppInfo $web_app = null,
-    )
-    {
+    ) {
         parent::__construct();
         $this->text = $text;
         $this->url = $url;
@@ -116,8 +115,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?CallbackGame $callback_game = null,
         ?bool $pay = null,
         ?WebAppInfo $web_app = null,
-    ): InlineKeyboardButton
-    {
+    ): InlineKeyboardButton {
         return new self(
             $text,
             $url,
