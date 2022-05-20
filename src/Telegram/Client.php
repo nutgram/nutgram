@@ -191,6 +191,11 @@ trait Client
     public function downloadUrl(File $file): string|null
     {
         if (isset($this->config['is_local']) && $this->config['is_local']) {
+
+            if (isset($this->config['local_path_transformer'])) {
+                return call_user_func($this->resolve($this->config['local_path_transformer']), $file->file_path);
+            }
+
             return $file->file_path;
         }
 
