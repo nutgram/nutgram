@@ -169,10 +169,10 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-                $concurrentDirectory = dirname($path),
-                true,
-                true
-            ) && !is_dir($concurrentDirectory)) {
+            $concurrentDirectory = dirname($path),
+            true,
+            true
+        ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -191,7 +191,6 @@ trait Client
     public function downloadUrl(File $file): string|null
     {
         if (isset($this->config['is_local']) && $this->config['is_local']) {
-
             if (isset($this->config['local_path_transformer'])) {
                 return call_user_func($this->resolve($this->config['local_path_transformer']), $file->file_path);
             }
