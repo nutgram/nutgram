@@ -80,7 +80,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
         );
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_filter([
             'text' => $this->text,

@@ -53,8 +53,9 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
      *
      * Note: This offers an easy way for users to start using your bot
      * in inline mode when they are currently in a private chat with it.
-     * Especially useful when combined with {@see https://core.telegram.org/bots/api#answerinlinequery switch_pm}… actions – in this case the
-     * user will be automatically returned to the chat they switched from, skipping the chat selection screen.
+     * Especially useful when combined with {@see https://core.telegram.org/bots/api#answerinlinequery switch_pm}…
+     * actions – in this case the user will be automatically returned to the chat they switched from, skipping the chat
+     * selection screen.
      */
     public ?string $switch_inline_query = null;
 
@@ -91,7 +92,8 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?CallbackGame $callback_game = null,
         ?bool $pay = null,
         ?WebAppInfo $web_app = null,
-    ) {
+    )
+    {
         parent::__construct();
         $this->text = $text;
         $this->url = $url;
@@ -114,7 +116,8 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?CallbackGame $callback_game = null,
         ?bool $pay = null,
         ?WebAppInfo $web_app = null,
-    ): InlineKeyboardButton {
+    ): InlineKeyboardButton
+    {
         return new self(
             $text,
             $url,
@@ -128,10 +131,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         );
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_filter([
             'text' => $this->text,

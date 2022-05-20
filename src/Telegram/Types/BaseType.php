@@ -48,9 +48,9 @@ abstract class BaseType implements JsonSerializable
     }
 
     /**
-     * @return array|mixed
+     * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->__serialize();
     }

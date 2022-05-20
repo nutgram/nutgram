@@ -91,7 +91,7 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
         return $this;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_filter([
             'keyboard' => $this->keyboard ?? [],
