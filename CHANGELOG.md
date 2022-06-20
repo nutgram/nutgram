@@ -2,14 +2,39 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.3.0 - 2022-06-20
+
+### Added
+
+- Add `local_path_transformer` config key
+
+### Fixed
+
+- Fixed `downloadFile` method when "is_local" config key is `true`
+- Fixed missing phpdoc on `jsonSerialize` methods
+
+## 3.2.1 - 2022-05-15
+
+### Changed
+
+- The `explanation_entities` field mapping is now optional.
+
 ## 3.2.0 - 2022-05-14
 
 ### Added
+
 - Support for Telegram test environment
 - Minor additions and fixes
 
 ### Fixed
+
 - Serialization issue on the types
+
+## 3.1.4 - 2022-05-12
+
+### Changed
+
+- Code improvements
 
 ## 3.1.3 - 2022-05-10
 
