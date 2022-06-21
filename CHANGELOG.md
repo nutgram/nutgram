@@ -2,7 +2,7 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
-## 3.1.0 - 2022-06-21
+## 3.4.0 - 2022-06-21
 
 ### Added
 
