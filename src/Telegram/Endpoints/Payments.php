@@ -47,6 +47,30 @@ trait Payments
     }
 
     /**
+     * Use this method to create a link for an invoice. Returns the created invoice link as String on success.
+     * @see https://core.telegram.org/bots/api#createinvoicelink
+     * @param  string  $title Product name, 1-32 characters
+     * @param  string  $description Product description, 1-255 characters
+     * @param  string  $payload Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
+     * @param  string  $provider_token Payment provider token, obtained via {@see https://t.me/botfather BotFather}
+     * @param  string  $currency Three-letter ISO 4217 currency code, see {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies}
+     * @param  array  $prices Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
+     * @return string
+     */
+    public function createInvoiceLink(
+        string $title,
+        string $description,
+        string $payload,
+        string $provider_token,
+        string $currency,
+        array $prices,
+        ?array $opt = []
+    ): string {
+        $required = compact('title', 'description', 'payload', 'provider_token', 'currency', 'prices');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+    }
+
+    /**
      * If you sent an invoice requesting a shipping address and the parameter is_flexible was specified, the Bot API
      * will send an {@see https://core.telegram.org/bots/api#update Update} with a shipping_query field to the bot.
      * Use this method to reply to shipping queries. On success, True is returned.

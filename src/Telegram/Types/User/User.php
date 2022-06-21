@@ -42,6 +42,16 @@ class User extends BaseType
     public ?string $language_code = null;
 
     /**
+     * Optional. True, if this user is a Telegram Premium user
+     */
+    public ?bool $is_premium = null;
+
+    /**
+     * Optional. True, if this user added the bot to the attachment menu
+     */
+    public ?bool $added_to_attachment_menu = null;
+
+    /**
      * Optional. True, if the bot can be invited to groups.
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
      */
