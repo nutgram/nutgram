@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 
 /**
@@ -56,6 +57,11 @@ class Sticker extends BaseType
      * Optional. Name of the sticker set to which the sticker belongs
      */
     public ?string $set_name = null;
+
+    /**
+     * Optional. Premium animation for the sticker, if the sticker is premium
+     */
+    public ?File $premium_animation = null;
 
     /**
      * Optional. For mask stickers, the position where the mask should be placed

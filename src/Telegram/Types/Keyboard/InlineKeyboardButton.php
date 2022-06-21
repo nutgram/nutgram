@@ -21,6 +21,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
 
     /**
      * Optional. HTTP or tg:// url to be opened when button is pressed
+     * Only HTTPS links are allowed in login_url inline keyboard buttons.
      */
     public ?string $url = null;
 
