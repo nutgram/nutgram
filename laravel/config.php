@@ -13,4 +13,7 @@ return [
     // Set if the service provider should automatically load
     // handlers from /routes/telegram.php
     'routes' => true,
+
+    // Enable or disable Nutgram mixins
+    'mixins' => false,
 ];

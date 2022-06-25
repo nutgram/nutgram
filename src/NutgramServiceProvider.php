@@ -12,8 +12,11 @@ use SergiX44\Nutgram\Laravel\Commands\HookSetCommand;
 use SergiX44\Nutgram\Laravel\Commands\ListCommand;
 use SergiX44\Nutgram\Laravel\Commands\RegisterCommandsCommand;
 use SergiX44\Nutgram\Laravel\Commands\RunCommand;
+use SergiX44\Nutgram\Laravel\Mixins\FileMixin;
+use SergiX44\Nutgram\Laravel\Mixins\NutgramMixin;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\Webhook;
+use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 
 /**
@@ -61,6 +64,11 @@ class NutgramServiceProvider extends ServiceProvider
 
         $this->app->alias(Nutgram::class, 'nutgram');
         $this->app->alias(Nutgram::class, FakeNutgram::class);
+
+        if (config('nutgram.mixins', false)) {
+            Nutgram::mixin(new NutgramMixin());
+            File::mixin(new FileMixin());
+        }
     }
 
     /**
