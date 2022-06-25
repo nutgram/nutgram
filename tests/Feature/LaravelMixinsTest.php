@@ -32,7 +32,6 @@ test('the Nutgram::downloadFileToDisk method save File to Laravel disk', functio
 });
 
 test('the File::saveToDisk method save File to Laravel disk', function () {
-
     File::mixin(new FileMixin());
 
     $disk = 'local';
