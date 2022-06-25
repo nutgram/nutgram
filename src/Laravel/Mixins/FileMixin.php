@@ -7,6 +7,9 @@ use Psr\Http\Client\ClientInterface;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 
+/**
+ * @mixin Nutgram
+ */
 class FileMixin
 {
     /**
@@ -15,7 +18,7 @@ class FileMixin
     public function saveToDisk()
     {
         return function (string $path, string $disk = null, array $clientOpt = []): bool {
-            /** @var File|Nutgram $this */
+            /** @var File $this */
 
             if (is_dir($path)) {
                 $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
