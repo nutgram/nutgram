@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Laravel\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use RuntimeException;
 
@@ -27,7 +28,7 @@ abstract class BaseMakeCommand extends Command
         $this->makeDirectory($path);
 
         //write stub to file
-        file_put_contents($path, $stub);
+        File::put($path, $stub);
 
         $this->info('Nutgram '.Str::singular($this->getSubDirName()).' created successfully.');
         return 0;
@@ -71,7 +72,7 @@ abstract class BaseMakeCommand extends Command
      */
     protected function getStubContent(string $path, array $variables = []): string
     {
-        $content = file_get_contents($path);
+        $content = File::get($path);
         foreach ($variables as $key => $value) {
             $content = str_replace('{{ '.$key.' }}', $value, $content);
         }
@@ -85,12 +86,14 @@ abstract class BaseMakeCommand extends Command
      */
     protected function makeDirectory(string $path): void
     {
-        if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            true,
-            true
-        ) && !is_dir($concurrentDirectory)) {
-            throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
+        $path = dirname($path);
+
+        if(File::isDirectory($path)) {
+            return;
+        }
+
+        if(!File::makeDirectory($path, 0755, true)) {
+            throw new RuntimeException('Unable to create directory: '.$path);
         }
     }
 }
