@@ -22,7 +22,7 @@ abstract class BaseMakeCommand extends Command
         $stub = $this->getStubContent($this->getStubPath(), $this->getStubVariables());
 
         //get destination path
-        $path = config('nutgram.working_path').'/'.$this->getSubDirName().'/'.$name.'.php';
+        $path = config('nutgram.namespace').'/'.$this->getSubDirName().'/'.$name.'.php';
 
         //create directory if it doesn't exist
         $this->makeDirectory($path);
