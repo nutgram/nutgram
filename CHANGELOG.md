@@ -2,6 +2,17 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.5.0 - 2022-06-26
+
+### Added
+
+- Add Nutgram mixins for Laravel
+- Add new Laravel command: `nutgram:make:command`
+- Add new Laravel command: `nutgram:make:conversation`
+- Add new Laravel command: `nutgram:make:conversation`
+- Add new Laravel command: `nutgram:make:handler`
+- Add new Laravel command: `nutgram:make:middleware`
+
 ## 3.4.0 - 2022-06-21
 
 ### Added
