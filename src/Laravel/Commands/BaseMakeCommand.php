@@ -74,7 +74,7 @@ abstract class BaseMakeCommand extends Command
     {
         $content = File::get($path);
         foreach ($variables as $key => $value) {
-            $content = str_replace('{{ '.$key.' }}', $value, $content);
+            $content = str_replace("{{ $key }}", $value, $content);
         }
         return $content;
     }
