@@ -88,11 +88,11 @@ abstract class BaseMakeCommand extends Command
     {
         $path = dirname($path);
 
-        if(File::isDirectory($path)) {
+        if (File::isDirectory($path)) {
             return;
         }
 
-        if(!File::makeDirectory($path, 0755, true)) {
+        if (!File::makeDirectory($path, 0755, true)) {
             throw new RuntimeException('Unable to create directory: '.$path);
         }
     }
