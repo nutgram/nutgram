@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Telegram\{{ namespace }};
+
+use SergiX44\Nutgram\Nutgram;
+
+class {{ name }}
+{
+    public function __invoke(Nutgram $bot): void
+    {
+        $bot->sendMessage('This is an handler!');
+    }
+}
