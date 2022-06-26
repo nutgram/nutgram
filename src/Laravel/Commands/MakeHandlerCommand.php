@@ -12,7 +12,8 @@ class MakeHandlerCommand extends BaseMakeCommand
      * Return the sub directory name
      * @return string
      */
-    protected function getSubDirName():string{
+    protected function getSubDirName():string
+    {
         return 'Handlers';
     }
 
