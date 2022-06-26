@@ -157,7 +157,7 @@ test('nutgram:make:command makes a command', function () {
         ->expectsOutput('Nutgram Command created successfully.')
         ->assertExitCode(0);
 
-    expect(config('nutgram.working_path').'/Commands/MyCommand.php')
+    expect(config('nutgram.namespace').'/Commands/MyCommand.php')
         ->toBeFile()
         ->getFileContent()
         ->toContain('class MyCommand');
@@ -168,7 +168,7 @@ test('nutgram:make:conversation makes a conversation', function () {
         ->expectsOutput('Nutgram Conversation created successfully.')
         ->assertExitCode(0);
 
-    expect(config('nutgram.working_path').'/Conversations/MyConversation.php')
+    expect(config('nutgram.namespace').'/Conversations/MyConversation.php')
         ->toBeFile()
         ->getFileContent()
         ->toContain('class MyConversation extends Conversation');
@@ -179,7 +179,7 @@ test('nutgram:make:conversation makes a conversation menu', function () {
         ->expectsOutput('Nutgram Conversation created successfully.')
         ->assertExitCode(0);
 
-    expect(config('nutgram.working_path').'/Conversations/MyConversationMenu.php')
+    expect(config('nutgram.namespace').'/Conversations/MyConversationMenu.php')
         ->toBeFile()
         ->getFileContent()
         ->toContain('class MyConversationMenu extends InlineMenu');
@@ -190,7 +190,7 @@ test('nutgram:make:handler makes an handler', function () {
         ->expectsOutput('Nutgram Handler created successfully.')
         ->assertExitCode(0);
 
-    expect(config('nutgram.working_path').'/Handlers/MyHandler.php')
+    expect(config('nutgram.namespace').'/Handlers/MyHandler.php')
         ->toBeFile()
         ->getFileContent()
         ->toContain('class MyHandler');
@@ -201,7 +201,7 @@ test('nutgram:make:middleware makes a middleware', function () {
         ->expectsOutput('Nutgram Middleware created successfully.')
         ->assertExitCode(0);
 
-    expect(config('nutgram.working_path').'/Middleware/MyMiddleware.php')
+    expect(config('nutgram.namespace').'/Middleware/MyMiddleware.php')
         ->toBeFile()
         ->getFileContent()
         ->toContain('class MyMiddleware');
