@@ -5,6 +5,10 @@ use SergiX44\Nutgram\Laravel\Commands\HookInfoCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookRemoveCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookSetCommand;
 use SergiX44\Nutgram\Laravel\Commands\ListCommand;
+use SergiX44\Nutgram\Laravel\Commands\MakeCommandCommand;
+use SergiX44\Nutgram\Laravel\Commands\MakeConversationCommand;
+use SergiX44\Nutgram\Laravel\Commands\MakeHandlerCommand;
+use SergiX44\Nutgram\Laravel\Commands\MakeMiddlewareCommand;
 use SergiX44\Nutgram\Laravel\Commands\RegisterCommandsCommand;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
@@ -44,7 +48,6 @@ test('nutgram:hook:info prints the webhook info', function () {
     });
 
     $this->artisan(HookInfoCommand::class)
-
         ->expectsTable(['Info', 'Value'], [
             ['url', ''],
             ['has_custom_certificate', 'false'],
@@ -147,4 +150,59 @@ test('nutgram:list with handler registered', function () {
         ->artisan(ListCommand::class)
         ->doesntExpectOutput('No handlers have been registered.')
         ->assertExitCode(0);
+});
+
+test('nutgram:make:command makes a command', function () {
+    $this->artisan(MakeCommandCommand::class, ['name' => 'MyCommand'])
+        ->expectsOutput('Nutgram Command created successfully.')
+        ->assertExitCode(0);
+
+    expect(config('nutgram.working_path').'/Commands/MyCommand.php')
+        ->toBeFile()
+        ->getFileContent()
+        ->toContain('class MyCommand');
+});
+
+test('nutgram:make:conversation makes a conversation', function () {
+    $this->artisan(MakeConversationCommand::class, ['name' => 'MyConversation'])
+        ->expectsOutput('Nutgram Conversation created successfully.')
+        ->assertExitCode(0);
+
+    expect(config('nutgram.working_path').'/Conversations/MyConversation.php')
+        ->toBeFile()
+        ->getFileContent()
+        ->toContain('class MyConversation extends Conversation');
+});
+
+test('nutgram:make:conversation makes a conversation menu', function () {
+    $this->artisan(MakeConversationCommand::class, ['name' => 'MyConversationMenu', '--menu' => true])
+        ->expectsOutput('Nutgram Conversation created successfully.')
+        ->assertExitCode(0);
+
+    expect(config('nutgram.working_path').'/Conversations/MyConversationMenu.php')
+        ->toBeFile()
+        ->getFileContent()
+        ->toContain('class MyConversationMenu extends InlineMenu');
+});
+
+test('nutgram:make:handler makes an handler', function () {
+    $this->artisan(MakeHandlerCommand::class, ['name' => 'MyHandler'])
+        ->expectsOutput('Nutgram Handler created successfully.')
+        ->assertExitCode(0);
+
+    expect(config('nutgram.working_path').'/Handlers/MyHandler.php')
+        ->toBeFile()
+        ->getFileContent()
+        ->toContain('class MyHandler');
+});
+
+test('nutgram:make:middleware makes a middleware', function () {
+    $this->artisan(MakeMiddlewareCommand::class, ['name' => 'MyMiddleware'])
+        ->expectsOutput('Nutgram Middleware created successfully.')
+        ->assertExitCode(0);
+
+    expect(config('nutgram.working_path').'/Middleware/MyMiddleware.php')
+        ->toBeFile()
+        ->getFileContent()
+        ->toContain('class MyMiddleware');
 });

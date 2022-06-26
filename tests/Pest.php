@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\File;
 use SergiX44\Nutgram\Tests\TestCase;
 
 /*
@@ -28,9 +29,7 @@ uses(TestCase::class)
 |
 */
 
-//expect()->extend('toBeOne', function () {
-//    return $this->toBe(1);
-//});
+expect()->extend('getFileContent', fn () => $this->and(File::get($this->value)));
 
 /*
 |--------------------------------------------------------------------------

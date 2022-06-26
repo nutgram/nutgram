@@ -10,6 +10,10 @@ use SergiX44\Nutgram\Laravel\Commands\HookInfoCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookRemoveCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookSetCommand;
 use SergiX44\Nutgram\Laravel\Commands\ListCommand;
+use SergiX44\Nutgram\Laravel\Commands\MakeCommandCommand;
+use SergiX44\Nutgram\Laravel\Commands\MakeConversationCommand;
+use SergiX44\Nutgram\Laravel\Commands\MakeHandlerCommand;
+use SergiX44\Nutgram\Laravel\Commands\MakeMiddlewareCommand;
 use SergiX44\Nutgram\Laravel\Commands\RegisterCommandsCommand;
 use SergiX44\Nutgram\Laravel\Commands\RunCommand;
 use SergiX44\Nutgram\Laravel\Mixins\FileMixin;
@@ -84,6 +88,10 @@ class NutgramServiceProvider extends ServiceProvider
                 HookRemoveCommand::class,
                 HookSetCommand::class,
                 ListCommand::class,
+                MakeCommandCommand::class,
+                MakeConversationCommand::class,
+                MakeHandlerCommand::class,
+                MakeMiddlewareCommand::class,
             ]);
 
             $this->publishes([
