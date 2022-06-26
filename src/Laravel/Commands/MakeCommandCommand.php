@@ -12,7 +12,8 @@ class MakeCommandCommand extends BaseMakeCommand
      * Return the sub directory name
      * @return string
      */
-    protected function getSubDirName():string{
+    protected function getSubDirName():string
+    {
         return 'Commands';
     }
 

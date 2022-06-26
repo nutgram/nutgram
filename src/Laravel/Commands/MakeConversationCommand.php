@@ -12,7 +12,8 @@ class MakeConversationCommand extends BaseMakeCommand
      * Return the sub directory name
      * @return string
      */
-    protected function getSubDirName():string{
+    protected function getSubDirName():string
+    {
         return 'Conversations';
     }
 
@@ -22,7 +23,7 @@ class MakeConversationCommand extends BaseMakeCommand
      */
     protected function getStubPath(): string
     {
-        if($this->option('menu')){
+        if ($this->option('menu')) {
             return __DIR__.'/../Stubs/InlineMenu.stub';
         }
 

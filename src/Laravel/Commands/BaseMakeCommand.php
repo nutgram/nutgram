@@ -86,10 +86,10 @@ abstract class BaseMakeCommand extends Command
     protected function makeDirectory(string $path): void
     {
         if (!is_dir(dirname($path)) && !mkdir(
-                $concurrentDirectory = dirname($path),
-                true,
-                true
-            ) && !is_dir($concurrentDirectory)) {
+            $concurrentDirectory = dirname($path),
+            true,
+            true
+        ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
     }
