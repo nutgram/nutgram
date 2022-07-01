@@ -2,6 +2,12 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.5.1 - 2022-07-02
+
+### Fixed
+
+- Fix wrong `$clientOpt` merge in laravel mixins
+
 ## 3.5.0 - 2022-06-26
 
 ### Added
