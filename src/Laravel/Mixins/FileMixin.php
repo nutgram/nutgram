@@ -32,7 +32,7 @@ class FileMixin
             }
 
             $http = $this->getContainer()->get(ClientInterface::class);
-            $http->get($this->downloadUrl($this), array_merge(['sink' => $savedPath, $clientOpt]));
+            $http->get($this->downloadUrl($this), array_merge(['sink' => $savedPath], $clientOpt));
 
             return true;
         };

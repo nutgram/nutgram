@@ -30,7 +30,7 @@ class NutgramMixin
             }
 
             $http = $this->getContainer()->get(ClientInterface::class);
-            $http->get($url, array_merge(['sink' => $savedPath, $clientOpt]));
+            $http->get($url, array_merge(['sink' => $savedPath], $clientOpt));
 
             return true;
         };
