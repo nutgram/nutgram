@@ -21,7 +21,6 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 /**
  * Trait UpdateProxy
  * @package SergiX44\Nutgram\Proxies
- * @property Update $update
  */
 trait UpdateProxy
 {

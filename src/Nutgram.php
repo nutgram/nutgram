@@ -83,6 +83,20 @@ class Nutgram extends ResolveHandlers
 
         $this->token = $token;
         $this->config = $config;
+
+        $this->bootstrap($this->token, $this->config);
+    }
+
+    /**
+     * Initializes the current instance
+     * @param  string  $token
+     * @param  array  $config
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function bootstrap(string $token, array $config): void
+    {
         $this->container = new Container();
         $this->container->delegate(new ReflectionContainer());
 
@@ -109,6 +123,33 @@ class Nutgram extends ResolveHandlers
 
         $this->container->addShared(RunningMode::class, Polling::class);
         $this->container->addShared(__CLASS__, $this);
+    }
+
+    /**
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        $attributes = get_object_vars($this);
+
+        unset($attributes['http'], $attributes['container']);
+
+        return $attributes;
+    }
+
+    /**
+     * @param  array  $data
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->token = $data['token'];
+        $this->config = $data['config'];
+        $this->update = $data['update'];
+
+        $this->bootstrap($this->token, $this->config);
     }
 
     /**

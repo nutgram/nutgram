@@ -33,7 +33,6 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Trait Client
  * @package SergiX44\Nutgram\Telegram
- * @mixin Nutgram
  */
 trait Client
 {
