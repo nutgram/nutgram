@@ -21,7 +21,6 @@ it('throws exception when text is too long', function ($responseBody) {
     $messages = $bot->sendMessage($textOriginal);
 
     expect($messages)->toBeNull();
-
 })->with('too_long');
 
 it('chunks long text message', function () {
@@ -40,7 +39,7 @@ it('chunks long text message', function () {
         ->toBeArray()
         ->toHaveCount(2)
         ->sequence(
-            fn($message) => $message->toHaveProperty('text', $textChunk1),
-            fn($message) => $message->toHaveProperty('text', $textChunk2),
+            fn ($message) => $message->toHaveProperty('text', $textChunk1),
+            fn ($message) => $message->toHaveProperty('text', $textChunk2),
         );
 });
