@@ -330,4 +330,17 @@ trait Client
             'message_id' => $this->messageId(),
         ]);
     }
+
+    /**
+     * Chunk a string into an array of strings.
+     * @param  string  $text
+     * @param  int|null  $length
+     * @return array
+     */
+    protected function chunkText(string $text, ?int $length = null): array
+    {
+        $length ??= Limits::TEXT_LENGTH;
+
+        return preg_split('/(\X{'.$length.'})/u', $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+    }
 }
