@@ -94,10 +94,6 @@ trait AvailableMethods
                 $parameters['text'] = $chunk;
 
                 $messages[] = $this->requestJson(__FUNCTION__, array_filter($parameters), Message::class);
-
-                if ($index < count($chunks) - 1) {
-                    sleep(1);
-                }
             }
             return $messages;
         }
