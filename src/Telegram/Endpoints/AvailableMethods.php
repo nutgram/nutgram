@@ -82,21 +82,20 @@ trait AvailableMethods
         $parameters = array_merge($required, $opt);
 
         if ($this->config['split_long_messages'] ?? false) {
+            //chunk text
             $chunks = $this->chunkText($text);
             $totalChunks = count($chunks);
+
+            //get reply_markup
             $reply_markup = $parameters['reply_markup'] ?? null;
             unset($parameters['reply_markup']);
 
-            $messages = [];
-            foreach ($chunks as $index => $chunk) {
-                if ($index === $totalChunks - 1) {
-                    $parameters['reply_markup'] = $reply_markup;
-                }
+            //send messages
+            return array_map(function ($chunk, $index) use (&$parameters, $totalChunks, $reply_markup) {
+                $parameters['reply_markup'] = $index === $totalChunks - 1 ? $reply_markup : null;
                 $parameters['text'] = $chunk;
-
-                $messages[] = $this->requestJson(__FUNCTION__, array_filter($parameters), Message::class);
-            }
-            return $messages;
+                return $this->requestJson(__FUNCTION__, array_filter($parameters), Message::class);
+            }, $chunks, array_keys($chunks));
         }
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
