@@ -81,10 +81,7 @@ class Nutgram extends ResolveHandlers
             throw new InvalidArgumentException('The token cannot be empty.');
         }
 
-        $this->token = $token;
-        $this->config = $config;
-
-        $this->bootstrap($this->token, $this->config);
+        $this->bootstrap($token, $config);
     }
 
     /**
@@ -97,26 +94,28 @@ class Nutgram extends ResolveHandlers
      */
     private function bootstrap(string $token, array $config): void
     {
+        $this->token = $token;
+        $this->config = $config;
         $this->container = new Container();
         $this->container->delegate(new ReflectionContainer());
 
         $baseUri = sprintf(
             '%s/bot%s/%s',
-            $config['api_url'] ?? self::DEFAULT_API_URL,
-            $token,
-            $config['test_env'] ?? false ? 'test/' : ''
+            $this->config['api_url'] ?? self::DEFAULT_API_URL,
+            $this->token,
+            $this->config['test_env'] ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle(array_merge([
             'base_uri' => $baseUri,
-            'timeout' => $config['timeout'] ?? 5,
-        ], $config['client'] ?? []));
+            'timeout' => $this->config['timeout'] ?? 5,
+        ], $this->config['client'] ?? []));
         $this->container->addShared(ClientInterface::class, $this->http);
 
-        $this->container->addShared(Hydrator::class)->setConcrete($config['mapper'] ?? NutgramHydrator::class);
+        $this->container->addShared(Hydrator::class)->setConcrete($this->config['mapper'] ?? NutgramHydrator::class);
         $this->mapper = $this->container->get(Hydrator::class);
 
-        $this->container->addShared(CacheInterface::class, $config['cache'] ?? new ArrayCache());
+        $this->container->addShared(CacheInterface::class, $this->config['cache'] ?? new ArrayCache());
         $this->conversationCache = $this->container->get(ConversationCache::class);
         $this->globalCache = $this->container->get(GlobalCache::class);
         $this->userCache = $this->container->get(UserCache::class);
@@ -132,7 +131,7 @@ class Nutgram extends ResolveHandlers
     {
         $attributes = get_object_vars($this);
 
-        unset($attributes['http'], $attributes['container']);
+        unset($attributes['http'], $attributes['container'], $attributes['update']);
 
         return $attributes;
     }
@@ -145,11 +144,7 @@ class Nutgram extends ResolveHandlers
      */
     public function __unserialize(array $data): void
     {
-        $this->token = $data['token'];
-        $this->config = $data['config'];
-        $this->update = $data['update'];
-
-        $this->bootstrap($this->token, $this->config);
+        $this->bootstrap($data['token'], $data['config']);
     }
 
     /**
