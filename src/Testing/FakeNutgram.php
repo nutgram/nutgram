@@ -45,7 +45,6 @@ class FakeNutgram extends Nutgram
      */
     protected TypeFaker $typeFaker;
 
-
     /**
      * @var bool
      */
@@ -83,6 +82,13 @@ class FakeNutgram extends Nutgram
 
         $bot->setRunningMode(new Fake($update));
 
+        self::inject($bot, $mock, $handlerStack);
+
+        return $bot;
+    }
+
+    private static function inject(Nutgram $bot, MockHandler $mock, HandlerStack $handlerStack)
+    {
         (function () use ($handlerStack, $mock) {
             /** @psalm-scope-this SergiX44\Nutgram\Testing\FakeNutgram */
             $this->mockHandler = $mock;
@@ -138,8 +144,6 @@ class FakeNutgram extends Nutgram
                 };
             }, 'handles_empty_queue');
         })->call($bot);
-
-        return $bot;
     }
 
     /**
@@ -220,7 +224,7 @@ class FakeNutgram extends Nutgram
     {
         print(str_repeat('-', 25));
         print("\e[32m Nutgram Request History Dump \e[39m");
-        print(str_repeat('-', 25) . PHP_EOL);
+        print(str_repeat('-', 25).PHP_EOL);
 
         if (count($this->getRequestHistory()) > 0) {
             foreach ($this->getRequestHistory() as $i => $item) {
@@ -241,7 +245,7 @@ class FakeNutgram extends Nutgram
         }
 
         print(PHP_EOL);
-        print(str_repeat('-', 80) . PHP_EOL);
+        print(str_repeat('-', 80).PHP_EOL);
         print(PHP_EOL);
         flush();
         ob_flush();
@@ -297,7 +301,7 @@ class FakeNutgram extends Nutgram
         $contentType = $request->getHeaderLine('Content-Type');
 
         //get body
-        $body = (string)$request->getBody();
+        $body = (string) $request->getBody();
 
         //get data from json
         if (str_contains($contentType, 'application/json')) {
@@ -326,5 +330,32 @@ class FakeNutgram extends Nutgram
         }
 
         throw new InvalidArgumentException("Content-Type '$contentType' not supported");
+    }
+
+    /**
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        $attributes = parent::__serialize();
+
+        unset($attributes['typeFaker'], $attributes['config']['client']['handler']);
+
+        return $attributes;
+    }
+
+    /**
+     * @param  array  $data
+     * @return void
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function __unserialize(array $data): void
+    {
+        $mock = new MockHandler();
+        $handlerStack = HandlerStack::create($mock);
+        $data['config']['client']['handler'] = $handlerStack;
+        parent::__unserialize($data);
+        self::inject($this, $mock, $handlerStack);
     }
 }
