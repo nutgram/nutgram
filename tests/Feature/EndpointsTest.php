@@ -29,7 +29,7 @@ it('chunks long text message', function () {
     $textChunk2 = 'a';
 
     /** @var Nutgram $bot */
-    $bot = Nutgram::fake(config: ['chunk_message' => true])
+    $bot = Nutgram::fake(config: ['split_long_messages' => true])
         ->willReceivePartial(['text' => $textChunk1])
         ->willReceivePartial(['text' => $textChunk2]);
 
