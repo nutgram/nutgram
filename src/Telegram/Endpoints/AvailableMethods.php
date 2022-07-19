@@ -77,6 +77,7 @@ trait AvailableMethods
      */
     public function sendMessage(string $text, ?array $opt = []): Message|array|null
     {
+        $functionName = __FUNCTION__;
         $chat_id = $this->chatId();
         $required = compact('text', 'chat_id');
         $parameters = array_merge($required, $opt);
@@ -91,14 +92,14 @@ trait AvailableMethods
             unset($parameters['reply_markup']);
 
             //send messages
-            return array_map(function ($chunk, $index) use (&$parameters, $totalChunks, $reply_markup) {
+            return array_map(function ($chunk, $index) use (&$parameters, $totalChunks, $reply_markup, $functionName) {
                 $parameters['reply_markup'] = $index === $totalChunks - 1 ? $reply_markup : null;
                 $parameters['text'] = $chunk;
-                return $this->requestJson(__FUNCTION__, array_filter($parameters), Message::class);
+                return $this->requestJson($functionName, array_filter($parameters), Message::class);
             }, $chunks, array_keys($chunks));
         }
 
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->requestJson($functionName, $parameters, Message::class);
     }
 
     /**
