@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Traits\Macroable;
 use JsonException;
 use JsonSerializable;
+use Laminas\Stdlib\StringUtils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -334,13 +335,12 @@ trait Client
     /**
      * Chunk a string into an array of strings.
      * @param  string  $text
-     * @param  int|null  $length
+     * @param  int  $length
      * @return array
      */
-    protected function chunkText(string $text, ?int $length = null): array
+    protected function chunkText(string $text, int $length = Limits::TEXT_LENGTH): array
     {
-        $length ??= Limits::TEXT_LENGTH;
-
-        return preg_split('/(\X{'.$length.'})/u', $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $wrapper = StringUtils::getWrapper();
+        return explode('%#TGMSG#%', $wrapper->wordWrap($text, $length, "%#TGMSG#%", true));
     }
 }
