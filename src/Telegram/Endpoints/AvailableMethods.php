@@ -81,14 +81,15 @@ trait AvailableMethods
         $required = compact('text', 'chat_id');
         $parameters = array_merge($required, $opt);
 
-        if ($this->config['chunk_message'] ?? false) {
+        if ($this->config['split_long_messages'] ?? false) {
             $chunks = $this->chunkText($text);
+            $totalChunks = count($chunks);
             $reply_markup = $parameters['reply_markup'] ?? null;
             unset($parameters['reply_markup']);
 
             $messages = [];
             foreach ($chunks as $index => $chunk) {
-                if ($index === count($chunks) - 1) {
+                if ($index === $totalChunks - 1) {
                     $parameters['reply_markup'] = $reply_markup;
                 }
                 $parameters['text'] = $chunk;
