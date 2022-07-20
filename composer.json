@@ -29,7 +29,6 @@
         "ext-json": "*",
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/macroable": "^8.0|^9.0",
-        "laminas/laminas-stdlib": "^3.10",
         "league/container": "^4.2",
         "nutgram/hydrator": "^2.0",
         "opis/closure": "^3.6",

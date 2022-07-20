@@ -340,7 +340,89 @@ trait Client
      */
     protected function chunkText(string $text, int $length = Limits::TEXT_LENGTH): array
     {
-        $wrapper = StringUtils::getWrapper();
-        return explode('%#TGMSG#%', $wrapper->wordWrap($text, $length, "%#TGMSG#%", true));
+        return explode('%#TGMSG#%', $this->mb_wordwrap($text, $length, "%#TGMSG#%", true));
+    }
+
+    protected function g_strlen($str)
+    {
+        $len = grapheme_strlen($str);
+        return $len ?? false;
+    }
+
+    protected function g_substr($str, $offset = 0, $length = null): bool|string
+    {
+        if ($length !== null) {
+            return grapheme_substr($str, $offset, $length);
+        }
+
+        return grapheme_substr($str, $offset);
+    }
+
+    protected function mb_wordwrap($string, $width = 75, $break = "\n", $cut = false): string
+    {
+        $string = (string)$string;
+        if ($string === '') {
+            return '';
+        }
+
+        $break = (string)$break;
+        if ($break === '') {
+            throw new \InvalidArgumentException('Break string cannot be empty');
+        }
+
+        $width = (int)$width;
+        if ($width === 0 && $cut) {
+            throw new \InvalidArgumentException('Cannot force cut when width is zero');
+        }
+
+        $stringWidth = $this->g_strlen($string);
+        $breakWidth = $this->g_strlen($break);
+
+        $result = '';
+        $lastStart = $lastSpace = 0;
+
+        for ($current = 0; $current < $stringWidth; $current++) {
+            $char = $this->g_substr($string, $current, 1);
+
+            $possibleBreak = $char;
+            if ($breakWidth !== 1) {
+                $possibleBreak = $this->g_substr($string, $current, $breakWidth);
+            }
+
+            if ($possibleBreak === $break) {
+                $result .= $this->g_substr($string, $lastStart, $current - $lastStart + $breakWidth);
+                $current += $breakWidth - 1;
+                $lastStart = $lastSpace = $current + 1;
+                continue;
+            }
+
+            if ($char === ' ') {
+                if ($current - $lastStart >= $width) {
+                    $result .= $this->g_substr($string, $lastStart, $current - $lastStart).$break;
+                    $lastStart = $current + 1;
+                }
+
+                $lastSpace = $current;
+                continue;
+            }
+
+            if ($current - $lastStart >= $width && $cut && $lastStart >= $lastSpace) {
+                $result .= $this->g_substr($string, $lastStart, $current - $lastStart).$break;
+                $lastStart = $lastSpace = $current;
+                continue;
+            }
+
+            if ($current - $lastStart >= $width && $lastStart < $lastSpace) {
+                $result .= $this->g_substr($string, $lastStart, $lastSpace - $lastStart).$break;
+                $lastStart = $lastSpace += 1;
+                continue;
+            }
+        }
+
+        if ($lastStart !== $current) {
+            $result .= $this->g_substr($string, $lastStart, $current - $lastStart);
+        }
+
+        return $result;
     }
 }
