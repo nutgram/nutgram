@@ -3,13 +3,12 @@
 namespace SergiX44\Nutgram\Telegram\Types;
 
 use Illuminate\Support\Traits\Macroable;
-use JsonSerializable;
 use SergiX44\Nutgram\Nutgram;
 
-abstract class BaseType implements JsonSerializable
+abstract class BaseType
 {
     use Macroable {
-        __call as macroCall;
+        __call as callMacro;
     }
 
     protected ?Nutgram $bot;
@@ -33,33 +32,14 @@ abstract class BaseType implements JsonSerializable
             return $this->bot->$method(...$parameters);
         }
 
-        return $this->macroCall($method, $parameters);
-    }
-
-    /**
-     * @return array
-     */
-    public function __serialize(): array
-    {
-        $attributes = get_object_vars($this);
-        unset($attributes['bot']);
-
-        return $attributes;
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        return $this->__serialize();
+        return $this->callMacro($method, $parameters);
     }
 
     /**
      * @param  Nutgram|null  $bot
      * @return BaseType
      */
-    public function bindToInstance(?Nutgram $bot): BaseType
+    public function bindToInstance(?Nutgram $bot): self
     {
         $this->bot = $bot;
         return $this;

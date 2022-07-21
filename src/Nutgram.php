@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram;
 
+use Closure;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use League\Container\Container;
@@ -16,6 +17,7 @@ use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
+use SergiX44\Nutgram\Exception\CannotSerializeException;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\Command;
@@ -81,6 +83,19 @@ class Nutgram extends ResolveHandlers
             throw new InvalidArgumentException('The token cannot be empty.');
         }
 
+        $this->bootstrap($token, $config);
+    }
+
+    /**
+     * Initializes the current instance
+     * @param  string  $token
+     * @param  array  $config
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function bootstrap(string $token, array $config): void
+    {
         $this->token = $token;
         $this->config = $config;
         $this->container = new Container();
@@ -88,27 +103,56 @@ class Nutgram extends ResolveHandlers
 
         $baseUri = sprintf(
             '%s/bot%s/%s',
-            $config['api_url'] ?? self::DEFAULT_API_URL,
-            $token,
-            $config['test_env'] ?? false ? 'test/' : ''
+            $this->config['api_url'] ?? self::DEFAULT_API_URL,
+            $this->token,
+            $this->config['test_env'] ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle(array_merge([
             'base_uri' => $baseUri,
-            'timeout' => $config['timeout'] ?? 5,
-        ], $config['client'] ?? []));
+            'timeout' => $this->config['timeout'] ?? 5,
+        ], $this->config['client'] ?? []));
         $this->container->addShared(ClientInterface::class, $this->http);
 
-        $this->container->addShared(Hydrator::class)->setConcrete($config['mapper'] ?? NutgramHydrator::class);
+        $this->container->addShared(Hydrator::class)->setConcrete($this->config['mapper'] ?? NutgramHydrator::class);
         $this->mapper = $this->container->get(Hydrator::class);
 
-        $this->container->addShared(CacheInterface::class, $config['cache'] ?? new ArrayCache());
+        $this->container->addShared(CacheInterface::class, $this->config['cache'] ?? new ArrayCache());
         $this->conversationCache = $this->container->get(ConversationCache::class);
         $this->globalCache = $this->container->get(GlobalCache::class);
         $this->userCache = $this->container->get(UserCache::class);
 
         $this->container->addShared(RunningMode::class, Polling::class);
         $this->container->addShared(__CLASS__, $this);
+    }
+
+    /**
+     * @return array
+     * @throws CannotSerializeException
+     */
+    public function __serialize(): array
+    {
+        unset($this->config['cache']);
+
+        if (isset($this->config['local_path_transformer']) && $this->config['local_path_transformer'] instanceof Closure) {
+            throw new CannotSerializeException();
+        }
+
+        return [
+            'token' => $this->token,
+            'config' => $this->config,
+        ];
+    }
+
+    /**
+     * @param  array  $data
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->bootstrap($data['token'], $data['config']);
     }
 
     /**
