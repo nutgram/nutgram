@@ -71,15 +71,15 @@ class FakeNutgram extends Nutgram
      * @param  array  $responses
      * @return FakeNutgram
      */
-    public static function instance(mixed $update = null, array $responses = []): self
+    public static function instance(mixed $update = null, array $responses = [], array $config = []): self
     {
         $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);
 
-        $bot = new self(__CLASS__, [
+        $bot = new self(__CLASS__, array_merge([
             'client' => ['handler' => $handlerStack, 'base_uri' => ''],
             'api_url' => '',
-        ]);
+        ], $config));
 
         $bot->setRunningMode(new Fake($update));
 

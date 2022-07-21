@@ -73,13 +73,33 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendmessage
      * @param  string  $text Text of the message to be sent, 1-4096 characters after entities parsing
      * @param  array|null  $opt
-     * @return Message|null
+     * @return Message|Message[]|null
      */
-    public function sendMessage(string $text, ?array $opt = []): ?Message
+    public function sendMessage(string $text, ?array $opt = []): Message|array|null
     {
+        $functionName = __FUNCTION__;
         $chat_id = $this->chatId();
         $required = compact('text', 'chat_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        $parameters = array_merge($required, $opt);
+
+        if ($this->config['split_long_messages'] ?? false) {
+            //chunk text
+            $chunks = $this->chunkText($text);
+            $totalChunks = count($chunks);
+
+            //get reply_markup
+            $reply_markup = $parameters['reply_markup'] ?? null;
+            unset($parameters['reply_markup']);
+
+            //send messages
+            return array_map(function ($chunk, $index) use (&$parameters, $totalChunks, $reply_markup, $functionName) {
+                $parameters['reply_markup'] = $index === $totalChunks - 1 ? $reply_markup : null;
+                $parameters['text'] = $chunk;
+                return $this->requestJson($functionName, array_filter($parameters), Message::class);
+            }, $chunks, array_keys($chunks));
+        }
+
+        return $this->requestJson($functionName, $parameters, Message::class);
     }
 
     /**

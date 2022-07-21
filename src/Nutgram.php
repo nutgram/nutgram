@@ -116,9 +116,9 @@ class Nutgram extends ResolveHandlers
      * @param  array  $responses
      * @return FakeNutgram
      */
-    public static function fake(mixed $update = null, array $responses = []): FakeNutgram
+    public static function fake(mixed $update = null, array $responses = [], array $config = []): FakeNutgram
     {
-        return FakeNutgram::instance($update, $responses);
+        return FakeNutgram::instance($update, $responses, $config);
     }
 
     /**
