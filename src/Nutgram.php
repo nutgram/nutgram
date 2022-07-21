@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram;
 
+use Closure;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use League\Container\Container;
@@ -16,6 +17,7 @@ use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
+use SergiX44\Nutgram\Exception\CannotSerializeException;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\Command;
@@ -126,14 +128,20 @@ class Nutgram extends ResolveHandlers
 
     /**
      * @return array
+     * @throws CannotSerializeException
      */
     public function __serialize(): array
     {
-        $attributes = get_object_vars($this);
+        unset($this->config['cache']);
 
-        unset($attributes['http'], $attributes['container'], $attributes['update']);
+        if (isset($this->config['local_path_transformer']) && $this->config['local_path_transformer'] instanceof Closure) {
+            throw new CannotSerializeException();
+        }
 
-        return $attributes;
+        return [
+            'token' => $this->token,
+            'config' => $this->config,
+        ];
     }
 
     /**

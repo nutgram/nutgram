@@ -334,12 +334,13 @@ class FakeNutgram extends Nutgram
 
     /**
      * @return array
+     * @throws \SergiX44\Nutgram\Exception\CannotSerializeException
      */
     public function __serialize(): array
     {
         $attributes = parent::__serialize();
 
-        unset($attributes['typeFaker'], $attributes['config']['client']['handler']);
+        unset($attributes['config']['client']['handler']);
 
         return $attributes;
     }
