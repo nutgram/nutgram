@@ -6,7 +6,7 @@ class MakeHandlerCommand extends BaseMakeCommand
 {
     protected $signature = 'nutgram:make:handler {name : Handler name}';
 
-    protected $description = 'Create a new Handler Command';
+    protected $description = 'Create a new Nutgram Handler';
 
     /**
      * Return the sub directory name
