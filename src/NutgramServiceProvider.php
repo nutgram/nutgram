@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use SergiX44\Nutgram\Laravel\Commands\HookInfoCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookRemoveCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookSetCommand;
+use SergiX44\Nutgram\Laravel\Commands\IdeGenerateCommand;
 use SergiX44\Nutgram\Laravel\Commands\ListCommand;
 use SergiX44\Nutgram\Laravel\Commands\MakeCommandCommand;
 use SergiX44\Nutgram\Laravel\Commands\MakeConversationCommand;
@@ -92,6 +93,7 @@ class NutgramServiceProvider extends ServiceProvider
                 MakeConversationCommand::class,
                 MakeHandlerCommand::class,
                 MakeMiddlewareCommand::class,
+                IdeGenerateCommand::class,
             ]);
 
             $this->publishes([
