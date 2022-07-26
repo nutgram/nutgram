@@ -54,13 +54,16 @@ abstract class BaseMakeCommand extends Command
 
     /**
      * Map the stub variables present in stub to its value
+     *
      * @return array
      */
     protected function getStubVariables(): array
     {
+        $name = $this->argument('name');
+
         return [
-            'namespace' => $this->getSubDirName(),
-            'name' => $this->argument('name'),
+            'namespace' => $this->getSubDirName().$this->getNamespace($name),
+            'name' => class_basename($name),
         ];
     }
 
@@ -95,5 +98,47 @@ abstract class BaseMakeCommand extends Command
         if (!File::makeDirectory($path, 0755, true)) {
             throw new RuntimeException('Unable to create directory: '.$path);
         }
+    }
+
+    /**
+     * Get the full namespace for a given class, without the class name.
+     *
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function getNamespace(string $name): string
+    {
+        $namespace = $this->removeClassName($this->slashesTrim($name));
+
+        if (empty($namespace))
+            return '';
+
+        return '\\'.$namespace;
+
+    }
+
+
+    /**
+     * remove duplicated slashes
+     *
+     * @param  string  $name
+     * @param  string  $replacement
+     * @return string
+     */
+    protected function slashesTrim(string $name, string $replacement = '\\'): string
+    {
+        return preg_replace('#[\\\/]+#', $replacement, $name);
+    }
+
+    /**
+     * returns namespace from full class name
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function removeClassName(string $name): string
+    {
+        return trim(dirname($name), '\\/.');
     }
 }
