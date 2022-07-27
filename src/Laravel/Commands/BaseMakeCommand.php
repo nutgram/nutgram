@@ -111,11 +111,11 @@ abstract class BaseMakeCommand extends Command
     {
         $namespace = $this->removeClassName($this->slashesTrim($name));
 
-        if (empty($namespace))
+        if (empty($namespace)) {
             return '';
+        }
 
         return '\\'.$namespace;
-
     }
 
 
