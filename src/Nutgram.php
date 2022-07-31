@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram;
 use Closure;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
+use League\Container\Argument\Literal\IntegerArgument;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Psr\Container\ContainerExceptionInterface;
@@ -117,7 +118,13 @@ class Nutgram extends ResolveHandlers
         $this->container->addShared(Hydrator::class)->setConcrete($this->config['mapper'] ?? NutgramHydrator::class);
         $this->mapper = $this->container->get(Hydrator::class);
 
+        $botId = $config['bot_id'] ?? null;
         $this->container->addShared(CacheInterface::class, $this->config['cache'] ?? new ArrayCache());
+
+        $this->container->add(ConversationCache::class)->addArguments([CacheInterface::class, $botId]);
+        $this->container->add(GlobalCache::class)->addArguments([CacheInterface::class, $botId]);
+        $this->container->add(UserCache::class)->addArguments([CacheInterface::class, $botId]);
+
         $this->conversationCache = $this->container->get(ConversationCache::class);
         $this->globalCache = $this->container->get(GlobalCache::class);
         $this->userCache = $this->container->get(UserCache::class);
