@@ -9,7 +9,6 @@ use SergiX44\Nutgram\Nutgram;
 /**
  * Trait GlobalCacheProxy
  * @package SergiX44\Nutgram\Proxies
- * @mixin Nutgram
  */
 trait GlobalCacheProxy
 {
