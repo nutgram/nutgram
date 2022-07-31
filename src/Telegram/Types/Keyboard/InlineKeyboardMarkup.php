@@ -38,8 +38,7 @@ class InlineKeyboardMarkup extends BaseType implements JsonSerializable
     }
 
     /**
-     * @param  InlineKeyboardButton  ...$buttons
-     * @return InlineKeyboardMarkup
+     * @param InlineKeyboardButton  ...$buttons
      */
     public function addRow(...$buttons): static
     {
