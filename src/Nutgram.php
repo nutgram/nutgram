@@ -338,12 +338,12 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param $callable
+     * @param  callable|array|string  $callable
      * @return callable
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function resolve(callable $callable): callable
+    public function resolve(callable|array|string $callable): callable
     {
         // if is a class definition, resolve it to an instance through the container
         if (is_array($callable) && count($callable) === 2 && is_string($callable[0]) && class_exists($callable[0])) {
