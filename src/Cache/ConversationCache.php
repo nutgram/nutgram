@@ -18,10 +18,10 @@ class ConversationCache extends BotCache
     /**
      * ConversationCache constructor.
      * @param  CacheInterface  $cache
-     * @param $botId
-     * @param  int  $ttl
+     * @param  int|null  $botId
+     * @param  int|null  $ttl
      */
-    public function __construct(CacheInterface $cache, $botId, $ttl = self::CONVERSATION_TTL)
+    public function __construct(CacheInterface $cache, ?int $botId, ?int $ttl = self::CONVERSATION_TTL)
     {
         parent::__construct($cache, self::CONVERSATION_PREFIX, $botId, $ttl);
     }
