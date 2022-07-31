@@ -87,7 +87,7 @@ class FakeNutgram extends Nutgram
         return $bot;
     }
 
-    private static function inject(Nutgram $bot, MockHandler $mock, HandlerStack $handlerStack)
+    private static function inject(Nutgram $bot, MockHandler $mock, HandlerStack $handlerStack): void
     {
         (function () use ($handlerStack, $mock) {
             /** @psalm-scope-this SergiX44\Nutgram\Testing\FakeNutgram */

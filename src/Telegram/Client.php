@@ -342,7 +342,12 @@ trait Client
         return explode('%#TGMSG#%', $this->mb_wordwrap($text, $length, "%#TGMSG#%", true));
     }
 
-    protected function g_strlen($str)
+    /**
+     * @return false|int
+     *
+     * @psalm-return 0|false|positive-int
+     */
+    protected function g_strlen($str): int|false
     {
         $len = grapheme_strlen($str);
         return $len ?? false;
