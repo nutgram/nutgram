@@ -4,6 +4,7 @@ use Mockery\MockInterface;
 use SergiX44\Nutgram\Laravel\Commands\HookInfoCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookRemoveCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookSetCommand;
+use SergiX44\Nutgram\Laravel\Commands\IdeGenerateCommand;
 use SergiX44\Nutgram\Laravel\Commands\ListCommand;
 use SergiX44\Nutgram\Laravel\Commands\MakeCommandCommand;
 use SergiX44\Nutgram\Laravel\Commands\MakeConversationCommand;
@@ -205,4 +206,16 @@ test('nutgram:make:middleware makes a middleware', function () {
         ->toBeFile()
         ->getFileContent()
         ->toContain('class MyMiddleware');
+});
+
+test('nutgram:ide:generate publish the stub file', function () {
+    $this->artisan(IdeGenerateCommand::class)
+        ->expectsOutput('Generating IDE helper...')
+        ->expectsOutput('Done!')
+        ->assertExitCode(0);
+
+    expect(base_path('_ide_helper_nutgram.php'))
+        ->toBeFile()
+        ->getFileContent()
+        ->toContain('namespace SergiX44\Nutgram\Telegram\Types\Media {');
 });
