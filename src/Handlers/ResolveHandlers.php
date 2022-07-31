@@ -124,10 +124,11 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  $conversation
+     * @param  Conversation|callable  $conversation
      * @return array
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    protected function continueConversation($conversation): array
+    protected function continueConversation(Conversation|callable $conversation): array
     {
         $resolvedHandlers = [];
 

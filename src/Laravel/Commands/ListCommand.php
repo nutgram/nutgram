@@ -114,7 +114,7 @@ class ListCommand extends Command
         };
     }
 
-    protected function getMessageSubtype($value): ?string
+    protected function getMessageSubtype(string $value): ?string
     {
         $value = Str::lower($value);
 

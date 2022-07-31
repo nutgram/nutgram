@@ -271,13 +271,13 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  $callable
+     * @param  Conversations\Conversation|callable  $callable
      * @param  int|null  $userId
      * @param  int|null  $chatId
      * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function stepConversation($callable, ?int $userId = null, ?int $chatId = null): self
+    public function stepConversation(Conversations\Conversation|callable $callable, ?int $userId = null, ?int $chatId = null): self
     {
         $userId = $userId ?? $this->userId();
         $chatId = $chatId ?? $this->chatId();
@@ -343,7 +343,7 @@ class Nutgram extends ResolveHandlers
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function resolve($callable): callable
+    public function resolve(callable $callable): callable
     {
         // if is a class definition, resolve it to an instance through the container
         if (is_array($callable) && count($callable) === 2 && is_string($callable[0]) && class_exists($callable[0])) {
