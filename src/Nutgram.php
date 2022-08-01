@@ -118,12 +118,12 @@ class Nutgram extends ResolveHandlers
         $this->container->addShared(Hydrator::class)->setConcrete($this->config['mapper'] ?? NutgramHydrator::class);
         $this->mapper = $this->container->get(Hydrator::class);
 
-        $botId = $config['bot_id'] ?? null;
+        $botId = $this->config['bot_id'] ?? (int)explode(':', $this->token)[0];
         $this->container->addShared(CacheInterface::class, $this->config['cache'] ?? new ArrayCache());
 
-        $this->container->add(ConversationCache::class)->addArguments([CacheInterface::class, $botId]);
-        $this->container->add(GlobalCache::class)->addArguments([CacheInterface::class, $botId]);
-        $this->container->add(UserCache::class)->addArguments([CacheInterface::class, $botId]);
+        $this->container->addShared(ConversationCache::class)->addArguments([CacheInterface::class, $botId]);
+        $this->container->addShared(GlobalCache::class)->addArguments([CacheInterface::class, $botId]);
+        $this->container->addShared(UserCache::class)->addArguments([CacheInterface::class, $botId]);
 
         $this->conversationCache = $this->container->get(ConversationCache::class);
         $this->globalCache = $this->container->get(GlobalCache::class);

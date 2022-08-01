@@ -25,6 +25,8 @@ class FakeNutgram extends Nutgram
 {
     use Hears, Asserts;
 
+    public const TOKEN = '123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11';
+
     /**
      * @var MockHandler
      */
@@ -75,7 +77,7 @@ class FakeNutgram extends Nutgram
         $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);
 
-        $bot = new self(__CLASS__, array_merge([
+        $bot = new self(self::TOKEN, array_merge([
             'client' => ['handler' => $handlerStack, 'base_uri' => ''],
             'api_url' => '',
         ], $config));
