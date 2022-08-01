@@ -2,6 +2,24 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.6.0 - 2022-08-01
+
+### What's Changed
+
+- Message chunk support by @Lukasss93 in https://github.com/nutgram/nutgram/pull/174
+- Fix null token by @miki131 in https://github.com/nutgram/nutgram/pull/177
+- Serializable instance by @SergiX44 in https://github.com/nutgram/nutgram/pull/172
+- Fixed class name and namespace issue when creating command by @mkhab7 in https://github.com/nutgram/nutgram/pull/180
+- Add nutgram:ide:generate command by @Lukasss93 in https://github.com/nutgram/nutgram/pull/181
+- Raise psalm error level by @SergiX44 in https://github.com/nutgram/nutgram/pull/185
+- support bot_id cache by @SergiX44 in https://github.com/nutgram/nutgram/pull/184
+
+### New Contributors
+
+- @miki131 made their first contribution in https://github.com/nutgram/nutgram/pull/177
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.5.1...3.6.0
+
 ## 3.5.1 - 2022-07-02
 
 ### Fixed
@@ -124,52 +142,63 @@ All notable changes to `nutgram` will be documented in this file.
 ## 1.4.1 - 2022-02-21
 
 ### Fixed
+
 - Fixed wrong handler with "animation" message
 
 ## 1.4.0 - 2022-02-18
 
 ### Added
+
 - Webhook safe mode.
 
 ### Changed
+
 - Replace service container implementation.
 
 ### Fixed
+
 - Dependency conflict on Laravel 9.
 
 ## 1.3.0 - 2022-02-07
 
 ### Added
+
 - Support for bot api 5.6/5.7.
 
 ## 1.2.0 - 2021-12-09
 
 ### Added
+
 - Support for bot api 5.5.
 
 ## 1.1.1 - 2021-12-03
 
 ### Fixed
+
 - Mapping issue with array of objects.
 
 ## 1.1.0 - 2021-11-30
 
 ### Added
+
 - Guzzle client options on multipart requests.
 
 ## 1.0.0 - 2021-11-18
 
 ### Changed
+
 - 1.0 stable!
 
 ## 0.16.0 - 2021-11-03
 
 ### Added
+
 - Auto-inject callback_data for InlineMenus.
 - Maximum connections options.
 - By type exceptions handlers.
 
 ### Fixed
+
 - Error with closing the menu.
 
 ## 0.15.10 - 2021-10-29
@@ -210,21 +239,25 @@ All notable changes to `nutgram` will be documented in this file.
 ## 0.15.5 - 2021-10-16
 
 ### Fixed
+
 - Error with type conflict
 
 ## 0.15.4 - 2021-10-10
 
 ### Fixed
+
 - Fixed nullable token on Laravel provider
 
 ## 0.15.3 - 2021-10-10
 
 ### Fixed
+
 - Error on laravel auto-discover
 
 ## 0.15.2 - 2021-10-07
 
 ### Fixed
+
 - Fixed namespaces
 - Fixed missing documentation
 
@@ -261,24 +294,26 @@ All notable changes to `nutgram` will be documented in this file.
 ## 0.13.1 - 2021-09-26
 
 ### Fixed
+
 - Reopen behaviour
 
 ## 0.13.0 - 2021-09-25
 
 ### Added
-- Added conversation menu
 
+- Added conversation menu
 
 ## 0.12.0 - 2021-09-25
 
 ### Added
+
 - Added default step to conversation
 - Added `closing` method to conversation
-
 
 ## 0.11.0 - 2021-09-21
 
 ### Added
+
 - Added new laravel command: `nutgram:run`
 - Added new laravel command: `nutgram:register-commands`
 - Added new laravel command: `nutgram:hook:info`
@@ -287,195 +322,202 @@ All notable changes to `nutgram` will be documented in this file.
 - Added `isCommand` helper
 
 ### Changed
-- Code quality improvements
 
+- Code quality improvements
 
 ## 0.10.0 - 2021-09-19
 
 ### Added
+
 - Added support to command auto registration
 - Added type validation to `onMessageType` method
 - Added type validation to `fallbackOn` method
 
-
 ## 0.9.1 - 2021-09-17
 
 ### Changed
+
 - Code quality improvements
 
 ### Fixed
-- Fix missing subtype support
 
+- Fix missing subtype support
 
 ## 0.9.0 - 2021-07-26
 
 ### Added
-- Update to Bot API 5.3
 
+- Update to Bot API 5.3
 
 ## 0.8.0 - 2021-05-06
 
 ### Added
-- Added `uploadStickerFile` method
 
+- Added `uploadStickerFile` method
 
 ## 0.7.0 - 2021-04-26
 
 ### Changed
-- Update to Bot API 5.2
 
+- Update to Bot API 5.2
 
 ## 0.6.2 - 2021-04-14
 
 ### Changed
+
 - Updated documentation
 - Improved sending files
-
 
 ## 0.6.1 - 2021-03-12
 
 ### Fixed
-- Added missing user from `my_chat_member` and `chat_member` types in `getUser` method
 
+- Added missing user from `my_chat_member` and `chat_member` types in `getUser` method
 
 ## 0.6.0 - 2021-03-10
 
 ### Added
+
 - Added `onMyChatMember` handler
 - Added `onChatMember` handler
 - Added `myChatMember` helper
 - Added `chatMember` helper
 
 ### Changed
+
 - Update to Bot API 5.1
 - Updated documentation
-
 
 ## 0.5.1 - 2021-03-09
 
 ### Changed
+
 - Updated documentation
 
 ### Fixed
-- Fix check update type on resolveHandler method
 
+- Fix check update type on resolveHandler method
 
 ## 0.5.0 - 2021-03-08
 
 ### Added
+
 - Added helper methods to create keyboards
 - Implemented download method
 - Added IoC on mapped objects
 
 ### Changed
-- Improved running mode
 
+- Improved running mode
 
 ## 0.4.1 - 2021-03-05
 
 ### Changed
-- Updated documentation and tests
 
+- Updated documentation and tests
 
 ## 0.4.0 - 2021-03-04
 
 ### Added
+
 - Allow non-class based conversations
 - Added documentation
 
 ### Changed
-- Code quality improvements
 
+- Code quality improvements
 
 ## 0.3.6 - 2021-03-01
 
 ### Added
-- Implemented typed messages handlers
 
+- Implemented typed messages handlers
 
 ## 0.3.5 - 2021-03-01
 
 ### Changed
-- Improved Laravel integration
 
+- Improved Laravel integration
 
 ## 0.3.4 - 2021-02-26
 
 ### Changed
-- Make mapping fail safe
 
+- Make mapping fail safe
 
 ## 0.3.3 - 2021-02-25
 
 ### Fixed
-- Fixed send attachments
 
+- Fixed send attachments
 
 ## 0.3.2 - 2021-02-24
 
 ### Removed
-- Removed useless async call
 
+- Removed useless async call
 
 ## 0.3.1 - 2021-02-23
 
 ### Fixed
-- Fixed api error on polling mode
 
+- Fixed api error on polling mode
 
 ## 0.3.0 - 2021-02-22
 
 ### Fixed
-- Fixed typed handlers
 
+- Fixed typed handlers
 
 ## 0.2.4 - 2021-02-20
 
 ### Fixed
-- Fix type mapping
 
+- Fix type mapping
 
 ## 0.2.3 - 2021-02-19
 
 ### Added
-- Added method to get the current update
 
+- Added method to get the current update
 
 ## 0.2.2 - 2021-02-18
 
 ### Fixed
-- Fix double call to the handler
 
+- Fix double call to the handler
 
 ## 0.2.1 - 2021-02-18
 
 ### Changes
-- Allow null response on some methods
 
+- Allow null response on some methods
 
 ## 0.2.0 - 2021-02-18
 
 ### Added
+
 - Added some helpers methods
 
 ### Fixed
+
 - Fix nullable conversion step
 - Fix wrong methods return type
-
 
 ## 0.1.2 - 2021-02-17
 
 ### Fixed
-- Check null before fetch conversation
 
+- Check null before fetch conversation
 
 ## 0.1.1 - 2021-02-17
 
 ### Added
-- Added missing methods
 
+- Added missing methods
 
 ## 0.1 - 2021-02-17
 
 ### Changed
+
 - Initial release
