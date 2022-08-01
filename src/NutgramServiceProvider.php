@@ -46,11 +46,9 @@ class NutgramServiceProvider extends ServiceProvider
                 return Nutgram::fake();
             }
 
-            $config = array_merge([
-                'cache' => $app->make(Cache::class),
-            ], config('nutgram.config'));
-
-            $bot = new Nutgram(config('nutgram.token') ?? 'MISSING-TOKEN', $config);
+            $bot = new Nutgram(config('nutgram.token') ?? FakeNutgram::TOKEN, array_merge([
+                'cache' => $app->get(Cache::class),
+            ], config('nutgram.config', [])));
 
             if ($app->runningInConsole()) {
                 $bot->setRunningMode(Polling::class);
