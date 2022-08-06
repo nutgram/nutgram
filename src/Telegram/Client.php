@@ -9,12 +9,11 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Traits\Macroable;
 use JsonException;
 use JsonSerializable;
-use Laminas\Stdlib\StringUtils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
-use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Support\StrUtils;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\Games;
 use SergiX44\Nutgram\Telegram\Endpoints\InlineMode;
@@ -53,10 +52,8 @@ trait Client
      * @see https://en.wikipedia.org/wiki/Push_technology#Long_polling
      * @param  array{offset?: int, limit?: int, timeout?: int, allowed_updates?: array<string>}  $parameters
      * @return array|null
-     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     public function getUpdates(array $parameters = []): ?array
@@ -71,10 +68,8 @@ trait Client
      * @param  null|array{certificate?: mixed, ip_address?: string, max_connections?: int,
      *     allowed_updates?:array<string>, drop_pending_updates?: bool}  $opt
      * @return bool|null
-     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     public function setWebhook(string $url, ?array $opt = []): ?bool
@@ -86,10 +81,8 @@ trait Client
     /**
      * @param  null|array{drop_pending_updates?: bool}  $opt
      * @return bool|null
-     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     public function deleteWebhook(?array $opt = []): ?bool
@@ -99,10 +92,8 @@ trait Client
 
     /**
      * @return WebhookInfo|null
-     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     public function getWebhookInfo(): ?WebhookInfo
@@ -115,10 +106,8 @@ trait Client
      * @param  array|null  $parameters
      * @param  array|null  $options
      * @return mixed
-     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     public function sendRequest(string $endpoint, ?array $parameters = [], ?array $options = []): mixed
@@ -133,10 +122,8 @@ trait Client
      * @param  array  $opt
      * @param  array  $clientOpt
      * @return Message|null
-     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     protected function sendAttachment(
@@ -164,7 +151,9 @@ trait Client
      * @param  string  $path
      * @param  array  $clientOpt
      * @return bool|null
+     * @throws ContainerExceptionInterface
      * @throws GuzzleException
+     * @throws NotFoundExceptionInterface
      */
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
@@ -187,6 +176,8 @@ trait Client
     /**
      * @param  File  $file
      * @return string|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function downloadUrl(File $file): string|null
     {
@@ -208,10 +199,8 @@ trait Client
      * @param  string  $mapTo
      * @param  array|null  $options
      * @return mixed
-     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     protected function requestMultipart(
@@ -253,10 +242,8 @@ trait Client
      * @param  string  $mapTo
      * @param  array|null  $options
      * @return mixed
-     * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
      * @throws TelegramException
      */
     protected function requestJson(
@@ -317,7 +304,7 @@ trait Client
      * @param  array  $opt
      * @return array
      */
-    private function targetChatMessageOrInlineMessageId(array $opt = []): array
+    protected function targetChatMessageOrInlineMessageId(array $opt = []): array
     {
         $inlineMessageId = $this->inlineMessageId();
 
@@ -339,94 +326,6 @@ trait Client
      */
     protected function chunkText(string $text, int $length = Limits::TEXT_LENGTH): array
     {
-        return explode('%#TGMSG#%', $this->mb_wordwrap($text, $length, "%#TGMSG#%", true));
-    }
-
-    /**
-     * @return false|int
-     *
-     * @psalm-return 0|false|positive-int
-     */
-    protected function g_strlen($str): int|false
-    {
-        $len = grapheme_strlen($str);
-        return $len ?? false;
-    }
-
-    protected function g_substr($str, $offset = 0, $length = null): bool|string
-    {
-        if ($length !== null) {
-            return grapheme_substr($str, $offset, $length);
-        }
-
-        return grapheme_substr($str, $offset);
-    }
-
-    protected function mb_wordwrap($string, $width = 75, $break = "\n", $cut = false): string
-    {
-        $string = (string)$string;
-        if ($string === '') {
-            return '';
-        }
-
-        $break = (string)$break;
-        if ($break === '') {
-            throw new \InvalidArgumentException('Break string cannot be empty');
-        }
-
-        $width = (int)$width;
-        if ($width === 0 && $cut) {
-            throw new \InvalidArgumentException('Cannot force cut when width is zero');
-        }
-
-        $stringWidth = $this->g_strlen($string);
-        $breakWidth = $this->g_strlen($break);
-
-        $result = '';
-        $lastStart = $lastSpace = 0;
-
-        for ($current = 0; $current < $stringWidth; $current++) {
-            $char = $this->g_substr($string, $current, 1);
-
-            $possibleBreak = $char;
-            if ($breakWidth !== 1) {
-                $possibleBreak = $this->g_substr($string, $current, $breakWidth);
-            }
-
-            if ($possibleBreak === $break) {
-                $result .= $this->g_substr($string, $lastStart, $current - $lastStart + $breakWidth);
-                $current += $breakWidth - 1;
-                $lastStart = $lastSpace = $current + 1;
-                continue;
-            }
-
-            if ($char === ' ') {
-                if ($current - $lastStart >= $width) {
-                    $result .= $this->g_substr($string, $lastStart, $current - $lastStart).$break;
-                    $lastStart = $current + 1;
-                }
-
-                $lastSpace = $current;
-                continue;
-            }
-
-            if ($current - $lastStart >= $width && $cut && $lastStart >= $lastSpace) {
-                $result .= $this->g_substr($string, $lastStart, $current - $lastStart).$break;
-                $lastStart = $lastSpace = $current;
-                continue;
-            }
-
-            if ($current - $lastStart >= $width && $lastStart < $lastSpace) {
-                $result .= $this->g_substr($string, $lastStart, $lastSpace - $lastStart).$break;
-                $lastStart = $lastSpace += 1;
-                continue;
-            }
-        }
-
-        if ($lastStart !== $current) {
-            $result .= $this->g_substr($string, $lastStart, $current - $lastStart);
-        }
-
-        return $result;
+        return explode('%#TGMSG#%', StrUtils::wordWrap($text, $length, "%#TGMSG#%", true));
     }
 }
