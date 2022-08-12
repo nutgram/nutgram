@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.7.0 - 2022-08-12
+
+### What's Changed
+
+- move wordwrap to helper class by @SergiX44 in https://github.com/nutgram/nutgram/pull/187
+- bot api 6.2 by @SergiX44 in https://github.com/nutgram/nutgram/pull/189
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.6.0...3.7.0
+
 ## 3.6.0 - 2022-08-01
 
 ### What's Changed
