@@ -23,6 +23,11 @@ class StickerSet extends BaseType
     public string $title;
 
     /**
+     * Type of stickers in the set, currently one of “regular”, “mask”, “custom_emoji”
+     */
+    public string $sticker_type;
+
+    /**
      * True, if the sticker set contains animated stickers
      */
     public bool $is_animated;
@@ -33,6 +38,7 @@ class StickerSet extends BaseType
     public bool $is_video;
 
     /**
+     * @deprecated use the field $sticker_type
      * True, if the sticker set contains masks
      */
     public bool $contains_masks;
