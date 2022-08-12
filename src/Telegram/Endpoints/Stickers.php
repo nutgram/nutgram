@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\Sticker\StickerSet;
 
 /**
@@ -147,5 +148,17 @@ trait Stickers
         $user_id = $this->userId();
         $required = compact('user_id', 'name');
         return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), options: $clientOpt);
+    }
+
+    /**
+     * Use this method to get information about custom emoji stickers by their identifiers.
+     * Returns an Array of Sticker objects.
+     * @see https://core.telegram.org/bots/api#getcustomemojistickers
+     * @param  array{string}  $emoji_ids
+     * @return array|null
+     */
+    public function getCustomEmojiStickers(array $emoji_ids): ?array
+    {
+        return $this->requestJson(__FUNCTION__, $emoji_ids, Sticker::class);
     }
 }
