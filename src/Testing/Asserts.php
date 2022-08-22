@@ -119,7 +119,7 @@ trait Asserts
             throw new InvalidArgumentException('You cannot do this assert without userId and chatId.');
         }
 
-        PHPUnit::assertNotNull($this->getConversation($userId, $chatId), 'No active conversation found');
+        PHPUnit::assertNotNull($this->currentConversation($userId, $chatId), 'No active conversation found');
 
         return $this;
     }
@@ -138,7 +138,7 @@ trait Asserts
             throw new InvalidArgumentException('You cannot do this assert without userId and chatId.');
         }
 
-        PHPUnit::assertNull($this->getConversation($userId, $chatId), 'Found an active conversation');
+        PHPUnit::assertNull($this->currentConversation($userId, $chatId), 'Found an active conversation');
 
         return $this;
     }

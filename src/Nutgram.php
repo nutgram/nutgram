@@ -18,6 +18,7 @@ use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
+use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Exception\CannotSerializeException;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
@@ -212,7 +213,7 @@ class Nutgram extends ResolveHandlers
     {
         $this->update = $update;
 
-        $conversation = $this->getConversation($this->userId(), $this->chatId());
+        $conversation = $this->currentConversation($this->userId(), $this->chatId());
 
         if ($conversation !== null) {
             $handlers = $this->continueConversation($conversation);
@@ -284,8 +285,11 @@ class Nutgram extends ResolveHandlers
      * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function stepConversation(Conversations\Conversation|callable $callable, ?int $userId = null, ?int $chatId = null): self
-    {
+    public function stepConversation(
+        Conversations\Conversation|callable $callable,
+        ?int $userId = null,
+        ?int $chatId = null
+    ): self {
         $userId = $userId ?? $this->userId();
         $chatId = $chatId ?? $this->chatId();
 
@@ -319,9 +323,9 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @return Container
+     * @return ContainerInterface
      */
-    public function getContainer(): Container
+    public function getContainer(): ContainerInterface
     {
         return $this->container;
     }
