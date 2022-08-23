@@ -106,12 +106,15 @@ abstract class Conversation
 
     /**
      * @param  Nutgram  $bot
+     * @param  int|null  $userId
+     * @param  int|null  $chatId
      * @throws InvalidArgumentException
      */
-    public function terminate(Nutgram $bot): void
+    public function terminate(Nutgram $bot, ?int $userId = null, ?int $chatId = null): void
     {
         $this->bot = $bot;
-        $this->end();
+        $this->closing($this->bot);
+        $this->bot->endConversation($userId, $chatId);
     }
 
     /**
