@@ -111,10 +111,10 @@ abstract class ResolveHandlers extends CollectHandlers
     /**
      * @param  int|null  $userId
      * @param  int|null  $chatId
-     * @return callable|null
+     * @return callable|Conversation|\Closure|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    protected function getConversation(?int $userId, ?int $chatId): ?callable
+    public function currentConversation(?int $userId, ?int $chatId): callable|Conversation|\Closure|null
     {
         if ($chatId === null || $userId === null) {
             return null;

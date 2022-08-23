@@ -29,10 +29,10 @@ class ConversationCache extends BotCache
     /**
      * @param  int  $userId
      * @param  int  $chatId
-     * @return callable|null
+     * @return callable|Conversation|Closure|null
      * @throws InvalidArgumentException
      */
-    public function get(int $userId, int $chatId): ?callable
+    public function get(int $userId, int $chatId): null|callable|Conversation|Closure
     {
         $data = $this->cache->get($this->makeKey($userId, $chatId));
         if ($data !== null) {
