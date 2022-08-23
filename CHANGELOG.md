@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.7.1 - 2022-08-23
+
+### What's Changed
+
+- ability to retrieve the current conversation from outside the context by @SergiX44 in https://github.com/nutgram/nutgram/pull/191
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.7.0...3.7.1
+
 ## 3.7.0 - 2022-08-12
 
 ### What's Changed
