@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram;
 use Closure;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
+use Laravel\SerializableClosure\SerializableClosure;
 use League\Container\Argument\Literal\IntegerArgument;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -102,6 +103,8 @@ class Nutgram extends ResolveHandlers
         $this->config = $config;
         $this->container = new Container();
         $this->container->delegate(new ReflectionContainer());
+
+        SerializableClosure::setSecretKey($this->token);
 
         $baseUri = sprintf(
             '%s/bot%s/%s',
