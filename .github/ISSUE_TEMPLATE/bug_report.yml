@@ -3,6 +3,13 @@ description: Create a bug report
 title: "[BUG] "
 labels: ["Bug"]
 body:
+    - type: input
+      attributes:
+          label: Nutgram version
+          description: "The version of Nutgram you are using."
+      validations:
+          required: true
+
     - type: textarea
       attributes:
           label: Describe the bug
