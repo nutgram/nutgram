@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.7.2 - 2022-09-02
+
+### What's Changed
+
+- switch to laravel serializable closure by @SergiX44 in https://github.com/nutgram/nutgram/pull/192
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.7.1...3.7.2
+
 ## 3.7.1 - 2022-08-23
 
 ### What's Changed
