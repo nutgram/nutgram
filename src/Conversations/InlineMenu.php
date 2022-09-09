@@ -120,14 +120,16 @@ abstract class InlineMenu extends Conversation
     public function handleStep(): mixed
     {
         if ($this->bot->isCallbackQuery()) {
-            $this->bot->answerCallbackQuery();
-
             $data = $this->bot->callbackQuery()?->data;
 
+            $result = null;
             if (isset($this->callbacks[$data])) {
                 $this->step = $this->callbacks[$data];
-                return $this($this->bot, $data);
+                $result = $this($this->bot, $data);
             }
+
+            $this->bot->answerCallbackQuery();
+            return $result;
         }
 
         if (isset($this->orNext)) {
@@ -196,8 +198,8 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @internal Override only to change the Telegram method.
      * @return Message|null
+     * @internal Override only to change the Telegram method.
      */
     protected function doOpen(): Message|null
     {
@@ -207,8 +209,8 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @internal Override only to change the Telegram method.
      * @return Message|null
+     * @internal Override only to change the Telegram method.
      */
     protected function doUpdate(): Message|null
     {
