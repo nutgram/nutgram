@@ -445,6 +445,15 @@ class Message extends BaseType
     }
 
     /**
+     * Returns the message text or caption
+     * @return string|null
+     */
+    public function getText(): ?string
+    {
+        return $this->text ?? $this->caption;
+    }
+
+    /**
      * Delete the current message
      * @return bool|null
      */
@@ -464,7 +473,7 @@ class Message extends BaseType
     {
         return $this->bot->editMessageText($text, array_merge([
             'chat_id' => $this->chat->id,
-            'message_id' => $this->message_id
+            'message_id' => $this->message_id,
         ], $opt));
     }
 

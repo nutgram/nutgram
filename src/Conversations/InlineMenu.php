@@ -7,6 +7,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 abstract class InlineMenu extends Conversation
 {
@@ -118,12 +119,15 @@ abstract class InlineMenu extends Conversation
      */
     public function handleStep(): mixed
     {
-        $data = $this->bot->callbackQuery()?->data;
-
-        if (isset($this->callbacks[$data]) && $this->bot->isCallbackQuery()) {
+        if ($this->bot->isCallbackQuery()) {
             $this->bot->answerCallbackQuery();
-            $this->step = $this->callbacks[$data];
-            return $this($this->bot, $data);
+
+            $data = $this->bot->callbackQuery()?->data;
+
+            if (isset($this->callbacks[$data])) {
+                $this->step = $this->callbacks[$data];
+                return $this($this->bot, $data);
+            }
         }
 
         if (isset($this->orNext)) {
@@ -139,22 +143,21 @@ abstract class InlineMenu extends Conversation
      * @param  bool  $reopen
      * @param  bool  $noHandlers
      * @param  bool  $noMiddlewares
-     * @return void
+     * @return Message|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    protected function showMenu(bool $reopen = false, bool $noHandlers = false, bool $noMiddlewares = false): void
-    {
+    protected function showMenu(
+        bool $reopen = false,
+        bool $noHandlers = false,
+        bool $noMiddlewares = false
+    ): Message|null {
         if ($reopen || !$this->messageId || !$this->chatId) {
             if ($reopen) {
                 $this->closeMenu();
             }
-            $message = $this->bot->sendMessage($this->text, array_merge([
-                'reply_markup' => $this->buttons,
-            ], $this->opt));
+            $message = $this->doOpen();
         } else {
-            $message = $this->bot->editMessageText($this->text, array_merge([
-                'reply_markup' => $this->buttons,
-            ], $this->opt));
+            $message = $this->doUpdate();
         }
 
         $this->messageId = $message?->message_id ?? $this->messageId;
@@ -163,6 +166,8 @@ abstract class InlineMenu extends Conversation
         $this->setSkipHandlers($noHandlers)
             ->setSkipMiddlewares($noMiddlewares)
             ->next('handleStep');
+
+        return $message;
     }
 
     /**
@@ -172,7 +177,7 @@ abstract class InlineMenu extends Conversation
     {
         if ($this->messageId && $this->chatId) {
             try {
-                return $this->bot->deleteMessage($this->chatId, $this->messageId) ?? false;
+                return $this->doClose();
             } catch (TelegramException) {
                 return false;
             }
@@ -181,12 +186,43 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param Nutgram  $bot
+     * @param  Nutgram  $bot
      *
      * @return void
      */
     protected function closing(Nutgram $bot)
     {
         $this->closeMenu();
+    }
+
+    /**
+     * @internal Override only to change the Telegram method.
+     * @return Message|null
+     */
+    protected function doOpen(): Message|null
+    {
+        return $this->bot->sendMessage($this->text, array_merge([
+            'reply_markup' => $this->buttons,
+        ], $this->opt));
+    }
+
+    /**
+     * @internal Override only to change the Telegram method.
+     * @return Message|null
+     */
+    protected function doUpdate(): Message|null
+    {
+        return $this->bot->editMessageText($this->text, array_merge([
+            'reply_markup' => $this->buttons,
+        ], $this->opt));
+    }
+
+    /**
+     * @return bool
+     * @internal Override only to change the Telegram method.
+     */
+    protected function doClose(): bool
+    {
+        return $this->bot->deleteMessage($this->chatId, $this->messageId) ?? false;
     }
 }
