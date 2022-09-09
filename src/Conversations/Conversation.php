@@ -47,7 +47,7 @@ abstract class Conversation
     }
 
     /**
-     * @param Nutgram  $bot
+     * @param  Nutgram  $bot
      *
      * @return never
      */
@@ -79,7 +79,7 @@ abstract class Conversation
     }
 
     /**
-     * @param Nutgram  $bot
+     * @param  Nutgram  $bot
      *
      * @return void
      */
@@ -160,9 +160,20 @@ abstract class Conversation
      */
     public function __serialize(): array
     {
-        $attributes = get_object_vars($this);
+        $attributes = array_merge(
+            get_object_vars($this),
+            $this->getSerializableAttributes()
+        );
         unset($attributes['bot']);
 
         return $attributes;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getSerializableAttributes(): array
+    {
+        return [];
     }
 }

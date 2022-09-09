@@ -62,6 +62,14 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
+     * @return array
+     */
+    protected function getSerializableAttributes(): array
+    {
+        return get_object_vars($this);
+    }
+
+    /**
      * @param  string  $text
      * @param  array  $opt
      * @return InlineMenu
