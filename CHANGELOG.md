@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.7.3 - 2022-09-09
+
+### What's Changed
+
+- allow override low level call by @SergiX44 in https://github.com/nutgram/nutgram/pull/193
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.7.2...3.7.3
+
 ## 3.7.2 - 2022-09-02
 
 ### What's Changed
