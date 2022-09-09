@@ -24,27 +24,37 @@ abstract class InlineMenu extends Conversation
     /**
      * @var string
      */
-    protected string $text;
+    private string $text;
 
     /**
      * @var InlineKeyboardMarkup
      */
-    protected InlineKeyboardMarkup $buttons;
+    private InlineKeyboardMarkup $buttons;
 
     /**
      * @var array
      */
-    protected array $callbacks = [];
+    private array $callbacks = [];
 
     /**
      * @var string|null
      */
-    protected ?string $orNext;
+    private ?string $orNext;
 
     /**
      * @var array
      */
-    protected array $opt = [];
+    private array $opt = [];
+
+    /**
+     * @var bool
+     */
+    private bool $reopenOnOrNext = false;
+
+    /**
+     * @var bool
+     */
+    private bool $forceReopen = false;
 
     public function __construct()
     {
@@ -105,11 +115,13 @@ abstract class InlineMenu extends Conversation
 
     /**
      * @param  string|null  $orNext
+     * @param  bool  $reopenOnOrNext
      * @return InlineMenu
      */
-    protected function orNext(?string $orNext): self
+    protected function orNext(?string $orNext, bool $reopenOnOrNext = false): self
     {
         $this->orNext = $orNext;
+        $this->reopenOnOrNext = $reopenOnOrNext;
         return $this;
     }
 
@@ -133,8 +145,15 @@ abstract class InlineMenu extends Conversation
         }
 
         if (isset($this->orNext)) {
+            if ($this->reopenOnOrNext) {
+                $this->forceReopen = true;
+            }
+
             $this->step = $this->orNext;
-            return $this($this->bot);
+            $result = $this($this->bot);
+            $this->forceReopen = false;
+
+            return $result;
         }
 
         $this->end();
@@ -153,13 +172,13 @@ abstract class InlineMenu extends Conversation
         bool $noHandlers = false,
         bool $noMiddlewares = false
     ): Message|null {
-        if ($reopen || !$this->messageId || !$this->chatId) {
-            if ($reopen) {
+        if ($reopen || $this->forceReopen || !$this->messageId || !$this->chatId) {
+            if ($reopen || $this->forceReopen) {
                 $this->closeMenu();
             }
-            $message = $this->doOpen();
+            $message = $this->doOpen($this->text, $this->buttons, $this->opt);
         } else {
-            $message = $this->doUpdate();
+            $message = $this->doUpdate($this->text, $this->buttons, $this->opt);
         }
 
         $this->messageId = $message?->message_id ?? $this->messageId;
@@ -173,17 +192,40 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
+     * @param  string|null  $finalText
+     * @param  array  $opt
      * @return bool
      */
-    protected function closeMenu(): bool
+    protected function closeMenu(?string $finalText = null, array $opt = []): bool
     {
         if ($this->messageId && $this->chatId) {
+            // if we have the final text, clear and update the last message
+            if ($finalText !== null) {
+                $this->clearButtons();
+                $this->doUpdate($finalText, $this->buttons, $opt);
+                $this->chatId = $this->messageId = null;
+                return true;
+            }
+
+            // otherwise delete it as default
             try {
-                return $this->doClose();
+                $result = $this->doClose($this->chatId, $this->messageId);
+                $this->chatId = $this->messageId = null;
+                return $result;
             } catch (TelegramException) {
                 return false;
             }
         }
+
+        // if we have the final text but some reason not the message and chat
+        // display it as a new message
+        if ($finalText !== null) {
+            $this->clearButtons();
+            $this->doOpen($finalText, $this->buttons, $opt);
+            $this->chatId = $this->messageId = null;
+            return true;
+        }
+
         return false;
     }
 
@@ -198,33 +240,41 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
+     * @param  string  $text
+     * @param  InlineKeyboardMarkup  $buttons
+     * @param  array  $opt
      * @return Message|null
      * @internal Override only to change the Telegram method.
      */
-    protected function doOpen(): Message|null
+    protected function doOpen(string $text, InlineKeyboardMarkup $buttons, array $opt): Message|null
     {
-        return $this->bot->sendMessage($this->text, array_merge([
-            'reply_markup' => $this->buttons,
-        ], $this->opt));
+        return $this->bot->sendMessage($text, array_merge([
+            'reply_markup' => $buttons,
+        ], $opt));
     }
 
     /**
+     * @param  string  $text
+     * @param  InlineKeyboardMarkup  $buttons
+     * @param  array  $opt
      * @return Message|null
      * @internal Override only to change the Telegram method.
      */
-    protected function doUpdate(): Message|null
+    protected function doUpdate(string $text, InlineKeyboardMarkup $buttons, array $opt): Message|null
     {
-        return $this->bot->editMessageText($this->text, array_merge([
-            'reply_markup' => $this->buttons,
-        ], $this->opt));
+        return $this->bot->editMessageText($text, array_merge([
+            'reply_markup' => $buttons,
+        ], $opt));
     }
 
     /**
+     * @param  int|null  $chatId
+     * @param  int|null  $messageId
      * @return bool
      * @internal Override only to change the Telegram method.
      */
-    protected function doClose(): bool
+    protected function doClose(?int $chatId, ?int $messageId): bool
     {
-        return $this->bot->deleteMessage($this->chatId, $this->messageId) ?? false;
+        return $this->bot->deleteMessage($chatId, $messageId) ?? false;
     }
 }
