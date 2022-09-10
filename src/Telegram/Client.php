@@ -12,6 +12,7 @@ use JsonSerializable;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SergiX44\Nutgram\Support\StrUtils;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
@@ -227,6 +228,13 @@ trait Client
 
         try {
             $response = $this->http->post($endpoint, array_merge(['multipart' => $parameters], $options));
+
+            $this->container->get(LoggerInterface::class)
+                ->debug($endpoint.PHP_EOL.$response->getBody()->getContents(), [
+                    'parameters' => $parameters,
+                    'options' => $options
+                ]);
+
             return $this->mapResponse($response, $mapTo);
         } catch (RequestException $exception) {
             if (!$exception->hasResponse()) {
@@ -256,6 +264,13 @@ trait Client
             $response = $this->http->post($endpoint, array_merge([
                 'json' => $json,
             ], $options));
+
+            $this->container->get(LoggerInterface::class)
+                ->debug($endpoint.PHP_EOL.$response->getBody()->getContents(), [
+                    'parameters' => $json,
+                    'options' => $options
+                ]);
+
             return $this->mapResponse($response, $mapTo);
         } catch (RequestException $exception) {
             if (!$exception->hasResponse()) {
