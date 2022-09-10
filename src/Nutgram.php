@@ -224,7 +224,7 @@ class Nutgram extends ResolveHandlers
     {
         $this->container->get(LoggerInterface::class)
             ->debug("Received update: ".$update->getType(), [
-                'update' => json_encode($update->toArray()),
+                'update' => json_encode($update),
             ]);
 
         $this->update = $update;
