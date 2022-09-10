@@ -140,6 +140,7 @@ class Nutgram extends ResolveHandlers
         $this->conversationCache = $this->container->get(ConversationCache::class);
         $this->globalCache = $this->container->get(GlobalCache::class);
         $this->userCache = $this->container->get(UserCache::class);
+        $this->logger = $this->container->get(LoggerInterface::class);
 
         $this->container->addShared(RunningMode::class, Polling::class);
         $this->container->addShared(__CLASS__, $this);
