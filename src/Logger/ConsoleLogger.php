@@ -13,7 +13,8 @@ class ConsoleLogger extends AbstractLogger
             return;
         }
 
-        print(sprintf("[%s] %s: %s",
+        print(sprintf(
+            "[%s] %s: %s",
             date('Y-m-d H:i:s'),
             $level,
             $this->interpolate($message, $context)
