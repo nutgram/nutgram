@@ -230,8 +230,8 @@ trait Client
             $response = $this->http->post($endpoint, array_merge(['multipart' => $parameters], $options));
             $content = $this->mapResponse($response, $mapTo);
 
-            $this->logger->debug($endpoint, [
-                'content' => array_filter((array)$content),
+            $this->log($endpoint, [
+                'content' => $content,
                 'parameters' => $parameters,
                 'options' => $options
             ]);
@@ -267,8 +267,8 @@ trait Client
             ], $options));
             $content = $this->mapResponse($response, $mapTo);
 
-            $this->logger->debug($endpoint, [
-                'content' => array_filter((array)$content),
+            $this->log($endpoint, [
+                'content' => $content,
                 'parameters' => $json,
                 'options' => $options
             ]);
@@ -344,5 +344,33 @@ trait Client
     protected function chunkText(string $text, int $length = Limits::TEXT_LENGTH): array
     {
         return explode('%#TGMSG#%', StrUtils::wordWrap($text, $length, "%#TGMSG#%", true));
+    }
+
+    protected function log(string $message, array $context = []): void
+    {
+        $debugEnabled = $this->config['debug'] ?? false;
+
+        if (!$debugEnabled) {
+            return;
+        }
+
+        $this->logger->debug($message, $this->array_remove_empty($context));
+    }
+
+    protected function array_remove_empty($haystack)
+    {
+        $haystack = json_decode(json_encode($haystack), true);
+
+        foreach ($haystack as $key => $value) {
+            if (is_array($value)) {
+                $haystack[$key] = $this->array_remove_empty($value);
+            }
+
+            if (empty($haystack[$key])) {
+                unset($haystack[$key]);
+            }
+        }
+
+        return $haystack;
     }
 }
