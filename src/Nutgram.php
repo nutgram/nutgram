@@ -14,6 +14,8 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Client\ClientInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Cache\ConversationCache;
@@ -62,6 +64,11 @@ class Nutgram extends ResolveHandlers
      * @var Hydrator
      */
     private Hydrator $mapper;
+
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
 
     /**
      * @var ContainerInterface
@@ -124,6 +131,7 @@ class Nutgram extends ResolveHandlers
 
         $botId = $this->config['bot_id'] ?? (int)explode(':', $this->token)[0];
         $this->container->addShared(CacheInterface::class, $this->config['cache'] ?? new ArrayCache());
+        $this->container->addShared(LoggerInterface::class, $this->config['logger'] ?? new NullLogger());
 
         $this->container->addShared(ConversationCache::class)->addArguments([CacheInterface::class, $botId]);
         $this->container->addShared(GlobalCache::class)->addArguments([CacheInterface::class, $botId]);
