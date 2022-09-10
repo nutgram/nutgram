@@ -49,11 +49,6 @@ abstract class InlineMenu extends Conversation
     /**
      * @var bool
      */
-    private bool $reopenOnOrNext = false;
-
-    /**
-     * @var bool
-     */
     private bool $forceReopen = false;
 
     public function __construct()
@@ -89,6 +84,7 @@ abstract class InlineMenu extends Conversation
         $this->buttons = InlineKeyboardMarkup::make();
         $this->callbacks = [];
         $this->orNext = null;
+        $this->forceReopen = false;
         return $this;
     }
 
@@ -123,13 +119,13 @@ abstract class InlineMenu extends Conversation
 
     /**
      * @param  string|null  $orNext
-     * @param  bool  $reopenOnOrNext
+     * @param  bool  $forceReopen
      * @return InlineMenu
      */
-    protected function orNext(?string $orNext, bool $reopenOnOrNext = false): self
+    protected function orNext(?string $orNext, bool $forceReopen = false): self
     {
         $this->orNext = $orNext;
-        $this->reopenOnOrNext = $reopenOnOrNext;
+        $this->forceReopen = $forceReopen;
         return $this;
     }
 
@@ -153,15 +149,8 @@ abstract class InlineMenu extends Conversation
         }
 
         if (isset($this->orNext)) {
-            if ($this->reopenOnOrNext) {
-                $this->forceReopen = true;
-            }
-
             $this->step = $this->orNext;
-            $result = $this($this->bot);
-            $this->forceReopen = false;
-
-            return $result;
+            return $this($this->bot);
         }
 
         $this->end();
