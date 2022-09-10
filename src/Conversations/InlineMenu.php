@@ -186,7 +186,7 @@ abstract class InlineMenu extends Conversation
             }
             $message = $this->doOpen($this->text, $this->buttons, $this->opt);
         } else {
-            $message = $this->doUpdate($this->text, $this->buttons, $this->opt);
+            $message = $this->doUpdate($this->text, $this->chatId, $this->messageId, $this->buttons, $this->opt);
         }
 
         $this->messageId = $message?->message_id ?? $this->messageId;
@@ -202,15 +202,20 @@ abstract class InlineMenu extends Conversation
     /**
      * @param  string|null  $finalText
      * @param  array  $opt
+     * @param  bool  $reopen
      * @return bool
      */
-    protected function closeMenu(?string $finalText = null, array $opt = []): bool
+    protected function closeMenu(?string $finalText = null, array $opt = [], bool $reopen = false): bool
     {
+        if ($this->messageId && $this->chatId && $reopen) {
+            $this->chatId = $this->messageId = null;
+        }
+
         if ($this->messageId && $this->chatId) {
             // if we have the final text, clear and update the last message
             if ($finalText !== null) {
                 $this->clearButtons();
-                $this->doUpdate($finalText, $this->buttons, $opt);
+                $this->doUpdate($finalText, $this->chatId, $this->messageId, $this->buttons, $opt);
                 $this->chatId = $this->messageId = null;
                 return true;
             }
@@ -270,8 +275,13 @@ abstract class InlineMenu extends Conversation
      * @return Message|null
      * @internal Override only to change the Telegram method.
      */
-    protected function doUpdate(string $text, ?int $chatId, ?int $messageId, InlineKeyboardMarkup $buttons, array $opt): Message|null
-    {
+    protected function doUpdate(
+        string $text,
+        ?int $chatId,
+        ?int $messageId,
+        InlineKeyboardMarkup $buttons,
+        array $opt
+    ): Message|null {
         return $this->bot->editMessageText($text, array_merge([
             'reply_markup' => $buttons,
             'chat_id' => $chatId,
