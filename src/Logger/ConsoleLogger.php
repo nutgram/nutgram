@@ -14,11 +14,11 @@ class ConsoleLogger extends AbstractLogger
         }
 
         print(sprintf(
-            "[%s] %s: %s",
+            "[%s] %s: %s\n\n",
             date('Y-m-d H:i:s'),
-            $level,
+            strtoupper($level),
             $this->interpolate($message, $context)
-        ).PHP_EOL);
+        ));
     }
 
     private function interpolate(Stringable|string $message, array $context): string
