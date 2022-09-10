@@ -231,7 +231,7 @@ trait Client
             $content = $this->mapResponse($response, $mapTo);
 
             $this->logger->debug($endpoint, [
-                'content' => $content,
+                'content' => array_filter((array)$content),
                 'parameters' => $parameters,
                 'options' => $options
             ]);
@@ -268,7 +268,7 @@ trait Client
             $content = $this->mapResponse($response, $mapTo);
 
             $this->logger->debug($endpoint, [
-                'content' => $content,
+                'content' => array_filter((array)$content),
                 'parameters' => $json,
                 'options' => $options
             ]);
