@@ -49,7 +49,7 @@ class NutgramServiceProvider extends ServiceProvider
 
             $bot = new Nutgram(config('nutgram.token') ?? FakeNutgram::TOKEN, array_merge([
                 'cache' => $app->get(Cache::class),
-                'logger' => $app->get(LoggerInterface::class),
+                'logger' => $app->get(LoggerInterface::class)->channel(config('nutgram.log_channel', 'null')),
             ], config('nutgram.config', [])));
 
             if ($app->runningInConsole()) {
