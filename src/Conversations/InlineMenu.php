@@ -46,11 +46,6 @@ abstract class InlineMenu extends Conversation
      */
     private array $opt = [];
 
-    /**
-     * @var bool
-     */
-    private bool $withForceReopen = false;
-
     public function __construct()
     {
         $this->buttons = InlineKeyboardMarkup::make();
@@ -84,7 +79,6 @@ abstract class InlineMenu extends Conversation
         $this->buttons = InlineKeyboardMarkup::make();
         $this->callbacks = [];
         $this->orNext = null;
-        $this->withForceReopen = false;
         return $this;
     }
 
@@ -119,13 +113,11 @@ abstract class InlineMenu extends Conversation
 
     /**
      * @param  string|null  $orNext
-     * @param  bool  $withForceReopen
      * @return InlineMenu
      */
-    protected function orNext(?string $orNext, bool $withForceReopen = false): self
+    protected function orNext(?string $orNext): self
     {
         $this->orNext = $orNext;
-        $this->withForceReopen = $withForceReopen;
         return $this;
     }
 
@@ -169,12 +161,9 @@ abstract class InlineMenu extends Conversation
         bool $noHandlers = false,
         bool $noMiddlewares = false
     ): Message|null {
-        $reopen = $reopen || ($this->step === $this->orNext && $this->withForceReopen);
-
         if ($reopen || !$this->messageId || !$this->chatId) {
             if ($reopen) {
                 $this->closeMenu();
-                $this->withForceReopen = false;
             }
             $message = $this->doOpen($this->text, $this->buttons, $this->opt);
         } else {
