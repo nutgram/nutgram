@@ -228,14 +228,15 @@ trait Client
 
         try {
             $response = $this->http->post($endpoint, array_merge(['multipart' => $parameters], $options));
+            $content = $this->mapResponse($response, $mapTo);
 
-            $this->container->get(LoggerInterface::class)
-                ->debug($endpoint.PHP_EOL.$response->getBody()->getContents(), [
-                    'parameters' => $parameters,
-                    'options' => $options
-                ]);
+            $this->logger->debug($endpoint, [
+                'content' => $content,
+                'parameters' => $parameters,
+                'options' => $options
+            ]);
 
-            return $this->mapResponse($response, $mapTo);
+            return $content;
         } catch (RequestException $exception) {
             if (!$exception->hasResponse()) {
                 throw $exception;
@@ -264,14 +265,15 @@ trait Client
             $response = $this->http->post($endpoint, array_merge([
                 'json' => $json,
             ], $options));
+            $content = $this->mapResponse($response, $mapTo);
 
-            $this->container->get(LoggerInterface::class)
-                ->debug($endpoint.PHP_EOL.$response->getBody()->getContents(), [
-                    'parameters' => $json,
-                    'options' => $options
-                ]);
+            $this->logger->debug($endpoint, [
+                'content' => $content,
+                'parameters' => $json,
+                'options' => $options
+            ]);
 
-            return $this->mapResponse($response, $mapTo);
+            return $content;
         } catch (RequestException $exception) {
             if (!$exception->hasResponse()) {
                 throw $exception;

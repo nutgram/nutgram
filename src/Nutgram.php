@@ -222,10 +222,9 @@ class Nutgram extends ResolveHandlers
      */
     public function processUpdate(Update $update): void
     {
-        $this->container->get(LoggerInterface::class)
-            ->debug("Received update: ".$update->getType(), [
-                'update' => $update,
-            ]);
+        $this->logger->debug("Received update: ".$update->getType(), [
+            'update' => $update,
+        ]);
 
         $this->update = $update;
 
