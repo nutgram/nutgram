@@ -13,7 +13,7 @@ class ConsoleLogger extends AbstractLogger
             return;
         }
 
-        $stringContext = trim(json_encode($context));
+        $stringContext = trim(json_encode($context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
         if (!empty($stringContext)) {
             $message .= "\n{$stringContext}";
