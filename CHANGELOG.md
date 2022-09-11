@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.7.5 - 2022-09-11
+
+### What's Changed
+
+- Options for inline menu callback query by @SergiX44 in https://github.com/nutgram/nutgram/pull/197
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.7.4...3.7.5
+
 ## 3.7.4 - 2022-09-10
 
 ### What's Changed
