@@ -46,6 +46,11 @@ abstract class InlineMenu extends Conversation
      */
     private array $opt = [];
 
+    /**
+     * @var array
+     */
+    private array $callbackQueryOpt = [];
+
     public function __construct()
     {
         $this->buttons = InlineKeyboardMarkup::make();
@@ -56,7 +61,9 @@ abstract class InlineMenu extends Conversation
      */
     protected function getSerializableAttributes(): array
     {
-        return get_object_vars($this);
+        $attributes = get_object_vars($this);
+        unset($attributes['callbackQueryOpt']);
+        return $attributes;
     }
 
     /**
@@ -136,7 +143,7 @@ abstract class InlineMenu extends Conversation
                 $result = $this($this->bot, $data);
             }
 
-            $this->bot->answerCallbackQuery();
+            $this->bot->answerCallbackQuery($this->callbackQueryOpt);
             return $result;
         }
 
@@ -221,6 +228,16 @@ abstract class InlineMenu extends Conversation
         }
 
         return false;
+    }
+
+    /**
+     * @param  array  $opt
+     * @return $this
+     */
+    protected function setCallbackQueryOptions(array $opt): self
+    {
+        $this->callbackQueryOpt = $opt;
+        return $this;
     }
 
     /**
