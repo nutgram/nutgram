@@ -49,7 +49,7 @@ abstract class InlineMenu extends Conversation
     /**
      * @var array
      */
-    private array $callbackQueryOpt;
+    private array $callbackQueryOpt = [];
 
     public function __construct()
     {
