@@ -61,7 +61,9 @@ abstract class InlineMenu extends Conversation
      */
     protected function getSerializableAttributes(): array
     {
-        return get_object_vars($this);
+        $attributes = get_object_vars($this);
+        unset($attributes['callbackQueryOpt']);
+        return $attributes;
     }
 
     /**
@@ -142,7 +144,6 @@ abstract class InlineMenu extends Conversation
             }
 
             $this->bot->answerCallbackQuery($this->callbackQueryOpt);
-            $this->callbackQueryOpt = [];
             return $result;
         }
 
