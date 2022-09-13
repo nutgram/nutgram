@@ -159,6 +159,16 @@ abstract class CollectHandlers
     }
 
     /**
+     * @param  string  $pattern
+     * @param $callable
+     * @return Handler
+     */
+    public function onPreCheckoutQueryPayload(string $pattern, $callable): Handler
+    {
+        return $this->handlers[UpdateTypes::PRE_CHECKOUT_QUERY][$pattern] = new Handler($callable, $pattern);
+    }
+
+    /**
      * @param $callable
      * @return Handler
      */

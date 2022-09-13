@@ -1,0 +1,19 @@
+{
+  "update_id": 2,
+  "pre_checkout_query": {
+    "id": "999728699048485871",
+    "bot": null,
+    "from": {
+      "id": 222222222,
+      "is_bot": false,
+      "first_name": "Mario",
+      "username": "Super",
+      "language_code": "it"
+    },
+    "currency": "USD",
+    "total_amount": 100,
+    "invoice_payload": "thedata",
+    "shipping_option_id": null,
+    "order_info": null
+  }
+}

@@ -60,6 +60,9 @@ abstract class ResolveHandlers extends CollectHandlers
         } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
             $data = $this->update->callback_query?->data;
             $this->addHandlersBy($resolvedHandlers, $updateType, value: $data);
+        } elseif ($updateType === UpdateTypes::PRE_CHECKOUT_QUERY) {
+            $data = $this->update->pre_checkout_query?->invoice_payload;
+            $this->addHandlersBy($resolvedHandlers, $updateType, value: $data);
         }
 
         if (empty($resolvedHandlers) && $updateType !== null) {

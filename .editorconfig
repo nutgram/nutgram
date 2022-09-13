@@ -22,3 +22,6 @@ ij_php_space_before_closure_left_parenthesis = true
 ij_php_keep_indents_on_empty_lines = false
 ij_php_space_after_type_cast = false
 ij_php_concat_spaces = false
+
+[*.json]
+indent_size = 2
