@@ -66,6 +66,12 @@ dataset('pre_checkout_query_payload', function () {
     return [json_decode($file)];
 });
 
+dataset('successful_payment', function () {
+    $file = file_get_contents(__DIR__.'/Updates/successful_payment.json');
+
+    return [json_decode($file)];
+});
+
 dataset('edited_message', function () {
     $file = file_get_contents(__DIR__.'/Updates/edited_message.json');
 

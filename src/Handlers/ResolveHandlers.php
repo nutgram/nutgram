@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
+use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
@@ -48,10 +49,17 @@ abstract class ResolveHandlers extends CollectHandlers
         $updateType = $this->update->getType();
 
         if ($updateType === UpdateTypes::MESSAGE) {
-            $text = $this->update?->message?->getParsedCommand() ?? $this->update->message?->text;
+            $messageType = $this->update->message->getType();
 
-            if ($text !== null) {
-                $this->addHandlersBy($resolvedHandlers, $updateType, $this->update?->message?->getType(), $text);
+            if ($messageType === MessageTypes::TEXT) {
+                $text = $this->update?->message?->getParsedCommand() ?? $this->update->message?->text;
+
+                if ($text !== null) {
+                    $this->addHandlersBy($resolvedHandlers, $updateType, $this->update?->message?->getType(), $text);
+                }
+            } elseif ($messageType === MessageTypes::SUCCESSFUL_PAYMENT) {
+                $data = $this->update->message->successful_payment?->invoice_payload;
+                $this->addHandlersBy($resolvedHandlers, $updateType, $this->update?->message?->getType(), $data);
             }
 
             if (count($resolvedHandlers) === 0) {
