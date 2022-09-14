@@ -323,6 +323,25 @@ it('the catch all handler text not called for media', function ($update) {
     $bot->run();
 })->with('photo');
 
+it('parse pre checkout queries with specific data', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onPreCheckoutQueryPayload('thedata', function ($bot) {
+        expect($bot)->toBeInstanceOf(Nutgram::class);
+    });
+
+    $bot->onMessage(function ($bot) {
+        throw new Exception();
+    });
+
+
+    $bot->fallback(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->run();
+})->with('pre_checkout_query_payload');
+
 test('commands can have descriptions', function ($update) {
     $bot = Nutgram::fake($update);
 
