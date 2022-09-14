@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\RunningMode;
 
 use Closure;
 use JsonMapper_Exception;
+use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 use SergiX44\Nutgram\Hydrator\Hydrator;
 use SergiX44\Nutgram\Nutgram;
@@ -59,6 +60,11 @@ class Webhook implements RunningMode
         $update = $bot->getContainer()
             ->get(Hydrator::class)
             ->hydrate(json_decode($input, flags: JSON_THROW_ON_ERROR), $bot->getContainer()->getNew(Update::class));
+
+        $bot->getContainer()
+            ->get(LoggerInterface::class)
+            ->debug(sprintf('Received update: %s%s%s', $update->getType(), PHP_EOL, $input));
+
         $bot->processUpdate($update);
     }
 

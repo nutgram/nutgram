@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Psr\Log\LoggerInterface;
 use SergiX44\Nutgram\Laravel\Commands\HookInfoCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookRemoveCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookSetCommand;
@@ -48,6 +49,7 @@ class NutgramServiceProvider extends ServiceProvider
 
             $bot = new Nutgram(config('nutgram.token') ?? FakeNutgram::TOKEN, array_merge([
                 'cache' => $app->get(Cache::class),
+                'logger' => $app->get(LoggerInterface::class)->channel(config('nutgram.log_channel', 'null')),
             ], config('nutgram.config', [])));
 
             if ($app->runningInConsole()) {
