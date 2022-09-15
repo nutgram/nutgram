@@ -12,7 +12,6 @@ use JsonSerializable;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SergiX44\Nutgram\Support\StrUtils;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
@@ -51,7 +50,12 @@ trait Client
      * An Array of Update objects is returned.
      * @see https://core.telegram.org/bots/api#getupdates
      * @see https://en.wikipedia.org/wiki/Push_technology#Long_polling
-     * @param  array{offset?: int, limit?: int, timeout?: int, allowed_updates?: array<string>}  $parameters
+     * @param  array{
+     *     offset?:int,
+     *     limit?:int,
+     *     timeout?:int,
+     *     allowed_updates?:string[]
+     * }  $parameters
      * @return array|null
      * @throws GuzzleException
      * @throws JsonException
@@ -66,8 +70,15 @@ trait Client
 
     /**
      * @param  string  $url
-     * @param  null|array{certificate?: mixed, ip_address?: string, max_connections?: int,
-     *     allowed_updates?:array<string>, drop_pending_updates?: bool}  $opt
+     * @param  null|array{
+     *     url?:string,
+     *     certificate?:InputFile,
+     *     ip_address?:string,
+     *     max_connections?:int,
+     *     allowed_updates?:string[],
+     *     drop_pending_updates?:bool,
+     *     secret_token?:string
+     * }  $opt
      * @return bool|null
      * @throws GuzzleException
      * @throws JsonException
@@ -80,7 +91,9 @@ trait Client
     }
 
     /**
-     * @param  null|array{drop_pending_updates?: bool}  $opt
+     * @param  null|array{
+     *     drop_pending_updates?:bool
+     * }  $opt
      * @return bool|null
      * @throws GuzzleException
      * @throws JsonException

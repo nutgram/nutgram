@@ -4,7 +4,10 @@
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 
 /**
@@ -20,7 +23,16 @@ trait UpdatesMessages
      * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagetext
      * @param  string  $text New text of the message, 1-4096 characters after entities parsing
-     * @param  array|null  $opt
+     * @param  null|array{
+     *     chat_id?:int|string,
+     *     message_id?:int,
+     *     inline_message_id?:string,
+     *     text?:string,
+     *     parse_mode?:string,
+     *     entities?:MessageEntity[],
+     *     disable_web_page_preview?:bool,
+     *     reply_markup?:InlineKeyboardMarkup
+     * }  $opt
      * @return Message|bool|null
      */
     public function editMessageText(string $text, ?array $opt = []): Message|bool|null
@@ -35,7 +47,15 @@ trait UpdatesMessages
      * On success, if the edited message is not an inline message,
      * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagecaption
-     * @param  array|null  $opt
+     * @param  null|array{
+     *     chat_id?:int|string,
+     *     message_id?:int,
+     *     inline_message_id?:string,
+     *     caption?:string,
+     *     parse_mode?:string,
+     *     caption_entities?:MessageEntity[],
+     *     reply_markup?:InlineKeyboardMarkup
+     * }  $opt
      * @return Message|bool|null
      */
     public function editMessageCaption(?array $opt = []): Message|bool|null
@@ -54,7 +74,13 @@ trait UpdatesMessages
      * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagemedia
      * @param  array  $mediaArray An object for a new media content of the message
-     * @param  array|null  $opt
+     * @param  null|array{
+     *     chat_id?:int|string,
+     *     message_id?:int,
+     *     inline_message_id?:string,
+     *     media?:InputMedia,
+     *     reply_markup?:InlineKeyboardMarkup
+     * }  $opt
      * @param  array  $clientOpt
      * @return Message|bool|null
      * @throws \JsonException
@@ -72,7 +98,12 @@ trait UpdatesMessages
      * On success, if the edited message is not an inline message,
      * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagereplymarkup
-     * @param  array|null  $opt
+     * @param  null|array{
+     *     chat_id?:int|string,
+     *     message_id?:int,
+     *     inline_message_id?:string,
+     *     reply_markup?:InlineKeyboardMarkup
+     * }  $opt
      * @return Message|bool|null
      */
     public function editMessageReplyMarkup(?array $opt = []): Message|bool|null
@@ -88,7 +119,11 @@ trait UpdatesMessages
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target channel (in the
      *     format [at]channelusername)
      * @param  int  $message_id Identifier of the original message with the poll
-     * @param  array|null  $opt
+     * @param  null|array{
+     *     chat_id?:int|string,
+     *     message_id?:int,
+     *     reply_markup?:InlineKeyboardMarkup
+     * }  $opt
      * @return Poll|null
      */
     public function stopPoll(string|int $chat_id, int $message_id, ?array $opt = []): ?Poll

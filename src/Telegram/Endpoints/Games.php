@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Game\GameHighScore;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 /**
@@ -20,7 +21,15 @@ trait Games
      * @see https://core.telegram.org/bots/api#sendgame
      * @param  string  $game_short_name Short name of the game, serves as the unique identifier for the game. Set up
      *     your games via {@see https://t.me/botfather Botfather}.
-     * @param  array|null  $opt
+     * @param  null|array{
+     *     chat_id?:int,
+     *     game_short_name?:string,
+     *     disable_notification?:bool,
+     *     protect_content?:bool,
+     *     reply_to_message_id?:int,
+     *     allow_sending_without_reply?:bool,
+     *     reply_markup?:InlineKeyboardMarkup
+     * }  $opt
      * @return Message|null
      */
     public function sendGame(string $game_short_name, ?array $opt = []): ?Message
@@ -37,7 +46,15 @@ trait Games
      * Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
      * @see https://core.telegram.org/bots/api#setgamescore
      * @param  int  $score New score, must be non-negative
-     * @param  array|null  $opt
+     * @param  null|array{
+     *     user_id?:int,
+     *     score?:int,
+     *     force?:bool,
+     *     disable_edit_message?:bool,
+     *     chat_id?:int,
+     *     message_id?:int,
+     *     inline_message_id?:string
+     * }  $opt
      * @return bool|null
      */
     public function setGameScore(int $score, ?array $opt = []): ?bool
@@ -53,7 +70,12 @@ trait Games
      * Will return the score of the specified user and several of their neighbors in a game.
      * On success, returns an Array of {@see https://core.telegram.org/bots/api#gamehighscore GameHighScore} objects.
      * @see https://core.telegram.org/bots/api#getgamehighscores
-     * @param  array|null  $opt
+     * @param  null|array{
+     *     user_id?:int,
+     *     chat_id?:int,
+     *     message_id?:int,
+     *     inline_message_id?:string
+     * }  $opt
      * @return array|null
      */
     public function getGameHighScores(?array $opt = []): ?array
