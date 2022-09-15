@@ -68,11 +68,11 @@ trait Stickers
      * @param  mixed  $png_sticker PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not
      *     exceed 512px, and either width or height must be exactly 512px.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
-     * @param  array|null  $opt
+     * @param  array  $opt
      * @param  array  $clientOpt
      * @return File|null
      */
-    public function uploadStickerFile(mixed $png_sticker, ?array $opt = [], array $clientOpt = []): ?File
+    public function uploadStickerFile(mixed $png_sticker, array $opt = [], array $clientOpt = []): ?File
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'png_sticker');
@@ -94,7 +94,7 @@ trait Stickers
      * @param  string  $title Short name of sticker set, to be used in t.me/addstickers/ URLs (e.g., animals). Can
      *     contain only english letters, digits and underscores. Must begin with a letter, can't contain consecutive
      *     underscores and must end in “_by_<bot username>”. <bot_username> is case insensitive. 1-64 characters.
-     * @param  null|array{
+     * @param  array{
      *     user_id?:int,
      *     name?:string,
      *     title?:string,
@@ -108,7 +108,7 @@ trait Stickers
      * @param  array  $clientOpt
      * @return bool|null
      */
-    public function createNewStickerSet(string $name, string $title, ?array $opt = [], array $clientOpt = []): ?bool
+    public function createNewStickerSet(string $name, string $title, array $opt = [], array $clientOpt = []): ?bool
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'name', 'title');
@@ -123,7 +123,7 @@ trait Stickers
      * Static sticker sets can have up to 120 stickers. Returns True on success.
      * @see https://core.telegram.org/bots/api#addstickertoset
      * @param  string  $name Sticker set name
-     * @param  null|array{
+     * @param  array{
      *     user_id?:int,
      *     name?:string,
      *     png_sticker?:InputFile|string,
@@ -135,7 +135,7 @@ trait Stickers
      * @param  array  $clientOpt
      * @return bool|null
      */
-    public function addStickerToSet(string $name, ?array $opt = [], array $clientOpt = []): ?bool
+    public function addStickerToSet(string $name, array $opt = [], array $clientOpt = []): ?bool
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'name');
@@ -171,7 +171,7 @@ trait Stickers
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setstickersetthumb
      * @param  string  $name Sticker set name
-     * @param  null|array{
+     * @param  array{
      *     name?:string,
      *     user_id?:int,
      *     thumb?:InputFile|string
@@ -179,7 +179,7 @@ trait Stickers
      * @param  array  $clientOpt
      * @return bool|null
      */
-    public function setStickerSetThumb(string $name, ?array $opt = [], array $clientOpt = []): ?bool
+    public function setStickerSetThumb(string $name, array $opt = [], array $clientOpt = []): ?bool
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'name');

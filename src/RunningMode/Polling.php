@@ -58,7 +58,7 @@ class Polling implements RunningMode
      * @param  Update[]  $updates
      * @return void
      */
-    protected function fire(Nutgram $bot, ?array $updates): void
+    protected function fire(Nutgram $bot, array $updates = []): void
     {
         foreach ($updates as $update) {
             try {

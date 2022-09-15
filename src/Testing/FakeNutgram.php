@@ -210,9 +210,10 @@ class FakeNutgram extends Nutgram
     }
 
     /**
+     * @param  bool  $remember
      * @return $this
      */
-    public function willStartConversation($remember = true): self
+    public function willStartConversation(bool $remember = true): self
     {
         $this->rememberUserAndChat = $remember;
         return $this;

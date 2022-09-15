@@ -21,7 +21,7 @@ trait InlineMode
      * No more than 50 results per query are allowed.
      * @see https://core.telegram.org/bots/api#answerinlinequery
      * @param  array  $results An array of results for the inline query
-     * @param  null|array{
+     * @param  array{
      *     inline_query_id?:string,
      *     results?:InlineQueryResult[],
      *     cache_time?:int,
@@ -33,7 +33,7 @@ trait InlineMode
      * @return bool|null
      * @throws JsonException
      */
-    public function answerInlineQuery(array $results, ?array $opt = []): ?bool
+    public function answerInlineQuery(array $results, array $opt = []): ?bool
     {
         $required = [
             'inline_query_id' => $this->inlineQuery()?->id,

@@ -82,7 +82,7 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#sendmessage
      * @param  string  $text Text of the message to be sent, 1-4096 characters after entities parsing
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     text?:string,
      *     parse_mode?:string,
@@ -96,7 +96,7 @@ trait AvailableMethods
      * }  $opt
      * @return Message|Message[]|null
      */
-    public function sendMessage(string $text, ?array $opt = []): Message|array|null
+    public function sendMessage(string $text, array $opt = []): Message|array|null
     {
         $functionName = __FUNCTION__;
         $chat_id = $this->chatId();
@@ -463,7 +463,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendlocation
      * @param  float  $latitude Latitude of the location
      * @param  float  $longitude Longitude of the location
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     latitude?:float,
      *     longitude?:float,
@@ -479,7 +479,7 @@ trait AvailableMethods
      * }  $opt
      * @return Message|null
      */
-    public function sendLocation(float $latitude, float $longitude, ?array $opt = []): ?Message
+    public function sendLocation(float $latitude, float $longitude, array $opt = []): ?Message
     {
         $chat_id = $this->chatId();
         $required = compact('latitude', 'longitude', 'chat_id');
@@ -495,7 +495,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#editmessagelivelocation
      * @param  float  $latitude Latitude of new location
      * @param  float  $longitude Longitude of new location
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     message_id?:int,
      *     inline_message_id?:string,
@@ -508,7 +508,7 @@ trait AvailableMethods
      * }  $opt
      * @return Message|bool|null
      */
-    public function editMessageLiveLocation(float $latitude, float $longitude, ?array $opt = []): Message|bool|null
+    public function editMessageLiveLocation(float $latitude, float $longitude, array $opt = []): Message|bool|null
     {
         $required = compact('latitude', 'longitude');
         $target = $this->targetChatMessageOrInlineMessageId($opt);
@@ -520,7 +520,7 @@ trait AvailableMethods
      * On success, if the message was sent by the bot,
      * the sent {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#stopmessagelivelocation
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     message_id?:int,
      *     inline_message_id?:string,
@@ -528,7 +528,7 @@ trait AvailableMethods
      * }  $opt
      * @return Message|bool|null
      */
-    public function stopMessageLiveLocation(?array $opt = []): Message|bool|null
+    public function stopMessageLiveLocation(array $opt = []): Message|bool|null
     {
         $target = $this->targetChatMessageOrInlineMessageId($opt);
         return $this->requestJson(__FUNCTION__, array_merge($target, $opt), Message::class);
@@ -542,7 +542,7 @@ trait AvailableMethods
      * @param  float  $longitude Longitude of the venue
      * @param  string  $title Name of the venue
      * @param  string  $address Address of the venue
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     latitude?:float,
      *     longitude?:float,
@@ -565,7 +565,7 @@ trait AvailableMethods
         float $longitude,
         string $title,
         string $address,
-        ?array $opt = []
+        array $opt = []
     ): ?Message {
         $chat_id = $this->chatId();
         $required = compact('latitude', 'longitude', 'chat_id', 'title', 'address');
@@ -578,7 +578,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendcontact
      * @param  string  $first_name Contact's first name
      * @param  string  $phone_number Contact's phone number
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     phone_number?:string,
      *     first_name?:string,
@@ -592,7 +592,7 @@ trait AvailableMethods
      * }  $opt
      * @return Message|null
      */
-    public function sendContact(string $first_name, string $phone_number, ?array $opt = []): ?Message
+    public function sendContact(string $first_name, string $phone_number, array $opt = []): ?Message
     {
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'first_name', 'phone_number');
@@ -605,7 +605,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendpoll
      * @param  string  $question Poll question, 1-300 characters
      * @param  string[]  $options A list of answer options, 2-10 strings 1-100 characters each
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     question?:string,
      *     options?:string[],
@@ -628,7 +628,7 @@ trait AvailableMethods
      * @return Message|null
      * @throws JsonException
      */
-    public function sendPoll(string $question, array $options, ?array $opt = []): ?Message
+    public function sendPoll(string $question, array $options, array $opt = []): ?Message
     {
         $required = [
             'chat_id' => $this->chatId(),
@@ -642,7 +642,7 @@ trait AvailableMethods
      * Use this method to send an animated emoji that will display a random value.
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#senddice
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     emoji?:string,
      *     disable_notification?:bool,
@@ -653,7 +653,7 @@ trait AvailableMethods
      * }  $opt
      * @return Message|null
      */
-    public function sendDice(?array $opt = []): ?Message
+    public function sendDice(array $opt = []): ?Message
     {
         $chat_id = $this->chatId();
         $required = compact('chat_id');
@@ -682,10 +682,10 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#senddocument general files}, find_location for
      *     {@see https://core.telegram.org/bots/api#sendlocation location data}, record_video_note or upload_video_note
      *     for {@see https://core.telegram.org/bots/api#sendvideonote video notes}.
-     * @param  array|null  $opt
+     * @param  array  $opt
      * @return bool|null
      */
-    public function sendChatAction(string $action, ?array $opt = []): ?bool
+    public function sendChatAction(string $action, array $opt = []): ?bool
     {
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'action');
@@ -696,14 +696,14 @@ trait AvailableMethods
      * Use this method to get a list of profile pictures for a user.
      * Returns a {@see https://core.telegram.org/bots/api#userprofilephotos UserProfilePhotos} object.
      * @see https://core.telegram.org/bots/api#getuserprofilephotos
-     * @param  null|array{
+     * @param  array{
      *     user_id?:int,
      *     offset?:int,
      *     limit?:int
      * }  $opt
      * @return UserProfilePhotos|null
      */
-    public function getUserProfilePhotos(?array $opt = []): ?UserProfilePhotos
+    public function getUserProfilePhotos(array $opt = []): ?UserProfilePhotos
     {
         $user_id = $this->userId();
         $required = compact('user_id');
@@ -735,7 +735,7 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target group or username of the target supergroup or
      *     channel (in the format [at]channelusername)
      * @param  int  $user_id Unique identifier of the target user
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     user_id?:int,
      *     until_date?:int,
@@ -743,7 +743,7 @@ trait AvailableMethods
      * }  $opt
      * @return bool|null
      */
-    public function banChatMember(string|int $chat_id, int $user_id, ?array $opt = []): ?bool
+    public function banChatMember(string|int $chat_id, int $user_id, array $opt = []): ?bool
     {
         $required = compact('chat_id', 'user_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -759,14 +759,14 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target group or username of the target supergroup or
      *     channel (in the format [at]username)
      * @param  int  $user_id Unique identifier of the target user
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     user_id?:int,
      *     only_if_banned?:bool
      * }  $opt
      * @return bool|null
      */
-    public function unbanChatMember(string|int $chat_id, int $user_id, ?array $opt = []): ?bool
+    public function unbanChatMember(string|int $chat_id, int $user_id, array $opt = []): ?bool
     {
         $required = compact('chat_id', 'user_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -781,7 +781,7 @@ trait AvailableMethods
      *     format [at]supergroupusername)
      * @param  int  $user_id Unique identifier of the target user
      * @param  ChatPermissions  $permissions An object for new user permissions
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     user_id?:int,
      *     permissions?:ChatPermissions,
@@ -793,7 +793,7 @@ trait AvailableMethods
         string|int $chat_id,
         int $user_id,
         ChatPermissions $permissions,
-        ?array $opt = []
+        array $opt = []
     ): ?bool {
         $required = compact('chat_id', 'user_id');
         $required['permissions'] = json_encode($permissions);
@@ -808,7 +808,7 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target channel (in the
      *     format [at]channelusername)
      * @param  int  $user_id Unique identifier of the target user
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     user_id?:int,
      *     is_anonymous?:bool,
@@ -825,7 +825,7 @@ trait AvailableMethods
      * }  $opt
      * @return bool|null
      */
-    public function promoteChatMember(string|int $chat_id, int $user_id, ?array $opt = []): ?bool
+    public function promoteChatMember(string|int $chat_id, int $user_id, array $opt = []): ?bool
     {
         $required = compact('chat_id', 'user_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -839,14 +839,14 @@ trait AvailableMethods
      *     format [at]supergroupusername)
      * @param  int  $user_id Unique identifier of the target user
      * @param  string  $custom_title New custom title for the administrator; 0-16 characters, emoji are not allowed
-     * @param  array|null  $opt
+     * @param  array  $opt
      * @return bool|null
      */
     public function setChatAdministratorCustomTitle(
         string|int $chat_id,
         int $user_id,
         string $custom_title,
-        ?array $opt = []
+        array $opt = []
     ): ?bool {
         $required = compact('chat_id', 'user_id', 'custom_title');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -862,10 +862,10 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target channel (in the
      *     format [at]channelusername)
      * @param  int  $sender_chat_id Unique identifier of the target sender chat
-     * @param  array|null  $opt
+     * @param  array  $opt
      * @return bool|null
      */
-    public function banChatSenderChat(string|int $chat_id, int $sender_chat_id, ?array $opt = []): ?bool
+    public function banChatSenderChat(string|int $chat_id, int $sender_chat_id, array $opt = []): ?bool
     {
         $required = compact('chat_id', 'sender_chat_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -893,10 +893,10 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup (in the
      *     format [at]supergroupusername)
      * @param  ChatPermissions  $permissions New default chat permissions
-     * @param  array|null  $opt
+     * @param  array  $opt
      * @return bool|null
      */
-    public function setChatPermissions(string|int $chat_id, ChatPermissions $permissions, ?array $opt = []): ?bool
+    public function setChatPermissions(string|int $chat_id, ChatPermissions $permissions, array $opt = []): ?bool
     {
         $required = compact('chat_id');
         $required['permissions'] = json_encode($permissions);
@@ -932,7 +932,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#createchatinvitelink
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target channel (in the
      *     format [at]channelusername)
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     name?:string,
      *     expire_date?:int,
@@ -941,7 +941,7 @@ trait AvailableMethods
      * }  $opt
      * @return ChatInviteLink|null
      */
-    public function createChatInviteLink(string|int $chat_id, ?array $opt = []): ?ChatInviteLink
+    public function createChatInviteLink(string|int $chat_id, array $opt = []): ?ChatInviteLink
     {
         $required = compact('chat_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), ChatInviteLink::class);
@@ -955,7 +955,7 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target channel (in the
      *     format [at]channelusername)
      * @param  string  $invite_link The invite link to edit
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     invite_link?:string,
      *     name?:string,
@@ -965,7 +965,7 @@ trait AvailableMethods
      * }  $opt
      * @return ChatInviteLink|null
      */
-    public function editChatInviteLink(string|int $chat_id, string $invite_link, ?array $opt = []): ?ChatInviteLink
+    public function editChatInviteLink(string|int $chat_id, string $invite_link, array $opt = []): ?ChatInviteLink
     {
         $required = compact('chat_id', 'invite_link');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt), ChatInviteLink::class);
@@ -1086,14 +1086,14 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target channel (in the
      *     format [at]channelusername)
      * @param  int  $message_id Identifier of a message to pin
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     message_id?:int,
      *     disable_notification?:bool
      * }  $opt
      * @return bool|null
      */
-    public function pinChatMessage(string|int $chat_id, int $message_id, ?array $opt = []): ?bool
+    public function pinChatMessage(string|int $chat_id, int $message_id, array $opt = []): ?bool
     {
         $required = compact('chat_id', 'message_id');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -1242,7 +1242,7 @@ trait AvailableMethods
      * > {@see https://t.me/botfather [at]Botfather} and accept the terms.
      * > Otherwise, you may use links like `t.me/your_bot?start=XXXX` that open your bot with a parameter.
      * @see https://core.telegram.org/bots/api#answercallbackquery
-     * @param  null|array{
+     * @param  array{
      *     callback_query_id?:string,
      *     text?:string,
      *     show_alert?:bool,
@@ -1251,7 +1251,7 @@ trait AvailableMethods
      * }  $opt
      * @return bool|null
      */
-    public function answerCallbackQuery(?array $opt = []): ?bool
+    public function answerCallbackQuery(array $opt = []): ?bool
     {
         $required = ['callback_query_id' => $this->callbackQuery()?->id];
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -1262,14 +1262,14 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setmycommands
      * @param  BotCommand[]  $commands A list of bot commands to be set as the list of the bot's commands. At most 100
      *     commands can be specified.
-     * @param  null|array{
+     * @param  array{
      *     commands?:BotCommand[],
      *     scope?:object,
      *     language_code?:string
      * }  $opt
      * @return bool|null
      */
-    public function setMyCommands(array $commands = [], ?array $opt = []): ?bool
+    public function setMyCommands(array $commands = [], array $opt = []): ?bool
     {
         $required = ['commands' => json_encode($commands)];
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -1280,13 +1280,13 @@ trait AvailableMethods
      * After deletion, {@see https://core.telegram.org/bots/api#determining-list-of-commands higher level commands}
      * will be shown to affected users. Returns True on success.
      * @see https://core.telegram.org/bots/api#deletemycommands
-     * @param  null|array{
+     * @param  array{
      *     scope?:object,
      *     language_code?:string
      * }  $opt
      * @return bool
      */
-    public function deleteMyCommands(?array $opt = []): bool
+    public function deleteMyCommands(array $opt = []): bool
     {
         return $this->requestJson(__FUNCTION__, $opt);
     }
@@ -1295,13 +1295,13 @@ trait AvailableMethods
      * Use this method to get the current list of the bot's commands. Requires no parameters. Returns Array of
      * {@see https://core.telegram.org/bots/api#botcommand BotCommand} on success.
      * @see https://core.telegram.org/bots/api#getmycommands
-     * @param  null|array{
+     * @param  array{
      *     scope?:object,
      *     language_code?:string
      * }  $opt
      * @return BotCommand[]|null
      */
-    public function getMyCommands(?array $opt = []): ?array
+    public function getMyCommands(array $opt = []): ?array
     {
         return $this->requestJson(__FUNCTION__, $opt, BotCommand::class);
     }
@@ -1310,13 +1310,13 @@ trait AvailableMethods
      * Use this method to change the bot's menu button in a private chat, or the default menu button.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setchatmenubutton
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int,
      *     menu_button?:MenuButton
      * }  $opt
      * @return bool|null
      */
-    public function setChatMenuButton(?array $opt = []): ?bool
+    public function setChatMenuButton(array $opt = []): ?bool
     {
         return $this->requestJson(__FUNCTION__, $opt);
     }
@@ -1325,12 +1325,12 @@ trait AvailableMethods
      * Use this method to get the current value of the bot's menu button in a private chat, or the default menu button.
      * Returns {@see https://core.telegram.org/bots/api#menubutton MenuButton} on success.
      * @see https://core.telegram.org/bots/api#getchatmenubutton
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int
      * }  $opt
      * @return MenuButton|null
      */
-    public function getChatMenuButton(?array $opt = []): ?MenuButton
+    public function getChatMenuButton(array $opt = []): ?MenuButton
     {
         return $this->requestJson(__FUNCTION__, $opt, MenuButton::class);
     }
@@ -1341,13 +1341,13 @@ trait AvailableMethods
      * These rights will be suggested to users, but they are are free to modify the list before adding the bot.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setmydefaultadministratorrights
-     * @param  null|array{
+     * @param  array{
      *     rights?:ChatAdministratorRights,
      *     for_channels?:bool
      * }  $opt
      * @return bool|null
      */
-    public function setMyDefaultAdministratorRights(?array $opt = []): ?bool
+    public function setMyDefaultAdministratorRights(array $opt = []): ?bool
     {
         return $this->requestJson(__FUNCTION__, $opt);
     }
@@ -1356,12 +1356,12 @@ trait AvailableMethods
      * Use this method to get the current default administrator rights of the bot.
      * Returns {@see https://core.telegram.org/bots/api#chatadministratorrights ChatAdministratorRights} on success.
      * @see https://core.telegram.org/bots/api#getmydefaultadministratorrights
-     * @param  null|array{
+     * @param  array{
      *     for_channels?:bool
      * }  $opt
      * @return ChatAdministratorRights|null
      */
-    public function getMyDefaultAdministratorRights(?array $opt = []): ?ChatAdministratorRights
+    public function getMyDefaultAdministratorRights(array $opt = []): ?ChatAdministratorRights
     {
         return $this->requestJson(__FUNCTION__, $opt, ChatAdministratorRights::class);
     }

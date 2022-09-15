@@ -30,7 +30,7 @@ trait Payments
      *     {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies}
      * @param  array  $prices Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost,
      *     delivery tax, bonus, etc.)
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int|string,
      *     title?:string,
      *     description?:string,
@@ -69,7 +69,7 @@ trait Payments
         string $provider_token,
         string $currency,
         array $prices,
-        ?array $opt = []
+        array $opt = []
     ): ?Message {
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'title', 'description', 'payload', 'provider_token', 'currency');
@@ -89,7 +89,7 @@ trait Payments
      *     {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies}
      * @param  array  $prices Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount,
      *     delivery cost, delivery tax, bonus, etc.)
-     * @param  null|array{
+     * @param  array{
      *     title?:string,
      *     description?:string,
      *     payload?:string,
@@ -120,7 +120,7 @@ trait Payments
         string $provider_token,
         string $currency,
         array $prices,
-        ?array $opt = []
+        array $opt = []
     ): string {
         $required = compact('title', 'description', 'payload', 'provider_token', 'currency', 'prices');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -133,7 +133,7 @@ trait Payments
      * @see https://core.telegram.org/bots/api#answershippingquery
      * @param  bool  $ok Specify True if delivery to the specified address is possible and False if there are any
      *     problems (for example, if delivery to the specified address is not possible)
-     * @param  null|array{
+     * @param  array{
      *     shipping_query_id?:string,
      *     ok?:bool,
      *     shipping_options?:ShippingOption[],
@@ -141,7 +141,7 @@ trait Payments
      * }  $opt
      * @return bool|null
      */
-    public function answerShippingQuery(bool $ok, ?array $opt = []): ?bool
+    public function answerShippingQuery(bool $ok, array $opt = []): ?bool
     {
         $required = [
             'shipping_query_id' => $this->shippingQuery()?->id,
@@ -159,14 +159,14 @@ trait Payments
      * @see https://core.telegram.org/bots/api#answerprecheckoutquery
      * @param  bool  $ok Specify True if everything is alright (goods are available, etc.) and the bot is ready to
      *     proceed with the order. Use False if there are any problems.
-     * @param  null|array{
+     * @param  array{
      *     pre_checkout_query_id?:string,
      *     ok?:bool,
      *     error_message?:string
      * }  $opt
      * @return bool|null
      */
-    public function answerPreCheckoutQuery(bool $ok, ?array $opt = []): ?bool
+    public function answerPreCheckoutQuery(bool $ok, array $opt = []): ?bool
     {
         $required = [
             'pre_checkout_query_id' => $this->preCheckoutQuery()?->id,

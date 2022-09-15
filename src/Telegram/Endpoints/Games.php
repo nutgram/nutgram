@@ -21,7 +21,7 @@ trait Games
      * @see https://core.telegram.org/bots/api#sendgame
      * @param  string  $game_short_name Short name of the game, serves as the unique identifier for the game. Set up
      *     your games via {@see https://t.me/botfather Botfather}.
-     * @param  null|array{
+     * @param  array{
      *     chat_id?:int,
      *     game_short_name?:string,
      *     disable_notification?:bool,
@@ -32,7 +32,7 @@ trait Games
      * }  $opt
      * @return Message|null
      */
-    public function sendGame(string $game_short_name, ?array $opt = []): ?Message
+    public function sendGame(string $game_short_name, array $opt = []): ?Message
     {
         $chat_id = $this->chatId();
         $required = compact('game_short_name', 'chat_id');
@@ -46,7 +46,7 @@ trait Games
      * Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
      * @see https://core.telegram.org/bots/api#setgamescore
      * @param  int  $score New score, must be non-negative
-     * @param  null|array{
+     * @param  array{
      *     user_id?:int,
      *     score?:int,
      *     force?:bool,
@@ -57,7 +57,7 @@ trait Games
      * }  $opt
      * @return bool|null
      */
-    public function setGameScore(int $score, ?array $opt = []): ?bool
+    public function setGameScore(int $score, array $opt = []): ?bool
     {
         $user_id = $this->userId();
         $target = $this->targetChatMessageOrInlineMessageId($opt);
@@ -70,7 +70,7 @@ trait Games
      * Will return the score of the specified user and several of their neighbors in a game.
      * On success, returns an Array of {@see https://core.telegram.org/bots/api#gamehighscore GameHighScore} objects.
      * @see https://core.telegram.org/bots/api#getgamehighscores
-     * @param  null|array{
+     * @param  array{
      *     user_id?:int,
      *     chat_id?:int,
      *     message_id?:int,
@@ -78,7 +78,7 @@ trait Games
      * }  $opt
      * @return array|null
      */
-    public function getGameHighScores(?array $opt = []): ?array
+    public function getGameHighScores(array $opt = []): ?array
     {
         $user_id = $this->userId();
         $target = $this->targetChatMessageOrInlineMessageId($opt);

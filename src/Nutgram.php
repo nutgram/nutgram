@@ -7,7 +7,6 @@ use Closure;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use Laravel\SerializableClosure\SerializableClosure;
-use League\Container\Argument\Literal\IntegerArgument;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Psr\Container\ContainerExceptionInterface;
@@ -388,7 +387,7 @@ class Nutgram extends ResolveHandlers
     /**
      * Set my commands call to Telegram using all the registered commands
      */
-    public function registerMyCommands(?array $opt = []): bool|null
+    public function registerMyCommands(array $opt = []): bool|null
     {
         $commands = [];
         array_walk_recursive($this->handlers, static function ($handler) use (&$commands) {
