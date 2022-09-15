@@ -172,6 +172,28 @@ abstract class CollectHandlers
      * @param $callable
      * @return Handler
      */
+    public function onSuccessfulPayment($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::SUCCESSFUL_PAYMENT][] = new Handler($callable);
+    }
+
+    /**
+     * @param  string  $pattern
+     * @param $callable
+     * @return Handler
+     */
+    public function onSuccessfulPaymentPayload(string $pattern, $callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::SUCCESSFUL_PAYMENT][$pattern] = new Handler(
+            $callable,
+            $pattern
+        );
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
     public function onPoll($callable): Handler
     {
         return $this->handlers[UpdateTypes::POLL][] = new Handler($callable);

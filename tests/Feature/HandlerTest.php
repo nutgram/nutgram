@@ -342,6 +342,25 @@ it('parse pre checkout queries with specific data', function ($update) {
     $bot->run();
 })->with('pre_checkout_query_payload');
 
+it('parse successful payment with specific data', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onSuccessfulPaymentPayload('thedata', function ($bot) {
+        expect($bot)->toBeInstanceOf(Nutgram::class);
+    });
+
+    $bot->onMessage(function ($bot) {
+        throw new Exception();
+    });
+
+
+    $bot->fallback(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->run();
+})->with('successful_payment');
+
 test('commands can have descriptions', function ($update) {
     $bot = Nutgram::fake($update);
 
