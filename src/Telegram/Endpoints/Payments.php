@@ -5,7 +5,10 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use JsonException;
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
+use SergiX44\Nutgram\Telegram\Types\Payment\ShippingOption;
 
 /**
  * Trait Payments
@@ -27,7 +30,35 @@ trait Payments
      *     {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies}
      * @param  array  $prices Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost,
      *     delivery tax, bonus, etc.)
-     * @param  array|null  $opt
+     * @param  array{
+     *     chat_id?:int|string,
+     *     title?:string,
+     *     description?:string,
+     *     payload?:string,
+     *     provider_token?:string,
+     *     currency?:string,
+     *     prices?:LabeledPrice[],
+     *     max_tip_amount?:int,
+     *     suggested_tip_amounts?:int[],
+     *     start_parameter?:string,
+     *     provider_data?:string,
+     *     photo_url?:string,
+     *     photo_size?:int,
+     *     photo_width?:int,
+     *     photo_height?:int,
+     *     need_name?:bool,
+     *     need_phone_number?:bool,
+     *     need_email?:bool,
+     *     need_shipping_address?:bool,
+     *     send_phone_number_to_provider?:bool,
+     *     send_email_to_provider?:bool,
+     *     is_flexible?:bool,
+     *     disable_notification?:bool,
+     *     protect_content?:bool,
+     *     reply_to_message_id?:int,
+     *     allow_sending_without_reply?:bool,
+     *     reply_markup?:InlineKeyboardMarkup
+     * }  $opt
      * @return Message|null
      * @throws JsonException
      */
@@ -38,7 +69,7 @@ trait Payments
         string $provider_token,
         string $currency,
         array $prices,
-        ?array $opt = []
+        array $opt = []
     ): ?Message {
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'title', 'description', 'payload', 'provider_token', 'currency');
@@ -51,10 +82,35 @@ trait Payments
      * @see https://core.telegram.org/bots/api#createinvoicelink
      * @param  string  $title Product name, 1-32 characters
      * @param  string  $description Product description, 1-255 characters
-     * @param  string  $payload Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
+     * @param  string  $payload Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use
+     *     for your internal processes.
      * @param  string  $provider_token Payment provider token, obtained via {@see https://t.me/botfather BotFather}
-     * @param  string  $currency Three-letter ISO 4217 currency code, see {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies}
-     * @param  array  $prices Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
+     * @param  string  $currency Three-letter ISO 4217 currency code, see
+     *     {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies}
+     * @param  array  $prices Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount,
+     *     delivery cost, delivery tax, bonus, etc.)
+     * @param  array{
+     *     title?:string,
+     *     description?:string,
+     *     payload?:string,
+     *     provider_token?:string,
+     *     currency?:string,
+     *     prices?:LabeledPrice[],
+     *     max_tip_amount?:int,
+     *     suggested_tip_amounts?:int[],
+     *     provider_data?:string,
+     *     photo_url?:string,
+     *     photo_size?:int,
+     *     photo_width?:int,
+     *     photo_height?:int,
+     *     need_name?:bool,
+     *     need_phone_number?:bool,
+     *     need_email?:bool,
+     *     need_shipping_address?:bool,
+     *     send_phone_number_to_provider?:bool,
+     *     send_email_to_provider?:bool,
+     *     is_flexible?:bool
+     * }  $opt
      * @return string
      */
     public function createInvoiceLink(
@@ -64,7 +120,7 @@ trait Payments
         string $provider_token,
         string $currency,
         array $prices,
-        ?array $opt = []
+        array $opt = []
     ): string {
         $required = compact('title', 'description', 'payload', 'provider_token', 'currency', 'prices');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
@@ -77,10 +133,15 @@ trait Payments
      * @see https://core.telegram.org/bots/api#answershippingquery
      * @param  bool  $ok Specify True if delivery to the specified address is possible and False if there are any
      *     problems (for example, if delivery to the specified address is not possible)
-     * @param  array|null  $opt
+     * @param  array{
+     *     shipping_query_id?:string,
+     *     ok?:bool,
+     *     shipping_options?:ShippingOption[],
+     *     error_message?:string
+     * }  $opt
      * @return bool|null
      */
-    public function answerShippingQuery(bool $ok, ?array $opt = []): ?bool
+    public function answerShippingQuery(bool $ok, array $opt = []): ?bool
     {
         $required = [
             'shipping_query_id' => $this->shippingQuery()?->id,
@@ -98,10 +159,14 @@ trait Payments
      * @see https://core.telegram.org/bots/api#answerprecheckoutquery
      * @param  bool  $ok Specify True if everything is alright (goods are available, etc.) and the bot is ready to
      *     proceed with the order. Use False if there are any problems.
-     * @param  array|null  $opt
+     * @param  array{
+     *     pre_checkout_query_id?:string,
+     *     ok?:bool,
+     *     error_message?:string
+     * }  $opt
      * @return bool|null
      */
-    public function answerPreCheckoutQuery(bool $ok, ?array $opt = []): ?bool
+    public function answerPreCheckoutQuery(bool $ok, array $opt = []): ?bool
     {
         $required = [
             'pre_checkout_query_id' => $this->preCheckoutQuery()?->id,

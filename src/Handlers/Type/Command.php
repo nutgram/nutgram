@@ -14,7 +14,7 @@ class Command extends Handler
      */
     public function getName(): string
     {
-        [$cmd,] = explode(' ', strtolower($this->pattern));
+        [$cmd,] = explode(' ', strtolower($this->pattern ?? ''));
         return str_replace('/', '', $cmd);
     }
 

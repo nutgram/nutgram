@@ -51,7 +51,7 @@ class ListCommand extends Command
         foreach ($handlers as $data) {
             [$handler, $arg, $subtype, $callable] = array_values($data);
 
-            $handler = str_pad($handler, $maxHandler);
+            $handler = str_pad($handler ?? '', $maxHandler);
             $arg = (!in_array($handler, ['onText', 'onCommand']) ? $arg : $subtype);
             $arg = $arg ?: $subtype;
 
@@ -70,7 +70,7 @@ class ListCommand extends Command
         return 0;
     }
 
-    protected function getHandlerName(string $signature)
+    protected function getHandlerName(string $signature): ?string
     {
         $signature = Str::lower($signature);
 
@@ -81,7 +81,7 @@ class ListCommand extends Command
                     [$subHandlerName, $subHandlerKey] = array_pad(explode('.', $subHandlerSignature), 2, null);
 
                     if ($subHandlerName === 'text') {
-                        if (Str::startsWith($subHandlerKey, '/')) {
+                        if (Str::startsWith($subHandlerKey ?? '', '/')) {
                             return 'onCommand';
                         }
 
@@ -129,10 +129,10 @@ class ListCommand extends Command
             return null;
         }
 
-        return sprintf("MessageTypes::%s", Str::upper($subHandlerName));
+        return sprintf("MessageTypes::%s", Str::upper($subHandlerName ?? 'UNKNOWN'));
     }
 
-    protected function getCallableName($callable): string
+    protected function getCallableName(mixed $callable): string
     {
         if (is_string($callable)) {
             return trim($callable);

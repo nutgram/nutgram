@@ -19,7 +19,7 @@ class NutgramMixin
 
             if (is_dir($path)) {
                 $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-                $path .= basename($file->file_path);
+                $path .= basename($file->file_path ?? $file->file_id);
             }
 
             $savedPath = Storage::disk($disk)->path($path);

@@ -59,7 +59,12 @@ abstract class BaseMakeCommand extends Command
      */
     protected function getStubVariables(): array
     {
-        $name = $this->argument('name');
+        /** @var ?string $name */
+        $name = $this->argument('name') ?: null;
+
+        if ($name === null) {
+            throw new RuntimeException('You must provide a name');
+        }
 
         return [
             'namespace' => $this->getSubDirName().$this->getNamespace($name),

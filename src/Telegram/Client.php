@@ -12,7 +12,6 @@ use JsonSerializable;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SergiX44\Nutgram\Support\StrUtils;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
@@ -51,7 +50,12 @@ trait Client
      * An Array of Update objects is returned.
      * @see https://core.telegram.org/bots/api#getupdates
      * @see https://en.wikipedia.org/wiki/Push_technology#Long_polling
-     * @param  array{offset?: int, limit?: int, timeout?: int, allowed_updates?: array<string>}  $parameters
+     * @param  array{
+     *     offset?:int,
+     *     limit?:int,
+     *     timeout?:int,
+     *     allowed_updates?:string[]
+     * }  $parameters
      * @return array|null
      * @throws GuzzleException
      * @throws JsonException
@@ -66,27 +70,36 @@ trait Client
 
     /**
      * @param  string  $url
-     * @param  null|array{certificate?: mixed, ip_address?: string, max_connections?: int,
-     *     allowed_updates?:array<string>, drop_pending_updates?: bool}  $opt
+     * @param  array{
+     *     url?:string,
+     *     certificate?:InputFile,
+     *     ip_address?:string,
+     *     max_connections?:int,
+     *     allowed_updates?:string[],
+     *     drop_pending_updates?:bool,
+     *     secret_token?:string
+     * }  $opt
      * @return bool|null
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
      */
-    public function setWebhook(string $url, ?array $opt = []): ?bool
+    public function setWebhook(string $url, array $opt = []): ?bool
     {
         $required = compact('url');
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
     /**
-     * @param  null|array{drop_pending_updates?: bool}  $opt
+     * @param  array{
+     *     drop_pending_updates?:bool
+     * }  $opt
      * @return bool|null
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
      */
-    public function deleteWebhook(?array $opt = []): ?bool
+    public function deleteWebhook(array $opt = []): ?bool
     {
         return $this->requestJson(__FUNCTION__, $opt);
     }
@@ -104,14 +117,14 @@ trait Client
 
     /**
      * @param  string  $endpoint
-     * @param  array|null  $parameters
-     * @param  array|null  $options
+     * @param  array  $parameters
+     * @param  array  $options
      * @return mixed
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
      */
-    public function sendRequest(string $endpoint, ?array $parameters = [], ?array $options = []): mixed
+    public function sendRequest(string $endpoint, array $parameters = [], array $options = []): mixed
     {
         return $this->requestMultipart($endpoint, $parameters, options: $options);
     }
@@ -198,7 +211,7 @@ trait Client
      * @param  string  $endpoint
      * @param  array|null  $multipart
      * @param  string  $mapTo
-     * @param  array|null  $options
+     * @param  array  $options
      * @return mixed
      * @throws GuzzleException
      * @throws JsonException
@@ -208,7 +221,7 @@ trait Client
         string $endpoint,
         ?array $multipart = null,
         string $mapTo = stdClass::class,
-        ?array $options = []
+        array $options = []
     ): mixed {
         $parameters = array_map(fn ($name, $contents) => match (true) {
             $contents instanceof InputFile => [
@@ -249,7 +262,7 @@ trait Client
      * @param  string  $endpoint
      * @param  array|null  $json
      * @param  string  $mapTo
-     * @param  array|null  $options
+     * @param  array  $options
      * @return mixed
      * @throws GuzzleException
      * @throws JsonException
@@ -259,7 +272,7 @@ trait Client
         string $endpoint,
         ?array $json = null,
         string $mapTo = stdClass::class,
-        ?array $options = []
+        array $options = []
     ): mixed {
         try {
             $response = $this->http->post($endpoint, array_merge([

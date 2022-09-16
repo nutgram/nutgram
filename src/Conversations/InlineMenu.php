@@ -288,12 +288,12 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param  int|null  $chatId
-     * @param  int|null  $messageId
+     * @param  int  $chatId
+     * @param  int  $messageId
      * @return bool
      * @internal Override only to change the Telegram method.
      */
-    protected function doClose(?int $chatId, ?int $messageId): bool
+    protected function doClose(int $chatId, int $messageId): bool
     {
         return $this->bot->deleteMessage($chatId, $messageId) ?? false;
     }

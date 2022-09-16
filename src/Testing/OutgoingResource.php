@@ -23,7 +23,7 @@ class OutgoingResource implements JsonSerializable
      * @param  string|null  $type
      * @param  int  $size
      * @param  int  $error
-     * @param  resource  $tmp_resource
+     * @param  resource|null  $tmp_resource
      */
     public function __construct(
         ?string $name,
@@ -41,6 +41,10 @@ class OutgoingResource implements JsonSerializable
 
     public function jsonSerialize()
     {
+        if ($this->name === null) {
+            return basename(__CLASS__);
+        }
+
         return sprintf("%s{%s}", basename(__CLASS__), $this->name);
     }
 

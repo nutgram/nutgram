@@ -465,11 +465,11 @@ class Message extends BaseType
     /**
      * Edit the current message text
      * @param  string  $text
-     * @param  array|null  $opt
+     * @param  array  $opt
      * @return Message|bool|null
      * @see Nutgram::editMessageText
      */
-    public function editText(string $text, ?array $opt = []): Message|bool|null
+    public function editText(string $text, array $opt = []): Message|bool|null
     {
         return $this->bot->editMessageText($text, array_merge([
             'chat_id' => $this->chat->id,
@@ -480,11 +480,11 @@ class Message extends BaseType
     /**
      * Copy the current message
      * @param  string|int  $chatId
-     * @param  array|null  $opt
+     * @param  array  $opt
      * @return MessageId|null
      * @see Nutgram::copyMessage
      */
-    public function copy(string|int $chatId, ?array $opt = []): ?MessageId
+    public function copy(string|int $chatId, array $opt = []): ?MessageId
     {
         return $this->bot->copyMessage($chatId, $this->chat->id, $this->message_id, $opt);
     }
@@ -492,11 +492,11 @@ class Message extends BaseType
     /**
      * Forward the current message
      * @param  string|int  $chatId
-     * @param  array|null  $opt
+     * @param  array  $opt
      * @return Message|null
      * @see Nutgram::forwardMessage
      */
-    public function forward(string|int $chatId, ?array $opt = []): ?Message
+    public function forward(string|int $chatId, array $opt = []): ?Message
     {
         return $this->bot->forwardMessage($chatId, $this->chat->id, $this->message_id, $opt);
     }

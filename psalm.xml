@@ -13,6 +13,11 @@
         </ignoreFiles>
     </projectFiles>
     <issueHandlers>
+        <PropertyNotSetInConstructor>
+            <errorLevel type="suppress">
+                <directory name="src"/>
+            </errorLevel>
+        </PropertyNotSetInConstructor>
         <InvalidThrow>
             <errorLevel type="suppress">
                 <referencedClass name="Psr\SimpleCache\InvalidArgumentException"/>
@@ -20,8 +25,22 @@
         </InvalidThrow>
         <UndefinedMethod>
             <errorLevel type="suppress">
-                <referencedMethod name="ReflectionType::getName" />
+                <referencedMethod name="ReflectionType::getName"/>
             </errorLevel>
         </UndefinedMethod>
+        <PossiblyNullPropertyAssignmentValue>
+            <errorLevel type="suppress">
+                <directory name="src"/>
+            </errorLevel>
+        </PossiblyNullPropertyAssignmentValue>
+        <UndefinedInterfaceMethod>
+            <errorLevel type="suppress">
+                <referencedMethod name="Psr\Container\ContainerInterface::getNew"/>
+                <referencedMethod name="Psr\Container\ContainerInterface::extend"/>
+                <referencedMethod name="Psr\Http\Client\ClientInterface::get"/>
+                <referencedMethod name="Psr\Http\Client\ClientInterface::post"/>
+                <referencedMethod name="Illuminate\Contracts\Filesystem\Filesystem::path"/>
+            </errorLevel>
+        </UndefinedInterfaceMethod>
     </issueHandlers>
 </psalm>
