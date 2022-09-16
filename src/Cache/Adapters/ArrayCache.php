@@ -3,7 +3,6 @@
 
 namespace SergiX44\Nutgram\Cache\Adapters;
 
-use DateInterval;
 use Psr\SimpleCache\CacheInterface;
 
 /**
@@ -17,10 +16,10 @@ class ArrayCache implements CacheInterface
 
     /**
      * @param  string  $key
-     * @param  mixed  $default
+     * @param  null  $default
      * @return mixed
      */
-    public function get(string $key, mixed $default = null): mixed
+    public function get($key, $default = null): mixed
     {
         $this->checkExpire($key);
 
@@ -30,10 +29,10 @@ class ArrayCache implements CacheInterface
     /**
      * @param  string  $key
      * @param  mixed  $value
-     * @param  int|DateInterval|null  $ttl
+     * @param  null  $ttl
      * @return bool
      */
-    public function set(string $key, mixed $value, null|int|DateInterval $ttl = null): bool
+    public function set($key, $value, $ttl = null): bool
     {
         $this->delete($key);
 
@@ -69,10 +68,10 @@ class ArrayCache implements CacheInterface
 
     /**
      * @param  iterable  $keys
-     * @param  mixed  $default
-     * @return iterable<string, mixed>
+     * @param  null  $default
+     * @return array
      */
-    public function getMultiple(iterable $keys, mixed $default = null): iterable
+    public function getMultiple($keys, $default = null): array
     {
         $values = [];
 
@@ -85,10 +84,10 @@ class ArrayCache implements CacheInterface
 
     /**
      * @param  iterable  $values
-     * @param  null|int|DateInterval  $ttl
+     * @param  null  $ttl
      * @return bool
      */
-    public function setMultiple(iterable $values, null|int|DateInterval $ttl = null): bool
+    public function setMultiple($values, $ttl = null): bool
     {
         foreach ($values as $key => $value) {
             $this->set($key, $value, $ttl);
