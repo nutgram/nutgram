@@ -71,7 +71,7 @@ class TypeFaker
             }
 
             // if is a class, try to resolve it
-            if ($this->shouldInstantiate($typeName, $resolveStack, $isNullable)) {
+            if ($this->shouldInstantiate($typeName, $resolveStack, $isNullable ?? false)) {
                 $resolveStack[] = $typeName;
                 $instance->{$property->name} = $this->fakeInstance(
                     $typeName,
@@ -93,7 +93,7 @@ class TypeFaker
                         $fillNullable,
                         $resolveStack
                     );
-                    $instance->{$property->name} = $this->wrap($arrayInstance, $nesting);
+                    $instance->{$property->name} = $this->wrap($arrayInstance, $nesting ?? 0);
                     continue;
                 }
             }
@@ -156,7 +156,7 @@ class TypeFaker
     {
         return substr(str_shuffle(str_repeat(
             $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            ceil($length / strlen($x))
+            (int)ceil($length / strlen($x))
         )), 1, $length);
     }
 

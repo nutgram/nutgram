@@ -45,8 +45,8 @@ class File extends BaseType
     public function save(string $path, array $clientOpt = []): ?bool
     {
         if (is_dir($path)) {
-            $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-            $path .= basename($this->file_path);
+            $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+            $path .= basename($this->file_path ?? $this->file_id);
         }
         return $this->bot?->downloadFile($this, $path, $clientOpt);
     }

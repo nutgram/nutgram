@@ -116,7 +116,7 @@ class FakeNutgram extends Nutgram
                     if ($this->mockHandler->count() === 0) {
                         [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
                         $return = (new ReflectionClass(self::class))
-                            ->getMethod($request->getUri())
+                            ->getMethod((string)$request->getUri())
                             ->getReturnType();
 
                         $instance = null;

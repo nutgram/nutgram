@@ -20,7 +20,7 @@ class InputFile
     protected ?string $filename;
 
     /**
-     * @param $resource
+     * @param  mixed  $resource
      * @param  string|null  $filename
      */
     public function __construct($resource, ?string $filename = null)
@@ -36,7 +36,7 @@ class InputFile
     }
 
     /**
-     * @param $resource
+     * @param  resource  $resource
      * @param  string|null  $filename
      * @return InputFile
      */
