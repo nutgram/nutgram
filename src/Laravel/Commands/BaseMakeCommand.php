@@ -16,12 +16,7 @@ abstract class BaseMakeCommand extends Command
     public function handle(): int
     {
         //get the file name
-        $name = $this->argument('name') ?: null;
-
-        if ($name === null) {
-            $this->error('You must provide a name');
-            return 1;
-        }
+        $name = $this->argument('name');
 
         //get stub content
         $stub = $this->getStubContent($this->getStubPath(), $this->getStubVariables());
