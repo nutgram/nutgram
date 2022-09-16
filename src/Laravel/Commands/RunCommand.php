@@ -17,11 +17,8 @@ class RunCommand extends Command
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function handle(): void
+    public function handle(Nutgram $bot): void
     {
-        /** @var Nutgram $bot */
-        $bot = app(Nutgram::class);
-
         $bot->run();
     }
 }

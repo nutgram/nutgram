@@ -19,11 +19,8 @@ class HookInfoCommand extends Command
      * @throws GuzzleException
      * @throws JsonException
      */
-    public function handle(): int
+    public function handle(Nutgram $bot): int
     {
-        /** @var Nutgram $bot */
-        $bot = app(Nutgram::class);
-
         $webhookInfo = $bot->getWebhookInfo();
 
         if ($webhookInfo === null) {
