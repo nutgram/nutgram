@@ -23,33 +23,33 @@ class GlobalCache extends BotCache
     }
 
     /**
-     * @param $key
-     * @param  $default
+     * @param  string  $key
+     * @param  mixed  $default
      * @return mixed
      * @throws InvalidArgumentException
      */
-    public function get($key, $default = null): mixed
+    public function get(string $key, mixed $default = null): mixed
     {
         return $this->cache->get($this->makeKey($key), $default);
     }
 
     /**
-     * @param $key
-     * @param $data
+     * @param  string  $key
+     * @param  mixed  $data
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function set($key, $data): bool
+    public function set(string $key, mixed $data): bool
     {
         return $this->cache->set($this->makeKey($key), $data, $this->ttl);
     }
 
     /**
-     * @param $key
+     * @param  string  $key
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function delete($key): bool
+    public function delete(string $key): bool
     {
         return $this->cache->delete($this->makeKey($key));
     }

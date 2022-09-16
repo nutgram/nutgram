@@ -22,7 +22,7 @@ class FileMixin
 
             if (is_dir($path)) {
                 $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-                $path .= basename($this->file_path);
+                $path .= basename($this->file_path ?? $this->file_id);
             }
 
             $savedPath = Storage::disk($disk)->path($path);

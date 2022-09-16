@@ -15,6 +15,10 @@ class ConsoleLogger extends AbstractLogger
 
         $stringContext = trim(json_encode($context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
+        if ($message instanceof Stringable) {
+            $message = $message->__toString();
+        }
+
         if (!empty($stringContext)) {
             $message .= "\n{$stringContext}";
         }

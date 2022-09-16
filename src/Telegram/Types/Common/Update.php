@@ -195,10 +195,10 @@ class Update extends BaseType
     {
         return match (true) {
             $this->message !== null => $this->message->chat,
-            $this->callback_query !== null => $this->callback_query?->message?->chat,
-            $this->channel_post !== null => $this->channel_post?->chat,
-            $this->edited_channel_post !== null => $this->edited_channel_post?->chat,
-            $this->chat_join_request !== null => $this->chat_join_request?->chat,
+            $this->callback_query !== null => $this->callback_query->message?->chat,
+            $this->channel_post !== null => $this->channel_post->chat,
+            $this->edited_channel_post !== null => $this->edited_channel_post->chat,
+            $this->chat_join_request !== null => $this->chat_join_request->chat,
             default => null
         };
     }
@@ -226,7 +226,7 @@ class Update extends BaseType
     {
         return match (true) {
             $this->message !== null => $this->message,
-            $this->callback_query !== null => $this->callback_query?->message,
+            $this->callback_query !== null => $this->callback_query->message,
             $this->edited_message !== null => $this->edited_message,
             $this->channel_post !== null => $this->channel_post,
             $this->edited_channel_post !== null => $this->edited_channel_post,

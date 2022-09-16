@@ -13,6 +13,11 @@
         </ignoreFiles>
     </projectFiles>
     <issueHandlers>
+        <PropertyNotSetInConstructor>
+            <errorLevel type="suppress">
+                <directory name="src"/>
+            </errorLevel>
+        </PropertyNotSetInConstructor>
         <InvalidThrow>
             <errorLevel type="suppress">
                 <referencedClass name="Psr\SimpleCache\InvalidArgumentException"/>
@@ -20,7 +25,7 @@
         </InvalidThrow>
         <UndefinedMethod>
             <errorLevel type="suppress">
-                <referencedMethod name="ReflectionType::getName" />
+                <referencedMethod name="ReflectionType::getName"/>
             </errorLevel>
         </UndefinedMethod>
     </issueHandlers>

@@ -3,6 +3,8 @@
 namespace SergiX44\Nutgram\Laravel\Commands;
 
 use Illuminate\Console\Command;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Nutgram;
 
 class RunCommand extends Command
@@ -11,8 +13,15 @@ class RunCommand extends Command
 
     protected $description = 'Start the bot in long polling mode';
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function handle(): void
     {
-        app(Nutgram::class)->run();
+        /** @var Nutgram $bot */
+        $bot = app(Nutgram::class);
+
+        $bot->run();
     }
 }

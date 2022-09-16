@@ -13,6 +13,7 @@ class RegisterCommandsCommand extends Command
 
     public function handle(): int
     {
+        /** @var Nutgram $bot */
         $bot = app(Nutgram::class);
 
         $bot->registerMyCommands();

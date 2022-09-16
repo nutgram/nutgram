@@ -2,8 +2,11 @@
 
 namespace SergiX44\Nutgram\Laravel\Commands;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
+use JsonException;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 
 class HookSetCommand extends Command
 {
@@ -11,13 +14,36 @@ class HookSetCommand extends Command
 
     protected $description = 'Set the bot webhook';
 
+    /**
+     * @throws TelegramException
+     * @throws GuzzleException
+     * @throws JsonException
+     */
     public function handle(): int
     {
-        $url = $this->argument('url');
-        $ip_address = $this->option('ip');
-        $max_connections = (int)$this->option('max-connections');
+        /** @var ?string $url */
+        $url = $this->argument('url') ?: null;
 
-        app(Nutgram::class)->setWebhook($url, array_filter(compact('ip_address', 'max_connections')));
+        if ($url === null) {
+            $this->error('You must provide a url');
+            return 1;
+        }
+
+        /** @var ?string $ip_address */
+        $ip_address = $this->option('ip') ?: null;
+
+        /** @var ?string $max_connections */
+        $max_connections = $this->option('max-connections') ?: null;
+
+        //cast to int if not null
+        if (is_numeric($max_connections)) {
+            $max_connections = (int)$max_connections;
+        }
+
+        /** @var Nutgram $bot */
+        $bot = app(Nutgram::class);
+
+        $bot->setWebhook($url, array_filter(compact('ip_address', 'max_connections')));
 
         $this->info("Bot webhook set with url: $url");
 

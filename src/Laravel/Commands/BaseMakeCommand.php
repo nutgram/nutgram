@@ -16,7 +16,12 @@ abstract class BaseMakeCommand extends Command
     public function handle(): int
     {
         //get the file name
-        $name = $this->argument('name');
+        $name = $this->argument('name') ?: null;
+
+        if ($name === null) {
+            $this->error('You must provide a name');
+            return 1;
+        }
 
         //get stub content
         $stub = $this->getStubContent($this->getStubPath(), $this->getStubVariables());
@@ -59,7 +64,12 @@ abstract class BaseMakeCommand extends Command
      */
     protected function getStubVariables(): array
     {
-        $name = $this->argument('name');
+        /** @var ?string $name */
+        $name = $this->argument('name') ?: null;
+
+        if ($name === null) {
+            throw new RuntimeException('You must provide a name');
+        }
 
         return [
             'namespace' => $this->getSubDirName().$this->getNamespace($name),
