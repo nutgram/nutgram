@@ -33,6 +33,16 @@ class Handler extends MiddlewareChain
     protected $callable;
 
     /**
+     * @var bool
+     */
+    protected bool $skipGlobalMiddlewares = false;
+
+    /**
+     * @var array
+     */
+    protected array $skippedGlobalMiddlewares = [];
+
+    /**
      * Handler constructor.
      * @param $callable
      * @param  string|null  $pattern
@@ -84,6 +94,37 @@ class Handler extends MiddlewareChain
     public function __invoke(Nutgram $bot): mixed
     {
         return call_user_func($bot->resolve($this->callable), $bot, ...$this->parameters);
+    }
+
+    /**
+     * Skip global middlewares.
+     * If you want to skip a specific global middleware, use the "$middlewares" parameter.
+     * @param  array  $middlewares
+     * @return $this
+     */
+    public function skipGlobalMiddlewares(array $middlewares = []): Handler
+    {
+        $this->skipGlobalMiddlewares = true;
+        $this->skippedGlobalMiddlewares = $middlewares;
+        return $this;
+    }
+
+    /**
+     * Returns true if the handler is skipping global middlewares.
+     * @return bool
+     */
+    public function isSkippingGlobalMiddlewares(): bool
+    {
+        return $this->skipGlobalMiddlewares;
+    }
+
+    /**
+     * Returns the skipped global middlewares.
+     * @return array
+     */
+    public function getSkippedGlobalMiddlewares(): array
+    {
+        return $this->skippedGlobalMiddlewares;
     }
 
     /**

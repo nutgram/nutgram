@@ -385,3 +385,85 @@ test('commands can have descriptions', function ($update) {
     expect($cmd3->getDescription())->toBeNull();
     expect($cmd3->isHidden())->toBeTrue();
 })->with('command_message');
+
+
+it('skips global middleware except one', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $test = [];
+
+    $middleware1 = function ($bot, $next) use (&$test) {
+        $test[] = 'GM1';
+        $next($bot);
+    };
+    $middleware2 = function ($bot, $next) use (&$test) {
+        $test[] = 'GM2';
+        $next($bot);
+    };
+
+    $bot->middleware($middleware1);
+    $bot->middleware($middleware2);
+
+    $bot
+        ->onMessage(function ($bot) use (&$test) {
+            $test[] = 'Message';
+        })
+        ->skipGlobalMiddlewares([
+            $middleware1
+        ])
+        ->middleware(function ($bot, $next) use (&$test) {
+            $test[] = 'LM1';
+            $next($bot);
+        });
+
+    $bot->run();
+
+    expect($test)->toContain('GM2', 'LM1', 'Message');
+
+})->with('message');
+
+it('skips all global middleware', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $testA = [];
+    $testB = [];
+
+    $middleware1 = function ($bot, $next) use (&$testA, &$testB) {
+        $testA[] = 'GM1';
+        $testB[] = 'GM1';
+        $next($bot);
+    };
+    $middleware2 = function ($bot, $next) use (&$testA, &$testB) {
+        $testA[] = 'GM2';
+        $testB[] = 'GM2';
+        $next($bot);
+    };
+
+    $bot->middleware($middleware1);
+    $bot->middleware($middleware2);
+
+    $bot
+        ->onMessage(function ($bot) use (&$testA) {
+            $testA[] = 'Message';
+        })
+        ->skipGlobalMiddlewares()
+        ->middleware(function ($bot, $next) use (&$testA) {
+            $testA[] = 'LM1';
+            $next($bot);
+        });
+
+    $bot
+        ->onMessage(function ($bot) use (&$testB) {
+            $testB[] = 'Message';
+        })
+        ->middleware(function ($bot, $next) use (&$testB) {
+            $testB[] = 'LM1';
+            $next($bot);
+        });
+
+    $bot->run();
+
+    expect($testA)->toContain('LM1', 'Message');
+    expect($testB)->toContain('GM1', 'GM2', 'LM1', 'Message');
+
+})->with('message');
