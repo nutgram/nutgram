@@ -175,7 +175,17 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected function applyGlobalMiddlewareTo(Handler $handler): void
     {
+        $skippedGlobalMiddlewares = $handler->getSkippedGlobalMiddlewares();
+
+        if ($handler->isSkippingGlobalMiddlewares() && empty($skippedGlobalMiddlewares)) {
+            return;
+        }
+
         foreach ($this->globalMiddlewares as $middleware) {
+            if ($handler->isSkippingGlobalMiddlewares() && in_array($middleware, $skippedGlobalMiddlewares, true)) {
+                continue;
+            }
+
             $handler->middleware($middleware);
         }
     }
