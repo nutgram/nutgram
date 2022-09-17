@@ -419,7 +419,6 @@ it('skips global middleware except one', function ($update) {
     $bot->run();
 
     expect($test)->toContain('GM2', 'LM1', 'Message');
-
 })->with('message');
 
 it('skips all global middleware', function ($update) {
@@ -465,5 +464,4 @@ it('skips all global middleware', function ($update) {
 
     expect($testA)->toContain('LM1', 'Message');
     expect($testB)->toContain('GM1', 'GM2', 'LM1', 'Message');
-
 })->with('message');
