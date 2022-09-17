@@ -2,6 +2,18 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.7.6 - 2022-09-17
+
+### What's Changed
+
+- Add onPreCheckoutQueryPayload handler by @Lukasss93 in https://github.com/nutgram/nutgram/pull/198
+- Logging by @Lukasss93 in https://github.com/nutgram/nutgram/pull/196
+- Add onSuccessfulPayment + onSuccessfulPaymentPayload handlers by @Lukasss93 in https://github.com/nutgram/nutgram/pull/199
+- Psalm array annotations by @Lukasss93 in https://github.com/nutgram/nutgram/pull/201
+- Add skipGlobalMiddlewares method to Handler class by @Lukasss93 in https://github.com/nutgram/nutgram/pull/204
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.7.5...3.7.6
+
 ## 3.7.5 - 2022-09-11
 
 ### What's Changed
