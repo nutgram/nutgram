@@ -4,7 +4,6 @@
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
-use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
@@ -27,7 +26,6 @@ trait UpdatesMessages
      *     chat_id?:int|string,
      *     message_id?:int,
      *     inline_message_id?:string,
-     *     text?:string,
      *     parse_mode?:string,
      *     entities?:MessageEntity[],
      *     disable_web_page_preview?:bool,
@@ -78,7 +76,6 @@ trait UpdatesMessages
      *     chat_id?:int|string,
      *     message_id?:int,
      *     inline_message_id?:string,
-     *     media?:InputMedia,
      *     reply_markup?:InlineKeyboardMarkup
      * }  $opt
      * @param  array  $clientOpt
@@ -120,8 +117,6 @@ trait UpdatesMessages
      *     format [at]channelusername)
      * @param  int  $message_id Identifier of the original message with the poll
      * @param  array{
-     *     chat_id?:int|string,
-     *     message_id?:int,
      *     reply_markup?:InlineKeyboardMarkup
      * }  $opt
      * @return Poll|null

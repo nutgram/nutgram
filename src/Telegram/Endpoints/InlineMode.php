@@ -22,8 +22,6 @@ trait InlineMode
      * @see https://core.telegram.org/bots/api#answerinlinequery
      * @param  array  $results An array of results for the inline query
      * @param  array{
-     *     inline_query_id?:string,
-     *     results?:InlineQueryResult[],
      *     cache_time?:int,
      *     is_personal?:bool,
      *     next_offset?:string,

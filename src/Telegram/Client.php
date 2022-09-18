@@ -71,7 +71,6 @@ trait Client
     /**
      * @param  string  $url
      * @param  array{
-     *     url?:string,
      *     certificate?:InputFile,
      *     ip_address?:string,
      *     max_connections?:int,

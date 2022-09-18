@@ -7,7 +7,6 @@ use JsonException;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
-use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingOption;
 
 /**
@@ -31,13 +30,6 @@ trait Payments
      * @param  array  $prices Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost,
      *     delivery tax, bonus, etc.)
      * @param  array{
-     *     chat_id?:int|string,
-     *     title?:string,
-     *     description?:string,
-     *     payload?:string,
-     *     provider_token?:string,
-     *     currency?:string,
-     *     prices?:LabeledPrice[],
      *     max_tip_amount?:int,
      *     suggested_tip_amounts?:int[],
      *     start_parameter?:string,
@@ -90,12 +82,6 @@ trait Payments
      * @param  array  $prices Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount,
      *     delivery cost, delivery tax, bonus, etc.)
      * @param  array{
-     *     title?:string,
-     *     description?:string,
-     *     payload?:string,
-     *     provider_token?:string,
-     *     currency?:string,
-     *     prices?:LabeledPrice[],
      *     max_tip_amount?:int,
      *     suggested_tip_amounts?:int[],
      *     provider_data?:string,
@@ -134,8 +120,6 @@ trait Payments
      * @param  bool  $ok Specify True if delivery to the specified address is possible and False if there are any
      *     problems (for example, if delivery to the specified address is not possible)
      * @param  array{
-     *     shipping_query_id?:string,
-     *     ok?:bool,
      *     shipping_options?:ShippingOption[],
      *     error_message?:string
      * }  $opt
@@ -160,8 +144,6 @@ trait Payments
      * @param  bool  $ok Specify True if everything is alright (goods are available, etc.) and the bot is ready to
      *     proceed with the order. Use False if there are any problems.
      * @param  array{
-     *     pre_checkout_query_id?:string,
-     *     ok?:bool,
      *     error_message?:string
      * }  $opt
      * @return bool|null

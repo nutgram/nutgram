@@ -22,8 +22,6 @@ trait Games
      * @param  string  $game_short_name Short name of the game, serves as the unique identifier for the game. Set up
      *     your games via {@see https://t.me/botfather Botfather}.
      * @param  array{
-     *     chat_id?:int,
-     *     game_short_name?:string,
      *     disable_notification?:bool,
      *     protect_content?:bool,
      *     reply_to_message_id?:int,
@@ -47,8 +45,6 @@ trait Games
      * @see https://core.telegram.org/bots/api#setgamescore
      * @param  int  $score New score, must be non-negative
      * @param  array{
-     *     user_id?:int,
-     *     score?:int,
      *     force?:bool,
      *     disable_edit_message?:bool,
      *     chat_id?:int,
@@ -71,7 +67,6 @@ trait Games
      * On success, returns an Array of {@see https://core.telegram.org/bots/api#gamehighscore GameHighScore} objects.
      * @see https://core.telegram.org/bots/api#getgamehighscores
      * @param  array{
-     *     user_id?:int,
      *     chat_id?:int,
      *     message_id?:int,
      *     inline_message_id?:string
