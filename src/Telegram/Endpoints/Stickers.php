@@ -32,8 +32,6 @@ trait Stickers
      *     upload a new one using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     chat_id?:int|string,
-     *     sticker?:InputFile|string,
      *     disable_notification?:bool,
      *     protect_content?:bool,
      *     reply_to_message_id?:int,
@@ -95,9 +93,6 @@ trait Stickers
      *     contain only english letters, digits and underscores. Must begin with a letter, can't contain consecutive
      *     underscores and must end in “_by_<bot username>”. <bot_username> is case insensitive. 1-64 characters.
      * @param  array{
-     *     user_id?:int,
-     *     name?:string,
-     *     title?:string,
      *     png_sticker?:InputFile|string,
      *     tgs_sticker?:InputFile,
      *     webm_sticker?:InputFile,
@@ -124,8 +119,6 @@ trait Stickers
      * @see https://core.telegram.org/bots/api#addstickertoset
      * @param  string  $name Sticker set name
      * @param  array{
-     *     user_id?:int,
-     *     name?:string,
      *     png_sticker?:InputFile|string,
      *     tgs_sticker?:InputFile,
      *     webm_sticker?:InputFile,
@@ -172,8 +165,6 @@ trait Stickers
      * @see https://core.telegram.org/bots/api#setstickersetthumb
      * @param  string  $name Sticker set name
      * @param  array{
-     *     name?:string,
-     *     user_id?:int,
      *     thumb?:InputFile|string
      * }  $opt
      * @param  array  $clientOpt

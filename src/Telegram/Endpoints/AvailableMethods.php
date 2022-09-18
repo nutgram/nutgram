@@ -83,8 +83,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendmessage
      * @param  string  $text Text of the message to be sent, 1-4096 characters after entities parsing
      * @param  array{
-     *     chat_id?:int|string,
-     *     text?:string,
      *     parse_mode?:string,
      *     entities?:MessageEntity[],
      *     disable_web_page_preview?:bool,
@@ -133,11 +131,8 @@ trait AvailableMethods
      *     username in the format [at]channelusername)
      * @param  int  $message_id Message identifier in the chat specified in from_chat_id
      * @param  array{
-     *     chat_id?:int|string,
-     *     from_chat_id?:int|string,
      *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     message_id?:int
+     *     protect_content?:bool
      * }  $opt
      * @return Message|null
      */
@@ -163,9 +158,6 @@ trait AvailableMethods
      *     username in the format [at]channelusername)
      * @param  int  $message_id Message identifier in the chat specified in from_chat_id
      * @param  array{
-     *     chat_id?:int|string,
-     *     from_chat_id?:int|string,
-     *     message_id?:int,
      *     caption?:string,
      *     parse_mode?:string,
      *     caption_entities?:MessageEntity[],
@@ -197,8 +189,6 @@ trait AvailableMethods
      *     must not exceed 10000 in total. Width and height ratio must be at most 20.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     chat_id?:int|string,
-     *     photo?:InputFile|string,
      *     caption?:string,
      *     parse_mode?:string,
      *     caption_entities?:MessageEntity[],
@@ -229,8 +219,6 @@ trait AvailableMethods
      *     Internet, or upload a new one using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     chat_id?:int|string,
-     *     audio?:InputFile|string,
      *     caption?:string,
      *     parse_mode?:string,
      *     caption_entities?:MessageEntity[],
@@ -262,8 +250,6 @@ trait AvailableMethods
      *     a new one using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     chat_id?:int|string,
-     *     document?:InputFile|string,
      *     thumb?:InputFile|string,
      *     caption?:string,
      *     parse_mode?:string,
@@ -294,8 +280,6 @@ trait AvailableMethods
      *     a new video using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     chat_id?:int|string,
-     *     video?:InputFile|string,
      *     duration?:int,
      *     width?:int,
      *     height?:int,
@@ -328,8 +312,6 @@ trait AvailableMethods
      *     Internet, or upload a new animation using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     chat_id?:int|string,
-     *     animation?:InputFile|string,
      *     duration?:int,
      *     width?:int,
      *     height?:int,
@@ -364,8 +346,6 @@ trait AvailableMethods
      *     a new one using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     chat_id?:int|string,
-     *     voice?:InputFile|string,
      *     caption?:string,
      *     parse_mode?:string,
      *     caption_entities?:MessageEntity[],
@@ -395,8 +375,6 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}. Sending video notes by
      *     a URL is currently unsupported
      * @param  array{
-     *     chat_id?:int|string,
-     *     video_note?:InputFile|string,
      *     duration?:int,
      *     length?:int,
      *     thumb?:InputFile|string,
@@ -419,16 +397,15 @@ trait AvailableMethods
      * Documents and audio files can be only grouped in an album with messages of the same type.
      * On success, an array of {@see https://core.telegram.org/bots/api#message Messages} that were sent is returned.
      * @see https://core.telegram.org/bots/api#sendmediagroup
-     * @param  array  $media An array describing messages to be sent, must include 2-10 items
-     * @param  array  $opt
+     * @param  InputMediaAudio[]|InputMediaDocument[]|InputMediaPhoto[]|InputMediaVideo[]|resource[]  $media An array
+     *     describing messages to be sent, must include 2-10 items
      * @param  array{
-     *     chat_id?:int|string,
-     *     media?:InputMediaAudio[]|InputMediaDocument[]|InputMediaPhoto[]|InputMediaVideo[],
      *     disable_notification?:bool,
      *     protect_content?:bool,
      *     reply_to_message_id?:int,
      *     allow_sending_without_reply?:bool
-     * }  $clientOpt
+     * }  $opt
+     * @param  array  $clientOpt
      * @return array|null
      * @throws JsonException
      */
@@ -464,9 +441,6 @@ trait AvailableMethods
      * @param  float  $latitude Latitude of the location
      * @param  float  $longitude Longitude of the location
      * @param  array{
-     *     chat_id?:int|string,
-     *     latitude?:float,
-     *     longitude?:float,
      *     horizontal_accuracy?:float,
      *     live_period?:int,
      *     heading?:int,
@@ -499,8 +473,6 @@ trait AvailableMethods
      *     chat_id?:int|string,
      *     message_id?:int,
      *     inline_message_id?:string,
-     *     latitude?:float,
-     *     longitude?:float,
      *     horizontal_accuracy?:float,
      *     heading?:int,
      *     proximity_alert_radius?:int,
@@ -543,11 +515,6 @@ trait AvailableMethods
      * @param  string  $title Name of the venue
      * @param  string  $address Address of the venue
      * @param  array{
-     *     chat_id?:int|string,
-     *     latitude?:float,
-     *     longitude?:float,
-     *     title?:string,
-     *     address?:string,
      *     foursquare_id?:string,
      *     foursquare_type?:string,
      *     google_place_id?:string,
@@ -579,9 +546,6 @@ trait AvailableMethods
      * @param  string  $first_name Contact's first name
      * @param  string  $phone_number Contact's phone number
      * @param  array{
-     *     chat_id?:int|string,
-     *     phone_number?:string,
-     *     first_name?:string,
      *     last_name?:string,
      *     vcard?:string,
      *     disable_notification?:bool,
@@ -606,9 +570,6 @@ trait AvailableMethods
      * @param  string  $question Poll question, 1-300 characters
      * @param  string[]  $options A list of answer options, 2-10 strings 1-100 characters each
      * @param  array{
-     *     chat_id?:int|string,
-     *     question?:string,
-     *     options?:string[],
      *     is_anonymous?:bool,
      *     type?:string,
      *     allows_multiple_answers?:bool,
@@ -643,7 +604,6 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#senddice
      * @param  array{
-     *     chat_id?:int|string,
      *     emoji?:string,
      *     disable_notification?:bool,
      *     protect_content?:bool,
@@ -697,7 +657,6 @@ trait AvailableMethods
      * Returns a {@see https://core.telegram.org/bots/api#userprofilephotos UserProfilePhotos} object.
      * @see https://core.telegram.org/bots/api#getuserprofilephotos
      * @param  array{
-     *     user_id?:int,
      *     offset?:int,
      *     limit?:int
      * }  $opt
@@ -736,8 +695,6 @@ trait AvailableMethods
      *     channel (in the format [at]channelusername)
      * @param  int  $user_id Unique identifier of the target user
      * @param  array{
-     *     chat_id?:int|string,
-     *     user_id?:int,
      *     until_date?:int,
      *     revoke_messages?:bool
      * }  $opt
@@ -760,8 +717,6 @@ trait AvailableMethods
      *     channel (in the format [at]username)
      * @param  int  $user_id Unique identifier of the target user
      * @param  array{
-     *     chat_id?:int|string,
-     *     user_id?:int,
      *     only_if_banned?:bool
      * }  $opt
      * @return bool|null
@@ -782,9 +737,6 @@ trait AvailableMethods
      * @param  int  $user_id Unique identifier of the target user
      * @param  ChatPermissions  $permissions An object for new user permissions
      * @param  array{
-     *     chat_id?:int|string,
-     *     user_id?:int,
-     *     permissions?:ChatPermissions,
      *     until_date?:int
      * }  $opt
      * @return bool|null
@@ -809,8 +761,6 @@ trait AvailableMethods
      *     format [at]channelusername)
      * @param  int  $user_id Unique identifier of the target user
      * @param  array{
-     *     chat_id?:int|string,
-     *     user_id?:int,
      *     is_anonymous?:bool,
      *     can_manage_chat?:bool,
      *     can_post_messages?:bool,
@@ -933,7 +883,6 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target channel (in the
      *     format [at]channelusername)
      * @param  array{
-     *     chat_id?:int|string,
      *     name?:string,
      *     expire_date?:int,
      *     member_limit?:int,
@@ -956,8 +905,6 @@ trait AvailableMethods
      *     format [at]channelusername)
      * @param  string  $invite_link The invite link to edit
      * @param  array{
-     *     chat_id?:int|string,
-     *     invite_link?:string,
      *     name?:string,
      *     expire_date?:int,
      *     member_limit?:int,
@@ -1087,8 +1034,6 @@ trait AvailableMethods
      *     format [at]channelusername)
      * @param  int  $message_id Identifier of a message to pin
      * @param  array{
-     *     chat_id?:int|string,
-     *     message_id?:int,
      *     disable_notification?:bool
      * }  $opt
      * @return bool|null
@@ -1243,7 +1188,6 @@ trait AvailableMethods
      * > Otherwise, you may use links like `t.me/your_bot?start=XXXX` that open your bot with a parameter.
      * @see https://core.telegram.org/bots/api#answercallbackquery
      * @param  array{
-     *     callback_query_id?:string,
      *     text?:string,
      *     show_alert?:bool,
      *     url?:string,
@@ -1263,7 +1207,6 @@ trait AvailableMethods
      * @param  BotCommand[]  $commands A list of bot commands to be set as the list of the bot's commands. At most 100
      *     commands can be specified.
      * @param  array{
-     *     commands?:BotCommand[],
      *     scope?:object,
      *     language_code?:string
      * }  $opt
