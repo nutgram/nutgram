@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.7.7 - 2022-09-22
+
+### What's Changed
+
+- Fix psalm array annotations by @Lukasss93 in https://github.com/nutgram/nutgram/pull/205
+- before step hook by @SergiX44 in https://github.com/nutgram/nutgram/pull/207
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.7.6...3.7.7
+
 ## 3.7.6 - 2022-09-17
 
 ### What's Changed
