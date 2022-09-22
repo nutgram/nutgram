@@ -153,7 +153,7 @@ class Nutgram extends ResolveHandlers
     {
         unset($this->config['cache']);
 
-        if (!is_string($this->config['logger'])) {
+        if (isset($this->config['logger']) && !is_string($this->config['logger'])) {
             unset($this->config['logger']);
         }
 
