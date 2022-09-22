@@ -79,8 +79,17 @@ abstract class Conversation
     }
 
     /**
+     * Developer defined function called before the current step.
      * @param  Nutgram  $bot
-     *
+     * @return void
+     */
+    protected function beforeStep(Nutgram $bot)
+    {
+    }
+
+    /**
+     * Developer defined function called when the conversation is shut down.
+     * @param  Nutgram  $bot
      * @return void
      */
     protected function closing(Nutgram $bot)
@@ -98,6 +107,7 @@ abstract class Conversation
         if (method_exists($this, $this->step)) {
             $this->bot = $bot;
             $method = $this->step;
+            $this->beforeStep($bot);
             return $this->$method($this->bot, ...$parameters);
         }
 
