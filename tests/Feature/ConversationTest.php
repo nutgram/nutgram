@@ -1,6 +1,7 @@
 <?php
 
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithBeforeStep;
 use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithClosing;
 use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithClosingMultipleSteps;
 use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithDefault;
@@ -31,6 +32,14 @@ it('calls the default conversation step', function ($update) {
 it('calls the closing handler', function ($update) {
     $bot = Nutgram::fake($update);
     $bot->onMessage(ConversationWithClosing::class);
+    $bot->run();
+
+    expect($bot->getData('test'))->toBe(2);
+})->with('message');
+
+it('calls the before step handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onMessage(ConversationWithBeforeStep::class);
     $bot->run();
 
     expect($bot->getData('test'))->toBe(2);

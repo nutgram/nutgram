@@ -116,7 +116,7 @@ class Nutgram extends ResolveHandlers
             '%s/bot%s/%s',
             $this->config['api_url'] ?? self::DEFAULT_API_URL,
             $this->token,
-            $this->config['test_env'] ?? false ? 'test/' : ''
+                $this->config['test_env'] ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle(array_merge([
@@ -129,8 +129,8 @@ class Nutgram extends ResolveHandlers
         $this->mapper = $this->container->get(Hydrator::class);
 
         $botId = $this->config['bot_id'] ?? (int)explode(':', $this->token)[0];
-        $this->container->addShared(CacheInterface::class, $this->config['cache'] ?? new ArrayCache());
-        $this->container->addShared(LoggerInterface::class, $this->config['logger'] ?? new NullLogger());
+        $this->container->addShared(CacheInterface::class, $this->config['cache'] ?? ArrayCache::class);
+        $this->container->addShared(LoggerInterface::class, $this->config['logger'] ?? NullLogger::class);
 
         $this->container->addShared(ConversationCache::class)->addArguments([CacheInterface::class, $botId]);
         $this->container->addShared(GlobalCache::class)->addArguments([CacheInterface::class, $botId]);
@@ -152,6 +152,10 @@ class Nutgram extends ResolveHandlers
     public function __serialize(): array
     {
         unset($this->config['cache']);
+
+        if (!is_string($this->config['logger'])) {
+            unset($this->config['logger']);
+        }
 
         if (isset($this->config['local_path_transformer']) && $this->config['local_path_transformer'] instanceof Closure) {
             throw new CannotSerializeException();
