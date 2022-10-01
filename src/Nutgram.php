@@ -32,6 +32,7 @@ use SergiX44\Nutgram\Proxies\UpdateDataProxy;
 use SergiX44\Nutgram\Proxies\UserCacheProxy;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
+use SergiX44\Nutgram\Support\BulkMessenger;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
@@ -116,7 +117,7 @@ class Nutgram extends ResolveHandlers
             '%s/bot%s/%s',
             $this->config['api_url'] ?? self::DEFAULT_API_URL,
             $this->token,
-            $this->config['test_env'] ?? false ? 'test/' : ''
+                $this->config['test_env'] ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle(array_merge([
@@ -401,5 +402,15 @@ class Nutgram extends ResolveHandlers
         });
 
         return $this->setMyCommands($commands, $opt);
+    }
+
+    /**
+     * @return BulkMessenger
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getBulkMessenger(): BulkMessenger
+    {
+        return $this->container->get(BulkMessenger::class);
     }
 }
