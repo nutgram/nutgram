@@ -12,6 +12,7 @@ use SergiX44\Nutgram\Laravel\Commands\HookRemoveCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookSetCommand;
 use SergiX44\Nutgram\Laravel\Commands\IdeGenerateCommand;
 use SergiX44\Nutgram\Laravel\Commands\ListCommand;
+use SergiX44\Nutgram\Laravel\Commands\LogoutCommand;
 use SergiX44\Nutgram\Laravel\Commands\MakeCommandCommand;
 use SergiX44\Nutgram\Laravel\Commands\MakeConversationCommand;
 use SergiX44\Nutgram\Laravel\Commands\MakeHandlerCommand;
@@ -94,6 +95,7 @@ class NutgramServiceProvider extends ServiceProvider
                 MakeHandlerCommand::class,
                 MakeMiddlewareCommand::class,
                 IdeGenerateCommand::class,
+                LogoutCommand::class,
             ]);
 
             $this->publishes([
