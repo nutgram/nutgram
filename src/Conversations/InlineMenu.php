@@ -193,7 +193,7 @@ abstract class InlineMenu extends Conversation
      * @param  bool  $reopen
      * @return bool
      */
-    protected function closeMenu(?string $finalText = null, array $opt = [], bool $reopen = false): bool
+    protected function closeMenu(?string $finalText = null, array $opt = [], bool $reopen = false): bool|Message
     {
         if ($this->messageId && $this->chatId && $reopen) {
             $this->chatId = $this->messageId = null;
@@ -203,9 +203,9 @@ abstract class InlineMenu extends Conversation
             // if we have the final text, clear and update the last message
             if ($finalText !== null) {
                 $this->clearButtons();
-                $this->doUpdate($finalText, $this->chatId, $this->messageId, $this->buttons, $opt);
+                $message = $this->doUpdate($finalText, $this->chatId, $this->messageId, $this->buttons, $opt);
                 $this->chatId = $this->messageId = null;
-                return true;
+                return $message ?? true;
             }
 
             // otherwise delete it as default
@@ -222,9 +222,9 @@ abstract class InlineMenu extends Conversation
         // display it as a new message
         if ($finalText !== null) {
             $this->clearButtons();
-            $this->doOpen($finalText, $this->buttons, $opt);
+            $message = $this->doOpen($finalText, $this->buttons, $opt);
             $this->chatId = $this->messageId = null;
-            return true;
+            return $message ?? true;
         }
 
         return false;
