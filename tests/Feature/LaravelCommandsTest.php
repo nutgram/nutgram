@@ -6,6 +6,7 @@ use SergiX44\Nutgram\Laravel\Commands\HookRemoveCommand;
 use SergiX44\Nutgram\Laravel\Commands\HookSetCommand;
 use SergiX44\Nutgram\Laravel\Commands\IdeGenerateCommand;
 use SergiX44\Nutgram\Laravel\Commands\ListCommand;
+use SergiX44\Nutgram\Laravel\Commands\LogoutCommand;
 use SergiX44\Nutgram\Laravel\Commands\MakeCommandCommand;
 use SergiX44\Nutgram\Laravel\Commands\MakeConversationCommand;
 use SergiX44\Nutgram\Laravel\Commands\MakeHandlerCommand;
@@ -218,4 +219,36 @@ test('nutgram:ide:generate publish the stub file', function () {
         ->toBeFile()
         ->getFileContent()
         ->toContain('namespace SergiX44\Nutgram\Telegram\Types\Media {');
+});
+
+test('nutgram:logout makes a logout', function () {
+    $this->mock(Nutgram::class, function (MockInterface $mock) {
+        $mock->shouldReceive('deleteWebhook')->andReturn(true);
+        $mock->shouldReceive('close')->andReturn(true);
+        $mock->shouldReceive('logout')->andReturn(true);
+    });
+
+    $this->artisan(LogoutCommand::class)
+        ->expectsOutput('Webhook deleted.')
+        ->expectsOutput('Bot closed.')
+        ->expectsOutput('Logged out.')
+        ->expectsOutput('Done.')
+        ->expectsOutput('Remember to set the webhook again if needed!')
+        ->assertExitCode(0);
+});
+
+test('nutgram:logout makes a logout + drop pending updates', function () {
+    $this->mock(Nutgram::class, function (MockInterface $mock) {
+        $mock->shouldReceive('deleteWebhook')->with(['drop_pending_updates' => true])->andReturn(true);
+        $mock->shouldReceive('close')->andReturn(true);
+        $mock->shouldReceive('logout')->andReturn(true);
+    });
+
+    $this->artisan(LogoutCommand::class, ['--drop-pending-updates' => true])
+        ->expectsOutput('Webhook deleted.')
+        ->expectsOutput('Bot closed.')
+        ->expectsOutput('Logged out.')
+        ->expectsOutput('Done.')
+        ->expectsOutput('Remember to set the webhook again if needed!')
+        ->assertExitCode(0);
 });
