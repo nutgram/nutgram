@@ -18,10 +18,6 @@ class BulkMessenger
      */
     public function __construct(Nutgram $bot)
     {
-        if (!extension_loaded('pcntl')) {
-            throw new RuntimeException('The pcntl extension is required.');
-        }
-
         if (PHP_SAPI !== 'cli') {
             throw new RuntimeException('You can use the bulk messenger only via CLI.');
         }
@@ -64,12 +60,27 @@ class BulkMessenger
     /**
      * @return void
      */
-    public function start(): void
+    public function startAsync(): void
     {
+        if (!extension_loaded('pcntl')) {
+            throw new RuntimeException('The pcntl extension is required.');
+        }
+
         pcntl_async_signals(true);
         pcntl_signal(SIGALRM, $this);
 
         $this();
+    }
+
+    /**
+     * @return void
+     */
+    public function startSync(): void
+    {
+        while (!empty($this->chats)) {
+            $this();
+            sleep($this->seconds);
+        }
     }
 
     /**
