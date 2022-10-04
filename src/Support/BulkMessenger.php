@@ -18,9 +18,7 @@ class BulkMessenger
      */
     public function __construct(Nutgram $bot)
     {
-        if
-        (!extension_loaded('pcntl'))
-        {
+        if (!extension_loaded('pcntl')) {
             throw new RuntimeException('The pcntl extension is required.');
         }
 
