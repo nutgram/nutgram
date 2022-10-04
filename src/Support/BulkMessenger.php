@@ -18,8 +18,14 @@ class BulkMessenger
      */
     public function __construct(Nutgram $bot)
     {
+        if
+        (!extension_loaded('pcntl'))
+        {
+            throw new RuntimeException('The pcntl extension is required.');
+        }
+
         if (PHP_SAPI !== 'cli') {
-            throw new RuntimeException('This class can be instantiated only via CLI.');
+            throw new RuntimeException('You can use the bulk messenger only via CLI.');
         }
 
         $this->bot = $bot;
@@ -30,7 +36,7 @@ class BulkMessenger
      * @param  array  $parameters
      * @return $this
      */
-    public function setMessage(string $method, array $parameters): static
+    public function setPayload(string $method, array $parameters): static
     {
         $this->method = $method;
         $this->parameters = $parameters;
