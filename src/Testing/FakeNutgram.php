@@ -236,7 +236,10 @@ class FakeNutgram extends Nutgram
 
                 $requestIndex = "[$i] ";
                 print($requestIndex."\e[34m".$request->getUri()->getPath()."\e[39m".PHP_EOL);
-                $content = json_encode(FakeNutgram::getActualData($request), JSON_PRETTY_PRINT);
+                $content = json_encode(
+                    value: FakeNutgram::getActualData($request),
+                    flags: JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE,
+                );
                 print(preg_replace('/"(.+)":/', "\"\e[33m\${1}\e[39m\":", $content));
 
                 if ($i < count($this->getRequestHistory()) - 1) {
@@ -304,7 +307,7 @@ class FakeNutgram extends Nutgram
         $contentType = $request->getHeaderLine('Content-Type');
 
         //get body
-        $body = (string) $request->getBody();
+        $body = (string)$request->getBody();
 
         //get data from json
         if (str_contains($contentType, 'application/json')) {
