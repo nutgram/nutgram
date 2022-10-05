@@ -55,8 +55,9 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/pest",
-        "psalm": "vendor/bin/psalm"
+        "test": "@php vendor/bin/pest",
+        "test-coverage": "@php vendor/bin/pest --coverage --coverage-clover=coverage.xml",
+        "psalm": "@php vendor/bin/psalm"
     },
     "config": {
         "sort-packages": true,
