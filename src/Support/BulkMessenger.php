@@ -8,10 +8,15 @@ use SergiX44\Nutgram\Nutgram;
 class BulkMessenger
 {
     public Nutgram $bot;
-    private array $parameters = [];
-    private string $method = 'sendMessage';
-    protected int $seconds = 2;
+    private int $seconds = 2;
     private array $chats = [];
+    private string $text = 'Hello!';
+    private array $opt = [];
+
+    /**
+     * @var callable
+     */
+    private $callable;
 
     /**
      * @param  Nutgram  $bot
@@ -23,17 +28,18 @@ class BulkMessenger
         }
 
         $this->bot = $bot;
+        $this->callable = function (Nutgram $bot, int $chatId) {
+            $bot->sendMessage($this->text, array_merge($this->opt, ['chat_id' => $chatId]));
+        };
     }
 
     /**
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param  callable  $action
      * @return $this
      */
-    public function setPayload(string $method, array $parameters): static
+    public function using(callable $action): static
     {
-        $this->method = $method;
-        $this->parameters = $parameters;
+        $this->callable = $action;
         return $this;
     }
 
@@ -54,6 +60,26 @@ class BulkMessenger
     public function setInterval(int $seconds): static
     {
         $this->seconds = $seconds;
+        return $this;
+    }
+
+    /**
+     * @param  string  $text
+     * @return $this
+     */
+    public function setText(string $text): static
+    {
+        $this->text = $text;
+        return $this;
+    }
+
+    /**
+     * @param  array  $params
+     * @return $this
+     */
+    public function setOpt(array $params): static
+    {
+        $this->opt = $params;
         return $this;
     }
 
@@ -94,9 +120,7 @@ class BulkMessenger
             return;
         }
 
-        $parameters = array_merge($this->parameters, ['chat_id' => $chatId]);
-
-        $this->bot->{$this->method}(...$parameters);
+        ($this->callable)($this->bot, $chatId);
         pcntl_alarm($this->seconds);
     }
 }
