@@ -5,3 +5,4 @@ composer.lock
 .phpunit.result.cache
 phpunit.xml
 /vendor/
+coverage.xml
