@@ -70,7 +70,6 @@ it('it escapes the conversation when a specific handler is matched', function ($
     $bot->setRunningMode(new Fake($command));
     $bot->run();
     expect($bot->getData('test'))->toBe(-1);
-
 })->with('message_and_command');
 
 it('calls the same handler if not end or next step called', function ($update) {
