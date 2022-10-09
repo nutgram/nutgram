@@ -1,6 +1,7 @@
 <?php
 
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithBeforeStep;
 use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithClosing;
 use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithClosingMultipleSteps;
@@ -55,6 +56,22 @@ it('calls the closing handler with multiple steps', function ($update) {
     $bot->run();
     expect($bot->getData('test'))->toBe(3);
 })->with('message');
+
+it('it escapes the conversation when a specific handler is matched', function ($update, $command) {
+    $bot = Nutgram::fake($update);
+    $bot->onMessage(ConversationWithClosingMultipleSteps::class);
+    $bot->onCommand('start', function ($bot) {
+        $bot->setData('test', -1);
+    });
+
+    $bot->run();
+    expect($bot->getData('test'))->toBe(1);
+
+    $bot->setRunningMode(new Fake($command));
+    $bot->run();
+    expect($bot->getData('test'))->toBe(-1);
+
+})->with('message_and_command');
 
 it('calls the same handler if not end or next step called', function ($update) {
     $bot = Nutgram::fake($update);

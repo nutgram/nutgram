@@ -11,9 +11,6 @@ class LegacyHydrator implements Hydrator
     public function __construct()
     {
         $this->mapper = new JsonMapper();
-        $this->mapper->undefinedPropertyHandler = static function ($object, $propName, $jsonValue): void {
-            $object->{$propName} = $jsonValue;
-        };
     }
 
     /**

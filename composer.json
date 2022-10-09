@@ -42,7 +42,8 @@
       "pestphp/pest": "^1.1",
       "pestphp/pest-plugin-mock": "^1.0",
       "roave/security-advisories": "dev-latest",
-      "vimeo/psalm": "^4.11"
+      "vimeo/psalm": "^4.11",
+      "netresearch/jsonmapper": "^4.0.0"
     },
     "autoload": {
         "psr-4": {

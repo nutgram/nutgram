@@ -93,9 +93,18 @@ class BulkMessenger
         }
 
         pcntl_async_signals(true);
-        pcntl_signal(SIGALRM, $this);
+        pcntl_signal(SIGALRM, [$this, 'handleAlarm']);
 
+        $this->handleAlarm();
+    }
+
+    /**
+     * @return void
+     */
+    protected function handleAlarm(): void
+    {
         $this();
+        pcntl_alarm($this->seconds);
     }
 
     /**
@@ -121,6 +130,5 @@ class BulkMessenger
         }
 
         ($this->callable)($this->bot, $chatId);
-        pcntl_alarm($this->seconds);
     }
 }
