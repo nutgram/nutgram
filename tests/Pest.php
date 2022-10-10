@@ -48,10 +48,23 @@ dataset('message', function () {
     return [json_decode($file)];
 });
 
+dataset('multiple_messages', function () {
+    $file = file_get_contents(__DIR__.'/Updates/message.json');
+
+    return [[[json_decode($file), json_decode($file)]]];
+});
+
 dataset('command_message', function () {
     $file = file_get_contents(__DIR__.'/Updates/command_message.json');
 
     return [json_decode($file)];
+});
+
+dataset('message_and_command', function () {
+    $file = file_get_contents(__DIR__.'/Updates/command_message.json');
+    $file2 = file_get_contents(__DIR__.'/Updates/message.json');
+
+    return [[json_decode($file2), json_decode($file)]];
 });
 
 dataset('callback_query', function () {
