@@ -1,0 +1,22 @@
+{
+  "update_id": 123456789,
+  "poll": {
+    "id": "123456789",
+    "question": "What's your favorite color?",
+    "options": [
+      {
+        "text": "Red",
+        "voter_count": 1
+      },
+      {
+        "text": "Blue",
+        "voter_count": 2
+      }
+    ],
+    "total_voter_count": 3,
+    "is_closed": false,
+    "is_anonymous": false,
+    "type": "regular",
+    "allows_multiple_answers": false
+  }
+}
