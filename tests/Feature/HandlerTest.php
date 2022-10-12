@@ -377,17 +377,14 @@ test('commands can have descriptions', function ($update) {
     expect($cmd1->getName())->toBe('help');
     expect($cmd1->getDescription())->toBe('test');
     expect($cmd1->isHidden())->toBeFalse();
-    expect($cmd1->toBotCommand())->toBeInstanceOf(BotCommand::class);
 
     expect($cmd2->getName())->toBe('start');
     expect($cmd2->getDescription())->toBe('test2');
     expect($cmd2->isHidden())->toBeFalse();
-    expect($cmd2->toBotCommand())->toBeInstanceOf(BotCommand::class);
 
     expect($cmd3->getName())->toBe('end');
     expect($cmd3->getDescription())->toBeNull();
     expect($cmd3->isHidden())->toBeTrue();
-    expect($cmd3->toBotCommand())->toBeInstanceOf(BotCommand::class);
 })->with('command_message');
 
 
@@ -469,3 +466,22 @@ it('skips all global middleware', function ($update) {
     expect($testA)->toContain('LM1', 'Message');
     expect($testB)->toContain('GM1', 'GM2', 'LM1', 'Message');
 })->with('message');
+
+test('toBotCommand() returns BotCommand object', function () {
+    $bot = Nutgram::fake();
+
+    $cmd = $bot->onCommand('start', static function ($bot) {
+    })->description('start');
+
+    expect($cmd->toBotCommand())->toBeInstanceOf(BotCommand::class);
+});
+
+test('toBotCommand() throws exception if the description is not set', function () {
+    $bot = Nutgram::fake();
+
+    $cmd = $bot->onCommand('start', static function ($bot) {
+    });
+
+    $cmd->toBotCommand();
+
+})->throws(TypeError::class);
