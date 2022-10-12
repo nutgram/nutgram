@@ -85,5 +85,4 @@ test('missing callback method', function () {
         ->willStartConversation()
         ->hearText('start')
         ->reply();
-
 })->throws(InvalidArgumentException::class, 'The method handleMissing does not exists.');
