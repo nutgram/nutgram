@@ -483,5 +483,4 @@ test('toBotCommand() throws exception if the description is not set', function (
     });
 
     $cmd->toBotCommand();
-
 })->throws(TypeError::class);
