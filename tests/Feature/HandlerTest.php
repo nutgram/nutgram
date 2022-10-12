@@ -2,6 +2,7 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 
 it('calls the message handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -376,14 +377,17 @@ test('commands can have descriptions', function ($update) {
     expect($cmd1->getName())->toBe('help');
     expect($cmd1->getDescription())->toBe('test');
     expect($cmd1->isHidden())->toBeFalse();
+    expect($cmd1->toBotCommand())->toBeInstanceOf(BotCommand::class);
 
     expect($cmd2->getName())->toBe('start');
     expect($cmd2->getDescription())->toBe('test2');
     expect($cmd2->isHidden())->toBeFalse();
+    expect($cmd2->toBotCommand())->toBeInstanceOf(BotCommand::class);
 
     expect($cmd3->getName())->toBe('end');
     expect($cmd3->getDescription())->toBeNull();
     expect($cmd3->isHidden())->toBeTrue();
+    expect($cmd3->toBotCommand())->toBeInstanceOf(BotCommand::class);
 })->with('command_message');
 
 
