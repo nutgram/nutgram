@@ -102,7 +102,8 @@ it('it skips the middleware on the conversation when specified', function ($upda
     expect($bot->getData('test'))->toBe(3);
 })->with('message_and_command');
 
-it('it not escapes the conversation when a specific handler is matched because it skips handler',
+it(
+    'it not escapes the conversation when a specific handler is matched because it skips handler',
     function ($update, $command) {
         $bot = Nutgram::fake($update);
         $bot->onMessage(ConversationWithSkipHandlersMultipleSteps::class);
@@ -116,7 +117,8 @@ it('it not escapes the conversation when a specific handler is matched because i
         $bot->setRunningMode(new Fake($command));
         $bot->run();
         expect($bot->getData('test'))->toBe(2);
-    })->with('message_and_command');
+    }
+)->with('message_and_command');
 
 it('calls the same handler if not end or next step called', function ($update) {
     $bot = Nutgram::fake($update);
