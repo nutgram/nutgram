@@ -6,7 +6,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/nutgram/nutgram.svg?style=flat-square)](https://packagist.org/packages/nutgram/nutgram)
 [![Total Downloads](https://img.shields.io/packagist/dt/nutgram/nutgram.svg?style=flat-square)](https://packagist.org/packages/nutgram/nutgram)
-[![License](https://poser.pugx.org/nutgram/nutgram/license)](//packagist.org/packages/nutgram/nutgram)
+![GitHub](https://img.shields.io/github/license/nutgram/nutgram)
 [![API](https://img.shields.io/badge/Telegram%20Bot%20API-6.2%09--%20August%2012,%202022-blue.svg)](https://core.telegram.org/bots/api)
 
 [![Test Suite](https://github.com/nutgram/nutgram/actions/workflows/php.yml/badge.svg)](https://github.com/nutgram/nutgram/actions/workflows/php.yml)
