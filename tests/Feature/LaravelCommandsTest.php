@@ -24,10 +24,6 @@ test('nutgram:register-commands registers the bot commands', function () {
     $bot->onCommand('help', static function () {
     })->description('help command');
 
-    $this->mock(Nutgram::class, function (MockInterface $mock) {
-        $mock->shouldReceive('registerMyCommands')->andReturn(0);
-    });
-
     $this->artisan(RegisterCommandsCommand::class)
         ->expectsOutput('Bot commands set.')
         ->assertExitCode(0);
