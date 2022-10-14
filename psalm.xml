@@ -40,6 +40,7 @@
                 <referencedMethod name="Psr\Http\Client\ClientInterface::get"/>
                 <referencedMethod name="Psr\Http\Client\ClientInterface::post"/>
                 <referencedMethod name="Illuminate\Contracts\Filesystem\Filesystem::path"/>
+                <referencedMethod name="Illuminate\Contracts\Filesystem\Filesystem::putFileAs"/>
             </errorLevel>
         </UndefinedInterfaceMethod>
     </issueHandlers>
