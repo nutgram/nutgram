@@ -38,19 +38,13 @@ abstract class BaseMakeCommand extends Command
      * Return the sub directory name
      * @return string
      */
-    protected function getSubDirName(): string
-    {
-        return '?';
-    }
+    abstract protected function getSubDirName(): string;
 
     /**
      * Return the stub file path
      * @return string
      */
-    protected function getStubPath(): string
-    {
-        return __DIR__.'/../Stubs/?.stub';
-    }
+    abstract protected function getStubPath(): string;
 
     /**
      * Map the stub variables present in stub to its value
@@ -59,12 +53,8 @@ abstract class BaseMakeCommand extends Command
      */
     protected function getStubVariables(): array
     {
-        /** @var ?string $name */
-        $name = $this->argument('name') ?: null;
-
-        if ($name === null) {
-            throw new RuntimeException('You must provide a name');
-        }
+        /** @var string $name */
+        $name = $this->argument('name');
 
         return [
             'namespace' => $this->getSubDirName().$this->getNamespace($name),

@@ -91,6 +91,16 @@ test('nutgram:hook:info prints the webhook info with error', function () {
         ->assertExitCode(0);
 });
 
+test('nutgram:hook:info does not print the webhook info', function () {
+    $this->mock(Nutgram::class, function (MockInterface $mock) {
+        $mock->shouldReceive('getWebhookInfo')->andReturn(null);
+    });
+
+    $this->artisan(HookInfoCommand::class)
+        ->expectsOutput('Unable to get webhook info')
+        ->assertExitCode(1);
+});
+
 test('nutgram:hook:remove removes the bot webhook', function () {
     $this->mock(Nutgram::class, function (MockInterface $mock) {
         $mock->shouldReceive('deleteWebhook')->with([
