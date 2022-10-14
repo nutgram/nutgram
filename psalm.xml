@@ -43,5 +43,10 @@
                 <referencedMethod name="Illuminate\Contracts\Filesystem\Filesystem::putFileAs"/>
             </errorLevel>
         </UndefinedInterfaceMethod>
+        <InvalidScope>
+            <errorLevel type="suppress">
+                <directory name="tests/"/>
+            </errorLevel>
+        </InvalidScope>
     </issueHandlers>
 </psalm>
