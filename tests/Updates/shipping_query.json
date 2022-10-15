@@ -1,0 +1,22 @@
+{
+  "update_id": 123456789,
+  "shipping_query": {
+    "id": "123456789",
+    "from": {
+      "id": 123456789,
+      "is_bot": false,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "mariobros"
+    },
+    "invoice_payload": "test",
+    "shipping_address": {
+      "country_code": "US",
+      "state": "CA",
+      "city": "San Francisco",
+      "street_line1": "1st Street",
+      "street_line2": "2nd Street",
+      "post_code": "94107"
+    }
+  }
+}

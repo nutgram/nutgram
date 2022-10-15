@@ -21,13 +21,8 @@ class HookSetCommand extends Command
      */
     public function handle(): int
     {
-        /** @var ?string $url */
-        $url = $this->argument('url') ?: null;
-
-        if ($url === null) {
-            $this->error('You must provide a url');
-            return 1;
-        }
+        /** @var string $url */
+        $url = $this->argument('url');
 
         /** @var ?string $ip_address */
         $ip_address = $this->option('ip') ?: null;

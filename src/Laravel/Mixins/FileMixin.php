@@ -2,8 +2,7 @@
 
 namespace SergiX44\Nutgram\Laravel\Mixins;
 
-use Illuminate\Support\Facades\Storage;
-use Psr\Http\Client\ClientInterface;
+use Closure;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 
@@ -13,28 +12,14 @@ use SergiX44\Nutgram\Telegram\Types\Media\File;
 class FileMixin
 {
     /**
-     * @return \Closure
+     * @return Closure
      */
-    public function saveToDisk()
+    public function saveToDisk(): Closure
     {
-        return function (string $path, string $disk = null, array $clientOpt = []): bool {
+        return function (string $path, ?string $disk = null, array $clientOpt = []): bool {
             /** @var File $this */
 
-            if (is_dir($path)) {
-                $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-                $path .= basename($this->file_path ?? $this->file_id);
-            }
-
-            $savedPath = Storage::disk($disk)->path($path);
-
-            if ($this->getConfig()['is_local'] ?? false) {
-                return copy($this->downloadUrl($this), $savedPath);
-            }
-
-            $http = $this->getContainer()->get(ClientInterface::class);
-            $http->get($this->downloadUrl($this), array_merge(['sink' => $savedPath], $clientOpt));
-
-            return true;
+            return MixinUtils::saveFileToDisk($this, $path, $disk, $clientOpt);
         };
     }
 }

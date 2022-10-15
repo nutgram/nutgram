@@ -2,6 +2,7 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 
 it('calls the message handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -465,3 +466,21 @@ it('skips all global middleware', function ($update) {
     expect($testA)->toContain('LM1', 'Message');
     expect($testB)->toContain('GM1', 'GM2', 'LM1', 'Message');
 })->with('message');
+
+test('toBotCommand() returns BotCommand object', function () {
+    $bot = Nutgram::fake();
+
+    $cmd = $bot->onCommand('start', static function ($bot) {
+    })->description('start');
+
+    expect($cmd->toBotCommand())->toBeInstanceOf(BotCommand::class);
+});
+
+test('toBotCommand() throws exception if the description is not set', function () {
+    $bot = Nutgram::fake();
+
+    $cmd = $bot->onCommand('start', static function ($bot) {
+    });
+
+    $cmd->toBotCommand();
+})->throws(TypeError::class);

@@ -13,6 +13,7 @@ use SergiX44\Nutgram\Laravel\Commands\MakeHandlerCommand;
 use SergiX44\Nutgram\Laravel\Commands\MakeMiddlewareCommand;
 use SergiX44\Nutgram\Laravel\Commands\RegisterCommandsCommand;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 
 test('nutgram:register-commands registers the bot commands', function () {
@@ -23,10 +24,6 @@ test('nutgram:register-commands registers the bot commands', function () {
 
     $bot->onCommand('help', static function () {
     })->description('help command');
-
-    $this->mock(Nutgram::class, function (MockInterface $mock) {
-        $mock->shouldReceive('registerMyCommands')->andReturn(0);
-    });
 
     $this->artisan(RegisterCommandsCommand::class)
         ->expectsOutput('Bot commands set.')
@@ -95,6 +92,16 @@ test('nutgram:hook:info prints the webhook info with error', function () {
         ->assertExitCode(0);
 });
 
+test('nutgram:hook:info does not print the webhook info', function () {
+    $this->mock(Nutgram::class, function (MockInterface $mock) {
+        $mock->shouldReceive('getWebhookInfo')->andReturn(null);
+    });
+
+    $this->artisan(HookInfoCommand::class)
+        ->expectsOutput('Unable to get webhook info')
+        ->assertExitCode(1);
+});
+
 test('nutgram:hook:remove removes the bot webhook', function () {
     $this->mock(Nutgram::class, function (MockInterface $mock) {
         $mock->shouldReceive('deleteWebhook')->with([
@@ -143,7 +150,48 @@ test('nutgram:list with no handlers registered', function () {
 
 test('nutgram:list with handler registered', function () {
     $bot = Nutgram::fake();
+
+    $callback = new class {
+        public function foo(Nutgram $bot)
+        {
+        }
+    };
+
     $bot->onCommand('start', static function () {
+    });
+    $bot->onText('foo', [$callback, 'foo']);
+    $bot->onMessage([$callback::class, 'foo']);
+    $bot->onMessageType(MessageTypes::PHOTO, static function () {
+    });
+    $bot->onEditedMessage(static function () {
+    });
+    $bot->onChannelPost(static function () {
+    });
+    $bot->onEditedChannelPost(static function () {
+    });
+    $bot->onInlineQuery(static function () {
+    });
+    $bot->onchosenInlineResult(static function () {
+    });
+    $bot->onCallbackQuery(static function () {
+    });
+    $bot->onShippingQuery(static function () {
+    });
+    $bot->onPreCheckoutQuery(static function () {
+    });
+    $bot->onPoll(static function () {
+    });
+    $bot->onPollAnswer(static function () {
+    });
+    $bot->onMyChatMember(static function () {
+    });
+    $bot->onChatMember(static function () {
+    });
+    $bot->onChatJoinRequest(static function () {
+    });
+    $bot->onApiError(static function () {
+    });
+    $bot->onException(static function () {
     });
 
     $this->swap(Nutgram::class, $bot);

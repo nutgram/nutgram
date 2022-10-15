@@ -18,6 +18,9 @@
             <directory suffix=".php">./tests</directory>
             <directory suffix=".php">./src/Telegram/Endpoints</directory>
             <directory suffix=".php">./src/Telegram/Types</directory>
+            <directory suffix=".php">./src/RunningMode</directory>
+            <file>./src/NutgramServiceProvider.php</file>
+            <file>./src/Laravel/Commands/RunCommand.php</file>
         </exclude>
     </coverage>
     <php>
