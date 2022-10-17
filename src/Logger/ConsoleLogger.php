@@ -9,7 +9,7 @@ class ConsoleLogger extends AbstractLogger
 {
     public function log($level, Stringable|string $message, array $context = []): void
     {
-        if (PHP_SAPI !== 'cli') {
+        if (!$this->isCli()) {
             return;
         }
 
@@ -29,5 +29,10 @@ class ConsoleLogger extends AbstractLogger
             strtoupper($level),
             $message,
         ));
+    }
+
+    protected function isCli(): bool
+    {
+        return PHP_SAPI === 'cli';
     }
 }
