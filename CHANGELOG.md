@@ -2,6 +2,20 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.7.8 - 2022-10-17
+
+### What's Changed
+
+- inline menu return message by @SergiX44 in https://github.com/nutgram/nutgram/pull/211
+- Add nutgram:logout command by @Lukasss93 in https://github.com/nutgram/nutgram/pull/208
+- Add "JSON_UNESCAPED_UNICODE" to "dump" method by @Lukasss93 in https://github.com/nutgram/nutgram/pull/213
+- Coverage support by @Lukasss93 in https://github.com/nutgram/nutgram/pull/214
+- experimental bulk messenger by @SergiX44 in https://github.com/nutgram/nutgram/pull/210
+- increase coverage by @SergiX44 in https://github.com/nutgram/nutgram/pull/217
+- tests! tests! tests! by @Lukasss93 in https://github.com/nutgram/nutgram/pull/220
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.7.7...3.7.8
+
 ## 3.7.7 - 2022-09-22
 
 ### What's Changed
