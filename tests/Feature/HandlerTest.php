@@ -515,3 +515,57 @@ it('dumps no requests call', function () {
         ->toContain('Nutgram Request History Dump')
         ->toContain('Request history empty');
 });
+
+it('calls the message handler + withoutMiddleware', function () {
+    $bot = Nutgram::fake();
+
+    $test = '';
+
+    $middleare = function ($bot, $next) use (&$test) {
+        $test .= 'A';
+        $next($bot);
+    };
+
+    $bot->middleware($middleare);
+
+    $bot->onMessage(function ($bot) use (&$test) {
+        $test .= 'B';
+    });
+
+    $bot
+        ->hearText('foo')
+        ->withoutMiddleware([$middleare])
+        ->reply();
+
+    expect($test)->toBe('B');
+});
+
+it('calls the message handler + overrideMiddleware', function () {
+    $bot = Nutgram::fake();
+
+    $test = '';
+
+    $middleareA = function ($bot, $next) use (&$test) {
+        $test .= 'A';
+        $next($bot);
+    };
+
+    $middleareB = function ($bot, $next) use (&$test) {
+        $test .= 'B';
+        $next($bot);
+    };
+
+    $bot->middleware($middleareA);
+    $bot->middleware($middleareB);
+
+    $bot->onMessage(function ($bot) use (&$test) {
+        $test .= 'C';
+    });
+
+    $bot
+        ->hearText('foo')
+        ->overrideMiddleware([$middleareB])
+        ->reply();
+
+    expect($test)->toBe('BC');
+});
