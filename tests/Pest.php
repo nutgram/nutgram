@@ -15,8 +15,7 @@ use SergiX44\Nutgram\Tests\TestCase;
 */
 
 uses(TestCase::class)
-    ->group('Features')
-    ->in('Feature');
+    ->in('Feature', 'Unit');
 
 /*
 |--------------------------------------------------------------------------
