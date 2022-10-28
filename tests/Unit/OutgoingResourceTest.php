@@ -19,7 +19,7 @@ it('returns serialized json', function ($name, $output) {
     $resource = fopen('php://memory', 'rwb+');
     fwrite($resource, 'bar');
 
-    $this->outgoingResource = new OutgoingResource(
+    $outgoingResource = new OutgoingResource(
         name: $name,
         type: 'text/plain',
         size: 3,
@@ -27,7 +27,7 @@ it('returns serialized json', function ($name, $output) {
         tmp_resource: $resource
     );
 
-    expect(json_encode($this->outgoingResource))->toBe($output);
+    expect(json_encode($outgoingResource))->toBe($output);
 })->with([
     'filled name' => ['foo.txt', '"OutgoingResource{foo.txt}"'],
     'empty name' => [null, '"OutgoingResource"'],
