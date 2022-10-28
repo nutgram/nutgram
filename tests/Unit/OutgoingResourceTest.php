@@ -16,7 +16,6 @@ beforeEach(function () {
 });
 
 it('returns serialized json', function ($name, $output) {
-
     $resource = fopen('php://memory', 'rwb+');
     fwrite($resource, 'bar');
 
