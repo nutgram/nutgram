@@ -39,7 +39,7 @@ class OutgoingResource implements JsonSerializable
         $this->tmp_resource = $tmp_resource;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         if ($this->name === null) {
             return basename(__CLASS__);
