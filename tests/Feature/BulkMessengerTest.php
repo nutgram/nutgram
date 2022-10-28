@@ -22,7 +22,6 @@ it('does not run when not in cli mode', function () {
         ->getMock();
 
     $bot->getBulkMessenger();
-
 })->throws(RuntimeException::class, 'You can use the bulk messenger only via CLI.');
 
 it('does not run (async mode) without pcntl support', function () {
@@ -48,7 +47,6 @@ it('does not run (async mode) without pcntl support', function () {
         ->setText('*AAA*')
         ->setOpt(['parse_mode' => ParseMode::MARKDOWN])
         ->startAsync();
-
 })->throws(RuntimeException::class, 'The pcntl extension is required.');
 
 it('runs the bulk messenger', function () {
