@@ -68,6 +68,11 @@ class FakeNutgram extends Nutgram
     private array $methodsReturnTypes = [];
 
     /**
+     * @var array
+     */
+    protected array $dumpHistory = [];
+
+    /**
      * @param  mixed  $update
      * @param  array  $responses
      * @return FakeNutgram
@@ -154,6 +159,11 @@ class FakeNutgram extends Nutgram
     public function getRequestHistory(): array
     {
         return $this->testingHistory;
+    }
+
+    public function getDumpHistory(): array
+    {
+        return $this->dumpHistory;
     }
 
     /**
@@ -253,6 +263,7 @@ class FakeNutgram extends Nutgram
         print(PHP_EOL);
         print(str_repeat('-', 80).PHP_EOL);
         print(PHP_EOL);
+        $this->dumpHistory[] = preg_replace("/\033\[[^m]*m/", '', ob_get_contents());
         flush();
         ob_flush();
 

@@ -8,6 +8,10 @@ use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Testing\FormDataParser;
 use SergiX44\Nutgram\Testing\OutgoingResource;
 
+it('throws exception if the token is empty', function () {
+    new Nutgram('');
+})->throws(InvalidArgumentException::class, 'The token cannot be empty.');
+
 it('return the right running mode', function ($update) {
     /** @var \SergiX44\Nutgram\Nutgram $bot */
     $bot = Nutgram::fake($update);

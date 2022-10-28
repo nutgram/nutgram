@@ -484,3 +484,34 @@ test('toBotCommand() throws exception if the description is not set', function (
 
     $cmd->toBotCommand();
 })->throws(TypeError::class);
+
+it('dumps requests call', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('foo', function (Nutgram $bot) {
+        $bot->sendMessage('bar');
+    });
+
+    $bot
+        ->hearText('/foo')
+        ->reply()
+        ->dump();
+
+    expect($bot->getDumpHistory()[0])
+        ->toContain('Nutgram Request History Dump')
+        ->toContain("[0] sendMessage")
+        ->toContain('"text": "bar"');
+});
+
+it('dumps no requests call', function () {
+    $bot = Nutgram::fake();
+
+    $bot
+        ->hearText('/foo')
+        ->reply()
+        ->dump();
+
+    expect($bot->getDumpHistory()[0])
+        ->toContain('Nutgram Request History Dump')
+        ->toContain('Request history empty');
+});
