@@ -27,10 +27,10 @@ it('returns serialized json', function ($name, $output) {
         tmp_resource: $resource
     );
 
-    expect(json_encode($outgoingResource))->toBe($output);
+    expect(json_encode($outgoingResource))->toContain($output);
 })->with([
-    'filled name' => ['foo.txt', '"OutgoingResource{foo.txt}"'],
-    'empty name' => [null, '"OutgoingResource"'],
+    'filled name' => ['foo.txt', 'OutgoingResource{foo.txt}'],
+    'empty name' => [null, 'OutgoingResource'],
 ]);
 
 it('returns name', function () {
