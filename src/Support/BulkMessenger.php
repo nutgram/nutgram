@@ -28,7 +28,7 @@ class BulkMessenger
         }
 
         $this->bot = $bot;
-        $this->callable = function (Nutgram $bot, int $chatId) {
+        $this->callable = function (Nutgram $bot, int|string $chatId) {
             $bot->sendMessage($this->text, array_merge($this->opt, ['chat_id' => $chatId]));
         };
     }
