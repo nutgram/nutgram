@@ -21,6 +21,7 @@
             <directory suffix=".php">./src/RunningMode</directory>
             <file>./src/NutgramServiceProvider.php</file>
             <file>./src/Laravel/Commands/RunCommand.php</file>
+            <file>./src/Support/StrUtils.php</file>
         </exclude>
     </coverage>
     <php>

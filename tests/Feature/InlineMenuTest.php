@@ -18,6 +18,7 @@ test('valid inline menu + no end', function () {
         ->willStartConversation()
         ->hearText('start')
         ->reply()
+        ->assertActiveConversation()
         ->assertReplyMessage([
             'text' => 'Choose a color:',
             'reply_markup' => InlineKeyboardMarkup::make()
@@ -33,7 +34,8 @@ test('valid inline menu + no end', function () {
             'text' => 'Alert!',
         ], 1)
         ->hearText('start')
-        ->reply();
+        ->reply()
+        ->assertNoConversation();
 });
 
 test('valid inline menu + no end + no data', function () {
@@ -138,3 +140,23 @@ test('missing callback method', function () {
         ->hearText('start')
         ->reply();
 })->throws(InvalidArgumentException::class, 'The method handleMissing does not exists.');
+
+test('invalid assertActiveConversation without calling willStartConversation method', function () {
+    $bot = Nutgram::fake();
+    $bot->onMessage(ValidNoEndMenu::class);
+
+    $bot
+        ->hearText('start')
+        ->reply()
+        ->assertActiveConversation();
+})->throws(InvalidArgumentException::class, 'You cannot do this assert without userId and chatId.');
+
+test('invalid assertNoConversation without calling willStartConversation method', function () {
+    $bot = Nutgram::fake();
+    $bot->onMessage(ValidNoEndMenu::class);
+
+    $bot
+        ->hearText('start')
+        ->reply()
+        ->assertNoConversation();
+})->throws(InvalidArgumentException::class, 'You cannot do this assert without userId and chatId.');

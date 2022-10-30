@@ -484,3 +484,88 @@ test('toBotCommand() throws exception if the description is not set', function (
 
     $cmd->toBotCommand();
 })->throws(TypeError::class);
+
+it('dumps requests call', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('foo', function (Nutgram $bot) {
+        $bot->sendMessage('bar');
+    });
+
+    $bot
+        ->hearText('/foo')
+        ->reply()
+        ->dump();
+
+    expect($bot->getDumpHistory()[0])
+        ->toContain('Nutgram Request History Dump')
+        ->toContain("[0] sendMessage")
+        ->toContain('"text": "bar"');
+});
+
+it('dumps no requests call', function () {
+    $bot = Nutgram::fake();
+
+    $bot
+        ->hearText('/foo')
+        ->reply()
+        ->dump();
+
+    expect($bot->getDumpHistory()[0])
+        ->toContain('Nutgram Request History Dump')
+        ->toContain('Request history empty');
+});
+
+it('calls the message handler + withoutMiddleware', function () {
+    $bot = Nutgram::fake();
+
+    $test = '';
+
+    $middleare = function ($bot, $next) use (&$test) {
+        $test .= 'A';
+        $next($bot);
+    };
+
+    $bot->middleware($middleare);
+
+    $bot->onMessage(function ($bot) use (&$test) {
+        $test .= 'B';
+    });
+
+    $bot
+        ->hearText('foo')
+        ->withoutMiddleware([$middleare])
+        ->reply();
+
+    expect($test)->toBe('B');
+});
+
+it('calls the message handler + overrideMiddleware', function () {
+    $bot = Nutgram::fake();
+
+    $test = '';
+
+    $middleareA = function ($bot, $next) use (&$test) {
+        $test .= 'A';
+        $next($bot);
+    };
+
+    $middleareB = function ($bot, $next) use (&$test) {
+        $test .= 'B';
+        $next($bot);
+    };
+
+    $bot->middleware($middleareA);
+    $bot->middleware($middleareB);
+
+    $bot->onMessage(function ($bot) use (&$test) {
+        $test .= 'C';
+    });
+
+    $bot
+        ->hearText('foo')
+        ->overrideMiddleware([$middleareB])
+        ->reply();
+
+    expect($test)->toBe('BC');
+});

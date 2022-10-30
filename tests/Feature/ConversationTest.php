@@ -179,6 +179,19 @@ it('works with inline conversations', function ($update) {
     expect($bot->getData('test'))->toBe(1);
 })->with('message');
 
+it('does not start conversation outside of it', function () {
+    $bot = Nutgram::fake();
+
+    $bot->stepConversation(function (Nutgram $bot) {
+        //foo
+    });
+})->throws(InvalidArgumentException::class, 'You cannot step a conversation without userId and chatId.');
+
+it('does not end conversation outside of it', function () {
+    $bot = Nutgram::fake();
+    $bot->endConversation();
+})->throws(InvalidArgumentException::class, 'You cannot end a conversation without userId and chatId.');
+
 it('does not work with empty conversation class', function ($update) {
     $bot = Nutgram::fake($update);
 
