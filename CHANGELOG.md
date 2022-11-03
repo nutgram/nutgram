@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.7.9 - 2022-11-03
+
+### What's Changed
+
+- Add php 8.2 support to php.yml by @Lukasss93 in https://github.com/nutgram/nutgram/pull/227
+- Fix chatId type of BulkMessenger class by @Lukasss93 in https://github.com/nutgram/nutgram/pull/232
+- 2 Tests 2 Coverage by @Lukasss93 in https://github.com/nutgram/nutgram/pull/228
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.7.8...3.7.9
+
 ## 3.7.8 - 2022-10-17
 
 ### What's Changed
