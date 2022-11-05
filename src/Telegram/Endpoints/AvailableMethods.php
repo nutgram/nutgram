@@ -1186,7 +1186,7 @@ trait AvailableMethods
      */
     public function getForumTopicIconStickers(): ?array
     {
-        return $this->requestJson(__FUNCTION__, [], Sticker::class);
+        return $this->requestJson(__FUNCTION__, mapTo: Sticker::class);
     }
 
     /**
@@ -1203,8 +1203,7 @@ trait AvailableMethods
      */
     public function createForumTopic(string|int $chat_id, string $name, array $opt = []): ?ForumTopic
     {
-        $required = compact('chat_id', 'name');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), ForumTopic::class);
+        return $this->requestJson(__FUNCTION__, array_merge(compact('chat_id', 'name'), $opt), ForumTopic::class);
     }
 
     /**
@@ -1227,9 +1226,11 @@ trait AvailableMethods
         int $message_thread_id,
         string $name,
         string $icon_custom_emoji_id
-    ): ?bool {
-        $required = compact('chat_id', 'message_thread_id', 'name', 'icon_custom_emoji_id');
-        return $this->requestJson(__FUNCTION__, $required);
+    ): ?bool
+    {
+        return $this->requestJson(__FUNCTION__,
+            compact('chat_id', 'message_thread_id', 'name', 'icon_custom_emoji_id')
+        );
     }
 
     /**
@@ -1245,8 +1246,7 @@ trait AvailableMethods
      */
     public function closeForumTopic(string|int $chat_id, int $message_thread_id): ?bool
     {
-        $required = compact('chat_id', 'message_thread_id');
-        return $this->requestJson(__FUNCTION__, $required);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
     }
 
     /**
@@ -1262,8 +1262,7 @@ trait AvailableMethods
      */
     public function reopenForumTopic(string|int $chat_id, int $message_thread_id): ?bool
     {
-        $required = compact('chat_id', 'message_thread_id');
-        return $this->requestJson(__FUNCTION__, $required);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
     }
 
     /**
@@ -1279,8 +1278,7 @@ trait AvailableMethods
      */
     public function deleteForumTopic(string|int $chat_id, int $message_thread_id): ?bool
     {
-        $required = compact('chat_id', 'message_thread_id');
-        return $this->requestJson(__FUNCTION__, $required);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
     }
 
     /**
@@ -1296,8 +1294,7 @@ trait AvailableMethods
      */
     public function unpinAllForumTopicMessages(string|int $chat_id, int $message_thread_id): ?bool
     {
-        $required = compact('chat_id', 'message_thread_id');
-        return $this->requestJson(__FUNCTION__, $required);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
     }
 
     /**
