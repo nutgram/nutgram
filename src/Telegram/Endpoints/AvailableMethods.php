@@ -1226,9 +1226,9 @@ trait AvailableMethods
         int $message_thread_id,
         string $name,
         string $icon_custom_emoji_id
-    ): ?bool
-    {
-        return $this->requestJson(__FUNCTION__,
+    ): ?bool {
+        return $this->requestJson(
+            __FUNCTION__,
             compact('chat_id', 'message_thread_id', 'name', 'icon_custom_emoji_id')
         );
     }
