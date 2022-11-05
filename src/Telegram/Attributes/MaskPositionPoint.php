@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-class MaskPositionPoint
+class MaskPositionPoint extends BaseAttribute
 {
     public const FOREHEAD = 'forehead';
     public const EYES = 'eyes';

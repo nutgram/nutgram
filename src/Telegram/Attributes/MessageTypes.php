@@ -2,9 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-use ReflectionClass;
-
-class MessageTypes
+class MessageTypes extends BaseAttribute
 {
     public const TEXT = 'text';
     public const AUDIO = 'audio';
@@ -42,12 +40,4 @@ class MessageTypes
     public const VIDEO_CHAT_ENDED = 'video_chat_ended';
     public const VIDEO_CHAT_PARTICIPANTS_INVITED = 'video_chat_participants_invited';
     public const WEB_APP_DATA = 'web_app_data';
-
-    /**
-     * @return array
-     */
-    public static function all(): array
-    {
-        return (new ReflectionClass(__CLASS__))->getConstants();
-    }
 }

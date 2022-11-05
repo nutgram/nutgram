@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-class PassportTypes
+class PassportTypes extends BaseAttribute
 {
     public const PERSONAL_DETAILS = 'personal_details';
     public const PASSPORT = 'passport';

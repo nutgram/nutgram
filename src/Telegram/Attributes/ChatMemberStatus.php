@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-class ChatMemberStatus
+class ChatMemberStatus extends BaseAttribute
 {
     public const CREATOR = 'creator';
     public const ADMINISTRATOR = 'administrator';
