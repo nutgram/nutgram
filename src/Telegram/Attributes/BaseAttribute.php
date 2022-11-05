@@ -11,6 +11,6 @@ abstract class BaseAttribute
      */
     public static function all(): array
     {
-        return (new ReflectionClass(__CLASS__))->getConstants();
+        return (new ReflectionClass(static::class))->getConstants();
     }
 }
