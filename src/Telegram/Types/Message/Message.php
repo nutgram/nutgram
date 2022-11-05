@@ -5,6 +5,9 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicClosed;
+use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicCreated;
+use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicReopened;
 use SergiX44\Nutgram\Telegram\Types\Game\Game;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
@@ -40,6 +43,11 @@ class Message extends BaseType
      * Unique message identifier inside this chat
      */
     public int $message_id;
+
+    /**
+     * Optional. Unique identifier of a message thread to which the message belongs; for supergroups only
+     */
+    public ?int $message_thread_id = null;
 
     /**
      * Optional. Sender, can be empty for messages sent to channels
@@ -94,6 +102,11 @@ class Message extends BaseType
      * adding a link to their account in forwarded messages
      */
     public ?int $forward_date = null;
+
+    /**
+     * Optional. True, if the message is sent to a forum topic
+     */
+    public ?bool $is_topic_message = null;
 
     /**
      * Optional. True, if the message is a channel post that was automatically forwarded
@@ -341,6 +354,21 @@ class Message extends BaseType
      * A user in the chat triggered another user's proximity alert while sharing Live Location.
      */
     public ?ProximityAlertTriggered $proximity_alert_triggered = null;
+
+    /**
+     * Optional. Service message: forum topic created
+     */
+    public ?ForumTopicCreated $forum_topic_created = null;
+
+    /**
+     * Optional. Service message: forum topic closed
+     */
+    public ?ForumTopicClosed $forum_topic_closed = null;
+
+    /**
+     * Optional. Service message: forum topic reopened
+     */
+    public ?ForumTopicReopened $forum_topic_reopened = null;
 
     /**
      * Optional. Service message: voice chat scheduled

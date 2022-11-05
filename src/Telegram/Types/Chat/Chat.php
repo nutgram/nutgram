@@ -46,10 +46,29 @@ class Chat extends BaseType
     public ?string $last_name = null;
 
     /**
+     * Optional. True, if the supergroup chat is a forum
+     * (has {@see https://telegram.org/blog/topics-in-groups-collectible-usernames#topics-in-groups topics} enabled)
+     */
+    public ?bool $is_forum = null;
+
+    /**
      * Optional. Chat photo.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?ChatPhoto $photo = null;
+
+    /**
+     * Optional. If non-empty, the list of all
+     * {@see https://telegram.org/blog/topics-in-groups-collectible-usernames#collectible-usernames active chat usernames}; for private chats, supergroups and channels. Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * @var string[]|null
+     */
+    public ?array $active_usernames = null;
+
+    /**
+     * Optional. Custom emoji identifier of emoji status of the other party in a private chat.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?string $emoji_status_custom_emoji_id = null;
 
     /**
      * Optional. Bio of the other party in a private chat.
