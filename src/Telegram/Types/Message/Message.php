@@ -382,8 +382,12 @@ class Message extends BaseType
      */
     public function getParsedCommand(): ?string
     {
-        if ($this->text !== null && preg_match('/^(\/\w+)(@\w+)?(.+)?$/', $this->text, $matches)) {
-            return $matches[1].($matches[3] ?? '');
+        $username = $this->bot->getConfig()['username'] ?: null;
+        $tag = $username !== null ? "(?<tag>@$username)?" : '';
+        $pattern = sprintf("/^(?<name>\\/[a-z]+)%s(?<args> .+)?\$/i", $tag);
+
+        if ($this->text !== null && preg_match($pattern, $this->text, $matches)) {
+            return $matches['name'].($matches['args'] ?? '');
         }
         return null;
     }
