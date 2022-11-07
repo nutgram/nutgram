@@ -40,6 +40,8 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected ?Update $update = null;
 
+    abstract public function getConfig(): array;
+
     /**
      * @return array
      */
@@ -52,7 +54,8 @@ abstract class ResolveHandlers extends CollectHandlers
             $messageType = $this->update->message->getType();
 
             if ($messageType === MessageTypes::TEXT) {
-                $text = $this->update?->message?->getParsedCommand() ?? $this->update->message?->text;
+                $username = $this->getConfig()['bot_name'] ?? null;
+                $text = $this->update?->message?->getParsedCommand($username) ?? $this->update->message?->text;
 
                 if ($text !== null) {
                     $this->addHandlersBy($resolvedHandlers, $updateType, $messageType, $text);

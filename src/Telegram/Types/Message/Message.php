@@ -378,12 +378,12 @@ class Message extends BaseType
      * Example:
      * IN: /hello param1 param2 or /hello[at]MyDearBot param1 param2
      * OUT: /hello param1 param2
+     * @param  string|null  $username
      * @return string|null
      */
-    public function getParsedCommand(): ?string
+    public function getParsedCommand(?string $username = null): ?string
     {
-        $username = $this->bot?->getConfig()['username'] ?? null;
-        $tag = $username !== null ? "(?<tag>@$username)?" : '';
+        $tag = $username !== null ? "(@$username)?" : '';
         $pattern = sprintf("/^(?<name>\\/[a-z]+)%s(?<args> .+)?\$/i", $tag);
 
         if ($this->text !== null && preg_match($pattern, $this->text, $matches)) {

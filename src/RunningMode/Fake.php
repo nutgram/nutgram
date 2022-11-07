@@ -12,9 +12,9 @@ class Fake implements RunningMode
 
     /**
      * Fake running mode constructor.
-     * @param  string|null  $update
+     * @param  object|array|null  $update
      */
-    public function __construct(private mixed $update = null)
+    public function __construct(private object|array|null $update = null)
     {
     }
 

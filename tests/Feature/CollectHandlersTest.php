@@ -32,6 +32,17 @@ it('calls onCommand() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('command');
 
+it('calls onCommand() handler with different tags', function ($update, $valid) {
+    $bot = Nutgram::fake($update, config: ['bot_name' => 'foo']);
+    $bot->onCommand('test', function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called', false))->toBe($valid);
+})->with('command_tags');
+
 it('calls onText() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
