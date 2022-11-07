@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-class PollType
+class PollType extends BaseEnum
 {
     public const REGULAR = 'regular';
     public const QUIZ = 'quiz';

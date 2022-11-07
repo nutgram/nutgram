@@ -284,6 +284,42 @@ it('calls onChatJoinRequest() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('chat_join_request');
 
+it('calls onForumTopicCreated handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onForumTopicCreated(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('forum_topic_created');
+
+it('calls onForumTopicClosed handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onForumTopicClosed(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('forum_topic_closed');
+
+it('calls onForumTopicReopened handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onForumTopicReopened(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('forum_topic_reopened');
+
 it('calls onException() handler', function ($update) {
     $bot = Nutgram::fake($update);
 

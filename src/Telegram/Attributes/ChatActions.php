@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-class ChatActions
+class ChatActions extends BaseEnum
 {
     public const TYPING = 'typing';
     public const UPLOAD_PHOTO = 'upload_photo';

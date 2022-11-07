@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-class Emojis
+class Emojis extends BaseEnum
 {
     public const DICE = '🎲';
     public const DART = '🎯';

@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-class ChatType
+class ChatType extends BaseEnum
 {
     public const SENDER = 'sender';
     public const PRIVATE = 'private';

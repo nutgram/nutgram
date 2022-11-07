@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-class PassportSources
+class PassportSources extends BaseEnum
 {
     public const DATA = 'data';
     public const FRONT_SIDE = 'front_side';

@@ -36,6 +36,11 @@ trait ChatMemberRestricted
     public ?bool $can_pin_messages = null;
 
     /**
+     * True, if the user is allowed to create forum topics
+     */
+    public ?bool $can_manage_topics = null;
+
+    /**
      * True, if the user can send text messages, contacts, locations and venues
      */
     public ?bool $can_send_messages = null;

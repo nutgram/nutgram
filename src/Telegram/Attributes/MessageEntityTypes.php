@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-class MessageEntityTypes
+class MessageEntityTypes extends BaseEnum
 {
     public const MENTION = 'mention';
     public const HASHTAG = 'hashtag';
