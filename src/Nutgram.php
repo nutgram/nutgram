@@ -24,7 +24,7 @@ use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Exception\CannotSerializeException;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
-use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Handlers\Type\CommandHandler;
 use SergiX44\Nutgram\Hydrator\Hydrator;
 use SergiX44\Nutgram\Hydrator\NutgramHydrator;
 use SergiX44\Nutgram\Proxies\GlobalCacheProxy;
@@ -396,7 +396,7 @@ class Nutgram extends ResolveHandlers
     {
         $commands = [];
         array_walk_recursive($this->handlers, static function ($handler) use (&$commands) {
-            if ($handler instanceof Command && !$handler->isHidden()) {
+            if ($handler instanceof CommandHandler && !$handler->isHidden()) {
                 $commands[] = $handler->toBotCommand();
             }
         });

@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
-use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Handlers\Type\CommandHandler;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 
@@ -14,13 +14,14 @@ trait MessageHandlers
     /**
      * @param  string  $command
      * @param $callable
-     * @return Command
+     * @return CommandHandler
      */
-    public function onCommand(string $command, $callable): Command
+    public function onCommand(string $command, $callable): CommandHandler
     {
         $command = "/$command";
 
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command] = new Command($callable, $command);
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command] = new CommandHandler($callable,
+            $command);
     }
 
     /**

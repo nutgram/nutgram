@@ -5,7 +5,7 @@ namespace SergiX44\Nutgram\Handlers\Type;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 
-class Command extends Handler
+class CommandHandler extends Handler
 {
     protected ?string $description = null;
 
@@ -36,9 +36,9 @@ class Command extends Handler
 
     /**
      * @param  string  $description
-     * @return Command
+     * @return CommandHandler
      */
-    public function description(string $description): Command
+    public function description(string $description): CommandHandler
     {
         $this->description = $description;
         return $this;
