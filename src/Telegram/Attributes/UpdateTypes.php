@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-class UpdateTypes extends BaseAttribute
+class UpdateTypes extends BaseEnum
 {
     public const MESSAGE = 'message';
     public const EDITED_MESSAGE = 'edited_message';

@@ -4,7 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Attributes;
 
 use ReflectionClass;
 
-abstract class BaseAttribute
+abstract class BaseEnum
 {
     /**
      * @return array

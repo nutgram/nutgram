@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Attributes;
 
-class MessageTypes extends BaseAttribute
+class MessageTypes extends BaseEnum
 {
     public const TEXT = 'text';
     public const ANIMATION = 'animation';

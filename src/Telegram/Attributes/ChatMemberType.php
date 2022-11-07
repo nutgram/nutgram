@@ -9,7 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberMember;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberRestricted;
 
-class ChatMemberType extends BaseAttribute
+class ChatMemberType extends BaseEnum
 {
     public const OWNER = ChatMemberOwner::class;
     public const ADMINISTRATOR = ChatMemberAdministrator::class;
