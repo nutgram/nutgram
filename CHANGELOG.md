@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.8.0 - 2022-11-07
+
+### What's Changed
+
+- Bot API 6.3 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/235
+- Fix command parser by @Lukasss93 in https://github.com/nutgram/nutgram/pull/238
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.7.9...3.8.0
+
 ## 3.7.9 - 2022-11-03
 
 ### What's Changed
