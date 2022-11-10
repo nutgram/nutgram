@@ -35,10 +35,10 @@ class CommandHandler extends Handler
     }
 
     /**
-     * @param  string  $description
+     * @param  string|null  $description
      * @return CommandHandler
      */
-    public function description(string $description): CommandHandler
+    public function description(?string $description): CommandHandler
     {
         $this->description = $description;
         return $this;

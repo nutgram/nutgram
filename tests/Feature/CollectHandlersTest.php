@@ -5,6 +5,8 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
+use SergiX44\Nutgram\Tests\Feature\OOP\MiddlewareA;
+use SergiX44\Nutgram\Tests\Feature\OOP\TestCommand;
 
 it('calls middleware() handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -30,6 +32,30 @@ it('calls onCommand() handler', function ($update) {
     $bot->run();
 
     expect($bot->getData('called'))->toBeTrue();
+})->with('command');
+
+it('calls onCommand() handler without callable', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onCommand('test');
+    $bot->run();
+})->with('command')->throws(InvalidArgumentException::class, 'You must provide a callable');
+
+it('calls onCommand() handler with abstract class Command', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->middleware(MiddlewareA::class);
+
+    $handler = $bot->onCommand(TestCommand::class);
+
+    $bot->run();
+
+    expect($bot->getData('command called'))->toBeTrue();
+    expect($bot->getData('middlewareA', false))->toBeFalse();
+    expect($bot->getData('middlewareB', false))->toBeTrue();
+
+    expect($handler)
+        ->getName()->toBe('test')
+        ->getDescription()->toBe('This is a test command');
 })->with('command');
 
 it('calls onCommand() handler with different tags', function ($update, $valid) {

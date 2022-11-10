@@ -2,7 +2,9 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use InvalidArgumentException;
 use SergiX44\Nutgram\Handlers\Type\CommandHandler;
+use SergiX44\Nutgram\Support\Command;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 
@@ -16,12 +18,25 @@ trait MessageHandlers
      * @param $callable
      * @return CommandHandler
      */
-    public function onCommand(string $command, $callable): CommandHandler
+    public function onCommand(string $command, $callable = null): CommandHandler
     {
-        $command = "/$command";
+        if (is_subclass_of($command, Command::class)) {
+            $commandName = "/{$command::$name}";
+            $handler = new CommandHandler($command, $commandName);
+            $handler->description($command::$description);
+            array_walk($command::$middlewares, fn ($middleware) => $handler->middleware($middleware));
+            if ($command::$skipGlobalMiddlewares !== null) {
+                $handler->skipGlobalMiddlewares($command::$skipGlobalMiddlewares);
+            }
+        } else {
+            if ($callable === null) {
+                throw new InvalidArgumentException('You must provide a callable');
+            }
+            $commandName = "/$command";
+            $handler = new CommandHandler($callable, $commandName);
+        }
 
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command] = new CommandHandler($callable,
-            $command);
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$commandName] = $handler;
     }
 
     /**
