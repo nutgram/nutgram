@@ -14,11 +14,11 @@ use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 trait MessageHandlers
 {
     /**
-     * @param  string  $command
-     * @param $callable
+     * @param  string|callable|array  $command
+     * @param  callable|array|null  $callable
      * @return CommandHandler
      */
-    public function onCommand(string $command, $callable = null): CommandHandler
+    public function onCommand($command, $callable = null): CommandHandler
     {
         if (is_subclass_of($command, Command::class)) {
             $commandName = "/{$command::$name}";
