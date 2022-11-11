@@ -34,11 +34,9 @@ trait MessageHandlers
         if (is_array($command) && is_subclass_of($command[0], Command::class)) {
             //Case B: onCommand([CommandClass::class, 'method'])
             $commandClass = $command[0];
-        } else {
-            if (is_string($command) && is_subclass_of($command, Command::class)) {
-                //Case C: onCommand(CommandClass::class)
-                $commandClass = $command;
-            }
+        } elseif (is_string($command) && is_subclass_of($command, Command::class)) {
+            //Case C: onCommand(CommandClass::class)
+            $commandClass = $command;
         }
 
         if ($commandClass === null) {
