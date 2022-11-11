@@ -6,7 +6,6 @@ use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Tests\Feature\OOP\MiddlewareA;
-use SergiX44\Nutgram\Tests\Feature\OOP\TestCommand;
 
 it('calls middleware() handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -40,23 +39,31 @@ it('calls onCommand() handler without callable', function ($update) {
     $bot->run();
 })->with('command')->throws(InvalidArgumentException::class, 'You must provide a callable');
 
-it('calls onCommand() handler with abstract class Command', function ($update) {
+it('calls onCommand() handler with abstract class Command', function ($update, $handler, $data) {
     $bot = Nutgram::fake($update);
 
     $bot->middleware(MiddlewareA::class);
 
-    $handler = $bot->onCommand(TestCommand::class);
+    $handler = $bot->onCommand($handler);
 
     $bot->run();
 
-    expect($bot->getData('command called'))->toBeTrue();
+    expect($bot->getData($data))->toBeTrue();
     expect($bot->getData('middlewareA', false))->toBeFalse();
     expect($bot->getData('middlewareB', false))->toBeTrue();
 
     expect($handler)
         ->getName()->toBe('test')
         ->getDescription()->toBe('This is a test command');
-})->with('command');
+})->with('command_abstract');
+
+it('calls onCommand() handler with invalid callable', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onCommand(123);
+
+    $bot->run();
+})->with('command')->throws(InvalidArgumentException::class, 'You must provide a valid Command class');
 
 it('calls onCommand() handler with different tags', function ($update, $valid) {
     $bot = Nutgram::fake($update, config: ['bot_name' => 'foo']);

@@ -19,4 +19,9 @@ class TestCommand extends Command
     {
         $bot->setData('command called', true);
     }
+
+    public function suchwow(Nutgram $bot): void
+    {
+        $bot->setData('such command called', true);
+    }
 }

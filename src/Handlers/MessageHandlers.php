@@ -20,22 +20,38 @@ trait MessageHandlers
      */
     public function onCommand($command, $callable = null): CommandHandler
     {
-        if (is_subclass_of($command, Command::class)) {
-            $commandName = "/{$command::$name}";
-            $handler = new CommandHandler($command, $commandName);
-            $handler->description($command::$description);
-            array_walk($command::$middlewares, fn ($middleware) => $handler->middleware($middleware));
-            if ($command::$skipGlobalMiddlewares !== null) {
-                $handler->skipGlobalMiddlewares($command::$skipGlobalMiddlewares);
-            }
-        } else {
+        //Case A: onCommand('start', callable)
+        if (is_string($command) && !is_subclass_of($command, Command::class)) {
             if ($callable === null) {
                 throw new InvalidArgumentException('You must provide a callable');
             }
             $commandName = "/$command";
             $handler = new CommandHandler($callable, $commandName);
+            return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$commandName] = $handler;
         }
 
+        $commandClass = null;
+        if (is_array($command) && is_subclass_of($command[0], Command::class)) {
+            //Case B: onCommand([CommandClass::class, 'method'])
+            $commandClass = $command[0];
+        } else {
+            if (is_string($command) && is_subclass_of($command, Command::class)) {
+                //Case C: onCommand(CommandClass::class)
+                $commandClass = $command;
+            }
+        }
+
+        if ($commandClass === null) {
+            throw new InvalidArgumentException('You must provide a valid Command class');
+        }
+
+        $commandName = "/{$commandClass::$name}";
+        $handler = new CommandHandler($command, $commandName);
+        $handler->description($commandClass::$description);
+        array_walk($commandClass::$middlewares, fn ($middleware) => $handler->middleware($middleware));
+        if ($commandClass::$skipGlobalMiddlewares !== null) {
+            $handler->skipGlobalMiddlewares($commandClass::$skipGlobalMiddlewares);
+        }
         return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$commandName] = $handler;
     }
 
