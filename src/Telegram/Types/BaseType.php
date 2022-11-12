@@ -44,4 +44,9 @@ abstract class BaseType
         $this->bot = $bot;
         return $this;
     }
+
+    public function getBot(): ?Nutgram
+    {
+        return $this->bot;
+    }
 }
