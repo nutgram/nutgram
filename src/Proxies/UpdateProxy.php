@@ -45,7 +45,7 @@ trait UpdateProxy
      */
     public function chat(): ?Chat
     {
-        return $this->update?->getChat()?->bindToInstance($this);
+        return $this->update?->getChat();
     }
 
     /**
@@ -61,7 +61,7 @@ trait UpdateProxy
      */
     public function user(): ?User
     {
-        return $this->update?->getUser()?->bindToInstance($this);
+        return $this->update?->getUser();
     }
 
     /**
@@ -77,7 +77,7 @@ trait UpdateProxy
      */
     public function message(): ?Message
     {
-        return $this->update?->getMessage()?->bindToInstance($this);
+        return $this->update?->getMessage();
     }
 
     /**
@@ -93,7 +93,7 @@ trait UpdateProxy
      */
     public function callbackQuery(): ?CallbackQuery
     {
-        return $this->update?->callback_query?->bindToInstance($this);
+        return $this->update?->callback_query;
     }
 
     /**
@@ -109,7 +109,7 @@ trait UpdateProxy
      */
     public function inlineQuery(): ?InlineQuery
     {
-        return $this->update?->inline_query?->bindToInstance($this);
+        return $this->update?->inline_query;
     }
 
     /**
@@ -117,7 +117,7 @@ trait UpdateProxy
      */
     public function chosenInlineResult(): ?ChosenInlineResult
     {
-        return $this->update?->chosen_inline_result?->bindToInstance($this);
+        return $this->update?->chosen_inline_result;
     }
 
     /**
@@ -125,7 +125,7 @@ trait UpdateProxy
      */
     public function shippingQuery(): ?ShippingQuery
     {
-        return $this->update?->shipping_query?->bindToInstance($this);
+        return $this->update?->shipping_query;
     }
 
     /**
@@ -141,7 +141,7 @@ trait UpdateProxy
      */
     public function preCheckoutQuery(): ?PreCheckoutQuery
     {
-        return $this->update?->pre_checkout_query?->bindToInstance($this);
+        return $this->update?->pre_checkout_query;
     }
 
     /**
@@ -149,7 +149,7 @@ trait UpdateProxy
      */
     public function poll(): ?Poll
     {
-        return $this->update?->poll?->bindToInstance($this);
+        return $this->update?->poll;
     }
 
     /**
@@ -157,7 +157,7 @@ trait UpdateProxy
      */
     public function pollAnswer(): ?PollAnswer
     {
-        return $this->update?->poll_answer?->bindToInstance($this);
+        return $this->update?->poll_answer;
     }
 
     /**
@@ -173,7 +173,7 @@ trait UpdateProxy
      */
     public function chatMember(): ?ChatMemberUpdated
     {
-        return $this->update?->chat_member?->bindToInstance($this) ?? $this->update?->my_chat_member?->bindToInstance($this);
+        return $this->update?->chat_member ?? $this->update?->my_chat_member;
     }
 
     /**
@@ -181,7 +181,7 @@ trait UpdateProxy
      */
     public function chatJoinRequest(): ?ChatJoinRequest
     {
-        return $this->update?->chat_join_request?->bindToInstance($this);
+        return $this->update?->chat_join_request;
     }
 
     /**

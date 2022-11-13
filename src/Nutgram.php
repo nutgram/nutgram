@@ -128,6 +128,7 @@ class Nutgram extends ResolveHandlers
 
         $this->container->addShared(Hydrator::class)->setConcrete($this->config['mapper'] ?? NutgramHydrator::class);
         $this->mapper = $this->container->get(Hydrator::class);
+        $this->mapper->setContainer($this->container);
 
         $botId = $this->config['bot_id'] ?? (int)explode(':', $this->token)[0];
         $this->container->addShared(CacheInterface::class, $this->config['cache'] ?? ArrayCache::class);
