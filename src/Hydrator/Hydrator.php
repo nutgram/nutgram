@@ -2,8 +2,6 @@
 
 namespace SergiX44\Nutgram\Hydrator;
 
-use Psr\Container\ContainerInterface;
-
 interface Hydrator
 {
     /**
@@ -19,10 +17,4 @@ interface Hydrator
      * @return array
      */
     public function hydrateArray(array $data, object $instance): array;
-
-    /**
-     * @param  ContainerInterface  $container
-     * @return void
-     */
-    public function setContainer(ContainerInterface $container): void;
 }

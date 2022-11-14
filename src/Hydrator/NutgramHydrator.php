@@ -8,9 +8,9 @@ class NutgramHydrator implements Hydrator
 {
     private \SergiX44\Hydrator\Hydrator $mapper;
 
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
-        $this->mapper = new \SergiX44\Hydrator\Hydrator();
+        $this->mapper = new \SergiX44\Hydrator\Hydrator($container);
     }
 
     /**
@@ -30,10 +30,5 @@ class NutgramHydrator implements Hydrator
             fn ($obj) => $this->mapper->hydrate(clone $instance, $obj),
             $data
         );
-    }
-
-    public function setContainer(ContainerInterface $container): void
-    {
-        $this->mapper->setContainer($container);
     }
 }
