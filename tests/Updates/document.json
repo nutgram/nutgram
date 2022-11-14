@@ -1,0 +1,28 @@
+{
+  "update_id": 1,
+  "message": {
+    "message_id": 123,
+    "from": {
+      "id": 456,
+      "is_bot": false,
+      "first_name": "Mario",
+      "username": "Bros",
+      "language_code": "en"
+    },
+    "chat": {
+      "id": 456,
+      "first_name": "Mario",
+      "username": "Bros",
+      "type": "private"
+    },
+    "date": 1684984664,
+    "document": {
+      "file_id": "a1b2c34d5e6f7g8h9i",
+      "file_unique_id": "a1b2c34d5e6f7g8h9i0j",
+      "thumb": null,
+      "file_name": "document.pdf",
+      "mime_type": "application/pdf",
+      "file_size": 123456
+    }
+  }
+}
