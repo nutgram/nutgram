@@ -8,13 +8,11 @@ use Psr\SimpleCache\InvalidArgumentException;
 
 class UserCache extends BotCache
 {
-    protected const USERDATA_TTL = null;
-
     protected const USERDATA_PREFIX = 'USER';
 
-    public function __construct(CacheInterface $cache, ?int $botId, ?int $ttl = self::USERDATA_TTL)
+    public function __construct(CacheInterface $cache, ?int $botId)
     {
-        parent::__construct($cache, self::USERDATA_PREFIX, $botId, $ttl);
+        parent::__construct($cache, self::USERDATA_PREFIX, $botId);
     }
 
     /**
@@ -33,12 +31,13 @@ class UserCache extends BotCache
      * @param  int  $userId
      * @param  string  $key
      * @param  mixed  $data
+     * @param  mixed  $ttl
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function set(int $userId, string $key, mixed $data): bool
+    public function set(int $userId, string $key, mixed $data, $ttl = null): bool
     {
-        return $this->cache->set($this->makeKey($userId, $key), $data, $this->ttl);
+        return $this->cache->set($this->makeKey($userId, $key), $data, $ttl);
     }
 
     /**

@@ -4,7 +4,6 @@
 namespace SergiX44\Nutgram\Proxies;
 
 use Psr\SimpleCache\InvalidArgumentException;
-use SergiX44\Nutgram\Nutgram;
 
 /**
  * Trait GlobalCacheProxy
@@ -27,12 +26,13 @@ trait GlobalCacheProxy
     /**
      * @param $key
      * @param $value
+     * @param  mixed  $ttl
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function setGlobalData($key, $value): bool
+    public function setGlobalData($key, $value, $ttl = null): bool
     {
-        return $this->globalCache->set($key, $value);
+        return $this->globalCache->set($key, $value, $ttl);
     }
 
     /**
