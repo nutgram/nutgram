@@ -79,3 +79,22 @@ it('throws exception if no handler specified', function ($responseBody) {
 
     $bot->sendMessage('hi');
 })->with('response_wrong_file_id')->expectException(TelegramException::class);
+
+
+it('throws exception if too many requests', function ($responseBody) {
+    $bot = Nutgram::fake(responses: [
+        new Response(429, body: $responseBody),
+    ]);
+
+    try {
+        $bot->sendMessage('hi');
+    } catch (TelegramException $e) {
+        expect($e)->toBeInstanceOf(TelegramException::class)
+            ->getMessage()->toBe('Too Many Requests: retry after 14')
+            ->getCode()->toBe(429)
+            ->getParameters()->toBe(['retry_after' => 14])
+            ->getParameter('retry_after')->toBe(14)
+            ->hasParameter('retry_after')->toBeTrue()
+            ->hasParameter('foo')->toBeFalse();
+    }
+})->with('too_many_requests');
