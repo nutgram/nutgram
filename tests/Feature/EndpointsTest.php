@@ -82,7 +82,6 @@ it('downloads a file', function ($update) {
     if (file_exists(__DIR__."/".$update->message->document->file_name)) {
         unlink(__DIR__."/".$update->message->document->file_name);
     }
-
 })->with('document');
 
 it('calls getUpdates method', function () {
@@ -128,7 +127,6 @@ it('calls deleteWebhook method', function () {
 });
 
 it('calls getWebhookInfo method', function () {
-
     $info = [
         'url' => 'https://example.com',
         'has_custom_certificate' => false,
@@ -160,4 +158,3 @@ it('calls getWebhookInfo method', function () {
         ->max_connections->toBe($info['max_connections'])
         ->allowed_updates->toBe($info['allowed_updates']);
 });
-
