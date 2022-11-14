@@ -315,8 +315,8 @@ trait Client
         $e = new TelegramException(
             message: $json?->description ?? 'Client exception',
             code: $json?->error_code ?? 0,
+            previous: $clientException,
             parameters: (array)($json?->parameters ?? []),
-            previous: $clientException
         );
 
         if (!empty($this->handlers[self::API_ERROR])) {
