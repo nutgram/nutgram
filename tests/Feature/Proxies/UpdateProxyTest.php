@@ -126,6 +126,7 @@ test('preCheckoutQuery() returns PreCheckoutQuery object', function ($update) {
 
     expect($bot->preCheckoutQuery())->toBeInstanceOf(PreCheckoutQuery::class);
     expect($bot->preCheckoutQuery()->getBot())->toBeInstanceOf(Nutgram::class);
+    expect($bot->preCheckoutQuery()->from->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('pre_checkout_query_payload');
 
 test('poll() returns Poll object', function ($update) {

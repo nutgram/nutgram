@@ -2,7 +2,6 @@
   "update_id": 2,
   "pre_checkout_query": {
     "id": "999728699048485871",
-    "bot": null,
     "from": {
       "id": 222222222,
       "is_bot": false,
