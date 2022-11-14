@@ -16,7 +16,7 @@ class ArrayCache implements CacheInterface
 
     /**
      * @param  string  $key
-     * @param  null  $default
+     * @param  mixed  $default
      * @return mixed
      */
     public function get($key, $default = null): mixed
@@ -29,7 +29,7 @@ class ArrayCache implements CacheInterface
     /**
      * @param  string  $key
      * @param  mixed  $value
-     * @param  null  $ttl
+     * @param  mixed  $ttl
      * @return bool
      */
     public function set($key, $value, $ttl = null): bool

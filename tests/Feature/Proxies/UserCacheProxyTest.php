@@ -47,3 +47,22 @@ test('deleteUserData() remove stored value', function () {
 
     expect($value)->toBe('bar');
 });
+
+test('getUserData() returns value after calling setUserData() with valid TTL', function () {
+    $bot = Nutgram::fake();
+
+    $bot->setUserData(key: 'test', value: 'foo', userId: 123, ttl: 1);
+    $value = $bot->getUserData(key: 'test', userId: 123, default: 'bar');
+
+    expect($value)->toBe('foo');
+});
+
+test('getUserData() returns default value after calling setUserData() with expired TTL', function () {
+    $bot = Nutgram::fake();
+
+    $bot->setUserData(key: 'test', value: 'foo', userId: 123, ttl: 1);
+    sleep(2);
+    $value = $bot->getUserData(key: 'test', userId: 123, default: 'bar');
+
+    expect($value)->toBe('bar');
+});

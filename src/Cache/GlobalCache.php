@@ -8,18 +8,15 @@ use Psr\SimpleCache\InvalidArgumentException;
 
 class GlobalCache extends BotCache
 {
-    protected const GLOBAL_TTL = null;
-
     protected const GLOBAL_PREFIX = 'GLOBAL';
 
     /**
      * @param  CacheInterface  $cache
      * @param  int|null  $botId
-     * @param  int|null  $ttl
      */
-    public function __construct(CacheInterface $cache, ?int $botId, ?int $ttl = self::GLOBAL_TTL)
+    public function __construct(CacheInterface $cache, ?int $botId)
     {
-        parent::__construct($cache, self::GLOBAL_PREFIX, $botId, $ttl);
+        parent::__construct($cache, self::GLOBAL_PREFIX, $botId);
     }
 
     /**
@@ -36,12 +33,13 @@ class GlobalCache extends BotCache
     /**
      * @param  string  $key
      * @param  mixed  $data
+     * @param  mixed  $ttl
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function set(string $key, mixed $data): bool
+    public function set(string $key, mixed $data, $ttl = null): bool
     {
-        return $this->cache->set($this->makeKey($key), $data, $this->ttl);
+        return $this->cache->set($this->makeKey($key), $data, $ttl);
     }
 
     /**
