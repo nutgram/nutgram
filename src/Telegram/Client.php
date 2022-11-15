@@ -28,7 +28,6 @@ use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use stdClass;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Trait Client
@@ -183,7 +182,7 @@ trait Client
         }
 
         $response = $this->http->get($this->downloadUrl($file), array_merge(['sink' => $path], $clientOpt));
-        return $response->getStatusCode() === Response::HTTP_OK;
+        return $response->getStatusCode() === 200;
     }
 
     /**
