@@ -110,6 +110,7 @@ class Nutgram extends ResolveHandlers
         $this->config = $config;
         $this->container = new Container();
         $this->container->delegate(new ReflectionContainer());
+        $this->container->addShared(ContainerInterface::class, $this->container);
 
         SerializableClosure::setSecretKey($this->token);
 
@@ -126,7 +127,8 @@ class Nutgram extends ResolveHandlers
         ], $this->config['client'] ?? []));
         $this->container->addShared(ClientInterface::class, $this->http);
 
-        $this->container->addShared(Hydrator::class)->setConcrete($this->config['mapper'] ?? NutgramHydrator::class);
+        $hydrator = $this->container->get(NutgramHydrator::class);
+        $this->container->addShared(Hydrator::class)->setConcrete($this->config['mapper'] ?? $hydrator);
         $this->mapper = $this->container->get(Hydrator::class);
 
         $botId = $this->config['bot_id'] ?? (int)explode(':', $this->token)[0];

@@ -2,13 +2,15 @@
 
 namespace SergiX44\Nutgram\Hydrator;
 
+use Psr\Container\ContainerInterface;
+
 class NutgramHydrator implements Hydrator
 {
     private \SergiX44\Hydrator\Hydrator $mapper;
 
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
-        $this->mapper = new \SergiX44\Hydrator\Hydrator();
+        $this->mapper = new \SergiX44\Hydrator\Hydrator($container);
     }
 
     /**

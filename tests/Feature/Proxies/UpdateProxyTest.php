@@ -21,6 +21,7 @@ test('update() returns Update object', function ($update) {
     $bot->run();
 
     expect($bot->update())->toBeInstanceOf(Update::class);
+    expect($bot->update()->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('message');
 
 test('chat() returns Chat object', function ($update) {
@@ -29,6 +30,7 @@ test('chat() returns Chat object', function ($update) {
     $bot->run();
 
     expect($bot->chat())->toBeInstanceOf(Chat::class);
+    expect($bot->chat()->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('message');
 
 test('user() returns User object', function ($update) {
@@ -37,6 +39,7 @@ test('user() returns User object', function ($update) {
     $bot->run();
 
     expect($bot->user())->toBeInstanceOf(User::class);
+    expect($bot->user()->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('message');
 
 test('messageId() returns message id', function ($update) {
@@ -53,6 +56,7 @@ test('message() returns Message object', function ($update) {
     $bot->run();
 
     expect($bot->message())->toBeInstanceOf(Message::class);
+    expect($bot->message()->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('message');
 
 test('isCallbackQuery() returns boolean', function ($update) {
@@ -69,6 +73,7 @@ test('callbackQuery() returns CallbackQuery object', function ($update) {
     $bot->run();
 
     expect($bot->callbackQuery())->toBeInstanceOf(CallbackQuery::class);
+    expect($bot->callbackQuery()->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('callback_query');
 
 test('isInlineQuery() returns boolean', function ($update) {
@@ -85,6 +90,7 @@ test('inlineQuery() returns InlineQuery object', function ($update) {
     $bot->run();
 
     expect($bot->inlineQuery())->toBeInstanceOf(InlineQuery::class);
+    expect($bot->inlineQuery()->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('inline_query');
 
 test('chosenInlineResult() returns ChosenInlineResult object', function ($update) {
@@ -93,6 +99,7 @@ test('chosenInlineResult() returns ChosenInlineResult object', function ($update
     $bot->run();
 
     expect($bot->chosenInlineResult())->toBeInstanceOf(ChosenInlineResult::class);
+    expect($bot->chosenInlineResult()->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('chosen_inline_result');
 
 test('shippingQuery() returns ShippingQuery object', function ($update) {
@@ -101,6 +108,7 @@ test('shippingQuery() returns ShippingQuery object', function ($update) {
     $bot->run();
 
     expect($bot->shippingQuery())->toBeInstanceOf(ShippingQuery::class);
+    expect($bot->shippingQuery()->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('shipping_query');
 
 test('isPreCheckoutQuery() returns boolean', function ($update) {
@@ -117,6 +125,8 @@ test('preCheckoutQuery() returns PreCheckoutQuery object', function ($update) {
     $bot->run();
 
     expect($bot->preCheckoutQuery())->toBeInstanceOf(PreCheckoutQuery::class);
+    expect($bot->preCheckoutQuery()->getBot())->toBeInstanceOf(Nutgram::class);
+    expect($bot->preCheckoutQuery()->from->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('pre_checkout_query_payload');
 
 test('poll() returns Poll object', function ($update) {
@@ -125,6 +135,7 @@ test('poll() returns Poll object', function ($update) {
     $bot->run();
 
     expect($bot->poll())->toBeInstanceOf(Poll::class);
+    expect($bot->poll()->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('poll');
 
 test('pollAnswer() returns PollAnswer object', function ($update) {
@@ -133,6 +144,7 @@ test('pollAnswer() returns PollAnswer object', function ($update) {
     $bot->run();
 
     expect($bot->pollAnswer())->toBeInstanceOf(PollAnswer::class);
+    expect($bot->pollAnswer()->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('poll_answer');
 
 test('isMyChatMember() returns boolean', function ($update) {
@@ -149,6 +161,7 @@ test('chatMember() returns ChatMember object', function ($update) {
     $bot->run();
 
     expect($bot->chatMember())->toBeInstanceOf(ChatMemberUpdated::class);
+    expect($bot->chatMember()->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('my_chat_member');
 
 test('chatJoinRequest() returns ChatJoinRequest object', function ($update) {
@@ -157,6 +170,7 @@ test('chatJoinRequest() returns ChatJoinRequest object', function ($update) {
     $bot->run();
 
     expect($bot->chatJoinRequest())->toBeInstanceOf(ChatJoinRequest::class);
+    expect($bot->chatJoinRequest()->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('chat_join_request');
 
 test('inlineMessageId() returns inline message id', function ($update) {
