@@ -1,0 +1,46 @@
+{
+  "update_id": 2,
+  "callback_query": {
+    "id": "666728699048485871",
+    "from": {
+      "id": 222222222,
+      "is_bot": false,
+      "first_name": "Mario",
+      "username": "Super",
+      "language_code": "it"
+    },
+    "message": {
+      "message_id": 69587,
+      "from": {
+        "id": 111111111,
+        "is_bot": true,
+        "first_name": "Superbot",
+        "username": "thebot"
+      },
+      "chat": {
+        "id": 222222222,
+        "first_name": "Mario",
+        "username": "Super",
+        "type": "private"
+      },
+      "date": 1584984711,
+      "text": "This is a test",
+      "reply_markup": {
+        "inline_keyboard": [
+          [
+            {
+              "text": "asd",
+              "callback_data": "a"
+            },
+            {
+              "text": "dsa",
+              "callback_data": "b"
+            }
+          ]
+        ]
+      }
+    },
+    "chat_instance": "1628661761791766620",
+    "data": "c=uud&pid=1&bid=1"
+  }
+}
