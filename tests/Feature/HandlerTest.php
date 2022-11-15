@@ -184,6 +184,27 @@ it('parse callback queries with specific data', function ($update) {
     $bot->run();
 })->with('callback_query');
 
+it('parse callback queries with specific data capturing', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onCallbackQueryData('c=uud&pid={pid}&bid={bid}', function ($bot, $pid, $bid) {
+        expect($bot)->toBeInstanceOf(Nutgram::class);
+        expect($pid)->toBe('1');
+        expect($bid)->toBe('1');
+    });
+
+    $bot->onMessage(function ($bot) {
+        throw new Exception();
+    });
+
+
+    $bot->fallback(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->run();
+})->with('callback_query_complex');
+
 it('calls the exception handler', function ($update) {
     $bot = Nutgram::fake($update);
 
