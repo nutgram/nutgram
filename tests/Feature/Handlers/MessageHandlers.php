@@ -69,6 +69,17 @@ it('calls onDocument() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('document');
 
+it('calls onPhoto() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onPhoto(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('photo');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
