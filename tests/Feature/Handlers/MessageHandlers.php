@@ -289,6 +289,17 @@ it('calls onMigrateToChatId() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('migrate_to_chat_id');
 
+it('calls onMigrateFromChatId() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onMigrateFromChatId(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('migrate_from_chat_id');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
