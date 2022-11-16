@@ -267,6 +267,17 @@ it('calls onChannelChatCreated() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('channel_chat_created');
 
+it('calls onMessageAutoDeleteTimerChanged() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onMessageAutoDeleteTimerChanged(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('message_auto_delete_timer_changed');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
