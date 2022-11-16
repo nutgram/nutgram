@@ -190,6 +190,17 @@ it('calls onNewChatMembers() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('new_chat_members');
 
+it('calls onLeftChatMember() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onLeftChatMember(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('left_chat_member');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
