@@ -157,6 +157,17 @@ it('calls onGame() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('game');
 
+it('calls onVenue() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onVenue(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('venue');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
