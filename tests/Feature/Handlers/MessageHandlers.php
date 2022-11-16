@@ -357,6 +357,18 @@ it('calls onSuccessfulPaymentPayload() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('successful_payment');
 
+it('calls onConnectedWebsite() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onConnectedWebsite(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('connected_website');
+
 it('calls onForumTopicCreated handler', function ($update) {
     $bot = Nutgram::fake($update);
 
