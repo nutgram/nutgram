@@ -2,6 +2,19 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.8.1 - 2022-11-16
+
+### What's Changed
+
+- Add parameters support to TelegramException by @Lukasss93 in https://github.com/nutgram/nutgram/pull/249
+- Add more tests by @Lukasss93 in https://github.com/nutgram/nutgram/pull/254
+- Add TTL support to setUserData and setGlobalData by @Lukasss93 in https://github.com/nutgram/nutgram/pull/255
+- Fix invalid pattern capturing (wrong behaviour with same values) by @Lukasss93 in https://github.com/nutgram/nutgram/pull/260
+- Fix missing bot instance inside objects by @Lukasss93 in https://github.com/nutgram/nutgram/pull/257
+- Fix invalid dependency by @Lukasss93 in https://github.com/nutgram/nutgram/pull/261
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.8.0...3.8.1
+
 ## 3.8.0 - 2022-11-07
 
 ### What's Changed
