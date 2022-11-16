@@ -300,6 +300,17 @@ it('calls onMigrateFromChatId() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('migrate_from_chat_id');
 
+it('calls onPinnedMessage() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onPinnedMessage(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('pinned_message');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
