@@ -36,6 +36,17 @@ it('calls onCommand() handler with different tags', function ($update, $valid) {
     expect($bot->getData('called', false))->toBe($valid);
 })->with('command_tags');
 
+it('calls onAnimation() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onAnimation(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('animation');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
