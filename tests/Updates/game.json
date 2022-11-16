@@ -1,0 +1,83 @@
+{
+  "update_id": 123456789,
+  "message": {
+    "message_id": 123456,
+    "from": {
+      "id": 12345,
+      "is_bot": false,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "language_code": "it",
+      "is_premium": false
+    },
+    "chat": {
+      "id": 12345,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "type": "private"
+    },
+    "date": 1668633998,
+    "game": {
+      "title": "sdfsdfsdfsdfsf",
+      "description": "sdfsgdzhdfgghsd der sfdsfsadfdssadf sfsd fsdfdsfdf",
+      "photo": [
+        {
+          "file_id": "dsfdsfdsfdsfsdfdsfsdffdsf",
+          "file_unique_id": "sdfsdfdsf",
+          "file_size": 1412,
+          "width": 90,
+          "height": 51
+        },
+        {
+          "file_id": "sdfdsfdsfsdfsdfdsff",
+          "file_unique_id": "sdfsdfdsf",
+          "file_size": 20456,
+          "width": 320,
+          "height": 180
+        },
+        {
+          "file_id": "dsfdsfsdfsddsfsdffsdf",
+          "file_unique_id": "dsfdsfs",
+          "file_size": 54415,
+          "width": 640,
+          "height": 360
+        }
+      ],
+      "animation": {
+        "file_name": "dfs.mp4",
+        "mime_type": "video/mp4",
+        "duration": 4,
+        "width": 320,
+        "height": 180,
+        "thumb": {
+          "file_id": "sdxfdsfdsfds",
+          "file_unique_id": "dsfds",
+          "file_size": 19648,
+          "width": 320,
+          "height": 180
+        },
+        "file_id": "sdfsdfdsfsds",
+        "file_unique_id": "sdfsdf",
+        "file_size": 302894
+      }
+    },
+    "reply_markup": {
+      "inline_keyboard": [
+        [
+          {
+            "text": "sdfsdfsdfds",
+            "callback_game": {}
+          }
+        ]
+      ]
+    },
+    "via_bot": {
+      "id": 12345678,
+      "is_bot": true,
+      "first_name": "ffdssfsdf",
+      "username": "dsfds"
+    }
+  }
+}

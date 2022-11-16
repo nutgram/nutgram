@@ -127,6 +127,15 @@ trait MessageHandlers
      * @param $callable
      * @return Handler
      */
+    public function onGame($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::GAME][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
     public function onSuccessfulPayment($callable): Handler
     {
         return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::SUCCESSFUL_PAYMENT][] = new Handler($callable);
