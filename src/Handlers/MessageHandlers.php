@@ -311,6 +311,15 @@ trait MessageHandlers
      * @param $callable
      * @return Handler
      */
+    public function onPassportData($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::PASSPORT_DATA][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
     public function onForumTopicCreated($callable): Handler
     {
         return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::FORUM_TOPIC_CREATED][] = new Handler($callable);

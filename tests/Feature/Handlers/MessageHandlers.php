@@ -369,6 +369,18 @@ it('calls onConnectedWebsite() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('connected_website');
 
+it('calls onPassportData() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onPassportData(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('passport_data');
+
 it('calls onForumTopicCreated handler', function ($update) {
     $bot = Nutgram::fake($update);
 
