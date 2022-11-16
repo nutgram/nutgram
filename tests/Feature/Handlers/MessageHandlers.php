@@ -311,6 +311,17 @@ it('calls onPinnedMessage() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('pinned_message');
 
+it('calls onInvoice() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onInvoice(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('invoice');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
