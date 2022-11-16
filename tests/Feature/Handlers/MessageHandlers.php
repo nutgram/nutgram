@@ -179,6 +179,17 @@ it('calls onLocation() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('location');
 
+it('calls onNewChatMembers() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onNewChatMembers(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('new_chat_members');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
