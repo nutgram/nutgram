@@ -136,6 +136,15 @@ trait MessageHandlers
      * @param $callable
      * @return Handler
      */
+    public function onMessagePoll($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::POLL][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
     public function onVenue($callable): Handler
     {
         return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::VENUE][] = new Handler($callable);
