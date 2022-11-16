@@ -1,0 +1,37 @@
+{
+  "update_id": 123456789,
+  "message": {
+    "message_id": 123456,
+    "from": {
+      "id": 12345,
+      "is_bot": false,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "language_code": "it",
+      "is_premium": false
+    },
+    "chat": {
+      "id": 12345,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "type": "private"
+    },
+    "date": 1668633998,
+    "video_note": {
+      "duration": 3,
+      "length": 384,
+      "thumb": {
+        "file_id": "Azdfgdfzgdfgdfdfggdf",
+        "file_unique_id": "dfgdfgg",
+        "file_size": 6536,
+        "width": 320,
+        "height": 320
+      },
+      "file_id": "dfgfdgdfgdfggdfgdf",
+      "file_unique_id": "dfgdfggfd",
+      "file_size": 290925
+    }
+  }
+}

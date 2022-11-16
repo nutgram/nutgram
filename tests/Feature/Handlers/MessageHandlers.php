@@ -102,6 +102,17 @@ it('calls onVideo() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('video');
 
+it('calls onVideoNote() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onVideoNote(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('video_note');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
