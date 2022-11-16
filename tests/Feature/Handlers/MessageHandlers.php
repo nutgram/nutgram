@@ -245,6 +245,17 @@ it('calls onGroupChatCreated() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('group_chat_created');
 
+it('calls onSupergroupChatCreated() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onSupergroupChatCreated(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('supergroup_chat_created');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
