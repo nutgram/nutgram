@@ -168,6 +168,17 @@ it('calls onVenue() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('venue');
 
+it('calls onLocation() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onLocation(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('location');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
