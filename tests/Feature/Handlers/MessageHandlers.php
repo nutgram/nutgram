@@ -135,6 +135,17 @@ it('calls onContact() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('contact');
 
+it('calls onDice() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onDice(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('dice');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
