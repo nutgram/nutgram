@@ -278,6 +278,17 @@ it('calls onMessageAutoDeleteTimerChanged() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('message_auto_delete_timer_changed');
 
+it('calls onMigrateToChatId() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onMigrateToChatId(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('migrate_to_chat_id');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 

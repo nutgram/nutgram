@@ -235,6 +235,15 @@ trait MessageHandlers
      * @param $callable
      * @return Handler
      */
+    public function onMigrateToChatId($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::MIGRATE_TO_CHAT_ID][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
     public function onSuccessfulPayment($callable): Handler
     {
         return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::SUCCESSFUL_PAYMENT][] = new Handler($callable);
