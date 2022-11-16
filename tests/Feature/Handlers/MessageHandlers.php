@@ -91,6 +91,17 @@ it('calls onSticker() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('sticker');
 
+it('calls onVideo() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onVideo(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('video');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
