@@ -217,6 +217,15 @@ trait MessageHandlers
      * @param $callable
      * @return Handler
      */
+    public function onChannelChatCreated($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::CHANNEL_CHAT_CREATED][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
     public function onSuccessfulPayment($callable): Handler
     {
         return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::SUCCESSFUL_PAYMENT][] = new Handler($callable);
