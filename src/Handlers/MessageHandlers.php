@@ -190,6 +190,15 @@ trait MessageHandlers
      * @param $callable
      * @return Handler
      */
+    public function onDeleteChatPhoto($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::DELETE_CHAT_PHOTO][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
     public function onSuccessfulPayment($callable): Handler
     {
         return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::SUCCESSFUL_PAYMENT][] = new Handler($callable);
