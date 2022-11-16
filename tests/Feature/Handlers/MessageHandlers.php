@@ -212,6 +212,17 @@ it('calls onNewChatTitle() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('new_chat_title');
 
+it('calls onNewChatPhoto() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onNewChatPhoto(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('new_chat_photo');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 

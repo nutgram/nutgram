@@ -1,0 +1,46 @@
+{
+  "update_id": 123456789,
+  "message": {
+    "message_id": 123456,
+    "from": {
+      "id": 12345,
+      "is_bot": false,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "language_code": "it",
+      "is_premium": false
+    },
+    "chat": {
+      "id": 12345,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "type": "private"
+    },
+    "date": 1668633998,
+    "new_chat_photo": [
+      {
+        "file_id": "SOOOS",
+        "file_unique_id": "SOOOS",
+        "file_size": 26542,
+        "width": 240,
+        "height": 320
+      },
+      {
+        "file_id": "SAAS",
+        "file_unique_id": "SAAS",
+        "file_size": 84913,
+        "width": 720,
+        "height": 960
+      },
+      {
+        "file_id": "SEES",
+        "file_unique_id": "SEES",
+        "file_size": 104893,
+        "width": 600,
+        "height": 800
+      }
+    ]
+  }
+}
