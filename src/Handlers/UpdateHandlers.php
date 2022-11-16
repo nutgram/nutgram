@@ -128,8 +128,19 @@ trait UpdateHandlers
     /**
      * @param $callable
      * @return Handler
+     * @deprecated This handler is deprecated and will be removed in the next major version.
+     * @see Nutgram::onUpdatePoll()
      */
     public function onPoll($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::POLL][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onUpdatePoll($callable): Handler
     {
         return $this->handlers[UpdateTypes::POLL][] = new Handler($callable);
     }

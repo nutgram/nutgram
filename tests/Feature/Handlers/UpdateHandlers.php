@@ -171,6 +171,18 @@ it('calls onPoll() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('poll');
 
+it('calls onUpdatePoll() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onUpdatePoll(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('poll');
+
 it('calls onPollAnswer() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
