@@ -47,6 +47,17 @@ it('calls onAnimation() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('animation');
 
+it('calls onAudio() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onAudio(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('audio');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
