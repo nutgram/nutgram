@@ -234,6 +234,17 @@ it('calls onDeleteChatPhoto() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('delete_chat_photo');
 
+it('calls onGroupChatCreated() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onGroupChatCreated(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('group_chat_created');
+
 it('calls onSuccessfulPayment() handler', function ($update) {
     $bot = Nutgram::fake($update);
 

@@ -199,6 +199,15 @@ trait MessageHandlers
      * @param $callable
      * @return Handler
      */
+    public function onGroupChatCreated($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::GROUP_CHAT_CREATED][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
     public function onSuccessfulPayment($callable): Handler
     {
         return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::SUCCESSFUL_PAYMENT][] = new Handler($callable);
