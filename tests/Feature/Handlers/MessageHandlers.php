@@ -381,6 +381,18 @@ it('calls onPassportData() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('passport_data');
 
+it('calls onProximityAlertTriggered() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onProximityAlertTriggered(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('proximity_alert_triggered');
+
 it('calls onForumTopicCreated handler', function ($update) {
     $bot = Nutgram::fake($update);
 
