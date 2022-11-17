@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.9.0 - 2022-11-17
+
+### What's Changed
+
+- New handlers by @Lukasss93 in https://github.com/nutgram/nutgram/pull/267
+- Fix umask #268 by @SergiX44 in https://github.com/nutgram/nutgram/pull/269
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.8.1...3.9.0
+
 ## 3.8.1 - 2022-11-16
 
 ### What's Changed
