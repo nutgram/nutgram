@@ -428,3 +428,15 @@ it('calls onForumTopicReopened handler', function ($update) {
 
     expect($bot->getData('called'))->toBeTrue();
 })->with('forum_topic_reopened');
+
+it('calls onVideoChatScheduled handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onVideoChatScheduled(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('video_chat_scheduled');
