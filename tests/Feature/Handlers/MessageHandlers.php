@@ -452,3 +452,15 @@ it('calls onVideoChatStarted handler', function ($update) {
 
     expect($bot->getData('called'))->toBeTrue();
 })->with('video_chat_started');
+
+it('calls onVideoChatEnded handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onVideoChatEnded(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('video_chat_ended');
