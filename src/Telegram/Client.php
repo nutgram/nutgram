@@ -171,7 +171,7 @@ trait Client
     {
         if (!is_dir(dirname($path)) && !mkdir(
             $concurrentDirectory = dirname($path),
-            true,
+            0775,
             true
         ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
