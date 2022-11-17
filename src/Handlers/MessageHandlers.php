@@ -360,4 +360,13 @@ trait MessageHandlers
     {
         return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::VIDEO_CHAT_SCHEDULED][] = new Handler($callable);
     }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onVideoChatStarted($callable): Handler
+    {
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::VIDEO_CHAT_STARTED][] = new Handler($callable);
+    }
 }
