@@ -476,3 +476,15 @@ it('calls onVideoChatParticipantsInvited handler', function ($update) {
 
     expect($bot->getData('called'))->toBeTrue();
 })->with('video_chat_participants_invited');
+
+it('calls onWebAppData handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onWebAppData(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('web_app_data');
