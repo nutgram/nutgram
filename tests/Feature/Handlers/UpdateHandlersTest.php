@@ -230,5 +230,3 @@ it('calls onChatJoinRequest() handler', function ($update) {
 
     expect($bot->getData('called'))->toBeTrue();
 })->with('chat_join_request');
-
-
