@@ -1,0 +1,54 @@
+{
+  "update_id": 123456789,
+  "message": {
+    "message_id": 123456,
+    "from": {
+      "id": 12345,
+      "is_bot": false,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "language_code": "it",
+      "is_premium": false
+    },
+    "chat": {
+      "id": 12345,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "type": "private"
+    },
+    "date": 1668633998,
+    "animation": {
+      "file_name": "lol.mp4",
+      "mime_type": "video/mp4",
+      "duration": 1,
+      "width": 1280,
+      "height": 960,
+      "thumb": {
+        "file_id": "sdaafsghhjhgkkygrssgdfghgfdgh",
+        "file_unique_id": "dfgdfgdfhgdyhdfg",
+        "file_size": 14511,
+        "width": 320,
+        "height": 240
+      },
+      "file_id": "sdaafsghhjhgkkygrssgdfghgfdgh",
+      "file_unique_id": "dfgdfgdfhgdyhdfg",
+      "file_size": 276942
+    },
+    "document": {
+      "file_name": "sdaafsghhjhgkkygrssgdfghgfdgh.mp4",
+      "mime_type": "video/mp4",
+      "thumb": {
+        "file_id": "sdaafsghhjhgkkygrssgdfghgfdgh",
+        "file_unique_id": "dfgdfgdfhgdyhdfg",
+        "file_size": 14511,
+        "width": 320,
+        "height": 240
+      },
+      "file_id": "sdaafsghhjhgkkygrssgdfghgfdgh",
+      "file_unique_id": "dfgdfgdfhgdyhdfg",
+      "file_size": 276942
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "update_id": 123456789,
+  "message": {
+    "message_id": 123456,
+    "from": {
+      "id": 12345,
+      "is_bot": false,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "language_code": "it",
+      "is_premium": false
+    },
+    "chat": {
+      "id": 12345,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "type": "private"
+    },
+    "date": 1668633998,
+    "channel_chat_created": true
+  }
+}
