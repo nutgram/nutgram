@@ -12,14 +12,14 @@ class LoggerHandler extends AbstractProcessingHandler
 {
     protected Nutgram $bot;
 
-    protected string|int $chat_id;
+    protected string|int $chatId;
 
     public function __construct(array $config)
     {
         parent::__construct(Logger::toMonologLevel($config['level']), true);
 
         $this->bot = app(Nutgram::class);
-        $this->chat_id = $config['chat_id'];
+        $this->chatId = $config['chat_id'];
     }
 
     protected function getDefaultFormatter(): FormatterInterface
@@ -33,7 +33,7 @@ class LoggerHandler extends AbstractProcessingHandler
         config(['nutgram.config.split_long_messages' => true]);
 
         $this->bot->sendMessage($this->formatText($record), [
-            'chat_id' => $this->chat_id,
+            'chat_id' => $this->chatId,
             'parse_mode' => 'html',
         ]);
 
