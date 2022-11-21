@@ -42,7 +42,8 @@ class LoggerHandler extends AbstractProcessingHandler
 
     protected function formatText(array $record): string
     {
-        return sprintf("<b>%s %s</b> (%s):\n<pre>%s</pre>",
+        return sprintf(
+            "<b>%s %s</b> (%s):\n<pre>%s</pre>",
             config('app.name'),
             $record['level_name'],
             config('app.env'),
