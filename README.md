@@ -53,7 +53,10 @@ composer require nutgram/nutgram
 ## Projects with this library
 > Is your project using Nutgram? Let us know, feel free to add yours!
 
+- AnonyMeet ([@AnonyMeetBot](https://t.me/AnonyMeetBot)) - Anonymous chat bot
+- File Converter ([@newfileconverterbot](https://t.me/newfileconverterbot)) - Convert files to other formats
 - [Sticker Optimizer](https://github.com/Lukasss93/telegram-stickeroptimizer) ([@NewStickerOptimizerBot](https://t.me/NewStickerOptimizerBot)) - Optimize images for the @stickers bot
+- Chat Merger ([@ChatMergerBot](https://t.me/ChatMergerBot)) - Merge multiple messages into one
 - [Mermaid Generator](https://github.com/Lukasss93/telegram-mermaid) ([@newmermaidbot](https://t.me/newmermaidbot)) - Generate mermaid diagrams from text
 
 ## Testing
