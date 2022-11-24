@@ -50,6 +50,12 @@ composer require nutgram/nutgram
 
 - [Official Documentation](https://nutgram.dev)
 
+## Projects with this library
+> Is your project using Nutgram? Let us know, feel free to add yours!
+
+- [Sticker Optimizer](https://github.com/Lukasss93/telegram-stickeroptimizer) ([@NewStickerOptimizerBot](https://t.me/NewStickerOptimizerBot)) - Optimize images for the @stickers bot
+- [Mermaid Generator](https://github.com/Lukasss93/telegram-mermaid) ([@newmermaidbot](https://t.me/newmermaidbot)) - Generate mermaid diagrams from text
+
 ## Testing
 
 ```bash
