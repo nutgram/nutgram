@@ -33,7 +33,7 @@ $bot->onCommand('start', function(Nutgram $bot) {
 
 $bot->onText('My name is {name}', function(Nutgram $bot, string $name) {
     $bot->sendMessage("Hi $name");
-})
+});
 
 $bot->run();
 ```
