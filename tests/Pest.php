@@ -40,3 +40,8 @@ expect()->extend('getFileContent', fn () => $this->and(File::get($this->value)))
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+
+function getUpdateType(string $type, bool $associative = false): array|stdClass
+{
+    return json_decode(file_get_contents(__DIR__."/Updates/$type.json"), $associative);
+}
