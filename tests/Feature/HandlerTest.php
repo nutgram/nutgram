@@ -362,7 +362,7 @@ it('parse pre checkout queries with specific data', function ($update) {
     });
 
     $bot->run();
-})->with('pre_checkout_query_payload');
+})->with('pre_checkout_query');
 
 it('parse successful payment with specific data', function ($update) {
     $bot = Nutgram::fake($update);

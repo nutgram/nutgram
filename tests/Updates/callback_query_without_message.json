@@ -1,0 +1,16 @@
+{
+  "update_id": 2,
+  "callback_query": {
+    "id": "666728699048485871",
+    "from": {
+      "id": 222222222,
+      "is_bot": false,
+      "first_name": "Mario",
+      "username": "Super",
+      "language_code": "it"
+    },
+    "message": null,
+    "chat_instance": "1628661761791766620",
+    "data": "thedata"
+  }
+}

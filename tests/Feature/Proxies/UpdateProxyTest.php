@@ -117,7 +117,7 @@ test('isPreCheckoutQuery() returns boolean', function ($update) {
     $bot->run();
 
     expect($bot->isPreCheckoutQuery())->toBeTrue();
-})->with('pre_checkout_query_payload');
+})->with('pre_checkout_query');
 
 test('preCheckoutQuery() returns PreCheckoutQuery object', function ($update) {
     $bot = Nutgram::fake($update);
@@ -127,7 +127,7 @@ test('preCheckoutQuery() returns PreCheckoutQuery object', function ($update) {
     expect($bot->preCheckoutQuery())->toBeInstanceOf(PreCheckoutQuery::class);
     expect($bot->preCheckoutQuery()->getBot())->toBeInstanceOf(Nutgram::class);
     expect($bot->preCheckoutQuery()->from->getBot())->toBeInstanceOf(Nutgram::class);
-})->with('pre_checkout_query_payload');
+})->with('pre_checkout_query');
 
 test('poll() returns Poll object', function ($update) {
     $bot = Nutgram::fake($update);
