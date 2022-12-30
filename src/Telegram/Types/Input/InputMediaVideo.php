@@ -54,4 +54,9 @@ class InputMediaVideo extends InputMedia
      * Optional. Pass True, if the uploaded video is suitable for streaming
      */
     public ?bool $supports_streaming = null;
+
+    /**
+     * Optional. Pass True if the video needs to be covered with a spoiler animation
+     */
+    public ?bool $has_spoiler = null;
 }
