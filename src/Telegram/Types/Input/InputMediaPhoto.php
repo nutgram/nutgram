@@ -22,4 +22,9 @@ class InputMediaPhoto extends InputMedia
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $caption_entities
      */
     public ?array $caption_entities = null;
+
+    /**
+     * Optional. Pass True if the photo needs to be covered with a spoiler animation
+     */
+    public ?bool $has_spoiler = null;
 }

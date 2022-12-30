@@ -22,6 +22,12 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
     public array $keyboard;
 
     /**
+     * Optional. Requests clients to always show the keyboard when the regular keyboard is hidden.
+     * Defaults to false, in which case the custom keyboard can be hidden and opened with a keyboard icon.
+     */
+    public ?bool $is_persistent = null;
+
+    /**
      * Optional. Requests clients to resize the keyboard vertically for optimal fit
      * (e.g., make the keyboard smaller if there are just two rows of buttons).
      * Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.

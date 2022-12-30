@@ -644,7 +644,9 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#senddocument general files}, find_location for
      *     {@see https://core.telegram.org/bots/api#sendlocation location data}, record_video_note or upload_video_note
      *     for {@see https://core.telegram.org/bots/api#sendvideonote video notes}.
-     * @param  array  $opt
+     * @param  array{
+     *     message_thread_id?: int
+     * }  $opt
      * @return bool|null
      */
     public function sendChatAction(string $action, array $opt = []): ?bool
@@ -1199,6 +1201,10 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup (in the
      *     format [at]supergroupusername)
      * @param  string  $name Topic name, 1-128 characters
+     * @param  array{
+     *     icon_color?: int,
+     *     icon_custom_emoji_id?: string,
+     * }  $opt
      * @return ForumTopic|null
      */
     public function createForumTopic(string|int $chat_id, string $name, array $opt = []): ?ForumTopic
@@ -1214,22 +1220,21 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup (in the
      *     format [at]supergroupusername)
      * @param  int  $message_thread_id Unique identifier for the target message thread of the forum topic
-     * @param  string  $name New topic name, 1-128 characters
-     * @param  string  $icon_custom_emoji_id New unique identifier of the custom emoji shown as the topic icon. Use
-     *     {@see https://core.telegram.org/bots/api#getforumtopiciconstickers getForumTopicIconStickers} to get all
-     *     allowed custom emoji identifiers
+     * @param  array{
+     *     name?: string,
+     *     icon_custom_emoji_id?: string,
+     * }  $opt
      * @return bool|null
      * @see https://core.telegram.org/bots/api#editforumtopic
      */
     public function editForumTopic(
         string|int $chat_id,
         int $message_thread_id,
-        string $name,
-        string $icon_custom_emoji_id
+        array $opt = []
     ): ?bool {
         return $this->requestJson(
             __FUNCTION__,
-            compact('chat_id', 'message_thread_id', 'name', 'icon_custom_emoji_id')
+            array_merge(compact('chat_id', 'message_thread_id'), $opt)
         );
     }
 
@@ -1295,6 +1300,78 @@ trait AvailableMethods
     public function unpinAllForumTopicMessages(string|int $chat_id, int $message_thread_id): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
+    }
+
+    /**
+     * Use this method to edit the name of the 'General' topic in a forum supergroup chat.
+     * The bot must be an administrator in the chat for this to work and
+     * must have can_manage_topics administrator rights. Returns True on success.
+     * @see https://core.telegram.org/bots/api#editgeneralforumtopic
+     * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup (in the
+     *     format [at]supergroupusername)
+     * @param  string  $name New topic name, 1-128 characters
+     * @return bool|null
+     */
+    public function editGeneralForumTopic(string|int $chat_id, string $name): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'name'));
+    }
+
+    /**
+     * Use this method to close an open 'General' topic in a forum supergroup chat. The bot must be an administrator
+     * in the chat for this to work and must have the can_manage_topics administrator rights. Returns True on success.
+     * @see https://core.telegram.org/bots/api#closegeneralforumtopic
+     * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup (in the
+     *     format [at]supergroupusername)
+     * @return bool|null
+     */
+    public function closeGeneralForumTopic(string|int $chat_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+    }
+
+    /**
+     * Use this method to reopen a closed 'General' topic in a forum supergroup chat.
+     * The bot must be an administrator in the chat for this to work and
+     * must have the can_manage_topics administrator rights.
+     * The topic will be automatically unhidden if it was hidden. Returns True on success.
+     * @see https://core.telegram.org/bots/api#reopengeneralforumtopic
+     * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup (in the
+     *     format [at]supergroupusername)
+     * @return bool|null
+     */
+    public function reopenGeneralForumTopic(string|int $chat_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+    }
+
+    /**
+     * Use this method to hide the 'General' topic in a forum supergroup chat.
+     * The bot must be an administrator in the chat for this to work and
+     * must have the can_manage_topics administrator rights.
+     * The topic will be automatically closed if it was open. Returns True on success.
+     * @see https://core.telegram.org/bots/api#hidegeneralforumtopic
+     * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup (in the
+     *     format [at]supergroupusername)
+     * @return bool|null
+     */
+    public function hideGeneralForumTopic(string|int $chat_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+    }
+
+    /**
+     * Use this method to unhide the 'General' topic in a forum supergroup chat.
+     * The bot must be an administrator in the chat for this to work and
+     * must have the can_manage_topics administrator rights. Returns True on success.
+     * @see https://core.telegram.org/bots/api#unhidegeneralforumtopic
+     * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup (in the
+     *     format [at]supergroupusername)
+     * @return bool|null
+     */
+    public function unhideGeneralForumTopic(string|int $chat_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
     /**

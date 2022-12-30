@@ -16,6 +16,7 @@
         <exclude>
             <directory suffix=".php">./examples</directory>
             <directory suffix=".php">./tests</directory>
+            <directory suffix=".php">./src/Telegram/Attributes</directory>
             <directory suffix=".php">./src/Telegram/Endpoints</directory>
             <directory suffix=".php">./src/Telegram/Types</directory>
             <directory suffix=".php">./src/Laravel/Log</directory>

@@ -49,4 +49,9 @@ class InputMediaAnimation extends InputMedia
      * Optional. Video duration
      */
     public ?int $duration = null;
+
+    /**
+     * Optional. Pass True if the animation needs to be covered with a spoiler animation
+     */
+    public ?bool $has_spoiler = null;
 }

@@ -7,7 +7,11 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicClosed;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicCreated;
+use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicEdited;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicReopened;
+use SergiX44\Nutgram\Telegram\Types\Forum\GeneralForumTopicHidden;
+use SergiX44\Nutgram\Telegram\Types\Forum\GeneralForumTopicUnhidden;
+use SergiX44\Nutgram\Telegram\Types\Forum\WriteAccessAllowed;
 use SergiX44\Nutgram\Telegram\Types\Game\Game;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
@@ -221,6 +225,11 @@ class Message extends BaseType
     public ?array $caption_entities = null;
 
     /**
+     * Optional. True, if the message media is covered by a spoiler animation
+     */
+    public ?bool $has_media_spoiler = null;
+
+    /**
      * Optional. Message is a shared contact, information about the contact
      */
     public ?Contact $contact = null;
@@ -345,6 +354,11 @@ class Message extends BaseType
     public ?string $connected_website = null;
 
     /**
+     * Optional. Service message: the user allowed the bot added to the attachment menu to write messages
+     */
+    public ?WriteAccessAllowed $write_access_allowed = null;
+
+    /**
      * Optional. Telegram Passport data
      */
     public ?PassportData $passport_data = null;
@@ -361,6 +375,11 @@ class Message extends BaseType
     public ?ForumTopicCreated $forum_topic_created = null;
 
     /**
+     * Optional. Service message: forum topic edited
+     */
+    public ?ForumTopicEdited $forum_topic_edited = null;
+
+    /**
      * Optional. Service message: forum topic closed
      */
     public ?ForumTopicClosed $forum_topic_closed = null;
@@ -369,6 +388,16 @@ class Message extends BaseType
      * Optional. Service message: forum topic reopened
      */
     public ?ForumTopicReopened $forum_topic_reopened = null;
+
+    /**
+     * Optional. Service message: the 'General' forum topic hidden
+     */
+    public ?GeneralForumTopicHidden $general_forum_topic_hidden = null;
+
+    /**
+     * Optional. Service message: the 'General' forum topic unhidden
+     */
+    public ?GeneralForumTopicUnhidden $general_forum_topic_unhidden = null;
 
     /**
      * Optional. Service message: voice chat scheduled
