@@ -2,6 +2,20 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.10.0 - 2022-12-31
+
+### What's Changed
+
+- Add Laravel logger by @Lukasss93 in https://github.com/nutgram/nutgram/pull/271
+- Fix missing use cases inside getChat and setChat methods in Update class by @Lukasss93 in https://github.com/nutgram/nutgram/pull/278
+- Update to Bot Api 6.4 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/282
+
+### New Contributors
+
+- @ShNURoK42 made their first contribution in https://github.com/nutgram/nutgram/pull/274
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.9.0...3.10.0
+
 ## 3.9.0 - 2022-11-17
 
 ### What's Changed
