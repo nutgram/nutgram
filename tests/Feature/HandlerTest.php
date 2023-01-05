@@ -601,7 +601,6 @@ it('parse entities', function ($update) {
         expect($entities)
             ->toHaveCount(4)
             ->each->toBeInstanceOf(MessageEntity::class);
-
     });
 
     $bot->run();
