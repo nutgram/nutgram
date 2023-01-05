@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -43,6 +44,7 @@ class EncryptedPassportElement extends BaseType
      * {@see https://core.telegram.org/bots/api#encryptedcredentials EncryptedCredentials}.
      * @var \SergiX44\Nutgram\Telegram\Types\Passport\PassportFile[] $files
      */
+    #[ArrayType(PassportFile::class)]
     public ?array $files = null;
 
     /**
@@ -77,6 +79,7 @@ class EncryptedPassportElement extends BaseType
      * {@see https://core.telegram.org/bots/api#encryptedcredentials EncryptedCredentials}.
      * @var \SergiX44\Nutgram\Telegram\Types\Passport\PassportFile[] $translation
      */
+    #[ArrayType(PassportFile::class)]
     public ?array $translation = null;
 
     /**

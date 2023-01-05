@@ -2,12 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputVenueMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * Represents a link to an animated GIF file stored on the Telegram servers.
@@ -55,6 +56,7 @@ class InlineQueryResultCachedGif extends InlineQueryResult
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $caption_entities
      */
+    #[ArrayType(MessageEntity::class)]
     public ?array $caption_entities = null;
 
     /**
