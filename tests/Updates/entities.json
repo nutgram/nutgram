@@ -1,0 +1,47 @@
+{
+  "update_id": 123456,
+  "message": {
+    "message_id": 123,
+    "from": {
+      "id": 321654,
+      "is_bot": false,
+      "first_name": "John",
+      "last_name": "Doe",
+      "username": "johndoe",
+      "language_code": "en",
+      "is_premium": false
+    },
+    "chat": {
+      "id": 321654,
+      "first_name": "John",
+      "last_name": "Doe",
+      "username": "johndoe",
+      "type": "private"
+    },
+    "date": 1672956378,
+    "text": "test bold underline 😆👍 look here",
+    "entities": [
+      {
+        "offset": 5,
+        "length": 4,
+        "type": "bold"
+      },
+      {
+        "offset": 10,
+        "length": 9,
+        "type": "underline"
+      },
+      {
+        "offset": 25,
+        "length": 9,
+        "type": "text_link",
+        "url": "http://google.it/"
+      },
+      {
+        "offset": 30,
+        "length": 4,
+        "type": "bold"
+      }
+    ]
+  }
+}
