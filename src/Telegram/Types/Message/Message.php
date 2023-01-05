@@ -526,6 +526,15 @@ class Message extends BaseType
     }
 
     /**
+     * Return the message entities
+     * @return MessageEntity[]|null
+     */
+    public function getEntities(): ?array
+    {
+        return $this->entities ?? $this->caption_entities;
+    }
+
+    /**
      * Delete the current message
      * @return bool|null
      */
