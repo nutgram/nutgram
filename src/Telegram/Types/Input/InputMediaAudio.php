@@ -2,6 +2,9 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+
 /**
  * Represents an audio file to be treated as music to be sent.
  * @see https://core.telegram.org/bots/api#inputmediaaudio
@@ -33,6 +36,7 @@ class InputMediaAudio extends InputMedia
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $caption_entities
      */
+    #[ArrayType(MessageEntity::class)]
     public ?array $caption_entities = null;
 
     /**

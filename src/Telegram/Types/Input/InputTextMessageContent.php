@@ -2,7 +2,9 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content}
@@ -29,6 +31,7 @@ class InputTextMessageContent extends BaseType
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $caption_entities
      */
+    #[ArrayType(MessageEntity::class)]
     public ?array $entities = null;
 
     /**

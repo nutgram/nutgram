@@ -21,6 +21,6 @@ class UserProfilePhotos extends BaseType
      * Requested profile pictures (in up to 4 sizes each)
      * @var \SergiX44\Nutgram\Telegram\Types\Media\PhotoSize[][] $photos
      */
-    #[ArrayType(PhotoSize::class)]
+    #[ArrayType(PhotoSize::class, depth: 2)]
     public array $photos;
 }

@@ -6,6 +6,7 @@ use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\Animation;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * This object represents a game.
@@ -42,6 +43,7 @@ class Game extends BaseType
      * Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $text_entities
      */
+    #[ArrayType(MessageEntity::class)]
     public ?array $text_entities = null;
 
     /**

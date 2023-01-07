@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
@@ -22,6 +23,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Media\Contact;
 use SergiX44\Nutgram\Telegram\Types\Media\Dice;
 use SergiX44\Nutgram\Telegram\Types\Media\Document;
+use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 use SergiX44\Nutgram\Telegram\Types\Media\Video;
 use SergiX44\Nutgram\Telegram\Types\Media\VideoNote;
 use SergiX44\Nutgram\Telegram\Types\Media\Voice;
@@ -162,6 +164,7 @@ class Message extends BaseType
      * Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $entities
      */
+    #[ArrayType(MessageEntity::class)]
     public ?array $entities = null;
 
     /**
@@ -190,6 +193,7 @@ class Message extends BaseType
      * Optional. Message is a photo, available sizes of the photo
      * @var \SergiX44\Nutgram\Telegram\Types\Media\PhotoSize[] $photo
      */
+    #[ArrayType(PhotoSize::class)]
     public ?array $photo = null;
 
     /**
@@ -222,6 +226,7 @@ class Message extends BaseType
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $caption_entities
      */
+    #[ArrayType(MessageEntity::class)]
     public ?array $caption_entities = null;
 
     /**
@@ -259,6 +264,7 @@ class Message extends BaseType
      * and information about them (the bot itself may be one of these members)
      * @var \SergiX44\Nutgram\Telegram\Types\User\User[] $new_chat_members
      */
+    #[ArrayType(User::class)]
     public ?array $new_chat_members = null;
 
     /**
@@ -275,6 +281,7 @@ class Message extends BaseType
      * Optional. A chat photo was change to this value
      * @var \SergiX44\Nutgram\Telegram\Types\Media\PhotoSize[] $new_chat_photo
      */
+    #[ArrayType(PhotoSize::class)]
     public ?array $new_chat_photo = null;
 
     /**
@@ -516,6 +523,15 @@ class Message extends BaseType
     public function getText(): ?string
     {
         return $this->text ?? $this->caption;
+    }
+
+    /**
+     * Return the message entities
+     * @return MessageEntity[]|null
+     */
+    public function getEntities(): ?array
+    {
+        return $this->entities ?? $this->caption_entities;
     }
 
     /**

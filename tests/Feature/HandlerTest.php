@@ -3,6 +3,7 @@
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 it('calls the message handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -590,3 +591,17 @@ it('calls the message handler + overrideMiddleware', function () {
 
     expect($test)->toBe('BC');
 });
+
+it('parse entities', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $entities = $bot->message()->entities;
+
+        expect($entities)
+            ->toHaveCount(4)
+            ->each->toBeInstanceOf(MessageEntity::class);
+    });
+
+    $bot->run();
+})->with('entities');
