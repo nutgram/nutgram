@@ -16,7 +16,7 @@ class LegacyHydrator implements Hydrator
     /**
      * @inheritDoc
      */
-    public function hydrate(object|array $data, object $instance): mixed
+    public function hydrate(object|array $data, object|string $instance): mixed
     {
         return $this->mapper->map($data, $instance);
     }
@@ -24,7 +24,7 @@ class LegacyHydrator implements Hydrator
     /**
      * @inheritDoc
      */
-    public function hydrateArray(array $data, object $instance): array
+    public function hydrateArray(array $data, object|string $instance): array
     {
         return array_map(
             fn ($obj) => $this->mapper->map($obj, clone $instance),

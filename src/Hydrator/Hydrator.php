@@ -9,12 +9,12 @@ interface Hydrator
      * @param  object  $instance
      * @return object
      */
-    public function hydrate(array|object $data, object $instance): mixed;
+    public function hydrate(array|object $data, object|string $instance): mixed;
 
     /**
      * @param  array  $data
      * @param  object  $instance
      * @return array
      */
-    public function hydrateArray(array $data, object $instance): array;
+    public function hydrateArray(array $data, object|string $instance): array;
 }
