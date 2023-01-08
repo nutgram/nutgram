@@ -9,7 +9,6 @@ use SergiX44\Hydrator\Annotation\ConcreteResolver;
 #[Attribute(Attribute::TARGET_CLASS)]
 class MenuButtonResolver extends ConcreteResolver
 {
-
     public function getConcreteClass(array $data): string
     {
         return match ($data['type']) {
