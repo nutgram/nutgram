@@ -6,7 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Chat;
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member} that has some additional privileges.
  * @see https://core.telegram.org/bots/api#chatmemberowner
  */
-trait ChatMemberAdministrator
+class ChatMemberAdministrator extends ChatMember
 {
     /**
      * The member's status in the chat, always “administrator”

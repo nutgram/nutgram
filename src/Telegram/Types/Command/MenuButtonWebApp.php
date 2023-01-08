@@ -8,7 +8,7 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
  * Represents a menu button, which launches a Web App.
  * @see https://core.telegram.org/bots/api#menubuttonwebapp
  */
-trait MenuButtonWebApp
+class MenuButtonWebApp extends MenuButton
 {
     /**
      * Type of the button, must be web_app

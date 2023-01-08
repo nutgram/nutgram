@@ -8,10 +8,10 @@ namespace SergiX44\Nutgram\Telegram\Types\Chat;
  *
  * @see https://core.telegram.org/bots/api#chatmemberrestricted
  */
-trait ChatMemberRestricted
+class ChatMemberRestricted extends ChatMember
 {
     /**
-     * The member's status in the chat, always “member”
+     * The member's status in the chat, always “restricted”
      */
     public string $status;
 

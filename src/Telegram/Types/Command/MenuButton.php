@@ -15,10 +15,9 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * Otherwise the default menu button is applied. By default, the menu button opens the list of bot commands.
  * @see https://core.telegram.org/bots/api#menubutton
  */
+#[MenuButtonResolver]
 class MenuButton extends BaseType
 {
-    use MenuButtonCommands, MenuButtonWebApp, MenuButtonDefault;
-
     public function getType(): ?string
     {
         return match ($this->type) {

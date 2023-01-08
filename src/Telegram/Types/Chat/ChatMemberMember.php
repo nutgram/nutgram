@@ -7,7 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Chat;
  * that has no additional privileges or restrictions.
  * @see https://core.telegram.org/bots/api#chatmembermember
  */
-trait ChatMemberMember
+class ChatMemberMember extends ChatMember
 {
     /**
      * The member's status in the chat, always “member”
