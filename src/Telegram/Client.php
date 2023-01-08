@@ -306,8 +306,8 @@ trait Client
         if ($json?->ok) {
             return match (true) {
                 is_scalar($json->result) => $json->result,
-                is_array($json->result) => $this->mapper->hydrateArray($json->result, $this->container->getNew($mapTo)),
-                default => $this->mapper->hydrate($json->result, $this->container->getNew($mapTo))
+                is_array($json->result) => $this->mapper->hydrateArray($json->result, $mapTo),
+                default => $this->mapper->hydrate($json->result, $mapTo)
             };
         }
 

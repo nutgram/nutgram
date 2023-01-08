@@ -33,7 +33,7 @@ class Fake implements RunningMode
         } else {
             $update = $bot->getContainer()
                 ->get(Hydrator::class)
-                ->hydrate($this->update, $bot->getContainer()->getNew(Update::class));
+                ->hydrate($this->update, Update::class);
         }
 
         $bot->processUpdate($update);
