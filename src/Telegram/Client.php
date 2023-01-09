@@ -278,7 +278,8 @@ trait Client
             ], $options));
             $content = $this->mapResponse($response, $mapTo);
 
-            $this->logger->debug($endpoint.PHP_EOL.$response->getBody()->getContents(), [
+            $rawResponse = (string)$response->getBody();
+            $this->logger->debug($endpoint.PHP_EOL.$rawResponse, [
                 'parameters' => $json,
                 'options' => $options
             ]);
