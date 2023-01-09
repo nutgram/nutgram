@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
+use SergiX44\Nutgram\Telegram\Attributes\MenuButtonType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 /**
@@ -26,4 +27,9 @@ class MenuButtonWebApp extends MenuButton
      * the method {@see https://core.telegram.org/bots/api#answerwebappquery answerWebAppQuery}.
      */
     public ?WebAppInfo $web_app = null;
+
+    public function getType(): string
+    {
+        return MenuButtonType::WEB_APP;
+    }
 }

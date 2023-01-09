@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
+
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member}
  * that owns the chat and has all administrator privileges.
@@ -23,4 +25,9 @@ class ChatMemberOwner extends ChatMember
      * Optional. Custom title for this user
      */
     public ?string $custom_title = null;
+
+    public function getType(): string
+    {
+        return ChatMemberType::OWNER;
+    }
 }

@@ -3,7 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
 use Attribute;
-use Exception;
+use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 
 #[Attribute(Attribute::TARGET_CLASS)]
@@ -15,7 +15,7 @@ class MenuButtonResolver extends ConcreteResolver
             'commands' => MenuButtonCommands::class,
             'default' => MenuButtonDefault::class,
             'web_app' => MenuButtonWebApp::class,
-            default => throw new Exception('Unknown MenuButton type: '.$data['type']),
+            default => throw new InvalidArgumentException('Unknown MenuButton type: '.$data['type']),
         };
     }
 }

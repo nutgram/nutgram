@@ -24,4 +24,6 @@ abstract class ChatMember extends BaseType
      * Information about the user
      */
     public User $user;
+
+    abstract public function getType(): string;
 }

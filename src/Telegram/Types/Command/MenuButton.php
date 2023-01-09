@@ -2,7 +2,6 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use RuntimeException;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -16,15 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * @see https://core.telegram.org/bots/api#menubutton
  */
 #[MenuButtonResolver]
-class MenuButton extends BaseType
+abstract class MenuButton extends BaseType
 {
-    public function getType(): ?string
-    {
-        return match ($this->type) {
-            'commands' => MenuButtonCommands::class,
-            'webapp' => MenuButtonWebApp::class,
-            'default' => MenuButtonDefault::class,
-            default => throw new RuntimeException('Invalid MenuButton type'),
-        };
-    }
+    abstract public function getType(): string;
 }

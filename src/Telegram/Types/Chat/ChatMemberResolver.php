@@ -3,7 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use Attribute;
-use Exception;
+use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 
 #[Attribute(Attribute::TARGET_CLASS)]
@@ -18,7 +18,7 @@ class ChatMemberResolver extends ConcreteResolver
             'restricted' => ChatMemberRestricted::class,
             'left' => ChatMemberLeft::class,
             'kicked' => ChatMemberBanned::class,
-            default => throw new Exception('Unknown ChatMember status: '.$data['status']),
+            default => throw new InvalidArgumentException('Unknown ChatMember status: '.$data['status']),
         };
     }
 }
