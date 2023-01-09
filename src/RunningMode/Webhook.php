@@ -59,7 +59,7 @@ class Webhook implements RunningMode
         $input = file_get_contents('php://input');
         $update = $bot->getContainer()
             ->get(Hydrator::class)
-            ->hydrate(json_decode($input, flags: JSON_THROW_ON_ERROR), $bot->getContainer()->getNew(Update::class));
+            ->hydrate(json_decode($input, flags: JSON_THROW_ON_ERROR), Update::class);
 
         $bot->getContainer()
             ->get(LoggerInterface::class)

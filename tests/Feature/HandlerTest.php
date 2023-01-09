@@ -1,7 +1,10 @@
 <?php
 
+use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberAdministrator;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
@@ -605,3 +608,17 @@ it('parse entities', function ($update) {
 
     $bot->run();
 })->with('entities');
+
+it('gets administrators', function ($responseBody) {
+    $bot = Nutgram::fake(responses: [
+        new Response(200, body: $responseBody),
+    ]);
+
+    $admins = $bot->getChatAdministrators(123456789);
+
+    expect($admins)
+        ->sequence(
+            fn ($item) => $item->toBeInstanceOf(ChatMemberAdministrator::class),
+            fn ($item) => $item->toBeInstanceOf(ChatMemberOwner::class),
+        );
+})->with('response_chat_members');

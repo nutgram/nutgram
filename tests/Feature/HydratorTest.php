@@ -41,3 +41,20 @@ it('maps multiple updates with legacy hydrator', function ($update) {
         expect($u)->toBeInstanceOf(Update::class);
     }
 })->with('multiple_messages');
+
+it('doesnt return the same hydrated instance again', function ($update) {
+    $bot = Nutgram::fake();
+    $first = $bot->getContainer()
+        ->get(Hydrator::class)
+        ->hydrate($update, Update::class);
+
+    $first->message->text = 'changed';
+
+    $second = $bot->getContainer()
+        ->get(Hydrator::class)
+        ->hydrate($update, Update::class);
+
+    expect($first === $second)->toBeFalse();
+    expect($first->message->text)->toBe('changed');
+    expect($second->message->text)->toBe('Ciao');
+})->with('message');

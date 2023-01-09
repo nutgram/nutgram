@@ -2,16 +2,18 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
+
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member}
  * that is under certain restrictions in the chat. Supergroups only.
  *
  * @see https://core.telegram.org/bots/api#chatmemberrestricted
  */
-trait ChatMemberRestricted
+class ChatMemberRestricted extends ChatMember
 {
     /**
-     * The member's status in the chat, always “member”
+     * The member's status in the chat, always “restricted”
      */
     public string $status;
 
@@ -70,4 +72,9 @@ trait ChatMemberRestricted
      * Date when restrictions will be lifted for this user; unix time. If 0, then the user is banned forever
      */
     public ?int $until_date = null;
+
+    public function getType(): string
+    {
+        return ChatMemberType::RESTRICTED;
+    }
 }

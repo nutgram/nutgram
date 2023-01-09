@@ -2,9 +2,6 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
-use RuntimeException;
-use SergiX44\Nutgram\Telegram\Attributes\ChatMemberStatus;
-use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -20,31 +17,13 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  *
  * @see https://core.telegram.org/bots/api#chatmember
  */
-class ChatMember extends BaseType
+#[ChatMemberResolver]
+abstract class ChatMember extends BaseType
 {
-    use ChatMemberOwner;
-    use ChatMemberAdministrator;
-    use ChatMemberMember;
-    use ChatMemberRestricted;
-    use ChatMemberLeft;
-    use ChatMemberBanned;
-
     /**
      * Information about the user
      */
     public User $user;
 
-
-    public function getType(): ?string
-    {
-        return match ($this->status) {
-            ChatMemberStatus::CREATOR => ChatMemberType::OWNER,
-            ChatMemberStatus::ADMINISTRATOR => ChatMemberType::ADMINISTRATOR,
-            ChatMemberStatus::MEMBER => ChatMemberType::MEMBER,
-            ChatMemberStatus::RESTRICTED => ChatMemberType::RESTRICTED,
-            ChatMemberStatus::LEFT => ChatMemberType::LEFT,
-            ChatMemberStatus::KICKED => ChatMemberType::BANNED,
-            default => throw new RuntimeException('Invalid ChatMemberStatus type'),
-        };
-    }
+    abstract public function getType(): string;
 }
