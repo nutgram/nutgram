@@ -14,12 +14,13 @@ class Command extends Handler
     protected ?string $description = null;
 
     /**
-     * @param  string|null  $pattern
-     * @param  null  $callable
+     * @param  callable|callable-string  $callable
+     * @param  string|null  $command
      */
-    public function __construct($callable = null, ?string $pattern = null)
+    public function __construct($callable = null, ?string $command = null)
     {
-        parent::__construct($callable ?? [$this, 'handle'], $pattern ?? "/$this->command");
+        $command = $command ?? $this->command;
+        parent::__construct($callable ?? [$this, 'handle'], "/{$command}");
     }
 
     /**
@@ -45,16 +46,6 @@ class Command extends Handler
     public function isHidden(): bool
     {
         return empty($this->getDescription());
-    }
-
-    /**
-     * @param  string  $command
-     * @return Command
-     */
-    public function command(string $command): Command
-    {
-        $this->command = $command;
-        return $this;
     }
 
     /**

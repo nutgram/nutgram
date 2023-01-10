@@ -195,8 +195,7 @@ it('throws an error if not when not specifying a callable', function ($update) {
 it('works as-is specifying the minimum', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onCommand((new \SergiX44\Nutgram\Handlers\Type\Command())
-        ->command('start'));
+    $bot->onCommand(new \SergiX44\Nutgram\Handlers\Type\Command(command: 'start'));
 
     $bot->run();
 })->with('command_message')->expectException(RuntimeException::class);
