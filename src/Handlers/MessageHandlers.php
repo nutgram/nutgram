@@ -28,12 +28,12 @@ trait MessageHandlers
         }
 
         if ($callable === null) {
-            throw new InvalidArgumentException(sprintf('A callable but be specified when not providing a %s class or instance.', Command::class));
+            throw new InvalidArgumentException(sprintf('A callable must be specified when not providing a %s class or instance.', Command::class));
         }
 
         $command = "/$command";
 
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command] = new Command($command, $callable);
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command] = new Command($callable, $command);
     }
 
     /**

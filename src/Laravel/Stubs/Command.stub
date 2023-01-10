@@ -3,10 +3,15 @@
 namespace App\Telegram\{{ namespace }};
 
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Handlers\Type\Command;
 
-class {{ name }}
+class {{ name }} extends Command
 {
-    public function __invoke(Nutgram $bot): void
+    protected string $command = 'command';
+
+    protected ?string $description = 'A lovely description.';
+
+    public function handle(Nutgram $bot): void
     {
         $bot->sendMessage('This is a command!');
     }

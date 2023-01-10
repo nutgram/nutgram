@@ -17,7 +17,7 @@ class Command extends Handler
      * @param  string|null  $pattern
      * @param  null  $callable
      */
-    public function __construct(?string $pattern = null, $callable = null)
+    public function __construct($callable = null, ?string $pattern = null)
     {
         parent::__construct($callable ?? [$this, 'handle'], $pattern ?? "/$this->command");
     }
