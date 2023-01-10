@@ -9,7 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 
 class Command extends Handler
 {
-    protected string $command;
+    protected string $command = 'start';
 
     protected ?string $description = null;
 
