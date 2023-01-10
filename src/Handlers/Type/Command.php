@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Handlers\Type;
 
+use RuntimeException;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
@@ -76,5 +77,6 @@ class Command extends Handler
 
     public function handle(Nutgram $bot): void
     {
+        throw new RuntimeException('The handle method must be extended!');
     }
 }
