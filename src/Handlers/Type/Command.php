@@ -3,11 +3,24 @@
 namespace SergiX44\Nutgram\Handlers\Type;
 
 use SergiX44\Nutgram\Handlers\Handler;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 
 class Command extends Handler
 {
+
+    protected string $command;
+
     protected ?string $description = null;
+
+    /**
+     * @param  string|null  $pattern
+     * @param  null  $callable
+     */
+    public function __construct(?string $pattern = null, $callable = null)
+    {
+        parent::__construct($callable ?? [$this, 'handle'], $pattern ?? "/$this->command");
+    }
 
     /**
      * @return string
@@ -35,6 +48,16 @@ class Command extends Handler
     }
 
     /**
+     * @param  string  $command
+     * @return Command
+     */
+    public function command(string $command): Command
+    {
+        $this->command = $command;
+        return $this;
+    }
+
+    /**
      * @param  string  $description
      * @return Command
      */
@@ -50,5 +73,10 @@ class Command extends Handler
     public function toBotCommand(): BotCommand
     {
         return new BotCommand($this->getName(), $this->getDescription());
+    }
+
+    public function handle(Nutgram $bot): void
+    {
+
     }
 }
