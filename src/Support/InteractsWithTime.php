@@ -4,11 +4,10 @@ namespace SergiX44\Nutgram\Support;
 
 use DateInterval;
 use DateTimeImmutable;
-use DateTimeInterface;
 
 trait InteractsWithTime
 {
-    protected function expiringAt(DateInterval|int $ttl): DateTimeInterface
+    protected function expiringAt(DateInterval|int $ttl): DateTimeImmutable
     {
         $now = $this->getNow();
 
@@ -19,12 +18,12 @@ trait InteractsWithTime
         return $now->add(new DateInterval("PT{$ttl}S"));
     }
 
-    protected function hasExpired(DateTimeInterface $expiration): bool
+    protected function hasExpired(DateTimeImmutable $expiration): bool
     {
         return $this->getNow()->getTimestamp() >= $expiration->getTimestamp();
     }
 
-    protected function getNow(): DateTimeInterface
+    protected function getNow(): DateTimeImmutable
     {
         return new DateTimeImmutable();
     }
