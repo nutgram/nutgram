@@ -190,7 +190,6 @@ it('throws an error if not when not specifying a callable', function ($update) {
     $bot = Nutgram::fake($update);
 
     $bot->onCommand('/start');
-
 })->with('command_message')->expectException(InvalidArgumentException::class);
 
 it('parse callback queries', function ($update) {
