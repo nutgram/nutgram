@@ -8,7 +8,6 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 
 class Command extends Handler
 {
-
     protected string $command;
 
     protected ?string $description = null;
@@ -77,6 +76,5 @@ class Command extends Handler
 
     public function handle(Nutgram $bot): void
     {
-
     }
 }

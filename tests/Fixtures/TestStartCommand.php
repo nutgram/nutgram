@@ -16,5 +16,4 @@ class TestStartCommand extends Command
         expect($bot->getData('called'))->toBeFalse();
         $bot->setData('called', true);
     }
-
 }
