@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Cache;
 
+use DateInterval;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
@@ -33,11 +34,11 @@ class GlobalCache extends BotCache
     /**
      * @param  string  $key
      * @param  mixed  $data
-     * @param  mixed  $ttl
+     * @param  DateInterval|int|null  $ttl
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function set(string $key, mixed $data, $ttl = null): bool
+    public function set(string $key, mixed $data, DateInterval|int|null $ttl = null): bool
     {
         return $this->cache->set($this->makeKey($key), $data, $ttl);
     }

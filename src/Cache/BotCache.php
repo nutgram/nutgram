@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Cache;
 
+use DateInterval;
 use Psr\SimpleCache\CacheInterface;
 
 abstract class BotCache
@@ -12,10 +13,7 @@ abstract class BotCache
      */
     protected CacheInterface $cache;
 
-    /**
-     * @var int|null
-     */
-    protected ?int $ttl;
+    protected DateInterval|int|null $ttl;
 
     /**
      * @var string
@@ -27,7 +25,7 @@ abstract class BotCache
      */
     private ?int $botId;
 
-    public function __construct(CacheInterface $cache, string $key, ?int $botId, ?int $ttl = null)
+    public function __construct(CacheInterface $cache, string $key, ?int $botId, DateInterval|int|null $ttl = null)
     {
         $this->cache = $cache;
         $this->ttl = $ttl;

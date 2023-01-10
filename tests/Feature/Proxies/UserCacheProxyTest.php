@@ -1,5 +1,6 @@
 <?php
 
+use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Nutgram;
 
 test('getUserData() returns default value if it does not exist', function () {
@@ -60,8 +61,24 @@ test('getUserData() returns value after calling setUserData() with valid TTL', f
 test('getUserData() returns default value after calling setUserData() with expired TTL', function () {
     $bot = Nutgram::fake();
 
+    $cache = mock(ArrayCache::class)
+        ->makePartial()
+        ->shouldAllowMockingProtectedMethods()
+        ->shouldReceive('getNow')
+        ->andReturn(new DateTimeImmutable('2023-12-25 00:00:00'))
+        ->getMock();
+    $bot->setCache($cache);
+
     $bot->setUserData(key: 'test', value: 'foo', userId: 123, ttl: 1);
-    sleep(2);
+
+    $cache = mock(ArrayCache::class)
+        ->makePartial()
+        ->shouldAllowMockingProtectedMethods()
+        ->shouldReceive('getNow')
+        ->andReturn(new DateTimeImmutable('2023-12-25 00:00:02'))
+        ->getMock();
+    $bot->setCache($cache);
+
     $value = $bot->getUserData(key: 'test', userId: 123, default: 'bar');
 
     expect($value)->toBe('bar');

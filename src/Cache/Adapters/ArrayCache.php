@@ -3,7 +3,9 @@
 
 namespace SergiX44\Nutgram\Cache\Adapters;
 
+use DateInterval;
 use Psr\SimpleCache\CacheInterface;
+use SergiX44\Nutgram\Support\InteractsWithTime;
 
 /**
  * Class ArrayCache
@@ -11,6 +13,8 @@ use Psr\SimpleCache\CacheInterface;
  */
 class ArrayCache implements CacheInterface
 {
+    use InteractsWithTime;
+
     private array $cache = [];
     private array $expires = [];
 
@@ -29,7 +33,7 @@ class ArrayCache implements CacheInterface
     /**
      * @param  string  $key
      * @param  mixed  $value
-     * @param  mixed  $ttl
+     * @param  DateInterval|int|null  $ttl
      * @return bool
      */
     public function set($key, $value, $ttl = null): bool
@@ -38,7 +42,7 @@ class ArrayCache implements CacheInterface
 
         $this->cache[$key] = $value;
         if ($ttl !== null) {
-            $this->expires[$key] = time() + $ttl;
+            $this->expires[$key] = $this->expiringAt($ttl);
         }
 
         return true;
@@ -84,7 +88,7 @@ class ArrayCache implements CacheInterface
 
     /**
      * @param  iterable  $values
-     * @param  null  $ttl
+     * @param  DateInterval|int|null  $ttl
      * @return bool
      */
     public function setMultiple($values, $ttl = null): bool
@@ -126,7 +130,7 @@ class ArrayCache implements CacheInterface
     private function checkExpire(string $key): void
     {
         $expiration = $this->expires[$key] ?? null;
-        if ($expiration !== null && $expiration < time()) {
+        if ($expiration !== null && $this->hasExpired($expiration)) {
             unset($this->cache[$key], $this->expires[$key]);
         }
     }
