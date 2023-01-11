@@ -1,12 +1,14 @@
 <?php
 
 use GuzzleHttp\Psr7\Response;
+use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberAdministrator;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use SergiX44\Nutgram\Tests\Fixtures\TestStartCommand;
 
 it('calls the message handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -153,7 +155,7 @@ it('calls the right on command', function ($update) {
 it('allows defining commands with command instances', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $c = new class extends \SergiX44\Nutgram\Handlers\Type\Command {
+    $c = new class extends Command {
         protected string $command = 'start';
 
         public function handle(Nutgram $bot): void
@@ -162,7 +164,7 @@ it('allows defining commands with command instances', function ($update) {
         }
     };
 
-    $bot->onCommand($c);
+    $bot->registerCommand($c);
 
     $bot->onMessage(function ($bot) {
         throw new Exception();
@@ -175,7 +177,7 @@ it('allows defining commands with classes', function ($update) {
     $bot = Nutgram::fake($update);
 
     $bot->setData('called', false);
-    $bot->onCommand(\SergiX44\Nutgram\Tests\Fixtures\TestStartCommand::class);
+    $bot->registerCommand(TestStartCommand::class);
 
     $bot->onMessage(function ($bot) {
         throw new Exception();
@@ -189,13 +191,13 @@ it('allows defining commands with classes', function ($update) {
 it('throws an error if not when not specifying a callable', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onCommand('/start');
+    $bot->registerCommand('garbage');
 })->with('command_message')->expectException(InvalidArgumentException::class);
 
 it('works as-is specifying the minimum', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onCommand(new \SergiX44\Nutgram\Handlers\Type\Command(command: 'start'));
+    $bot->registerCommand(new Command(command: 'start'));
 
     $bot->run();
 })->with('command_message')->expectException(RuntimeException::class);

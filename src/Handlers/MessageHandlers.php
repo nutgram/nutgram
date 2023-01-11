@@ -13,25 +13,29 @@ use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 trait MessageHandlers
 {
     /**
-     * @param  string|Command  $command
-     * @param  null  $callable
+     * @param  string  $command
+     * @param $callable
      * @return Command
      */
-    public function onCommand(string|Command $command, $callable = null): Command
+    public function onCommand(string $command, $callable): Command
     {
-        if (is_subclass_of($command, Command::class) && $callable === null) {
-            /** @var Command $instance */
-            $instance = new $command();
-            return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$instance->getPattern()] = $instance;
-        } elseif ($command instanceof Command) {
-            return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command->getPattern()] = $command;
-        }
-
-        if ($callable === null) {
-            throw new InvalidArgumentException(sprintf('A callable must be specified when not providing a %s class or instance.', Command::class));
-        }
-
         return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command] = new Command($callable, $command);
+    }
+
+    /**
+     * @param  string|Command  $command
+     * @return Command
+     */
+    public function registerCommand(string|Command $command): Command
+    {
+        if (is_string($command)) {
+            if (!is_subclass_of($command, Command::class)) {
+                throw new InvalidArgumentException(sprintf('You must provide subclass of the %s class or an instance.', Command::class));
+            }
+            $command = new $command();
+        }
+
+        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command->getPattern()] = $command;
     }
 
     /**
