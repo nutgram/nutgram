@@ -16,8 +16,22 @@ it('does not get value due to missing key', function () {
 });
 
 it('does not get value due to expired key', function () {
+    $this->cache = mock(ArrayCache::class)
+        ->makePartial()
+        ->shouldAllowMockingProtectedMethods()
+        ->shouldReceive('getNow')
+        ->andReturn(new DateTimeImmutable('2023-12-25 00:00:00'))
+        ->getMock();
+
     $this->cache->set('foo', 'bar', 1);
-    sleep(2);
+
+    $this->cache = mock(ArrayCache::class)
+        ->makePartial()
+        ->shouldAllowMockingProtectedMethods()
+        ->shouldReceive('getNow')
+        ->andReturn(new DateTimeImmutable('2023-12-25 00:00:02'))
+        ->getMock();
+
     expect($this->cache->get('foo', 'baz'))->toBe('baz');
 });
 

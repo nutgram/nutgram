@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Proxies;
 
+use DateInterval;
 use Psr\SimpleCache\InvalidArgumentException;
 
 /**
@@ -26,11 +27,11 @@ trait GlobalCacheProxy
     /**
      * @param $key
      * @param $value
-     * @param  mixed  $ttl
+     * @param  DateInterval|int|null  $ttl
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function setGlobalData($key, $value, $ttl = null): bool
+    public function setGlobalData($key, $value, DateInterval|int|null $ttl = null): bool
     {
         return $this->globalCache->set($key, $value, $ttl);
     }

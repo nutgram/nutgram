@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Proxies;
 
+use DateInterval;
 use Psr\SimpleCache\InvalidArgumentException;
 
 /**
@@ -28,11 +29,11 @@ trait UserCacheProxy
      * @param $key
      * @param $value
      * @param  int|null  $userId
-     * @param  null  $ttl
+     * @param  DateInterval|int|null  $ttl
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function setUserData($key, $value, ?int $userId = null, $ttl = null): bool
+    public function setUserData($key, $value, ?int $userId = null, DateInterval|int|null $ttl = null): bool
     {
         $userId = $userId ?? $this->userId();
         return $this->userCache->set($userId, $key, $value, $ttl);

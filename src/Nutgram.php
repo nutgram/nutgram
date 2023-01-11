@@ -135,9 +135,9 @@ class Nutgram extends ResolveHandlers
         $this->container->addShared(CacheInterface::class, $this->config['cache'] ?? ArrayCache::class);
         $this->container->addShared(LoggerInterface::class, $this->config['logger'] ?? NullLogger::class);
 
-        $this->container->addShared(ConversationCache::class)->addArguments([CacheInterface::class, $botId]);
-        $this->container->addShared(GlobalCache::class)->addArguments([CacheInterface::class, $botId]);
-        $this->container->addShared(UserCache::class)->addArguments([CacheInterface::class, $botId]);
+        $this->container->add(ConversationCache::class)->addArguments([CacheInterface::class, $botId]);
+        $this->container->add(GlobalCache::class)->addArguments([CacheInterface::class, $botId]);
+        $this->container->add(UserCache::class)->addArguments([CacheInterface::class, $botId]);
 
         $this->conversationCache = $this->container->get(ConversationCache::class);
         $this->globalCache = $this->container->get(GlobalCache::class);
@@ -207,6 +207,9 @@ class Nutgram extends ResolveHandlers
     public function setCache(CacheInterface $cache): void
     {
         $this->container->extend(CacheInterface::class)->setConcrete($cache);
+        $this->conversationCache = $this->container->get(ConversationCache::class);
+        $this->globalCache = $this->container->get(GlobalCache::class);
+        $this->userCache = $this->container->get(UserCache::class);
     }
 
     /**

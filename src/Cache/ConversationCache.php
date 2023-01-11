@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\Cache;
 
 use Closure;
+use DateInterval;
 use Laravel\SerializableClosure\Exceptions\PhpVersionNotSupportedException;
 use Laravel\SerializableClosure\SerializableClosure;
 use Psr\SimpleCache\CacheInterface;
@@ -20,9 +21,9 @@ class ConversationCache extends BotCache
      * ConversationCache constructor.
      * @param  CacheInterface  $cache
      * @param  int|null  $botId
-     * @param  int|null  $ttl
+     * @param  DateInterval|int|null  $ttl
      */
-    public function __construct(CacheInterface $cache, ?int $botId, ?int $ttl = self::CONVERSATION_TTL)
+    public function __construct(CacheInterface $cache, ?int $botId, DateInterval|int|null $ttl = self::CONVERSATION_TTL)
     {
         parent::__construct($cache, self::CONVERSATION_PREFIX, $botId, $ttl);
     }

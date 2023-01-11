@@ -1,5 +1,6 @@
 <?php
 
+use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Nutgram;
 
 test('getGlobalData() returns default value', function () {
@@ -50,8 +51,24 @@ test('getGlobalData() returns value after calling setGlobalData() with valid TTL
 test('getGlobalData() returns default value after calling setGlobalData() with expired TTL', function () {
     $bot = Nutgram::fake();
 
+    $cache = mock(ArrayCache::class)
+        ->makePartial()
+        ->shouldAllowMockingProtectedMethods()
+        ->shouldReceive('getNow')
+        ->andReturn(new DateTimeImmutable('2023-12-25 00:00:00'))
+        ->getMock();
+    $bot->setCache($cache);
+
     $bot->setGlobalData('test', 'foo', 1);
-    sleep(2);
+
+    $cache = mock(ArrayCache::class)
+        ->makePartial()
+        ->shouldAllowMockingProtectedMethods()
+        ->shouldReceive('getNow')
+        ->andReturn(new DateTimeImmutable('2023-12-25 00:00:02'))
+        ->getMock();
+    $bot->setCache($cache);
+
     $value = $bot->getGlobalData('test', 'bar');
 
     expect($value)->toBe('bar');
