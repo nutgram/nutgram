@@ -2,6 +2,20 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.11.0 - 2023-01-11
+
+### What's Changed
+
+- Fix missing ArrayType annotations in some types by @Lukasss93 in https://github.com/nutgram/nutgram/pull/284
+- Fix generic types by @Lukasss93 in https://github.com/nutgram/nutgram/pull/285
+- Fix logger (response content) by @Lukasss93 in https://github.com/nutgram/nutgram/pull/287
+- Allow command registration as instances or classes by @SergiX44 in https://github.com/nutgram/nutgram/pull/289
+- Add support for DateInterval to TTL + mock time for cache expiration by @Lukasss93 in https://github.com/nutgram/nutgram/pull/290
+- Move command object/class registration to specific API call by @SergiX44 in https://github.com/nutgram/nutgram/pull/291
+- Add support for Laravel 10 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/292
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.10.0...3.11.0
+
 ## 3.10.0 - 2022-12-31
 
 ### What's Changed
