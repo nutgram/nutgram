@@ -21,6 +21,9 @@ jobs:
                         testbench: 7.*
                     -   laravel: 8.*
                         testbench: 6.*
+                exclude:
+                    -   php: 8.0
+                        laravel: 10.*
 
         name: PHP ${{ matrix.php }} + Laravel ${{ matrix.laravel }}
         steps:
