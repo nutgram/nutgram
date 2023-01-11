@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use InvalidArgumentException;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
@@ -12,13 +13,23 @@ use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 trait MessageHandlers
 {
     /**
-     * @param  string  $command
-     * @param $callable
+     * @param  string|Command  $command
+     * @param  null  $callable
      * @return Command
      */
-    public function onCommand(string $command, $callable): Command
+    public function onCommand(string|Command $command, $callable = null): Command
     {
-        $command = "/$command";
+        if (is_subclass_of($command, Command::class) && $callable === null) {
+            /** @var Command $instance */
+            $instance = new $command();
+            return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$instance->getPattern()] = $instance;
+        } elseif ($command instanceof Command) {
+            return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command->getPattern()] = $command;
+        }
+
+        if ($callable === null) {
+            throw new InvalidArgumentException(sprintf('A callable must be specified when not providing a %s class or instance.', Command::class));
+        }
 
         return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command] = new Command($callable, $command);
     }

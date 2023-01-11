@@ -150,6 +150,56 @@ it('calls the right on command', function ($update) {
     $bot->run();
 })->with('command_message');
 
+it('allows defining commands with command instances', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $c = new class extends \SergiX44\Nutgram\Handlers\Type\Command {
+        protected string $command = 'start';
+
+        public function handle(Nutgram $bot): void
+        {
+            expect($bot)->toBeInstanceOf(Nutgram::class);
+        }
+    };
+
+    $bot->onCommand($c);
+
+    $bot->onMessage(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->run();
+})->with('command_message');
+
+it('allows defining commands with classes', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->setData('called', false);
+    $bot->onCommand(\SergiX44\Nutgram\Tests\Fixtures\TestStartCommand::class);
+
+    $bot->onMessage(function ($bot) {
+        throw new Exception();
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('command_message');
+
+it('throws an error if not when not specifying a callable', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onCommand('/start');
+})->with('command_message')->expectException(InvalidArgumentException::class);
+
+it('works as-is specifying the minimum', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onCommand(new \SergiX44\Nutgram\Handlers\Type\Command(command: 'start'));
+
+    $bot->run();
+})->with('command_message')->expectException(RuntimeException::class);
+
 it('parse callback queries', function ($update) {
     $bot = Nutgram::fake($update);
 

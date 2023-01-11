@@ -2,12 +2,26 @@
 
 namespace SergiX44\Nutgram\Handlers\Type;
 
+use RuntimeException;
 use SergiX44\Nutgram\Handlers\Handler;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 
 class Command extends Handler
 {
+    protected string $command = '#';
+
     protected ?string $description = null;
+
+    /**
+     * @param  callable|callable-string  $callable
+     * @param  string|null  $command
+     */
+    public function __construct($callable = null, ?string $command = null)
+    {
+        $command = $command ?? $this->command;
+        parent::__construct($callable ?? [$this, 'handle'], "/{$command}");
+    }
 
     /**
      * @return string
@@ -50,5 +64,10 @@ class Command extends Handler
     public function toBotCommand(): BotCommand
     {
         return new BotCommand($this->getName(), $this->getDescription());
+    }
+
+    public function handle(Nutgram $bot): void
+    {
+        throw new RuntimeException('The handle method must be extended!');
     }
 }
