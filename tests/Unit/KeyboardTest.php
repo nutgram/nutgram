@@ -1,11 +1,12 @@
 <?php
 
+use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 
-it('make a correct keyboard', function () {
+it('makes a correct InlineKeyboardMarkup', function () {
     $expected = [
         'inline_keyboard' => [
             [
