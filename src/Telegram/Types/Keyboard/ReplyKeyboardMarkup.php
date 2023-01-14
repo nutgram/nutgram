@@ -73,7 +73,6 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
         $this->input_field_placeholder = $input_field_placeholder;
         $this->selective = $selective;
         $this->is_persistent = $is_persistent;
-
     }
 
     public static function make(
