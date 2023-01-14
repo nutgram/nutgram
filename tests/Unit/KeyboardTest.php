@@ -2,6 +2,8 @@
 
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 
 it('make a correct keyboard', function () {
     $expected = [
@@ -56,6 +58,22 @@ it('makes a correct ReplyKeyboardMarkup', function () {
         ->addRow(
             KeyboardButton::make('send contact', request_contact: true),
         );
+
+    expect(json_encode($keyboard))->toBe(json_encode($expected));
+});
+
+it('makes a correct ForceReply', function () {
+    $expected = [
+        'force_reply' => true,
+        'input_field_placeholder' => 'test',
+        'selective' => true,
+    ];
+
+    $keyboard = ForceReply::make(
+        force_reply: true,
+        input_field_placeholder: 'test',
+        selective: true
+    );
 
     expect(json_encode($keyboard))->toBe(json_encode($expected));
 });
