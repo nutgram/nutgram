@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
+use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -27,7 +28,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * if it only receives replies, commands and mentions — without any extra work for the user.
  * @see https://core.telegram.org/bots/api#forcereply
  */
-class ForceReply extends BaseType
+class ForceReply extends BaseType implements JsonSerializable
 {
     /**
      * Shows reply interface to the user, as if they manually selected the bot‘s message and tapped ’Reply'
@@ -42,8 +43,41 @@ class ForceReply extends BaseType
     /**
      * Optional. Use this parameter if you want to force reply from specific users only.
      * Targets:
-     * 1. users that are [at]mentioned in the text of the {@see https://core.telegram.org/bots/api#message Message} object;
+     * 1. users that are [at]mentioned in the text of the {@see https://core.telegram.org/bots/api#message Message}
+     * object;
      * 2. if the bot's message is a reply (has reply_to_message_id), sender of the original message.
      */
     public ?bool $selective = null;
+
+    public function __construct(
+        bool $force_reply,
+        ?string $input_field_placeholder = null,
+        ?bool $selective = null
+    ) {
+        parent::__construct();
+        $this->force_reply = $force_reply;
+        $this->input_field_placeholder = $input_field_placeholder;
+        $this->selective = $selective;
+    }
+
+    public static function make(
+        bool $force_reply,
+        ?string $input_field_placeholder = null,
+        ?bool $selective = null
+    ): ForceReply {
+        return new self(
+            $force_reply,
+            $input_field_placeholder,
+            $selective
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'force_reply' => $this->force_reply,
+            'input_field_placeholder' => $this->input_field_placeholder,
+            'selective' => $this->selective,
+        ]);
+    }
 }
