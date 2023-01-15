@@ -38,6 +38,7 @@ class Link
      */
     public function __invoke(Nutgram $bot): mixed
     {
-        return call_user_func($bot->resolve($this->callable), $bot, $this->next);
+        $args = $bot->resolveArguments($this->callable);
+        return call_user_func($bot->resolve($this->callable), $bot, $this->next, ...$args);
     }
 }

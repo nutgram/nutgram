@@ -383,8 +383,13 @@ class Nutgram extends ResolveHandlers
         }
 
         // if passing a class, we probably want resolve that and call the __invoke method
-        if (is_string($callable) && class_exists($callable)) {
-            $callable = $this->container->get($callable);
+        if (is_string($callable)) {
+
+            [$callable,] = explode(':', $callable);
+
+            if (class_exists($callable)) {
+                $callable = $this->container->get($callable);
+            }
         }
 
         if (!is_callable($callable)) {
@@ -392,6 +397,16 @@ class Nutgram extends ResolveHandlers
         }
 
         return $callable;
+    }
+
+    public function resolveArguments(callable|array|string $callable): array
+    {
+        if (is_string($callable)) {
+            [, $parameters] = array_pad(explode(':', $callable), 2, null);
+            return array_filter(explode(',', $parameters));
+        }
+
+        return [];
     }
 
     /**

@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Tests\Fixtures\TestStartCommand;
+use SergiX44\Nutgram\Tests\Middlewares\FoodMiddleware;
 
 it('calls the message handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -64,6 +65,18 @@ it('calls the message handler with multiple middlewares', function ($update) {
     $bot->run();
 
     expect($test)->toBe('ABCD');
+})->with('message');
+
+it('calls the message handler with a middleware with parameters', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessage(function ($bot) use (&$test) {
+        $test .= 'B';
+    })->middleware(FoodMiddleware::class.':pizza');
+
+    $bot->run();
+
+    expect($bot->getData('food'))->toBe('pizza');
 })->with('message');
 
 it('calls the fallback if not match any handler', function ($update) {
