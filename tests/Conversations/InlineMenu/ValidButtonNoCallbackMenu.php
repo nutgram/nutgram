@@ -1,19 +1,17 @@
 <?php
 
-namespace SergiX44\Nutgram\Tests\Feature\Conversations\InlineMenu;
+namespace SergiX44\Nutgram\Tests\Conversations\InlineMenu;
 
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 
-class ValidReopenMenu extends InlineMenu
+class ValidButtonNoCallbackMenu extends InlineMenu
 {
     public function start(Nutgram $bot)
     {
         $this->menuText('Choose a color:')
-            ->addButtonRow(InlineKeyboardButton::make('Red', callback_data: 'red@handleColor'))
-            ->addButtonRow(InlineKeyboardButton::make('Green', callback_data: 'green@handleColor'))
-            ->addButtonRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow@handleColor'))
+            ->addButtonRow(InlineKeyboardButton::make('Red'))
             ->showMenu();
     }
 
@@ -22,6 +20,6 @@ class ValidReopenMenu extends InlineMenu
         $color = $bot->callbackQuery()->data;
         $this->menuText("Choosen: $color!")
             ->clearButtons()
-            ->showMenu(reopen: true);
+            ->showMenu();
     }
 }

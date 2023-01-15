@@ -1,21 +1,20 @@
 <?php
 
-namespace SergiX44\Nutgram\Tests\Feature\Conversations;
+namespace SergiX44\Nutgram\Tests\Conversations;
 
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
-class ConversationWithSkipHandlersMultipleSteps extends Conversation
+class ConversationWithClosing extends Conversation
 {
     public function start(Nutgram $bot)
     {
         $bot->setData('test', $bot->getData('test', 0) + 1);
-        $this->setSkipHandlers(true)->next('second');
+        $this->end();
     }
 
-    public function second(Nutgram $bot)
+    public function closing(Nutgram $bot)
     {
         $bot->setData('test', $bot->getData('test', 0) + 1);
-        $this->end();
     }
 }

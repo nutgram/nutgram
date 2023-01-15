@@ -2,16 +2,16 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
-use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationEmpty;
-use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithBeforeStep;
-use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithClosing;
-use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithClosingMultipleSteps;
-use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithDefault;
-use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithMissingStep;
-use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithSkipHandlersMultipleSteps;
-use SergiX44\Nutgram\Tests\Feature\Conversations\ConversationWithSkipMiddlewareMultipleSteps;
-use SergiX44\Nutgram\Tests\Feature\Conversations\OneStepNotCompletedConversation;
-use SergiX44\Nutgram\Tests\Feature\Conversations\TwoStepConversation;
+use SergiX44\Nutgram\Tests\Conversations\ConversationEmpty;
+use SergiX44\Nutgram\Tests\Conversations\ConversationWithBeforeStep;
+use SergiX44\Nutgram\Tests\Conversations\ConversationWithClosing;
+use SergiX44\Nutgram\Tests\Conversations\ConversationWithClosingMultipleSteps;
+use SergiX44\Nutgram\Tests\Conversations\ConversationWithDefault;
+use SergiX44\Nutgram\Tests\Conversations\ConversationWithMissingStep;
+use SergiX44\Nutgram\Tests\Conversations\ConversationWithSkipHandlersMultipleSteps;
+use SergiX44\Nutgram\Tests\Conversations\ConversationWithSkipMiddlewareMultipleSteps;
+use SergiX44\Nutgram\Tests\Conversations\OneStepNotCompletedConversation;
+use SergiX44\Nutgram\Tests\Conversations\TwoStepConversation;
 
 it('calls the conversation steps', function ($update) {
     $bot = Nutgram::fake($update);

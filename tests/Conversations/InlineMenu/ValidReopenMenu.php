@@ -1,12 +1,12 @@
 <?php
 
-namespace SergiX44\Nutgram\Tests\Feature\Conversations\InlineMenu;
+namespace SergiX44\Nutgram\Tests\Conversations\InlineMenu;
 
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 
-class ValidNoEndMenu extends InlineMenu
+class ValidReopenMenu extends InlineMenu
 {
     public function start(Nutgram $bot)
     {
@@ -22,11 +22,6 @@ class ValidNoEndMenu extends InlineMenu
         $color = $bot->callbackQuery()->data;
         $this->menuText("Choosen: $color!")
             ->clearButtons()
-            ->showMenu();
-
-        $this->setCallbackQueryOptions([
-            'show_alert' => true,
-            'text' => 'Alert!',
-        ]);
+            ->showMenu(reopen: true);
     }
 }

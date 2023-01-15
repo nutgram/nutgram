@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Tests\Feature\Conversations;
+namespace SergiX44\Nutgram\Tests\Conversations;
 
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;

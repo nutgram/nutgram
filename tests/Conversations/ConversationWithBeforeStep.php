@@ -1,11 +1,11 @@
 <?php
 
-namespace SergiX44\Nutgram\Tests\Feature\Conversations;
+namespace SergiX44\Nutgram\Tests\Conversations;
 
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
-class ConversationWithClosing extends Conversation
+class ConversationWithBeforeStep extends Conversation
 {
     public function start(Nutgram $bot)
     {
@@ -13,7 +13,7 @@ class ConversationWithClosing extends Conversation
         $this->end();
     }
 
-    public function closing(Nutgram $bot)
+    public function beforeStep(Nutgram $bot)
     {
         $bot->setData('test', $bot->getData('test', 0) + 1);
     }
