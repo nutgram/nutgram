@@ -70,9 +70,23 @@ it('calls the message handler with multiple middlewares', function ($update) {
 it('calls the message handler with a middleware with parameters', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onMessage(function ($bot) use (&$test) {
-        $test .= 'B';
+    $bot->onMessage(function ($bot) {
+        // your code
     })->middleware(FoodMiddleware::class.':pizza');
+
+    $bot->run();
+
+    expect($bot->getData('food'))->toBe('pizza');
+})->with('message');
+
+it('calls the message handler with a global middleware with parameters', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->middleware(FoodMiddleware::class.':pizza');
+
+    $bot->onMessage(function ($bot) {
+        // your code
+    });
 
     $bot->run();
 
