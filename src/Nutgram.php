@@ -384,7 +384,6 @@ class Nutgram extends ResolveHandlers
 
         // if passing a class, we probably want resolve that and call the __invoke method
         if (is_string($callable)) {
-
             [$callable,] = explode(':', $callable);
 
             if (class_exists($callable)) {
