@@ -118,7 +118,7 @@ class Nutgram extends ResolveHandlers
             '%s/bot%s/%s',
             $this->config['api_url'] ?? self::DEFAULT_API_URL,
             $this->token,
-                $this->config['test_env'] ?? false ? 'test/' : ''
+            $this->config['test_env'] ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle(array_merge([
@@ -329,8 +329,7 @@ class Nutgram extends ResolveHandlers
         Conversations\Conversation|callable $callable,
         ?int $userId = null,
         ?int $chatId = null
-    ): self
-    {
+    ): self {
         $userId = $userId ?? $this->userId();
         $chatId = $chatId ?? $this->chatId();
 
