@@ -121,7 +121,7 @@ class Nutgram extends ResolveHandlers
             '%s/bot%s/%s',
             $this->config['api_url'] ?? self::DEFAULT_API_URL,
             $this->token,
-            $this->config['test_env'] ?? false ? 'test/' : ''
+                $this->config['test_env'] ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle(array_merge([
@@ -257,15 +257,32 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  array  $handlers
+     * @param  string  $type
+     * @param  array  $parameters
+     * @return mixed
      * @throws Throwable
      */
-    protected function fireHandlers(array $handlers): void
+    protected function fireHandlersBy(string $type, array $parameters = []): mixed
     {
+        $handlers = [];
+        $this->addHandlersBy($handlers, $type);
+        return $this->fireHandlers($handlers, $parameters);
+    }
+
+    /**
+     * @param  array  $handlers
+     * @param  array  $parameters
+     * @return mixed
+     * @throws Throwable
+     */
+    protected function fireHandlers(array $handlers, array $parameters = []): mixed
+    {
+        $result = null;
+
         /** @var Handler $handler */
         foreach ($handlers as $handler) {
             try {
-                $handler->getHead()($this);
+                $result = $handler->getHead()($this, ...$parameters);
             } catch (Throwable $e) {
                 if (!empty($this->handlers[self::EXCEPTION])) {
                     $this->fireExceptionHandlerBy(self::EXCEPTION, $e);
@@ -275,6 +292,8 @@ class Nutgram extends ResolveHandlers
                 throw $e;
             }
         }
+
+        return $result;
     }
 
     /**
@@ -313,7 +332,8 @@ class Nutgram extends ResolveHandlers
         Conversations\Conversation|callable $callable,
         ?int $userId = null,
         ?int $chatId = null
-    ): self {
+    ): self
+    {
         $userId = $userId ?? $this->userId();
         $chatId = $chatId ?? $this->chatId();
 
