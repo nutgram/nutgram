@@ -144,8 +144,7 @@ trait Client
         mixed $value,
         array $opt = [],
         array $clientOpt = []
-    ): ?Message
-    {
+    ): ?Message {
         $required = [
             'chat_id' => $this->chatId(),
             $param => $value,
@@ -171,10 +170,10 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-                $concurrentDirectory = dirname($path),
-                0775,
-                true
-            ) && !is_dir($concurrentDirectory)) {
+            $concurrentDirectory = dirname($path),
+            0775,
+            true
+        ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -227,8 +226,7 @@ trait Client
         ?array $multipart = null,
         string $mapTo = stdClass::class,
         array $options = []
-    ): mixed
-    {
+    ): mixed {
         $parameters = array_map(fn ($name, $contents) => match (true) {
             $contents instanceof InputFile => [
                 'name' => $name,
@@ -283,8 +281,7 @@ trait Client
         ?array $json = null,
         string $mapTo = stdClass::class,
         array $options = []
-    ): mixed
-    {
+    ): mixed {
         try {
             $request = array_merge([
                 'json' => $json,
