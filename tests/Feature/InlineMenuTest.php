@@ -1,6 +1,7 @@
 <?php
 
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Tests\Conversations\InlineMenu\LongInlineMenu;
@@ -163,7 +164,13 @@ test('invalid assertNoConversation without calling willStartConversation method'
 })->throws(InvalidArgumentException::class, 'You cannot do this assert without userId and chatId.');
 
 test('valid inline menu + no end + split message + long message', function () {
-    $bot = Nutgram::fake(config: ['split_long_messages' => true]);
+    $textChunk1 = str_repeat('a', Limits::TEXT_LENGTH);
+    $textChunk2 = 'a';
+
+    /** @var Nutgram $bot */
+    $bot = Nutgram::fake(config: ['split_long_messages' => true])
+        ->willReceivePartial(['text' => $textChunk1])
+        ->willReceivePartial(['text' => $textChunk2]);
 
     $bot->onMessage(LongInlineMenu::class);
 
@@ -189,7 +196,8 @@ test('valid inline menu + no end + split message + long message', function () {
         ->hearText('start')
         ->reply()
         ->assertNoConversation();
-})->throws(UnexpectedValueException::class, 'The "split_long_messages" option is not supported for inline menus.');
+})->throws(RuntimeException::class,
+    "Multiple messages are not supported by the InlineMenu class. Please provide a shorter text.");
 
 test('valid inline menu + no end + split message', function () {
     $bot = Nutgram::fake(config: ['split_long_messages' => true]);
@@ -201,9 +209,6 @@ test('valid inline menu + no end + split message', function () {
         ->hearText('start')
         ->reply()
         ->assertActiveConversation()
-        ->assertRaw(function () use ($bot) {
-            return ($bot->getConfig()['split_long_messages'] ?? false) === false;
-        })
         ->assertReplyMessage([
             'text' => 'Choose a color:',
             'reply_markup' => InlineKeyboardMarkup::make()
@@ -221,6 +226,4 @@ test('valid inline menu + no end + split message', function () {
         ->hearText('start')
         ->reply()
         ->assertNoConversation();
-
-    expect($bot->getConfig()['split_long_messages'])->toBeTrue();
 });

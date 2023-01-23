@@ -3,13 +3,12 @@
 namespace SergiX44\Nutgram\Conversations;
 
 use InvalidArgumentException;
+use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
-use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
-use UnexpectedValueException;
 
 abstract class InlineMenu extends Conversation
 {
@@ -52,8 +51,6 @@ abstract class InlineMenu extends Conversation
      * @var array
      */
     private array $callbackQueryOpt = [];
-
-    protected ?bool $originalSplitLongMessage = null;
 
     public function __construct()
     {
@@ -172,8 +169,6 @@ abstract class InlineMenu extends Conversation
         bool $noHandlers = false,
         bool $noMiddlewares = false
     ): Message|null {
-        $this->ignoreSplitLongMessage();
-
         if ($reopen || !$this->messageId || !$this->chatId) {
             if ($reopen) {
                 $this->closeMenu();
@@ -201,8 +196,6 @@ abstract class InlineMenu extends Conversation
      */
     protected function closeMenu(?string $finalText = null, array $opt = [], bool $reopen = false): bool|Message
     {
-        $this->ignoreSplitLongMessage();
-
         if ($this->messageId && $this->chatId && $reopen) {
             $this->chatId = $this->messageId = null;
         }
@@ -220,10 +213,8 @@ abstract class InlineMenu extends Conversation
             try {
                 $result = $this->doClose($this->chatId, $this->messageId);
                 $this->chatId = $this->messageId = null;
-                $this->restoreSplitLongMessage();
                 return $result;
             } catch (TelegramException) {
-                $this->restoreSplitLongMessage();
                 return false;
             }
         }
@@ -234,11 +225,9 @@ abstract class InlineMenu extends Conversation
             $this->clearButtons();
             $message = $this->doOpen($finalText, $this->buttons, $opt);
             $this->chatId = $this->messageId = null;
-            $this->restoreSplitLongMessage();
             return $message ?? true;
         }
 
-        $this->restoreSplitLongMessage();
         return false;
     }
 
@@ -271,9 +260,15 @@ abstract class InlineMenu extends Conversation
      */
     protected function doOpen(string $text, InlineKeyboardMarkup $buttons, array $opt): Message|null
     {
-        return $this->bot->sendMessage($text, array_merge([
+        $message = $this->bot->sendMessage($text, array_merge([
             'reply_markup' => $buttons,
         ], $opt));
+
+        if (is_array($message)) {
+            throw new RuntimeException('Multiple messages are not supported by the InlineMenu class. Please provide a shorter text.');
+        }
+
+        return $message;
     }
 
     /**
@@ -308,26 +303,5 @@ abstract class InlineMenu extends Conversation
     protected function doClose(int $chatId, int $messageId): bool
     {
         return $this->bot->deleteMessage($chatId, $messageId) ?? false;
-    }
-
-    /**
-     * @return void
-     */
-    protected function ignoreSplitLongMessage(): void
-    {
-        if (($this->bot->getConfig()['split_long_messages'] ?? false) && mb_strlen($this->text) > Limits::TEXT_LENGTH) {
-            throw new UnexpectedValueException('The "split_long_messages" option is not supported for inline menus.');
-        }
-
-        if ($this->originalSplitLongMessage === null) {
-            $this->originalSplitLongMessage = $this->bot->getConfig()['split_long_messages'] ?? false;
-        }
-
-        $this->bot->setConfigValue('split_long_messages', false);
-    }
-
-    protected function restoreSplitLongMessage(): void
-    {
-        $this->bot->setConfigValue('split_long_messages', $this->originalSplitLongMessage);
     }
 }
