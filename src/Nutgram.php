@@ -359,11 +359,6 @@ class Nutgram extends ResolveHandlers
         return $this->config;
     }
 
-    public function setConfigValue(string $key, mixed $value): void
-    {
-        $this->config = array_merge($this->config, [$key => $value]);
-    }
-
     /**
      * @return string
      * @throws ContainerExceptionInterface
