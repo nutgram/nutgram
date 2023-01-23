@@ -196,8 +196,10 @@ test('valid inline menu + no end + split message + long message', function () {
         ->hearText('start')
         ->reply()
         ->assertNoConversation();
-})->throws(RuntimeException::class,
-    "Multiple messages are not supported by the InlineMenu class. Please provide a shorter text.");
+})->throws(
+    RuntimeException::class,
+    "Multiple messages are not supported by the InlineMenu class. Please provide a shorter text."
+);
 
 test('valid inline menu + no end + split message', function () {
     $bot = Nutgram::fake(config: ['split_long_messages' => true]);
