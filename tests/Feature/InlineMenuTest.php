@@ -1,9 +1,9 @@
 <?php
 
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Tests\Conversations\InlineMenu\LongInlineMenu;
 use SergiX44\Nutgram\Tests\Conversations\InlineMenu\MissingMethodMenu;
 use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidButtonNoCallbackMenu;
 use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidButtonNoDataMenu;
@@ -162,17 +162,10 @@ test('invalid assertNoConversation without calling willStartConversation method'
         ->assertNoConversation();
 })->throws(InvalidArgumentException::class, 'You cannot do this assert without userId and chatId.');
 
-test('valid inline menu + no end + split message', function () {
-    $textOriginal = str_repeat('a', Limits::TEXT_LENGTH + 1);
-    $textChunk1 = str_repeat('a', Limits::TEXT_LENGTH);
-    $textChunk2 = 'a';
+test('valid inline menu + no end + split message + long message', function () {
+    $bot = Nutgram::fake(config: ['split_long_messages' => true]);
 
-    /** @var Nutgram $bot */
-    $bot = Nutgram::fake(config: ['split_long_messages' => true])
-        ->willReceivePartial(['text' => $textChunk1])
-        ->willReceivePartial(['text' => $textChunk2]);
-
-    $bot->onMessage(ValidNoEndMenu::class);
+    $bot->onMessage(LongInlineMenu::class);
 
     $bot
         ->willStartConversation()
@@ -197,3 +190,37 @@ test('valid inline menu + no end + split message', function () {
         ->reply()
         ->assertNoConversation();
 })->throws(UnexpectedValueException::class, 'The "split_long_messages" option is not supported for inline menus.');
+
+test('valid inline menu + no end + split message', function () {
+    $bot = Nutgram::fake(config: ['split_long_messages' => true]);
+
+    $bot->onMessage(ValidNoEndMenu::class);
+
+    $bot
+        ->willStartConversation()
+        ->hearText('start')
+        ->reply()
+        ->assertActiveConversation()
+        ->assertRaw(function () use ($bot) {
+            return ($bot->getConfig()['split_long_messages'] ?? false) === false;
+        })
+        ->assertReplyMessage([
+            'text' => 'Choose a color:',
+            'reply_markup' => InlineKeyboardMarkup::make()
+                ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
+                ->addRow(InlineKeyboardButton::make('Green', callback_data: 'green'))
+                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow'))
+        ])
+        ->hearCallbackQueryData('red')
+        ->reply()
+        ->assertReplyText('Choosen: red!')
+        ->assertReply('answerCallbackQuery', [
+            'show_alert' => true,
+            'text' => 'Alert!',
+        ], 1)
+        ->hearText('start')
+        ->reply()
+        ->assertNoConversation();
+
+    expect($bot->getConfig()['split_long_messages'])->toBeTrue();
+});
