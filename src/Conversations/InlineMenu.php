@@ -168,8 +168,7 @@ abstract class InlineMenu extends Conversation
         bool $reopen = false,
         bool $noHandlers = false,
         bool $noMiddlewares = false
-    ): Message|null
-    {
+    ): Message|null {
         if ($this->bot->getConfig()['split_long_messages'] ?? false) {
             throw new UnexpectedValueException('The "split_long_messages" option is not supported for inline menus.');
         }
