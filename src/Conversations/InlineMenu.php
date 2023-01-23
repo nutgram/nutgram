@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use UnexpectedValueException;
 
 abstract class InlineMenu extends Conversation
 {
@@ -167,7 +168,12 @@ abstract class InlineMenu extends Conversation
         bool $reopen = false,
         bool $noHandlers = false,
         bool $noMiddlewares = false
-    ): Message|null {
+    ): Message|null
+    {
+        if ($this->bot->getConfig()['split_long_messages'] ?? false) {
+            throw new UnexpectedValueException('The "split_long_messages" option is not supported for inline menus.');
+        }
+
         if ($reopen || !$this->messageId || !$this->chatId) {
             if ($reopen) {
                 $this->closeMenu();

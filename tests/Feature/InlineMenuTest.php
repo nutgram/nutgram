@@ -196,4 +196,4 @@ test('valid inline menu + no end + split message', function () {
         ->hearText('start')
         ->reply()
         ->assertNoConversation();
-})->only();
+})->throws(UnexpectedValueException::class, 'The "split_long_messages" option is not supported for inline menus.');
