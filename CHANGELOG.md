@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.11.2 - 2023-01-24
+
+### What's Changed
+
+- Fix conversation + split message enabled by @Lukasss93 in https://github.com/nutgram/nutgram/pull/310
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.11.1...3.11.2
+
 ## 3.11.0 - 2023-01-11
 
 ### What's Changed
