@@ -41,9 +41,10 @@ class Command extends Handler
     }
 
     /**
+     * @param  Nutgram  $bot
      * @return bool
      */
-    public function isHidden(): bool
+    public function isHidden(Nutgram $bot): bool
     {
         return empty($this->getDescription());
     }

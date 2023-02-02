@@ -453,15 +453,15 @@ test('commands can have descriptions', function ($update) {
 
     expect($cmd1->getName())->toBe('help');
     expect($cmd1->getDescription())->toBe('test');
-    expect($cmd1->isHidden())->toBeFalse();
+    expect($cmd1->isHidden($bot))->toBeFalse();
 
     expect($cmd2->getName())->toBe('start');
     expect($cmd2->getDescription())->toBe('test2');
-    expect($cmd2->isHidden())->toBeFalse();
+    expect($cmd2->isHidden($bot))->toBeFalse();
 
     expect($cmd3->getName())->toBe('end');
     expect($cmd3->getDescription())->toBeNull();
-    expect($cmd3->isHidden())->toBeTrue();
+    expect($cmd3->isHidden($bot))->toBeTrue();
 })->with('command_message');
 
 
