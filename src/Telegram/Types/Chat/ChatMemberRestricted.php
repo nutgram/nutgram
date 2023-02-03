@@ -48,10 +48,34 @@ class ChatMemberRestricted extends ChatMember
     public ?bool $can_send_messages = null;
 
     /**
-     * True, if the user can send audios, documents, photos, videos,
-     * video notes and voice notes, implies can_send_messages
+     * True, if the user is allowed to send audios
      */
-    public ?bool $can_send_media_messages = null;
+    public ?bool $can_send_audios = null;
+
+    /**
+     * True, if the user is allowed to send documents
+     */
+    public ?bool $can_send_documents = null;
+
+    /**
+     * True, if the user is allowed to send photos
+     */
+    public ?bool $can_send_photos = null;
+
+    /**
+     * True, if the user is allowed to send videos
+     */
+    public ?bool $can_send_videos = null;
+
+    /**
+     * True, if the user is allowed to send video notes
+     */
+    public ?bool $can_send_video_notes = null;
+
+    /**
+     * True, if the user is allowed to send voice notes
+     */
+    public ?bool $can_send_voice_notes = null;
 
     /**
      * True, if the user is allowed to send polls

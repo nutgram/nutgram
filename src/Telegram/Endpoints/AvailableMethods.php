@@ -752,6 +752,7 @@ trait AvailableMethods
      * @param  int  $user_id Unique identifier of the target user
      * @param  ChatPermissions  $permissions An object for new user permissions
      * @param  array{
+     *     use_independent_chat_permissions?:bool,
      *     until_date?:int
      * }  $opt
      * @return bool|null
@@ -858,7 +859,9 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target supergroup (in the
      *     format [at]supergroupusername)
      * @param  ChatPermissions  $permissions New default chat permissions
-     * @param  array  $opt
+     * @param  array{
+     *     use_independent_chat_permissions?:bool
+     * }  $opt
      * @return bool|null
      */
     public function setChatPermissions(string|int $chat_id, ChatPermissions $permissions, array $opt = []): ?bool

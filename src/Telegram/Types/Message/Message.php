@@ -31,6 +31,8 @@ use SergiX44\Nutgram\Telegram\Types\Passport\PassportData;
 use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
+use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
+use SergiX44\Nutgram\Telegram\Types\Shared\UserShared;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatEnded;
@@ -353,6 +355,16 @@ class Message extends BaseType
      * @see https://core.telegram.org/bots/api#payments More about payments
      */
     public ?SuccessfulPayment $successful_payment = null;
+
+    /**
+     * Optional. Service message: a user was shared with the bot
+     */
+    public ?UserShared $user_shared = null;
+
+    /**
+     * Optional. Service message: a chat was shared with the bot
+     */
+    public ?ChatShared $chat_shared = null;
 
     /**
      * Optional. The domain name of the website on which the user has logged in.
