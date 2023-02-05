@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.12.0 - 2023-02-05
+
+### What's Changed
+
+- Update to Bot Api 6.5 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/318
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.11.2...3.12.0
+
 ## 3.11.2 - 2023-01-24
 
 ### What's Changed
