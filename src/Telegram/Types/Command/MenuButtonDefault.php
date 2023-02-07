@@ -13,7 +13,7 @@ class MenuButtonDefault extends MenuButton
     /**
      * Type of the button, must be default
      */
-    public string $type;
+    public string $type = 'default';
 
     public function getType(): string
     {

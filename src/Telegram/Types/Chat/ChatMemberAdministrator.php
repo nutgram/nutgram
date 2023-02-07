@@ -13,7 +13,7 @@ class ChatMemberAdministrator extends ChatMember
     /**
      * The member's status in the chat, always “administrator”
      */
-    public string $status;
+    public string $status = 'administrator';
 
     /**
      * True, if the bot is allowed to edit administrator privileges of that user

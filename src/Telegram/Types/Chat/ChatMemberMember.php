@@ -14,7 +14,7 @@ class ChatMemberMember extends ChatMember
     /**
      * The member's status in the chat, always “member”
      */
-    public string $status;
+    public string $status = 'member';
 
     public function getType(): string
     {

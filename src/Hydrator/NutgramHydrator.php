@@ -31,4 +31,12 @@ class NutgramHydrator implements Hydrator
             $data
         );
     }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function getConcreteFor(string $class): ?object
+    {
+        return $this->mapper->getConcreteResolverFor($class);
+    }
 }
