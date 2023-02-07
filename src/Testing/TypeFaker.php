@@ -70,13 +70,14 @@ class TypeFaker
             $typeName = $property->getType()?->getName();
             $isNullable = $property->getType()?->allowsNull();
 
-            if (!$isNullable && $property->isInitialized($dummyInstance)) {
-                continue;
-            }
-
             // if specified by the user
             if (isset($additional[$property->name]) && !is_array($additional[$property->name])) {
                 $data[$property->name] = $additional[$property->name];
+                continue;
+            }
+
+            // if is not nullable, but the property is already initialized, that's good
+            if (!$isNullable && $property->isInitialized($dummyInstance)) {
                 continue;
             }
 
