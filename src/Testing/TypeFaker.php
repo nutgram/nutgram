@@ -5,14 +5,16 @@ namespace SergiX44\Nutgram\Testing;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionProperty;
+use SergiX44\Hydrator\Annotation\ConcreteResolver;
+use SergiX44\Nutgram\Hydrator\Hydrator;
 
 class TypeFaker
 {
 
     /**
-     * @param  ContainerInterface  $container
+     * @param  Hydrator  $hydrator
      */
-    public function __construct(private ContainerInterface $container)
+    public function __construct(private Hydrator $hydrator)
     {
     }
 
@@ -53,27 +55,41 @@ class TypeFaker
     ) {
         $reflectionClass = new ReflectionClass($class);
 
-        $instance = $this->container->get($class);
-        $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        foreach ($properties as $property) {
+        if ($reflectionClass->isAbstract()) {
+            /** @var ConcreteResolver $concrete */
+            $concretes = $this->hydrator->getConcreteFor($reflectionClass->getName())?->getConcretes();
+            if ($concretes !== null) {
+                $concreteClass = array_shift($concretes);
+                $reflectionClass = new ReflectionClass($concreteClass);
+            }
+        }
+
+        $data = [];
+        $dummyInstance = $reflectionClass->newInstanceWithoutConstructor();
+        foreach ($reflectionClass->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $typeName = $property->getType()?->getName();
             $isNullable = $property->getType()?->allowsNull();
 
             // if specified by the user
             if (isset($additional[$property->name]) && !is_array($additional[$property->name])) {
-                $instance->{$property->name} = $additional[$property->name];
+                $data[$property->name] = $additional[$property->name];
+                continue;
+            }
+
+            // if is not nullable, but the property is already initialized, that's good
+            if (!$isNullable && $property->isInitialized($dummyInstance)) {
                 continue;
             }
 
             if ($isNullable && !$fillNullable && !isset($additional[$property->name])) {
-                $instance->{$property->name} = null;
+                $data[$property->name] = null;
                 continue;
             }
 
             // if is a class, try to resolve it
             if ($this->shouldInstantiate($typeName, $resolveStack, $isNullable ?? false)) {
                 $resolveStack[] = $typeName;
-                $instance->{$property->name} = $this->fakeInstance(
+                $data[$property->name] = $this->fakeInstance(
                     $typeName,
                     $additional[$property->name] ?? [],
                     $fillNullable,
@@ -93,15 +109,15 @@ class TypeFaker
                         $fillNullable,
                         $resolveStack
                     );
-                    $instance->{$property->name} = $this->wrap($arrayInstance, $nesting ?? 0);
+                    $data[$property->name] = $this->wrap($arrayInstance, $nesting ?? 0);
                     continue;
                 }
             }
 
-            $instance->{$property->name} = self::randomScalarOf($typeName);
+            $data[$property->name] = self::randomScalarOf($typeName);
         }
 
-        return $instance;
+        return $this->hydrator->hydrate($data, $reflectionClass->getName());
     }
 
 

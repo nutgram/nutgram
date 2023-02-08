@@ -99,7 +99,7 @@ class FakeNutgram extends Nutgram
         (function () use ($handlerStack, $mock) {
             /** @psalm-scope-this SergiX44\Nutgram\Testing\FakeNutgram */
             $this->mockHandler = $mock;
-            $this->typeFaker = new TypeFaker($this->getContainer());
+            $this->typeFaker = new TypeFaker($this->mapper);
 
             $properties = (new ReflectionClass(Client::class))->getMethods(ReflectionMethod::IS_PUBLIC);
 

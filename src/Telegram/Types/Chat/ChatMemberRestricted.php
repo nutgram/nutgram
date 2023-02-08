@@ -15,7 +15,7 @@ class ChatMemberRestricted extends ChatMember
     /**
      * The member's status in the chat, always “restricted”
      */
-    public string $status;
+    public string $status = 'restricted';
 
     /**
      * True, if the user is a member of the chat at the moment of the request

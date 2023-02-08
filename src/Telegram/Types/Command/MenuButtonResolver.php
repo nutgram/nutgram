@@ -9,13 +9,14 @@ use SergiX44\Hydrator\Annotation\ConcreteResolver;
 #[Attribute(Attribute::TARGET_CLASS)]
 class MenuButtonResolver extends ConcreteResolver
 {
-    public function getConcreteClass(array $data): string
+    protected array $concretes = [
+        'commands' => MenuButtonCommands::class,
+        'default' => MenuButtonDefault::class,
+        'web_app' => MenuButtonWebApp::class,
+    ];
+
+    public function concreteFor(array $data): ?string
     {
-        return match ($data['type']) {
-            'commands' => MenuButtonCommands::class,
-            'default' => MenuButtonDefault::class,
-            'web_app' => MenuButtonWebApp::class,
-            default => throw new InvalidArgumentException('Unknown MenuButton type: '.$data['type']),
-        };
+        return $this->concretes[$data['type']] ?? throw new InvalidArgumentException('Unknown MenuButton type: '.$data['type']);
     }
 }

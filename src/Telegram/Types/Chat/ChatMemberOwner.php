@@ -14,7 +14,7 @@ class ChatMemberOwner extends ChatMember
     /**
      * The member's status in the chat, always “creator”
      */
-    public string $status;
+    public string $status = 'creator';
 
     /**
      * True, if the user's presence in the chat is hidden

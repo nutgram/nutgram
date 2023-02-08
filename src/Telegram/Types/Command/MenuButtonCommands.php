@@ -13,7 +13,7 @@ class MenuButtonCommands extends MenuButton
     /**
      * Type of the button, must be commands
      */
-    public string $type;
+    public string $type = 'commands';
 
     public function getType(): string
     {

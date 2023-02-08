@@ -15,7 +15,7 @@ class ChatMemberBanned extends ChatMember
     /**
      * The member's status in the chat, always “kicked”
      */
-    public string $status;
+    public string $status = 'kicked';
 
     /**
      * Date when restrictions will be lifted for this user; unix time. If 0, then the user is banned forever

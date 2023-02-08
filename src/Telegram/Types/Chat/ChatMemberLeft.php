@@ -15,7 +15,7 @@ class ChatMemberLeft extends ChatMember
     /**
      * The member's status in the chat, always “left”
      */
-    public string $status;
+    public string $status = 'left';
 
     public function getType(): string
     {

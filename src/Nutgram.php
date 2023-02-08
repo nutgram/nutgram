@@ -63,7 +63,7 @@ class Nutgram extends ResolveHandlers
     /**
      * @var Hydrator
      */
-    private Hydrator $mapper;
+    protected Hydrator $mapper;
 
     /**
      * @var LoggerInterface

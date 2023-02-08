@@ -31,4 +31,9 @@ class LegacyHydrator implements Hydrator
             $data
         );
     }
+
+    public function getConcreteFor(string $class): ?object
+    {
+        return null;
+    }
 }

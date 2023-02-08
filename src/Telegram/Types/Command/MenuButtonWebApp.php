@@ -14,7 +14,7 @@ class MenuButtonWebApp extends MenuButton
     /**
      * Type of the button, must be web_app
      */
-    public string $type;
+    public string $type = 'web_app';
 
     /**
      * Text on the button
