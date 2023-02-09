@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.12.1 - 2023-02-09
+
+### What's Changed
+
+- fixes #314 by @SergiX44 in https://github.com/nutgram/nutgram/pull/319
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.12.0...3.12.1
+
 ## 3.12.0 - 2023-02-05
 
 ### What's Changed
