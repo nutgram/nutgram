@@ -9,7 +9,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class NutgramExtension extends Extension
 {
-
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
