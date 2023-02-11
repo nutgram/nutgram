@@ -9,7 +9,6 @@ use SergiX44\Nutgram\Nutgram;
 
 class NutgramFactory
 {
-
     public function createNutgram(string $token, array $config, CacheInterface $cache, LoggerInterface $logger)
     {
         $config = array_merge([
@@ -19,5 +18,4 @@ class NutgramFactory
 
         return new Nutgram($token, $config);
     }
-
 }
