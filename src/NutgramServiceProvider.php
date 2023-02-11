@@ -31,6 +31,9 @@ use SergiX44\Nutgram\Testing\FakeNutgram;
  */
 class NutgramServiceProvider extends ServiceProvider
 {
+    protected const CONFIG_PATH = __DIR__.'/Laravel/Config/config.php';
+    protected const ROUTES_PATH = __DIR__.'/Laravel/Routes/routes.php';
+
     /** @var string */
     public string $telegramRoutes;
 
@@ -41,7 +44,7 @@ class NutgramServiceProvider extends ServiceProvider
     {
         $this->telegramRoutes = $this->app->basePath('routes/telegram.php');
 
-        $this->mergeConfigFrom(__DIR__.'/../laravel/config.php', 'nutgram');
+        $this->mergeConfigFrom(self::CONFIG_PATH, 'nutgram');
 
         $this->app->singleton(Nutgram::class, function (Application $app) {
             if ($app->runningUnitTests()) {
@@ -99,14 +102,14 @@ class NutgramServiceProvider extends ServiceProvider
             ]);
 
             $this->publishes([
-                __DIR__.'/../laravel/config.php' => config_path('nutgram.php'),
-                __DIR__.'/../laravel/routes.php' => $this->telegramRoutes,
+                self::CONFIG_PATH => config_path('nutgram.php'),
+                self::ROUTES_PATH => $this->telegramRoutes,
             ], 'nutgram');
         }
 
         if (config('nutgram.routes', false)) {
             $bot = $this->app->get(Nutgram::class);
-            require file_exists($this->telegramRoutes) ? $this->telegramRoutes : __DIR__.'/../laravel/routes.php';
+            require file_exists($this->telegramRoutes) ? $this->telegramRoutes : self::ROUTES_PATH;
         }
     }
 }
