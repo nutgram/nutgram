@@ -43,8 +43,7 @@
         "pestphp/pest": "^1.1",
         "pestphp/pest-plugin-mock": "^1.0",
         "roave/security-advisories": "dev-latest",
-        "symfony/framework-bundle": "^6.0|^6.1|^6.2",
-        "vimeo/psalm": "^4.11"
+        "vimeo/psalm": "^4.30"
     },
     "autoload": {
         "psr-4": {
