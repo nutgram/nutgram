@@ -189,10 +189,11 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param  string|null  $finalText
-     * @param  array  $opt
-     * @param  bool  $reopen
-     * @return bool
+     * @param string|null  $finalText
+     * @param array  $opt
+     * @param bool  $reopen
+     *
+     * @return Message|bool
      */
     protected function closeMenu(?string $finalText = null, array $opt = [], bool $reopen = false): bool|Message
     {
@@ -272,12 +273,14 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param  string  $text
-     * @param  int|null  $chatId
-     * @param  int|null  $messageId
-     * @param  InlineKeyboardMarkup  $buttons
-     * @param  array  $opt
-     * @return Message|null
+     * @param string  $text
+     * @param int|null  $chatId
+     * @param int|null  $messageId
+     * @param InlineKeyboardMarkup  $buttons
+     * @param array  $opt
+     *
+     * @return Message|bool|null
+     *
      * @internal Override only to change the Telegram method.
      */
     protected function doUpdate(
@@ -286,7 +289,7 @@ abstract class InlineMenu extends Conversation
         ?int $messageId,
         InlineKeyboardMarkup $buttons,
         array $opt
-    ): Message|null {
+    ): bool|Message|null {
         return $this->bot->editMessageText($text, array_merge([
             'reply_markup' => $buttons,
             'chat_id' => $chatId,
