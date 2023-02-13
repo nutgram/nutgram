@@ -109,6 +109,9 @@ class Nutgram extends ResolveHandlers
         $this->token = $token;
         $this->config = $config;
         $this->container = new Container();
+        if (isset($config['container']) && $config['container'] instanceof ContainerInterface) {
+            $this->container->delegate($config['container']);
+        }
         $this->container->delegate(new ReflectionContainer());
         $this->container->addShared(ContainerInterface::class, $this->container);
 

@@ -39,10 +39,11 @@ class TypeFaker
 
     /**
      * @template T
-     * @param  class-string<T>  $class
-     * @param  array  $additional
-     * @param  array  $resolveStack
-     * @return T
+     *
+     * @param class-string<T>  $class
+     * @param array  $additional
+     * @param array  $resolveStack
+     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \ReflectionException
@@ -52,7 +53,7 @@ class TypeFaker
         array $additional = [],
         bool $fillNullable = true,
         array $resolveStack = []
-    ) {
+    ): object {
         $reflectionClass = new ReflectionClass($class);
 
         if ($reflectionClass->isAbstract()) {

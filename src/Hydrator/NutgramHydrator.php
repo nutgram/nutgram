@@ -16,7 +16,7 @@ class NutgramHydrator implements Hydrator
     /**
      * @inheritDoc
      */
-    public function hydrate(object|array $data, object|string $instance): mixed
+    public function hydrate(object|array $data, object|string $instance): object|string
     {
         return $this->mapper->hydrate($instance, $data);
     }

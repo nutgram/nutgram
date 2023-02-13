@@ -48,5 +48,10 @@
                 <directory name="tests/"/>
             </errorLevel>
         </InvalidScope>
+        <UndefinedGlobalVariable>
+            <errorLevel type="suppress">
+                <file name="src/Laravel/Routes/routes.php"/>
+            </errorLevel>
+        </UndefinedGlobalVariable>
     </issueHandlers>
 </psalm>
