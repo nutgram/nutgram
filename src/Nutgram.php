@@ -257,15 +257,32 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  array  $handlers
+     * @param  string  $type
+     * @param  array  $parameters
+     * @return mixed
      * @throws Throwable
      */
-    protected function fireHandlers(array $handlers): void
+    protected function fireHandlersBy(string $type, array $parameters = []): mixed
     {
+        $handlers = [];
+        $this->addHandlersBy($handlers, $type);
+        return $this->fireHandlers($handlers, $parameters);
+    }
+
+    /**
+     * @param  array  $handlers
+     * @param  array  $parameters
+     * @return mixed
+     * @throws Throwable
+     */
+    protected function fireHandlers(array $handlers, array $parameters = []): mixed
+    {
+        $result = null;
+
         /** @var Handler $handler */
         foreach ($handlers as $handler) {
             try {
-                $handler->getHead()($this);
+                $result = $handler->addParameters($parameters)->getHead()($this);
             } catch (Throwable $e) {
                 if (!empty($this->handlers[self::EXCEPTION])) {
                     $this->fireExceptionHandlerBy(self::EXCEPTION, $e);
@@ -275,6 +292,8 @@ class Nutgram extends ResolveHandlers
                 throw $e;
             }
         }
+
+        return $result;
     }
 
     /**
