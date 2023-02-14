@@ -186,9 +186,8 @@ trait Client
 
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
         $response = $this->http->get($endpoint, $requestPost ?? $request);
-        $responsePost = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$response]);
 
-        return ($responsePost ?? $response)->getStatusCode() === 200;
+        return $response->getStatusCode() === 200;
     }
 
     /**
@@ -248,8 +247,7 @@ trait Client
         try {
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
             $response = $this->http->post($endpoint, $requestPost ?? $request);
-            $responsePost = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$response]);
-            $content = $this->mapResponse($responsePost ?? $response, $mapTo);
+            $content = $this->mapResponse($response, $mapTo);
 
             $this->logger->debug($endpoint, [
                 'content' => $content,
@@ -289,8 +287,7 @@ trait Client
 
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
             $response = $this->http->post($endpoint, $requestPost ?? $request);
-            $responsePost = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$response]);
-            $content = $this->mapResponse($responsePost ?? $response, $mapTo);
+            $content = $this->mapResponse($response, $mapTo);
 
             $rawResponse = (string)$response->getBody();
             $this->logger->debug($endpoint.PHP_EOL.$rawResponse, [
@@ -318,6 +315,7 @@ trait Client
     protected function mapResponse(ResponseInterface $response, string $mapTo, Exception $clientException = null): mixed
     {
         $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
+        $json = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$json]) ?? $json;
         if ($json?->ok) {
             return match (true) {
                 is_scalar($json->result) => $json->result,

@@ -54,7 +54,7 @@ abstract class CollectHandlers
      */
     public function beforeApiRequest($callable): Handler
     {
-        return $this->handlers[self::BEFORE_API_REQUEST][] = new Handler($callable);
+        return $this->handlers[self::BEFORE_API_REQUEST] = new Handler($callable);
     }
 
     /**
@@ -63,7 +63,7 @@ abstract class CollectHandlers
      */
     public function afterApiRequest($callable): Handler
     {
-        return $this->handlers[self::AFTER_API_REQUEST][] = new Handler($callable);
+        return $this->handlers[self::AFTER_API_REQUEST] = new Handler($callable);
     }
 
     /**

@@ -282,7 +282,7 @@ class Nutgram extends ResolveHandlers
         /** @var Handler $handler */
         foreach ($handlers as $handler) {
             try {
-                $result = $handler->getHead()($this, ...$parameters);
+                $result = $handler->addParameters($parameters)->getHead()($this);
             } catch (Throwable $e) {
                 if (!empty($this->handlers[self::EXCEPTION])) {
                     $this->fireExceptionHandlerBy(self::EXCEPTION, $e);
