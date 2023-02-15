@@ -674,3 +674,33 @@ it('gets administrators', function ($responseBody) {
             fn ($item) => $item->toBeInstanceOf(ChatMemberOwner::class),
         );
 })->with('response_chat_members');
+
+it('can manipulate the http request', function () {
+    $bot = Nutgram::fake();
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request['json']['text'])->toBe('foo');
+        $request['json']['text'] = 'foobar';
+        return $request;
+    });
+
+    $bot->sendMessage('foo');
+
+    /** @var \GuzzleHttp\Psr7\Request $request */
+    $request = $bot->getRequestHistory()[0]['request'];
+
+    expect($request->getBody()->getContents())->toContain('foobar');
+});
+
+it('can manipulate the http response', function () {
+    $bot = Nutgram::fake();
+
+    $bot->afterApiRequest(function (Nutgram $bot, object $response) {
+        $response->result->text = 'banane';
+        return $response;
+    });
+
+    $message = $bot->sendMessage('foo');
+
+    expect($message->text)->toBe('banane');
+});

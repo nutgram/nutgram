@@ -95,6 +95,16 @@ class Handler extends MiddlewareChain
     }
 
     /**
+     * @param  array  $parameters
+     * @return Handler
+     */
+    public function addParameters(array $parameters): Handler
+    {
+        $this->parameters = array_merge($this->parameters, $parameters);
+        return $this;
+    }
+
+    /**
      * @param  Nutgram  $bot
      * @return mixed
      * @throws ContainerExceptionInterface

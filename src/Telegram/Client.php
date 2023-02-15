@@ -181,7 +181,12 @@ trait Client
             return copy($this->downloadUrl($file), $path);
         }
 
-        $response = $this->http->get($this->downloadUrl($file), array_merge(['sink' => $path], $clientOpt));
+        $request = array_merge(['sink' => $path], $clientOpt);
+        $endpoint = $this->downloadUrl($file);
+
+        $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+        $response = $this->http->get($endpoint, $requestPost ?? $request);
+
         return $response->getStatusCode() === 200;
     }
 
@@ -237,8 +242,11 @@ trait Client
             ]
         }, array_keys($multipart), $multipart);
 
+        $request = array_merge(['multipart' => $parameters], $options);
+
         try {
-            $response = $this->http->post($endpoint, array_merge(['multipart' => $parameters], $options));
+            $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+            $response = $this->http->post($endpoint, $requestPost ?? $request);
             $content = $this->mapResponse($response, $mapTo);
 
             $this->logger->debug($endpoint, [
@@ -273,9 +281,12 @@ trait Client
         array $options = []
     ): mixed {
         try {
-            $response = $this->http->post($endpoint, array_merge([
+            $request = array_merge([
                 'json' => $json,
-            ], $options));
+            ], $options);
+
+            $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+            $response = $this->http->post($endpoint, $requestPost ?? $request);
             $content = $this->mapResponse($response, $mapTo);
 
             $rawResponse = (string)$response->getBody();
@@ -304,6 +315,7 @@ trait Client
     protected function mapResponse(ResponseInterface $response, string $mapTo, Exception $clientException = null): mixed
     {
         $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
+        $json = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$json]) ?? $json;
         if ($json?->ok) {
             return match (true) {
                 is_scalar($json->result) => $json->result,

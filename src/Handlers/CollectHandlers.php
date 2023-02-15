@@ -12,6 +12,8 @@ abstract class CollectHandlers
 
     protected const FALLBACK = 'FALLBACK';
     protected const EXCEPTION = 'EXCEPTION';
+    protected const BEFORE_API_REQUEST = 'BEFORE_API_REQUEST';
+    protected const AFTER_API_REQUEST = 'AFTER_API_REQUEST';
     protected const API_ERROR = 'API_ERROR';
 
     /**
@@ -44,6 +46,24 @@ abstract class CollectHandlers
         }
 
         return $this->handlers[self::EXCEPTION][] = new Handler($callableOrException);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function beforeApiRequest($callable): Handler
+    {
+        return $this->handlers[self::BEFORE_API_REQUEST] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function afterApiRequest($callable): Handler
+    {
+        return $this->handlers[self::AFTER_API_REQUEST] = new Handler($callable);
     }
 
     /**

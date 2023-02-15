@@ -98,6 +98,7 @@ abstract class ResolveHandlers extends CollectHandlers
         ?string $value = null
     ): void {
         $typedHandlers = $this->handlers[$type] ?? [];
+        $typedHandlers = is_array($typedHandlers) ? $typedHandlers : [$typedHandlers];
 
         if ($subType !== null && isset($typedHandlers[$subType])) {
             if ($typedHandlers[$subType] instanceof Handler) {
