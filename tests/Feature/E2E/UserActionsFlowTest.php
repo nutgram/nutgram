@@ -5,7 +5,6 @@ use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Tests\Adapters\TestCache;
 
-
 beforeEach(function () {
     $this->bot = Nutgram::fake(config: [
         'cache' => new TestCache(),
