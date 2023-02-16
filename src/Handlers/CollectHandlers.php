@@ -59,12 +59,17 @@ abstract class CollectHandlers
     public function onException($callableOrException, $callable = null): Handler
     {
         if ($callable !== null) {
-            return $this->handlers[self::EXCEPTION][$callableOrException] = new Handler($callable, $callableOrException,
-                groupMiddlewares: $this->groupMiddlewares);
+            return $this->handlers[self::EXCEPTION][$callableOrException] = new Handler(
+                $callable,
+                $callableOrException,
+                groupMiddlewares: $this->groupMiddlewares
+            );
         }
 
-        return $this->handlers[self::EXCEPTION][] = new Handler($callableOrException,
-            groupMiddlewares: $this->groupMiddlewares);
+        return $this->handlers[self::EXCEPTION][] = new Handler(
+            $callableOrException,
+            groupMiddlewares: $this->groupMiddlewares
+        );
     }
 
     /**
@@ -73,8 +78,10 @@ abstract class CollectHandlers
      */
     public function beforeApiRequest($callable): Handler
     {
-        return $this->handlers[self::BEFORE_API_REQUEST] = new Handler($callable,
-            groupMiddlewares: $this->groupMiddlewares);
+        return $this->handlers[self::BEFORE_API_REQUEST] = new Handler(
+            $callable,
+            groupMiddlewares: $this->groupMiddlewares
+        );
     }
 
     /**
@@ -83,8 +90,10 @@ abstract class CollectHandlers
      */
     public function afterApiRequest($callable): Handler
     {
-        return $this->handlers[self::AFTER_API_REQUEST] = new Handler($callable,
-            groupMiddlewares: $this->groupMiddlewares);
+        return $this->handlers[self::AFTER_API_REQUEST] = new Handler(
+            $callable,
+            groupMiddlewares: $this->groupMiddlewares
+        );
     }
 
     /**
@@ -95,12 +104,17 @@ abstract class CollectHandlers
     public function onApiError($callableOrPattern, $callable = null): Handler
     {
         if ($callable !== null) {
-            return $this->handlers[self::API_ERROR][$callableOrPattern] = new Handler($callable, $callableOrPattern,
-                groupMiddlewares: $this->groupMiddlewares);
+            return $this->handlers[self::API_ERROR][$callableOrPattern] = new Handler(
+                $callable,
+                $callableOrPattern,
+                groupMiddlewares: $this->groupMiddlewares
+            );
         }
 
-        return $this->handlers[self::API_ERROR][] = new Handler($callableOrPattern,
-            groupMiddlewares: $this->groupMiddlewares);
+        return $this->handlers[self::API_ERROR][] = new Handler(
+            $callableOrPattern,
+            groupMiddlewares: $this->groupMiddlewares
+        );
     }
 
     /**
@@ -122,8 +136,11 @@ abstract class CollectHandlers
         if (!in_array($type, UpdateTypes::all(), true)) {
             throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
         }
-        return $this->handlers[self::FALLBACK][$type] = new Handler($callable, $type,
-            groupMiddlewares: $this->groupMiddlewares);
+        return $this->handlers[self::FALLBACK][$type] = new Handler(
+            $callable,
+            $type,
+            groupMiddlewares: $this->groupMiddlewares
+        );
     }
 
     /**
