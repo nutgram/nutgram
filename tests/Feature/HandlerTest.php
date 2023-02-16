@@ -718,7 +718,6 @@ it('calls the message handler with middleware group', function ($update) {
     $bot->middleware($reusableMiddleware);
 
     $bot->groupMiddleware($reusableMiddleware, function (Nutgram $bot) use ($reusableMiddleware, &$test) {
-
         $bot->groupMiddleware([$reusableMiddleware], function (Nutgram $bot) use (&$test) {
             $bot->onMessage(function ($bot) use (&$test) {
                 $test .= 'H1';
@@ -734,7 +733,6 @@ it('calls the message handler with middleware group', function ($update) {
             $test .= 'LM2';
             $next($bot);
         });
-
     });
 
     $bot->onMessage(function ($bot) use (&$test) {
