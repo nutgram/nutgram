@@ -14,5 +14,3 @@ class DumbCommand extends Command
         $bot->setGlobalData('flow', $bot->getGlobalData('flow', '').'H');
     }
 }
-
-;
