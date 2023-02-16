@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use Closure;
 use InvalidArgumentException;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 
@@ -27,6 +28,22 @@ abstract class CollectHandlers
     protected array $handlers = [];
 
     /**
+     * @var array
+     */
+    protected array $groupMiddlewares = [];
+
+    public function middlewares($middleware, Closure $callable): void
+    {
+        if (!is_array($middleware)) {
+            $middleware = [$middleware];
+        }
+
+        $this->groupMiddlewares[] = $middleware;
+        $callable($this);
+        array_pop($this->groupMiddlewares);
+    }
+
+    /**
      * @param $callable
      */
     public function middleware($callable): void
@@ -42,10 +59,12 @@ abstract class CollectHandlers
     public function onException($callableOrException, $callable = null): Handler
     {
         if ($callable !== null) {
-            return $this->handlers[self::EXCEPTION][$callableOrException] = new Handler($callable, $callableOrException);
+            return $this->handlers[self::EXCEPTION][$callableOrException] = new Handler($callable, $callableOrException,
+                groupMiddlewares: $this->groupMiddlewares);
         }
 
-        return $this->handlers[self::EXCEPTION][] = new Handler($callableOrException);
+        return $this->handlers[self::EXCEPTION][] = new Handler($callableOrException,
+            groupMiddlewares: $this->groupMiddlewares);
     }
 
     /**
@@ -54,7 +73,8 @@ abstract class CollectHandlers
      */
     public function beforeApiRequest($callable): Handler
     {
-        return $this->handlers[self::BEFORE_API_REQUEST] = new Handler($callable);
+        return $this->handlers[self::BEFORE_API_REQUEST] = new Handler($callable,
+            groupMiddlewares: $this->groupMiddlewares);
     }
 
     /**
@@ -63,7 +83,8 @@ abstract class CollectHandlers
      */
     public function afterApiRequest($callable): Handler
     {
-        return $this->handlers[self::AFTER_API_REQUEST] = new Handler($callable);
+        return $this->handlers[self::AFTER_API_REQUEST] = new Handler($callable,
+            groupMiddlewares: $this->groupMiddlewares);
     }
 
     /**
@@ -74,10 +95,12 @@ abstract class CollectHandlers
     public function onApiError($callableOrPattern, $callable = null): Handler
     {
         if ($callable !== null) {
-            return $this->handlers[self::API_ERROR][$callableOrPattern] = new Handler($callable, $callableOrPattern);
+            return $this->handlers[self::API_ERROR][$callableOrPattern] = new Handler($callable, $callableOrPattern,
+                groupMiddlewares: $this->groupMiddlewares);
         }
 
-        return $this->handlers[self::API_ERROR][] = new Handler($callableOrPattern);
+        return $this->handlers[self::API_ERROR][] = new Handler($callableOrPattern,
+            groupMiddlewares: $this->groupMiddlewares);
     }
 
     /**
@@ -86,7 +109,7 @@ abstract class CollectHandlers
      */
     public function fallback($callable): Handler
     {
-        return $this->handlers[self::FALLBACK][] = new Handler($callable);
+        return $this->handlers[self::FALLBACK][] = new Handler($callable, groupMiddlewares: $this->groupMiddlewares);
     }
 
     /**
@@ -99,7 +122,8 @@ abstract class CollectHandlers
         if (!in_array($type, UpdateTypes::all(), true)) {
             throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
         }
-        return $this->handlers[self::FALLBACK][$type] = new Handler($callable, $type);
+        return $this->handlers[self::FALLBACK][$type] = new Handler($callable, $type,
+            groupMiddlewares: $this->groupMiddlewares);
     }
 
     /**
