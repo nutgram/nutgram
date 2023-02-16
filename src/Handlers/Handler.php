@@ -42,15 +42,18 @@ class Handler extends MiddlewareChain
      */
     protected array $skippedGlobalMiddlewares = [];
 
+    protected array $groupMiddlewares = [];
+
     /**
      * Handler constructor.
      * @param $callable
      * @param  string|null  $pattern
      */
-    public function __construct($callable, ?string $pattern = null)
+    public function __construct($callable, ?string $pattern = null, array $groupMiddlewares = [])
     {
         $this->pattern = $pattern;
         $this->callable = $callable;
+        $this->groupMiddlewares = $groupMiddlewares;
         $this->head = new Link($this);
     }
 
@@ -152,5 +155,13 @@ class Handler extends MiddlewareChain
     public function getPattern(): ?string
     {
         return $this->pattern;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGroupMiddlewares(): array
+    {
+        return $this->groupMiddlewares;
     }
 }

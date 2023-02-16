@@ -17,10 +17,10 @@ class Command extends Handler
      * @param  callable|callable-string  $callable
      * @param  string|null  $command
      */
-    public function __construct($callable = null, ?string $command = null)
+    public function __construct($callable = null, ?string $command = null, array $groupMiddlewares = [])
     {
         $command = $command ?? $this->command;
-        parent::__construct($callable ?? [$this, 'handle'], "/{$command}");
+        parent::__construct($callable ?? [$this, 'handle'], "/{$command}", $groupMiddlewares);
     }
 
     /**

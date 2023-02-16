@@ -179,6 +179,8 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected function applyGlobalMiddlewareTo(Handler $handler): void
     {
+        $this->applyGroupMiddlewares($handler);
+
         $skippedGlobalMiddlewares = $handler->getSkippedGlobalMiddlewares();
 
         if ($handler->isSkippingGlobalMiddlewares() && empty($skippedGlobalMiddlewares)) {
@@ -191,6 +193,15 @@ abstract class ResolveHandlers extends CollectHandlers
             }
 
             $handler->middleware($middleware);
+        }
+    }
+
+    protected function applyGroupMiddlewares(Handler $handler): void
+    {
+        foreach (array_reverse($handler->getGroupMiddlewares()) as $middlewares) {
+            foreach (array_reverse($middlewares) as $middleware) {
+                $handler->middleware($middleware);
+            }
         }
     }
 
