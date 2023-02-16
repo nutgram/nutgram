@@ -175,11 +175,14 @@ it('groups middleware with complex nesting levels', function ($update) {
 
     $bot->middleware($middleware0);
 
-    $bot->middlewares($middleware1,
+    $bot->middlewares(
+        $middleware1,
         function (Nutgram $bot) use ($middleware4, $middleware3, $middleware2, $middleware1, &$test) {
-            $bot->middlewares([$middleware1, $middleware2],
+            $bot->middlewares(
+                [$middleware1, $middleware2],
                 function (Nutgram $bot) use ($middleware1, $middleware4, $middleware3, &$test) {
-                    $bot->middlewares($middleware3,
+                    $bot->middlewares(
+                        $middleware3,
                         function (Nutgram $bot) use ($middleware1, $middleware4, &$test) {
                             $bot->middlewares([$middleware1, $middleware4], function (Nutgram $bot) use (&$test) {
                                 $bot->onMessage(function (Nutgram $bot) use (&$test) {
@@ -196,7 +199,8 @@ it('groups middleware with complex nesting levels', function ($update) {
                                 $test .= 'LM0';
                                 $next($bot);
                             });
-                        });
+                        }
+                    );
 
                     $bot->onMessage(function (Nutgram $bot) use (&$test) {
                         $test .= 'H1';
@@ -204,7 +208,8 @@ it('groups middleware with complex nesting levels', function ($update) {
                         $test .= 'LM1';
                         $next($bot);
                     });
-                });
+                }
+            );
 
             $bot->onMessage(function (Nutgram $bot) use (&$test) {
                 $test .= 'H2';
@@ -212,8 +217,8 @@ it('groups middleware with complex nesting levels', function ($update) {
                 $test .= 'LM2';
                 $next($bot);
             });
-
-        });
+        }
+    );
 
     $bot->onMessage(function (Nutgram $bot) use (&$test) {
         $test .= 'H3';
