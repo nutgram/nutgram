@@ -189,4 +189,66 @@ class Chat extends BaseType
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?ChatLocation $location = null;
+
+    public static function make(
+        int $id,
+        string $type,
+        ?string $title = null,
+        ?string $username = null,
+        ?string $first_name = null,
+        ?string $last_name = null,
+        ?bool $is_forum = null,
+        ?ChatPhoto $photo = null,
+        ?array $active_usernames = null,
+        ?string $emoji_status_custom_emoji_id = null,
+        ?string $bio = null,
+        ?bool $has_private_forwards = null,
+        ?bool $has_restricted_voice_and_video_messages = null,
+        ?bool $join_to_send_messages = null,
+        ?bool $join_by_request = null,
+        ?string $description = null,
+        ?string $invite_link = null,
+        ?Message $pinned_message = null,
+        ?ChatPermissions $permissions = null,
+        ?int $slow_mode_delay = null,
+        ?int $message_auto_delete_time = null,
+        ?bool $has_aggressive_anti_spam_enabled = null,
+        ?bool $has_hidden_members = null,
+        ?bool $has_protected_content = null,
+        ?string $sticker_set_name = null,
+        ?bool $can_set_sticker_set = null,
+        ?int $linked_chat_id = null,
+        ?ChatLocation $location = null,
+    ): Chat {
+        $chat = new self();
+        $chat->id = $id;
+        $chat->type = $type;
+        $chat->title = $title;
+        $chat->username = $username;
+        $chat->first_name = $first_name;
+        $chat->last_name = $last_name;
+        $chat->is_forum = $is_forum;
+        $chat->photo = $photo;
+        $chat->active_usernames = $active_usernames;
+        $chat->emoji_status_custom_emoji_id = $emoji_status_custom_emoji_id;
+        $chat->bio = $bio;
+        $chat->has_private_forwards = $has_private_forwards;
+        $chat->has_restricted_voice_and_video_messages = $has_restricted_voice_and_video_messages;
+        $chat->join_to_send_messages = $join_to_send_messages;
+        $chat->join_by_request = $join_by_request;
+        $chat->description = $description;
+        $chat->invite_link = $invite_link;
+        $chat->pinned_message = $pinned_message;
+        $chat->permissions = $permissions;
+        $chat->slow_mode_delay = $slow_mode_delay;
+        $chat->message_auto_delete_time = $message_auto_delete_time;
+        $chat->has_aggressive_anti_spam_enabled = $has_aggressive_anti_spam_enabled;
+        $chat->has_hidden_members = $has_hidden_members;
+        $chat->has_protected_content = $has_protected_content;
+        $chat->sticker_set_name = $sticker_set_name;
+        $chat->can_set_sticker_set = $can_set_sticker_set;
+        $chat->linked_chat_id = $linked_chat_id;
+        $chat->location = $location;
+        return $chat;
+    }
 }

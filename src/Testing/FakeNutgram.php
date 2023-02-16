@@ -73,6 +73,16 @@ class FakeNutgram extends Nutgram
     protected array $dumpHistory = [];
 
     /**
+     * @var User|null
+     */
+    protected ?User $commonUser = null;
+
+    /**
+     * @var Chat|null
+     */
+    protected ?Chat $commonChat = null;
+
+    /**
      * @param  mixed  $update
      * @param  array  $responses
      * @return FakeNutgram

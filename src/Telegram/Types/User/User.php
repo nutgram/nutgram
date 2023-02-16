@@ -68,4 +68,32 @@ class User extends BaseType
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
      */
     public ?bool $supports_inline_queries = null;
+
+    public static function make(
+        int $id,
+        bool $is_bot,
+        string $first_name,
+        ?string $last_name = null,
+        ?string $username = null,
+        ?string $language_code = null,
+        ?bool $is_premium = null,
+        ?bool $added_to_attachment_menu = null,
+        ?bool $can_join_groups = null,
+        ?bool $can_read_all_group_messages = null,
+        ?bool $supports_inline_queries = null,
+    ): User {
+        $user = new self();
+        $user->id = $id;
+        $user->is_bot = $is_bot;
+        $user->first_name = $first_name;
+        $user->last_name = $last_name;
+        $user->username = $username;
+        $user->language_code = $language_code;
+        $user->is_premium = $is_premium;
+        $user->added_to_attachment_menu = $added_to_attachment_menu;
+        $user->can_join_groups = $can_join_groups;
+        $user->can_read_all_group_messages = $can_read_all_group_messages;
+        $user->supports_inline_queries = $supports_inline_queries;
+        return $user;
+    }
 }

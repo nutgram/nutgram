@@ -6,19 +6,43 @@ use InvalidArgumentException;
 use ReflectionObject;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * @mixin FakeNutgram
  */
 trait Hears
 {
+    public function setCommonUser(User $user): self
+    {
+        $this->commonUser = $user;
+
+        return $this;
+    }
+
+    public function setCommonChat(Chat $chat): self
+    {
+        $this->commonChat = $chat;
+
+        return $this;
+    }
+
     /**
      * @param  mixed  $update
      * @return $this
      */
     public function hearUpdate(Update $update): self
     {
+        if ($this->commonUser !== null) {
+            $update->setUser($this->commonUser);
+        }
+
+        if ($this->commonChat !== null) {
+            $update->setChat($this->commonChat);
+        }
+
         if ($this->rememberUserAndChat) {
             if ($this->storedUser === null || $this->storedChat === null) {
                 $this->storedUser = $update->getUser();
