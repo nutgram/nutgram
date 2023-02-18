@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.13.1 - 2023-02-18
+
+### What's Changed
+
+- resolve the conversation instance via container by @SergiX44 in https://github.com/nutgram/nutgram/pull/333
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.13.0...3.13.1
+
 ## 3.13.0 - 2023-02-18
 
 ### What's Changed
