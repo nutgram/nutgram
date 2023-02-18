@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.13.0 - 2023-02-18
+
+### What's Changed
+
+- symfony bundle support by @SergiX44 in https://github.com/nutgram/nutgram/pull/321
+- add request response handler interceptors by @SergiX44 in https://github.com/nutgram/nutgram/pull/309
+- Common user chat in tests by @Lukasss93 in https://github.com/nutgram/nutgram/pull/325
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.12.1...3.13.0
+
 ## 3.12.1 - 2023-02-09
 
 ### What's Changed
