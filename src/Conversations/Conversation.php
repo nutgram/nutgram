@@ -40,7 +40,7 @@ abstract class Conversation
      */
     public static function begin(Nutgram $bot): self
     {
-        $instance = new static();
+        $instance = $bot->getContainer()->get(static::class);
         $instance($bot);
 
         return $instance;
@@ -106,9 +106,8 @@ abstract class Conversation
     {
         if (method_exists($this, $this->step)) {
             $this->bot = $bot;
-            $method = $this->step;
             $this->beforeStep($bot);
-            return $this->$method($this->bot, ...$parameters);
+            return $this->{$this->step}($bot, ...$parameters);
         }
 
         throw new RuntimeException("Conversation step '$this->step' not found.");
