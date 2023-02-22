@@ -121,7 +121,7 @@ class Nutgram extends ResolveHandlers
             '%s/bot%s/%s',
             $this->config['api_url'] ?? self::DEFAULT_API_URL,
             $this->token,
-            $this->config['test_env'] ?? false ? 'test/' : ''
+                $this->config['test_env'] ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle(array_merge([
@@ -240,6 +240,10 @@ class Nutgram extends ResolveHandlers
         $conversation = $this->currentConversation($this->userId(), $this->chatId());
 
         if ($conversation !== null) {
+            if ($conversation instanceof Conversation) {
+                $freshConversation = $this->container->get($conversation::class);
+                $conversation = $this->mapper->hydrate($freshConversation, $conversation);
+            }
             $handlers = $this->continueConversation($conversation);
         } else {
             $handlers = $this->resolveHandlers();

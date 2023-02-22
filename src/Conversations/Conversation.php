@@ -32,7 +32,7 @@ abstract class Conversation
     /**
      * @var Nutgram|null
      */
-    protected ?Nutgram $bot;
+    protected ?Nutgram $bot = null;
 
     /**
      * @param  Nutgram  $bot
