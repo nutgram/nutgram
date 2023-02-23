@@ -240,10 +240,6 @@ class Nutgram extends ResolveHandlers
         $conversation = $this->currentConversation($this->userId(), $this->chatId());
 
         if ($conversation !== null) {
-            if ($conversation instanceof Conversation) {
-                $freshConversation = $this->container->get($conversation::class);
-                $conversation = $this->mapper->hydrate($freshConversation, $conversation);
-            }
             $handlers = $this->continueConversation($conversation);
         } else {
             $handlers = $this->resolveHandlers();
@@ -370,9 +366,9 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @return ContainerInterface
+     * @return ContainerInterface|Container
      */
-    public function getContainer(): ContainerInterface
+    public function getContainer(): ContainerInterface|Container
     {
         return $this->container;
     }

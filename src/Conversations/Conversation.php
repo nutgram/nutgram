@@ -30,9 +30,9 @@ abstract class Conversation
     protected ?string $step = 'start';
 
     /**
-     * @var Nutgram|null
+     * @var Nutgram
      */
-    protected ?Nutgram $bot = null;
+    protected Nutgram $bot;
 
     /**
      * @param  Nutgram  $bot
