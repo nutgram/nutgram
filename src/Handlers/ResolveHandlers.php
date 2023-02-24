@@ -164,7 +164,7 @@ abstract class ResolveHandlers extends CollectHandlers
         }
 
         if ($conversation instanceof Conversation) {
-            $getAttributes = fn () => get_object_vars($this);
+            $getAttributes = fn () => array_filter(get_object_vars($this));
             $setAttributes = function (array $attributes) {
                 foreach ($attributes as $attribute => $value) {
                     $this->{$attribute} = $value;
@@ -172,8 +172,8 @@ abstract class ResolveHandlers extends CollectHandlers
             };
 
             $freshConversation = $this->container->get($conversation::class);
-            $freshAttributes = array_filter($getAttributes->call($freshConversation));
-            $currentAttributes = array_filter($getAttributes->call($conversation));
+            $freshAttributes = $getAttributes->call($freshConversation);
+            $currentAttributes = $getAttributes->call($conversation);
             $attributes = array_diff_key($freshAttributes, $currentAttributes);
             $setAttributes->call($conversation, $attributes);
         }
