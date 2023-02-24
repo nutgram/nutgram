@@ -8,6 +8,8 @@ use SergiX44\Nutgram\Tests\Fixtures\CustomService;
 
 class ConversationWithConstructor extends Conversation
 {
+    protected bool $refreshInstance = true;
+
     public function __construct(private CustomService $service)
     {
     }

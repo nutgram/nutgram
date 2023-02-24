@@ -35,6 +35,11 @@ abstract class Conversation
     protected Nutgram $bot;
 
     /**
+     * @var bool
+     */
+    protected bool $refreshInstance = false;
+
+    /**
      * @param  Nutgram  $bot
      * @return static
      */
@@ -54,6 +59,14 @@ abstract class Conversation
     public function start(Nutgram $bot)
     {
         throw new RuntimeException('Attempt to start an empty conversation.');
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldRefreshInstance(): bool
+    {
+        return $this->refreshInstance;
     }
 
     /**
