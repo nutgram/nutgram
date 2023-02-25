@@ -30,9 +30,14 @@ abstract class Conversation
     protected ?string $step = 'start';
 
     /**
-     * @var Nutgram|null
+     * @var Nutgram
      */
-    protected ?Nutgram $bot;
+    protected Nutgram $bot;
+
+    /**
+     * @var bool
+     */
+    private static bool $refreshInstance = false;
 
     /**
      * @param  Nutgram  $bot
@@ -54,6 +59,23 @@ abstract class Conversation
     public function start(Nutgram $bot)
     {
         throw new RuntimeException('Attempt to start an empty conversation.');
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldRefreshInstance(): bool
+    {
+        return self::$refreshInstance;
+    }
+
+    /**
+     * @param  bool  $flag
+     * @return void
+     */
+    public static function refreshOnDeserialize(bool $flag = true): void
+    {
+        self::$refreshInstance = $flag;
     }
 
     /**

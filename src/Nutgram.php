@@ -366,9 +366,9 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @return ContainerInterface
+     * @return ContainerInterface|Container
      */
-    public function getContainer(): ContainerInterface
+    public function getContainer(): ContainerInterface|Container
     {
         return $this->container;
     }

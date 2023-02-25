@@ -6,12 +6,14 @@ use SergiX44\Nutgram\Tests\Conversations\ConversationEmpty;
 use SergiX44\Nutgram\Tests\Conversations\ConversationWithBeforeStep;
 use SergiX44\Nutgram\Tests\Conversations\ConversationWithClosing;
 use SergiX44\Nutgram\Tests\Conversations\ConversationWithClosingMultipleSteps;
+use SergiX44\Nutgram\Tests\Conversations\ConversationWithConstructor;
 use SergiX44\Nutgram\Tests\Conversations\ConversationWithDefault;
 use SergiX44\Nutgram\Tests\Conversations\ConversationWithMissingStep;
 use SergiX44\Nutgram\Tests\Conversations\ConversationWithSkipHandlersMultipleSteps;
 use SergiX44\Nutgram\Tests\Conversations\ConversationWithSkipMiddlewareMultipleSteps;
 use SergiX44\Nutgram\Tests\Conversations\OneStepNotCompletedConversation;
 use SergiX44\Nutgram\Tests\Conversations\TwoStepConversation;
+use SergiX44\Nutgram\Tests\Fixtures\CustomService;
 
 it('calls the conversation steps', function ($update) {
     $bot = Nutgram::fake($update);
@@ -207,3 +209,21 @@ it('does not work with missing step', function ($update) {
 
     $bot->run();
 })->with('message')->throws(RuntimeException::class, "Conversation step 'missing' not found.");
+
+it('calls the conversation constructor at every step', function ($update) {
+    $bot = Nutgram::fake($update);
+    \SergiX44\Nutgram\Conversations\Conversation::refreshOnDeserialize();
+    $bot->onMessage(ConversationWithConstructor::class);
+
+    $bot->getContainer()->addShared(CustomService::class, new CustomService());
+
+    $bot->run();
+    expect($bot->getData('test'))->toBe(1);
+
+    $bot->run();
+    expect($bot->getData('test'))->toBe(2);
+
+    $bot->run();
+    expect($bot->getData('test'))->toBe(1);
+    \SergiX44\Nutgram\Conversations\Conversation::refreshOnDeserialize(false);
+})->with('message');

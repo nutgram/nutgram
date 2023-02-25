@@ -3,6 +3,8 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
@@ -163,6 +165,10 @@ abstract class ResolveHandlers extends CollectHandlers
             }
         }
 
+        if ($conversation instanceof Conversation && $conversation->shouldRefreshInstance()) {
+            $this->refreshInstance($conversation);
+        }
+
         $handler = new Handler($conversation);
 
         if (!$conversation instanceof Conversation || !$conversation->skipMiddlewares()) {
@@ -201,5 +207,27 @@ abstract class ResolveHandlers extends CollectHandlers
                 $this->applyGlobalMiddlewareTo($leaf);
             }
         });
+    }
+
+    /**
+     * @param  Conversation  $conversation
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function refreshInstance(Conversation $conversation): void
+    {
+        $getAttributes = fn () => array_filter(get_object_vars($this));
+        $setAttributes = function (array $attributes) {
+            foreach ($attributes as $attribute => $value) {
+                $this->{$attribute} = $value;
+            }
+        };
+
+        $freshConversation = $this->container->get($conversation::class);
+        $freshAttributes = $getAttributes->call($freshConversation);
+        $currentAttributes = $getAttributes->call($conversation);
+        $attributes = array_diff_key($freshAttributes, $currentAttributes);
+        $setAttributes->call($conversation, $attributes);
     }
 }
