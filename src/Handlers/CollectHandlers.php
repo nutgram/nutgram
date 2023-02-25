@@ -22,6 +22,16 @@ abstract class CollectHandlers
     protected array $globalMiddlewares = [];
 
     /**
+     * @var string
+     */
+    protected string $target = 'handlers';
+
+    /**
+     * @var array
+     */
+    protected array $groupHandlers = [];
+
+    /**
      * @var array
      */
     protected array $handlers = [];
@@ -35,6 +45,31 @@ abstract class CollectHandlers
     }
 
     /**
+     * @param  callable|callable-string|array  $middlewares
+     * @param  callable  $closure
+     * @return void
+     */
+    public function with($middlewares, callable $closure): void
+    {
+        $middlewares = is_array($middlewares) ? $middlewares : [$middlewares];
+
+        $this->target = 'groupHandlers';
+        $closure($this);
+        $this->target = 'handlers';
+
+        array_walk_recursive($this->groupHandlers, function ($leaf) use ($middlewares) {
+            if ($leaf instanceof Handler) {
+                foreach ($middlewares as $middleware) {
+                    $leaf->middleware($middleware);
+                }
+            }
+        });
+
+        $this->handlers = array_merge_recursive($this->handlers, $this->groupHandlers);
+        $this->groupHandlers = [];
+    }
+
+    /**
      * @param  callable|string  $callableOrException
      * @param  callable|null  $callable
      * @return Handler
@@ -42,10 +77,10 @@ abstract class CollectHandlers
     public function onException($callableOrException, $callable = null): Handler
     {
         if ($callable !== null) {
-            return $this->handlers[self::EXCEPTION][$callableOrException] = new Handler($callable, $callableOrException);
+            return $this->{$this->target}[self::EXCEPTION][$callableOrException] = new Handler($callable, $callableOrException);
         }
 
-        return $this->handlers[self::EXCEPTION][] = new Handler($callableOrException);
+        return $this->{$this->target}[self::EXCEPTION][] = new Handler($callableOrException);
     }
 
     /**
@@ -54,7 +89,7 @@ abstract class CollectHandlers
      */
     public function beforeApiRequest($callable): Handler
     {
-        return $this->handlers[self::BEFORE_API_REQUEST] = new Handler($callable);
+        return $this->{$this->target}[self::BEFORE_API_REQUEST] = new Handler($callable);
     }
 
     /**
@@ -63,7 +98,7 @@ abstract class CollectHandlers
      */
     public function afterApiRequest($callable): Handler
     {
-        return $this->handlers[self::AFTER_API_REQUEST] = new Handler($callable);
+        return $this->{$this->target}[self::AFTER_API_REQUEST] = new Handler($callable);
     }
 
     /**
@@ -74,10 +109,10 @@ abstract class CollectHandlers
     public function onApiError($callableOrPattern, $callable = null): Handler
     {
         if ($callable !== null) {
-            return $this->handlers[self::API_ERROR][$callableOrPattern] = new Handler($callable, $callableOrPattern);
+            return $this->{$this->target}[self::API_ERROR][$callableOrPattern] = new Handler($callable, $callableOrPattern);
         }
 
-        return $this->handlers[self::API_ERROR][] = new Handler($callableOrPattern);
+        return $this->{$this->target}[self::API_ERROR][] = new Handler($callableOrPattern);
     }
 
     /**
@@ -86,7 +121,7 @@ abstract class CollectHandlers
      */
     public function fallback($callable): Handler
     {
-        return $this->handlers[self::FALLBACK][] = new Handler($callable);
+        return $this->{$this->target}[self::FALLBACK][] = new Handler($callable);
     }
 
     /**
@@ -99,7 +134,7 @@ abstract class CollectHandlers
         if (!in_array($type, UpdateTypes::all(), true)) {
             throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
         }
-        return $this->handlers[self::FALLBACK][$type] = new Handler($callable, $type);
+        return $this->{$this->target}[self::FALLBACK][$type] = new Handler($callable, $type);
     }
 
     /**
@@ -110,11 +145,11 @@ abstract class CollectHandlers
     public function clearErrorHandlers(bool $exception = true, bool $apiError = true): void
     {
         if ($exception) {
-            $this->handlers[self::EXCEPTION] = [];
+            $this->{$this->target}[self::EXCEPTION] = [];
         }
 
         if ($apiError) {
-            $this->handlers[self::API_ERROR] = [];
+            $this->{$this->target}[self::API_ERROR] = [];
         }
     }
 }
