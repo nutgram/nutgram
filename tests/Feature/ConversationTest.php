@@ -212,6 +212,7 @@ it('does not work with missing step', function ($update) {
 
 it('calls the conversation constructor at every step', function ($update) {
     $bot = Nutgram::fake($update);
+    \SergiX44\Nutgram\Conversations\Conversation::refreshOnDeserialize();
     $bot->onMessage(ConversationWithConstructor::class);
 
     $bot->getContainer()->addShared(CustomService::class, new CustomService());
@@ -224,4 +225,5 @@ it('calls the conversation constructor at every step', function ($update) {
 
     $bot->run();
     expect($bot->getData('test'))->toBe(1);
+    \SergiX44\Nutgram\Conversations\Conversation::refreshOnDeserialize(false);
 })->with('message');

@@ -37,7 +37,7 @@ abstract class Conversation
     /**
      * @var bool
      */
-    protected bool $refreshInstance = false;
+    private static bool $refreshInstance = false;
 
     /**
      * @param  Nutgram  $bot
@@ -66,7 +66,16 @@ abstract class Conversation
      */
     public function shouldRefreshInstance(): bool
     {
-        return $this->refreshInstance;
+        return self::$refreshInstance;
+    }
+
+    /**
+     * @param  bool  $flag
+     * @return void
+     */
+    public static function refreshOnDeserialize(bool $flag = true): void
+    {
+        self::$refreshInstance = $flag;
     }
 
     /**
