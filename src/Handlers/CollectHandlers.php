@@ -59,7 +59,7 @@ abstract class CollectHandlers
 
         array_walk_recursive($this->groupHandlers, function ($leaf) use ($middlewares) {
             if ($leaf instanceof Handler) {
-                foreach ($middlewares as $middleware) {
+                foreach (array_reverse($middlewares) as $middleware) {
                     $leaf->middleware($middleware);
                 }
             }
