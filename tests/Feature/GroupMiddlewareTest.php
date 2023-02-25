@@ -24,8 +24,8 @@ it('groups middleware with nesting level 1', function ($update) {
     $bot->with($middleware1, function (Nutgram $bot) use (&$test) {
         $bot->onMessage(function (Nutgram $bot) use (&$test) {
             $test .= 'H1';
-        })->middleware(function (Nutgram $bot, $next, $str) use (&$test) {
-            $test .= $str;
+        })->middleware(function (Nutgram $bot, $next) use (&$test) {
+            $test .= 'LM1';
             $next($bot);
         });
     });
