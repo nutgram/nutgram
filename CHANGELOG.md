@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.14.0 - 2023-02-25
+
+### What's Changed
+
+- rehydrate a fresh conversation post deserialization by @SergiX44 in https://github.com/nutgram/nutgram/pull/339
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.13.1...3.14.0
+
 ## 3.13.1 - 2023-02-18
 
 ### What's Changed
