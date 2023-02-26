@@ -174,8 +174,7 @@ abstract class InlineMenu extends Conversation
         bool $reopen = false,
         bool $noHandlers = false,
         bool $noMiddlewares = false
-    ): Message|null
-    {
+    ): Message|null {
         if ($reopen || !$this->messageId || !$this->chatId) {
             if ($reopen) {
                 $this->closeMenu();
@@ -296,8 +295,7 @@ abstract class InlineMenu extends Conversation
         ?int $messageId,
         InlineKeyboardMarkup $buttons,
         array $opt
-    ): bool|Message|null
-    {
+    ): bool|Message|null {
         return $this->bot->editMessageText($text, array_merge([
             'reply_markup' => $buttons,
             'chat_id' => $chatId,
