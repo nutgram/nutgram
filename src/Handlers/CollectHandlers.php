@@ -96,29 +96,7 @@ abstract class CollectHandlers
      */
     public function onException($callableOrException, $callable = null): Handler
     {
-        if ($callable !== null) {
-            return $this->{$this->target}[self::EXCEPTION][$callableOrException] = new Handler($callable, $callableOrException);
-        }
-
-        return $this->{$this->target}[self::EXCEPTION][] = new Handler($callableOrException);
-    }
-
-    /**
-     * @param $callable
-     * @return Handler
-     */
-    public function beforeApiRequest($callable): Handler
-    {
-        return $this->{$this->target}[self::BEFORE_API_REQUEST] = new Handler($callable);
-    }
-
-    /**
-     * @param $callable
-     * @return Handler
-     */
-    public function afterApiRequest($callable): Handler
-    {
-        return $this->{$this->target}[self::AFTER_API_REQUEST] = new Handler($callable);
+        return $this->registerErrorHandlerFor(self::EXCEPTION, $callableOrException, $callable);
     }
 
     /**
@@ -128,11 +106,22 @@ abstract class CollectHandlers
      */
     public function onApiError($callableOrPattern, $callable = null): Handler
     {
+        return $this->registerErrorHandlerFor(self::API_ERROR, $callableOrPattern, $callable);
+    }
+
+    /**
+     * @param  string  $type
+     * @param $callableOrPattern
+     * @param $callable
+     * @return Handler
+     */
+    private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
+    {
         if ($callable !== null) {
-            return $this->{$this->target}[self::API_ERROR][$callableOrPattern] = new Handler($callable, $callableOrPattern);
+            return $this->{$this->target}[$type][$callableOrPattern] = new Handler($callable, $callableOrPattern);
         }
 
-        return $this->{$this->target}[self::API_ERROR][] = new Handler($callableOrPattern);
+        return $this->{$this->target}[$type][] = new Handler($callableOrPattern);
     }
 
     /**
@@ -171,5 +160,23 @@ abstract class CollectHandlers
         if ($apiError) {
             $this->{$this->target}[self::API_ERROR] = [];
         }
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function beforeApiRequest($callable): Handler
+    {
+        return $this->{$this->target}[self::BEFORE_API_REQUEST] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function afterApiRequest($callable): Handler
+    {
+        return $this->{$this->target}[self::AFTER_API_REQUEST] = new Handler($callable);
     }
 }
