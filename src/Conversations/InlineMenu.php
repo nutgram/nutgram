@@ -111,6 +111,10 @@ abstract class InlineMenu extends Conversation
                 throw new InvalidArgumentException("The method $method does not exists.");
             }
 
+            while (array_key_exists($callbackData, $this->callbacks)) {
+                $callbackData .= '@';
+            }
+
             $button->callback_data = $callbackData;
             $this->callbacks[$callbackData] = $method;
         }
@@ -141,6 +145,8 @@ abstract class InlineMenu extends Conversation
             $result = null;
             if (isset($this->callbacks[$data])) {
                 $this->step = $this->callbacks[$data];
+                $data = trim($data, '@');
+                $this->bot->callbackQuery()->data = $data;
                 $result = $this($this->bot, $data);
             }
 
@@ -168,7 +174,8 @@ abstract class InlineMenu extends Conversation
         bool $reopen = false,
         bool $noHandlers = false,
         bool $noMiddlewares = false
-    ): Message|null {
+    ): Message|null
+    {
         if ($reopen || !$this->messageId || !$this->chatId) {
             if ($reopen) {
                 $this->closeMenu();
@@ -189,9 +196,9 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param string|null  $finalText
-     * @param array  $opt
-     * @param bool  $reopen
+     * @param  string|null  $finalText
+     * @param  array  $opt
+     * @param  bool  $reopen
      *
      * @return Message|bool
      */
@@ -273,11 +280,11 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param string  $text
-     * @param int|null  $chatId
-     * @param int|null  $messageId
-     * @param InlineKeyboardMarkup  $buttons
-     * @param array  $opt
+     * @param  string  $text
+     * @param  int|null  $chatId
+     * @param  int|null  $messageId
+     * @param  InlineKeyboardMarkup  $buttons
+     * @param  array  $opt
      *
      * @return Message|bool|null
      *
@@ -289,7 +296,8 @@ abstract class InlineMenu extends Conversation
         ?int $messageId,
         InlineKeyboardMarkup $buttons,
         array $opt
-    ): bool|Message|null {
+    ): bool|Message|null
+    {
         return $this->bot->editMessageText($text, array_merge([
             'reply_markup' => $buttons,
             'chat_id' => $chatId,

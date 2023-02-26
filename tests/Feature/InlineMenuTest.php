@@ -10,6 +10,7 @@ use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidButtonNoCallbackMenu;
 use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidButtonNoDataMenu;
 use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidNoEndMenu;
 use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidReopenMenu;
+use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidSameDataMenu;
 use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidWithFallbackMenu;
 
 test('valid inline menu + no end', function () {
@@ -228,4 +229,56 @@ test('valid inline menu + no end + split message', function () {
         ->hearText('start')
         ->reply()
         ->assertNoConversation();
+});
+
+
+test('works with same callback data but different callback method', function () {
+    $bot = Nutgram::fake();
+    $bot->onMessage(ValidSameDataMenu::class);
+
+    $bot
+        ->willStartConversation()
+        ->hearText('start')
+        ->reply()
+        ->assertActiveConversation()
+        ->assertReplyMessage([
+            'text' => 'Choose a color:',
+            'reply_markup' => InlineKeyboardMarkup::make()
+                ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
+                ->addRow(InlineKeyboardButton::make('Green', callback_data: 'red@'))
+                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'red@@'))
+        ])
+        ->hearCallbackQueryData('red@')
+        ->reply()
+        ->assertReplyText('Choosen: 2red!')
+        ->assertReply('answerCallbackQuery', [
+            'show_alert' => true,
+            'text' => 'Alert!',
+        ], 1)
+        ->hearText('start')
+        ->reply()
+        ->assertNoConversation()
+        ->hearText('start')
+        ->reply()
+        ->assertActiveConversation()
+        ->hearCallbackQueryData('red@@')
+        ->reply()
+        ->assertReplyText('Choosen: 3red!')
+        ->assertReply('answerCallbackQuery', [
+            'show_alert' => true,
+            'text' => 'Alert!',
+        ], 1)
+        ->hearText('start')
+        ->reply()
+        ->assertNoConversation()
+        ->hearText('start')
+        ->reply()
+        ->assertActiveConversation()
+        ->hearCallbackQueryData('red')
+        ->reply()
+        ->assertReplyText('Choosen: 1red!')
+        ->assertReply('answerCallbackQuery', [
+            'show_alert' => true,
+            'text' => 'Alert!',
+        ], 1);
 });
