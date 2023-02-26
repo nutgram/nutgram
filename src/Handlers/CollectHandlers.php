@@ -57,15 +57,22 @@ abstract class CollectHandlers
     public function group($middlewares, callable $closure): void
     {
         $middlewares = is_array($middlewares) ? array_reverse($middlewares) : [$middlewares];
+
+        // get the current group status
         $beforeMyMiddlewares = $this->groupMiddlewares;
         $beforeMyHandlers = $this->groupHandlers;
+
+        // push new middlewares to the stack
         $this->groupMiddlewares = array_merge($middlewares, $this->groupMiddlewares);
 
+        // get the current target
         $previousTarget = $this->target;
         $this->target = 'groupHandlers';
         $closure($this);
+        // restore the parent target
         $this->target = $previousTarget;
 
+        // apply the middleware stack to the current registered group handlers
         array_walk_recursive($this->groupHandlers, function ($leaf) {
             if ($leaf instanceof Handler) {
                 foreach ($this->groupMiddlewares as $middleware) {
@@ -74,7 +81,10 @@ abstract class CollectHandlers
             }
         });
 
+        // commit the handlers
         $this->handlers = array_merge_recursive($this->handlers, $this->groupHandlers);
+
+        // restore the status of the parent group, if any
         $this->groupMiddlewares = $beforeMyMiddlewares;
         $this->groupHandlers = $beforeMyHandlers;
     }
