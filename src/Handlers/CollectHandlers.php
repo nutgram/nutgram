@@ -22,6 +22,21 @@ abstract class CollectHandlers
     protected array $globalMiddlewares = [];
 
     /**
+     * @var string
+     */
+    protected string $target = 'handlers';
+
+    /**
+     * @var array
+     */
+    protected array $groupHandlers = [];
+
+    /**
+     * @var array
+     */
+    protected array $groupMiddlewares = [];
+
+    /**
      * @var array
      */
     protected array $handlers = [];
@@ -35,35 +50,53 @@ abstract class CollectHandlers
     }
 
     /**
+     * @param  callable|callable-string|array  $middlewares
+     * @param  callable  $closure
+     * @return void
+     */
+    public function group($middlewares, callable $closure): void
+    {
+        $middlewares = is_array($middlewares) ? array_reverse($middlewares) : [$middlewares];
+
+        // get the current group status
+        $beforeMyMiddlewares = $this->groupMiddlewares;
+        $beforeMyHandlers = $this->groupHandlers;
+
+        // push new middlewares to the stack
+        $this->groupMiddlewares = array_merge($middlewares, $this->groupMiddlewares);
+
+        // get the current target
+        $previousTarget = $this->target;
+        $this->target = 'groupHandlers';
+        $closure($this);
+        // restore the parent target
+        $this->target = $previousTarget;
+
+        // apply the middleware stack to the current registered group handlers
+        array_walk_recursive($this->groupHandlers, function ($leaf) {
+            if ($leaf instanceof Handler) {
+                foreach ($this->groupMiddlewares as $middleware) {
+                    $leaf->middleware($middleware);
+                }
+            }
+        });
+
+        // commit the handlers
+        $this->handlers = array_merge_recursive($this->handlers, $this->groupHandlers);
+
+        // restore the status of the parent group, if any
+        $this->groupMiddlewares = $beforeMyMiddlewares;
+        $this->groupHandlers = $beforeMyHandlers;
+    }
+
+    /**
      * @param  callable|string  $callableOrException
      * @param  callable|null  $callable
      * @return Handler
      */
     public function onException($callableOrException, $callable = null): Handler
     {
-        if ($callable !== null) {
-            return $this->handlers[self::EXCEPTION][$callableOrException] = new Handler($callable, $callableOrException);
-        }
-
-        return $this->handlers[self::EXCEPTION][] = new Handler($callableOrException);
-    }
-
-    /**
-     * @param $callable
-     * @return Handler
-     */
-    public function beforeApiRequest($callable): Handler
-    {
-        return $this->handlers[self::BEFORE_API_REQUEST] = new Handler($callable);
-    }
-
-    /**
-     * @param $callable
-     * @return Handler
-     */
-    public function afterApiRequest($callable): Handler
-    {
-        return $this->handlers[self::AFTER_API_REQUEST] = new Handler($callable);
+        return $this->registerErrorHandlerFor(self::EXCEPTION, $callableOrException, $callable);
     }
 
     /**
@@ -73,11 +106,22 @@ abstract class CollectHandlers
      */
     public function onApiError($callableOrPattern, $callable = null): Handler
     {
+        return $this->registerErrorHandlerFor(self::API_ERROR, $callableOrPattern, $callable);
+    }
+
+    /**
+     * @param  string  $type
+     * @param $callableOrPattern
+     * @param $callable
+     * @return Handler
+     */
+    private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
+    {
         if ($callable !== null) {
-            return $this->handlers[self::API_ERROR][$callableOrPattern] = new Handler($callable, $callableOrPattern);
+            return $this->{$this->target}[$type][$callableOrPattern] = new Handler($callable, $callableOrPattern);
         }
 
-        return $this->handlers[self::API_ERROR][] = new Handler($callableOrPattern);
+        return $this->{$this->target}[$type][] = new Handler($callableOrPattern);
     }
 
     /**
@@ -86,7 +130,7 @@ abstract class CollectHandlers
      */
     public function fallback($callable): Handler
     {
-        return $this->handlers[self::FALLBACK][] = new Handler($callable);
+        return $this->{$this->target}[self::FALLBACK][] = new Handler($callable);
     }
 
     /**
@@ -99,7 +143,7 @@ abstract class CollectHandlers
         if (!in_array($type, UpdateTypes::all(), true)) {
             throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
         }
-        return $this->handlers[self::FALLBACK][$type] = new Handler($callable, $type);
+        return $this->{$this->target}[self::FALLBACK][$type] = new Handler($callable, $type);
     }
 
     /**
@@ -110,11 +154,29 @@ abstract class CollectHandlers
     public function clearErrorHandlers(bool $exception = true, bool $apiError = true): void
     {
         if ($exception) {
-            $this->handlers[self::EXCEPTION] = [];
+            $this->{$this->target}[self::EXCEPTION] = [];
         }
 
         if ($apiError) {
-            $this->handlers[self::API_ERROR] = [];
+            $this->{$this->target}[self::API_ERROR] = [];
         }
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function beforeApiRequest($callable): Handler
+    {
+        return $this->{$this->target}[self::BEFORE_API_REQUEST] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function afterApiRequest($callable): Handler
+    {
+        return $this->{$this->target}[self::AFTER_API_REQUEST] = new Handler($callable);
     }
 }

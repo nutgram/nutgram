@@ -19,7 +19,7 @@ trait MessageHandlers
      */
     public function onCommand(string $command, $callable): Command
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command] = new Command($callable, $command);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command] = new Command($callable, $command);
     }
 
     /**
@@ -35,7 +35,7 @@ trait MessageHandlers
             $command = new $command();
         }
 
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command->getPattern()] = $command;
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::TEXT][$command->getPattern()] = $command;
     }
 
     /**
@@ -45,7 +45,7 @@ trait MessageHandlers
      */
     public function onText(string $pattern, $callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT][$pattern] = new Handler($callable, $pattern);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::TEXT][$pattern] = new Handler($callable, $pattern);
     }
 
     /**
@@ -54,7 +54,7 @@ trait MessageHandlers
      */
     public function onAnimation($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::ANIMATION][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::ANIMATION][] = new Handler($callable);
     }
 
     /**
@@ -63,7 +63,7 @@ trait MessageHandlers
      */
     public function onAudio($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::AUDIO][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::AUDIO][] = new Handler($callable);
     }
 
     /**
@@ -72,7 +72,7 @@ trait MessageHandlers
      */
     public function onDocument($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::DOCUMENT][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::DOCUMENT][] = new Handler($callable);
     }
 
     /**
@@ -81,7 +81,7 @@ trait MessageHandlers
      */
     public function onPhoto($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::PHOTO][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::PHOTO][] = new Handler($callable);
     }
 
     /**
@@ -90,7 +90,7 @@ trait MessageHandlers
      */
     public function onSticker($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::STICKER][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::STICKER][] = new Handler($callable);
     }
 
     /**
@@ -99,7 +99,7 @@ trait MessageHandlers
      */
     public function onVideo($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::VIDEO][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::VIDEO][] = new Handler($callable);
     }
 
     /**
@@ -108,7 +108,7 @@ trait MessageHandlers
      */
     public function onVideoNote($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::VIDEO_NOTE][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::VIDEO_NOTE][] = new Handler($callable);
     }
 
     /**
@@ -117,7 +117,7 @@ trait MessageHandlers
      */
     public function onVoice($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::VOICE][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::VOICE][] = new Handler($callable);
     }
 
     /**
@@ -126,7 +126,7 @@ trait MessageHandlers
      */
     public function onContact($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::CONTACT][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::CONTACT][] = new Handler($callable);
     }
 
     /**
@@ -135,7 +135,7 @@ trait MessageHandlers
      */
     public function onDice($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::DICE][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::DICE][] = new Handler($callable);
     }
 
     /**
@@ -144,7 +144,7 @@ trait MessageHandlers
      */
     public function onGame($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::GAME][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::GAME][] = new Handler($callable);
     }
 
     /**
@@ -153,7 +153,7 @@ trait MessageHandlers
      */
     public function onMessagePoll($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::POLL][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::POLL][] = new Handler($callable);
     }
 
     /**
@@ -162,7 +162,7 @@ trait MessageHandlers
      */
     public function onVenue($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::VENUE][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::VENUE][] = new Handler($callable);
     }
 
     /**
@@ -171,7 +171,7 @@ trait MessageHandlers
      */
     public function onLocation($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::LOCATION][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::LOCATION][] = new Handler($callable);
     }
 
     /**
@@ -180,7 +180,7 @@ trait MessageHandlers
      */
     public function onNewChatMembers($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::NEW_CHAT_MEMBERS][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::NEW_CHAT_MEMBERS][] = new Handler($callable);
     }
 
     /**
@@ -189,7 +189,7 @@ trait MessageHandlers
      */
     public function onLeftChatMember($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::LEFT_CHAT_MEMBER][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::LEFT_CHAT_MEMBER][] = new Handler($callable);
     }
 
     /**
@@ -198,7 +198,7 @@ trait MessageHandlers
      */
     public function onNewChatTitle($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::NEW_CHAT_TITLE][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::NEW_CHAT_TITLE][] = new Handler($callable);
     }
 
     /**
@@ -207,7 +207,7 @@ trait MessageHandlers
      */
     public function onNewChatPhoto($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::NEW_CHAT_PHOTO][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::NEW_CHAT_PHOTO][] = new Handler($callable);
     }
 
     /**
@@ -216,7 +216,7 @@ trait MessageHandlers
      */
     public function onDeleteChatPhoto($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::DELETE_CHAT_PHOTO][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::DELETE_CHAT_PHOTO][] = new Handler($callable);
     }
 
     /**
@@ -225,7 +225,7 @@ trait MessageHandlers
      */
     public function onGroupChatCreated($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::GROUP_CHAT_CREATED][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::GROUP_CHAT_CREATED][] = new Handler($callable);
     }
 
     /**
@@ -234,7 +234,7 @@ trait MessageHandlers
      */
     public function onSupergroupChatCreated($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::SUPERGROUP_CHAT_CREATED][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::SUPERGROUP_CHAT_CREATED][] = new Handler($callable);
     }
 
     /**
@@ -243,7 +243,7 @@ trait MessageHandlers
      */
     public function onChannelChatCreated($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::CHANNEL_CHAT_CREATED][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::CHANNEL_CHAT_CREATED][] = new Handler($callable);
     }
 
     /**
@@ -252,7 +252,7 @@ trait MessageHandlers
      */
     public function onMessageAutoDeleteTimerChanged($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::MESSAGE_AUTO_DELETE_TIMER_CHANGED][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::MESSAGE_AUTO_DELETE_TIMER_CHANGED][] = new Handler($callable);
     }
 
     /**
@@ -261,7 +261,7 @@ trait MessageHandlers
      */
     public function onMigrateToChatId($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::MIGRATE_TO_CHAT_ID][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::MIGRATE_TO_CHAT_ID][] = new Handler($callable);
     }
 
     /**
@@ -270,7 +270,7 @@ trait MessageHandlers
      */
     public function onMigrateFromChatId($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::MIGRATE_FROM_CHAT_ID][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::MIGRATE_FROM_CHAT_ID][] = new Handler($callable);
     }
 
     /**
@@ -279,7 +279,7 @@ trait MessageHandlers
      */
     public function onPinnedMessage($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::PINNED_MESSAGE][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::PINNED_MESSAGE][] = new Handler($callable);
     }
 
     /**
@@ -288,7 +288,7 @@ trait MessageHandlers
      */
     public function onInvoice($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::INVOICE][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::INVOICE][] = new Handler($callable);
     }
 
     /**
@@ -297,7 +297,7 @@ trait MessageHandlers
      */
     public function onSuccessfulPayment($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::SUCCESSFUL_PAYMENT][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::SUCCESSFUL_PAYMENT][] = new Handler($callable);
     }
 
     /**
@@ -307,7 +307,7 @@ trait MessageHandlers
      */
     public function onSuccessfulPaymentPayload(string $pattern, $callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::SUCCESSFUL_PAYMENT][$pattern] = new Handler(
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::SUCCESSFUL_PAYMENT][$pattern] = new Handler(
             $callable,
             $pattern
         );
@@ -319,7 +319,7 @@ trait MessageHandlers
      */
     public function onConnectedWebsite($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::CONNECTED_WEBSITE][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::CONNECTED_WEBSITE][] = new Handler($callable);
     }
 
     /**
@@ -328,7 +328,7 @@ trait MessageHandlers
      */
     public function onPassportData($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::PASSPORT_DATA][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::PASSPORT_DATA][] = new Handler($callable);
     }
 
     /**
@@ -337,7 +337,7 @@ trait MessageHandlers
      */
     public function onProximityAlertTriggered($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::PROXIMITY_ALERT_TRIGGERED][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::PROXIMITY_ALERT_TRIGGERED][] = new Handler($callable);
     }
 
     /**
@@ -346,7 +346,7 @@ trait MessageHandlers
      */
     public function onForumTopicCreated($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::FORUM_TOPIC_CREATED][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::FORUM_TOPIC_CREATED][] = new Handler($callable);
     }
 
     /**
@@ -355,7 +355,7 @@ trait MessageHandlers
      */
     public function onForumTopicClosed($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::FORUM_TOPIC_CLOSED][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::FORUM_TOPIC_CLOSED][] = new Handler($callable);
     }
 
     /**
@@ -364,7 +364,7 @@ trait MessageHandlers
      */
     public function onForumTopicReopened($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::FORUM_TOPIC_REOPENED][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::FORUM_TOPIC_REOPENED][] = new Handler($callable);
     }
 
     /**
@@ -373,7 +373,7 @@ trait MessageHandlers
      */
     public function onVideoChatScheduled($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::VIDEO_CHAT_SCHEDULED][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::VIDEO_CHAT_SCHEDULED][] = new Handler($callable);
     }
 
     /**
@@ -382,7 +382,7 @@ trait MessageHandlers
      */
     public function onVideoChatStarted($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::VIDEO_CHAT_STARTED][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::VIDEO_CHAT_STARTED][] = new Handler($callable);
     }
 
     /**
@@ -391,7 +391,7 @@ trait MessageHandlers
      */
     public function onVideoChatEnded($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::VIDEO_CHAT_ENDED][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::VIDEO_CHAT_ENDED][] = new Handler($callable);
     }
 
     /**
@@ -400,7 +400,7 @@ trait MessageHandlers
      */
     public function onVideoChatParticipantsInvited($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::VIDEO_CHAT_PARTICIPANTS_INVITED][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::VIDEO_CHAT_PARTICIPANTS_INVITED][] = new Handler($callable);
     }
 
     /**
@@ -409,6 +409,6 @@ trait MessageHandlers
      */
     public function onWebAppData($callable): Handler
     {
-        return $this->handlers[UpdateTypes::MESSAGE][MessageTypes::WEB_APP_DATA][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::WEB_APP_DATA][] = new Handler($callable);
     }
 }
