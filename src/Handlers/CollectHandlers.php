@@ -34,6 +34,11 @@ abstract class CollectHandlers
     /**
      * @var array
      */
+    protected array $groupMiddlewares = [];
+
+    /**
+     * @var array
+     */
     protected array $handlers = [];
 
     /**
@@ -49,24 +54,29 @@ abstract class CollectHandlers
      * @param  callable  $closure
      * @return void
      */
-    public function with($middlewares, callable $closure): void
+    public function group($middlewares, callable $closure): void
     {
-        $middlewares = is_array($middlewares) ? $middlewares : [$middlewares];
+        $middlewares = is_array($middlewares) ? array_reverse($middlewares) : [$middlewares];
+        $beforeMyMiddlewares = $this->groupMiddlewares;
+        $beforeMyHandlers = $this->groupHandlers;
+        $this->groupMiddlewares = array_merge($middlewares, $this->groupMiddlewares);
 
+        $previousTarget = $this->target;
         $this->target = 'groupHandlers';
         $closure($this);
-        $this->target = 'handlers';
+        $this->target = $previousTarget;
 
-        array_walk_recursive($this->groupHandlers, function ($leaf) use ($middlewares) {
+        array_walk_recursive($this->groupHandlers, function ($leaf) {
             if ($leaf instanceof Handler) {
-                foreach (array_reverse($middlewares) as $middleware) {
+                foreach ($this->groupMiddlewares as $middleware) {
                     $leaf->middleware($middleware);
                 }
             }
         });
 
         $this->handlers = array_merge_recursive($this->handlers, $this->groupHandlers);
-        $this->groupHandlers = [];
+        $this->groupMiddlewares = $beforeMyMiddlewares;
+        $this->groupHandlers = $beforeMyHandlers;
     }
 
     /**

@@ -21,7 +21,7 @@ it('groups middleware with nesting level 1', function ($update) {
 
     $bot->middleware($middleware0);
 
-    $bot->with($middleware1, function (Nutgram $bot) use (&$test) {
+    $bot->group($middleware1, function (Nutgram $bot) use (&$test) {
         $bot->onMessage(function (Nutgram $bot) use (&$test) {
             $test .= 'H1';
         })->middleware(function (Nutgram $bot, $next) use (&$test) {
@@ -63,7 +63,7 @@ it('groups middleware with 2 nesting levels 1', function ($update) {
 
     $bot->middleware($middleware0);
 
-    $bot->with($middleware1, function (Nutgram $bot) use (&$test) {
+    $bot->group($middleware1, function (Nutgram $bot) use (&$test) {
         $bot->onMessage(function (Nutgram $bot) use (&$test) {
             $test .= 'H1';
         })->middleware(function (Nutgram $bot, $next) use (&$test) {
@@ -72,7 +72,7 @@ it('groups middleware with 2 nesting levels 1', function ($update) {
         });
     });
 
-    $bot->with([$middleware1, $middleware2], function (Nutgram $bot) use (&$test) {
+    $bot->group([$middleware1, $middleware2], function (Nutgram $bot) use (&$test) {
         $bot->onMessage(function (Nutgram $bot) use (&$test) {
             $test .= 'H2';
         })->middleware(function (Nutgram $bot, $next) use (&$test) {
@@ -114,8 +114,8 @@ it('groups middleware with nesting level 2', function ($update) {
 
     $bot->middleware($middleware0);
 
-    $bot->with($middleware1, function (Nutgram $bot) use ($middleware2, &$test) {
-        $bot->with($middleware2, function (Nutgram $bot) use (&$test) {
+    $bot->group($middleware1, function (Nutgram $bot) use ($middleware2, &$test) {
+        $bot->group($middleware2, function (Nutgram $bot) use (&$test) {
             $bot->onMessage(function (Nutgram $bot) use (&$test) {
                 $test .= 'H1';
             })->middleware(function (Nutgram $bot, $next) use (&$test) {
@@ -175,16 +175,16 @@ it('groups middleware with complex nesting levels', function ($update) {
 
     $bot->middleware($middleware0);
 
-    $bot->with(
+    $bot->group(
         $middleware1,
         function (Nutgram $bot) use ($middleware4, $middleware3, $middleware2, $middleware1, &$test) {
-            $bot->with(
+            $bot->group(
                 [$middleware1, $middleware2],
                 function (Nutgram $bot) use ($middleware1, $middleware4, $middleware3, &$test) {
-                    $bot->with(
+                    $bot->group(
                         $middleware3,
                         function (Nutgram $bot) use ($middleware1, $middleware4, &$test) {
-                            $bot->with([$middleware1, $middleware4], function (Nutgram $bot) use (&$test) {
+                            $bot->group([$middleware1, $middleware4], function (Nutgram $bot) use (&$test) {
                                 $bot->onMessage(function (Nutgram $bot) use (&$test) {
                                     $test .= 'HX';
                                 })->middleware(function (Nutgram $bot, $next) use (&$test) {
@@ -250,7 +250,7 @@ it('groups middleware with onCommand', function ($update) {
 
     $bot->middleware($middleware0);
 
-    $bot->with($middleware1, function (Nutgram $bot) use (&$test) {
+    $bot->group($middleware1, function (Nutgram $bot) use (&$test) {
         $bot->onCommand('test', function (Nutgram $bot) use (&$test) {
             $test .= 'H1';
         })->middleware(function (Nutgram $bot, $next) use (&$test) {
@@ -279,7 +279,7 @@ it('groups middleware with registerCommand', function ($update) {
 
     $bot->middleware($middleware0);
 
-    $bot->with($middleware1, function (Nutgram $bot) {
+    $bot->group($middleware1, function (Nutgram $bot) {
         $bot->registerCommand(DumbCommand::class)->middleware(function (Nutgram $bot, $next) {
             $bot->setGlobalData('flow', $bot->getGlobalData('flow', '').'LM');
             $next($bot);
