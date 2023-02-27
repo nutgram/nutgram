@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.15.0 - 2023-02-27
+
+### What's Changed
+
+- middleware grouping by @SergiX44 in https://github.com/nutgram/nutgram/pull/343
+- allow same callback data for different callbacks for InlineMenu by @SergiX44 in https://github.com/nutgram/nutgram/pull/347
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.14.0...3.15.0
+
 ## 3.14.0 - 2023-02-25
 
 ### What's Changed
