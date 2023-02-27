@@ -64,21 +64,17 @@ class Handler extends MiddlewareChain
             return false;
         }
 
-        //sanitize pattern
+        // sanitize pattern
         $pattern = str_replace('/', '\/', $this->pattern);
 
-        //look for named parameters
-        preg_match_all(self::PARAM_NAME_REGEX, $pattern, $matches);
-        $availableParameters = array_flip($matches[1]);
-        unset($matches);
-
-        //replace named parameters with regex
+        // replace named parameters with regex
         $regex = '/^'.preg_replace(self::PARAM_NAME_REGEX, '(?<$1>.*)', $pattern).'?$/miu';
 
-        //match + return only named parameters
+        // match + return only named parameters
         $regexMatched = (bool)preg_match($regex, $value, $matches);
         if ($regexMatched) {
-            $this->parameters = array_intersect_key($matches, $availableParameters);
+            array_shift($matches);
+            $this->parameters = array_filter($matches, 'is_numeric', ARRAY_FILTER_USE_KEY);
         }
 
         return $regexMatched;
