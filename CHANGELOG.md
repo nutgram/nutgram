@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.15.1 - 2023-02-27
+
+### What's Changed
+
+- Fix regex groups in https://github.com/nutgram/nutgram/pull/350
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.15.0...3.15.1
+
 ## 3.15.0 - 2023-02-27
 
 ### What's Changed
