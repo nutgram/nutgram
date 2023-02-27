@@ -717,3 +717,16 @@ it('calls the message handler with regex groups', function ($update) {
 
     $bot->run();
 })->with('food');
+
+it('calls the message handler with regex groups + number', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onText('I want {number} portions of (pizza|cake)', function (Nutgram $bot, $amount, $dish) {
+        $bot->sendMessage("You will get {$amount} portions of {$dish}!");
+
+        expect($amount)->toBe('12');
+        expect($dish)->toBe('pizza');
+    });
+
+    $bot->run();
+})->with('food');
