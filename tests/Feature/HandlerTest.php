@@ -704,3 +704,16 @@ it('can manipulate the http response', function () {
 
     expect($message->text)->toBe('banane');
 });
+
+it('calls the message handler with regex groups', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onText('I want ([0-9]+) portions of (pizza|cake)', function (Nutgram $bot, $amount, $dish) {
+        $bot->sendMessage("You will get {$amount} portions of {$dish}!");
+
+        expect($amount)->toBe('12');
+        expect($dish)->toBe('pizza');
+    });
+
+    $bot->run();
+})->with('food');
