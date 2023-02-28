@@ -517,6 +517,7 @@ class Message extends BaseType
             $this->passport_data !== null => MessageTypes::PASSPORT_DATA,
             $this->proximity_alert_triggered !== null => MessageTypes::PROXIMITY_ALERT_TRIGGERED,
             $this->forum_topic_created !== null => MessageTypes::FORUM_TOPIC_CREATED,
+            $this->forum_topic_edited !== null => MessageTypes::FORUM_TOPIC_EDITED,
             $this->forum_topic_closed !== null => MessageTypes::FORUM_TOPIC_CLOSED,
             $this->forum_topic_reopened !== null => MessageTypes::FORUM_TOPIC_REOPENED,
             $this->video_chat_scheduled !== null => MessageTypes::VIDEO_CHAT_SCHEDULED,
