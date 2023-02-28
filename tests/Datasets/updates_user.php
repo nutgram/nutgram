@@ -12,7 +12,7 @@ dataset('updates_user', function () {
         'callback_query_without_message' => [getUpdateType('callback_query_without_message'), 'onCallbackQuery', true],
         'shipping_query' => [getUpdateType('shipping_query'), 'onShippingQuery', true],
         'pre_checkout_query' => [getUpdateType('pre_checkout_query'), 'onPreCheckoutQuery', true],
-        'poll' => [getUpdateType('poll'), 'onPoll', false],
+        'poll' => [getUpdateType('poll'), 'onUpdatePoll', false],
         'poll_answer' => [getUpdateType('poll_answer'), 'onPollAnswer', true],
         'my_chat_member' => [getUpdateType('my_chat_member'), 'onMyChatMember', true],
         'chat_member' => [getUpdateType('chat_member'), 'onChatMember', true],
