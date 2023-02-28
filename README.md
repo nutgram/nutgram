@@ -50,6 +50,12 @@ composer require nutgram/nutgram
 
 - [Official Documentation](https://nutgram.dev)
 
+## Supported versions
+| Nutgram | PHP  | Support Until |
+|---------|------|---------------|
+| ^3.0    | ^8.0 | 2023-11-26    |
+| ^4.0    | ^8.2 | -             |
+
 ## Projects with this library
 > Is your project using Nutgram? Let us know, feel free to add yours!
 
