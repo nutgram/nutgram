@@ -730,3 +730,32 @@ it('calls the message handler with regex groups + number', function ($update) {
 
     $bot->run();
 })->with('food');
+
+it('calls the message handler with multiple global middlewares', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $test = '';
+
+    $middlewareA = function ($bot, $next) use (&$test) {
+        $test .= 'A';
+        $next($bot);
+    };
+
+    $middlewareB = function ($bot, $next) use (&$test) {
+        $test .= 'B';
+        $next($bot);
+    };
+
+    $bot->middleware([
+        $middlewareA,
+        $middlewareB,
+    ]);
+
+    $bot->onMessage(function ($bot) use (&$test) {
+        $test .= 'M';
+    });
+
+    $bot->run();
+
+    expect($test)->toBe('ABM');
+})->with('message');
