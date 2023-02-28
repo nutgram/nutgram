@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.15.2 - 2023-02-28
+
+### What's Changed
+
+- Add ability to pass multiple global middleware by @Lukasss93 in https://github.com/nutgram/nutgram/pull/353
+- Add missing onForumTopicEdited handler by @Lukasss93 in https://github.com/nutgram/nutgram/pull/354
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.15.1...3.15.2
+
 ## 3.15.1 - 2023-02-27
 
 ### What's Changed
