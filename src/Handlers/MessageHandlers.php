@@ -353,6 +353,15 @@ trait MessageHandlers
      * @param $callable
      * @return Handler
      */
+    public function onForumTopicEdited($callable): Handler
+    {
+        return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::FORUM_TOPIC_EDITED][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
     public function onForumTopicClosed($callable): Handler
     {
         return $this->{$this->target}[UpdateTypes::MESSAGE][MessageTypes::FORUM_TOPIC_CLOSED][] = new Handler($callable);

@@ -37,6 +37,7 @@ class MessageTypes extends BaseEnum
     public const PASSPORT_DATA = 'passport_data';
     public const PROXIMITY_ALERT_TRIGGERED = 'proximity_alert_triggered';
     public const FORUM_TOPIC_CREATED = 'forum_topic_created';
+    public const FORUM_TOPIC_EDITED = 'forum_topic_edited';
     public const FORUM_TOPIC_CLOSED = 'forum_topic_closed';
     public const FORUM_TOPIC_REOPENED = 'forum_topic_reopened';
     public const VIDEO_CHAT_SCHEDULED = 'video_chat_scheduled';

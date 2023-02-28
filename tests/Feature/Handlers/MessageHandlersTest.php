@@ -405,6 +405,18 @@ it('calls onForumTopicCreated handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('forum_topic_created');
 
+it('calls onForumTopicEdited handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onForumTopicEdited(function (Nutgram $bot) {
+        $bot->setData('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getData('called'))->toBeTrue();
+})->with('forum_topic_edited');
+
 it('calls onForumTopicClosed handler', function ($update) {
     $bot = Nutgram::fake($update);
 
