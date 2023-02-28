@@ -38,12 +38,6 @@ class StickerSet extends BaseType
     public bool $is_video;
 
     /**
-     * @deprecated use the field $sticker_type
-     * True, if the sticker set contains masks
-     */
-    public bool $contains_masks;
-
-    /**
      * List of all set stickers
      * @var \SergiX44\Nutgram\Telegram\Types\Sticker\Sticker[] $stickers
      */
