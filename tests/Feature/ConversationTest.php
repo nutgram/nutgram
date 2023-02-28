@@ -11,6 +11,7 @@ use SergiX44\Nutgram\Tests\Conversations\ConversationWithDefault;
 use SergiX44\Nutgram\Tests\Conversations\ConversationWithMissingStep;
 use SergiX44\Nutgram\Tests\Conversations\ConversationWithSkipHandlersMultipleSteps;
 use SergiX44\Nutgram\Tests\Conversations\ConversationWithSkipMiddlewareMultipleSteps;
+use SergiX44\Nutgram\Tests\Conversations\NonSerializableConversation;
 use SergiX44\Nutgram\Tests\Conversations\OneStepNotCompletedConversation;
 use SergiX44\Nutgram\Tests\Conversations\TwoStepConversation;
 use SergiX44\Nutgram\Tests\Fixtures\CustomService;
@@ -226,4 +227,13 @@ it('calls the conversation constructor at every step', function ($update) {
     $bot->run();
     expect($bot->getData('test'))->toBe(1);
     \SergiX44\Nutgram\Conversations\Conversation::refreshOnDeserialize(false);
+})->with('message');
+
+it('works with explicit set of non serializable attributes', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onMessage(NonSerializableConversation::class);
+
+    $bot->run();
+    $bot->run();
+    expect($bot->getData('test'))->toBe('ok');
 })->with('message');
