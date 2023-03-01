@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\File;
-use SergiX44\Nutgram\Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /*
 |--------------------------------------------------------------------------
