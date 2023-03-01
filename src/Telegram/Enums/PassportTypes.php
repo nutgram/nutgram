@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Attributes;
+namespace SergiX44\Nutgram\Telegram\Enums;
 
 class PassportTypes extends BaseEnum
 {

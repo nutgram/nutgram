@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Attributes;
+namespace SergiX44\Nutgram\Telegram\Enums;
 
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberAdministrator;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberBanned;

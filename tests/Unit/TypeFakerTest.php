@@ -1,8 +1,8 @@
 <?php
 
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Attributes\ChatMemberStatus;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\ChatMemberStatus;
+use SergiX44\Nutgram\Telegram\Enums\UpdateTypes;
 
 it('can create my chat member status', function () {
     Nutgram::fake()

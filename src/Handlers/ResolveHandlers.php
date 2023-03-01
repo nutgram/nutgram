@@ -10,8 +10,8 @@ use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\MessageTypes;
+use SergiX44\Nutgram\Telegram\Enums\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 /**

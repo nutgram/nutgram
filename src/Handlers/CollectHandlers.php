@@ -4,7 +4,7 @@
 namespace SergiX44\Nutgram\Handlers;
 
 use InvalidArgumentException;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\UpdateTypes;
 
 abstract class CollectHandlers
 {

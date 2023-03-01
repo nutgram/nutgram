@@ -5,7 +5,7 @@ namespace SergiX44\Nutgram\Testing;
 use InvalidArgumentException;
 use ReflectionObject;
 use SergiX44\Nutgram\RunningMode\RunningMode;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\User\User;

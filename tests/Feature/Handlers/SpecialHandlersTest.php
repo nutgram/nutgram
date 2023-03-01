@@ -2,7 +2,7 @@
 
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 
 it('calls middleware() handler', function ($update) {

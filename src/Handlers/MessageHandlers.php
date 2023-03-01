@@ -4,8 +4,8 @@ namespace SergiX44\Nutgram\Handlers;
 
 use InvalidArgumentException;
 use SergiX44\Nutgram\Handlers\Type\Command;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\MessageTypes;
+use SergiX44\Nutgram\Telegram\Enums\UpdateTypes;
 
 /**
  * @mixin CollectHandlers

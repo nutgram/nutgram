@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
-use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
+use SergiX44\Nutgram\Telegram\Enums\ChatMemberType;
 
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member}

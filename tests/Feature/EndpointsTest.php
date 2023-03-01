@@ -2,7 +2,7 @@
 
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
+use SergiX44\Nutgram\Telegram\Enums\MessageTypes;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;

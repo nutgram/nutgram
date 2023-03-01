@@ -2,7 +2,7 @@
 
 
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
+use SergiX44\Nutgram\Telegram\Enums\MessageTypes;
 
 require 'vendor/autoload.php';
 
