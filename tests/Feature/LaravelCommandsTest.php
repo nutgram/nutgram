@@ -179,7 +179,7 @@ test('nutgram:list with handler registered', function () {
     });
     $bot->onPreCheckoutQuery(static function () {
     });
-    $bot->onPoll(static function () {
+    $bot->onUpdatePoll(static function () {
     });
     $bot->onPollAnswer(static function () {
     });

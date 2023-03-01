@@ -159,18 +159,6 @@ it('calls onPreCheckoutQueryPayload() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('pre_checkout_query');
 
-it('calls onPoll() handler', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $bot->onPoll(function (Nutgram $bot) {
-        $bot->setData('called', true);
-    });
-
-    $bot->run();
-
-    expect($bot->getData('called'))->toBeTrue();
-})->with('poll');
-
 it('calls onUpdatePoll() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
