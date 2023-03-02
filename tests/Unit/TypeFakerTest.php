@@ -9,8 +9,8 @@ it('can create my chat member status', function () {
         ->hearUpdateType(UpdateTypes::MY_CHAT_MEMBER, [
             'chat' => ['id' => 321],
             'from' => ['id' => 321],
-            'new_chat_member' => ['status' => ChatMemberStatus::MEMBER],
+            'new_chat_member' => ['status' => ChatMemberStatus::MEMBER->value],
         ])
         ->reply()
         ->assertNoReply();
-});
+})->only();

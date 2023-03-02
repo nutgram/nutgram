@@ -2,12 +2,12 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-class ChatMemberStatus extends BaseEnum
+enum ChatMemberStatus: string
 {
-    public const CREATOR = 'creator';
-    public const ADMINISTRATOR = 'administrator';
-    public const MEMBER = 'member';
-    public const RESTRICTED = 'restricted';
-    public const LEFT = 'left';
-    public const KICKED = 'kicked';
+    case CREATOR = 'creator';
+    case ADMINISTRATOR = 'administrator';
+    case MEMBER = 'member';
+    case RESTRICTED = 'restricted';
+    case LEFT = 'left';
+    case KICKED = 'kicked';
 }

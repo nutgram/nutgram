@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Enums\ChatMemberStatus;
 use SergiX44\Nutgram\Telegram\Enums\ChatMemberType;
 
 /**
@@ -14,7 +15,8 @@ class ChatMemberOwner extends ChatMember
     /**
      * The member's status in the chat, always “creator”
      */
-    public string $status = 'creator';
+    //public string $status = 'creator';
+    public ChatMemberStatus $status = ChatMemberStatus::CREATOR;
 
     /**
      * True, if the user's presence in the chat is hidden
