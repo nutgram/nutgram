@@ -1,6 +1,6 @@
 <?php
 
-use SergiX44\Nutgram\Exception\CannotSerializeException;
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 
@@ -16,20 +16,25 @@ test('the instance can be serialized', function () {
     expect($o)->toBeInstanceOf(Nutgram::class);
 });
 
-test('the instance throw exception with local path transformer as closure', function () {
-    $bot = new Nutgram('fake', [
-        'local_path_transformer' => function ($path) {
-            return 'blah';
-        },
-    ]);
+test('it can serialize with local path transformer as closure', function () {
 
-    serialize($bot);
-})->expectException(CannotSerializeException::class);
+    $closure = function ($path) {
+        return 'blah';
+    };
+
+    $bot = new Nutgram('fake', new Configuration(localPathTransformer: $closure));
+
+    $str = serialize($bot);
+
+    expect($str)->toBeString();
+
+    $o = unserialize($str);
+
+    expect($o->getConfig())->toBeInstanceOf(Configuration::class);
+});
 
 test('the instance works with local path transformer as callable', function () {
-    $bot = new Nutgram('fake', [
-        'local_path_transformer' => DummyPathTransformer::class,
-    ]);
+    $bot = new Nutgram('fake', new Configuration(localPathTransformer: DummyPathTransformer::class));
 
     $str = serialize($bot);
 

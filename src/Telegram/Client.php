@@ -166,6 +166,7 @@ trait Client
      * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws NotFoundExceptionInterface
+     * @throws \Throwable
      */
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
@@ -177,7 +178,7 @@ trait Client
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
-        if ($this->config['is_local'] ?? false) {
+        if ($this->config->isLocal) {
             return copy($this->downloadUrl($file), $path);
         }
 
@@ -198,16 +199,15 @@ trait Client
      */
     public function downloadUrl(File $file): string|null
     {
-        if (isset($this->config['is_local']) && $this->config['is_local']) {
-            if (isset($this->config['local_path_transformer'])) {
-                return call_user_func($this->resolve($this->config['local_path_transformer']), $file->file_path);
+        if ($this->config->isLocal) {
+            if (isset($this->config->localPathTransformer)) {
+                return call_user_func($this->resolve($this->config->localPathTransformer), $file->file_path);
             }
 
             return $file->file_path;
         }
 
-        $baseUri = $this->config['api_url'] ?? self::DEFAULT_API_URL;
-        return "$baseUri/file/bot$this->token/$file->file_path";
+        return "{$this->config->apiUrl}/file/bot$this->token/$file->file_path";
     }
 
     /**
@@ -319,8 +319,8 @@ trait Client
         if ($json?->ok) {
             return match (true) {
                 is_scalar($json->result) => $json->result,
-                is_array($json->result) => $this->mapper->hydrateArray($json->result, $mapTo),
-                default => $this->mapper->hydrate($json->result, $mapTo)
+                is_array($json->result) => $this->hydrator->hydrateArray($json->result, $mapTo),
+                default => $this->hydrator->hydrate($json->result, $mapTo)
             };
         }
 

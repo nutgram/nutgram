@@ -1,6 +1,8 @@
 <?php
 
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Hydrator\Hydrator;
+use SergiX44\Nutgram\Hydrator\LegacyHydrator;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
@@ -24,7 +26,7 @@ it('maps multiple updates', function ($update) {
 })->with('multiple_messages');
 
 it('maps one update with legacy hydrator', function ($update) {
-    $r = Nutgram::fake(config: ['mapper' => \SergiX44\Nutgram\Hydrator\LegacyHydrator::class])->getContainer()
+    $r = Nutgram::fake(config: new Configuration(hydrator: LegacyHydrator::class))->getContainer()
         ->get(Hydrator::class)
         ->hydrate($update, new Update());
 
@@ -32,7 +34,7 @@ it('maps one update with legacy hydrator', function ($update) {
 })->with('message');
 
 it('maps multiple updates with legacy hydrator', function ($update) {
-    $r = Nutgram::fake(config: ['mapper' => \SergiX44\Nutgram\Hydrator\LegacyHydrator::class])->getContainer()
+    $r = Nutgram::fake(config: new Configuration(hydrator: LegacyHydrator::class))->getContainer()
         ->get(Hydrator::class)
         ->hydrateArray($update, new Update());
 
