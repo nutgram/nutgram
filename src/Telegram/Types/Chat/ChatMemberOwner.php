@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use SergiX44\Nutgram\Telegram\Enums\ChatMemberStatus;
-use SergiX44\Nutgram\Telegram\Enums\ChatMemberType;
 
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member}
@@ -27,9 +26,4 @@ class ChatMemberOwner extends ChatMember
      * Optional. Custom title for this user
      */
     public ?string $custom_title = null;
-
-    public function getType(): string
-    {
-        return ChatMemberType::OWNER->value;
-    }
 }
