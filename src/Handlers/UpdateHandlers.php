@@ -118,8 +118,10 @@ trait UpdateHandlers
      */
     public function onPreCheckoutQueryPayload(string $pattern, $callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::PRE_CHECKOUT_QUERY->value][$pattern] = new Handler($callable,
-            $pattern);
+        return $this->{$this->target}[UpdateTypes::PRE_CHECKOUT_QUERY->value][$pattern] = new Handler(
+            $callable,
+            $pattern
+        );
     }
 
     /**
