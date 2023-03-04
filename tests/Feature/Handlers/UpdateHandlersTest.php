@@ -27,18 +27,6 @@ it('calls onMessageType() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('message');
 
-it('calls onMessageType() handler with invalid type', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $bot->onMessageType('foobar', function (Nutgram $bot) {
-        $bot->setData('called', true);
-    });
-
-    $bot->run();
-
-    expect($bot->getData('called'))->toBeTrue();
-})->with('message')->throws(InvalidArgumentException::class, 'The parameter "type" is not a valid message type.');
-
 it('calls onEditedMessage() handler', function ($update) {
     $bot = Nutgram::fake($update);
 

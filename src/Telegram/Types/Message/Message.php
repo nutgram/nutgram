@@ -479,9 +479,9 @@ class Message extends BaseType
 
     /**
      * Return the current message type
-     * @return string|null
+     * @return MessageTypes|null
      */
-    public function getType(): ?string
+    public function getType(): ?MessageTypes
     {
         return match (true) {
             $this->text !== null => MessageTypes::TEXT,

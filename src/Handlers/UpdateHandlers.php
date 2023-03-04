@@ -2,7 +2,6 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
-use InvalidArgumentException;
 use SergiX44\Nutgram\Telegram\Enums\MessageTypes;
 use SergiX44\Nutgram\Telegram\Enums\UpdateTypes;
 
@@ -25,12 +24,9 @@ trait UpdateHandlers
      * @param $callable
      * @return Handler
      */
-    public function onMessageType(string $type, $callable): Handler
+    public function onMessageType(MessageTypes $type, $callable): Handler
     {
-        if (!in_array($type, MessageTypes::all(), true)) {
-            throw new InvalidArgumentException('The parameter "type" is not a valid message type.');
-        }
-        return $this->{$this->target}[UpdateTypes::MESSAGE->value][$type][] = new Handler($callable);
+        return $this->{$this->target}[UpdateTypes::MESSAGE->value][$type->value][] = new Handler($callable);
     }
 
     /**
