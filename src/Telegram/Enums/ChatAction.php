@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-enum ChatActions: string
+enum ChatAction: string
 {
     case TYPING = 'typing';
     case UPLOAD_PHOTO = 'upload_photo';

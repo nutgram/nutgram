@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-enum UpdateTypes: string
+enum UpdateType: string
 {
     case MESSAGE = 'message';
     case EDITED_MESSAGE = 'edited_message';

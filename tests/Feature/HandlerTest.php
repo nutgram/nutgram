@@ -3,7 +3,7 @@
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Enums\MessageTypes;
+use SergiX44\Nutgram\Telegram\Enums\MessageType;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberAdministrator;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
@@ -91,7 +91,7 @@ it('calls the specific fallback and not the general one if not match any handler
         throw new Exception();
     });
 
-    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Enums\UpdateTypes::MESSAGE, function ($bot) {
+    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Enums\UpdateType::MESSAGE, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -109,7 +109,7 @@ it('calls the right handler and no the fallback', function ($update) {
         throw new Exception();
     });
 
-    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Enums\UpdateTypes::MESSAGE, function ($bot) {
+    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Enums\UpdateType::MESSAGE, function ($bot) {
         throw new Exception();
     });
 
@@ -356,7 +356,7 @@ it('call the typed message handler', function ($update) {
         throw new Exception();
     });
 
-    $bot->onMessageType(MessageTypes::PHOTO, function ($bot) {
+    $bot->onMessageType(MessageType::PHOTO, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -366,7 +366,7 @@ it('call the typed message handler', function ($update) {
 it('calls the typed message handler: text', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onMessageType(MessageTypes::TEXT, function ($bot) {
+    $bot->onMessageType(MessageType::TEXT, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -376,7 +376,7 @@ it('calls the typed message handler: text', function ($update) {
 it('calls the onMessageTypeText handler and onText handlers', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onMessageType(MessageTypes::TEXT, function ($bot) {
+    $bot->onMessageType(MessageType::TEXT, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -394,7 +394,7 @@ it('the catch all handler text not called for media', function ($update) {
         throw new Exception();
     });
 
-    $bot->onMessageType(MessageTypes::PHOTO, function ($bot) {
+    $bot->onMessageType(MessageType::PHOTO, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 

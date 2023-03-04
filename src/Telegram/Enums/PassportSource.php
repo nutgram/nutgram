@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-enum PassportSources: string
+enum PassportSource: string
 {
     case DATA = 'data';
     case FRONT_SIDE = 'front_side';

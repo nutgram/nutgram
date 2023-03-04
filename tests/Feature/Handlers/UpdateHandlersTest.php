@@ -1,7 +1,7 @@
 <?php
 
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Enums\MessageTypes;
+use SergiX44\Nutgram\Telegram\Enums\MessageType;
 
 it('calls onMessage() handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -18,7 +18,7 @@ it('calls onMessage() handler', function ($update) {
 it('calls onMessageType() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onMessageType(MessageTypes::TEXT, function (Nutgram $bot) {
+    $bot->onMessageType(MessageType::TEXT, function (Nutgram $bot) {
         $bot->setData('called', true);
     });
 

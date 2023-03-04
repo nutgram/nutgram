@@ -2,7 +2,7 @@
 
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Enums\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\UpdateType;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 
 it('calls middleware() handler', function ($update) {
@@ -109,7 +109,7 @@ it('calls fallback() handler', function ($update) {
 it('calls fallbackOn() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->fallbackOn(UpdateTypes::MESSAGE, function (Nutgram $bot) {
+    $bot->fallbackOn(UpdateType::MESSAGE, function (Nutgram $bot) {
         $bot->setData('called', true);
     });
 

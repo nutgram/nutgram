@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-enum MessageEntityTypes: string
+enum MessageEntityType: string
 {
     case MENTION = 'mention';
     case HASHTAG = 'hashtag';

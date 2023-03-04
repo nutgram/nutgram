@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-enum MessageTypes: string
+enum MessageType: string
 {
     case TEXT = 'text';
     case ANIMATION = 'animation';

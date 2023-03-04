@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-enum Emojis: string
+enum Emoji: string
 {
     case DICE = '🎲';
     case DART = '🎯';

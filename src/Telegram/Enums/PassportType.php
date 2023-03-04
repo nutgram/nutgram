@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-enum PassportTypes: string
+enum PassportType: string
 {
     case PERSONAL_DETAILS = 'personal_details';
     case PASSPORT = 'passport';
