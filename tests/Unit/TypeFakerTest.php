@@ -13,4 +13,4 @@ it('can create my chat member status', function () {
         ])
         ->reply()
         ->assertNoReply();
-})->only();
+});
