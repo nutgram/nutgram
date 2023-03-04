@@ -19,8 +19,10 @@ trait MessageHandlers
      */
     public function onCommand(string $command, $callable): Command
     {
-        return $this->{$this->target}[UpdateTypes::MESSAGE->value][MessageTypes::TEXT->value][$command] = new Command($callable,
-            $command);
+        return $this->{$this->target}[UpdateTypes::MESSAGE->value][MessageTypes::TEXT->value][$command] = new Command(
+            $callable,
+            $command
+        );
     }
 
     /**
@@ -46,8 +48,10 @@ trait MessageHandlers
      */
     public function onText(string $pattern, $callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::MESSAGE->value][MessageTypes::TEXT->value][$pattern] = new Handler($callable,
-            $pattern);
+        return $this->{$this->target}[UpdateTypes::MESSAGE->value][MessageTypes::TEXT->value][$pattern] = new Handler(
+            $callable,
+            $pattern
+        );
     }
 
     /**
