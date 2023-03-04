@@ -18,6 +18,6 @@ class ChatMemberMember extends ChatMember
 
     public function getType(): string
     {
-        return ChatMemberType::MEMBER;
+        return ChatMemberType::MEMBER->value;
     }
 }

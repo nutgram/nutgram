@@ -9,12 +9,12 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberMember;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberRestricted;
 
-class ChatMemberType extends BaseEnum
+enum ChatMemberType: string
 {
-    public const OWNER = ChatMemberOwner::class;
-    public const ADMINISTRATOR = ChatMemberAdministrator::class;
-    public const MEMBER = ChatMemberMember::class;
-    public const RESTRICTED = ChatMemberRestricted::class;
-    public const LEFT = ChatMemberLeft::class;
-    public const BANNED = ChatMemberBanned::class;
+    case OWNER = ChatMemberOwner::class;
+    case ADMINISTRATOR = ChatMemberAdministrator::class;
+    case MEMBER = ChatMemberMember::class;
+    case RESTRICTED = ChatMemberRestricted::class;
+    case LEFT = ChatMemberLeft::class;
+    case BANNED = ChatMemberBanned::class;
 }

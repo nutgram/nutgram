@@ -2,12 +2,12 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-class PassportSources extends BaseEnum
+enum PassportSources: string
 {
-    public const DATA = 'data';
-    public const FRONT_SIDE = 'front_side';
-    public const REVERSE_SIDE = 'reverse_side';
-    public const SELFIE = 'selfie';
-    public const FILE = 'file';
-    public const FILES = 'files';
+    case DATA = 'data';
+    case FRONT_SIDE = 'front_side';
+    case REVERSE_SIDE = 'reverse_side';
+    case SELFIE = 'selfie';
+    case FILE = 'file';
+    case FILES = 'files';
 }

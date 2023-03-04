@@ -92,6 +92,6 @@ class ChatMemberAdministrator extends ChatMember
 
     public function getType(): string
     {
-        return ChatMemberType::ADMINISTRATOR;
+        return ChatMemberType::ADMINISTRATOR->value;
     }
 }

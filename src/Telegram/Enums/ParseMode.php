@@ -2,9 +2,9 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-class ParseMode extends BaseEnum
+enum ParseMode: string
 {
-    public const MARKDOWN = 'MarkdownV2';
-    public const MARKDOWN_LEGACY = 'Markdown';
-    public const HTML = 'HTML';
+    case MARKDOWN = 'MarkdownV2';
+    case MARKDOWN_LEGACY = 'Markdown';
+    case HTML = 'HTML';
 }

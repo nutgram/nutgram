@@ -24,6 +24,6 @@ class ChatMemberBanned extends ChatMember
 
     public function getType(): string
     {
-        return ChatMemberType::BANNED;
+        return ChatMemberType::BANNED->value;
     }
 }

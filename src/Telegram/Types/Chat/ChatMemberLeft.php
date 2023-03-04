@@ -19,6 +19,6 @@ class ChatMemberLeft extends ChatMember
 
     public function getType(): string
     {
-        return ChatMemberType::LEFT;
+        return ChatMemberType::LEFT->value;
     }
 }

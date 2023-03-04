@@ -6,9 +6,9 @@ use SergiX44\Nutgram\Telegram\Types\Command\MenuButtonCommands;
 use SergiX44\Nutgram\Telegram\Types\Command\MenuButtonDefault;
 use SergiX44\Nutgram\Telegram\Types\Command\MenuButtonWebApp;
 
-class MenuButtonType extends BaseEnum
+enum MenuButtonType: string
 {
-    public const COMMANDS = MenuButtonCommands::class;
-    public const DEFAULT = MenuButtonDefault::class;
-    public const WEB_APP = MenuButtonWebApp::class;
+    case COMMANDS = MenuButtonCommands::class;
+    case DEFAULT = MenuButtonDefault::class;
+    case WEB_APP = MenuButtonWebApp::class;
 }

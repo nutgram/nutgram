@@ -99,6 +99,6 @@ class ChatMemberRestricted extends ChatMember
 
     public function getType(): string
     {
-        return ChatMemberType::RESTRICTED;
+        return ChatMemberType::RESTRICTED->value;
     }
 }

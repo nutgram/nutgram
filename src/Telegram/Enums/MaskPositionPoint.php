@@ -2,10 +2,10 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-class MaskPositionPoint extends BaseEnum
+enum MaskPositionPoint: string
 {
-    public const FOREHEAD = 'forehead';
-    public const EYES = 'eyes';
-    public const MOUTH = 'mouth';
-    public const CHIN = 'chin';
+    case FOREHEAD = 'forehead';
+    case EYES = 'eyes';
+    case MOUTH = 'mouth';
+    case CHIN = 'chin';
 }

@@ -2,11 +2,11 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-class ChatType extends BaseEnum
+enum ChatType: string
 {
-    public const SENDER = 'sender';
-    public const PRIVATE = 'private';
-    public const GROUP = 'group';
-    public const SUPERGROUP = 'supergroup';
-    public const CHANNEL = 'channel';
+    case SENDER = 'sender';
+    case PRIVATE = 'private';
+    case GROUP = 'group';
+    case SUPERGROUP = 'supergroup';
+    case CHANNEL = 'channel';
 }

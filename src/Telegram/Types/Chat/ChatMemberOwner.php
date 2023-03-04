@@ -30,6 +30,6 @@ class ChatMemberOwner extends ChatMember
 
     public function getType(): string
     {
-        return ChatMemberType::OWNER;
+        return ChatMemberType::OWNER->value;
     }
 }

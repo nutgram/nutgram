@@ -2,21 +2,21 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-class MessageEntityTypes extends BaseEnum
+enum MessageEntityTypes: string
 {
-    public const MENTION = 'mention';
-    public const HASHTAG = 'hashtag';
-    public const CASHTAG = 'cashtag';
-    public const BOT_COMMAND = 'bot_command';
-    public const URL = 'url';
-    public const EMAIL = 'email';
-    public const PHONE_NUMBER = 'phone_number';
-    public const BOLD = 'bold';
-    public const ITALIC = 'italic';
-    public const UNDERLINE = 'underline';
-    public const STRIKETHROUGH = 'strikethrough';
-    public const CODE = 'code';
-    public const PRE = 'pre';
-    public const TEXT_LINK = 'text_link';
-    public const TEXT_MENTION = 'text_mention';
+    case MENTION = 'mention';
+    case HASHTAG = 'hashtag';
+    case CASHTAG = 'cashtag';
+    case BOT_COMMAND = 'bot_command';
+    case URL = 'url';
+    case EMAIL = 'email';
+    case PHONE_NUMBER = 'phone_number';
+    case BOLD = 'bold';
+    case ITALIC = 'italic';
+    case UNDERLINE = 'underline';
+    case STRIKETHROUGH = 'strikethrough';
+    case CODE = 'code';
+    case PRE = 'pre';
+    case TEXT_LINK = 'text_link';
+    case TEXT_MENTION = 'text_mention';
 }

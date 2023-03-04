@@ -2,12 +2,12 @@
 
 namespace SergiX44\Nutgram\Telegram\Enums;
 
-class Emojis extends BaseEnum
+enum Emojis: string
 {
-    public const DICE = '🎲';
-    public const DART = '🎯';
-    public const BASKETBALL = '🏀';
-    public const FOOTBALL = '⚽';
-    public const SLOT = '🎰';
-    public const BOWLING = '🎳';
+    case DICE = '🎲';
+    case DART = '🎯';
+    case BASKETBALL = '🏀';
+    case FOOTBALL = '⚽';
+    case SLOT = '🎰';
+    case BOWLING = '🎳';
 }
