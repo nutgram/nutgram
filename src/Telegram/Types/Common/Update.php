@@ -118,9 +118,9 @@ class Update extends BaseType
 
     /**
      * Return the current update type
-     * @return string|null
+     * @return UpdateTypes|null
      */
-    public function getType(): ?string
+    public function getType(): ?UpdateTypes
     {
         return match (true) {
             $this->message !== null => UpdateTypes::MESSAGE,

@@ -50,7 +50,7 @@ abstract class ResolveHandlers extends CollectHandlers
     protected function resolveHandlers(): array
     {
         $resolvedHandlers = [];
-        $updateType = $this->update->getType();
+        $updateType = $this->update?->getType();
 
         if ($updateType === UpdateTypes::MESSAGE) {
             $messageType = $this->update->message->getType();
@@ -60,26 +60,26 @@ abstract class ResolveHandlers extends CollectHandlers
                 $text = $this->update?->message?->getParsedCommand($username) ?? $this->update->message?->text;
 
                 if ($text !== null) {
-                    $this->addHandlersBy($resolvedHandlers, $updateType, $messageType, $text);
+                    $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType, $text);
                 }
             } elseif ($messageType === MessageTypes::SUCCESSFUL_PAYMENT) {
                 $data = $this->update->message->successful_payment?->invoice_payload;
-                $this->addHandlersBy($resolvedHandlers, $updateType, $messageType, $data);
+                $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType, $data);
             }
 
             if (count($resolvedHandlers) === 0) {
-                $this->addHandlersBy($resolvedHandlers, $updateType, $messageType);
+                $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType);
             }
         } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
             $data = $this->update->callback_query?->data;
-            $this->addHandlersBy($resolvedHandlers, $updateType, value: $data);
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         } elseif ($updateType === UpdateTypes::PRE_CHECKOUT_QUERY) {
             $data = $this->update->pre_checkout_query?->invoice_payload;
-            $this->addHandlersBy($resolvedHandlers, $updateType, value: $data);
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         }
 
         if (empty($resolvedHandlers) && $updateType !== null) {
-            $this->addHandlersBy($resolvedHandlers, $updateType);
+            $this->addHandlersBy($resolvedHandlers, $updateType->value);
         }
 
         $this->addHandlersBy($resolvedHandlers, Update::class);

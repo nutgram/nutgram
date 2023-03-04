@@ -118,17 +118,6 @@ it('calls fallbackOn() handler', function ($update) {
     expect($bot->getData('called'))->toBeTrue();
 })->with('message');
 
-it('calls fallbackOn() handler + pattern', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $bot->fallbackOn('foo', '/test', function (Nutgram $bot) {
-    });
-
-    $bot->run();
-
-    expect($bot->getData('called'))->toBeTrue();
-})->with('message')->throws(InvalidArgumentException::class, 'The parameter "type" is not a valid update type.');
-
 it('calls clearErrorHandlers() method', function ($update) {
     $bot = Nutgram::fake($update);
 

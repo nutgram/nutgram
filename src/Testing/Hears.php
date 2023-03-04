@@ -2,7 +2,6 @@
 
 namespace SergiX44\Nutgram\Testing;
 
-use InvalidArgumentException;
 use ReflectionObject;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Enums\UpdateTypes;
@@ -64,21 +63,22 @@ trait Hears
      * @param  array  $partialAttributes
      * @return $this
      */
-    public function hearUpdateType(string $type, array $partialAttributes = [], bool $fillNullableFields = false): self
-    {
-        if (!in_array($type, UpdateTypes::all(), true)) {
-            throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
-        }
+    public function hearUpdateType(
+        UpdateTypes $type,
+        array $partialAttributes = [],
+        bool $fillNullableFields = false
+    ): self {
+        $typeName = $type->value;
 
         /** @var Update $update */
         $update = $this->getContainer()->get(Update::class);
 
         $class = (new ReflectionObject($update))
-            ->getProperty($type)
+            ->getProperty($typeName)
             ->getType()
             ?->getName();
 
-        $update->{$type} = $this->typeFaker->fakeInstanceOf($class, $partialAttributes, $fillNullableFields);
+        $update->{$typeName} = $this->typeFaker->fakeInstanceOf($class, $partialAttributes, $fillNullableFields);
 
         return $this->hearUpdate($update);
     }
