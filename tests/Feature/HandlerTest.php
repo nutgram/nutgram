@@ -777,7 +777,6 @@ it('sends enum value as json', function ($update) {
     });
 
     $bot->run();
-
 })->with('message');
 
 it('sends enum value as multipart', function ($update) {

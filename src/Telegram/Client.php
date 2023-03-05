@@ -171,10 +171,10 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-                $concurrentDirectory = dirname($path),
-                0775,
-                true
-            ) && !is_dir($concurrentDirectory)) {
+            $concurrentDirectory = dirname($path),
+            0775,
+            true
+        ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
