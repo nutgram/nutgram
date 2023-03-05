@@ -6,5 +6,4 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 abstract class PassportElementError extends BaseType
 {
-
 }
