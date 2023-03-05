@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Telegram;
 
+use BackedEnum;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -170,10 +171,10 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            0775,
-            true
-        ) && !is_dir($concurrentDirectory)) {
+                $concurrentDirectory = dirname($path),
+                0775,
+                true
+            ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -236,6 +237,10 @@ trait Client
                 'name' => $name,
                 'contents' => json_encode($contents),
             ],
+            $contents instanceof BackedEnum => [
+                'name' => $name,
+                'contents' => $contents->value,
+            ],
             default => [
                 'name' => $name,
                 'contents' => $contents,
@@ -276,11 +281,16 @@ trait Client
      */
     protected function requestJson(
         string $endpoint,
-        ?array $json = null,
+        array $json = [],
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
         try {
+            $json = array_map(fn ($item) => match (true) {
+                $item instanceof BackedEnum => $item->value,
+                default => $item,
+            }, $json);
+
             $request = array_merge([
                 'json' => $json,
             ], $options);

@@ -4,9 +4,11 @@ use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Enums\MessageType;
+use SergiX44\Nutgram\Telegram\Enums\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberAdministrator;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Tests\Fixtures\TestStartCommand;
 
@@ -758,4 +760,42 @@ it('calls the message handler with multiple global middlewares', function ($upda
     $bot->run();
 
     expect($test)->toBe('ABM');
+})->with('message');
+
+it('sends enum value as json', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->sendMessage('foo', [
+            'parse_mode' => ParseMode::HTML,
+        ]);
+    });
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request['json']['parse_mode'])->toBe('HTML');
+        return $request;
+    });
+
+    $bot->run();
+
+})->with('message');
+
+it('sends enum value as multipart', function ($update) {
+    $file = fopen('php://temp', 'rb');
+
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessage(function (Nutgram $bot) use ($file) {
+        $bot->sendDocument(InputFile::make($file), [
+            'caption' => 'test',
+            'parse_mode' => ParseMode::HTML,
+        ]);
+    });
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request['multipart'][3]['contents'])->toBe('HTML');
+        return $request;
+    });
+
+    $bot->run();
 })->with('message');
