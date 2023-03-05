@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Enums\ChatAction;
 use SergiX44\Nutgram\Telegram\Enums\DiceEmoji;
 use SergiX44\Nutgram\Telegram\Enums\ForumIconColor;
 use SergiX44\Nutgram\Telegram\Enums\ParseMode;
+use SergiX44\Nutgram\Telegram\Enums\PollType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -588,7 +589,7 @@ trait AvailableMethods
      * @param  string[]  $options A list of answer options, 2-10 strings 1-100 characters each
      * @param  array{
      *     is_anonymous?:bool,
-     *     type?:string,
+     *     type?:PollType|string,
      *     allows_multiple_answers?:bool,
      *     correct_option_id?:int,
      *     explanation?:string,
