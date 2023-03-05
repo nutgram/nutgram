@@ -15,8 +15,10 @@ class MessageEntityTypes extends BaseEnum
     public const ITALIC = 'italic';
     public const UNDERLINE = 'underline';
     public const STRIKETHROUGH = 'strikethrough';
+    public const SPOILER = 'spoiler';
     public const CODE = 'code';
     public const PRE = 'pre';
     public const TEXT_LINK = 'text_link';
     public const TEXT_MENTION = 'text_mention';
+    public const CUSTOM_EMOJI = 'custom_emoji';
 }

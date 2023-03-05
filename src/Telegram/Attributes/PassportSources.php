@@ -10,4 +10,7 @@ class PassportSources extends BaseEnum
     public const SELFIE = 'selfie';
     public const FILE = 'file';
     public const FILES = 'files';
+    public const TRANSLATION_FILE = 'translation_file';
+    public const TRANSLATION_FILES = 'translation_files';
+    public const UNSPECIFIED = 'unspecified';
 }
