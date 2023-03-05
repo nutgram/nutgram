@@ -10,4 +10,7 @@ enum PassportSource: string
     case SELFIE = 'selfie';
     case FILE = 'file';
     case FILES = 'files';
+    case TRANSLATION_FILE = 'translation_file';
+    case TRANSLATION_FILES = 'translation_files';
+    case UNSPECIFIED = 'unspecified';
 }

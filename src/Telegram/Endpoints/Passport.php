@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use JsonException;
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Types\Passport\PassportElementError;
 
 /**
  * Trait Passport
@@ -24,7 +25,7 @@ trait Passport
      * Supply some details in the error message to make sure the user knows how to correct the issues.
      * @see https://core.telegram.org/bots/api#setpassportdataerrors
      * @param  int  $user_id User identifier
-     * @param  array  $errors An array describing the errors
+     * @param  PassportElementError[]  $errors An array describing the errors
      * @return bool|null
      * @throws JsonException
      */
