@@ -15,8 +15,10 @@ enum MessageEntityType: string
     case ITALIC = 'italic';
     case UNDERLINE = 'underline';
     case STRIKETHROUGH = 'strikethrough';
+    case SPOILER = 'spoiler';
     case CODE = 'code';
     case PRE = 'pre';
     case TEXT_LINK = 'text_link';
     case TEXT_MENTION = 'text_mention';
+    case CUSTOM_EMOJI = 'custom_emoji';
 }
