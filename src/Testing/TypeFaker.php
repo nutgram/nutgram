@@ -123,6 +123,14 @@ class TypeFaker
                 }
             }
 
+            // if is an enum, set the first case
+            if (is_subclass_of($typeName, BackedEnum::class)) {
+                $resolveStack[] = $typeName;
+                $cases = $typeName::cases();
+                $data[$property->name] = array_shift($cases)->value;
+                continue;
+            }
+
             $data[$property->name] = self::randomScalarOf($typeName);
         }
 
@@ -138,7 +146,7 @@ class TypeFaker
      */
     protected function shouldInstantiate(string $class, array $stack, bool $isNullable): bool
     {
-        return class_exists($class) && (!in_array($class, $stack, true) || !$isNullable);
+        return class_exists($class) && (!in_array($class, $stack, true) || !$isNullable) && !enum_exists($class);
     }
 
 
