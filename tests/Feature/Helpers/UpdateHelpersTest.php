@@ -1,6 +1,7 @@
 <?php
 
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Enums\ChatType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -53,7 +54,7 @@ it('sets the Chat object using setChat() method', function (object $update, stri
 
     $newChat = new Chat($bot);
     $newChat->id = 123456789;
-    $newChat->type = 'private';
+    $newChat->type = ChatType::PRIVATE;
     $newChat->username = 'supermario';
     $newChat->first_name = 'Mario';
     $newChat->last_name = 'Super';

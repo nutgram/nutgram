@@ -193,7 +193,7 @@ class Chat extends BaseType
 
     public static function make(
         int $id,
-        string $type,
+        ChatType $type,
         ?string $title = null,
         ?string $username = null,
         ?string $first_name = null,
