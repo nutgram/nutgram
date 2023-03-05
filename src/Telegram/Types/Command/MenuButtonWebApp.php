@@ -14,7 +14,7 @@ class MenuButtonWebApp extends MenuButton
     /**
      * Type of the button, must be web_app
      */
-    public string $type = 'web_app';
+    public MenuButtonType $type = MenuButtonType::WEB_APP;
 
     /**
      * Text on the button
@@ -27,9 +27,4 @@ class MenuButtonWebApp extends MenuButton
      * the method {@see https://core.telegram.org/bots/api#answerwebappquery answerWebAppQuery}.
      */
     public ?WebAppInfo $web_app = null;
-
-    public function getType(): string
-    {
-        return MenuButtonType::WEB_APP;
-    }
 }
