@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Enums\ChatAction;
 use SergiX44\Nutgram\Telegram\Enums\DiceEmoji;
 use SergiX44\Nutgram\Telegram\Enums\ForumIconColor;
+use SergiX44\Nutgram\Telegram\Enums\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -88,7 +89,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendmessage
      * @param  string  $text Text of the message to be sent, 1-4096 characters after entities parsing
      * @param  array{
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     entities?:MessageEntity[],
      *     disable_web_page_preview?:bool,
      *     disable_notification?:bool,
@@ -175,7 +176,7 @@ trait AvailableMethods
      * @param  int  $message_id Message identifier in the chat specified in from_chat_id
      * @param  array{
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     disable_notification?:bool,
      *     protect_content?:bool,
@@ -206,7 +207,7 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     disable_notification?:bool,
      *     protect_content?:bool,
@@ -236,7 +237,7 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     duration?:int,
      *     performer?:string,
@@ -268,7 +269,7 @@ trait AvailableMethods
      * @param  array{
      *     thumb?:InputFile|string,
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     disable_content_type_detection?:bool,
      *     disable_notification?:bool,
@@ -301,7 +302,7 @@ trait AvailableMethods
      *     height?:int,
      *     thumb?:InputFile|string,
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     supports_streaming?:bool,
      *     disable_notification?:bool,
@@ -333,7 +334,7 @@ trait AvailableMethods
      *     height?:int,
      *     thumb?:InputFile|string,
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     disable_notification?:bool,
      *     protect_content?:bool,
@@ -363,7 +364,7 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     duration?:int,
      *     disable_notification?:bool,
@@ -591,7 +592,7 @@ trait AvailableMethods
      *     allows_multiple_answers?:bool,
      *     correct_option_id?:int,
      *     explanation?:string,
-     *     explanation_parse_mode?:string,
+     *     explanation_parse_mode?:ParseMode|string,
      *     explanation_entities?:MessageEntity[],
      *     open_period?:int,
      *     close_date?:int,

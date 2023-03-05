@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Telegram\Enums\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
@@ -30,7 +31,7 @@ class InputMediaAudio extends InputMedia
      * @see https://core.telegram.org/bots/api#html-style HTML
      * @see https://core.telegram.org/bots/api#formatting-options bold, italic, fixed-width text or inline URLs
      */
-    public ?string $parse_mode = null;
+    public ?ParseMode $parse_mode = null;
 
     /**
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
