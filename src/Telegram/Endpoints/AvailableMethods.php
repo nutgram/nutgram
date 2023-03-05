@@ -7,6 +7,7 @@ use JsonException;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Enums\ChatAction;
 use SergiX44\Nutgram\Telegram\Enums\DiceEmoji;
+use SergiX44\Nutgram\Telegram\Enums\ForumIconColor;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -1218,7 +1219,7 @@ trait AvailableMethods
      *     format [at]supergroupusername)
      * @param  string  $name Topic name, 1-128 characters
      * @param  array{
-     *     icon_color?: int,
+     *     icon_color?: ForumIconColor|int,
      *     icon_custom_emoji_id?: string,
      * }  $opt
      * @return ForumTopic|null
