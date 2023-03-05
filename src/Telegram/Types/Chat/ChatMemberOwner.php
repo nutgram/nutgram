@@ -14,7 +14,6 @@ class ChatMemberOwner extends ChatMember
     /**
      * The member's status in the chat, always “creator”
      */
-    //public string $status = 'creator';
     public ChatMemberStatus $status = ChatMemberStatus::CREATOR;
 
     /**

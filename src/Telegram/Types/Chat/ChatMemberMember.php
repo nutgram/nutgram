@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Enums\ChatMemberStatus;
+
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member}
  * that has no additional privileges or restrictions.
@@ -12,5 +14,5 @@ class ChatMemberMember extends ChatMember
     /**
      * The member's status in the chat, always “member”
      */
-    public string $status = 'member';
+    public ChatMemberStatus $status = ChatMemberStatus::MEMBER;
 }

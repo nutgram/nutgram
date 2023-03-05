@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Enums\ChatMemberStatus;
+
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member}
  * that is under certain restrictions in the chat. Supergroups only.
@@ -13,7 +15,7 @@ class ChatMemberRestricted extends ChatMember
     /**
      * The member's status in the chat, always “restricted”
      */
-    public string $status = 'restricted';
+    public ChatMemberStatus $status = ChatMemberStatus::RESTRICTED;
 
     /**
      * True, if the user is a member of the chat at the moment of the request
