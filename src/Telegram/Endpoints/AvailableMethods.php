@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use JsonException;
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Enums\ChatAction;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -647,7 +648,7 @@ trait AvailableMethods
      * We only recommend using this method when a response from the bot will take a noticeable amount of time to
      * arrive.
      * @see https://core.telegram.org/bots/api#sendchataction
-     * @param  string  $action Type of action to broadcast. Choose one, depending on what the user is about to receive:
+     * @param  ChatAction|string  $action Type of action to broadcast. Choose one, depending on what the user is about to receive:
      *     typing for {@see https://core.telegram.org/bots/api#sendmessage text messages}, upload_photo for
      *     {@see https://core.telegram.org/bots/api#sendphoto photos}, record_video or upload_video for
      *     {@see https://core.telegram.org/bots/api#sendvideo videos}, record_voice or upload_voice for
@@ -660,7 +661,7 @@ trait AvailableMethods
      * }  $opt
      * @return bool|null
      */
-    public function sendChatAction(string $action, array $opt = []): ?bool
+    public function sendChatAction(ChatAction|string $action, array $opt = []): ?bool
     {
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'action');
