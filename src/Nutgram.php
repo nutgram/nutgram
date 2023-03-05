@@ -157,7 +157,7 @@ class Nutgram extends ResolveHandlers
      */
     public function __serialize(): array
     {
-        unset($this->config['cache']);
+        unset($this->config['cache'], $this->config['container']);
 
         if (isset($this->config['logger']) && !is_string($this->config['logger'])) {
             unset($this->config['logger']);
