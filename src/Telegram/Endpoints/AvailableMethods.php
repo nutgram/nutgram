@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 use JsonException;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Enums\ChatAction;
+use SergiX44\Nutgram\Telegram\Enums\DiceEmoji;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -618,7 +619,7 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#senddice
      * @param  array{
-     *     emoji?:string,
+     *     emoji?:DiceEmoji|string,
      *     disable_notification?:bool,
      *     protect_content?:bool,
      *     reply_to_message_id?:int,
