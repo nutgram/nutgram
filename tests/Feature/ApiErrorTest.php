@@ -1,8 +1,11 @@
 <?php
 
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
+use SergiX44\Nutgram\Testing\FakeNutgram;
 
 it('calls the api error handler', function ($responseBody) {
     $bot = Nutgram::fake(responses: [
@@ -80,7 +83,6 @@ it('throws exception if no handler specified', function ($responseBody) {
     $bot->sendMessage('hi');
 })->with('response_wrong_file_id')->expectException(TelegramException::class);
 
-
 it('throws exception if too many requests', function ($responseBody) {
     $bot = Nutgram::fake(responses: [
         new Response(429, body: $responseBody),
@@ -98,3 +100,20 @@ it('throws exception if too many requests', function ($responseBody) {
             ->hasParameter('foo')->toBeFalse();
     }
 })->with('too_many_requests');
+
+it('redacts bot token when there is a connectexception', function () {
+    $bot = Nutgram::fake(
+        responses: [
+            new ConnectException(
+                'cURL error 6: Could not resolve host: api.telegram.org (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/getUpdates',
+                new Request('GET', 'https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/sendMessage')
+            )
+        ],
+    );
+
+    try {
+        $bot->sendMessage('hello');
+    } catch (ConnectException $e) {
+        expect($e->getMessage())->not->toContain(FakeNutgram::TOKEN);
+    }
+});
