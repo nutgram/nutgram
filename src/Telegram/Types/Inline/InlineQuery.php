@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Telegram\Attributes\ChatType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -46,4 +47,29 @@ class InlineQuery extends BaseType
      * Optional. Sender location, only for bots that request user location
      */
     public ?Location $location = null;
+
+    public function isSender(): bool
+    {
+        return $this->chat_type === ChatType::SENDER;
+    }
+
+    public function isPrivate(): bool
+    {
+        return $this->chat_type === ChatType::PRIVATE;
+    }
+
+    public function isGroup(): bool
+    {
+        return $this->chat_type === ChatType::GROUP;
+    }
+
+    public function isSupergroup(): bool
+    {
+        return $this->chat_type === ChatType::SUPERGROUP;
+    }
+
+    public function isChannel(): bool
+    {
+        return $this->chat_type === ChatType::CHANNEL;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Attributes\ChatType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
@@ -250,5 +251,25 @@ class Chat extends BaseType
         $chat->linked_chat_id = $linked_chat_id;
         $chat->location = $location;
         return $chat;
+    }
+
+    public function isPrivate(): bool
+    {
+        return $this->type === ChatType::PRIVATE;
+    }
+
+    public function isGroup(): bool
+    {
+        return $this->type === ChatType::GROUP;
+    }
+
+    public function isSupergroup(): bool
+    {
+        return $this->type === ChatType::SUPERGROUP;
+    }
+
+    public function isChannel(): bool
+    {
+        return $this->type === ChatType::CHANNEL;
     }
 }
