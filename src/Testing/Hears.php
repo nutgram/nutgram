@@ -89,10 +89,7 @@ trait Hears
      */
     public function hearMessage(array $value): self
     {
-        return $this->hearUpdateType(
-            UpdateTypes::MESSAGE,
-            array_merge(['from' => []], $value)
-        );
+        return $this->hearUpdateType(UpdateTypes::MESSAGE, ['from' => [], ...$value]);
     }
 
     /**

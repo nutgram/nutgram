@@ -67,7 +67,7 @@ abstract class CollectHandlers
         $beforeMyHandlers = $this->groupHandlers;
 
         // push new middlewares to the stack
-        $this->groupMiddlewares = array_merge($middlewares, $this->groupMiddlewares);
+        $this->groupMiddlewares = [...$middlewares, ...$this->groupMiddlewares];
 
         // get the current target
         $previousTarget = $this->target;

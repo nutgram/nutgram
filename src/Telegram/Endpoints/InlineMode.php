@@ -37,7 +37,7 @@ trait InlineMode
             'inline_query_id' => $this->inlineQuery()?->id,
             'results' => json_encode($results, JSON_THROW_ON_ERROR),
         ];
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**

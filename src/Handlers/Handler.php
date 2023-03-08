@@ -96,7 +96,7 @@ class Handler extends MiddlewareChain
      */
     public function addParameters(array $parameters): Handler
     {
-        $this->parameters = array_merge($this->parameters, $parameters);
+        $this->parameters = [...$this->parameters, ...$parameters];
         return $this;
     }
 

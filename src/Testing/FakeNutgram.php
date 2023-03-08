@@ -92,10 +92,11 @@ class FakeNutgram extends Nutgram
         $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);
 
-        $bot = new self(self::TOKEN, array_merge([
+        $bot = new self(self::TOKEN, [
             'client' => ['handler' => $handlerStack, 'base_uri' => ''],
             'api_url' => '',
-        ], $config));
+            ...$config,
+        ]);
 
         $bot->setRunningMode(new Fake($update));
 
@@ -353,7 +354,7 @@ class FakeNutgram extends Nutgram
                     }
                 });
             }
-            return array_merge($params, $formData->files);
+            return [...$params, ...$formData->files];
         }
 
         throw new InvalidArgumentException("Content-Type '$contentType' not supported");

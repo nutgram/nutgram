@@ -267,9 +267,10 @@ abstract class InlineMenu extends Conversation
      */
     protected function doOpen(string $text, InlineKeyboardMarkup $buttons, array $opt): Message|null
     {
-        $message = $this->bot->sendMessage($text, array_merge([
+        $message = $this->bot->sendMessage($text, [
             'reply_markup' => $buttons,
-        ], $opt));
+            ...$opt,
+        ]);
 
         if (is_array($message)) {
             throw new RuntimeException('Multiple messages are not supported by the InlineMenu class. Please provide a shorter text.');
@@ -296,11 +297,12 @@ abstract class InlineMenu extends Conversation
         InlineKeyboardMarkup $buttons,
         array $opt
     ): bool|Message|null {
-        return $this->bot->editMessageText($text, array_merge([
+        return $this->bot->editMessageText($text, [
             'reply_markup' => $buttons,
             'chat_id' => $chatId,
             'message_id' => $messageId,
-        ], $opt));
+            ...$opt
+        ]);
     }
 
     /**

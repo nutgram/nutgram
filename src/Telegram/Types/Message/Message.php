@@ -565,10 +565,11 @@ class Message extends BaseType
      */
     public function editText(string $text, array $opt = []): Message|bool|null
     {
-        return $this->bot->editMessageText($text, array_merge([
+        return $this->bot->editMessageText($text, [
             'chat_id' => $this->chat->id,
             'message_id' => $this->message_id,
-        ], $opt));
+            ...$opt,
+        ]);
     }
 
     /**

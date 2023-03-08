@@ -66,7 +66,7 @@ trait Payments
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'title', 'description', 'payload', 'provider_token', 'currency');
         $required['prices'] = json_encode($prices, JSON_THROW_ON_ERROR);
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
     }
 
     /**
@@ -109,7 +109,7 @@ trait Payments
         array $opt = []
     ): string {
         $required = compact('title', 'description', 'payload', 'provider_token', 'currency', 'prices');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -131,7 +131,7 @@ trait Payments
             'shipping_query_id' => $this->shippingQuery()?->id,
             'ok' => $ok,
         ];
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -154,6 +154,6 @@ trait Payments
             'pre_checkout_query_id' => $this->preCheckoutQuery()?->id,
             'ok' => $ok,
         ];
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 }
