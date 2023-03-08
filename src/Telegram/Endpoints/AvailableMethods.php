@@ -1246,8 +1246,7 @@ trait AvailableMethods
         string|int $chat_id,
         int $message_thread_id,
         array $opt = []
-    ): ?bool
-    {
+    ): ?bool {
         $required = compact('chat_id', 'message_thread_id');
         return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
