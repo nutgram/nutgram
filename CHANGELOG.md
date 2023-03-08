@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.16.0 - 2023-03-08
+
+### What's Changed
+
+- [3.x] Add chat type helper methods by @Lukasss93 in https://github.com/nutgram/nutgram/pull/371
+- [3.x] Fix missing items in MessageEntityTypes and PassportSources attributes by @Lukasss93 in https://github.com/nutgram/nutgram/pull/375
+- [3.x] Redact token in ConnectException by @Lukasss93 in https://github.com/nutgram/nutgram/pull/373
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.15.3...3.16.0
+
 ## 3.15.3 - 2023-03-05
 
 **Full Changelog**: https://github.com/nutgram/nutgram/compare/3.15.2...3.15.3
