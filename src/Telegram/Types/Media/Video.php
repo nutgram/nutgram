@@ -39,7 +39,7 @@ class Video extends BaseType
     /**
      * Optional. Video thumbnail
      */
-    public ?PhotoSize $thumb = null;
+    public ?PhotoSize $thumbnail = null;
 
     /**
      * Optional. Original filename as defined by sender

@@ -21,7 +21,7 @@ class InputMediaVideo extends InputMedia
      * “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
      * @see https://core.telegram.org/bots/api#sending-files More info on Sending Files
      */
-    public mixed $thumb;
+    public mixed $thumbnail;
 
     /**
      * Optional. Send Markdown or HTML, if you want Telegram apps to show

@@ -86,15 +86,15 @@ class InlineQueryResultDocument extends InlineQueryResult
     /**
      * Optional. URL of the thumbnail (jpeg only) for the file
      */
-    public ?string $thumb_url = null;
+    public ?string $thumbnail_url = null;
 
     /**
      * Optional. Thumbnail width
      */
-    public ?int $thumb_width = null;
+    public ?int $thumbnail_width = null;
 
     /**
      * Optional. Thumbnail height
      */
-    public ?int $thumb_height = null;
+    public ?int $thumbnail_height = null;
 }

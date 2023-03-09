@@ -2,7 +2,6 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
@@ -63,15 +62,15 @@ class InlineQueryResultContact extends InlineQueryResult
     /**
      * Optional. Url of the thumbnail for the result
      */
-    public ?string $thumb_url = null;
+    public ?string $thumbnail_url = null;
 
     /**
      * Optional. Thumbnail width
      */
-    public ?int $thumb_width = null;
+    public ?int $thumbnail_width = null;
 
     /**
      * Optional. Thumbnail height
      */
-    public ?int $thumb_height = null;
+    public ?int $thumbnail_height = null;
 }

@@ -54,5 +54,5 @@ class Audio extends BaseType
     /**
      * Optional. Thumbnail of the album cover to which the music file belongs
      */
-    public ?PhotoSize $thumb = null;
+    public ?PhotoSize $thumbnail = null;
 }

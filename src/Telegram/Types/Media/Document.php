@@ -27,7 +27,7 @@ class Document extends BaseType
     /**
      * Optional. Document thumbnail as defined by sender
      */
-    public ?PhotoSize $thumb = null;
+    public ?PhotoSize $thumbnail = null;
 
     /**
      * Optional. Original filename as defined by sender

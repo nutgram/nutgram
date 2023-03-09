@@ -52,13 +52,13 @@ class InlineQueryResultGif extends InlineQueryResult
     /**
      * URL of the static thumbnail for the result (jpeg or gif)
      */
-    public string $thumb_url;
+    public string $thumbnail_url;
 
     /**
      * Optional. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”.
      * Defaults to “image/jpeg”
      */
-    public ?string $thumb_mime_type = null;
+    public ?string $thumbnail_mime_type = null;
 
     /**
      * Optional. Title for the result

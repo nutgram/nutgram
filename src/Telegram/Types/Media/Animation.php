@@ -39,7 +39,7 @@ class Animation extends BaseType
     /**
      * Optional. Animation thumbnail as defined by sender
      */
-    public ?PhotoSize $thumb = null;
+    public ?PhotoSize $thumbnail = null;
 
     /**
      * Optional. Original animation filename as defined by sender

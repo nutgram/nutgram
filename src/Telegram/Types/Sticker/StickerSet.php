@@ -53,5 +53,5 @@ class StickerSet extends BaseType
     /**
      * Optional. Sticker set thumbnail in the .WEBP or .TGS format
      */
-    public ?PhotoSize $thumb = null;
+    public ?PhotoSize $thumbnail = null;
 }

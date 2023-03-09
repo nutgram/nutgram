@@ -45,7 +45,7 @@ class InlineQueryResultVideo extends InlineQueryResult
     /**
      * URL of the thumbnail (jpeg only) for the video
      */
-    public string $thumb_url;
+    public string $thumbnail_url;
 
     /**
      * Title for the result

@@ -36,7 +36,7 @@ class VideoNote extends BaseType
     /**
      * Optional. Video thumbnail
      */
-    public ?PhotoSize $thumb = null;
+    public ?PhotoSize $thumbnail = null;
 
     /**
      * Optional. File size

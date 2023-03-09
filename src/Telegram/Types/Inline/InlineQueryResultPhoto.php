@@ -35,7 +35,7 @@ class InlineQueryResultPhoto extends InlineQueryResult
     /**
      * URL of the thumbnail for the photo
      */
-    public string $thumb_url;
+    public string $thumbnail_url;
 
     /**
      * Optional. Width of the photo
