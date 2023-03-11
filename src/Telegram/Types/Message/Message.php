@@ -3,7 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
+use SergiX44\Nutgram\Telegram\Enums\MessageType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicClosed;
@@ -479,52 +479,52 @@ class Message extends BaseType
 
     /**
      * Return the current message type
-     * @return string|null
+     * @return MessageType|null
      */
-    public function getType(): ?string
+    public function getType(): ?MessageType
     {
         return match (true) {
-            $this->text !== null => MessageTypes::TEXT,
-            $this->audio !== null => MessageTypes::AUDIO,
-            $this->animation !== null => MessageTypes::ANIMATION,
-            $this->document !== null => MessageTypes::DOCUMENT,
-            $this->game !== null => MessageTypes::GAME,
-            $this->photo !== null => MessageTypes::PHOTO,
-            $this->sticker !== null => MessageTypes::STICKER,
-            $this->video !== null => MessageTypes::VIDEO,
-            $this->voice !== null => MessageTypes::VOICE,
-            $this->video_note !== null => MessageTypes::VIDEO_NOTE,
-            $this->contact !== null => MessageTypes::CONTACT,
-            $this->venue !== null => MessageTypes::VENUE,
-            $this->location !== null => MessageTypes::LOCATION,
-            $this->poll !== null => MessageTypes::POLL,
-            $this->dice !== null => MessageTypes::DICE,
-            $this->new_chat_members !== null => MessageTypes::NEW_CHAT_MEMBERS,
-            $this->left_chat_member !== null => MessageTypes::LEFT_CHAT_MEMBER,
-            $this->new_chat_title !== null => MessageTypes::NEW_CHAT_TITLE,
-            $this->new_chat_photo !== null => MessageTypes::NEW_CHAT_PHOTO,
-            $this->delete_chat_photo !== null => MessageTypes::DELETE_CHAT_PHOTO,
-            $this->group_chat_created !== null => MessageTypes::GROUP_CHAT_CREATED,
-            $this->supergroup_chat_created !== null => MessageTypes::SUPERGROUP_CHAT_CREATED,
-            $this->channel_chat_created !== null => MessageTypes::CHANNEL_CHAT_CREATED,
-            $this->migrate_to_chat_id !== null => MessageTypes::MIGRATE_TO_CHAT_ID,
-            $this->migrate_from_chat_id !== null => MessageTypes::MIGRATE_FROM_CHAT_ID,
-            $this->pinned_message !== null => MessageTypes::PINNED_MESSAGE,
-            $this->invoice !== null => MessageTypes::INVOICE,
-            $this->successful_payment !== null => MessageTypes::SUCCESSFUL_PAYMENT,
-            $this->message_auto_delete_timer_changed !== null => MessageTypes::MESSAGE_AUTO_DELETE_TIMER_CHANGED,
-            $this->connected_website !== null => MessageTypes::CONNECTED_WEBSITE,
-            $this->passport_data !== null => MessageTypes::PASSPORT_DATA,
-            $this->proximity_alert_triggered !== null => MessageTypes::PROXIMITY_ALERT_TRIGGERED,
-            $this->forum_topic_created !== null => MessageTypes::FORUM_TOPIC_CREATED,
-            $this->forum_topic_edited !== null => MessageTypes::FORUM_TOPIC_EDITED,
-            $this->forum_topic_closed !== null => MessageTypes::FORUM_TOPIC_CLOSED,
-            $this->forum_topic_reopened !== null => MessageTypes::FORUM_TOPIC_REOPENED,
-            $this->video_chat_scheduled !== null => MessageTypes::VIDEO_CHAT_SCHEDULED,
-            $this->video_chat_started !== null => MessageTypes::VIDEO_CHAT_STARTED,
-            $this->video_chat_ended !== null => MessageTypes::VIDEO_CHAT_ENDED,
-            $this->video_chat_participants_invited !== null => MessageTypes::VIDEO_CHAT_PARTICIPANTS_INVITED,
-            $this->web_app_data !== null => MessageTypes::WEB_APP_DATA,
+            $this->text !== null => MessageType::TEXT,
+            $this->audio !== null => MessageType::AUDIO,
+            $this->animation !== null => MessageType::ANIMATION,
+            $this->document !== null => MessageType::DOCUMENT,
+            $this->game !== null => MessageType::GAME,
+            $this->photo !== null => MessageType::PHOTO,
+            $this->sticker !== null => MessageType::STICKER,
+            $this->video !== null => MessageType::VIDEO,
+            $this->voice !== null => MessageType::VOICE,
+            $this->video_note !== null => MessageType::VIDEO_NOTE,
+            $this->contact !== null => MessageType::CONTACT,
+            $this->venue !== null => MessageType::VENUE,
+            $this->location !== null => MessageType::LOCATION,
+            $this->poll !== null => MessageType::POLL,
+            $this->dice !== null => MessageType::DICE,
+            $this->new_chat_members !== null => MessageType::NEW_CHAT_MEMBERS,
+            $this->left_chat_member !== null => MessageType::LEFT_CHAT_MEMBER,
+            $this->new_chat_title !== null => MessageType::NEW_CHAT_TITLE,
+            $this->new_chat_photo !== null => MessageType::NEW_CHAT_PHOTO,
+            $this->delete_chat_photo !== null => MessageType::DELETE_CHAT_PHOTO,
+            $this->group_chat_created !== null => MessageType::GROUP_CHAT_CREATED,
+            $this->supergroup_chat_created !== null => MessageType::SUPERGROUP_CHAT_CREATED,
+            $this->channel_chat_created !== null => MessageType::CHANNEL_CHAT_CREATED,
+            $this->migrate_to_chat_id !== null => MessageType::MIGRATE_TO_CHAT_ID,
+            $this->migrate_from_chat_id !== null => MessageType::MIGRATE_FROM_CHAT_ID,
+            $this->pinned_message !== null => MessageType::PINNED_MESSAGE,
+            $this->invoice !== null => MessageType::INVOICE,
+            $this->successful_payment !== null => MessageType::SUCCESSFUL_PAYMENT,
+            $this->message_auto_delete_timer_changed !== null => MessageType::MESSAGE_AUTO_DELETE_TIMER_CHANGED,
+            $this->connected_website !== null => MessageType::CONNECTED_WEBSITE,
+            $this->passport_data !== null => MessageType::PASSPORT_DATA,
+            $this->proximity_alert_triggered !== null => MessageType::PROXIMITY_ALERT_TRIGGERED,
+            $this->forum_topic_created !== null => MessageType::FORUM_TOPIC_CREATED,
+            $this->forum_topic_edited !== null => MessageType::FORUM_TOPIC_EDITED,
+            $this->forum_topic_closed !== null => MessageType::FORUM_TOPIC_CLOSED,
+            $this->forum_topic_reopened !== null => MessageType::FORUM_TOPIC_REOPENED,
+            $this->video_chat_scheduled !== null => MessageType::VIDEO_CHAT_SCHEDULED,
+            $this->video_chat_started !== null => MessageType::VIDEO_CHAT_STARTED,
+            $this->video_chat_ended !== null => MessageType::VIDEO_CHAT_ENDED,
+            $this->video_chat_participants_invited !== null => MessageType::VIDEO_CHAT_PARTICIPANTS_INVITED,
+            $this->web_app_data !== null => MessageType::WEB_APP_DATA,
             default => null
         };
     }

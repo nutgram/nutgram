@@ -17,5 +17,4 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 #[MenuButtonResolver]
 abstract class MenuButton extends BaseType
 {
-    abstract public function getType(): string;
 }

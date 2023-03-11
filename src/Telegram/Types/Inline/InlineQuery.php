@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Telegram\Enums\ChatType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -40,7 +41,7 @@ class InlineQuery extends BaseType
      * The chat type should be always known for requests sent from official clients and most third-party clients,
      * unless the request was sent from a secret chat
      */
-    public ?string $chat_type = null;
+    public ?ChatType $chat_type = null;
 
     /**
      * Optional. Sender location, only for bots that request user location

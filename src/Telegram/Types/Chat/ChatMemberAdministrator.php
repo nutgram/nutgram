@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
-use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
+use SergiX44\Nutgram\Telegram\Enums\ChatMemberStatus;
 
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member} that has some additional privileges.
@@ -13,7 +13,7 @@ class ChatMemberAdministrator extends ChatMember
     /**
      * The member's status in the chat, always “administrator”
      */
-    public string $status = 'administrator';
+    public ChatMemberStatus $status = ChatMemberStatus::ADMINISTRATOR;
 
     /**
      * True, if the bot is allowed to edit administrator privileges of that user
@@ -89,9 +89,4 @@ class ChatMemberAdministrator extends ChatMember
      * Optional. Custom title for this user
      */
     public ?string $custom_title = null;
-
-    public function getType(): string
-    {
-        return ChatMemberType::ADMINISTRATOR;
-    }
 }

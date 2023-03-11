@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
+use SergiX44\Nutgram\Telegram\Enums\MessageEntityType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -12,13 +13,15 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 class MessageEntity extends BaseType
 {
     /**
-     * Type of the entity. Can be mention ([at]username), hashtag, bot_command, url, email, bold (bold text),
-     * italic (italic text), code (monowidth string), pre (monowidth block),
-     * text_link (for clickable text URLs), text_mention (for users without usernames),
+     * Type of the entity. Currently, can be “mention” (@username), “hashtag” (#hashtag), “cashtag” ($USD),
+     * “bot_command” (/start@jobs_bot), “url” (https://telegram.org), “email” (do-not-reply@telegram.org),
+     * “phone_number” (+1-212-555-0123), “bold” (bold text), “italic” (italic text), “underline” (underlined text),
+     * “strikethrough” (strikethrough text), “spoiler” (spoiler message), “code” (monowidth string),
+     * “pre” (monowidth block), “text_link” (for clickable text URLs), “text_mention” (for users without usernames),
      * “custom_emoji” (for inline custom emoji stickers)
      * @see https://telegram.org/blog/edit#new-mentions
      */
-    public string $type;
+    public MessageEntityType $type;
 
     /**
      * Offset in UTF-16 code units to the start of the entity

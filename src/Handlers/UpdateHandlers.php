@@ -2,9 +2,8 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
-use InvalidArgumentException;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\MessageType;
+use SergiX44\Nutgram\Telegram\Enums\UpdateType;
 
 /**
  * @mixin CollectHandlers
@@ -17,7 +16,7 @@ trait UpdateHandlers
      */
     public function onMessage($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::MESSAGE][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::MESSAGE->value][] = new Handler($callable);
     }
 
     /**
@@ -25,12 +24,9 @@ trait UpdateHandlers
      * @param $callable
      * @return Handler
      */
-    public function onMessageType(string $type, $callable): Handler
+    public function onMessageType(MessageType $type, $callable): Handler
     {
-        if (!in_array($type, MessageTypes::all(), true)) {
-            throw new InvalidArgumentException('The parameter "type" is not a valid message type.');
-        }
-        return $this->{$this->target}[UpdateTypes::MESSAGE][$type][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::MESSAGE->value][$type->value][] = new Handler($callable);
     }
 
     /**
@@ -39,7 +35,7 @@ trait UpdateHandlers
      */
     public function onEditedMessage($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::EDITED_MESSAGE][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::EDITED_MESSAGE->value][] = new Handler($callable);
     }
 
     /**
@@ -48,7 +44,7 @@ trait UpdateHandlers
      */
     public function onChannelPost($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::CHANNEL_POST][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::CHANNEL_POST->value][] = new Handler($callable);
     }
 
     /**
@@ -57,7 +53,7 @@ trait UpdateHandlers
      */
     public function onEditedChannelPost($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::EDITED_CHANNEL_POST][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::EDITED_CHANNEL_POST->value][] = new Handler($callable);
     }
 
     /**
@@ -66,7 +62,7 @@ trait UpdateHandlers
      */
     public function onInlineQuery($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::INLINE_QUERY][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::INLINE_QUERY->value][] = new Handler($callable);
     }
 
     /**
@@ -75,7 +71,7 @@ trait UpdateHandlers
      */
     public function onChosenInlineResult($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::CHOSEN_INLINE_RESULT][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::CHOSEN_INLINE_RESULT->value][] = new Handler($callable);
     }
 
     /**
@@ -84,7 +80,7 @@ trait UpdateHandlers
      */
     public function onCallbackQuery($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::CALLBACK_QUERY][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::CALLBACK_QUERY->value][] = new Handler($callable);
     }
 
     /**
@@ -94,7 +90,7 @@ trait UpdateHandlers
      */
     public function onCallbackQueryData(string $pattern, $callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::CALLBACK_QUERY][$pattern] = new Handler($callable, $pattern);
+        return $this->{$this->target}[UpdateType::CALLBACK_QUERY->value][$pattern] = new Handler($callable, $pattern);
     }
 
     /**
@@ -103,7 +99,7 @@ trait UpdateHandlers
      */
     public function onShippingQuery($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::SHIPPING_QUERY][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::SHIPPING_QUERY->value][] = new Handler($callable);
     }
 
     /**
@@ -112,7 +108,7 @@ trait UpdateHandlers
      */
     public function onPreCheckoutQuery($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::PRE_CHECKOUT_QUERY][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::PRE_CHECKOUT_QUERY->value][] = new Handler($callable);
     }
 
     /**
@@ -122,7 +118,10 @@ trait UpdateHandlers
      */
     public function onPreCheckoutQueryPayload(string $pattern, $callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::PRE_CHECKOUT_QUERY][$pattern] = new Handler($callable, $pattern);
+        return $this->{$this->target}[UpdateType::PRE_CHECKOUT_QUERY->value][$pattern] = new Handler(
+            $callable,
+            $pattern
+        );
     }
 
     /**
@@ -131,7 +130,7 @@ trait UpdateHandlers
      */
     public function onUpdatePoll($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::POLL][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::POLL->value][] = new Handler($callable);
     }
 
     /**
@@ -140,7 +139,7 @@ trait UpdateHandlers
      */
     public function onPollAnswer($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::POLL_ANSWER][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::POLL_ANSWER->value][] = new Handler($callable);
     }
 
     /**
@@ -149,7 +148,7 @@ trait UpdateHandlers
      */
     public function onMyChatMember($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::MY_CHAT_MEMBER][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::MY_CHAT_MEMBER->value][] = new Handler($callable);
     }
 
     /**
@@ -158,7 +157,7 @@ trait UpdateHandlers
      */
     public function onChatMember($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::CHAT_MEMBER][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::CHAT_MEMBER->value][] = new Handler($callable);
     }
 
     /**
@@ -167,6 +166,6 @@ trait UpdateHandlers
      */
     public function onChatJoinRequest($callable): Handler
     {
-        return $this->{$this->target}[UpdateTypes::CHAT_JOIN_REQUEST][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::CHAT_JOIN_REQUEST->value][] = new Handler($callable);
     }
 }

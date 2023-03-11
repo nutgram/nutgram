@@ -2,10 +2,9 @@
 
 namespace SergiX44\Nutgram\Testing;
 
-use InvalidArgumentException;
 use ReflectionObject;
 use SergiX44\Nutgram\RunningMode\RunningMode;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -64,21 +63,22 @@ trait Hears
      * @param  array  $partialAttributes
      * @return $this
      */
-    public function hearUpdateType(string $type, array $partialAttributes = [], bool $fillNullableFields = false): self
-    {
-        if (!in_array($type, UpdateTypes::all(), true)) {
-            throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
-        }
+    public function hearUpdateType(
+        UpdateType $type,
+        array $partialAttributes = [],
+        bool $fillNullableFields = false
+    ): self {
+        $typeName = $type->value;
 
         /** @var Update $update */
         $update = $this->getContainer()->get(Update::class);
 
         $class = (new ReflectionObject($update))
-            ->getProperty($type)
+            ->getProperty($typeName)
             ->getType()
             ?->getName();
 
-        $update->{$type} = $this->typeFaker->fakeInstanceOf($class, $partialAttributes, $fillNullableFields);
+        $update->{$typeName} = $this->typeFaker->fakeInstanceOf($class, $partialAttributes, $fillNullableFields);
 
         return $this->hearUpdate($update);
     }
@@ -89,7 +89,10 @@ trait Hears
      */
     public function hearMessage(array $value): self
     {
-        return $this->hearUpdateType(UpdateTypes::MESSAGE, ['from' => [], ...$value]);
+        return $this->hearUpdateType(
+            UpdateType::MESSAGE,
+            ['from' => [], ...$value]
+        );
     }
 
     /**
@@ -107,7 +110,7 @@ trait Hears
      */
     public function hearCallbackQueryData(string $value): self
     {
-        return $this->hearUpdateType(UpdateTypes::CALLBACK_QUERY, [
+        return $this->hearUpdateType(UpdateType::CALLBACK_QUERY, [
             'message' => ['from' => []],
             'data' => $value,
         ]);

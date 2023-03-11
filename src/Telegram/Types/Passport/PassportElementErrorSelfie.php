@@ -2,25 +2,26 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Enums\PassportSource;
+use SergiX44\Nutgram\Telegram\Enums\PassportType;
 
 /**
  * Represents an issue with the selfie with a document.
  * The error is considered resolved when the file with the selfie changes.
  * @see https://core.telegram.org/bots/api#passportelementerrorreverseside
  */
-class PassportElementErrorSelfie extends BaseType
+class PassportElementErrorSelfie extends PassportElementError
 {
     /**
      * Error source, must be selfie
      */
-    public string $source;
+    public PassportSource $source = PassportSource::SELFIE;
 
     /**
      * The section of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”,
      * “identity_card”, “internal_passport”
      */
-    public string $type;
+    public PassportType $type;
 
     /**
      * Base64-encoded hash of the file with the selfie

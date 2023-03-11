@@ -2,7 +2,9 @@
 
 namespace SergiX44\Nutgram\Testing;
 
-use Psr\Container\ContainerInterface;
+use BackedEnum;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
 use ReflectionProperty;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
@@ -20,40 +22,42 @@ class TypeFaker
 
     /**
      * @template T
-     * @param  class-string<T>  $type
+     * @param  class-string  $type
      * @param  array  $partial
      * @param  bool  $fillNullable
      * @return T|string|int|bool|array|null|float
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      * @throws \ReflectionException
      */
     public function fakeInstanceOf(string $type, array $partial = [], bool $fillNullable = true): mixed
     {
         if (class_exists($type)) {
-            return $this->fakeInstance($type, $partial, $fillNullable);
+            $data = $this->fakeDataFor($type, $partial, $fillNullable);
+            return $this->hydrator->hydrate($data, $type);
         }
 
-        return $this->randomScalarOf($type);
+        return self::randomScalarOf($type);
     }
 
     /**
-     * @template T
      *
-     * @param class-string<T>  $class
-     * @param array  $additional
-     * @param array  $resolveStack
+     * @param  class-string  $class
+     * @param  array  $additional
+     * @param  bool  $fillNullable
+     * @param  array  $resolveStack
      *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      * @throws \ReflectionException
      */
-    private function fakeInstance(
+    private function fakeDataFor(
         string $class,
         array $additional = [],
         bool $fillNullable = true,
         array $resolveStack = []
-    ): object {
+    ): array {
         $reflectionClass = new ReflectionClass($class);
 
         if ($reflectionClass->isAbstract()) {
@@ -68,8 +72,6 @@ class TypeFaker
         $data = [];
         $dummyInstance = $reflectionClass->newInstanceWithoutConstructor();
         foreach ($reflectionClass->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            $typeName = $property->getType()?->getName();
-            $isNullable = $property->getType()?->allowsNull();
 
             // if specified by the user
             if (isset($additional[$property->name]) && !is_array($additional[$property->name])) {
@@ -77,8 +79,12 @@ class TypeFaker
                 continue;
             }
 
-            // if is not nullable, but the property is already initialized, that's good
+            $isNullable = $property->getType()?->allowsNull();
+
+            // if is not nullable, but the property is already initialized, take the value
             if (!$isNullable && $property->isInitialized($dummyInstance)) {
+                $value = $property->getValue($dummyInstance);
+                $data[$property->name] = $value instanceof BackedEnum ? $value->value : $value;
                 continue;
             }
 
@@ -87,10 +93,12 @@ class TypeFaker
                 continue;
             }
 
+            $typeName = $property->getType()?->getName();
+
             // if is a class, try to resolve it
             if ($this->shouldInstantiate($typeName, $resolveStack, $isNullable ?? false)) {
                 $resolveStack[] = $typeName;
-                $data[$property->name] = $this->fakeInstance(
+                $data[$property->name] = $this->fakeDataFor(
                     $typeName,
                     $additional[$property->name] ?? [],
                     $fillNullable,
@@ -104,21 +112,29 @@ class TypeFaker
                 $typeArray = str_ireplace('[]', '', $matches[1], $nesting);
                 if ($this->shouldInstantiate($typeArray, $resolveStack, $isNullable)) {
                     $resolveStack[] = $typeArray;
-                    $arrayInstance = $this->fakeInstance(
+                    $arrayData = $this->fakeDataFor(
                         $typeArray,
                         $additional[$property->name] ?? [],
                         $fillNullable,
                         $resolveStack
                     );
-                    $data[$property->name] = $this->wrap($arrayInstance, $nesting ?? 0);
+                    $data[$property->name] = $this->wrap($arrayData, $nesting ?? 0);
                     continue;
                 }
+            }
+
+            // if is an enum, set the first case
+            if (is_subclass_of($typeName, BackedEnum::class)) {
+                $resolveStack[] = $typeName;
+                $cases = $typeName::cases();
+                $data[$property->name] = array_shift($cases)->value;
+                continue;
             }
 
             $data[$property->name] = self::randomScalarOf($typeName);
         }
 
-        return $this->hydrator->hydrate($data, $reflectionClass->getName());
+        return $data;
     }
 
 
@@ -130,7 +146,7 @@ class TypeFaker
      */
     protected function shouldInstantiate(string $class, array $stack, bool $isNullable): bool
     {
-        return class_exists($class) && (!in_array($class, $stack, true) || !$isNullable);
+        return class_exists($class) && (!in_array($class, $stack, true) || !$isNullable) && !enum_exists($class);
     }
 
 
@@ -151,7 +167,6 @@ class TypeFaker
     /**
      * @param  string  $type
      * @return string|int|bool|array|float|null
-     * @throws \Exception
      */
     public static function randomScalarOf(string $type): string|int|bool|array|null|float
     {
@@ -171,26 +186,25 @@ class TypeFaker
      */
     public static function randomString(int $length = 8): string
     {
+        static $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         return substr(str_shuffle(str_repeat(
-            $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            $x,
             (int)ceil($length / strlen($x))
         )), 1, $length);
     }
 
     /**
      * @param  int  $min
-     * @param  int  $max
+     * @param  int|null  $max
      * @return int
-     * @throws \Exception
      */
-    public static function randomInt(int $min = 0, int $max = PHP_INT_MAX): int
+    public static function randomInt(int $min = 0, ?int $max = null): int
     {
-        return random_int($min, $max);
+        return mt_rand($min, $max ?? getrandmax());
     }
 
     /**
      * @return float
-     * @throws \Exception
      */
     public static function randomFloat(): float
     {

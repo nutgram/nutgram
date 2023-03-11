@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Enums\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
@@ -26,7 +27,7 @@ trait UpdatesMessages
      *     chat_id?:int|string,
      *     message_id?:int,
      *     inline_message_id?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     entities?:MessageEntity[],
      *     disable_web_page_preview?:bool,
      *     reply_markup?:InlineKeyboardMarkup
@@ -50,7 +51,7 @@ trait UpdatesMessages
      *     message_id?:int,
      *     inline_message_id?:string,
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     reply_markup?:InlineKeyboardMarkup
      * }  $opt

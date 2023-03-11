@@ -3,10 +3,12 @@
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
+use SergiX44\Nutgram\Telegram\Enums\MessageType;
+use SergiX44\Nutgram\Telegram\Enums\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberAdministrator;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Tests\Fixtures\TestStartCommand;
 
@@ -91,7 +93,7 @@ it('calls the specific fallback and not the general one if not match any handler
         throw new Exception();
     });
 
-    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Attributes\UpdateTypes::MESSAGE, function ($bot) {
+    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Enums\UpdateType::MESSAGE, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -109,7 +111,7 @@ it('calls the right handler and no the fallback', function ($update) {
         throw new Exception();
     });
 
-    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Attributes\UpdateTypes::MESSAGE, function ($bot) {
+    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Enums\UpdateType::MESSAGE, function ($bot) {
         throw new Exception();
     });
 
@@ -356,7 +358,7 @@ it('call the typed message handler', function ($update) {
         throw new Exception();
     });
 
-    $bot->onMessageType(MessageTypes::PHOTO, function ($bot) {
+    $bot->onMessageType(MessageType::PHOTO, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -366,7 +368,7 @@ it('call the typed message handler', function ($update) {
 it('calls the typed message handler: text', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onMessageType(MessageTypes::TEXT, function ($bot) {
+    $bot->onMessageType(MessageType::TEXT, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -376,7 +378,7 @@ it('calls the typed message handler: text', function ($update) {
 it('calls the onMessageTypeText handler and onText handlers', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onMessageType(MessageTypes::TEXT, function ($bot) {
+    $bot->onMessageType(MessageType::TEXT, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -394,7 +396,7 @@ it('the catch all handler text not called for media', function ($update) {
         throw new Exception();
     });
 
-    $bot->onMessageType(MessageTypes::PHOTO, function ($bot) {
+    $bot->onMessageType(MessageType::PHOTO, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -758,4 +760,41 @@ it('calls the message handler with multiple global middlewares', function ($upda
     $bot->run();
 
     expect($test)->toBe('ABM');
+})->with('message');
+
+it('sends enum value as json', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->sendMessage('foo', [
+            'parse_mode' => ParseMode::HTML,
+        ]);
+    });
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request['json']['parse_mode'])->toBe('HTML');
+        return $request;
+    });
+
+    $bot->run();
+})->with('message');
+
+it('sends enum value as multipart', function ($update) {
+    $file = fopen('php://temp', 'rb');
+
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessage(function (Nutgram $bot) use ($file) {
+        $bot->sendDocument(InputFile::make($file), [
+            'caption' => 'test',
+            'parse_mode' => ParseMode::HTML,
+        ]);
+    });
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request['multipart'][3]['contents'])->toBe('HTML');
+        return $request;
+    });
+
+    $bot->run();
 })->with('message');

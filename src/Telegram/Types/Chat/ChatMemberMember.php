@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
-use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
+use SergiX44\Nutgram\Telegram\Enums\ChatMemberStatus;
 
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member}
@@ -14,10 +14,5 @@ class ChatMemberMember extends ChatMember
     /**
      * The member's status in the chat, always “member”
      */
-    public string $status = 'member';
-
-    public function getType(): string
-    {
-        return ChatMemberType::MEMBER;
-    }
+    public ChatMemberStatus $status = ChatMemberStatus::MEMBER;
 }

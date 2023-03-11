@@ -3,8 +3,7 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
-use InvalidArgumentException;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\UpdateType;
 
 abstract class CollectHandlers
 {
@@ -138,16 +137,13 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param  string  $type
+     * @param  UpdateType  $type
      * @param $callable
      * @return Handler
      */
-    public function fallbackOn(string $type, $callable): Handler
+    public function fallbackOn(UpdateType $type, $callable): Handler
     {
-        if (!in_array($type, UpdateTypes::all(), true)) {
-            throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
-        }
-        return $this->{$this->target}[self::FALLBACK][$type] = new Handler($callable, $type);
+        return $this->{$this->target}[self::FALLBACK][$type->value] = new Handler($callable, $type->value);
     }
 
     /**

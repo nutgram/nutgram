@@ -23,25 +23,6 @@ it('maps multiple updates', function ($update) {
     }
 })->with('multiple_messages');
 
-it('maps one update with legacy hydrator', function ($update) {
-    $r = Nutgram::fake(config: ['mapper' => \SergiX44\Nutgram\Hydrator\LegacyHydrator::class])->getContainer()
-        ->get(Hydrator::class)
-        ->hydrate($update, new Update());
-
-    expect($r)->toBeInstanceOf(Update::class);
-})->with('message');
-
-it('maps multiple updates with legacy hydrator', function ($update) {
-    $r = Nutgram::fake(config: ['mapper' => \SergiX44\Nutgram\Hydrator\LegacyHydrator::class])->getContainer()
-        ->get(Hydrator::class)
-        ->hydrateArray($update, new Update());
-
-    expect($r)->toBeArray();
-    foreach ($r as $u) {
-        expect($u)->toBeInstanceOf(Update::class);
-    }
-})->with('multiple_messages');
-
 it('doesnt return the same hydrated instance again', function ($update) {
     $bot = Nutgram::fake();
     $first = $bot->getContainer()
