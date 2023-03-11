@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Telegram\Enums\PassportType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -16,7 +17,7 @@ class EncryptedPassportElement extends BaseType
      * “address”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”,
      * “temporary_registration”, “phone_number”, “email”.
      */
-    public string $type;
+    public PassportType $type;
 
     /**
      * Optional. Base64-encoded encrypted Telegram Passport element data provided by the user, available for

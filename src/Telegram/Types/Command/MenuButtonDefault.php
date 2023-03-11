@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use SergiX44\Nutgram\Telegram\Attributes\MenuButtonType;
+use SergiX44\Nutgram\Telegram\Enums\MenuButtonType;
 
 /**
  * Describes that no specific value for the menu button was set.
@@ -13,10 +13,5 @@ class MenuButtonDefault extends MenuButton
     /**
      * Type of the button, must be default
      */
-    public string $type = 'default';
-
-    public function getType(): string
-    {
-        return MenuButtonType::DEFAULT;
-    }
+    public MenuButtonType $type = MenuButtonType::DEFAULT;
 }

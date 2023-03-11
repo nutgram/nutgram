@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
-use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
+use SergiX44\Nutgram\Telegram\Enums\ChatMemberStatus;
 
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member}
@@ -15,10 +15,5 @@ class ChatMemberLeft extends ChatMember
     /**
      * The member's status in the chat, always “left”
      */
-    public string $status = 'left';
-
-    public function getType(): string
-    {
-        return ChatMemberType::LEFT;
-    }
+    public ChatMemberStatus $status = ChatMemberStatus::LEFT;
 }

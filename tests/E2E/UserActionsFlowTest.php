@@ -1,6 +1,7 @@
 <?php
 
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Enums\ChatType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -43,7 +44,7 @@ it('can remember the user', function () {
 
     $bot->setCommonChat(Chat::make(
         id: 123456789,
-        type: 'private',
+        type: ChatType::PRIVATE,
         username: 'IronMan',
         first_name: 'Tony',
         last_name: 'Stark',

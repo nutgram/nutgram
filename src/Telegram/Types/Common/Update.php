@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Channel\ChannelPost;
 use SergiX44\Nutgram\Telegram\Types\Channel\EditedChannelPost;
@@ -118,25 +118,25 @@ class Update extends BaseType
 
     /**
      * Return the current update type
-     * @return string|null
+     * @return UpdateType|null
      */
-    public function getType(): ?string
+    public function getType(): ?UpdateType
     {
         return match (true) {
-            $this->message !== null => UpdateTypes::MESSAGE,
-            $this->edited_message !== null => UpdateTypes::EDITED_MESSAGE,
-            $this->channel_post !== null => UpdateTypes::CHANNEL_POST,
-            $this->edited_channel_post !== null => UpdateTypes::EDITED_CHANNEL_POST,
-            $this->inline_query !== null => UpdateTypes::INLINE_QUERY,
-            $this->chosen_inline_result !== null => UpdateTypes::CHOSEN_INLINE_RESULT,
-            $this->callback_query !== null => UpdateTypes::CALLBACK_QUERY,
-            $this->shipping_query !== null => UpdateTypes::SHIPPING_QUERY,
-            $this->pre_checkout_query !== null => UpdateTypes::PRE_CHECKOUT_QUERY,
-            $this->poll !== null => UpdateTypes::POLL,
-            $this->poll_answer !== null => UpdateTypes::POLL_ANSWER,
-            $this->my_chat_member !== null => UpdateTypes::MY_CHAT_MEMBER,
-            $this->chat_member !== null => UpdateTypes::CHAT_MEMBER,
-            $this->chat_join_request !== null => UpdateTypes::CHAT_JOIN_REQUEST,
+            $this->message !== null => UpdateType::MESSAGE,
+            $this->edited_message !== null => UpdateType::EDITED_MESSAGE,
+            $this->channel_post !== null => UpdateType::CHANNEL_POST,
+            $this->edited_channel_post !== null => UpdateType::EDITED_CHANNEL_POST,
+            $this->inline_query !== null => UpdateType::INLINE_QUERY,
+            $this->chosen_inline_result !== null => UpdateType::CHOSEN_INLINE_RESULT,
+            $this->callback_query !== null => UpdateType::CALLBACK_QUERY,
+            $this->shipping_query !== null => UpdateType::SHIPPING_QUERY,
+            $this->pre_checkout_query !== null => UpdateType::PRE_CHECKOUT_QUERY,
+            $this->poll !== null => UpdateType::POLL,
+            $this->poll_answer !== null => UpdateType::POLL_ANSWER,
+            $this->my_chat_member !== null => UpdateType::MY_CHAT_MEMBER,
+            $this->chat_member !== null => UpdateType::CHAT_MEMBER,
+            $this->chat_join_request !== null => UpdateType::CHAT_JOIN_REQUEST,
             default => null
         };
     }

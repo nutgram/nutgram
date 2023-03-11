@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
+use SergiX44\Nutgram\Telegram\Enums\DiceEmoji;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -15,7 +16,7 @@ class Dice extends BaseType
     /**
      * Emoji on which the dice throw animation is based
      */
-    public string $emoji;
+    public DiceEmoji $emoji;
 
     /**
      * Value of the dice, 1-6 for “🎲” and “🎯” base emoji, 1-5 for “🏀” base emoji

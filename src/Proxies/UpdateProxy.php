@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Proxies;
 
+use SergiX44\Nutgram\Telegram\Enums\MessageEntityType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
@@ -203,6 +204,6 @@ trait UpdateProxy
 
         return $entity !== null &&
             $entity->offset === 0 &&
-            $entity->type === 'bot_command';
+            $entity->type === MessageEntityType::BOT_COMMAND;
     }
 }

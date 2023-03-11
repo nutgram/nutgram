@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
-use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
+use SergiX44\Nutgram\Telegram\Enums\ChatMemberStatus;
 
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member}
@@ -15,15 +15,10 @@ class ChatMemberBanned extends ChatMember
     /**
      * The member's status in the chat, always “kicked”
      */
-    public string $status = 'kicked';
+    public ChatMemberStatus $status = ChatMemberStatus::KICKED;
 
     /**
      * Date when restrictions will be lifted for this user; unix time. If 0, then the user is banned forever
      */
     public ?int $until_date = null;
-
-    public function getType(): string
-    {
-        return ChatMemberType::BANNED;
-    }
 }

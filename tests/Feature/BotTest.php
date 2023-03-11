@@ -3,7 +3,7 @@
 use GuzzleHttp\Psr7\Request;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Testing\FormDataParser;
 use SergiX44\Nutgram\Testing\OutgoingResource;
@@ -21,7 +21,7 @@ it('return the right running mode', function ($update) {
 
 it('works as mocked instance', function () {
     $bot = Nutgram::fake()
-        ->hearUpdateType(UpdateTypes::MESSAGE, ['text' => '/testing', 'from' => ['username' => 'XD']])
+        ->hearUpdateType(UpdateType::MESSAGE, ['text' => '/testing', 'from' => ['username' => 'XD']])
         ->willReceivePartial(['text' => 'aaa'])
         ->willReceivePartial(['chat' => ['id' => 123]]);
 
@@ -57,7 +57,7 @@ it('reply text works as mocked instance', function () {
 
 it('no reply works as mocked instance', function () {
     $bot = Nutgram::fake()
-        ->hearUpdateType(UpdateTypes::MESSAGE, ['text' => '/not_test']);
+        ->hearUpdateType(UpdateType::MESSAGE, ['text' => '/not_test']);
 
     $bot->onCommand('test', function (Nutgram $bot) {
         $bot->sendMessage('test');

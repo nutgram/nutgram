@@ -5,6 +5,11 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use JsonException;
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Enums\ChatAction;
+use SergiX44\Nutgram\Telegram\Enums\DiceEmoji;
+use SergiX44\Nutgram\Telegram\Enums\ForumIconColor;
+use SergiX44\Nutgram\Telegram\Enums\ParseMode;
+use SergiX44\Nutgram\Telegram\Enums\PollType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -85,7 +90,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendmessage
      * @param  string  $text Text of the message to be sent, 1-4096 characters after entities parsing
      * @param  array{
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     entities?:MessageEntity[],
      *     disable_web_page_preview?:bool,
      *     disable_notification?:bool,
@@ -172,7 +177,7 @@ trait AvailableMethods
      * @param  int  $message_id Message identifier in the chat specified in from_chat_id
      * @param  array{
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     disable_notification?:bool,
      *     protect_content?:bool,
@@ -203,7 +208,7 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     disable_notification?:bool,
      *     protect_content?:bool,
@@ -233,7 +238,7 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     duration?:int,
      *     performer?:string,
@@ -265,7 +270,7 @@ trait AvailableMethods
      * @param  array{
      *     thumb?:InputFile|string,
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     disable_content_type_detection?:bool,
      *     disable_notification?:bool,
@@ -298,7 +303,7 @@ trait AvailableMethods
      *     height?:int,
      *     thumb?:InputFile|string,
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     supports_streaming?:bool,
      *     disable_notification?:bool,
@@ -330,7 +335,7 @@ trait AvailableMethods
      *     height?:int,
      *     thumb?:InputFile|string,
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     disable_notification?:bool,
      *     protect_content?:bool,
@@ -360,7 +365,7 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     duration?:int,
      *     disable_notification?:bool,
@@ -584,11 +589,11 @@ trait AvailableMethods
      * @param  string[]  $options A list of answer options, 2-10 strings 1-100 characters each
      * @param  array{
      *     is_anonymous?:bool,
-     *     type?:string,
+     *     type?:PollType|string,
      *     allows_multiple_answers?:bool,
      *     correct_option_id?:int,
      *     explanation?:string,
-     *     explanation_parse_mode?:string,
+     *     explanation_parse_mode?:ParseMode|string,
      *     explanation_entities?:MessageEntity[],
      *     open_period?:int,
      *     close_date?:int,
@@ -617,7 +622,7 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#senddice
      * @param  array{
-     *     emoji?:string,
+     *     emoji?:DiceEmoji|string,
      *     disable_notification?:bool,
      *     protect_content?:bool,
      *     reply_to_message_id?:int,
@@ -647,7 +652,7 @@ trait AvailableMethods
      * We only recommend using this method when a response from the bot will take a noticeable amount of time to
      * arrive.
      * @see https://core.telegram.org/bots/api#sendchataction
-     * @param  string  $action Type of action to broadcast. Choose one, depending on what the user is about to receive:
+     * @param  ChatAction|string  $action Type of action to broadcast. Choose one, depending on what the user is about to receive:
      *     typing for {@see https://core.telegram.org/bots/api#sendmessage text messages}, upload_photo for
      *     {@see https://core.telegram.org/bots/api#sendphoto photos}, record_video or upload_video for
      *     {@see https://core.telegram.org/bots/api#sendvideo videos}, record_voice or upload_voice for
@@ -660,7 +665,7 @@ trait AvailableMethods
      * }  $opt
      * @return bool|null
      */
-    public function sendChatAction(string $action, array $opt = []): ?bool
+    public function sendChatAction(ChatAction|string $action, array $opt = []): ?bool
     {
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'action');
@@ -1216,7 +1221,7 @@ trait AvailableMethods
      *     format [at]supergroupusername)
      * @param  string  $name Topic name, 1-128 characters
      * @param  array{
-     *     icon_color?: int,
+     *     icon_color?: ForumIconColor|int,
      *     icon_custom_emoji_id?: string,
      * }  $opt
      * @return ForumTopic|null

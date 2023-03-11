@@ -2,7 +2,7 @@
 
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\UpdateType;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 
 it('calls middleware() handler', function ($update) {
@@ -109,7 +109,7 @@ it('calls fallback() handler', function ($update) {
 it('calls fallbackOn() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->fallbackOn(UpdateTypes::MESSAGE, function (Nutgram $bot) {
+    $bot->fallbackOn(UpdateType::MESSAGE, function (Nutgram $bot) {
         $bot->setData('called', true);
     });
 
@@ -117,17 +117,6 @@ it('calls fallbackOn() handler', function ($update) {
 
     expect($bot->getData('called'))->toBeTrue();
 })->with('message');
-
-it('calls fallbackOn() handler + pattern', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $bot->fallbackOn('foo', '/test', function (Nutgram $bot) {
-    });
-
-    $bot->run();
-
-    expect($bot->getData('called'))->toBeTrue();
-})->with('message')->throws(InvalidArgumentException::class, 'The parameter "type" is not a valid update type.');
 
 it('calls clearErrorHandlers() method', function ($update) {
     $bot = Nutgram::fake($update);
