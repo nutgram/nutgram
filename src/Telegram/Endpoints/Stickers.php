@@ -76,10 +76,10 @@ trait Stickers
         $required = compact('user_id', 'png_sticker');
 
         if (is_resource($png_sticker)) {
-            return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), File::class, $clientOpt);
+            return $this->requestMultipart(__FUNCTION__, [...$required, ...$opt], File::class, $clientOpt);
         }
 
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), File::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], File::class);
     }
 
     /**
@@ -107,7 +107,7 @@ trait Stickers
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'name', 'title');
-        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), options: $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, [...$required, ...$opt], options: $clientOpt);
     }
 
     /**
@@ -132,7 +132,7 @@ trait Stickers
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'name');
-        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), options: $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, [...$required, ...$opt], options: $clientOpt);
     }
 
     /**
@@ -174,7 +174,7 @@ trait Stickers
     {
         $user_id = $this->userId();
         $required = compact('user_id', 'name');
-        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), options: $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, [...$required, ...$opt], options: $clientOpt);
     }
 
     /**

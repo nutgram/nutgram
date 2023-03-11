@@ -191,10 +191,10 @@ abstract class Conversation
      */
     public function __serialize(): array
     {
-        $attributes = array_merge(
-            get_object_vars($this),
-            $this->getSerializableAttributes()
-        );
+        $attributes = [
+            ...get_object_vars($this),
+            ...$this->getSerializableAttributes(),
+        ];
         unset($attributes['bot']);
 
         return $attributes;

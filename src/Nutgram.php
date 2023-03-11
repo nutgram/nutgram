@@ -124,10 +124,11 @@ class Nutgram extends ResolveHandlers
             $this->config['test_env'] ?? false ? 'test/' : ''
         );
 
-        $this->http = new Guzzle(array_merge([
+        $this->http = new Guzzle([
             'base_uri' => $baseUri,
             'timeout' => $this->config['timeout'] ?? 5,
-        ], $this->config['client'] ?? []));
+            ...($this->config['client'] ?? []),
+        ]);
         $this->container->addShared(ClientInterface::class, $this->http);
 
         $hydrator = $this->container->get(NutgramHydrator::class);

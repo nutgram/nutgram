@@ -27,15 +27,16 @@ class Polling implements RunningMode
         $allowedUpdates = isset($pollingConfig['allowed_updates']) ? ['allowed_updates' => $pollingConfig['allowed_updates']] : [];
 
 
-        $parameters = array_merge([
+        $parameters = [
             'limit' => $pollingConfig['limit'] ?? 100,
             'timeout' => $timeout,
-        ], $allowedUpdates);
+            ...$allowedUpdates,
+        ];
 
         $offset = 1;
         echo "Listening...\n";
         while (true) {
-            $updates = $bot->getUpdates(array_merge(['offset' => $offset], $parameters));
+            $updates = $bot->getUpdates(['offset' => $offset, ...$parameters]);
 
             if ($offset === 1) {
                 /** @var Update $last */

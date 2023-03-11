@@ -86,7 +86,7 @@ trait Client
     public function setWebhook(string $url, array $opt = []): ?bool
     {
         $required = compact('url');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -153,10 +153,10 @@ trait Client
 
         if (is_resource($value) || $value instanceof InputFile) {
             $required[$param] = $value instanceof InputFile ? $value : new InputFile($value);
-            return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class, $clientOpt);
+            return $this->requestMultipart($endpoint, [...$required, ...$opt], Message::class, $clientOpt);
         }
 
-        return $this->requestJson($endpoint, array_merge($required, $opt), Message::class);
+        return $this->requestJson($endpoint, [...$required, ...$opt], Message::class);
     }
 
     /**
@@ -182,7 +182,7 @@ trait Client
             return copy($this->downloadUrl($file), $path);
         }
 
-        $request = array_merge(['sink' => $path], $clientOpt);
+        $request = ['sink' => $path, ...$clientOpt];
         $endpoint = $this->downloadUrl($file);
 
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
@@ -247,7 +247,7 @@ trait Client
             ]
         }, array_keys($multipart), $multipart);
 
-        $request = array_merge(['multipart' => $parameters], $options);
+        $request = ['multipart' => $parameters, ...$options];
 
         try {
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
@@ -291,9 +291,7 @@ trait Client
                 default => $item,
             }, $json);
 
-            $request = array_merge([
-                'json' => $json,
-            ], $options);
+            $request = ['json' => $json, ...$options];
 
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
             $response = $this->http->post($endpoint, $requestPost ?? $request);
