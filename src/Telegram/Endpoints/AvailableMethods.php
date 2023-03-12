@@ -5,6 +5,11 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use JsonException;
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Enums\ChatAction;
+use SergiX44\Nutgram\Telegram\Enums\DiceEmoji;
+use SergiX44\Nutgram\Telegram\Enums\ForumIconColor;
+use SergiX44\Nutgram\Telegram\Enums\ParseMode;
+use SergiX44\Nutgram\Telegram\Enums\PollType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -85,7 +90,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendmessage
      * @param  string  $text Text of the message to be sent, 1-4096 characters after entities parsing
      * @param  array{
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     entities?:MessageEntity[],
      *     disable_web_page_preview?:bool,
      *     disable_notification?:bool,
@@ -101,7 +106,7 @@ trait AvailableMethods
         $functionName = __FUNCTION__;
         $chat_id = $this->chatId();
         $required = compact('text', 'chat_id');
-        $parameters = array_merge($required, $opt);
+        $parameters = [...$required, ...$opt];
 
         if ($this->config->splitLongMessages) {
             //chunk text
@@ -156,7 +161,7 @@ trait AvailableMethods
         array $opt = []
     ): ?Message {
         $required = compact('chat_id', 'from_chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
     }
 
     /**
@@ -172,7 +177,7 @@ trait AvailableMethods
      * @param  int  $message_id Message identifier in the chat specified in from_chat_id
      * @param  array{
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     disable_notification?:bool,
      *     protect_content?:bool,
@@ -189,7 +194,7 @@ trait AvailableMethods
         array $opt = []
     ): ?MessageId {
         $required = compact('chat_id', 'from_chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), MessageId::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], MessageId::class);
     }
 
     /**
@@ -203,7 +208,7 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     disable_notification?:bool,
      *     protect_content?:bool,
@@ -233,7 +238,7 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     duration?:int,
      *     performer?:string,
@@ -265,7 +270,7 @@ trait AvailableMethods
      * @param  array{
      *     thumb?:InputFile|string,
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     disable_content_type_detection?:bool,
      *     disable_notification?:bool,
@@ -298,7 +303,7 @@ trait AvailableMethods
      *     height?:int,
      *     thumb?:InputFile|string,
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     supports_streaming?:bool,
      *     disable_notification?:bool,
@@ -330,7 +335,7 @@ trait AvailableMethods
      *     height?:int,
      *     thumb?:InputFile|string,
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     disable_notification?:bool,
      *     protect_content?:bool,
@@ -360,7 +365,7 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     duration?:int,
      *     disable_notification?:bool,
@@ -444,7 +449,7 @@ trait AvailableMethods
             'chat_id' => $this->chatId(),
             'media' => json_encode($inputMedia, JSON_THROW_ON_ERROR),
         ];
-        return $this->requestMultipart(__FUNCTION__, array_merge($required, $files, $opt), Message::class, $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, [...$required, ...$files, ...$opt], Message::class, $clientOpt);
     }
 
     /**
@@ -470,7 +475,7 @@ trait AvailableMethods
     {
         $chat_id = $this->chatId();
         $required = compact('latitude', 'longitude', 'chat_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
     }
 
     /**
@@ -497,7 +502,7 @@ trait AvailableMethods
     {
         $required = compact('latitude', 'longitude');
         $target = $this->targetChatMessageOrInlineMessageId($opt);
-        return $this->requestJson(__FUNCTION__, array_merge($target, $required, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...$required, ...$opt], Message::class);
     }
 
     /**
@@ -516,7 +521,7 @@ trait AvailableMethods
     public function stopMessageLiveLocation(array $opt = []): Message|bool|null
     {
         $target = $this->targetChatMessageOrInlineMessageId($opt);
-        return $this->requestJson(__FUNCTION__, array_merge($target, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...$opt], Message::class);
     }
 
     /**
@@ -549,7 +554,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id = $this->chatId();
         $required = compact('latitude', 'longitude', 'chat_id', 'title', 'address');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
     }
 
     /**
@@ -573,7 +578,7 @@ trait AvailableMethods
     {
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'first_name', 'phone_number');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
     }
 
     /**
@@ -584,11 +589,11 @@ trait AvailableMethods
      * @param  string[]  $options A list of answer options, 2-10 strings 1-100 characters each
      * @param  array{
      *     is_anonymous?:bool,
-     *     type?:string,
+     *     type?:PollType|string,
      *     allows_multiple_answers?:bool,
      *     correct_option_id?:int,
      *     explanation?:string,
-     *     explanation_parse_mode?:string,
+     *     explanation_parse_mode?:ParseMode|string,
      *     explanation_entities?:MessageEntity[],
      *     open_period?:int,
      *     close_date?:int,
@@ -609,7 +614,7 @@ trait AvailableMethods
             'question' => $question,
             'options' => json_encode($options, JSON_THROW_ON_ERROR),
         ];
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
     }
 
     /**
@@ -617,7 +622,7 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#senddice
      * @param  array{
-     *     emoji?:string,
+     *     emoji?:DiceEmoji|string,
      *     disable_notification?:bool,
      *     protect_content?:bool,
      *     reply_to_message_id?:int,
@@ -630,7 +635,7 @@ trait AvailableMethods
     {
         $chat_id = $this->chatId();
         $required = compact('chat_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
     }
 
     /**
@@ -647,7 +652,7 @@ trait AvailableMethods
      * We only recommend using this method when a response from the bot will take a noticeable amount of time to
      * arrive.
      * @see https://core.telegram.org/bots/api#sendchataction
-     * @param  string  $action Type of action to broadcast. Choose one, depending on what the user is about to receive:
+     * @param  ChatAction|string  $action Type of action to broadcast. Choose one, depending on what the user is about to receive:
      *     typing for {@see https://core.telegram.org/bots/api#sendmessage text messages}, upload_photo for
      *     {@see https://core.telegram.org/bots/api#sendphoto photos}, record_video or upload_video for
      *     {@see https://core.telegram.org/bots/api#sendvideo videos}, record_voice or upload_voice for
@@ -660,11 +665,11 @@ trait AvailableMethods
      * }  $opt
      * @return bool|null
      */
-    public function sendChatAction(string $action, array $opt = []): ?bool
+    public function sendChatAction(ChatAction|string $action, array $opt = []): ?bool
     {
         $chat_id = $this->chatId();
         $required = compact('chat_id', 'action');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -681,7 +686,7 @@ trait AvailableMethods
     {
         $user_id = $this->userId();
         $required = compact('user_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), UserProfilePhotos::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], UserProfilePhotos::class);
     }
 
     /**
@@ -718,7 +723,7 @@ trait AvailableMethods
     public function banChatMember(string|int $chat_id, int $user_id, array $opt = []): ?bool
     {
         $required = compact('chat_id', 'user_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -739,7 +744,7 @@ trait AvailableMethods
     public function unbanChatMember(string|int $chat_id, int $user_id, array $opt = []): ?bool
     {
         $required = compact('chat_id', 'user_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -765,7 +770,7 @@ trait AvailableMethods
     ): ?bool {
         $required = compact('chat_id', 'user_id');
         $required['permissions'] = json_encode($permissions);
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -794,7 +799,7 @@ trait AvailableMethods
     public function promoteChatMember(string|int $chat_id, int $user_id, array $opt = []): ?bool
     {
         $required = compact('chat_id', 'user_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -815,7 +820,7 @@ trait AvailableMethods
         array $opt = []
     ): ?bool {
         $required = compact('chat_id', 'user_id', 'custom_title');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -834,7 +839,7 @@ trait AvailableMethods
     public function banChatSenderChat(string|int $chat_id, int $sender_chat_id, array $opt = []): ?bool
     {
         $required = compact('chat_id', 'sender_chat_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -868,7 +873,7 @@ trait AvailableMethods
     {
         $required = compact('chat_id');
         $required['permissions'] = json_encode($permissions);
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -911,7 +916,7 @@ trait AvailableMethods
     public function createChatInviteLink(string|int $chat_id, array $opt = []): ?ChatInviteLink
     {
         $required = compact('chat_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), ChatInviteLink::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], ChatInviteLink::class);
     }
 
     /**
@@ -933,7 +938,7 @@ trait AvailableMethods
     public function editChatInviteLink(string|int $chat_id, string $invite_link, array $opt = []): ?ChatInviteLink
     {
         $required = compact('chat_id', 'invite_link');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), ChatInviteLink::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], ChatInviteLink::class);
     }
 
     /**
@@ -1059,7 +1064,7 @@ trait AvailableMethods
     public function pinChatMessage(string|int $chat_id, int $message_id, array $opt = []): ?bool
     {
         $required = compact('chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -1216,14 +1221,15 @@ trait AvailableMethods
      *     format [at]supergroupusername)
      * @param  string  $name Topic name, 1-128 characters
      * @param  array{
-     *     icon_color?: int,
+     *     icon_color?: ForumIconColor|int,
      *     icon_custom_emoji_id?: string,
      * }  $opt
      * @return ForumTopic|null
      */
     public function createForumTopic(string|int $chat_id, string $name, array $opt = []): ?ForumTopic
     {
-        return $this->requestJson(__FUNCTION__, array_merge(compact('chat_id', 'name'), $opt), ForumTopic::class);
+        $required = compact('chat_id', 'name');
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], ForumTopic::class);
     }
 
     /**
@@ -1246,10 +1252,8 @@ trait AvailableMethods
         int $message_thread_id,
         array $opt = []
     ): ?bool {
-        return $this->requestJson(
-            __FUNCTION__,
-            array_merge(compact('chat_id', 'message_thread_id'), $opt)
-        );
+        $required = compact('chat_id', 'message_thread_id');
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -1410,7 +1414,7 @@ trait AvailableMethods
     public function answerCallbackQuery(array $opt = []): ?bool
     {
         $required = ['callback_query_id' => $this->callbackQuery()?->id];
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -1427,7 +1431,7 @@ trait AvailableMethods
     public function setMyCommands(array $commands = [], array $opt = []): ?bool
     {
         $required = ['commands' => json_encode($commands)];
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**

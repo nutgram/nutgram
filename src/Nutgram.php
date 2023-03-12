@@ -118,10 +118,12 @@ class Nutgram extends ResolveHandlers
             $config->testEnv ?? false ? 'test/' : ''
         );
 
-        $this->http = new Guzzle(array_merge([
+        $this->http = new Guzzle([
             'base_uri' => $baseUri,
             'timeout' => $config->clientTimeout,
-        ], $config->clientOptions));
+            ...$config->clientOptions,
+        ]);
+        
         $this->container->addShared(ClientInterface::class, $this->http);
 
         $hydrator = $this->container->get($config->hydrator);
@@ -230,7 +232,7 @@ class Nutgram extends ResolveHandlers
         }
 
         if (empty($handlers) && !empty($this->handlers[self::FALLBACK])) {
-            $this->addHandlersBy($handlers, self::FALLBACK, value: $this->update->getType());
+            $this->addHandlersBy($handlers, self::FALLBACK, value: $this->update->getType()->value);
         }
 
         if (empty($handlers)) {

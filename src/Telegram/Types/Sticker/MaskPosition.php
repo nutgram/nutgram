@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
+use SergiX44\Nutgram\Telegram\Enums\MaskPositionPoint;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -14,7 +15,7 @@ class MaskPosition extends BaseType
      * The part of the face relative to which the mask should be placed.
      * One of “forehead”, “eyes”, “mouth”, or “chin”.
      */
-    public string $point;
+    public MaskPositionPoint $point;
 
     /**
      * Shift by X-axis measured in widths of the mask scaled to the face size, from left to right.

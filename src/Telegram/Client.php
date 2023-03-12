@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Telegram;
 
+use BackedEnum;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -85,7 +86,7 @@ trait Client
     public function setWebhook(string $url, array $opt = []): ?bool
     {
         $required = compact('url');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
     /**
@@ -152,10 +153,10 @@ trait Client
 
         if (is_resource($value) || $value instanceof InputFile) {
             $required[$param] = $value instanceof InputFile ? $value : new InputFile($value);
-            return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class, $clientOpt);
+            return $this->requestMultipart($endpoint, [...$required, ...$opt], Message::class, $clientOpt);
         }
 
-        return $this->requestJson($endpoint, array_merge($required, $opt), Message::class);
+        return $this->requestJson($endpoint, [...$required, ...$opt], Message::class);
     }
 
     /**
@@ -182,7 +183,7 @@ trait Client
             return copy($this->downloadUrl($file), $path);
         }
 
-        $request = array_merge(['sink' => $path], $clientOpt);
+        $request = ['sink' => $path, ...$clientOpt];
         $endpoint = $this->downloadUrl($file);
 
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
@@ -236,13 +237,17 @@ trait Client
                 'name' => $name,
                 'contents' => json_encode($contents),
             ],
+            $contents instanceof BackedEnum => [
+                'name' => $name,
+                'contents' => $contents->value,
+            ],
             default => [
                 'name' => $name,
                 'contents' => $contents,
             ]
         }, array_keys($multipart), $multipart);
 
-        $request = array_merge(['multipart' => $parameters], $options);
+        $request = ['multipart' => $parameters, ...$options];
 
         try {
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
@@ -276,14 +281,17 @@ trait Client
      */
     protected function requestJson(
         string $endpoint,
-        ?array $json = null,
+        array $json = [],
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
         try {
-            $request = array_merge([
-                'json' => $json,
-            ], $options);
+            $json = array_map(fn ($item) => match (true) {
+                $item instanceof BackedEnum => $item->value,
+                default => $item,
+            }, $json);
+
+            $request = ['json' => $json, ...$options];
 
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
             $response = $this->http->post($endpoint, $requestPost ?? $request);

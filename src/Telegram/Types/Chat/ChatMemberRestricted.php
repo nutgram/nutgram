@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
-use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
+use SergiX44\Nutgram\Telegram\Enums\ChatMemberStatus;
 
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member}
@@ -15,7 +15,7 @@ class ChatMemberRestricted extends ChatMember
     /**
      * The member's status in the chat, always “restricted”
      */
-    public string $status = 'restricted';
+    public ChatMemberStatus $status = ChatMemberStatus::RESTRICTED;
 
     /**
      * True, if the user is a member of the chat at the moment of the request
@@ -96,9 +96,4 @@ class ChatMemberRestricted extends ChatMember
      * Date when restrictions will be lifted for this user; unix time. If 0, then the user is banned forever
      */
     public ?int $until_date = null;
-
-    public function getType(): string
-    {
-        return ChatMemberType::RESTRICTED;
-    }
 }

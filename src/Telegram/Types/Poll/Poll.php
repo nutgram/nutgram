@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Poll;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Telegram\Enums\PollType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
@@ -47,7 +48,7 @@ class Poll extends BaseType
     /**
      * Poll type, currently can be “regular” or “quiz”
      */
-    public string $type;
+    public PollType $type;
 
     /**
      * True, if the poll allows multiple answers

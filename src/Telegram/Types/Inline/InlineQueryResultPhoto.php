@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Telegram\Enums\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
@@ -69,7 +70,7 @@ class InlineQueryResultPhoto extends InlineQueryResult
      * {@see https://core.telegram.org/bots/api#formatting-options bold, italic, fixed-width text or inline URLs}
      * in your bot's message.
      */
-    public ?string $parse_mode = null;
+    public ?ParseMode $parse_mode = null;
 
     /**
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode

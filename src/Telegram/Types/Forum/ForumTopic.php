@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Forum;
 
+use SergiX44\Nutgram\Telegram\Enums\ForumIconColor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 class ForumTopic extends BaseType
@@ -19,7 +20,7 @@ class ForumTopic extends BaseType
     /**
      * Color of the topic icon in RGB format
      */
-    public int $icon_color;
+    public ForumIconColor $icon_color;
 
     /**
      * Optional. Unique identifier of the custom emoji shown as the topic icon

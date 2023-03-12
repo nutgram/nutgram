@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Enums\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
@@ -26,7 +27,7 @@ trait UpdatesMessages
      *     chat_id?:int|string,
      *     message_id?:int,
      *     inline_message_id?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     entities?:MessageEntity[],
      *     disable_web_page_preview?:bool,
      *     reply_markup?:InlineKeyboardMarkup
@@ -37,7 +38,7 @@ trait UpdatesMessages
     {
         $target = $this->targetChatMessageOrInlineMessageId($opt);
         $required = compact('text');
-        return $this->requestJson(__FUNCTION__, array_merge($target, $required, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...$required, ...$opt], Message::class);
     }
 
     /**
@@ -50,7 +51,7 @@ trait UpdatesMessages
      *     message_id?:int,
      *     inline_message_id?:string,
      *     caption?:string,
-     *     parse_mode?:string,
+     *     parse_mode?:ParseMode|string,
      *     caption_entities?:MessageEntity[],
      *     reply_markup?:InlineKeyboardMarkup
      * }  $opt
@@ -59,7 +60,7 @@ trait UpdatesMessages
     public function editMessageCaption(array $opt = []): Message|bool|null
     {
         $target = $this->targetChatMessageOrInlineMessageId($opt);
-        return $this->requestJson(__FUNCTION__, array_merge($target, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...$opt], Message::class);
     }
 
     /**
@@ -87,7 +88,7 @@ trait UpdatesMessages
         $target = $this->targetChatMessageOrInlineMessageId($opt);
         $media = json_encode($mediaArray, JSON_THROW_ON_ERROR);
         $required = compact('media');
-        return $this->requestMultipart(__FUNCTION__, array_merge($target, $required, $opt), Message::class, $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, [...$target, ...$required, ...$opt], Message::class, $clientOpt);
     }
 
     /**
@@ -106,7 +107,7 @@ trait UpdatesMessages
     public function editMessageReplyMarkup(array $opt = []): Message|bool|null
     {
         $target = $this->targetChatMessageOrInlineMessageId($opt);
-        return $this->requestJson(__FUNCTION__, array_merge($target, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...$opt], Message::class);
     }
 
     /**
@@ -124,7 +125,7 @@ trait UpdatesMessages
     public function stopPoll(string|int $chat_id, int $message_id, array $opt = []): ?Poll
     {
         $required = compact('chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Poll::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Poll::class);
     }
 
     /**

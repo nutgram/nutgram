@@ -11,8 +11,8 @@ use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Enums\MessageType;
+use SergiX44\Nutgram\Telegram\Enums\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 /**
@@ -51,36 +51,36 @@ abstract class ResolveHandlers extends CollectHandlers
     protected function resolveHandlers(): array
     {
         $resolvedHandlers = [];
-        $updateType = $this->update->getType();
+        $updateType = $this->update?->getType();
 
-        if ($updateType === UpdateTypes::MESSAGE) {
+        if ($updateType === UpdateType::MESSAGE) {
             $messageType = $this->update->message->getType();
 
-            if ($messageType === MessageTypes::TEXT) {
+            if ($messageType === MessageType::TEXT) {
                 $username = $this->getConfig()->botName;
                 $text = $this->update?->message?->getParsedCommand($username) ?? $this->update->message?->text;
 
                 if ($text !== null) {
-                    $this->addHandlersBy($resolvedHandlers, $updateType, $messageType, $text);
+                    $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $text);
                 }
-            } elseif ($messageType === MessageTypes::SUCCESSFUL_PAYMENT) {
+            } elseif ($messageType === MessageType::SUCCESSFUL_PAYMENT) {
                 $data = $this->update->message->successful_payment?->invoice_payload;
-                $this->addHandlersBy($resolvedHandlers, $updateType, $messageType, $data);
+                $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $data);
             }
 
             if (count($resolvedHandlers) === 0) {
-                $this->addHandlersBy($resolvedHandlers, $updateType, $messageType);
+                $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value);
             }
-        } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
+        } elseif ($updateType === UpdateType::CALLBACK_QUERY) {
             $data = $this->update->callback_query?->data;
-            $this->addHandlersBy($resolvedHandlers, $updateType, value: $data);
-        } elseif ($updateType === UpdateTypes::PRE_CHECKOUT_QUERY) {
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::PRE_CHECKOUT_QUERY) {
             $data = $this->update->pre_checkout_query?->invoice_payload;
-            $this->addHandlersBy($resolvedHandlers, $updateType, value: $data);
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         }
 
         if (empty($resolvedHandlers) && $updateType !== null) {
-            $this->addHandlersBy($resolvedHandlers, $updateType);
+            $this->addHandlersBy($resolvedHandlers, $updateType->value);
         }
 
         $this->addHandlersBy($resolvedHandlers, Update::class);

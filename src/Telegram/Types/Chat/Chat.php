@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Enums\ChatType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
@@ -23,7 +24,7 @@ class Chat extends BaseType
     /**
      * Type of chat, can be either “private”, “group”, “supergroup” or “channel”
      */
-    public string $type;
+    public ChatType $type;
 
     /**
      * Optional. Title, for supergroups, channels and group chats
@@ -192,7 +193,7 @@ class Chat extends BaseType
 
     public static function make(
         int $id,
-        string $type,
+        ChatType $type,
         ?string $title = null,
         ?string $username = null,
         ?string $first_name = null,

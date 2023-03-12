@@ -3,7 +3,7 @@
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
+use SergiX44\Nutgram\Telegram\Enums\MessageType;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
@@ -62,7 +62,7 @@ it('downloads a file', function ($update) {
         new Response(200, body: 'ok'),
     ]);
 
-    $bot->onMessageType(MessageTypes::DOCUMENT, function (Nutgram $bot) {
+    $bot->onMessageType(MessageType::DOCUMENT, function (Nutgram $bot) {
         $document = $bot->message()->document;
         $file = $bot->getFile($document->file_id);
 

@@ -92,7 +92,7 @@ class FakeNutgram extends Nutgram
     {
         $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);
-
+        
         $c = [
             'client' => ['handler' => $handlerStack, 'base_uri' => ''],
             'api_url' => '',
@@ -360,7 +360,7 @@ class FakeNutgram extends Nutgram
                     }
                 });
             }
-            return array_merge($params, $formData->files);
+            return [...$params, ...$formData->files];
         }
 
         throw new InvalidArgumentException("Content-Type '$contentType' not supported");

@@ -34,7 +34,7 @@ trait Games
     {
         $chat_id = $this->chatId();
         $required = compact('game_short_name', 'chat_id');
-        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
     }
 
     /**
@@ -58,7 +58,7 @@ trait Games
         $user_id = $this->userId();
         $target = $this->targetChatMessageOrInlineMessageId($opt);
         $required = compact('score', 'user_id');
-        return $this->requestJson(__FUNCTION__, array_merge($target, $required, $opt));
+        return $this->requestJson(__FUNCTION__, [...$target, ...$required, ...$opt]);
     }
 
     /**
@@ -78,6 +78,6 @@ trait Games
         $user_id = $this->userId();
         $target = $this->targetChatMessageOrInlineMessageId($opt);
         $required = compact('user_id');
-        return $this->requestJson(__FUNCTION__, array_merge($target, $required, $opt), GameHighScore::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...$required, ...$opt], GameHighScore::class);
     }
 }
