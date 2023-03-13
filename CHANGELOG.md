@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.17.0 - 2023-03-13
+
+### What's Changed
+
+- Apply fixes from StyleCI by @SergiX44 in https://github.com/nutgram/nutgram/pull/393
+- [3.x] Update to Bot Api 6.6 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/382
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.16.0...3.17.0
+
 ## 3.16.0 - 2023-03-08
 
 ### What's Changed
