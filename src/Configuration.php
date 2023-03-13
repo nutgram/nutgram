@@ -143,5 +143,4 @@ final readonly class Configuration
             $this->{$attribute} = $value;
         }
     }
-
 }
