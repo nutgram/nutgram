@@ -9,7 +9,6 @@ use Throwable;
 
 class Polling implements RunningMode
 {
-
     /**
      * @param  Nutgram  $bot
      */
