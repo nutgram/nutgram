@@ -718,6 +718,58 @@ it('calls the message handler with regex groups', function ($update) {
     $bot->run();
 })->with('food');
 
+it('calls the message handler with parameters', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onText('I want {amount} portions of {dish}', function (Nutgram $bot, $amount, $dish) {
+        $bot->sendMessage("You will get {$amount} portions of {$dish}!");
+
+        expect($amount)->toBe('12');
+        expect($dish)->toBe('pizza');
+    });
+
+    $bot->run();
+})->with('food');
+
+it('calls the message handler with regex quantifiers #1', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onText('I want ([0-9]{2}) portions of ([a-z]{5})', function (Nutgram $bot, $amount, $dish) {
+        $bot->sendMessage("You will get {$amount} portions of {$dish}!");
+
+        expect($amount)->toBe('12');
+        expect($dish)->toBe('pizza');
+    });
+
+    $bot->run();
+})->with('food');
+
+it('calls the message handler with regex quantifiers #2', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onText('I want ([0-9]{1,}) portions of ([a-z]{1,})', function (Nutgram $bot, $amount, $dish) {
+        $bot->sendMessage("You will get {$amount} portions of {$dish}!");
+
+        expect($amount)->toBe('12');
+        expect($dish)->toBe('pizza');
+    });
+
+    $bot->run();
+})->with('food');
+
+it('calls the message handler with regex quantifiers #3', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onText('I want ([0-9]{1,2}) portions of ([a-z]{1,5})', function (Nutgram $bot, $amount, $dish) {
+        $bot->sendMessage("You will get {$amount} portions of {$dish}!");
+
+        expect($amount)->toBe('12');
+        expect($dish)->toBe('pizza');
+    });
+
+    $bot->run();
+})->with('food');
+
 it('calls the message handler with regex groups + number', function ($update) {
     $bot = Nutgram::fake($update);
 
