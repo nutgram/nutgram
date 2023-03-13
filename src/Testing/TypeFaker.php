@@ -12,7 +12,6 @@ use SergiX44\Nutgram\Hydrator\Hydrator;
 
 class TypeFaker
 {
-
     /**
      * @param  Hydrator  $hydrator
      */
@@ -72,7 +71,6 @@ class TypeFaker
         $data = [];
         $dummyInstance = $reflectionClass->newInstanceWithoutConstructor();
         foreach ($reflectionClass->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-
             // if specified by the user
             if (isset($additional[$property->name]) && !is_array($additional[$property->name])) {
                 $data[$property->name] = $additional[$property->name];
