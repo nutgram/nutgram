@@ -92,7 +92,7 @@ class FakeNutgram extends Nutgram
     {
         $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);
-        
+
         $c = [
             'client' => ['handler' => $handlerStack, 'base_uri' => ''],
             'api_url' => '',
@@ -114,7 +114,7 @@ class FakeNutgram extends Nutgram
     private static function inject(Nutgram $bot, MockHandler $mock, HandlerStack $handlerStack): void
     {
         (function () use ($handlerStack, $mock) {
-            /** @psalm-scope-this SergiX44\Nutgram\Testing\FakeNutgram */
+            /** @psalm-scope-this \SergiX44\Nutgram\Testing\FakeNutgram */
             $this->mockHandler = $mock;
             $this->typeFaker = new TypeFaker($this->hydrator);
 
