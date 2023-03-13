@@ -15,7 +15,6 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\SentWebAppMessage;
  */
 trait InlineMode
 {
-
     /**
      * Use this method to send answers to an inline query. On success, True is returned.
      * No more than 50 results per query are allowed.

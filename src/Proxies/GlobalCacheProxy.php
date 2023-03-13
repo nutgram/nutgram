@@ -12,7 +12,6 @@ use Psr\SimpleCache\InvalidArgumentException;
  */
 trait GlobalCacheProxy
 {
-
     /**
      * @param  $key
      * @param  null  $default

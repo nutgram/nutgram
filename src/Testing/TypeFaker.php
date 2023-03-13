@@ -10,7 +10,6 @@ use SergiX44\Nutgram\Hydrator\Hydrator;
 
 class TypeFaker
 {
-
     /**
      * @param  Hydrator  $hydrator
      */

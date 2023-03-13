@@ -10,7 +10,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class ChatAdministratorRights extends BaseType
 {
-
     /**
      * True, if the user's presence in the chat is hidden
      */
