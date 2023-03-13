@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
+use SergiX44\Hydrator\Annotation\Alias;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
@@ -54,4 +55,11 @@ class StickerSet extends BaseType
      * Optional. Sticker set thumbnail in the .WEBP or .TGS format
      */
     public ?PhotoSize $thumbnail = null;
+
+    /**
+     * @see $thumbnail
+     * @deprecated Use thumbnail
+     */
+    #[Alias('thumbnail')]
+    public ?PhotoSize $thumb = null;
 }

@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
+use SergiX44\Hydrator\Annotation\Alias;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -40,6 +41,13 @@ class Video extends BaseType
      * Optional. Video thumbnail
      */
     public ?PhotoSize $thumbnail = null;
+
+    /**
+     * @see $thumbnail
+     * @deprecated Use thumbnail
+     */
+    #[Alias('thumbnail')]
+    public ?PhotoSize $thumb = null;
 
     /**
      * Optional. Original filename as defined by sender
