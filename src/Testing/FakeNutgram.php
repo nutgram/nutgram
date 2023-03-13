@@ -15,6 +15,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionUnionType;
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\Telegram\Client;
@@ -87,16 +88,21 @@ class FakeNutgram extends Nutgram
      * @param  array  $responses
      * @return FakeNutgram
      */
-    public static function instance(mixed $update = null, array $responses = [], array $config = []): self
+    public static function instance(mixed $update = null, array $responses = [], Configuration $config = null): self
     {
         $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);
 
-        $bot = new self(self::TOKEN, [
+        $c = [
             'client' => ['handler' => $handlerStack, 'base_uri' => ''],
             'api_url' => '',
-            ...$config,
-        ]);
+        ];
+
+        if ($config !== null) {
+            $c = array_replace_recursive($config->toArray(), $c);
+        }
+
+        $bot = new self(self::TOKEN, Configuration::fromArray($c));
 
         $bot->setRunningMode(new Fake($update));
 
@@ -108,9 +114,9 @@ class FakeNutgram extends Nutgram
     private static function inject(Nutgram $bot, MockHandler $mock, HandlerStack $handlerStack): void
     {
         (function () use ($handlerStack, $mock) {
-            /** @psalm-scope-this SergiX44\Nutgram\Testing\FakeNutgram */
+            /** @psalm-scope-this \SergiX44\Nutgram\Testing\FakeNutgram */
             $this->mockHandler = $mock;
-            $this->typeFaker = new TypeFaker($this->mapper);
+            $this->typeFaker = new TypeFaker($this->hydrator);
 
             $properties = (new ReflectionClass(Client::class))->getMethods(ReflectionMethod::IS_PUBLIC);
 
@@ -259,7 +265,7 @@ class FakeNutgram extends Nutgram
                 print($requestIndex."\e[34m".$request->getUri()->getPath()."\e[39m".PHP_EOL);
                 $content = json_encode(
                     value: FakeNutgram::getActualData($request),
-                    flags: JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE,
+                    flags: JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR,
                 );
                 print(preg_replace('/"(.+)":/', "\"\e[33m\${1}\e[39m\":", $content));
 
@@ -368,7 +374,9 @@ class FakeNutgram extends Nutgram
     {
         $attributes = parent::__serialize();
 
-        unset($attributes['config']['client']['handler']);
+        $conf = $attributes['config']->toArray();
+        unset($conf['client']['handler']);
+        $attributes['config'] = Configuration::fromArray($conf);
 
         return $attributes;
     }
@@ -383,7 +391,11 @@ class FakeNutgram extends Nutgram
     {
         $mock = new MockHandler();
         $handlerStack = HandlerStack::create($mock);
-        $data['config']['client']['handler'] = $handlerStack;
+
+        $conf = $data['config']->toArray();
+        $conf['client']['handler'] = $handlerStack;
+        $data['config'] = Configuration::fromArray($conf);
+
         parent::__unserialize($data);
         self::inject($this, $mock, $handlerStack);
     }

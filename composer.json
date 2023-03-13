@@ -38,7 +38,6 @@
     "require-dev": {
         "ext-reflection": "*",
         "illuminate/testing": "^8.0|^9.0|^10.0",
-        "netresearch/jsonmapper": "^4.0.0",
         "pestphp/pest": "^1.1",
         "pestphp/pest-plugin-mock": "^1.0",
         "roave/security-advisories": "dev-latest",

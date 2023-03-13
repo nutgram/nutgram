@@ -3,7 +3,6 @@
 
 namespace SergiX44\Nutgram;
 
-use Closure;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use Laravel\SerializableClosure\SerializableClosure;
@@ -14,9 +13,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 use Psr\SimpleCache\CacheInterface;
-use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
@@ -26,7 +23,6 @@ use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Hydrator\Hydrator;
-use SergiX44\Nutgram\Hydrator\NutgramHydrator;
 use SergiX44\Nutgram\Proxies\GlobalCacheProxy;
 use SergiX44\Nutgram\Proxies\UpdateDataProxy;
 use SergiX44\Nutgram\Proxies\UserCacheProxy;
@@ -43,17 +39,15 @@ class Nutgram extends ResolveHandlers
 {
     use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy;
 
-    protected const DEFAULT_API_URL = 'https://api.telegram.org';
-
     /**
      * @var string
      */
     private string $token;
 
     /**
-     * @var array
+     * @var Configuration
      */
-    private array $config;
+    private Configuration $config;
 
     /**
      * @var ClientInterface
@@ -63,7 +57,7 @@ class Nutgram extends ResolveHandlers
     /**
      * @var Hydrator
      */
-    protected Hydrator $mapper;
+    protected Hydrator $hydrator;
 
     /**
      * @var LoggerInterface
@@ -83,34 +77,34 @@ class Nutgram extends ResolveHandlers
     /**
      * Nutgram constructor.
      * @param  string  $token
-     * @param  array  $config
+     * @param  Configuration|null  $config
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function __construct(string $token, array $config = [])
+    public function __construct(string $token, ?Configuration $config = null)
     {
         if (empty($token)) {
             throw new InvalidArgumentException('The token cannot be empty.');
         }
 
-        $this->bootstrap($token, $config);
+        $this->bootstrap($token, $config ?? new Configuration());
     }
 
     /**
      * Initializes the current instance
      * @param  string  $token
-     * @param  array  $config
+     * @param  Configuration  $config
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function bootstrap(string $token, array $config): void
+    private function bootstrap(string $token, Configuration $config): void
     {
         $this->token = $token;
         $this->config = $config;
         $this->container = new Container();
-        if (isset($config['container']) && $config['container'] instanceof ContainerInterface) {
-            $this->container->delegate($config['container']);
+        if ($config->container !== null) {
+            $this->container->delegate($config->container);
         }
         $this->container->delegate(new ReflectionContainer());
         $this->container->addShared(ContainerInterface::class, $this->container);
@@ -119,25 +113,26 @@ class Nutgram extends ResolveHandlers
 
         $baseUri = sprintf(
             '%s/bot%s/%s',
-            $this->config['api_url'] ?? self::DEFAULT_API_URL,
+            $config->apiUrl,
             $this->token,
-            $this->config['test_env'] ?? false ? 'test/' : ''
+            $config->testEnv ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle([
             'base_uri' => $baseUri,
-            'timeout' => $this->config['timeout'] ?? 5,
-            ...($this->config['client'] ?? []),
+            'timeout' => $config->clientTimeout,
+            ...$config->clientOptions,
         ]);
+        
         $this->container->addShared(ClientInterface::class, $this->http);
 
-        $hydrator = $this->container->get(NutgramHydrator::class);
-        $this->container->addShared(Hydrator::class)->setConcrete($this->config['mapper'] ?? $hydrator);
-        $this->mapper = $this->container->get(Hydrator::class);
+        $hydrator = $this->container->get($config->hydrator);
+        $this->container->addShared(Hydrator::class)->setConcrete($hydrator);
+        $this->hydrator = $this->container->get(Hydrator::class);
 
-        $botId = $this->config['bot_id'] ?? (int)explode(':', $this->token)[0];
-        $this->container->addShared(CacheInterface::class, $this->config['cache'] ?? ArrayCache::class);
-        $this->container->addShared(LoggerInterface::class, $this->config['logger'] ?? NullLogger::class);
+        $botId = $config->botId ?? (int)explode(':', $this->token)[0];
+        $this->container->addShared(CacheInterface::class, $config->cache);
+        $this->container->addShared(LoggerInterface::class, $config->logger);
 
         $this->container->add(ConversationCache::class)->addArguments([CacheInterface::class, $botId]);
         $this->container->add(GlobalCache::class)->addArguments([CacheInterface::class, $botId]);
@@ -158,16 +153,6 @@ class Nutgram extends ResolveHandlers
      */
     public function __serialize(): array
     {
-        unset($this->config['cache']);
-
-        if (isset($this->config['logger']) && !is_string($this->config['logger'])) {
-            unset($this->config['logger']);
-        }
-
-        if (isset($this->config['local_path_transformer']) && $this->config['local_path_transformer'] instanceof Closure) {
-            throw new CannotSerializeException();
-        }
-
         return [
             'token' => $this->token,
             'config' => $this->config,
@@ -190,7 +175,7 @@ class Nutgram extends ResolveHandlers
      * @param  array  $responses
      * @return FakeNutgram
      */
-    public static function fake(mixed $update = null, array $responses = [], array $config = []): FakeNutgram
+    public static function fake(mixed $update = null, array $responses = [], ?Configuration $config = null): FakeNutgram
     {
         return FakeNutgram::instance($update, $responses, $config);
     }
@@ -375,9 +360,9 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @return array
+     * @return Configuration
      */
-    public function getConfig(): array
+    public function getConfig(): Configuration
     {
         return $this->config;
     }

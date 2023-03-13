@@ -1,5 +1,6 @@
 <?php
 
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
@@ -169,7 +170,7 @@ test('valid inline menu + no end + split message + long message', function () {
     $textChunk2 = 'a';
 
     /** @var Nutgram $bot */
-    $bot = Nutgram::fake(config: ['split_long_messages' => true])
+    $bot = Nutgram::fake(config: new Configuration(splitLongMessages: true))
         ->willReceivePartial(['text' => $textChunk1])
         ->willReceivePartial(['text' => $textChunk2]);
 
@@ -203,7 +204,7 @@ test('valid inline menu + no end + split message + long message', function () {
 );
 
 test('valid inline menu + no end + split message', function () {
-    $bot = Nutgram::fake(config: ['split_long_messages' => true]);
+    $bot = Nutgram::fake(config: new Configuration(splitLongMessages: true));
 
     $bot->onMessage(ValidNoEndMenu::class);
 

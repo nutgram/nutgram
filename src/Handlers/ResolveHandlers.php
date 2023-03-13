@@ -8,6 +8,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Enums\MessageType;
@@ -42,7 +43,7 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected ?Update $update = null;
 
-    abstract public function getConfig(): array;
+    abstract public function getConfig(): Configuration;
 
     /**
      * @return array
@@ -56,7 +57,7 @@ abstract class ResolveHandlers extends CollectHandlers
             $messageType = $this->update->message->getType();
 
             if ($messageType === MessageType::TEXT) {
-                $username = $this->getConfig()['bot_name'] ?? null;
+                $username = $this->getConfig()->botName;
                 $text = $this->update?->message?->getParsedCommand($username) ?? $this->update->message?->text;
 
                 if ($text !== null) {

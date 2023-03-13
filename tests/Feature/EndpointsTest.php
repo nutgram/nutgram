@@ -1,6 +1,7 @@
 <?php
 
 use GuzzleHttp\Psr7\Response;
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Enums\MessageType;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
@@ -32,7 +33,7 @@ it('chunks long text message', function () {
     $textChunk2 = 'a';
 
     /** @var Nutgram $bot */
-    $bot = Nutgram::fake(config: ['split_long_messages' => true])
+    $bot = Nutgram::fake(config: new Configuration(splitLongMessages: true))
         ->willReceivePartial(['text' => $textChunk1])
         ->willReceivePartial(['text' => $textChunk2]);
 

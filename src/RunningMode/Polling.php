@@ -3,33 +3,23 @@
 
 namespace SergiX44\Nutgram\RunningMode;
 
-use Psr\SimpleCache\InvalidArgumentException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use Throwable;
 
 class Polling implements RunningMode
 {
-
     /**
      * @param  Nutgram  $bot
-     * @throws InvalidArgumentException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \JsonException
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \SergiX44\Nutgram\Telegram\Exceptions\TelegramException
      */
     public function processUpdates(Nutgram $bot): void
     {
-        $pollingConfig = $bot->getConfig()['polling'] ?? [];
-        $timeout = $pollingConfig['timeout'] ?? $bot->getConfig()['timeout'] ?? 10;
-        $allowedUpdates = isset($pollingConfig['allowed_updates']) ? ['allowed_updates' => $pollingConfig['allowed_updates']] : [];
-
+        $config = $bot->getConfig();
+        $allowedUpdates = !empty($config->pollingAllowedUpdates) ? ['allowed_updates' => $config->pollingAllowedUpdates] : [];
 
         $parameters = [
-            'limit' => $pollingConfig['limit'] ?? 100,
-            'timeout' => $timeout,
+            'limit' => $config->pollingLimit,
+            'timeout' => $config->pollingTimeout,
             ...$allowedUpdates,
         ];
 

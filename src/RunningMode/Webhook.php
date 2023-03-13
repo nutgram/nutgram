@@ -14,7 +14,6 @@ use Throwable;
 
 class Webhook implements RunningMode
 {
-
     /**
      * @var array|string[]
      */

@@ -1,5 +1,6 @@
 <?php
 
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 
 it('calls onText() handler', function ($update) {
@@ -26,7 +27,7 @@ it('calls onCommand() handler', function ($update) {
 })->with('command');
 
 it('calls onCommand() handler with different tags', function ($update, $valid) {
-    $bot = Nutgram::fake($update, config: ['bot_name' => 'foo']);
+    $bot = Nutgram::fake($update, config: new Configuration(botName: 'foo'));
     $bot->onCommand('test', function (Nutgram $bot) {
         $bot->setData('called', true);
     });

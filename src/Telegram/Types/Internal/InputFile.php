@@ -8,7 +8,6 @@ namespace SergiX44\Nutgram\Telegram\Types\Internal;
  */
 class InputFile
 {
-
     /**
      * @var resource
      */

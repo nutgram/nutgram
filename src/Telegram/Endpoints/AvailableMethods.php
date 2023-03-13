@@ -108,7 +108,7 @@ trait AvailableMethods
         $required = compact('text', 'chat_id');
         $parameters = [...$required, ...$opt];
 
-        if ($this->config['split_long_messages'] ?? false) {
+        if ($this->config->splitLongMessages) {
             //chunk text
             $chunks = $this->chunkText($text);
             $totalChunks = count($chunks);
