@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
+use SergiX44\Hydrator\Annotation\Alias;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -54,5 +55,12 @@ class Audio extends BaseType
     /**
      * Optional. Thumbnail of the album cover to which the music file belongs
      */
+    public ?PhotoSize $thumbnail = null;
+
+    /**
+     * @see $thumbnail
+     * @deprecated Use thumbnail
+     */
+    #[Alias('thumbnail')]
     public ?PhotoSize $thumb = null;
 }

@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
+use SergiX44\Hydrator\Annotation\Alias;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
@@ -53,6 +54,13 @@ class Sticker extends BaseType
     /**
      * Optional. Sticker thumbnail in .webp or .jpg format
      */
+    public ?PhotoSize $thumbnail = null;
+
+    /**
+     * @see $thumbnail
+     * @deprecated Use thumbnail
+     */
+    #[Alias('thumbnail')]
     public ?PhotoSize $thumb = null;
 
     /**
@@ -78,7 +86,14 @@ class Sticker extends BaseType
     /**
      * Optional. For custom emoji stickers, unique identifier of the custom emoji
      */
-    public ?string $custom_emoji_id  = null;
+    public ?string $custom_emoji_id = null;
+
+    /**
+     * Optional. True, if the sticker must be repainted to a text color in messages,
+     * the color of the Telegram Premium badge in emoji status, white color on chat photos,
+     * or another appropriate color in other places
+     */
+    public ?bool $needs_repainting = null;
 
     /**
      * Optional. File size

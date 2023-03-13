@@ -12,6 +12,8 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatMember;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatPermissions;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Command\MenuButton;
+use SergiX44\Nutgram\Telegram\Types\Description\BotDescription;
+use SergiX44\Nutgram\Telegram\Types\Description\BotShortDescription;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopic;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaAudio;
@@ -1459,6 +1461,69 @@ trait AvailableMethods
     public function getMyCommands(array $opt = []): ?array
     {
         return $this->requestJson(__FUNCTION__, $opt, BotCommand::class);
+    }
+
+    /**
+     * Use this method to change the bot's description, which is shown in the chat with the bot if the chat is empty.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#setmydescription
+     * @param  array{
+     *     description?:string,
+     *     language_code?:string
+     * }  $opt
+     * @return void
+     */
+    public function setMyDescription(array $opt = []): bool
+    {
+        return $this->requestJson(__FUNCTION__, $opt);
+    }
+
+    /**
+     * Use this method to get the current bot description for the given user language.
+     * Returns {@see https://core.telegram.org/bots/api#botdescription BotDescription} on success.
+     * @see https://core.telegram.org/bots/api#getmydescription
+     * @param  array{
+     *     language_code?:string
+     * }  $opt
+     * @return BotDescription
+     */
+    public function getMyDescription(array $opt = []): BotDescription
+    {
+        return $this->requestJson(__FUNCTION__, $opt, BotDescription::class);
+    }
+
+    /**
+     * Use this method to change the bot's short description,
+     * which is shown on the bot's profile page and
+     * is sent together with the link when users share the bot.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#setmyshortdescription
+     * @param  array{
+     *     short_description?:string,
+     *     language_code?:string
+     * }  $opt
+     * @return void
+     */
+    public function setMyShortDescription(array $opt = []): bool
+    {
+        return $this->requestJson(__FUNCTION__, $opt);
+    }
+
+    //getMyShortDescription
+
+    /**
+     * Use this method to get the current bot short description for the given user language.
+     * Returns {@see https://core.telegram.org/bots/api#botshortdescription BotShortDescription} on success.
+     * @see https://core.telegram.org/bots/api#getmyshortdescription
+     * @param  array{
+     *     language_code?:string
+     * }  $opt
+     * @return BotShortDescription
+     * }
+     */
+    public function getMyShortDescription(array $opt = []): BotShortDescription
+    {
+        return $this->requestJson(__FUNCTION__, $opt, BotShortDescription::class);
     }
 
     /**

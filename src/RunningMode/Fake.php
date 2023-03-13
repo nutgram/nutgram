@@ -9,7 +9,6 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 class Fake implements RunningMode
 {
-
     /**
      * Fake running mode constructor.
      * @param  object|array|null  $update

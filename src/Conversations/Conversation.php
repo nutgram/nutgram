@@ -13,7 +13,6 @@ use SergiX44\Nutgram\Nutgram;
  */
 abstract class Conversation
 {
-
     /**
      * @var bool
      */
