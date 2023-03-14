@@ -4,10 +4,7 @@
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
-use SergiX44\Nutgram\Telegram\Enums\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
-use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 
 /**
@@ -24,13 +21,13 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#editmessagetext
      * @param  string  $text New text of the message, 1-4096 characters after entities parsing
      * @param  array{
-     *     chat_id?:int|string,
-     *     message_id?:int,
-     *     inline_message_id?:string,
-     *     parse_mode?:ParseMode|string,
-     *     entities?:MessageEntity[],
-     *     disable_web_page_preview?:bool,
-     *     reply_markup?:InlineKeyboardMarkup
+     ?int|string, $chat_id = null
+     ?int, $message_id = null
+     ?string, $inline_message_id = null
+     ?ParseMode|string, $parse_mode = null
+     ?MessageEntity[], $entities = null
+     ?bool, $disable_web_page_preview = null
+     ?InlineKeyboardMarkup $reply_markup = null
      * }  $opt
      * @return Message|bool|null
      */
@@ -47,13 +44,13 @@ trait UpdatesMessages
      * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagecaption
      * @param  array{
-     *     chat_id?:int|string,
-     *     message_id?:int,
-     *     inline_message_id?:string,
-     *     caption?:string,
-     *     parse_mode?:ParseMode|string,
-     *     caption_entities?:MessageEntity[],
-     *     reply_markup?:InlineKeyboardMarkup
+     ?int|string, $chat_id = null
+     ?int, $message_id = null
+     ?string, $inline_message_id = null
+     ?string, $caption = null
+     ?ParseMode|string, $parse_mode = null
+     ?MessageEntity[], $caption_entities = null
+     ?InlineKeyboardMarkup $reply_markup = null
      * }  $opt
      * @return Message|bool|null
      */
@@ -74,10 +71,10 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#editmessagemedia
      * @param  array  $mediaArray An object for a new media content of the message
      * @param  array{
-     *     chat_id?:int|string,
-     *     message_id?:int,
-     *     inline_message_id?:string,
-     *     reply_markup?:InlineKeyboardMarkup
+     ?int|string, $chat_id = null
+     ?int, $message_id = null
+     ?string, $inline_message_id = null
+     ?InlineKeyboardMarkup $reply_markup = null
      * }  $opt
      * @param  array  $clientOpt
      * @return Message|bool|null
@@ -97,10 +94,10 @@ trait UpdatesMessages
      * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagereplymarkup
      * @param  array{
-     *     chat_id?:int|string,
-     *     message_id?:int,
-     *     inline_message_id?:string,
-     *     reply_markup?:InlineKeyboardMarkup
+     ?int|string, $chat_id = null
+     ?int, $message_id = null
+     ?string, $inline_message_id = null
+     ?InlineKeyboardMarkup $reply_markup = null
      * }  $opt
      * @return Message|bool|null
      */
@@ -118,7 +115,7 @@ trait UpdatesMessages
      *     format [at]channelusername)
      * @param  int  $message_id Identifier of the original message with the poll
      * @param  array{
-     *     reply_markup?:InlineKeyboardMarkup
+     ?InlineKeyboardMarkup $reply_markup = null
      * }  $opt
      * @return Poll|null
      */

@@ -50,57 +50,29 @@ trait Client
      * An Array of Update objects is returned.
      * @see https://core.telegram.org/bots/api#getupdates
      * @see https://en.wikipedia.org/wiki/Push_technology#Long_polling
-     * @param  array{
-     *     offset?:int,
-     *     limit?:int,
-     *     timeout?:int,
-     *     allowed_updates?:string[]
-     * }  $parameters
-     * @return array|null
-     * @throws GuzzleException
-     * @throws JsonException
-     * @throws TelegramException
      */
-    public function getUpdates(array $parameters = []): ?array
+    public function getUpdates(?int $offset = null, ?int $limit = null, ?int $timeout = null, ?array $allowed_updates = []): ?array
     {
-        return $this->requestJson(__FUNCTION__, $parameters, Update::class, [
+        return $this->requestJson(__FUNCTION__, $this->filter(func_get_args()), Update::class, [
             'timeout' => ($parameters['timeout'] ?? 0) + 1,
         ]);
     }
 
-    /**
-     * @param  string  $url
-     * @param  array{
-     *     certificate?:InputFile,
-     *     ip_address?:string,
-     *     max_connections?:int,
-     *     allowed_updates?:string[],
-     *     drop_pending_updates?:bool,
-     *     secret_token?:string
-     * }  $opt
-     * @return bool|null
-     * @throws GuzzleException
-     * @throws JsonException
-     * @throws TelegramException
-     */
-    public function setWebhook(string $url, array $opt = []): ?bool
-    {
-        $required = compact('url');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+    public function setWebhook(
+        string $url,
+        ?InputFile $certificate = null,
+        ?string $ip_address = null,
+        ?int $max_connections = null,
+        ?array $allowed_updates = null,
+        ?bool $drop_pending_updates = null,
+        ?string $secret_token = null
+    ): ?bool {
+        return $this->requestJson(__FUNCTION__, $this->filter(func_get_args()));
     }
 
-    /**
-     * @param  array{
-     *     drop_pending_updates?:bool
-     * }  $opt
-     * @return bool|null
-     * @throws GuzzleException
-     * @throws JsonException
-     * @throws TelegramException
-     */
-    public function deleteWebhook(array $opt = []): ?bool
+    public function deleteWebhook(?bool $drop_pending_updates = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, $opt);
+        return $this->requestJson(__FUNCTION__, $this->filter(func_get_args()));
     }
 
     /**
@@ -172,10 +144,10 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            0775,
-            true
-        ) && !is_dir($concurrentDirectory)) {
+                $concurrentDirectory = dirname($path),
+                0775,
+                true
+            ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -212,6 +184,16 @@ trait Client
     }
 
     /**
+     * Filter the parameters to be sent to Telegram
+     * @param  array  $parameters
+     * @return array
+     */
+    protected function filter(array $parameters): array
+    {
+        return array_filter($parameters, fn ($value) => $value !== null);
+    }
+
+    /**
      * @param  string  $endpoint
      * @param  array|null  $multipart
      * @param  string  $mapTo
@@ -226,7 +208,8 @@ trait Client
         ?array $multipart = null,
         string $mapTo = stdClass::class,
         array $options = []
-    ): mixed {
+    ): mixed
+    {
         $parameters = array_map(fn ($name, $contents) => match (true) {
             $contents instanceof InputFile => [
                 'name' => $name,
@@ -284,7 +267,8 @@ trait Client
         array $json = [],
         string $mapTo = stdClass::class,
         array $options = []
-    ): mixed {
+    ): mixed
+    {
         try {
             $json = array_map(fn ($item) => match (true) {
                 $item instanceof BackedEnum => $item->value,

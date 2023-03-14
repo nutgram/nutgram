@@ -6,10 +6,6 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 use JsonException;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Enums\ChatAction;
-use SergiX44\Nutgram\Telegram\Enums\DiceEmoji;
-use SergiX44\Nutgram\Telegram\Enums\ForumIconColor;
-use SergiX44\Nutgram\Telegram\Enums\ParseMode;
-use SergiX44\Nutgram\Telegram\Enums\PollType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -23,14 +19,8 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaAudio;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaDocument;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
-use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
-use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageId;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -90,14 +80,14 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendmessage
      * @param  string  $text Text of the message to be sent, 1-4096 characters after entities parsing
      * @param  array{
-     *     parse_mode?:ParseMode|string,
-     *     entities?:MessageEntity[],
-     *     disable_web_page_preview?:bool,
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?ParseMode|string, $parse_mode = null
+     ?MessageEntity[], $entities = null
+     ?bool, $disable_web_page_preview = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @return Message|Message[]|null
      */
@@ -149,8 +139,8 @@ trait AvailableMethods
      *     username in the format [at]channelusername)
      * @param  int  $message_id Message identifier in the chat specified in from_chat_id
      * @param  array{
-     *     disable_notification?:bool,
-     *     protect_content?:bool
+     ?bool, $disable_notification = null
+     ?bool $protect_content = null
      * }  $opt
      * @return Message|null
      */
@@ -176,14 +166,14 @@ trait AvailableMethods
      *     username in the format [at]channelusername)
      * @param  int  $message_id Message identifier in the chat specified in from_chat_id
      * @param  array{
-     *     caption?:string,
-     *     parse_mode?:ParseMode|string,
-     *     caption_entities?:MessageEntity[],
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?string, $caption = null
+     ?ParseMode|string, $parse_mode = null
+     ?MessageEntity[], $caption_entities = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @return MessageId|null
      */
@@ -207,14 +197,14 @@ trait AvailableMethods
      *     must not exceed 10000 in total. Width and height ratio must be at most 20.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     caption?:string,
-     *     parse_mode?:ParseMode|string,
-     *     caption_entities?:MessageEntity[],
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?string, $caption = null
+     ?ParseMode|string, $parse_mode = null
+     ?MessageEntity[], $caption_entities = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @param  array  $clientOpt
      * @return Message|null
@@ -237,18 +227,18 @@ trait AvailableMethods
      *     Internet, or upload a new one using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     caption?:string,
-     *     parse_mode?:ParseMode|string,
-     *     caption_entities?:MessageEntity[],
-     *     duration?:int,
-     *     performer?:string,
-     *     title?:string,
-     *     thumb?:InputFile|string,
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?string, $caption = null
+     ?ParseMode|string, $parse_mode = null
+     ?MessageEntity[], $caption_entities = null
+     ?int, $duration = null
+     ?string, $performer = null
+     ?string, $title = null
+     ?InputFile|string, $thumb = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @param  array  $clientOpt
      * @return Message|null
@@ -268,16 +258,16 @@ trait AvailableMethods
      *     a new one using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     thumb?:InputFile|string,
-     *     caption?:string,
-     *     parse_mode?:ParseMode|string,
-     *     caption_entities?:MessageEntity[],
-     *     disable_content_type_detection?:bool,
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?InputFile|string, $thumb = null
+     ?string, $caption = null
+     ?ParseMode|string, $parse_mode = null
+     ?MessageEntity[], $caption_entities = null
+     ?bool, $disable_content_type_detection = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @param  array  $clientOpt
      * @return Message|null
@@ -298,19 +288,19 @@ trait AvailableMethods
      *     a new video using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     duration?:int,
-     *     width?:int,
-     *     height?:int,
-     *     thumb?:InputFile|string,
-     *     caption?:string,
-     *     parse_mode?:ParseMode|string,
-     *     caption_entities?:MessageEntity[],
-     *     supports_streaming?:bool,
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?int, $duration = null
+     ?int, $width = null
+     ?int, $height = null
+     ?InputFile|string, $thumb = null
+     ?string, $caption = null
+     ?ParseMode|string, $parse_mode = null
+     ?MessageEntity[], $caption_entities = null
+     ?bool, $supports_streaming = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @param  array  $clientOpt
      * @return Message|null
@@ -330,18 +320,18 @@ trait AvailableMethods
      *     Internet, or upload a new animation using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     duration?:int,
-     *     width?:int,
-     *     height?:int,
-     *     thumb?:InputFile|string,
-     *     caption?:string,
-     *     parse_mode?:ParseMode|string,
-     *     caption_entities?:MessageEntity[],
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?int, $duration = null
+     ?int, $width = null
+     ?int, $height = null
+     ?InputFile|string, $thumb = null
+     ?string, $caption = null
+     ?ParseMode|string, $parse_mode = null
+     ?MessageEntity[], $caption_entities = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @param  array  $clientOpt
      * @return Message|null
@@ -364,15 +354,15 @@ trait AvailableMethods
      *     a new one using multipart/form-data.
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     caption?:string,
-     *     parse_mode?:ParseMode|string,
-     *     caption_entities?:MessageEntity[],
-     *     duration?:int,
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?string, $caption = null
+     ?ParseMode|string, $parse_mode = null
+     ?MessageEntity[], $caption_entities = null
+     ?int, $duration = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @param  array  $clientOpt
      * @return Message|null
@@ -393,14 +383,14 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}. Sending video notes by
      *     a URL is currently unsupported
      * @param  array{
-     *     duration?:int,
-     *     length?:int,
-     *     thumb?:InputFile|string,
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?int, $duration = null
+     ?int, $length = null
+     ?InputFile|string, $thumb = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @param  array  $clientOpt
      * @return Message|null
@@ -418,10 +408,10 @@ trait AvailableMethods
      * @param  InputMediaAudio[]|InputMediaDocument[]|InputMediaPhoto[]|InputMediaVideo[]|resource[]  $media An array
      *     describing messages to be sent, must include 2-10 items
      * @param  array{
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool $allow_sending_without_reply = null
      * }  $opt
      * @param  array  $clientOpt
      * @return array|null
@@ -459,15 +449,15 @@ trait AvailableMethods
      * @param  float  $latitude Latitude of the location
      * @param  float  $longitude Longitude of the location
      * @param  array{
-     *     horizontal_accuracy?:float,
-     *     live_period?:int,
-     *     heading?:int,
-     *     proximity_alert_radius?:int,
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?float, $horizontal_accuracy = null
+     ?int, $live_period = null
+     ?int, $heading = null
+     ?int, $proximity_alert_radius = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @return Message|null
      */
@@ -488,13 +478,13 @@ trait AvailableMethods
      * @param  float  $latitude Latitude of new location
      * @param  float  $longitude Longitude of new location
      * @param  array{
-     *     chat_id?:int|string,
-     *     message_id?:int,
-     *     inline_message_id?:string,
-     *     horizontal_accuracy?:float,
-     *     heading?:int,
-     *     proximity_alert_radius?:int,
-     *     reply_markup?:InlineKeyboardMarkup
+     ?int|string, $chat_id = null
+     ?int, $message_id = null
+     ?string, $inline_message_id = null
+     ?float, $horizontal_accuracy = null
+     ?int, $heading = null
+     ?int, $proximity_alert_radius = null
+     ?InlineKeyboardMarkup $reply_markup = null
      * }  $opt
      * @return Message|bool|null
      */
@@ -511,10 +501,10 @@ trait AvailableMethods
      * the sent {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#stopmessagelivelocation
      * @param  array{
-     *     chat_id?:int|string,
-     *     message_id?:int,
-     *     inline_message_id?:string,
-     *     reply_markup?:InlineKeyboardMarkup
+     ?int|string, $chat_id = null
+     ?int, $message_id = null
+     ?string, $inline_message_id = null
+     ?InlineKeyboardMarkup $reply_markup = null
      * }  $opt
      * @return Message|bool|null
      */
@@ -533,15 +523,15 @@ trait AvailableMethods
      * @param  string  $title Name of the venue
      * @param  string  $address Address of the venue
      * @param  array{
-     *     foursquare_id?:string,
-     *     foursquare_type?:string,
-     *     google_place_id?:string,
-     *     google_place_type?:string,
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?string, $foursquare_id = null
+     ?string, $foursquare_type = null
+     ?string, $google_place_id = null
+     ?string, $google_place_type = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @return Message|null
      */
@@ -564,13 +554,13 @@ trait AvailableMethods
      * @param  string  $first_name Contact's first name
      * @param  string  $phone_number Contact's phone number
      * @param  array{
-     *     last_name?:string,
-     *     vcard?:string,
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?string, $last_name = null
+     ?string, $vcard = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @return Message|null
      */
@@ -588,21 +578,21 @@ trait AvailableMethods
      * @param  string  $question Poll question, 1-300 characters
      * @param  string[]  $options A list of answer options, 2-10 strings 1-100 characters each
      * @param  array{
-     *     is_anonymous?:bool,
-     *     type?:PollType|string,
-     *     allows_multiple_answers?:bool,
-     *     correct_option_id?:int,
-     *     explanation?:string,
-     *     explanation_parse_mode?:ParseMode|string,
-     *     explanation_entities?:MessageEntity[],
-     *     open_period?:int,
-     *     close_date?:int,
-     *     is_closed?:bool,
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?bool, $is_anonymous = null
+     ?PollType|string, $type = null
+     ?bool, $allows_multiple_answers = null
+     ?int, $correct_option_id = null
+     ?string, $explanation = null
+     ?ParseMode|string, $explanation_parse_mode = null
+     ?MessageEntity[], $explanation_entities = null
+     ?int, $open_period = null
+     ?int, $close_date = null
+     ?bool, $is_closed = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @return Message|null
      * @throws JsonException
@@ -622,12 +612,12 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#senddice
      * @param  array{
-     *     emoji?:DiceEmoji|string,
-     *     disable_notification?:bool,
-     *     protect_content?:bool,
-     *     reply_to_message_id?:int,
-     *     allow_sending_without_reply?:bool,
-     *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
+     ?DiceEmoji|string, $emoji = null
+     ?bool, $disable_notification = null
+     ?bool, $protect_content = null
+     ?int, $reply_to_message_id = null
+     ?bool, $allow_sending_without_reply = null
+     ?InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply $reply_markup = null
      * }  $opt
      * @return Message|null
      */
@@ -661,7 +651,7 @@ trait AvailableMethods
      *     {@see https://core.telegram.org/bots/api#sendlocation location data}, record_video_note or upload_video_note
      *     for {@see https://core.telegram.org/bots/api#sendvideonote video notes}.
      * @param  array{
-     *     message_thread_id?: int
+     ? int $message_thread_id = null
      * }  $opt
      * @return bool|null
      */
@@ -677,8 +667,8 @@ trait AvailableMethods
      * Returns a {@see https://core.telegram.org/bots/api#userprofilephotos UserProfilePhotos} object.
      * @see https://core.telegram.org/bots/api#getuserprofilephotos
      * @param  array{
-     *     offset?:int,
-     *     limit?:int
+     ?int, $offset = null
+     ?int $limit = null
      * }  $opt
      * @return UserProfilePhotos|null
      */
@@ -715,8 +705,8 @@ trait AvailableMethods
      *     channel (in the format [at]channelusername)
      * @param  int  $user_id Unique identifier of the target user
      * @param  array{
-     *     until_date?:int,
-     *     revoke_messages?:bool
+     ?int, $until_date = null
+     ?bool $revoke_messages = null
      * }  $opt
      * @return bool|null
      */
@@ -737,7 +727,7 @@ trait AvailableMethods
      *     channel (in the format [at]username)
      * @param  int  $user_id Unique identifier of the target user
      * @param  array{
-     *     only_if_banned?:bool
+     ?bool $only_if_banned = null
      * }  $opt
      * @return bool|null
      */
@@ -757,8 +747,8 @@ trait AvailableMethods
      * @param  int  $user_id Unique identifier of the target user
      * @param  ChatPermissions  $permissions An object for new user permissions
      * @param  array{
-     *     use_independent_chat_permissions?:bool,
-     *     until_date?:int
+     ?bool, $use_independent_chat_permissions = null
+     ?int $until_date = null
      * }  $opt
      * @return bool|null
      */
@@ -782,17 +772,17 @@ trait AvailableMethods
      *     format [at]channelusername)
      * @param  int  $user_id Unique identifier of the target user
      * @param  array{
-     *     is_anonymous?:bool,
-     *     can_manage_chat?:bool,
-     *     can_post_messages?:bool,
-     *     can_edit_messages?:bool,
-     *     can_delete_messages?:bool,
-     *     can_manage_video_chats?:bool,
-     *     can_restrict_members?:bool,
-     *     can_promote_members?:bool,
-     *     can_change_info?:bool,
-     *     can_invite_users?:bool,
-     *     can_pin_messages?:bool
+     ?bool, $is_anonymous = null
+     ?bool, $can_manage_chat = null
+     ?bool, $can_post_messages = null
+     ?bool, $can_edit_messages = null
+     ?bool, $can_delete_messages = null
+     ?bool, $can_manage_video_chats = null
+     ?bool, $can_restrict_members = null
+     ?bool, $can_promote_members = null
+     ?bool, $can_change_info = null
+     ?bool, $can_invite_users = null
+     ?bool $can_pin_messages = null
      * }  $opt
      * @return bool|null
      */
@@ -865,7 +855,7 @@ trait AvailableMethods
      *     format [at]supergroupusername)
      * @param  ChatPermissions  $permissions New default chat permissions
      * @param  array{
-     *     use_independent_chat_permissions?:bool
+     ?bool $use_independent_chat_permissions = null
      * }  $opt
      * @return bool|null
      */
@@ -906,10 +896,10 @@ trait AvailableMethods
      * @param  string|int  $chat_id Unique identifier for the target chat or username of the target channel (in the
      *     format [at]channelusername)
      * @param  array{
-     *     name?:string,
-     *     expire_date?:int,
-     *     member_limit?:int,
-     *     creates_join_request?:bool
+     ?string, $name = null
+     ?int, $expire_date = null
+     ?int, $member_limit = null
+     ?bool $creates_join_request = null
      * }  $opt
      * @return ChatInviteLink|null
      */
@@ -928,10 +918,10 @@ trait AvailableMethods
      *     format [at]channelusername)
      * @param  string  $invite_link The invite link to edit
      * @param  array{
-     *     name?:string,
-     *     expire_date?:int,
-     *     member_limit?:int,
-     *     creates_join_request?:bool
+     ?string, $name = null
+     ?int, $expire_date = null
+     ?int, $member_limit = null
+     ?bool $creates_join_request = null
      * }  $opt
      * @return ChatInviteLink|null
      */
@@ -1057,7 +1047,7 @@ trait AvailableMethods
      *     format [at]channelusername)
      * @param  int  $message_id Identifier of a message to pin
      * @param  array{
-     *     disable_notification?:bool
+     ?bool $disable_notification = null
      * }  $opt
      * @return bool|null
      */
@@ -1221,8 +1211,8 @@ trait AvailableMethods
      *     format [at]supergroupusername)
      * @param  string  $name Topic name, 1-128 characters
      * @param  array{
-     *     icon_color?: ForumIconColor|int,
-     *     icon_custom_emoji_id?: string,
+     ? ForumIconColor|int, $icon_color = null
+     ? string, $icon_custom_emoji_id = null
      * }  $opt
      * @return ForumTopic|null
      */
@@ -1241,8 +1231,8 @@ trait AvailableMethods
      *     format [at]supergroupusername)
      * @param  int  $message_thread_id Unique identifier for the target message thread of the forum topic
      * @param  array{
-     *     name?: string,
-     *     icon_custom_emoji_id?: string,
+     ? string, $name = null
+     ? string, $icon_custom_emoji_id = null
      * }  $opt
      * @return bool|null
      * @see https://core.telegram.org/bots/api#editforumtopic
@@ -1404,10 +1394,10 @@ trait AvailableMethods
      * > Otherwise, you may use links like `t.me/your_bot?start=XXXX` that open your bot with a parameter.
      * @see https://core.telegram.org/bots/api#answercallbackquery
      * @param  array{
-     *     text?:string,
-     *     show_alert?:bool,
-     *     url?:string,
-     *     cache_time?:int
+     ?string, $text = null
+     ?bool, $show_alert = null
+     ?string, $url = null
+     ?int $cache_time = null
      * }  $opt
      * @return bool|null
      */
@@ -1423,8 +1413,8 @@ trait AvailableMethods
      * @param  BotCommand[]  $commands A list of bot commands to be set as the list of the bot's commands. At most 100
      *     commands can be specified.
      * @param  array{
-     *     scope?:object,
-     *     language_code?:string
+     ?object, $scope = null
+     ?string $language_code = null
      * }  $opt
      * @return bool|null
      */
@@ -1440,8 +1430,8 @@ trait AvailableMethods
      * will be shown to affected users. Returns True on success.
      * @see https://core.telegram.org/bots/api#deletemycommands
      * @param  array{
-     *     scope?:object,
-     *     language_code?:string
+     ?object, $scope = null
+     ?string $language_code = null
      * }  $opt
      * @return bool
      */
@@ -1455,8 +1445,8 @@ trait AvailableMethods
      * {@see https://core.telegram.org/bots/api#botcommand BotCommand} on success.
      * @see https://core.telegram.org/bots/api#getmycommands
      * @param  array{
-     *     scope?:object,
-     *     language_code?:string
+     ?object, $scope = null
+     ?string $language_code = null
      * }  $opt
      * @return BotCommand[]|null
      */
@@ -1470,8 +1460,8 @@ trait AvailableMethods
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setchatmenubutton
      * @param  array{
-     *     chat_id?:int,
-     *     menu_button?:MenuButton
+     ?int, $chat_id = null
+     ?MenuButton $menu_button = null
      * }  $opt
      * @return bool|null
      */
@@ -1485,7 +1475,7 @@ trait AvailableMethods
      * Returns {@see https://core.telegram.org/bots/api#menubutton MenuButton} on success.
      * @see https://core.telegram.org/bots/api#getchatmenubutton
      * @param  array{
-     *     chat_id?:int
+     ?int $chat_id = null
      * }  $opt
      * @return MenuButton|null
      */
@@ -1501,8 +1491,8 @@ trait AvailableMethods
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setmydefaultadministratorrights
      * @param  array{
-     *     rights?:ChatAdministratorRights,
-     *     for_channels?:bool
+     ?ChatAdministratorRights, $rights = null
+     ?bool $for_channels = null
      * }  $opt
      * @return bool|null
      */
@@ -1516,7 +1506,7 @@ trait AvailableMethods
      * Returns {@see https://core.telegram.org/bots/api#chatadministratorrights ChatAdministratorRights} on success.
      * @see https://core.telegram.org/bots/api#getmydefaultadministratorrights
      * @param  array{
-     *     for_channels?:bool
+     ?bool $for_channels = null
      * }  $opt
      * @return ChatAdministratorRights|null
      */
