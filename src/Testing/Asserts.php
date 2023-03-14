@@ -2,12 +2,13 @@
 
 namespace SergiX44\Nutgram\Testing;
 
+use ArrayAccess;
 use GuzzleHttp\Psr7\Request;
-use Illuminate\Testing\Assert as LaraUnit;
 use InvalidArgumentException;
 use JsonException;
 use PHPUnit\Framework\Assert as PHPUnit;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Testing\Constraints\ArraySubset;
 
 /**
  * @mixin FakeNutgram
@@ -78,7 +79,7 @@ trait Asserts
                 $actual = [];
             }
 
-            LaraUnit::assertArraySubset($expected, $actual, msg: 'Sub array not found in the request body');
+            $this->assertArraySubset($expected, $actual, msg: 'Sub array not found in the request body');
         }
 
         return $this;
@@ -151,5 +152,15 @@ trait Asserts
         PHPUnit::assertEmpty($this->testingHistory, 'A reply was sent');
 
         return $this;
+    }
+
+    protected function assertArraySubset(
+        ArrayAccess|array $subset,
+        ArrayAccess|array $array,
+        bool $checkForIdentity = false,
+        string $msg = ''
+    ): void {
+        $constraint = new ArraySubset($subset, $checkForIdentity);
+        PHPUnit::assertThat($array, $constraint, $msg);
     }
 }
