@@ -15,7 +15,7 @@ class Handler extends MiddlewareChain
      * regular expression to capture named parameters but not quantifiers
      * captures {name}, but not {1}, {1,}, or {1,2}.
      */
-    protected const PARAM_NAME_REGEX = '/{((?:(?!\d+,?\d+?)\w)+?)}/';
+    protected const PARAM_NAME_REGEX = '/{((?:(?!\d+,?\d?+)\w)+?)}/';
 
     /**
      * @var string|null
