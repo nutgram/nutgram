@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Laravel\Log;
 
+use ArrayAccess;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\AbstractProcessingHandler;
