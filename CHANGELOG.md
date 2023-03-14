@@ -2,6 +2,21 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.17.1 - 2023-03-14
+
+### What's Changed
+
+- Remove "Illuminate\Testing\Assert" dependency to fix errors in symfony by @Lukasss93 in https://github.com/nutgram/nutgram/pull/394
+- possible fix for #378 by @SergiX44 in https://github.com/nutgram/nutgram/pull/395
+- Fix LoggerHandler.php by @Z3d0X in https://github.com/nutgram/nutgram/pull/388
+- Fix multiple middlewares by @Lukasss93 in https://github.com/nutgram/nutgram/pull/397
+
+### New Contributors
+
+- @Z3d0X made their first contribution in https://github.com/nutgram/nutgram/pull/388
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.17.0...3.17.1
+
 ## 3.17.0 - 2023-03-13
 
 ### What's Changed
