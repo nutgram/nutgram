@@ -46,10 +46,18 @@ abstract class CollectHandlers
      */
     public function middleware($callable): void
     {
+        array_unshift($this->globalMiddlewares, $callable);
+    }
+
+    /**
+     * @param  Array<callable|callable-string|array>  $callable
+     */
+    public function middlewares($callable): void
+    {
         $middlewares = is_array($callable) ? $callable : [$callable];
 
         foreach ($middlewares as $middleware) {
-            array_unshift($this->globalMiddlewares, $middleware);
+            $this->middleware($middleware);
         }
     }
 

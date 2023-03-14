@@ -720,7 +720,7 @@ it('calls the message handler with multiple global middlewares', function ($upda
         $next($bot);
     };
 
-    $bot->middleware([
+    $bot->middlewares([
         $middlewareA,
         $middlewareB,
     ]);
