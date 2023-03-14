@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Laravel\Log;
 
+use ArrayAccess;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\AbstractProcessingHandler;
@@ -27,7 +28,7 @@ class LoggerHandler extends AbstractProcessingHandler
         return new LineFormatter("%message% %context% %extra%\n");
     }
 
-    protected function write(array $record): void
+    protected function write(array|ArrayAccess $record): void
     {
         $oldSplitConfig = config('nutgram.config.split_long_messages', false);
         config(['nutgram.config.split_long_messages' => true]);
@@ -40,7 +41,7 @@ class LoggerHandler extends AbstractProcessingHandler
         config(['nutgram.config.split_long_messages' => $oldSplitConfig]);
     }
 
-    protected function formatText(array $record): string
+    protected function formatText(array|ArrayAccess $record): string
     {
         return sprintf(
             "<b>%s %s</b> (%s):\n<pre>%s</pre>",
