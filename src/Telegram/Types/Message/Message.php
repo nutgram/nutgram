@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Helpers\MessageHelpers;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
@@ -47,6 +48,8 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppData;
  */
 class Message extends BaseType
 {
+    use MessageHelpers;
+
     /**
      * Unique message identifier inside this chat
      */

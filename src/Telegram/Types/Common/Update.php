@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
+use SergiX44\Nutgram\Helpers\UpdateHelpers;
 use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Channel\ChannelPost;
@@ -27,6 +28,8 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  */
 class Update extends BaseType
 {
+    use UpdateHelpers;
+
     /**
      * The update‘s unique identifier.
      * Update identifiers start from a certain positive number and increase sequentially.

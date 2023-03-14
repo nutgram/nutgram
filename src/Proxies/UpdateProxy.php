@@ -11,7 +11,6 @@ use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
-use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingQuery;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
@@ -85,7 +84,7 @@ trait UpdateProxy
      */
     public function isCallbackQuery(): bool
     {
-        return $this->update?->callback_query !== null;
+        return $this->update?->isCallbackQuery();
     }
 
     /**
@@ -101,7 +100,7 @@ trait UpdateProxy
      */
     public function isInlineQuery(): bool
     {
-        return $this->update?->inline_query !== null;
+        return $this->update?->isInlineQuery();
     }
 
     /**
@@ -133,7 +132,7 @@ trait UpdateProxy
      */
     public function isPreCheckoutQuery(): bool
     {
-        return $this->update?->pre_checkout_query !== null;
+        return $this->update?->isPreCheckoutQuery();
     }
 
     /**
@@ -165,7 +164,7 @@ trait UpdateProxy
      */
     public function isMyChatMember(): bool
     {
-        return $this->update?->my_chat_member !== null;
+        return $this->update?->isMyChatMember();
     }
 
     /**
@@ -198,11 +197,6 @@ trait UpdateProxy
      */
     public function isCommand(): bool
     {
-        /** @var MessageEntity $entity */
-        $entity = $this->update?->message?->entities[0] ?? null;
-
-        return $entity !== null &&
-            $entity->offset === 0 &&
-            $entity->type === 'bot_command';
+        return $this->update?->message?->isCommand();
     }
 }
