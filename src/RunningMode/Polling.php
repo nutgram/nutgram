@@ -57,7 +57,7 @@ class Polling implements RunningMode
             } catch (Throwable $e) {
                 echo "$e\n";
             } finally {
-                $bot->clearData();
+                $bot->clear();
             }
         }
     }

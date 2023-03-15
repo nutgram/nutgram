@@ -12,6 +12,6 @@ class OneStepNotCompletedConversation extends Conversation
 
     public function firstStep(Nutgram $bot)
     {
-        $bot->setData('test', $bot->getData('test', 1) + 1);
+        $bot->set('test', $bot->get('test', 1) + 1);
     }
 }

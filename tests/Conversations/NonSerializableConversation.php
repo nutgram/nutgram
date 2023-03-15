@@ -26,7 +26,7 @@ class NonSerializableConversation extends Conversation
 
     public function secondStep(Nutgram $bot)
     {
-        $bot->setData('test', 'ok');
+        $bot->set('test', 'ok');
         $this->end();
     }
 }

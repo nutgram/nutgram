@@ -12,13 +12,13 @@ class TwoStepConversation extends Conversation
 
     public function firstStep(Nutgram $bot)
     {
-        $bot->setData('test', 1);
+        $bot->set('test', 1);
         $this->next('secondStep');
     }
 
     public function secondStep(Nutgram $bot)
     {
-        $bot->setData('test', 2);
+        $bot->set('test', 2);
         $this->end();
     }
 }

@@ -9,12 +9,12 @@ class ConversationWithBeforeStep extends Conversation
 {
     public function start(Nutgram $bot)
     {
-        $bot->setData('test', $bot->getData('test', 0) + 1);
+        $bot->set('test', $bot->get('test', 0) + 1);
         $this->end();
     }
 
     public function beforeStep(Nutgram $bot)
     {
-        $bot->setData('test', $bot->getData('test', 0) + 1);
+        $bot->set('test', $bot->get('test', 0) + 1);
     }
 }

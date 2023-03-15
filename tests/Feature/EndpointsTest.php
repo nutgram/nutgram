@@ -72,13 +72,13 @@ it('downloads a file', function ($update) {
     });
 
     $bot->onException(function (Nutgram $bot, $e) {
-        $bot->setData('caught_exception', true);
+        $bot->set('caught_exception', true);
     });
 
     $bot->run();
 
     expect(file_exists(__DIR__."/".$update->message->document->file_name))->toBeTrue();
-    expect($bot->getData('caught_exception', false))->toBeFalse();
+    expect($bot->get('caught_exception', false))->toBeFalse();
 
     if (file_exists(__DIR__."/".$update->message->document->file_name)) {
         unlink(__DIR__."/".$update->message->document->file_name);

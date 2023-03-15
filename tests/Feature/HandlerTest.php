@@ -178,7 +178,7 @@ it('allows defining commands with command instances', function ($update) {
 it('allows defining commands with classes', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->setData('called', false);
+    $bot->set('called', false);
     $bot->registerCommand(TestStartCommand::class);
 
     $bot->onMessage(function ($bot) {
@@ -187,7 +187,7 @@ it('allows defining commands with classes', function ($update) {
 
     $bot->run();
 
-    expect($bot->getData('called'))->toBeTrue();
+    expect($bot->get('called'))->toBeTrue();
 })->with('command_message');
 
 it('throws an error if not when not specifying a callable', function ($update) {
