@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram;
 
 use BackedEnum;
 use Exception;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Traits\Macroable;
@@ -187,7 +188,11 @@ trait Client
         $endpoint = $this->downloadUrl($file);
 
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
-        $response = $this->http->get($endpoint, $requestPost ?? $request);
+        try {
+            $response = $this->http->get($endpoint, $requestPost ?? $request);
+        } catch (ConnectException $e) {
+            $this->redactTokenFromConnectException($e);
+        }
 
         return $response->getStatusCode() === 200;
     }
@@ -251,7 +256,11 @@ trait Client
 
         try {
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
-            $response = $this->http->post($endpoint, $requestPost ?? $request);
+            try {
+                $response = $this->http->post($endpoint, $requestPost ?? $request);
+            } catch (ConnectException $e) {
+                $this->redactTokenFromConnectException($e);
+            }
             $content = $this->mapResponse($response, $mapTo);
 
             $this->logger->debug($endpoint, [
@@ -294,7 +303,11 @@ trait Client
             $request = ['json' => $json, ...$options];
 
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
-            $response = $this->http->post($endpoint, $requestPost ?? $request);
+            try {
+                $response = $this->http->post($endpoint, $requestPost ?? $request);
+            } catch (ConnectException $e) {
+                $this->redactTokenFromConnectException($e);
+            }
             $content = $this->mapResponse($response, $mapTo);
 
             $rawResponse = (string)$response->getBody();
@@ -376,5 +389,15 @@ trait Client
     protected function chunkText(string $text, int $length = Limits::TEXT_LENGTH): array
     {
         return explode('%#TGMSG#%', StrUtils::wordWrap($text, $length, "%#TGMSG#%", true));
+    }
+
+    protected function redactTokenFromConnectException(ConnectException $e): void
+    {
+        throw new ConnectException(
+            str_replace($this->token, str_repeat('*', 5), $e->getMessage()),
+            $e->getRequest(),
+            $e->getPrevious(),
+            $e->getHandlerContext(),
+        );
     }
 }

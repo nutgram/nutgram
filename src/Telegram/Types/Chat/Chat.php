@@ -252,4 +252,24 @@ class Chat extends BaseType
         $chat->location = $location;
         return $chat;
     }
+
+    public function isPrivate(): bool
+    {
+        return $this->type === ChatType::PRIVATE;
+    }
+
+    public function isGroup(): bool
+    {
+        return $this->type === ChatType::GROUP;
+    }
+
+    public function isSupergroup(): bool
+    {
+        return $this->type === ChatType::SUPERGROUP;
+    }
+
+    public function isChannel(): bool
+    {
+        return $this->type === ChatType::CHANNEL;
+    }
 }

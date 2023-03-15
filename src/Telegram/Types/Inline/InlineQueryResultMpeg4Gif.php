@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Hydrator\Annotation\Alias;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
@@ -53,12 +54,27 @@ class InlineQueryResultMpeg4Gif extends InlineQueryResult
     /**
      * URL of the static thumbnail (jpeg or gif) for the result
      */
-    public string $thumb_url;
+    public string $thumbnail_url;
 
     /**
      * Optional. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”.
      * Defaults to “image/jpeg”
      */
+    public ?string $thumbnail_mime_type = null;
+
+    /**
+     * URL of the static thumbnail for the result (jpeg or gif)
+     * @deprecated Use thumbnail_url
+     */
+    #[Alias('thumbnail_url')]
+    public ?string $thumb_url;
+
+    /**
+     * Optional. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”.
+     * Defaults to “image/jpeg”
+     * @deprecated Use thumbnail_mime_type
+     */
+    #[Alias('thumbnail_mime_type')]
     public ?string $thumb_mime_type = null;
 
     /**

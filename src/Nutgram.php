@@ -123,7 +123,7 @@ class Nutgram extends ResolveHandlers
             'timeout' => $config->clientTimeout,
             ...$config->clientOptions,
         ]);
-        
+
         $this->container->addShared(ClientInterface::class, $this->http);
 
         $hydrator = $this->container->get($config->hydrator);

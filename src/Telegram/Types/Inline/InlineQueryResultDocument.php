@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Hydrator\Annotation\Alias;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
@@ -87,15 +88,36 @@ class InlineQueryResultDocument extends InlineQueryResult
     /**
      * Optional. URL of the thumbnail (jpeg only) for the file
      */
-    public ?string $thumb_url = null;
+    public ?string $thumbnail_url = null;
 
     /**
      * Optional. Thumbnail width
      */
-    public ?int $thumb_width = null;
+    public ?int $thumbnail_width = null;
 
     /**
      * Optional. Thumbnail height
      */
+    public ?int $thumbnail_height = null;
+
+    /**
+     * Optional. Url of the thumbnail for the result
+     * @deprecated Use thumbnail_url
+     */
+    #[Alias('thumbnail_url')]
+    public ?string $thumb_url = null;
+
+    /**
+     * Optional. Thumbnail width
+     * @deprecated Use thumbnail_width
+     */
+    #[Alias('thumbnail_width')]
+    public ?int $thumb_width = null;
+
+    /**
+     * Optional. Thumbnail height
+     * @deprecated Use thumbnail_height
+     */
+    #[Alias('thumbnail_height')]
     public ?int $thumb_height = null;
 }

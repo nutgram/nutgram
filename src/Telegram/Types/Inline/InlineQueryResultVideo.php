@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Hydrator\Annotation\Alias;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
@@ -46,7 +47,15 @@ class InlineQueryResultVideo extends InlineQueryResult
     /**
      * URL of the thumbnail (jpeg only) for the video
      */
-    public string $thumb_url;
+    public string $thumbnail_url;
+
+
+    /**
+     * URL of the thumbnail (jpeg only) for the video
+     * @deprecated use thumbnail_url
+     */
+    #[Alias('thumbnail_url')]
+    public ?string $thumb_url;
 
     /**
      * Title for the result
