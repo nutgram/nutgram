@@ -81,7 +81,7 @@ trait Stickers
         $required = compact('user_id', 'sticker');
 
         if (is_resource($sticker)) {
-            return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), File::class, $clientOpt);
+            return $this->requestMultipart(__FUNCTION__, [...$required, ...$opt], File::class, $clientOpt);
         }
 
         return $this->requestJson(__FUNCTION__, [...$required, ...$opt], File::class);
@@ -157,7 +157,7 @@ trait Stickers
      */
     public function setCustomEmojiStickerSetThumbnail(string $name, array $opt = []): bool
     {
-        return $this->requestJson(__FUNCTION__, array_merge(compact('name'), $opt));
+        return $this->requestJson(__FUNCTION__, [...compact('name'), ...$opt]);
     }
 
     /**
@@ -197,7 +197,7 @@ trait Stickers
      */
     public function setStickerKeywords(string $sticker, array $opt = []): bool
     {
-        return $this->requestJson(__FUNCTION__, array_merge(compact('sticker'), $opt));
+        return $this->requestJson(__FUNCTION__, [...compact('sticker'), ...$opt]);
     }
 
     /**
@@ -213,7 +213,7 @@ trait Stickers
      */
     public function setStickerMaskPosition(string $sticker, array $opt = []): bool
     {
-        return $this->requestJson(__FUNCTION__, array_merge(compact('sticker'), $opt));
+        return $this->requestJson(__FUNCTION__, [...compact('sticker'), ...$opt]);
     }
 
     /**
