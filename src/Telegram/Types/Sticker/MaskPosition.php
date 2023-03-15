@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
-use SergiX44\Nutgram\Telegram\Enums\MaskPositionPoint;
+use SergiX44\Nutgram\Telegram\Properties\MaskPositionPoint;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**

@@ -3,7 +3,7 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
-use SergiX44\Nutgram\Telegram\Enums\UpdateType;
+use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
 abstract class CollectHandlers
 {

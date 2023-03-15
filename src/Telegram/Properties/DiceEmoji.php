@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Enums;
+namespace SergiX44\Nutgram\Telegram\Properties;
 
 enum DiceEmoji: string
 {

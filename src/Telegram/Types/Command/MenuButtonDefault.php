@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use SergiX44\Nutgram\Telegram\Enums\MenuButtonType;
+use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
 
 /**
  * Describes that no specific value for the menu button was set.

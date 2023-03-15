@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
-use SergiX44\Nutgram\Telegram\Enums\DiceEmoji;
+use SergiX44\Nutgram\Telegram\Properties\DiceEmoji;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**

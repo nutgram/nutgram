@@ -3,7 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Poll;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Telegram\Enums\PollType;
+use SergiX44\Nutgram\Telegram\Properties\PollType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 

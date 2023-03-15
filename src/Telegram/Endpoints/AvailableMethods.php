@@ -5,11 +5,11 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use JsonException;
 use SergiX44\Nutgram\Telegram\Client;
-use SergiX44\Nutgram\Telegram\Enums\ChatAction;
-use SergiX44\Nutgram\Telegram\Enums\DiceEmoji;
-use SergiX44\Nutgram\Telegram\Enums\ForumIconColor;
-use SergiX44\Nutgram\Telegram\Enums\ParseMode;
-use SergiX44\Nutgram\Telegram\Enums\PollType;
+use SergiX44\Nutgram\Telegram\Properties\ChatAction;
+use SergiX44\Nutgram\Telegram\Properties\DiceEmoji;
+use SergiX44\Nutgram\Telegram\Properties\ForumIconColor;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Properties\PollType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;

@@ -1,7 +1,7 @@
 <?php
 
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Enums\MessageType;
+use SergiX44\Nutgram\Telegram\Properties\MessageType;
 
 it('calls onMessage() handler', function ($update) {
     $bot = Nutgram::fake($update);

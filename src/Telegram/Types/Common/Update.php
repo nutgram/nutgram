@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
-use SergiX44\Nutgram\Telegram\Enums\UpdateType;
+use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Channel\ChannelPost;
 use SergiX44\Nutgram\Telegram\Types\Channel\EditedChannelPost;

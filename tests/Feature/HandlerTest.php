@@ -3,8 +3,8 @@
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Enums\MessageType;
-use SergiX44\Nutgram\Telegram\Enums\ParseMode;
+use SergiX44\Nutgram\Telegram\Properties\MessageType;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberAdministrator;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
@@ -93,7 +93,7 @@ it('calls the specific fallback and not the general one if not match any handler
         throw new Exception();
     });
 
-    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Enums\UpdateType::MESSAGE, function ($bot) {
+    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Properties\UpdateType::MESSAGE, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -111,7 +111,7 @@ it('calls the right handler and no the fallback', function ($update) {
         throw new Exception();
     });
 
-    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Enums\UpdateType::MESSAGE, function ($bot) {
+    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Properties\UpdateType::MESSAGE, function ($bot) {
         throw new Exception();
     });
 

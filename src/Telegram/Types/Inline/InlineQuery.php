@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
-use SergiX44\Nutgram\Telegram\Enums\ChatType;
+use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
 use SergiX44\Nutgram\Telegram\Types\User\User;

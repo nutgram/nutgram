@@ -3,7 +3,7 @@
 
 namespace SergiX44\Nutgram\Proxies;
 
-use SergiX44\Nutgram\Telegram\Enums\MessageEntityType;
+use SergiX44\Nutgram\Telegram\Properties\MessageEntityType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;

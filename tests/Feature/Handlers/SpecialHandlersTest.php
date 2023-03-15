@@ -2,8 +2,8 @@
 
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Enums\UpdateType;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
+use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
 it('calls middleware() handler', function ($update) {
     $bot = Nutgram::fake($update);

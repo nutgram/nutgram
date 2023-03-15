@@ -3,7 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Telegram\Enums\PassportType;
+use SergiX44\Nutgram\Telegram\Properties\PassportType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**

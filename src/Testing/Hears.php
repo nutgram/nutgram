@@ -4,7 +4,7 @@ namespace SergiX44\Nutgram\Testing;
 
 use ReflectionObject;
 use SergiX44\Nutgram\RunningMode\RunningMode;
-use SergiX44\Nutgram\Telegram\Enums\UpdateType;
+use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\User\User;

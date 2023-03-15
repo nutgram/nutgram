@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
-use SergiX44\Nutgram\Telegram\Enums\MessageEntityType;
+use SergiX44\Nutgram\Telegram\Properties\MessageEntityType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 

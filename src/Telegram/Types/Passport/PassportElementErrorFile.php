@@ -2,8 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
-use SergiX44\Nutgram\Telegram\Enums\PassportSource;
-use SergiX44\Nutgram\Telegram\Enums\PassportType;
+use SergiX44\Nutgram\Telegram\Properties\PassportSource;
+use SergiX44\Nutgram\Telegram\Properties\PassportType;
 
 /**
  * Represents an issue with a document scan. The error is considered resolved when the file with the document scan

@@ -2,7 +2,7 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\BulkMessenger;
-use SergiX44\Nutgram\Telegram\Enums\ParseMode;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 
 it('does not run when not in cli mode', function () {
     $bot = Nutgram::fake();

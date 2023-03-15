@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use SergiX44\Nutgram\Telegram\Enums\MenuButtonType;
+use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
 
 /**
  * Represents a menu button, which opens the bot's list of commands.
