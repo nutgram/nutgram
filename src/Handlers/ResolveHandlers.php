@@ -67,9 +67,8 @@ abstract class ResolveHandlers extends CollectHandlers
                 $this->addHandlersBy($resolvedHandlers, $updateType, $messageType, $data);
             }
 
-            if (count($resolvedHandlers) === 0) {
-                $this->addHandlersBy($resolvedHandlers, $updateType, $messageType);
-            }
+            $this->addHandlersBy($resolvedHandlers, $updateType, $messageType);
+            $this->addHandlersBy($resolvedHandlers, UpdateTypes::MESSAGE);
         } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
             $data = $this->update->callback_query?->data;
             $this->addHandlersBy($resolvedHandlers, $updateType, value: $data);
