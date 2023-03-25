@@ -733,3 +733,25 @@ it('calls the message handler with multiple global middlewares', function ($upda
 
     expect($test)->toBe('ABM');
 })->with('message');
+
+it('calls specific and generic handlers', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onText('aaaaaaaaaa', function (Nutgram $bot) {
+        $bot->setGlobalData('onText', true);
+    });
+
+    $bot->onMessageType(MessageTypes::TEXT, function (Nutgram $bot) {
+        $bot->setGlobalData('onMessageType', true);
+    });
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->setGlobalData('onMessage', true);
+    });
+
+    $bot->run();
+
+    expect($bot->getGlobalData('onText', false))->toBeTrue();
+    expect($bot->getGlobalData('onMessageType', false))->toBeTrue();
+    expect($bot->getGlobalData('onMessage', false))->toBeTrue();
+})->with('text');
