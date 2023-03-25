@@ -59,7 +59,7 @@ abstract class ResolveHandlers extends CollectHandlers
                 $username = $this->getConfig()['bot_name'] ?? null;
                 $text = $this->update?->message?->getParsedCommand($username) ?? $this->update->message?->text;
 
-                if ($text !== null) {
+                if ($text !== null && isset($this->handlers[UpdateTypes::MESSAGE][MessageTypes::TEXT])) {
                     $this->addHandlersBy($resolvedHandlers, $updateType, $messageType, $text);
                 }
             } elseif ($messageType === MessageTypes::SUCCESSFUL_PAYMENT) {
@@ -67,7 +67,9 @@ abstract class ResolveHandlers extends CollectHandlers
                 $this->addHandlersBy($resolvedHandlers, $updateType, $messageType, $data);
             }
 
-            $this->addHandlersBy($resolvedHandlers, $updateType, $messageType);
+            if (isset($this->handlers[$updateType][$messageType])) {
+                $this->addHandlersBy($resolvedHandlers, $updateType, $messageType);
+            }
             $this->addHandlersBy($resolvedHandlers, UpdateTypes::MESSAGE);
         } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
             $data = $this->update->callback_query?->data;

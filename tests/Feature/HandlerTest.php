@@ -116,7 +116,7 @@ it('calls the right handler and no the fallback', function ($update) {
     $bot->run();
 })->with('message');
 
-it('calls the right handler and no the generic one', function ($update) {
+it('calls the right handler and the generic one', function ($update) {
     $bot = Nutgram::fake($update);
 
     $bot->onText('Ciao', function ($bot) {
@@ -124,7 +124,7 @@ it('calls the right handler and no the generic one', function ($update) {
     });
 
     $bot->onMessage(function ($bot) {
-        throw new Exception();
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->fallback(function ($bot) {
@@ -146,7 +146,7 @@ it('calls the right on command', function ($update) {
     });
 
     $bot->onMessage(function ($bot) {
-        throw new Exception();
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->run();
@@ -167,7 +167,7 @@ it('allows defining commands with command instances', function ($update) {
     $bot->registerCommand($c);
 
     $bot->onMessage(function ($bot) {
-        throw new Exception();
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->run();
@@ -180,7 +180,7 @@ it('allows defining commands with classes', function ($update) {
     $bot->registerCommand(TestStartCommand::class);
 
     $bot->onMessage(function ($bot) {
-        throw new Exception();
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->run();
@@ -353,7 +353,7 @@ it('call the typed message handler', function ($update) {
     $bot = Nutgram::fake($update);
 
     $bot->onMessage(function ($bot) {
-        throw new Exception();
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
     $bot->onMessageType(MessageTypes::PHOTO, function ($bot) {
@@ -428,7 +428,7 @@ it('parse successful payment with specific data', function ($update) {
     });
 
     $bot->onMessage(function ($bot) {
-        throw new Exception();
+        expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
 
