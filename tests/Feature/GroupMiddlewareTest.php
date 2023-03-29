@@ -321,8 +321,6 @@ it('groups middleware with on*Data/Payload handlers', function ($update) {
     $bot->middleware($middlewareA);
 
     $bot->group($middlewareB, function (Nutgram $bot) use (&$test, $middlewareC, $middlewareD) {
-
-
         $bot->onCallbackQuery(function (Nutgram $bot) use (&$test) {
             $test .= 'H1';
         });
@@ -340,6 +338,4 @@ it('groups middleware with on*Data/Payload handlers', function ($update) {
     $bot->run();
 
     expect($test)->toBe('-[MA]H1-[MA][MB]H2');
-
-
 })->with('callback_query');
