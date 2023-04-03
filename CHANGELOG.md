@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.17.2 - 2023-04-03
+
+### What's Changed
+
+- Fix memory when using nested groups by @Lukasss93 in https://github.com/nutgram/nutgram/pull/414
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.17.1...3.17.2
+
 ## 3.17.1 - 2023-03-14
 
 ### What's Changed
