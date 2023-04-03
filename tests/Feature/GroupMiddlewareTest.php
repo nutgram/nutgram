@@ -337,5 +337,5 @@ it('groups middleware with on*Data/Payload handlers', function ($update) {
 
     $bot->run();
 
-    expect($test)->toBe('-[MA]H1-[MA][MB]H2');
+    expect($test)->toBe('-[MA][MB]H2');
 })->with('callback_query');
