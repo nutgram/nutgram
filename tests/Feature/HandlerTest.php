@@ -733,3 +733,19 @@ it('calls the message handler with multiple global middlewares', function ($upda
 
     expect($test)->toBe('ABM');
 })->with('message');
+
+it('calls beforeApiRequest with valid request', function () {
+    $bot = Nutgram::fake();
+
+    $history = [];
+
+    $bot->beforeApiRequest(function ($bot, $request) use (&$history) {
+        $history[] = $request['json']['text'];
+        return $request;
+    });
+
+    $bot->sendMessage('foo');
+    $bot->sendMessage('bar');
+
+    expect($history)->toBe(['foo', 'bar']);
+});
