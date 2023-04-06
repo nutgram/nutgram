@@ -749,3 +749,27 @@ it('calls beforeApiRequest with valid request', function () {
 
     expect($history)->toBe(['foo', 'bar']);
 });
+
+it('calls beforeApiRequest without global middlewares', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $history = [];
+
+    $bot->middleware(function ($bot, $next) {
+        $bot->sendMessage('nope');
+        return;
+    });
+
+    $bot->onText('aaaaaaaaaa', function ($bot) {
+        $bot->sendMessage('foo');
+    });
+
+    $bot->beforeApiRequest(function ($bot, $request) use (&$history) {
+        $history[] = $request['json']['text'];
+        return $request;
+    });
+
+    $bot->run();
+
+    expect($history)->toBe(['nope']);
+})->with('text');

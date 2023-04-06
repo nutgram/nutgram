@@ -183,7 +183,7 @@ abstract class CollectHandlers
      */
     public function beforeApiRequest($callable): Handler
     {
-        return $this->{$this->target}[self::BEFORE_API_REQUEST] = new Handler($callable);
+        return $this->{$this->target}[self::BEFORE_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
     }
 
     /**
@@ -192,6 +192,6 @@ abstract class CollectHandlers
      */
     public function afterApiRequest($callable): Handler
     {
-        return $this->{$this->target}[self::AFTER_API_REQUEST] = new Handler($callable);
+        return $this->{$this->target}[self::AFTER_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
     }
 }
