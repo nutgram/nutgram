@@ -1430,6 +1430,9 @@ trait AvailableMethods
     public function setMyCommands(array $commands = [], array $opt = []): ?bool
     {
         $required = ['commands' => json_encode($commands)];
+        if (array_key_exists('scope', $opt)) {
+            $opt['scope'] = json_encode($opt['scope']);
+        }
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
