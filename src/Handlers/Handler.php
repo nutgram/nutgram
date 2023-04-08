@@ -74,7 +74,7 @@ class Handler extends MiddlewareChain
         $regexMatched = (bool)preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL);
         if ($regexMatched) {
             array_shift($matches);
-            $this->parameters = array_filter($matches, 'is_numeric', ARRAY_FILTER_USE_KEY);
+            $this->setParameters(...array_filter($matches, 'is_numeric', ARRAY_FILTER_USE_KEY));
         }
 
         return $regexMatched;
@@ -108,7 +108,11 @@ class Handler extends MiddlewareChain
      */
     public function __invoke(Nutgram $bot): mixed
     {
-        return call_user_func($bot->resolve($this->callable), $bot, ...$this->parameters);
+        try {
+            return call_user_func($bot->resolve($this->callable), $bot, ...$this->parameters);
+        } finally {
+            $this->parameters = [];
+        }
     }
 
     /**

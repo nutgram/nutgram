@@ -733,3 +733,43 @@ it('calls the message handler with multiple global middlewares', function ($upda
 
     expect($test)->toBe('ABM');
 })->with('message');
+
+it('calls beforeApiRequest with valid request', function () {
+    $bot = Nutgram::fake();
+
+    $history = [];
+
+    $bot->beforeApiRequest(function ($bot, $request) use (&$history) {
+        $history[] = $request['json']['text'];
+        return $request;
+    });
+
+    $bot->sendMessage('foo');
+    $bot->sendMessage('bar');
+
+    expect($history)->toBe(['foo', 'bar']);
+});
+
+it('calls beforeApiRequest without global middlewares', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $history = [];
+
+    $bot->middleware(function ($bot, $next) {
+        $bot->sendMessage('nope');
+        return;
+    });
+
+    $bot->onText('aaaaaaaaaa', function ($bot) {
+        $bot->sendMessage('foo');
+    });
+
+    $bot->beforeApiRequest(function ($bot, $request) use (&$history) {
+        $history[] = $request['json']['text'];
+        return $request;
+    });
+
+    $bot->run();
+
+    expect($history)->toBe(['nope']);
+})->with('text');
