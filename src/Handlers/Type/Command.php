@@ -6,12 +6,15 @@ use RuntimeException;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 
 class Command extends Handler
 {
     protected string $command = '#';
 
     protected ?string $description = null;
+
+    protected array $scopes = [];
 
     /**
      * @param  callable|callable-string  $callable
@@ -56,6 +59,28 @@ class Command extends Handler
     {
         $this->description = $description;
         return $this;
+    }
+
+    /**
+     * @param  BotCommandScope|BotCommandScope[]  $scope
+     * @return $this
+     */
+    public function scope(BotCommandScope|array $scope): Command
+    {
+        if (!is_array($scope)) {
+            $scope = [$scope];
+        }
+
+        $this->scopes = array_merge($this->scopes, $scope);
+        return $this;
+    }
+
+    /**
+     * @return BotCommandScope[]
+     */
+    public function scopes(): array
+    {
+        return $this->scopes;
     }
 
     /**
