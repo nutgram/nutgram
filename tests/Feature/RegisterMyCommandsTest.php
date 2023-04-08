@@ -246,6 +246,44 @@ test('grouped scopes', function () {
     );
 });
 
+test('avoid duplicated scopes', function () {
+    $bot = Nutgram::fake();
+
+    $history = [];
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendMessage('Start command!');
+    })
+        ->description('Start command')
+        ->scope(BotCommandScopeAllPrivateChats::apply())
+        ->scope(BotCommandScopeAllGroupChats::apply());
+
+    $bot->onCommand('help', function (Nutgram $bot) {
+        $bot->sendMessage('Help command!');
+    })
+        ->description('Help command')
+        ->scope(BotCommandScopeAllPrivateChats::apply())
+        ->scope(BotCommandScopeAllPrivateChats::apply());
+
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
+        $history[] = $request['json'];
+
+        return $request;
+    });
+
+    $bot->registerMyCommands();
+
+    expect($history)->sequence(
+        fn ($x) => $x
+            ->scope->toBe('{"type":"all_private_chats"}')
+            ->commands->toBe('[{"command":"start","description":"Start command"},{"command":"help","description":"Help command"}]'),
+        fn ($x) => $x
+            ->scope->toBe('{"type":"all_group_chats"}')
+            ->commands->toBe('[{"command":"start","description":"Start command"}]'),
+    );
+});
+
 test('all scopes', function () {
     $bot = Nutgram::fake();
 

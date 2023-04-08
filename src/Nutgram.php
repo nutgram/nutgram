@@ -442,13 +442,14 @@ class Nutgram extends ResolveHandlers
                 if (!array_key_exists($scope->getHash(), $commandsByScope)) {
                     $commandsByScope[$scope->getHash()] = ['scope' => $scope, 'commands' => []];
                 }
-                $commandsByScope[$scope->getHash()]['commands'][] = $command->toBotCommand();
+                $commandsByScope[$scope->getHash()]['commands'][$command->getPattern()] = $command->toBotCommand();
             }
         }
+        unset($commands);
 
         // set commands for each scope
         foreach ($commandsByScope as $scope) {
-            $this->setMyCommands($scope['commands'], [
+            $this->setMyCommands(array_values($scope['commands']), [
                 'scope' => $scope['scope'],
             ]);
         }
