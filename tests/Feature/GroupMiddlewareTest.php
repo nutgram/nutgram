@@ -339,3 +339,108 @@ it('groups middleware with on*Data/Payload handlers', function ($update) {
 
     expect($test)->toBe('-[MA][MB]H2');
 })->with('callback_query');
+
+
+// SKIP GLOBAL MIDDLEWARES
+
+it('skips global middlewares (latest nested group)', function ($update) {
+    $bot = Nutgram::fake($update);
+    $test = '';
+
+    $middleware0 = function ($bot, $next) use (&$test) {
+        $test .= '[MW0]';
+        $next($bot);
+    };
+
+    $middleware1 = function ($bot, $next) use (&$test) {
+        $test .= '[MW1]';
+        $next($bot);
+    };
+
+    $middleware2 = function ($bot, $next) use (&$test) {
+        $test .= '[MW2]';
+        $next($bot);
+    };
+
+    $bot->middleware($middleware0);
+
+    $bot->group($middleware1, function (Nutgram $bot) use ($middleware0, $middleware2, &$test) {
+        $bot->group($middleware2, function (Nutgram $bot) use (&$test) {
+            $bot->onMessage(function (Nutgram $bot) use (&$test) {
+                $test .= 'H1';
+            })->middleware(function (Nutgram $bot, $next) use (&$test) {
+                $test .= 'LM1';
+                $next($bot);
+            });
+        })->skipGlobalMiddlewares();
+
+        $bot->onMessage(function (Nutgram $bot) use (&$test) {
+            $test .= 'H2';
+        })->middleware(function (Nutgram $bot, $next) use (&$test) {
+            $test .= 'LM2';
+            $next($bot);
+        });
+    });
+
+    $bot->onMessage(function (Nutgram $bot) use (&$test) {
+        $test .= 'H3';
+    })->middleware(function (Nutgram $bot, $next) use (&$test) {
+        $test .= 'LM3';
+        $next($bot);
+    });
+
+    $bot->run();
+
+    expect($test)->toBe('[MW1][MW2]LM1H1[MW0][MW1]LM2H2[MW0]LM3H3');
+})->with('message');
+
+it('skips global middlewares (parent nested group)', function ($update) {
+    $bot = Nutgram::fake($update);
+    $test = '';
+
+    $middleware0 = function ($bot, $next) use (&$test) {
+        $test .= '[MW0]';
+        $next($bot);
+    };
+
+    $middleware1 = function ($bot, $next) use (&$test) {
+        $test .= '[MW1]';
+        $next($bot);
+    };
+
+    $middleware2 = function ($bot, $next) use (&$test) {
+        $test .= '[MW2]';
+        $next($bot);
+    };
+
+    $bot->middleware($middleware0);
+
+    $bot->group($middleware1, function (Nutgram $bot) use ($middleware2, &$test) {
+        $bot->group($middleware2, function (Nutgram $bot) use (&$test) {
+            $bot->onMessage(function (Nutgram $bot) use (&$test) {
+                $test .= 'H1';
+            })->middleware(function (Nutgram $bot, $next) use (&$test) {
+                $test .= 'LM1';
+                $next($bot);
+            });
+        });
+
+        $bot->onMessage(function (Nutgram $bot) use (&$test) {
+            $test .= 'H2';
+        })->middleware(function (Nutgram $bot, $next) use (&$test) {
+            $test .= 'LM2';
+            $next($bot);
+        });
+    })->skipGlobalMiddlewares();
+
+    $bot->onMessage(function (Nutgram $bot) use (&$test) {
+        $test .= 'H3';
+    })->middleware(function (Nutgram $bot, $next) use (&$test) {
+        $test .= 'LM3';
+        $next($bot);
+    });
+
+    $bot->run();
+
+    expect($test)->toBe('[MW1][MW2]LM1H1[MW1]LM2H2[MW0]LM3H3');
+})->with('message');
