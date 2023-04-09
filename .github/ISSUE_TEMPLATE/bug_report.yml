@@ -12,6 +12,14 @@ body:
     
     - type: input
       attributes:
+          label: PHP version
+          description: "PHP version you are running on."
+          placeholder: 8.0
+      validations:
+          required: true
+    
+    - type: input
+      attributes:
           label: Framework
           description: "PHP framework you are using, if applicable."
           placeholder: "Laravel 10.x"
