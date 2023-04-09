@@ -222,6 +222,10 @@ class Nutgram extends ResolveHandlers
     public function run(): void
     {
         if (!$this->middlewareApplied) {
+            foreach ($this->handlersGroups as $group) {
+                $group->unapplyGlobalMiddlewares();
+            }
+
             $this->applyGlobalMiddleware();
             $this->middlewareApplied = true;
         }

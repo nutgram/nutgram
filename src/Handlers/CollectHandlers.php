@@ -42,6 +42,11 @@ abstract class CollectHandlers
     protected array $handlers = [];
 
     /**
+     * @var HandlersGroup[]
+     */
+    protected array $handlersGroups = [];
+
+    /**
      * @param  callable|callable-string|array  $callable
      */
     public function middleware($callable): void
@@ -64,9 +69,9 @@ abstract class CollectHandlers
     /**
      * @param  callable|callable-string|array  $middlewares
      * @param  callable  $closure
-     * @return void
+     * @return HandlersGroup
      */
-    public function group($middlewares, callable $closure): void
+    public function group($middlewares, callable $closure): HandlersGroup
     {
         $middlewares = is_array($middlewares) ? array_reverse($middlewares) : [$middlewares];
 
@@ -102,6 +107,11 @@ abstract class CollectHandlers
         // restore the status of the parent group, if any
         $this->groupMiddlewares = $beforeMyMiddlewares;
         $this->groupHandlers = $beforeMyHandlers;
+
+        // return the group
+        $handlersGroup = new HandlersGroup($this->handlers);
+        $this->handlersGroups[] = $handlersGroup;
+        return $handlersGroup;
     }
 
     /**
