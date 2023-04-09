@@ -14,7 +14,7 @@ body:
       attributes:
           label: PHP version
           description: "PHP version you are running on."
-          placeholder: 8.0
+          placeholder: "8.0"
       validations:
           required: true
     
