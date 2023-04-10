@@ -21,7 +21,7 @@ class HandlersGroup
         $this->skippedGlobalMiddlewares = $middlewares;
     }
 
-    public function unapplyGlobalMiddlewares(): void
+    public function evaluateGroupMethods(): void
     {
         if (!$this->skipGlobalMiddlewares) {
             return;

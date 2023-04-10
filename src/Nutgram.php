@@ -215,6 +215,13 @@ class Nutgram extends ResolveHandlers
         $this->userCache = $this->container->get(UserCache::class);
     }
 
+    protected function evaluateGroupsMethods(): void
+    {
+        foreach ($this->handlersGroups as $group) {
+            $group->evaluateGroupMethods();
+        }
+    }
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -222,10 +229,7 @@ class Nutgram extends ResolveHandlers
     public function run(): void
     {
         if (!$this->middlewareApplied) {
-            foreach ($this->handlersGroups as $group) {
-                $group->unapplyGlobalMiddlewares();
-            }
-
+            $this->evaluateGroupsMethods();
             $this->applyGlobalMiddleware();
             $this->middlewareApplied = true;
         }
