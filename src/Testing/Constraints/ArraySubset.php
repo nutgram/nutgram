@@ -3,10 +3,10 @@
 namespace SergiX44\Nutgram\Testing\Constraints;
 
 use ArrayObject;
+use InvalidArgumentException;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Traversable;
 
 final class ArraySubset extends Constraint
