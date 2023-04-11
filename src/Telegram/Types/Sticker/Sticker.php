@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use SergiX44\Hydrator\Annotation\Alias;
+use SergiX44\Nutgram\Telegram\Properties\StickerType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
@@ -29,7 +30,7 @@ class Sticker extends BaseType
      * The type of the sticker is independent of its format, which is
      * determined by the fields is_animated and is_video.
      */
-    public string $type;
+    public StickerType $type;
 
     /**
      * Sticker width

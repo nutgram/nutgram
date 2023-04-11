@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
@@ -70,7 +71,7 @@ trait Stickers
      *      See {@see https://core.telegram.org/stickers https://core.telegram.org/stickers} for technical requirements.
      *      {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param  array{
-     *     sticker_format?:string,
+     *     sticker_format?:StickerFormat,
      * }  $opt
      * @param  array  $clientOpt
      * @return File|null

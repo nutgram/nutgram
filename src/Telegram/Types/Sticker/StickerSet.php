@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use SergiX44\Hydrator\Annotation\Alias;
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Telegram\Properties\StickerType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 
@@ -26,7 +27,7 @@ class StickerSet extends BaseType
     /**
      * Type of stickers in the set, currently one of “regular”, “mask”, “custom_emoji”
      */
-    public string $sticker_type;
+    public StickerType $sticker_type;
 
     /**
      * True, if the sticker set contains animated stickers
