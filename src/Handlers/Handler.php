@@ -15,7 +15,7 @@ class Handler extends MiddlewareChain
      * regular expression to capture named parameters but not quantifiers
      * captures {name}, but not {1}, {1,}, or {1,2}.
      */
-    protected const PARAM_NAME_REGEX = '/{((?:(?!\d+,?\d+?)\w)+?)}/';
+    protected const PARAM_NAME_REGEX = '/{((?:(?!\d+,?\d?+)\w)+?)}/';
 
     /**
      * @var string|null
@@ -68,13 +68,13 @@ class Handler extends MiddlewareChain
         $pattern = str_replace('/', '\/', $this->pattern);
 
         // replace named parameters with regex
-        $regex = '/^'.preg_replace(self::PARAM_NAME_REGEX, '(?<$1>.*)', $pattern).'?$/miu';
+        $regex = '/^'.preg_replace(self::PARAM_NAME_REGEX, '(?<$1>.*)', $pattern).'?$/miU';
 
         // match + return only named parameters
-        $regexMatched = (bool)preg_match($regex, $value, $matches);
+        $regexMatched = (bool)preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL);
         if ($regexMatched) {
             array_shift($matches);
-            $this->parameters = array_filter($matches, 'is_numeric', ARRAY_FILTER_USE_KEY);
+            $this->setParameters(...array_filter($matches, 'is_numeric', ARRAY_FILTER_USE_KEY));
         }
 
         return $regexMatched;
@@ -108,7 +108,11 @@ class Handler extends MiddlewareChain
      */
     public function __invoke(Nutgram $bot): mixed
     {
-        return call_user_func($bot->resolve($this->callable), $bot, ...$this->parameters);
+        try {
+            return call_user_func($bot->resolve($this->callable), $bot, ...$this->parameters);
+        } finally {
+            $this->parameters = [];
+        }
     }
 
     /**

@@ -45,10 +45,18 @@ abstract class CollectHandlers
      */
     public function middleware($callable): void
     {
+        array_unshift($this->globalMiddlewares, $callable);
+    }
+
+    /**
+     * @param  Array<callable|callable-string|array>  $callable
+     */
+    public function middlewares($callable): void
+    {
         $middlewares = is_array($callable) ? $callable : [$callable];
 
         foreach ($middlewares as $middleware) {
-            array_unshift($this->globalMiddlewares, $middleware);
+            $this->middleware($middleware);
         }
     }
 
@@ -64,6 +72,9 @@ abstract class CollectHandlers
         // get the current group status
         $beforeMyMiddlewares = $this->groupMiddlewares;
         $beforeMyHandlers = $this->groupHandlers;
+
+        // reset the current group status
+        $this->groupHandlers = [];
 
         // push new middlewares to the stack
         $this->groupMiddlewares = [...$middlewares, ...$this->groupMiddlewares];
@@ -168,7 +179,7 @@ abstract class CollectHandlers
      */
     public function beforeApiRequest($callable): Handler
     {
-        return $this->{$this->target}[self::BEFORE_API_REQUEST] = new Handler($callable);
+        return $this->{$this->target}[self::BEFORE_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
     }
 
     /**
@@ -177,6 +188,6 @@ abstract class CollectHandlers
      */
     public function afterApiRequest($callable): Handler
     {
-        return $this->{$this->target}[self::AFTER_API_REQUEST] = new Handler($callable);
+        return $this->{$this->target}[self::AFTER_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
     }
 }

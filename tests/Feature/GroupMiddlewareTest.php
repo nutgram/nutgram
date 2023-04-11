@@ -290,3 +290,52 @@ it('groups middleware with registerCommand', function ($update) {
 
     expect($bot->getGlobalData('flow', ''))->toBe('-[MW0][MW1]LMH');
 })->with('command');
+
+// USE CASES
+
+it('groups middleware with on*Data/Payload handlers', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $test = '';
+
+    $middlewareA = function ($bot, $next) use (&$test) {
+        $test .= '-[MA]';
+        $next($bot);
+    };
+
+    $middlewareB = function ($bot, $next) use (&$test) {
+        $test .= '[MB]';
+        $next($bot);
+    };
+
+    $middlewareC = function ($bot, $next) use (&$test) {
+        $test .= '[MC]';
+        $next($bot);
+    };
+
+    $middlewareD = function ($bot, $next) use (&$test) {
+        $test .= '[MD]';
+        $next($bot);
+    };
+
+    $bot->middleware($middlewareA);
+
+    $bot->group($middlewareB, function (Nutgram $bot) use (&$test, $middlewareC, $middlewareD) {
+        $bot->onCallbackQuery(function (Nutgram $bot) use (&$test) {
+            $test .= 'H1';
+        });
+
+
+        $bot->onCallbackQueryData('thedata', function (Nutgram $bot) use (&$test) {
+            $test .= 'H2';
+        });
+
+        $bot->group([$middlewareC, $middlewareD], function (Nutgram $bot) use (&$test) {
+            // TODO
+        });
+    });
+
+    $bot->run();
+
+    expect($test)->toBe('-[MA][MB]H2');
+})->with('callback_query');

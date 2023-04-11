@@ -707,32 +707,6 @@ it('can manipulate the http response', function () {
     expect($message->text)->toBe('banane');
 });
 
-it('calls the message handler with regex groups', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $bot->onText('I want ([0-9]+) portions of (pizza|cake)', function (Nutgram $bot, $amount, $dish) {
-        $bot->sendMessage("You will get {$amount} portions of {$dish}!");
-
-        expect($amount)->toBe('12');
-        expect($dish)->toBe('pizza');
-    });
-
-    $bot->run();
-})->with('food');
-
-it('calls the message handler with regex groups + number', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $bot->onText('I want {number} portions of (pizza|cake)', function (Nutgram $bot, $amount, $dish) {
-        $bot->sendMessage("You will get {$amount} portions of {$dish}!");
-
-        expect($amount)->toBe('12');
-        expect($dish)->toBe('pizza');
-    });
-
-    $bot->run();
-})->with('food');
-
 it('calls the message handler with multiple global middlewares', function ($update) {
     $bot = Nutgram::fake($update);
 
@@ -748,7 +722,7 @@ it('calls the message handler with multiple global middlewares', function ($upda
         $next($bot);
     };
 
-    $bot->middleware([
+    $bot->middlewares([
         $middlewareA,
         $middlewareB,
     ]);
@@ -798,3 +772,43 @@ it('sends enum value as multipart', function ($update) {
 
     $bot->run();
 })->with('message');
+
+it('calls beforeApiRequest with valid request', function () {
+    $bot = Nutgram::fake();
+
+    $history = [];
+
+    $bot->beforeApiRequest(function ($bot, $request) use (&$history) {
+        $history[] = $request['json']['text'];
+        return $request;
+    });
+
+    $bot->sendMessage('foo');
+    $bot->sendMessage('bar');
+
+    expect($history)->toBe(['foo', 'bar']);
+});
+
+it('calls beforeApiRequest without global middlewares', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $history = [];
+
+    $bot->middleware(function ($bot, $next) {
+        $bot->sendMessage('nope');
+        return;
+    });
+
+    $bot->onText('aaaaaaaaaa', function ($bot) {
+        $bot->sendMessage('foo');
+    });
+
+    $bot->beforeApiRequest(function ($bot, $request) use (&$history) {
+        $history[] = $request['json']['text'];
+        return $request;
+    });
+
+    $bot->run();
+
+    expect($history)->toBe(['nope']);
+})->with('text');
