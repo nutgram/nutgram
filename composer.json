@@ -37,7 +37,6 @@
     },
     "require-dev": {
         "ext-reflection": "*",
-        "illuminate/testing": "^8.0|^9.0|^10.0",
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-mock": "^2.0",
         "roave/security-advisories": "dev-latest",

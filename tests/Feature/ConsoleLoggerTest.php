@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Str;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Logger\ConsoleLogger;
 use SergiX44\Nutgram\Nutgram;
@@ -26,5 +25,4 @@ it('logs with ConsoleLogger', function ($input, $expected) {
     expect(ob_get_contents())->toContain($expected);
 })->with([
     'string' => ['foo', 'DEBUG: foo'],
-    'stringable' => [Str::of('bar'), 'DEBUG: bar'],
 ]);
