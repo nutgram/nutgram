@@ -15,20 +15,5 @@ class BotCommandScopeAllChatAdministrators extends BotCommandScope
     /**
      * Scope type, must be all_chat_administrators
      */
-    public string $type = 'all_chat_administrators';
-
-    public function getType(): string
-    {
-        return BotCommandScopeType::ALL_CHAT_ADMINISTRATORS;
-    }
-
-    public function getHash(): string
-    {
-        return $this->type;
-    }
-
-    public static function apply(): static
-    {
-        return new static();
-    }
+    public string $type = BotCommandScopeType::ALL_CHAT_ADMINISTRATORS;
 }

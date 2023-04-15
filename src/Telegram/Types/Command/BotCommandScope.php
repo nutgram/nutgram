@@ -20,7 +20,15 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 #[BotCommandScopeResolver]
 abstract class BotCommandScope extends BaseType
 {
-    abstract public function getType(): string;
+    public string $type;
 
-    abstract public function getHash(): string;
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function __serialize(): array
+    {
+        return ['type' => $this->getType()];
+    }
 }

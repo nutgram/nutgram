@@ -15,7 +15,7 @@ class BotCommandScopeChatAdministrators extends BotCommandScope
     /**
      * Scope type, must be chat_administrators
      */
-    public string $type = 'chat_administrators';
+    public string $type = BotCommandScopeType::CHAT_ADMINISTRATORS;
 
     /**
      * Unique identifier for the target chat or username
@@ -23,20 +23,9 @@ class BotCommandScopeChatAdministrators extends BotCommandScope
      */
     public int|string $chat_id;
 
-    public function getType(): string
+    public function __construct(int|string $chat_id)
     {
-        return BotCommandScopeType::CHAT_ADMINISTRATORS;
-    }
-
-    public function getHash(): string
-    {
-        return $this->type.':'.$this->chat_id;
-    }
-
-    public static function apply(int|string $chat_id): static
-    {
-        $obj = new static();
-        $obj->chat_id = $chat_id;
-        return $obj;
+        parent::__construct();
+        $this->chat_id = $chat_id;
     }
 }

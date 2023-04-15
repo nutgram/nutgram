@@ -13,10 +13,5 @@ class MenuButtonCommands extends MenuButton
     /**
      * Type of the button, must be commands
      */
-    public string $type = 'commands';
-
-    public function getType(): string
-    {
-        return MenuButtonType::COMMANDS;
-    }
+    public string $type = MenuButtonType::COMMANDS;
 }

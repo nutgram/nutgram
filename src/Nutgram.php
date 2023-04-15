@@ -35,7 +35,7 @@ use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Support\BulkMessenger;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
-use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 use Throwable;
@@ -422,35 +422,24 @@ class Nutgram extends ResolveHandlers
      */
     public function registerMyCommands(): void
     {
-        // get all available commands
+        /** @var BotCommandScope[] $commands */
+        $scopes = [];
         /** @var Command[] $commands */
         $commands = [];
-        array_walk_recursive($this->handlers, static function ($handler) use (&$commands) {
+        array_walk_recursive($this->handlers, static function ($handler) use (&$commands, &$scopes) {
             if ($handler instanceof Command && !$handler->isHidden()) {
-                $commands[] = $handler;
+                foreach ($handler->scopes() as $scope) {
+                    $hashCode = crc32(serialize(get_object_vars($scope)));
+                    $scopes[$hashCode] = $scope;
+                    $commands[$hashCode][] = $handler->toBotCommand();
+                }
             }
         });
 
-        // group commands by scope
-        $commandsByScope = [];
-        foreach ($commands as $command) {
-            if (empty($command->scopes())) {
-                $command->scope(BotCommandScopeDefault::apply());
-            }
-
-            foreach ($command->scopes() as $scope) {
-                if (!array_key_exists($scope->getHash(), $commandsByScope)) {
-                    $commandsByScope[$scope->getHash()] = ['scope' => $scope, 'commands' => []];
-                }
-                $commandsByScope[$scope->getHash()]['commands'][$command->getPattern()] = $command->toBotCommand();
-            }
-        }
-        unset($commands);
-
         // set commands for each scope
-        foreach ($commandsByScope as $scope) {
-            $this->setMyCommands(array_values($scope['commands']), [
-                'scope' => $scope['scope'],
+        foreach ($scopes as $hashCode => $scope) {
+            $this->setMyCommands(array_unique($commands[$hashCode], SORT_REGULAR), [
+                'scope' => $scope,
             ]);
         }
     }
