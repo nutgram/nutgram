@@ -4,15 +4,12 @@ namespace SergiX44\Nutgram\Telegram\Types\Common;
 
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
-use SergiX44\Nutgram\Telegram\Types\Channel\ChannelPost;
-use SergiX44\Nutgram\Telegram\Types\Channel\EditedChannelPost;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
 use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
-use SergiX44\Nutgram\Telegram\Types\Message\EditedMessage;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingQuery;
@@ -46,17 +43,17 @@ class Update extends BaseType
     /**
      * Optional. New version of a message that is known to the bot and was edited
      */
-    public ?EditedMessage $edited_message = null;
+    public ?Message $edited_message = null;
 
     /**
      * Optional. New incoming channel post of any kind — text, photo, sticker, etc.
      */
-    public ?ChannelPost $channel_post = null;
+    public ?Message $channel_post = null;
 
     /**
      * Optional. New version of a channel post that is known to the bot and was edited
      */
-    public ?EditedChannelPost $edited_channel_post = null;
+    public ?Message $edited_channel_post = null;
 
     /**
      * Optional. New incoming {@see https://core.telegram.org/bots/api#inline-mode inline} query
