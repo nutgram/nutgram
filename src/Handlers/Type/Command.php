@@ -7,6 +7,7 @@ use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
 
 class Command extends Handler
 {
@@ -80,7 +81,7 @@ class Command extends Handler
      */
     public function scopes(): array
     {
-        return $this->scopes;
+        return !empty($this->scopes) ? $this->scopes : [new BotCommandScopeDefault];
     }
 
     /**

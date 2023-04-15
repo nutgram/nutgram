@@ -96,7 +96,7 @@ test('onCommand with description and scope', function () {
 
     $bot->onCommand('start', function (Nutgram $bot) {
         $bot->sendMessage('Hello World!');
-    })->description('Start command')->scope(BotCommandScopeAllPrivateChats::apply());
+    })->description('Start command')->scope(new BotCommandScopeAllPrivateChats);
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
         expect($request['json'])
@@ -119,7 +119,7 @@ test('registerCommand with description and scope', function () {
         public function scopes(): array
         {
             return [
-                BotCommandScopeAllPrivateChats::apply(),
+                new BotCommandScopeAllPrivateChats,
             ];
         }
 
@@ -148,8 +148,8 @@ test('onCommand with description and scopes (multiple calls)', function () {
     $bot->onCommand('start', function (Nutgram $bot) {
         $bot->sendMessage('Hello World!');
     })->description('Start command')
-        ->scope(BotCommandScopeAllPrivateChats::apply())
-        ->scope(BotCommandScopeAllGroupChats::apply());
+        ->scope(new BotCommandScopeAllPrivateChats)
+        ->scope(new BotCommandScopeAllGroupChats);
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
         $history[] = $request['json'];
@@ -178,8 +178,8 @@ test('onCommand with description and scopes (as array)', function () {
         $bot->sendMessage('Hello World!');
     })->description('Start command')
         ->scope([
-            BotCommandScopeAllPrivateChats::apply(),
-            BotCommandScopeAllGroupChats::apply()
+            new BotCommandScopeAllPrivateChats,
+            new BotCommandScopeAllGroupChats
         ]);
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
@@ -209,21 +209,21 @@ test('grouped scopes', function () {
         $bot->sendMessage('Start command!');
     })
         ->description('Start command')
-        ->scope(BotCommandScopeAllPrivateChats::apply())
-        ->scope(BotCommandScopeAllGroupChats::apply());
+        ->scope(new BotCommandScopeAllPrivateChats)
+        ->scope(new BotCommandScopeAllGroupChats);
 
     $bot->onCommand('help', function (Nutgram $bot) {
         $bot->sendMessage('Help command!');
     })
         ->description('Help command')
-        ->scope(BotCommandScopeAllPrivateChats::apply());
+        ->scope(new BotCommandScopeAllPrivateChats);
 
     $bot->onCommand('about', function (Nutgram $bot) {
         $bot->sendMessage('About command!');
     })
         ->description('About command')
-        ->scope(BotCommandScopeAllGroupChats::apply())
-        ->scope(BotCommandScopeAllChatAdministrators::apply());
+        ->scope(new BotCommandScopeAllGroupChats)
+        ->scope(new BotCommandScopeAllChatAdministrators);
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
         $history[] = $request['json'];
@@ -255,15 +255,15 @@ test('avoid duplicated scopes', function () {
         $bot->sendMessage('Start command!');
     })
         ->description('Start command')
-        ->scope(BotCommandScopeAllPrivateChats::apply())
-        ->scope(BotCommandScopeAllGroupChats::apply());
+        ->scope(new BotCommandScopeAllPrivateChats)
+        ->scope(new BotCommandScopeAllGroupChats);
 
     $bot->onCommand('help', function (Nutgram $bot) {
         $bot->sendMessage('Help command!');
     })
         ->description('Help command')
-        ->scope(BotCommandScopeAllPrivateChats::apply())
-        ->scope(BotCommandScopeAllPrivateChats::apply());
+        ->scope(new BotCommandScopeAllPrivateChats)
+        ->scope(new BotCommandScopeAllPrivateChats);
 
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
@@ -298,68 +298,68 @@ test('all scopes', function () {
         $bot->sendMessage('Help command!');
     })
         ->description('Help command')
-        ->scope(BotCommandScopeDefault::apply());
+        ->scope(new BotCommandScopeDefault);
 
     $bot->onCommand('admins', function (Nutgram $bot) {
         $bot->sendMessage('Admins command!');
     })
         ->description('Admins command')
-        ->scope(BotCommandScopeAllChatAdministrators::apply());
+        ->scope(new BotCommandScopeAllChatAdministrators);
 
     $bot->onCommand('groups', function (Nutgram $bot) {
         $bot->sendMessage('Groups command!');
     })
         ->description('Groups command')
-        ->scope(BotCommandScopeAllGroupChats::apply());
+        ->scope(new BotCommandScopeAllGroupChats);
 
     $bot->onCommand('private', function (Nutgram $bot) {
         $bot->sendMessage('Private command!');
     })
         ->description('Private command')
-        ->scope(BotCommandScopeAllPrivateChats::apply());
+        ->scope(new BotCommandScopeAllPrivateChats);
 
     $bot->onCommand('chat_a', function (Nutgram $bot) {
         $bot->sendMessage('ChatA command!');
     })
         ->description('ChatA command')
-        ->scope(BotCommandScopeChat::apply(123));
+        ->scope(new BotCommandScopeChat(123));
 
     $bot->onCommand('chat_b', function (Nutgram $bot) {
         $bot->sendMessage('ChatB command!');
     })
         ->description('ChatB command')
-        ->scope(BotCommandScopeChat::apply(456));
+        ->scope(new BotCommandScopeChat(456));
 
     $bot->onCommand('chat_admin_a', function (Nutgram $bot) {
         $bot->sendMessage('ChatAdminA command!');
     })
         ->description('ChatAdminA command')
-        ->scope(BotCommandScopeChatAdministrators::apply(123));
+        ->scope(new BotCommandScopeChatAdministrators(123));
 
     $bot->onCommand('chat_admin_b', function (Nutgram $bot) {
         $bot->sendMessage('ChatAdminB command!');
     })
         ->description('ChatAdminB command')
-        ->scope(BotCommandScopeChatAdministrators::apply(456));
+        ->scope(new BotCommandScopeChatAdministrators(456));
 
     $bot->onCommand('chat_member_a', function (Nutgram $bot) {
         $bot->sendMessage('ChatMemberA command!');
     })
         ->description('ChatMemberA command')
-        ->scope(BotCommandScopeChatMember::apply(123, 987));
+        ->scope(new BotCommandScopeChatMember(123, 987));
 
     $bot->onCommand('chat_member_b', function (Nutgram $bot) {
         $bot->sendMessage('ChatMemberB command!');
     })
         ->description('ChatMemberB command')
-        ->scope(BotCommandScopeChatMember::apply(123, 654));
+        ->scope(new BotCommandScopeChatMember(123, 654));
 
     $bot->onCommand('chat_member_c', function (Nutgram $bot) {
         $bot->sendMessage('ChatMemberC command!');
     })
         ->description('ChatMemberC command')
-        ->scope(BotCommandScopeChatMember::apply(456, 321))
-        ->scope(BotCommandScopeChatMember::apply(123, 654));
+        ->scope(new BotCommandScopeChatMember(456, 321))
+        ->scope(new BotCommandScopeChatMember(123, 654));
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
         $history[] = $request['json'];

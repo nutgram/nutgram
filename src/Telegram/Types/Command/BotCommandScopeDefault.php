@@ -16,20 +16,5 @@ class BotCommandScopeDefault extends BotCommandScope
     /**
      * Scope type, must be default
      */
-    public string $type = 'default';
-
-    public function getType(): string
-    {
-        return BotCommandScopeType::DEFAULT;
-    }
-
-    public function getHash(): string
-    {
-        return $this->type;
-    }
-
-    public static function apply(): static
-    {
-        return new static();
-    }
+    public string $type = BotCommandScopeType::DEFAULT;
 }

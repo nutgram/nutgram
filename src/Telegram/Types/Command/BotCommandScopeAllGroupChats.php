@@ -15,20 +15,5 @@ class BotCommandScopeAllGroupChats extends BotCommandScope
     /**
      * Scope type, must be all_group_chats
      */
-    public string $type = 'all_group_chats';
-
-    public function getType(): string
-    {
-        return BotCommandScopeType::ALL_GROUP_CHATS;
-    }
-
-    public function getHash(): string
-    {
-        return $this->type;
-    }
-
-    public static function apply(): static
-    {
-        return new static();
-    }
+    public string $type = BotCommandScopeType::ALL_GROUP_CHATS;
 }
