@@ -5,17 +5,18 @@ namespace SergiX44\Nutgram\Telegram\Types\Chat;
 use Attribute;
 use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
+use SergiX44\Nutgram\Telegram\Properties\ChatMemberStatus;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class ChatMemberResolver extends ConcreteResolver
 {
     protected array $concretes = [
-        'creator' => ChatMemberOwner::class,
-        'administrator' => ChatMemberAdministrator::class,
-        'member' => ChatMemberMember::class,
-        'restricted' => ChatMemberRestricted::class,
-        'left' => ChatMemberLeft::class,
-        'kicked' => ChatMemberBanned::class,
+        ChatMemberStatus::CREATOR->value => ChatMemberOwner::class,
+        ChatMemberStatus::ADMINISTRATOR->value => ChatMemberAdministrator::class,
+        ChatMemberStatus::MEMBER->value => ChatMemberMember::class,
+        ChatMemberStatus::RESTRICTED->value => ChatMemberRestricted::class,
+        ChatMemberStatus::LEFT->value => ChatMemberLeft::class,
+        ChatMemberStatus::KICKED->value => ChatMemberBanned::class,
     ];
 
     public function concreteFor(array $data): ?string

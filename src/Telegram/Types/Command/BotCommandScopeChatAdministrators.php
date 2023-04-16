@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use SergiX44\Nutgram\Telegram\Attributes\BotCommandScopeType;
+use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#botcommandscope scope}
@@ -15,7 +15,7 @@ class BotCommandScopeChatAdministrators extends BotCommandScope
     /**
      * Scope type, must be chat_administrators
      */
-    public string $type = BotCommandScopeType::CHAT_ADMINISTRATORS;
+    public BotCommandScopeType $type = BotCommandScopeType::CHAT_ADMINISTRATORS;
 
     /**
      * Unique identifier for the target chat or username

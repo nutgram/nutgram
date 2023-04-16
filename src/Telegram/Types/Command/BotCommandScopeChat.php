@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use SergiX44\Nutgram\Telegram\Attributes\BotCommandScopeType;
+use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#botcommandscope scope}
@@ -15,7 +15,7 @@ class BotCommandScopeChat extends BotCommandScope
     /**
      * Scope type, must be chat
      */
-    public string $type = BotCommandScopeType::CHAT;
+    public BotCommandScopeType $type = BotCommandScopeType::CHAT;
 
     /**
      * Unique identifier for the target chat or username

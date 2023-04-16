@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use SergiX44\Nutgram\Telegram\Attributes\BotCommandScopeType;
+use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#botcommandscope scope}
@@ -15,5 +15,5 @@ class BotCommandScopeAllGroupChats extends BotCommandScope
     /**
      * Scope type, must be all_group_chats
      */
-    public string $type = BotCommandScopeType::ALL_GROUP_CHATS;
+    public BotCommandScopeType $type = BotCommandScopeType::ALL_GROUP_CHATS;
 }

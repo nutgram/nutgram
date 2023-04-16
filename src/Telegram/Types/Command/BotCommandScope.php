@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
+use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -20,15 +21,15 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 #[BotCommandScopeResolver]
 abstract class BotCommandScope extends BaseType
 {
-    public string $type;
+    public BotCommandScopeType $type;
 
-    public function getType(): string
+    public function getType(): BotCommandScopeType
     {
         return $this->type;
     }
 
     public function __serialize(): array
     {
-        return ['type' => $this->getType()];
+        return ['type' => $this->getType()->value];
     }
 }
