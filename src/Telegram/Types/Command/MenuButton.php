@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
+use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -17,9 +18,9 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 #[MenuButtonResolver]
 abstract class MenuButton extends BaseType
 {
-    public string $type;
+    public MenuButtonType $type;
 
-    public function getType(): string
+    public function getType(): MenuButtonType
     {
         return $this->type;
     }
