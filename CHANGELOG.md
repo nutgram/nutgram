@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.18.0 - 2023-04-16
+
+### What's Changed
+
+- Fix "$request" content in beforeApiRequest handler by @Lukasss93 in https://github.com/nutgram/nutgram/pull/417
+- Simplify bot scope implementation by @SergiX44 in https://github.com/nutgram/nutgram/pull/420
+- Command Scope Support by @Lukasss93 in https://github.com/nutgram/nutgram/pull/418
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.17.2...3.18.0
+
 ## 3.17.2 - 2023-04-03
 
 ### What's Changed
