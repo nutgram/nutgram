@@ -16,6 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMember;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatPermissions;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Command\MenuButton;
 use SergiX44\Nutgram\Telegram\Types\Description\BotDescription;
 use SergiX44\Nutgram\Telegram\Types\Description\BotShortDescription;
@@ -1433,6 +1434,9 @@ trait AvailableMethods
     public function setMyCommands(array $commands = [], array $opt = []): ?bool
     {
         $required = ['commands' => json_encode($commands)];
+        if (array_key_exists('scope', $opt)) {
+            $opt['scope'] = json_encode($opt['scope']);
+        }
         return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
     }
 
@@ -1457,7 +1461,7 @@ trait AvailableMethods
      * {@see https://core.telegram.org/bots/api#botcommand BotCommand} on success.
      * @see https://core.telegram.org/bots/api#getmycommands
      * @param  array{
-     *     scope?:object,
+     *     scope?:BotCommandScope,
      *     language_code?:string
      * }  $opt
      * @return BotCommand[]|null
