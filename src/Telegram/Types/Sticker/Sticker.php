@@ -2,7 +2,6 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
-use SergiX44\Hydrator\Annotation\Alias;
 use SergiX44\Nutgram\Telegram\Properties\StickerType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
@@ -56,13 +55,6 @@ class Sticker extends BaseType
      * Optional. Sticker thumbnail in .webp or .jpg format
      */
     public ?PhotoSize $thumbnail = null;
-
-    /**
-     * @see $thumbnail
-     * @deprecated Use thumbnail
-     */
-    #[Alias('thumbnail')]
-    public ?PhotoSize $thumb = null;
 
     /**
      * Optional. Emoji associated with the sticker
