@@ -35,6 +35,7 @@ use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Support\BulkMessenger;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 use Throwable;
@@ -419,16 +420,28 @@ class Nutgram extends ResolveHandlers
     /**
      * Set my commands call to Telegram using all the registered commands
      */
-    public function registerMyCommands(array $opt = []): bool|null
+    public function registerMyCommands(): void
     {
+        /** @var BotCommandScope[] $commands */
+        $scopes = [];
+        /** @var Command[] $commands */
         $commands = [];
-        array_walk_recursive($this->handlers, static function ($handler) use (&$commands) {
+        array_walk_recursive($this->handlers, static function ($handler) use (&$commands, &$scopes) {
             if ($handler instanceof Command && !$handler->isHidden()) {
-                $commands[] = $handler->toBotCommand();
+                foreach ($handler->scopes() as $scope) {
+                    $hashCode = crc32(serialize(get_object_vars($scope)));
+                    $scopes[$hashCode] = $scope;
+                    $commands[$hashCode][] = $handler->toBotCommand();
+                }
             }
         });
 
-        return $this->setMyCommands($commands, $opt);
+        // set commands for each scope
+        foreach ($scopes as $hashCode => $scope) {
+            $this->setMyCommands(array_unique($commands[$hashCode], SORT_REGULAR), [
+                'scope' => $scope,
+            ]);
+        }
     }
 
     /**
