@@ -14,6 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Command\MenuButton;
 use SergiX44\Nutgram\Telegram\Types\Description\BotDescription;
+use SergiX44\Nutgram\Telegram\Types\Description\BotName;
 use SergiX44\Nutgram\Telegram\Types\Description\BotShortDescription;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopic;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
@@ -1463,6 +1464,33 @@ trait AvailableMethods
      * @return BotCommand[]|null
      */
     public function getMyCommands(array $opt = []): ?array
+    {
+        return $this->requestJson(__FUNCTION__, $opt, BotCommand::class);
+    }
+
+    /**
+     * Use this method to get the current bot name for the given user language. Returns BotName on success.
+     * @see https://core.telegram.org/bots/api#getmyname
+     * @param  array{
+     *     language_code?:string
+     * }  $opt
+     * @return BotName|null
+     */
+    public function getMyName(array $opt = []): ?BotName
+    {
+        return $this->requestJson(__FUNCTION__, $opt, BotName::class);
+    }
+
+    /**
+     * Use this method to change the bot's name. Returns True on success.
+     * @see https://core.telegram.org/bots/api#setmyname
+     * @param  array{
+     *     name?:string,
+     *     language_code?:string
+     * }  $opt
+     * @return bool|null
+     */
+    public function setMyName(array $opt = []): ?bool
     {
         return $this->requestJson(__FUNCTION__, $opt, BotCommand::class);
     }
