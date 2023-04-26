@@ -70,6 +70,12 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
     public ?string $switch_inline_query_current_chat = null;
 
     /**
+     * Optional. If set, pressing the button will prompt the user to select one of their chats of the specified type,
+     * open that chat and insert the bot's username and the specified inline query in the input field.
+     */
+    public ?SwitchInlineQueryChosenChat $switch_inline_query_chosen_chat = null;
+
+    /**
      * Optional. Description of the game that will be launched when the user presses the button.
      *
      * NOTE: This type of button MUST always be the first button in the first row.
@@ -93,6 +99,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?CallbackGame $callback_game = null,
         ?bool $pay = null,
         ?WebAppInfo $web_app = null,
+        ?SwitchInlineQueryChosenChat $switch_inline_query_chosen_chat = null,
     ) {
         parent::__construct();
         $this->text = $text;
@@ -104,6 +111,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         $this->callback_game = $callback_game;
         $this->pay = $pay;
         $this->web_app = $web_app;
+        $this->switch_inline_query_chosen_chat = $switch_inline_query_chosen_chat;
     }
 
     public static function make(
@@ -116,6 +124,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?CallbackGame $callback_game = null,
         ?bool $pay = null,
         ?WebAppInfo $web_app = null,
+        ?SwitchInlineQueryChosenChat $switch_inline_query_chosen_chat = null,
     ): InlineKeyboardButton {
         return new self(
             $text,
@@ -127,6 +136,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
             $callback_game,
             $pay,
             $web_app,
+            $switch_inline_query_chosen_chat,
         );
     }
 
@@ -139,6 +149,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
             'callback_data' => $this->callback_data,
             'switch_inline_query' => $this->switch_inline_query,
             'switch_inline_query_current_chat' => $this->switch_inline_query_current_chat,
+            'switch_inline_query_chosen_chat' => $this->switch_inline_query_chosen_chat,
             'callback_game' => $this->callback_game,
             'pay' => $this->pay,
             'web_app' => $this->web_app,
