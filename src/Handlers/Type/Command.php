@@ -18,8 +18,8 @@ class Command extends Handler
     protected array $scopes = [];
 
     /**
-     * @param  callable|callable-string  $callable
-     * @param  string|null  $command
+     * @param callable|callable-string $callable
+     * @param string|null              $command
      */
     public function __construct($callable = null, ?string $command = null)
     {
@@ -32,7 +32,8 @@ class Command extends Handler
      */
     public function getName(): string
     {
-        [$cmd,] = explode(' ', strtolower($this->pattern ?? ''));
+        [$cmd] = explode(' ', strtolower($this->pattern ?? ''));
+
         return str_replace('/', '', $cmd);
     }
 
@@ -53,17 +54,20 @@ class Command extends Handler
     }
 
     /**
-     * @param  string  $description
+     * @param string $description
+     *
      * @return Command
      */
     public function description(string $description): Command
     {
         $this->description = $description;
+
         return $this;
     }
 
     /**
-     * @param  BotCommandScope|BotCommandScope[]  $scope
+     * @param BotCommandScope|BotCommandScope[] $scope
+     *
      * @return $this
      */
     public function scope(BotCommandScope|array $scope): Command
@@ -73,6 +77,7 @@ class Command extends Handler
         }
 
         $this->scopes = array_merge($this->scopes, $scope);
+
         return $this;
     }
 
@@ -81,7 +86,7 @@ class Command extends Handler
      */
     public function scopes(): array
     {
-        return !empty($this->scopes) ? $this->scopes : [new BotCommandScopeDefault];
+        return !empty($this->scopes) ? $this->scopes : [new BotCommandScopeDefault()];
     }
 
     /**

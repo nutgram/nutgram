@@ -107,7 +107,7 @@ it('redacts bot token when there is a connectexception', function () {
             new ConnectException(
                 'cURL error 6: Could not resolve host: api.telegram.org (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/getUpdates',
                 new Request('GET', 'https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/sendMessage')
-            )
+            ),
         ],
     );
 

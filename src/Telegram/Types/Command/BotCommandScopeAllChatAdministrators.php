@@ -13,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Attributes\BotCommandScopeType;
 class BotCommandScopeAllChatAdministrators extends BotCommandScope
 {
     /**
-     * Scope type, must be all_chat_administrators
+     * Scope type, must be all_chat_administrators.
      */
     public string $type = BotCommandScopeType::ALL_CHAT_ADMINISTRATORS;
 }

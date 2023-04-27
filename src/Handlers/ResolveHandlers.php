@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Handlers;
 
 use Psr\Container\ContainerExceptionInterface;
@@ -15,8 +14,7 @@ use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 /**
- * Trait ResolveHandlers
- * @package SergiX44\Nutgram\Handlers
+ * Trait ResolveHandlers.
  */
 abstract class ResolveHandlers extends CollectHandlers
 {
@@ -88,10 +86,10 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  array  $handlers
-     * @param  string  $type
-     * @param  string|null  $subType
-     * @param  string|null  $value
+     * @param array       $handlers
+     * @param string      $type
+     * @param string|null $subType
+     * @param string|null $value
      */
     protected function addHandlersBy(
         array &$handlers,
@@ -126,10 +124,12 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
-     * @return callable|Conversation|\Closure|null
+     * @param int|null $userId
+     * @param int|null $chatId
+     *
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     *
+     * @return callable|Conversation|\Closure|null
      */
     public function currentConversation(?int $userId, ?int $chatId): callable|Conversation|\Closure|null
     {
@@ -141,9 +141,11 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  Conversation|callable  $conversation
-     * @return array
+     * @param Conversation|callable $conversation
+     *
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     *
+     * @return array
      */
     protected function continueConversation(Conversation|callable $conversation): array
     {
@@ -160,6 +162,7 @@ abstract class ResolveHandlers extends CollectHandlers
                     if ($conversation instanceof Conversation) {
                         $conversation->terminate($this);
                     }
+
                     return $handlers;
                 }
             }
@@ -181,7 +184,7 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  Handler  $handler
+     * @param Handler $handler
      */
     protected function applyGlobalMiddlewareTo(Handler $handler): void
     {
@@ -210,10 +213,12 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  Conversation  $conversation
-     * @return void
+     * @param Conversation $conversation
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
+     * @return void
      */
     protected function refreshInstance(Conversation $conversation): void
     {

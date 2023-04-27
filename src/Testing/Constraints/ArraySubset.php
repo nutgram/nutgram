@@ -18,8 +18,9 @@ final class ArraySubset extends Constraint
     /**
      * Create a new array subset constraint instance.
      *
-     * @param  iterable  $subset
-     * @param  bool  $strict
+     * @param iterable $subset
+     * @param bool     $strict
+     *
      * @return void
      */
     public function __construct(iterable $subset, bool $strict = false)
@@ -38,13 +39,14 @@ final class ArraySubset extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param  mixed  $other
-     * @param  string  $description
-     * @param  bool  $returnResult
-     * @return bool|null
+     * @param mixed  $other
+     * @param string $description
+     * @param bool   $returnResult
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
+     *
+     * @return bool|null
      */
     public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
     {
@@ -82,9 +84,9 @@ final class ArraySubset extends Constraint
     /**
      * Returns a string representation of the constraint.
      *
-     * @return string
-     *
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     public function toString(): string
     {
@@ -97,10 +99,11 @@ final class ArraySubset extends Constraint
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param  mixed  $other
-     * @return string
+     * @param mixed $other
      *
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     protected function failureDescription($other): string
     {
@@ -113,7 +116,8 @@ final class ArraySubset extends Constraint
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param  iterable  $other
+     * @param iterable $other
+     *
      * @return array
      */
     private function toArray(iterable $other): array
@@ -131,6 +135,6 @@ final class ArraySubset extends Constraint
         }
 
         // Keep BC even if we know that array would not be the expected one
-        return (array)$other;
+        return (array) $other;
     }
 }

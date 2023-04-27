@@ -10,12 +10,13 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * {@see https://core.telegram.org/bots/api#photosize photos},
  * {@see https://core.telegram.org/bots/api#voice voice messages} and
  * {@see https://core.telegram.org/bots/api#audio audio files}).
+ *
  * @see https://core.telegram.org/bots/api#document
  */
 class Document extends BaseType
 {
     /**
-     * Identifier for this file
+     * Identifier for this file.
      */
     public string $file_id;
 
@@ -26,7 +27,7 @@ class Document extends BaseType
     public string $file_unique_id;
 
     /**
-     * Optional. Document thumbnail as defined by sender
+     * Optional. Document thumbnail as defined by sender.
      */
     public ?PhotoSize $thumbnail = null;
 
@@ -38,17 +39,17 @@ class Document extends BaseType
     public ?PhotoSize $thumb = null;
 
     /**
-     * Optional. Original filename as defined by sender
+     * Optional. Original filename as defined by sender.
      */
     public ?string $file_name = null;
 
     /**
-     * Optional. MIME type of the file as defined by sender
+     * Optional. MIME type of the file as defined by sender.
      */
     public ?string $mime_type = null;
 
     /**
-     * Optional. File size
+     * Optional. File size.
      */
     public ?int $file_size = null;
 }

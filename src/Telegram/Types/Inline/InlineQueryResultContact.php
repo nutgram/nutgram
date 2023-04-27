@@ -14,83 +14,87 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the contact.
  *
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ *
  * @see https://core.telegram.org/bots/api#inlinequeryresultcontact
  */
 class InlineQueryResultContact extends InlineQueryResult
 {
     /**
-     * Type of the result, must be contact
+     * Type of the result, must be contact.
      */
     public string $type;
 
     /**
-     * Unique identifier for this result, 1-64 Bytes
+     * Unique identifier for this result, 1-64 Bytes.
      */
     public string $id;
 
     /**
-     * Contact's phone number
+     * Contact's phone number.
      */
     public string $phone_number;
 
     /**
-     * Contact's first name
+     * Contact's first name.
      */
     public string $first_name;
 
     /**
-     * Optional. Contact's last name
+     * Optional. Contact's last name.
      */
     public ?string $last_name = null;
 
     /**
-     * Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
+     * Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes.
      */
     public ?string $vcard = null;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
-     * attached to the message
+     * attached to the message.
      */
     public ?InlineKeyboardMarkup $reply_markup = null;
 
     /**
-     * Optional. Content of the message to be sent instead of the contact
+     * Optional. Content of the message to be sent instead of the contact.
      */
     public InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent|null $input_message_content;
 
     /**
-     * Optional. Url of the thumbnail for the result
+     * Optional. Url of the thumbnail for the result.
      */
     public ?string $thumbnail_url = null;
 
     /**
-     * Optional. Thumbnail width
+     * Optional. Thumbnail width.
      */
     public ?int $thumbnail_width = null;
 
     /**
-     * Optional. Thumbnail height
+     * Optional. Thumbnail height.
      */
     public ?int $thumbnail_height = null;
 
     /**
-     * Optional. Url of the thumbnail for the result
+     * Optional. Url of the thumbnail for the result.
+     *
      * @deprecated Use thumbnail_url
      */
     #[Alias('thumbnail_url')]
     public ?string $thumb_url = null;
 
     /**
-     * Optional. Thumbnail width
+     * Optional. Thumbnail width.
+     *
      * @deprecated Use thumbnail_width
      */
     #[Alias('thumbnail_width')]
     public ?int $thumb_width = null;
 
     /**
-     * Optional. Thumbnail height
+     * Optional. Thumbnail height.
+     *
      * @deprecated Use thumbnail_height
      */
     #[Alias('thumbnail_height')]

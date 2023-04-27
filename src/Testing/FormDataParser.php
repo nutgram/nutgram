@@ -36,7 +36,7 @@ class FormDataParser
         $contentType = $this->request->getHeaderLine('Content-Type');
 
         //get body
-        $body = (string)$this->request->getBody();
+        $body = (string) $this->request->getBody();
 
         if (!preg_match('/boundary=(.*)$/is', $contentType, $matches)) {
             return $this;
@@ -84,8 +84,10 @@ class FormDataParser
     }
 
     /**
-     * Parses body param headers
-     * @param  string  $headerContent
+     * Parses body param headers.
+     *
+     * @param string $headerContent
+     *
      * @return array
      */
     protected function parseHeaders(string $headerContent): array

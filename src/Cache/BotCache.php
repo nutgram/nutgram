@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Cache;
 
 use DateInterval;
@@ -41,6 +40,7 @@ abstract class BotCache
         if ($this->botId !== null) {
             return implode('_', [$this->key, $this->botId, ...func_get_args()]);
         }
+
         return implode('_', [$this->key, ...func_get_args()]);
     }
 }

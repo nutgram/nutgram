@@ -8,12 +8,14 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object represents a service message about new members invited to a video chat.
+ *
  * @see https://core.telegram.org/bots/api#videochatparticipantsinvited
  */
 class VideoChatParticipantsInvited extends BaseType
 {
     /**
-     * New members that were invited to the video chat
+     * New members that were invited to the video chat.
+     *
      * @var \SergiX44\Nutgram\Telegram\Types\User\User[] $users
      */
     #[ArrayType(User::class)]

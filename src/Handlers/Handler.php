@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Handlers;
 
 use Psr\Container\ContainerExceptionInterface;
@@ -28,7 +27,7 @@ class Handler extends MiddlewareChain
     protected array $parameters = [];
 
     /**
-     * @var callable $callable
+     * @var callable
      */
     protected $callable;
 
@@ -44,8 +43,9 @@ class Handler extends MiddlewareChain
 
     /**
      * Handler constructor.
+     *
      * @param $callable
-     * @param  string|null  $pattern
+     * @param string|null $pattern
      */
     public function __construct($callable, ?string $pattern = null)
     {
@@ -55,7 +55,8 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param  string  $value
+     * @param string $value
+     *
      * @return bool
      */
     public function matching(string $value): bool
@@ -71,7 +72,7 @@ class Handler extends MiddlewareChain
         $regex = '/^'.preg_replace(self::PARAM_NAME_REGEX, '(?<$1>.*)', $pattern).'?$/miU';
 
         // match + return only named parameters
-        $regexMatched = (bool)preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL);
+        $regexMatched = (bool) preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL);
         if ($regexMatched) {
             array_shift($matches);
             $this->setParameters(...array_filter($matches, 'is_numeric', ARRAY_FILTER_USE_KEY));
@@ -81,30 +82,36 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param  array  $parameters
+     * @param array $parameters
+     *
      * @return Handler
      */
     public function setParameters(...$parameters): Handler
     {
         $this->parameters = $parameters;
+
         return $this;
     }
 
     /**
-     * @param  array  $parameters
+     * @param array $parameters
+     *
      * @return Handler
      */
     public function addParameters(array $parameters): Handler
     {
         $this->parameters = array_merge($this->parameters, $parameters);
+
         return $this;
     }
 
     /**
-     * @param  Nutgram  $bot
-     * @return mixed
+     * @param Nutgram $bot
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
+     * @return mixed
      */
     public function __invoke(Nutgram $bot): mixed
     {
@@ -118,18 +125,22 @@ class Handler extends MiddlewareChain
     /**
      * Skip global middlewares.
      * If you want to skip a specific global middleware, use the "$middlewares" parameter.
-     * @param  array  $middlewares
+     *
+     * @param array $middlewares
+     *
      * @return $this
      */
     public function skipGlobalMiddlewares(array $middlewares = []): Handler
     {
         $this->skipGlobalMiddlewares = true;
         $this->skippedGlobalMiddlewares = $middlewares;
+
         return $this;
     }
 
     /**
      * Returns true if the handler is skipping global middlewares.
+     *
      * @return bool
      */
     public function isSkippingGlobalMiddlewares(): bool
@@ -139,6 +150,7 @@ class Handler extends MiddlewareChain
 
     /**
      * Returns the skipped global middlewares.
+     *
      * @return array
      */
     public function getSkippedGlobalMiddlewares(): array

@@ -26,17 +26,18 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * And if you use {@see https://core.telegram.org/bots/api#forcereply ForceReply}
  * in your bot‘s questions, it will receive the user’s answers even
  * if it only receives replies, commands and mentions — without any extra work for the user.
+ *
  * @see https://core.telegram.org/bots/api#forcereply
  */
 class ForceReply extends BaseType implements JsonSerializable
 {
     /**
-     * Shows reply interface to the user, as if they manually selected the bot‘s message and tapped ’Reply'
+     * Shows reply interface to the user, as if they manually selected the bot‘s message and tapped ’Reply'.
      */
     public bool $force_reply;
 
     /**
-     * Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters
+     * Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
      */
     public ?string $input_field_placeholder = null;
 
@@ -75,9 +76,9 @@ class ForceReply extends BaseType implements JsonSerializable
     public function jsonSerialize(): array
     {
         return array_filter([
-            'force_reply' => $this->force_reply,
+            'force_reply'             => $this->force_reply,
             'input_field_placeholder' => $this->input_field_placeholder,
-            'selective' => $this->selective,
+            'selective'               => $this->selective,
         ]);
     }
 }

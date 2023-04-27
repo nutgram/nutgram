@@ -30,7 +30,8 @@ trait Hears
     }
 
     /**
-     * @param  mixed  $update
+     * @param mixed $update
+     *
      * @return $this
      */
     public function hearUpdate(Update $update): self
@@ -53,15 +54,15 @@ trait Hears
             $update->setChat($this->storedChat);
         }
 
-
         $this->getContainer()->get(RunningMode::class)->setUpdate($update);
 
         return $this;
     }
 
     /**
-     * @param  string  $type
-     * @param  array  $partialAttributes
+     * @param string $type
+     * @param array  $partialAttributes
+     *
      * @return $this
      */
     public function hearUpdateType(string $type, array $partialAttributes = [], bool $fillNullableFields = false): self
@@ -84,7 +85,8 @@ trait Hears
     }
 
     /**
-     * @param  array  $value
+     * @param array $value
+     *
      * @return $this
      */
     public function hearMessage(array $value): self
@@ -96,7 +98,8 @@ trait Hears
     }
 
     /**
-     * @param  string  $value
+     * @param string $value
+     *
      * @return $this
      */
     public function hearText(string $value): self
@@ -105,14 +108,15 @@ trait Hears
     }
 
     /**
-     * @param  string  $value
+     * @param string $value
+     *
      * @return $this
      */
     public function hearCallbackQueryData(string $value): self
     {
         return $this->hearUpdateType(UpdateTypes::CALLBACK_QUERY, [
             'message' => ['from' => []],
-            'data' => $value,
+            'data'    => $value,
         ]);
     }
 }

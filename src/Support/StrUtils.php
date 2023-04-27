@@ -7,10 +7,11 @@ use InvalidArgumentException;
 class StrUtils
 {
     /**
-     * @param  string  $string
-     * @param  int  $width
-     * @param  string  $break
-     * @param  bool  $cut
+     * @param string $string
+     * @param int    $width
+     * @param string $break
+     * @param bool   $cut
+     *
      * @return string
      */
     public static function wordWrap(string $string, int $width = 75, string $break = "\n", bool $cut = false): string

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\RunningMode;
 
 use Closure;
@@ -19,12 +18,12 @@ class Webhook implements RunningMode
      */
     public const TELEGRAM_IPV4_RANGES = [
         '149.154.160.0' => '149.154.175.255', // literally 149.154.160.0/20
-        '91.108.4.0' => '91.108.7.255',    // literally 91.108.4.0/22
+        '91.108.4.0'    => '91.108.7.255',    // literally 91.108.4.0/22
     ];
 
-
     /**
-     * In safe mode If received request from a ip other than telegram ips, the robot will not respond
+     * In safe mode If received request from a ip other than telegram ips, the robot will not respond.
+     *
      * @var bool
      */
     protected bool $safeMode = false;
@@ -35,16 +34,16 @@ class Webhook implements RunningMode
     protected Closure $resolveIp;
 
     /**
-     * @param  Closure|null  $resolveIp
+     * @param Closure|null $resolveIp
      */
     public function __construct(?Closure $resolveIp = null)
     {
         $this->resolveIp = $resolveIp ?? static fn (): string => $_SERVER['REMOTE_ADDR'];
     }
 
-
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram $bot
+     *
      * @throws JsonMapper_Exception
      * @throws InvalidArgumentException
      * @throws Throwable
@@ -67,7 +66,6 @@ class Webhook implements RunningMode
         $bot->processUpdate($update);
     }
 
-
     /**
      * @return bool
      */
@@ -85,6 +83,7 @@ class Webhook implements RunningMode
                 return true;
             }
         }
+
         return false;
     }
 
@@ -97,22 +96,26 @@ class Webhook implements RunningMode
     }
 
     /**
-     * @param  bool  $safeMode
+     * @param bool $safeMode
+     *
      * @return self
      */
     public function setSafeMode(bool $safeMode): self
     {
         $this->safeMode = $safeMode;
+
         return $this;
     }
 
     /**
-     * @param  Closure  $resolveIp
+     * @param Closure $resolveIp
+     *
      * @return Webhook
      */
     public function requestIpFrom(Closure $resolveIp): Webhook
     {
         $this->resolveIp = $resolveIp;
+
         return $this;
     }
 }

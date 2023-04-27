@@ -7,22 +7,23 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object contains information about an incoming pre-checkout query.
+ *
  * @see https://core.telegram.org/bots/api#precheckoutquery
  */
 class PreCheckoutQuery extends BaseType
 {
     /**
-     * Unique query identifier
+     * Unique query identifier.
      */
     public string $id;
 
     /**
-     * User who sent the query
+     * User who sent the query.
      */
     public User $from;
 
     /**
-     * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code
+     * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code.
      */
     public string $currency;
 
@@ -35,17 +36,17 @@ class PreCheckoutQuery extends BaseType
     public int $total_amount;
 
     /**
-     * Bot specified invoice payload
+     * Bot specified invoice payload.
      */
     public string $invoice_payload;
 
     /**
-     * Optional. Identifier of the shipping option chosen by the user
+     * Optional. Identifier of the shipping option chosen by the user.
      */
     public ?string $shipping_option_id = null;
 
     /**
-     * Optional. Order info provided by the user
+     * Optional. Order info provided by the user.
      */
     public ?OrderInfo $order_info = null;
 }

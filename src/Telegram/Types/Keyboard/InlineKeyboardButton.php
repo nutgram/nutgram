@@ -10,12 +10,13 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 /**
  * This object represents one button of an inline keyboard. You MUST use exactly one of the optional fields.
+ *
  * @see https://core.telegram.org/bots/api#inlinekeyboardbutton
  */
 class InlineKeyboardButton extends BaseType implements JsonSerializable
 {
     /**
-     * Label text on the button
+     * Label text on the button.
      */
     public string $text;
 
@@ -33,7 +34,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
 
     /**
      * Optional. Data to be sent in a {@see https://core.telegram.org/bots/api#callbackquery callback}
-     * query to the bot when button is pressed, 1-64 bytes
+     * query to the bot when button is pressed, 1-64 bytes.
      */
     public ?string $callback_data = null;
 
@@ -143,16 +144,16 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
     public function jsonSerialize(): array
     {
         return array_filter([
-            'text' => $this->text,
-            'url' => $this->url,
-            'login_url' => $this->login_url,
-            'callback_data' => $this->callback_data,
-            'switch_inline_query' => $this->switch_inline_query,
+            'text'                             => $this->text,
+            'url'                              => $this->url,
+            'login_url'                        => $this->login_url,
+            'callback_data'                    => $this->callback_data,
+            'switch_inline_query'              => $this->switch_inline_query,
             'switch_inline_query_current_chat' => $this->switch_inline_query_current_chat,
-            'switch_inline_query_chosen_chat' => $this->switch_inline_query_chosen_chat,
-            'callback_game' => $this->callback_game,
-            'pay' => $this->pay,
-            'web_app' => $this->web_app,
+            'switch_inline_query_chosen_chat'  => $this->switch_inline_query_chosen_chat,
+            'callback_game'                    => $this->callback_game,
+            'pay'                              => $this->pay,
+            'web_app'                          => $this->web_app,
         ]);
     }
 }

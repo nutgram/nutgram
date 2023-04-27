@@ -7,12 +7,13 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 /**
  * This object contains information about the chat whose identifier was shared with the bot using a
  * {@see https://core.telegram.org/bots/api#keyboardbuttonrequestchat KeyboardButtonRequestChat} button.
+ *
  * @see https://core.telegram.org/bots/api#chatshared
  */
 class ChatShared extends BaseType
 {
     /**
-     * Identifier of the request
+     * Identifier of the request.
      */
     public int $request_id;
 

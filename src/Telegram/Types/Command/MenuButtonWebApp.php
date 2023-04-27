@@ -7,17 +7,18 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 /**
  * Represents a menu button, which launches a Web App.
+ *
  * @see https://core.telegram.org/bots/api#menubuttonwebapp
  */
 class MenuButtonWebApp extends MenuButton
 {
     /**
-     * Type of the button, must be web_app
+     * Type of the button, must be web_app.
      */
     public string $type = MenuButtonType::WEB_APP;
 
     /**
-     * Text on the button
+     * Text on the button.
      */
     public ?string $text = null;
 

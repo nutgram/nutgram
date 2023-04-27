@@ -14,13 +14,16 @@ class MixinUtils
 {
     /**
      * Download a file to a Laravel disk.
-     * @param  File  $file
-     * @param  string  $path
-     * @param  string|null  $disk
-     * @param  array  $clientOpt
-     * @return bool
+     *
+     * @param File        $file
+     * @param string      $path
+     * @param string|null $disk
+     * @param array       $clientOpt
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
+     * @return bool
      */
     public static function saveFileToDisk(File $file, string $path, ?string $disk = null, array $clientOpt = []): bool
     {

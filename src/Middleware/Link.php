@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Middleware;
 
 use Psr\Container\ContainerExceptionInterface;
@@ -21,8 +20,9 @@ class Link
 
     /**
      * Link constructor.
+     *
      * @param $callable
-     * @param  Link|null  $next
+     * @param Link|null $next
      */
     public function __construct($callable, ?Link $next = null)
     {
@@ -31,10 +31,12 @@ class Link
     }
 
     /**
-     * @param  Nutgram  $bot
-     * @return mixed
+     * @param Nutgram $bot
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
+     * @return mixed
      */
     public function __invoke(Nutgram $bot): mixed
     {

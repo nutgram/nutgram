@@ -11,6 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * By default, custom keyboards are displayed until a new keyboard is sent by a bot.
  * An exception is made for one-time keyboards that are hidden immediately
  * after the user presses a button (see ReplyKeyboardMarkup).
+ *
  * @see https://core.telegram.org/bots/api#replykeyboardmarkup ReplyKeyboardMarkup
  * @see https://core.telegram.org/bots/api#replykeyboardremove
  */
@@ -18,7 +19,8 @@ class ReplyKeyboardRemove extends BaseType implements JsonSerializable
 {
     /**
      * Required. Requests clients to remove the custom keyboard (user will not be able to summon this keyboard;
-     * if you want to hide the keyboard from sight but keep it accessible, use one_time_keyboard in ReplyKeyboardMarkup)
+     * if you want to hide the keyboard from sight but keep it accessible, use one_time_keyboard in ReplyKeyboardMarkup).
+     *
      * @see https://core.telegram.org/bots/api#replykeyboardmarkup ReplyKeyboardMarkup
      */
     public bool $remove_keyboard;
@@ -31,6 +33,7 @@ class ReplyKeyboardRemove extends BaseType implements JsonSerializable
      *
      * Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes
      * the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
+     *
      * @see https://core.telegram.org/bots/api#message Message
      */
     public ?bool $selective = null;
@@ -51,7 +54,7 @@ class ReplyKeyboardRemove extends BaseType implements JsonSerializable
     {
         return array_filter([
             'remove_keyboard' => $this->remove_keyboard,
-            'selective' => $this->selective,
+            'selective'       => $this->selective,
         ]);
     }
 }

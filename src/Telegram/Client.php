@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Telegram;
 
 use Exception;
@@ -31,35 +30,38 @@ use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use stdClass;
 
 /**
- * Trait Client
- * @package SergiX44\Nutgram\Telegram
+ * Trait Client.
  */
 trait Client
 {
-    use AvailableMethods,
-        UpdatesMessages,
-        Stickers,
-        InlineMode,
-        Payments,
-        Passport,
-        Games,
-        Macroable;
+    use AvailableMethods;
+    use UpdatesMessages;
+    use Stickers;
+    use InlineMode;
+    use Payments;
+    use Passport;
+    use Games;
+    use Macroable;
 
     /**
      * Use this method to receive incoming updates using long polling.
      * An Array of Update objects is returned.
+     *
      * @see https://core.telegram.org/bots/api#getupdates
      * @see https://en.wikipedia.org/wiki/Push_technology#Long_polling
+     *
      * @param  array{
      *     offset?:int,
      *     limit?:int,
      *     timeout?:int,
      *     allowed_updates?:string[]
      * }  $parameters
-     * @return array|null
+     *
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
+     *
+     * @return array|null
      */
     public function getUpdates(array $parameters = []): ?array
     {
@@ -69,7 +71,7 @@ trait Client
     }
 
     /**
-     * @param  string  $url
+     * @param string $url
      * @param  array{
      *     certificate?:InputFile,
      *     ip_address?:string,
@@ -78,14 +80,17 @@ trait Client
      *     drop_pending_updates?:bool,
      *     secret_token?:string
      * }  $opt
-     * @return bool|null
+     *
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
+     *
+     * @return bool|null
      */
     public function setWebhook(string $url, array $opt = []): ?bool
     {
         $required = compact('url');
+
         return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
@@ -93,10 +98,12 @@ trait Client
      * @param  array{
      *     drop_pending_updates?:bool
      * }  $opt
-     * @return bool|null
+     *
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
+     *
+     * @return bool|null
      */
     public function deleteWebhook(array $opt = []): ?bool
     {
@@ -104,10 +111,11 @@ trait Client
     }
 
     /**
-     * @return WebhookInfo|null
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
+     *
+     * @return WebhookInfo|null
      */
     public function getWebhookInfo(): ?WebhookInfo
     {
@@ -115,13 +123,15 @@ trait Client
     }
 
     /**
-     * @param  string  $endpoint
-     * @param  array  $parameters
-     * @param  array  $options
-     * @return mixed
+     * @param string $endpoint
+     * @param array  $parameters
+     * @param array  $options
+     *
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
+     *
+     * @return mixed
      */
     public function sendRequest(string $endpoint, array $parameters = [], array $options = []): mixed
     {
@@ -129,15 +139,17 @@ trait Client
     }
 
     /**
-     * @param  string  $endpoint
-     * @param  string  $param
-     * @param  mixed  $value
-     * @param  array  $opt
-     * @param  array  $clientOpt
-     * @return Message|null
+     * @param string $endpoint
+     * @param string $param
+     * @param mixed  $value
+     * @param array  $opt
+     * @param array  $clientOpt
+     *
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
+     *
+     * @return Message|null
      */
     protected function sendAttachment(
         string $endpoint,
@@ -148,11 +160,12 @@ trait Client
     ): ?Message {
         $required = [
             'chat_id' => $this->chatId(),
-            $param => $value,
+            $param    => $value,
         ];
 
         if (is_resource($value) || $value instanceof InputFile) {
             $required[$param] = $value instanceof InputFile ? $value : new InputFile($value);
+
             return $this->requestMultipart($endpoint, array_merge($required, $opt), Message::class, $clientOpt);
         }
 
@@ -160,13 +173,15 @@ trait Client
     }
 
     /**
-     * @param  File  $file
-     * @param  string  $path
-     * @param  array  $clientOpt
-     * @return bool|null
+     * @param File   $file
+     * @param string $path
+     * @param array  $clientOpt
+     *
      * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws NotFoundExceptionInterface
+     *
+     * @return bool|null
      */
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
@@ -186,6 +201,7 @@ trait Client
         $endpoint = $this->downloadUrl($file);
 
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+
         try {
             $response = $this->http->get($endpoint, $requestPost ?? $request);
         } catch (ConnectException $e) {
@@ -196,10 +212,12 @@ trait Client
     }
 
     /**
-     * @param  File  $file
-     * @return string|null
+     * @param File $file
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
+     * @return string|null
      */
     public function downloadUrl(File $file): string|null
     {
@@ -212,18 +230,21 @@ trait Client
         }
 
         $baseUri = $this->config['api_url'] ?? self::DEFAULT_API_URL;
+
         return "$baseUri/file/bot$this->token/$file->file_path";
     }
 
     /**
-     * @param  string  $endpoint
-     * @param  array|null  $multipart
-     * @param  string  $mapTo
-     * @param  array  $options
-     * @return mixed
+     * @param string     $endpoint
+     * @param array|null $multipart
+     * @param string     $mapTo
+     * @param array      $options
+     *
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
+     *
+     * @return mixed
      */
     protected function requestMultipart(
         string $endpoint,
@@ -233,16 +254,16 @@ trait Client
     ): mixed {
         $parameters = array_map(fn ($name, $contents) => match (true) {
             $contents instanceof InputFile => [
-                'name' => $name,
+                'name'     => $name,
                 'contents' => $contents->getResource(),
                 'filename' => $contents->getFilename(),
             ],
             $contents instanceof JsonSerializable => [
-                'name' => $name,
+                'name'     => $name,
                 'contents' => json_encode($contents),
             ],
             default => [
-                'name' => $name,
+                'name'     => $name,
                 'contents' => $contents,
             ]
         }, array_keys($multipart), $multipart);
@@ -251,6 +272,7 @@ trait Client
 
         try {
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+
             try {
                 $response = $this->http->post($endpoint, $requestPost ?? $request);
             } catch (ConnectException $e) {
@@ -259,9 +281,9 @@ trait Client
             $content = $this->mapResponse($response, $mapTo);
 
             $this->logger->debug($endpoint, [
-                'content' => $content,
+                'content'    => $content,
                 'parameters' => $parameters,
-                'options' => $options
+                'options'    => $options,
             ]);
 
             return $content;
@@ -269,19 +291,22 @@ trait Client
             if (!$exception->hasResponse()) {
                 throw $exception;
             }
+
             return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
         }
     }
 
     /**
-     * @param  string  $endpoint
-     * @param  array|null  $json
-     * @param  string  $mapTo
-     * @param  array  $options
-     * @return mixed
+     * @param string     $endpoint
+     * @param array|null $json
+     * @param string     $mapTo
+     * @param array      $options
+     *
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
+     *
+     * @return mixed
      */
     protected function requestJson(
         string $endpoint,
@@ -295,6 +320,7 @@ trait Client
             ], $options);
 
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+
             try {
                 $response = $this->http->post($endpoint, $requestPost ?? $request);
             } catch (ConnectException $e) {
@@ -302,10 +328,10 @@ trait Client
             }
             $content = $this->mapResponse($response, $mapTo);
 
-            $rawResponse = (string)$response->getBody();
+            $rawResponse = (string) $response->getBody();
             $this->logger->debug($endpoint.PHP_EOL.$rawResponse, [
                 'parameters' => $json,
-                'options' => $options
+                'options'    => $options,
             ]);
 
             return $content;
@@ -313,27 +339,30 @@ trait Client
             if (!$exception->hasResponse()) {
                 throw $exception;
             }
+
             return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
         }
     }
 
     /**
-     * @param  ResponseInterface  $response
-     * @param  string  $mapTo
-     * @param  Exception|null  $clientException
-     * @return mixed
+     * @param ResponseInterface $response
+     * @param string            $mapTo
+     * @param Exception|null    $clientException
+     *
      * @throws JsonException
      * @throws TelegramException
+     *
+     * @return mixed
      */
     protected function mapResponse(ResponseInterface $response, string $mapTo, Exception $clientException = null): mixed
     {
-        $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
+        $json = json_decode((string) $response->getBody(), flags: JSON_THROW_ON_ERROR);
         $json = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$json]) ?? $json;
         if ($json?->ok) {
             return match (true) {
                 is_scalar($json->result) => $json->result,
-                is_array($json->result) => $this->mapper->hydrateArray($json->result, $mapTo),
-                default => $this->mapper->hydrate($json->result, $mapTo)
+                is_array($json->result)  => $this->mapper->hydrateArray($json->result, $mapTo),
+                default                  => $this->mapper->hydrate($json->result, $mapTo)
             };
         }
 
@@ -341,7 +370,7 @@ trait Client
             message: $json?->description ?? 'Client exception',
             code: $json?->error_code ?? 0,
             previous: $clientException,
-            parameters: (array)($json?->parameters ?? []),
+            parameters: (array) ($json?->parameters ?? []),
         );
 
         if (!empty($this->handlers[self::API_ERROR])) {
@@ -355,7 +384,9 @@ trait Client
      * Returns the inline_message_id or
      * chat_id + message_id combination based on the current update.
      * The array is empty if none of them are set.
-     * @param  array  $opt
+     *
+     * @param array $opt
+     *
      * @return array
      */
     protected function targetChatMessageOrInlineMessageId(array $opt = []): array
@@ -367,20 +398,22 @@ trait Client
         }
 
         return array_filter([
-            'chat_id' => $this->chatId(),
+            'chat_id'    => $this->chatId(),
             'message_id' => $this->messageId(),
         ]);
     }
 
     /**
      * Chunk a string into an array of strings.
-     * @param  string  $text
-     * @param  int  $length
+     *
+     * @param string $text
+     * @param int    $length
+     *
      * @return array
      */
     protected function chunkText(string $text, int $length = Limits::TEXT_LENGTH): array
     {
-        return explode('%#TGMSG#%', StrUtils::wordWrap($text, $length, "%#TGMSG#%", true));
+        return explode('%#TGMSG#%', StrUtils::wordWrap($text, $length, '%#TGMSG#%', true));
     }
 
     protected function redactTokenFromConnectException(ConnectException $e): void

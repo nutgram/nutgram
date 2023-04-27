@@ -6,12 +6,13 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object contains basic information about a successful payment.
+ *
  * @see https://core.telegram.org/bots/api#successfulpayment
  */
 class SuccessfulPayment extends BaseType
 {
     /**
-     * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code
+     * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code.
      */
     public string $currency;
 
@@ -24,27 +25,27 @@ class SuccessfulPayment extends BaseType
     public int $total_amount;
 
     /**
-     * Bot specified invoice payload
+     * Bot specified invoice payload.
      */
     public string $invoice_payload;
 
     /**
-     * Optional. Identifier of the shipping option chosen by the user
+     * Optional. Identifier of the shipping option chosen by the user.
      */
     public ?string $shipping_option_id = null;
 
     /**
-     * Optional. Order info provided by the user
+     * Optional. Order info provided by the user.
      */
     public ?OrderInfo $order_info = null;
 
     /**
-     * Telegram payment identifier
+     * Telegram payment identifier.
      */
     public string $telegram_payment_charge_id;
 
     /**
-     * Provider payment identifier
+     * Provider payment identifier.
      */
     public string $provider_payment_charge_id;
 }

@@ -16,8 +16,9 @@ use SergiX44\Nutgram\Testing\Constraints\ArraySubset;
 trait Asserts
 {
     /**
-     * @param  callable  $closure
-     * @param  int  $index
+     * @param callable $closure
+     * @param int      $index
+     *
      * @return $this
      */
     public function assertRaw(callable $closure, int $index = 0): self
@@ -25,7 +26,7 @@ trait Asserts
         $reqRes = $this->testingHistory[$index];
 
         /** @var Request $request */
-        [$request,] = array_values($reqRes);
+        [$request] = array_values($reqRes);
 
         PHPUnit::assertTrue($closure($request));
 
@@ -33,8 +34,9 @@ trait Asserts
     }
 
     /**
-     * @param  string  $method
-     * @param  int  $times
+     * @param string $method
+     * @param int    $times
+     *
      * @return $this
      */
     public function assertCalled(string $method, int $times = 1): self
@@ -42,7 +44,7 @@ trait Asserts
         $actual = 0;
         foreach ($this->testingHistory as $reqRes) {
             /** @var Request $request */
-            [$request,] = array_values($reqRes);
+            [$request] = array_values($reqRes);
 
             if ($request->getUri()->getPath() === $method) {
                 $actual++;
@@ -55,9 +57,10 @@ trait Asserts
     }
 
     /**
-     * @param  string|string[]  $method
-     * @param  array|null  $expected
-     * @param  int  $index
+     * @param string|string[] $method
+     * @param array|null      $expected
+     * @param int             $index
+     *
      * @return $this
      */
     public function assertReply(string|array $method, ?array $expected = null, int $index = 0): self
@@ -67,7 +70,7 @@ trait Asserts
         $reqRes = $this->testingHistory[$index];
 
         /** @var Request $request */
-        [$request,] = array_values($reqRes);
+        [$request] = array_values($reqRes);
 
         PHPUnit::assertContains($request->getUri()->getPath(), $method, 'Method name not found');
 
@@ -86,9 +89,10 @@ trait Asserts
     }
 
     /**
-     * @param  array  $expected
-     * @param  int  $index
-     * @param  string|null  $forceMethod
+     * @param array       $expected
+     * @param int         $index
+     * @param string|null $forceMethod
+     *
      * @return $this
      */
     public function assertReplyMessage(array $expected, int $index = 0, ?string $forceMethod = null): self
@@ -97,8 +101,9 @@ trait Asserts
     }
 
     /**
-     * @param  string  $expected
-     * @param  int  $index
+     * @param string $expected
+     * @param int    $index
+     *
      * @return $this
      */
     public function assertReplyText(string $expected, int $index = 0): self
@@ -107,8 +112,9 @@ trait Asserts
     }
 
     /**
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
+     * @param int|null $userId
+     * @param int|null $chatId
+     *
      * @return $this
      */
     public function assertActiveConversation(?int $userId = null, ?int $chatId = null): self
@@ -126,8 +132,9 @@ trait Asserts
     }
 
     /**
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
+     * @param int|null $userId
+     * @param int|null $chatId
+     *
      * @return $this
      */
     public function assertNoConversation(?int $userId = null, ?int $chatId = null): self

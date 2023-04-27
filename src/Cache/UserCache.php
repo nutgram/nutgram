@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Cache;
 
 use DateInterval;
@@ -17,11 +16,13 @@ class UserCache extends BotCache
     }
 
     /**
-     * @param  int  $userId
-     * @param  string  $key
-     * @param  null  $default
-     * @return mixed
+     * @param int    $userId
+     * @param string $key
+     * @param null   $default
+     *
      * @throws InvalidArgumentException
+     *
+     * @return mixed
      */
     public function get(int $userId, string $key, $default = null): mixed
     {
@@ -29,12 +30,14 @@ class UserCache extends BotCache
     }
 
     /**
-     * @param  int  $userId
-     * @param  string  $key
-     * @param  mixed  $data
-     * @param  DateInterval|int|null  $ttl
-     * @return bool
+     * @param int                   $userId
+     * @param string                $key
+     * @param mixed                 $data
+     * @param DateInterval|int|null $ttl
+     *
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function set(int $userId, string $key, mixed $data, DateInterval|int|null $ttl = null): bool
     {
@@ -42,10 +45,12 @@ class UserCache extends BotCache
     }
 
     /**
-     * @param  int  $userId
-     * @param  string  $key
-     * @return bool
+     * @param int    $userId
+     * @param string $key
+     *
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function delete(int $userId, string $key): bool
     {

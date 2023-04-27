@@ -15,32 +15,33 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
  *
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ *
  * @see https://core.telegram.org/bots/api#inlinequeryresultaudio
  */
 class InlineQueryResultAudio extends InlineQueryResult
 {
     /**
-     * Type of the result, must be audio
+     * Type of the result, must be audio.
      */
     public string $type;
 
     /**
-     * Unique identifier for this result, 1-64 bytes
+     * Unique identifier for this result, 1-64 bytes.
      */
     public string $id;
 
     /**
-     * A valid URL for the audio file
+     * A valid URL for the audio file.
      */
     public string $audio_url;
 
     /**
-     * Title
+     * Title.
      */
     public string $title;
 
     /**
-     * Optional. Caption, 0-1024 characters
+     * Optional. Caption, 0-1024 characters.
      */
     public ?string $caption = null;
 
@@ -54,31 +55,32 @@ class InlineQueryResultAudio extends InlineQueryResult
     public ?string $parse_mode = null;
 
     /**
-     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
+     *
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $caption_entities
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $caption_entities = null;
 
     /**
-     * Optional. Performer
+     * Optional. Performer.
      */
     public ?string $performer = null;
 
     /**
-     * Optional. Audio duration in seconds
+     * Optional. Audio duration in seconds.
      */
     public ?int $audio_duration = null;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
-     * attached to the message
+     * attached to the message.
      */
     public ?InlineKeyboardMarkup $reply_markup = null;
 
     /**
-     *Optional. Content of the message to be sent instead of the audio
+     *Optional. Content of the message to be sent instead of the audio.
      */
     public InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent|null $input_message_content;
 }

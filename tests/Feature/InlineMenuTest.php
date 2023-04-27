@@ -23,18 +23,18 @@ test('valid inline menu + no end', function () {
         ->reply()
         ->assertActiveConversation()
         ->assertReplyMessage([
-            'text' => 'Choose a color:',
+            'text'         => 'Choose a color:',
             'reply_markup' => InlineKeyboardMarkup::make()
                 ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
                 ->addRow(InlineKeyboardButton::make('Green', callback_data: 'green'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow'))
+                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow')),
         ])
         ->hearCallbackQueryData('red')
         ->reply()
         ->assertReplyText('Choosen: red!')
         ->assertReply('answerCallbackQuery', [
             'show_alert' => true,
-            'text' => 'Alert!',
+            'text'       => 'Alert!',
         ], 1)
         ->hearText('start')
         ->reply()
@@ -50,9 +50,9 @@ test('valid inline menu + no end + no data', function () {
         ->hearText('start')
         ->reply()
         ->assertReplyMessage([
-            'text' => 'Choose a color:',
+            'text'         => 'Choose a color:',
             'reply_markup' => InlineKeyboardMarkup::make()
-                ->addRow(InlineKeyboardButton::make('Red', callback_data: 'Red'))
+                ->addRow(InlineKeyboardButton::make('Red', callback_data: 'Red')),
         ])
         ->hearCallbackQueryData('Red')
         ->reply()
@@ -80,11 +80,11 @@ test('valid inline menu + reopen', function () {
         ->hearText('start')
         ->reply()
         ->assertReplyMessage([
-            'text' => 'Choose a color:',
+            'text'         => 'Choose a color:',
             'reply_markup' => InlineKeyboardMarkup::make()
                 ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
                 ->addRow(InlineKeyboardButton::make('Green', callback_data: 'green'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow'))
+                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow')),
         ])
         ->hearCallbackQueryData('red')
         ->reply()
@@ -102,11 +102,11 @@ test('valid inline menu + orNext + click button', function () {
         ->hearText('start')
         ->reply()
         ->assertReplyMessage([
-            'text' => 'Choose a color:',
+            'text'         => 'Choose a color:',
             'reply_markup' => InlineKeyboardMarkup::make()
                 ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
                 ->addRow(InlineKeyboardButton::make('Green', callback_data: 'green'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow'))
+                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow')),
         ])
         ->hearCallbackQueryData('red')
         ->reply()
@@ -123,11 +123,11 @@ test('valid inline menu + orNext + no button click', function () {
         ->hearText('start')
         ->reply()
         ->assertReplyMessage([
-            'text' => 'Choose a color:',
+            'text'         => 'Choose a color:',
             'reply_markup' => InlineKeyboardMarkup::make()
                 ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
                 ->addRow(InlineKeyboardButton::make('Green', callback_data: 'green'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow'))
+                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow')),
         ])
         ->hearText('wow')
         ->reply()
@@ -181,25 +181,25 @@ test('valid inline menu + no end + split message + long message', function () {
         ->reply()
         ->assertActiveConversation()
         ->assertReplyMessage([
-            'text' => 'Choose a color:',
+            'text'         => 'Choose a color:',
             'reply_markup' => InlineKeyboardMarkup::make()
                 ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
                 ->addRow(InlineKeyboardButton::make('Green', callback_data: 'green'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow'))
+                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow')),
         ])
         ->hearCallbackQueryData('red')
         ->reply()
         ->assertReplyText('Choosen: red!')
         ->assertReply('answerCallbackQuery', [
             'show_alert' => true,
-            'text' => 'Alert!',
+            'text'       => 'Alert!',
         ], 1)
         ->hearText('start')
         ->reply()
         ->assertNoConversation();
 })->throws(
     RuntimeException::class,
-    "Multiple messages are not supported by the InlineMenu class. Please provide a shorter text."
+    'Multiple messages are not supported by the InlineMenu class. Please provide a shorter text.'
 );
 
 test('valid inline menu + no end + split message', function () {
@@ -213,24 +213,23 @@ test('valid inline menu + no end + split message', function () {
         ->reply()
         ->assertActiveConversation()
         ->assertReplyMessage([
-            'text' => 'Choose a color:',
+            'text'         => 'Choose a color:',
             'reply_markup' => InlineKeyboardMarkup::make()
                 ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
                 ->addRow(InlineKeyboardButton::make('Green', callback_data: 'green'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow'))
+                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow')),
         ])
         ->hearCallbackQueryData('red')
         ->reply()
         ->assertReplyText('Choosen: red!')
         ->assertReply('answerCallbackQuery', [
             'show_alert' => true,
-            'text' => 'Alert!',
+            'text'       => 'Alert!',
         ], 1)
         ->hearText('start')
         ->reply()
         ->assertNoConversation();
 });
-
 
 test('works with same callback data but different callback method', function () {
     $bot = Nutgram::fake();
@@ -242,18 +241,18 @@ test('works with same callback data but different callback method', function () 
         ->reply()
         ->assertActiveConversation()
         ->assertReplyMessage([
-            'text' => 'Choose a color:',
+            'text'         => 'Choose a color:',
             'reply_markup' => InlineKeyboardMarkup::make()
                 ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
                 ->addRow(InlineKeyboardButton::make('Green', callback_data: 'red@'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'red@@'))
+                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'red@@')),
         ])
         ->hearCallbackQueryData('red@')
         ->reply()
         ->assertReplyText('Choosen: 2red!')
         ->assertReply('answerCallbackQuery', [
             'show_alert' => true,
-            'text' => 'Alert!',
+            'text'       => 'Alert!',
         ], 1)
         ->hearText('start')
         ->reply()
@@ -266,7 +265,7 @@ test('works with same callback data but different callback method', function () 
         ->assertReplyText('Choosen: 3red!')
         ->assertReply('answerCallbackQuery', [
             'show_alert' => true,
-            'text' => 'Alert!',
+            'text'       => 'Alert!',
         ], 1)
         ->hearText('start')
         ->reply()
@@ -279,6 +278,6 @@ test('works with same callback data but different callback method', function () 
         ->assertReplyText('Choosen: 1red!')
         ->assertReply('answerCallbackQuery', [
             'show_alert' => true,
-            'text' => 'Alert!',
+            'text'       => 'Alert!',
         ], 1);
 });

@@ -1,11 +1,9 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Proxies;
 
 /**
- * Trait UpdateDataProxy
- * @package SergiX44\Nutgram\Proxies
+ * Trait UpdateDataProxy.
  */
 trait UpdateDataProxy
 {
@@ -13,7 +11,8 @@ trait UpdateDataProxy
 
     /**
      * @param $key
-     * @param  null  $default
+     * @param null $default
+     *
      * @return mixed
      */
     public function getData($key, $default = null): mixed
@@ -24,6 +23,7 @@ trait UpdateDataProxy
     /**
      * @param $key
      * @param $value
+     *
      * @return mixed
      */
     public function setData($key, $value): mixed
@@ -39,9 +39,6 @@ trait UpdateDataProxy
         unset($this->store[$key]);
     }
 
-    /**
-     *
-     */
     public function clearData(): void
     {
         $this->store = [];

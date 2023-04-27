@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram;
 
 use Closure;
@@ -20,7 +19,6 @@ use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
-use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Exception\CannotSerializeException;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
@@ -42,7 +40,10 @@ use Throwable;
 
 class Nutgram extends ResolveHandlers
 {
-    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy;
+    use Client;
+    use UpdateDataProxy;
+    use GlobalCacheProxy;
+    use UserCacheProxy;
 
     protected const DEFAULT_API_URL = 'https://api.telegram.org';
 
@@ -83,8 +84,10 @@ class Nutgram extends ResolveHandlers
 
     /**
      * Nutgram constructor.
-     * @param  string  $token
-     * @param  array  $config
+     *
+     * @param string $token
+     * @param array  $config
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -98,12 +101,15 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * Initializes the current instance
-     * @param  string  $token
-     * @param  array  $config
-     * @return void
+     * Initializes the current instance.
+     *
+     * @param string $token
+     * @param array  $config
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
+     * @return void
      */
     private function bootstrap(string $token, array $config): void
     {
@@ -127,7 +133,7 @@ class Nutgram extends ResolveHandlers
 
         $this->http = new Guzzle(array_merge([
             'base_uri' => $baseUri,
-            'timeout' => $this->config['timeout'] ?? 5,
+            'timeout'  => $this->config['timeout'] ?? 5,
         ], $this->config['client'] ?? []));
         $this->container->addShared(ClientInterface::class, $this->http);
 
@@ -135,7 +141,7 @@ class Nutgram extends ResolveHandlers
         $this->container->addShared(Hydrator::class)->setConcrete($this->config['mapper'] ?? $hydrator);
         $this->mapper = $this->container->get(Hydrator::class);
 
-        $botId = $this->config['bot_id'] ?? (int)explode(':', $this->token)[0];
+        $botId = $this->config['bot_id'] ?? (int) explode(':', $this->token)[0];
         $this->container->addShared(CacheInterface::class, $this->config['cache'] ?? ArrayCache::class);
         $this->container->addShared(LoggerInterface::class, $this->config['logger'] ?? NullLogger::class);
 
@@ -153,8 +159,9 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @return array
      * @throws CannotSerializeException
+     *
+     * @return array
      */
     public function __serialize(): array
     {
@@ -169,16 +176,18 @@ class Nutgram extends ResolveHandlers
         }
 
         return [
-            'token' => $this->token,
+            'token'  => $this->token,
             'config' => $this->config,
         ];
     }
 
     /**
-     * @param  array  $data
-     * @return void
+     * @param array $data
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
+     * @return void
      */
     public function __unserialize(array $data): void
     {
@@ -186,8 +195,9 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  mixed  $update
-     * @param  array  $responses
+     * @param mixed $update
+     * @param array $responses
+     *
      * @return FakeNutgram
      */
     public static function fake(mixed $update = null, array $responses = [], array $config = []): FakeNutgram
@@ -196,7 +206,8 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  string|RunningMode  $classOrInstance
+     * @param string|RunningMode $classOrInstance
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -206,7 +217,7 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  CacheInterface  $cache
+     * @param CacheInterface $cache
      */
     public function setCache(CacheInterface $cache): void
     {
@@ -230,7 +241,8 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  Update  $update
+     * @param Update $update
+     *
      * @throws Throwable
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
@@ -258,23 +270,28 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  string  $type
-     * @param  array  $parameters
-     * @return mixed
+     * @param string $type
+     * @param array  $parameters
+     *
      * @throws Throwable
+     *
+     * @return mixed
      */
     protected function fireHandlersBy(string $type, array $parameters = []): mixed
     {
         $handlers = [];
         $this->addHandlersBy($handlers, $type);
+
         return $this->fireHandlers($handlers, $parameters);
     }
 
     /**
-     * @param  array  $handlers
-     * @param  array  $parameters
-     * @return mixed
+     * @param array $handlers
+     * @param array $parameters
+     *
      * @throws Throwable
+     *
+     * @return mixed
      */
     protected function fireHandlers(array $handlers, array $parameters = []): mixed
     {
@@ -298,8 +315,9 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  string  $type
-     * @param  Throwable  $e
+     * @param string    $type
+     * @param Throwable $e
+     *
      * @return mixed
      */
     protected function fireExceptionHandlerBy(string $type, Throwable $e): mixed
@@ -312,22 +330,24 @@ class Nutgram extends ResolveHandlers
             $this->addHandlersBy($handlers, $type, $e::class);
         }
 
-
         if (empty($handlers)) {
             $this->addHandlersBy($handlers, $type);
         }
 
         /** @var Handler $handler */
         $handler = reset($handlers)->setParameters($e);
+
         return $handler($this);
     }
 
     /**
-     * @param  Conversations\Conversation|callable  $callable
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
-     * @return $this
+     * @param Conversations\Conversation|callable $callable
+     * @param int|null                            $userId
+     * @param int|null                            $chatId
+     *
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     *
+     * @return $this
      */
     public function stepConversation(
         Conversations\Conversation|callable $callable,
@@ -347,10 +367,12 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
-     * @return $this
+     * @param int|null $userId
+     * @param int|null $chatId
+     *
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     *
+     * @return $this
      */
     public function endConversation(?int $userId = null, ?int $chatId = null): self
     {
@@ -383,9 +405,10 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
+     * @return string
      */
     public function getUpdateMode(): string
     {
@@ -393,10 +416,12 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  callable|array|string  $callable
-     * @return callable
+     * @param callable|array|string $callable
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
+     * @return callable
      */
     public function resolve(callable|array|string $callable): callable
     {
@@ -418,7 +443,7 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * Set my commands call to Telegram using all the registered commands
+     * Set my commands call to Telegram using all the registered commands.
      */
     public function registerMyCommands(): void
     {
@@ -445,9 +470,10 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @return BulkMessenger
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
+     * @return BulkMessenger
      */
     public function getBulkMessenger(): BulkMessenger
     {

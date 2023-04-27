@@ -32,7 +32,7 @@ class HookSetCommand extends Command
 
         //cast to int if not null
         if (is_numeric($max_connections)) {
-            $max_connections = (int)$max_connections;
+            $max_connections = (int) $max_connections;
         }
 
         /** @var Nutgram $bot */

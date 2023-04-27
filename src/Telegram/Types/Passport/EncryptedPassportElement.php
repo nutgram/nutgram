@@ -7,6 +7,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * Contains information about documents or other Telegram Passport elements shared with the bot by the user.
+ *
  * @see https://core.telegram.org/bots/api#encryptedpassportelement
  */
 class EncryptedPassportElement extends BaseType
@@ -27,12 +28,12 @@ class EncryptedPassportElement extends BaseType
     public ?string $data = null;
 
     /**
-     * Optional. User's verified phone number, available only for “phone_number” type
+     * Optional. User's verified phone number, available only for “phone_number” type.
      */
     public ?string $phone_number = null;
 
     /**
-     * Optional. User's verified email address, available only for “email” type
+     * Optional. User's verified email address, available only for “email” type.
      */
     public ?string $email = null;
 
@@ -42,6 +43,7 @@ class EncryptedPassportElement extends BaseType
      * types.
      * Files can be decrypted and verified using the accompanying
      * {@see https://core.telegram.org/bots/api#encryptedcredentials EncryptedCredentials}.
+     *
      * @var \SergiX44\Nutgram\Telegram\Types\Passport\PassportFile[] $files
      */
     #[ArrayType(PassportFile::class)]
@@ -77,6 +79,7 @@ class EncryptedPassportElement extends BaseType
      * “bank_statement”, “rental_agreement”, “passport_registration” and “temporary_registration” types.
      * Files can be decrypted and verified using the accompanying
      * {@see https://core.telegram.org/bots/api#encryptedcredentials EncryptedCredentials}.
+     *
      * @var \SergiX44\Nutgram\Telegram\Types\Passport\PassportFile[] $translation
      */
     #[ArrayType(PassportFile::class)]
@@ -84,7 +87,7 @@ class EncryptedPassportElement extends BaseType
 
     /**
      * Base64-encoded element hash for using in
-     * {@see https://core.telegram.org/bots/api#passportelementerrorunspecified PassportElementErrorUnspecified}
+     * {@see https://core.telegram.org/bots/api#passportelementerrorunspecified PassportElementErrorUnspecified}.
      */
     public string $hash;
 }

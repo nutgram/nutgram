@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Cache;
 
 use DateInterval;
@@ -12,8 +11,8 @@ class GlobalCache extends BotCache
     protected const GLOBAL_PREFIX = 'GLOBAL';
 
     /**
-     * @param  CacheInterface  $cache
-     * @param  int|null  $botId
+     * @param CacheInterface $cache
+     * @param int|null       $botId
      */
     public function __construct(CacheInterface $cache, ?int $botId)
     {
@@ -21,10 +20,12 @@ class GlobalCache extends BotCache
     }
 
     /**
-     * @param  string  $key
-     * @param  mixed  $default
-     * @return mixed
+     * @param string $key
+     * @param mixed  $default
+     *
      * @throws InvalidArgumentException
+     *
+     * @return mixed
      */
     public function get(string $key, mixed $default = null): mixed
     {
@@ -32,11 +33,13 @@ class GlobalCache extends BotCache
     }
 
     /**
-     * @param  string  $key
-     * @param  mixed  $data
-     * @param  DateInterval|int|null  $ttl
-     * @return bool
+     * @param string                $key
+     * @param mixed                 $data
+     * @param DateInterval|int|null $ttl
+     *
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function set(string $key, mixed $data, DateInterval|int|null $ttl = null): bool
     {
@@ -44,9 +47,11 @@ class GlobalCache extends BotCache
     }
 
     /**
-     * @param  string  $key
-     * @return bool
+     * @param string $key
+     *
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function delete(string $key): bool
     {

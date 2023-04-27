@@ -13,13 +13,13 @@ use SergiX44\Nutgram\Telegram\Attributes\BotCommandScopeType;
 class BotCommandScopeChat extends BotCommandScope
 {
     /**
-     * Scope type, must be chat
+     * Scope type, must be chat.
      */
     public string $type = BotCommandScopeType::CHAT;
 
     /**
      * Unique identifier for the target chat or username
-     * of the target supergroup (in the format  &#64;supergroupusername)
+     * of the target supergroup (in the format  &#64;supergroupusername).
      */
     public int|string $chat_id;
 

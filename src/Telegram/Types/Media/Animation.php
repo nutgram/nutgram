@@ -7,12 +7,13 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
+ *
  * @see https://core.telegram.org/bots/api#animation
  */
 class Animation extends BaseType
 {
     /**
-     * Identifier for this file
+     * Identifier for this file.
      */
     public string $file_id;
 
@@ -23,22 +24,22 @@ class Animation extends BaseType
     public string $file_unique_id;
 
     /**
-     * Video width as defined by sender
+     * Video width as defined by sender.
      */
     public int $width;
 
     /**
-     * Video height as defined by sender
+     * Video height as defined by sender.
      */
     public int $height;
 
     /**
-     * Duration of the video in seconds as defined by sender
+     * Duration of the video in seconds as defined by sender.
      */
     public int $duration;
 
     /**
-     * Optional. Animation thumbnail as defined by sender
+     * Optional. Animation thumbnail as defined by sender.
      */
     public ?PhotoSize $thumbnail = null;
 
@@ -50,17 +51,17 @@ class Animation extends BaseType
     public ?PhotoSize $thumb = null;
 
     /**
-     * Optional. Original animation filename as defined by sender
+     * Optional. Original animation filename as defined by sender.
      */
     public ?string $file_name = null;
 
     /**
-     * Optional. MIME type of the file as defined by sender
+     * Optional. MIME type of the file as defined by sender.
      */
     public ?string $mime_type = null;
 
     /**
-     * Optional. File size
+     * Optional. File size.
      */
     public ?int $file_size = null;
 }

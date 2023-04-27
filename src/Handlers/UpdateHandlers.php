@@ -13,6 +13,7 @@ trait UpdateHandlers
 {
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onMessage($callable): Handler
@@ -21,8 +22,9 @@ trait UpdateHandlers
     }
 
     /**
-     * @param  string  $type
+     * @param string $type
      * @param $callable
+     *
      * @return Handler
      */
     public function onMessageType(string $type, $callable): Handler
@@ -30,11 +32,13 @@ trait UpdateHandlers
         if (!in_array($type, MessageTypes::all(), true)) {
             throw new InvalidArgumentException('The parameter "type" is not a valid message type.');
         }
+
         return $this->{$this->target}[UpdateTypes::MESSAGE][$type][] = new Handler($callable);
     }
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onEditedMessage($callable): Handler
@@ -44,6 +48,7 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onChannelPost($callable): Handler
@@ -53,6 +58,7 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onEditedChannelPost($callable): Handler
@@ -62,6 +68,7 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onInlineQuery($callable): Handler
@@ -71,6 +78,7 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onChosenInlineResult($callable): Handler
@@ -80,6 +88,7 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onCallbackQuery($callable): Handler
@@ -88,8 +97,9 @@ trait UpdateHandlers
     }
 
     /**
-     * @param  string  $pattern
+     * @param string $pattern
      * @param $callable
+     *
      * @return Handler
      */
     public function onCallbackQueryData(string $pattern, $callable): Handler
@@ -99,6 +109,7 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onShippingQuery($callable): Handler
@@ -108,6 +119,7 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onPreCheckoutQuery($callable): Handler
@@ -116,8 +128,9 @@ trait UpdateHandlers
     }
 
     /**
-     * @param  string  $pattern
+     * @param string $pattern
      * @param $callable
+     *
      * @return Handler
      */
     public function onPreCheckoutQueryPayload(string $pattern, $callable): Handler
@@ -127,7 +140,9 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
+     *
      * @deprecated This handler is deprecated and will be removed in the next major version.
      * @see Nutgram::onUpdatePoll()
      */
@@ -138,6 +153,7 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onUpdatePoll($callable): Handler
@@ -147,6 +163,7 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onPollAnswer($callable): Handler
@@ -156,6 +173,7 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onMyChatMember($callable): Handler
@@ -165,6 +183,7 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onChatMember($callable): Handler
@@ -174,6 +193,7 @@ trait UpdateHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onChatJoinRequest($callable): Handler

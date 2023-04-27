@@ -25,6 +25,7 @@ class HookInfoCommand extends Command
 
         if ($webhookInfo === null) {
             $this->error('Unable to get webhook info');
+
             return 1;
         }
 

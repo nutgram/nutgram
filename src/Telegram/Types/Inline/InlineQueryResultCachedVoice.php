@@ -17,32 +17,33 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * message.
  *
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ *
  * @see https://core.telegram.org/bots/api#inlinequeryresultcachedvoice
  */
 class InlineQueryResultCachedVoice extends InlineQueryResult
 {
     /**
-     * Type of the result, must be voice
+     * Type of the result, must be voice.
      */
     public string $type;
 
     /**
-     * Unique identifier for this result, 1-64 bytes
+     * Unique identifier for this result, 1-64 bytes.
      */
     public string $id;
 
     /**
-     * A valid file identifier for the voice message
+     * A valid file identifier for the voice message.
      */
     public string $voice_file_id;
 
     /**
-     * Voice message title
+     * Voice message title.
      */
     public string $title;
 
     /**
-     * Optional. Caption, 0-1024 characters
+     * Optional. Caption, 0-1024 characters.
      */
     public ?string $caption = null;
 
@@ -56,7 +57,8 @@ class InlineQueryResultCachedVoice extends InlineQueryResult
     public ?string $parse_mode = null;
 
     /**
-     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
+     *
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $caption_entities
      */
     #[ArrayType(MessageEntity::class)]
@@ -65,12 +67,12 @@ class InlineQueryResultCachedVoice extends InlineQueryResult
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
-     * attached to the message
+     * attached to the message.
      */
     public ?InlineKeyboardMarkup $reply_markup = null;
 
     /**
-     * Optional. Content of the message to be sent instead of the voice message
+     * Optional. Content of the message to be sent instead of the voice message.
      */
     public InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent|null $input_message_content;
 }

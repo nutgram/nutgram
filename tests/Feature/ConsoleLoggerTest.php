@@ -24,6 +24,6 @@ it('logs with ConsoleLogger', function ($input, $expected) {
 
     expect(ob_get_contents())->toContain($expected);
 })->with([
-    'string' => ['foo', 'DEBUG: foo'],
+    'string'     => ['foo', 'DEBUG: foo'],
     'stringable' => [Str::of('bar'), 'DEBUG: bar'],
 ]);

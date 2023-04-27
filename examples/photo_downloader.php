@@ -1,6 +1,5 @@
 <?php
 
-
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 

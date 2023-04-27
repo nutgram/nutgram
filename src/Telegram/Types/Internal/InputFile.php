@@ -19,8 +19,8 @@ class InputFile
     protected ?string $filename;
 
     /**
-     * @param  mixed  $resource
-     * @param  string|null  $filename
+     * @param mixed       $resource
+     * @param string|null $filename
      */
     public function __construct($resource, ?string $filename = null)
     {
@@ -35,8 +35,9 @@ class InputFile
     }
 
     /**
-     * @param  resource  $resource
-     * @param  string|null  $filename
+     * @param resource    $resource
+     * @param string|null $filename
+     *
      * @return InputFile
      */
     public static function make($resource, ?string $filename = null): InputFile
@@ -45,12 +46,14 @@ class InputFile
     }
 
     /**
-     * @param  string|null  $filename
+     * @param string|null $filename
+     *
      * @return InputFile
      */
     public function filename(?string $filename): InputFile
     {
         $this->filename = $filename;
+
         return $this;
     }
 

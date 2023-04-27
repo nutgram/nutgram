@@ -1,22 +1,22 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Proxies;
 
 use DateInterval;
 use Psr\SimpleCache\InvalidArgumentException;
 
 /**
- * Trait GlobalCacheProxy
- * @package SergiX44\Nutgram\Proxies
+ * Trait GlobalCacheProxy.
  */
 trait GlobalCacheProxy
 {
     /**
-     * @param  $key
-     * @param  null  $default
-     * @return mixed
+     * @param      $key
+     * @param null $default
+     *
      * @throws InvalidArgumentException
+     *
+     * @return mixed
      */
     public function getGlobalData($key, $default = null): mixed
     {
@@ -26,9 +26,11 @@ trait GlobalCacheProxy
     /**
      * @param $key
      * @param $value
-     * @param  DateInterval|int|null  $ttl
-     * @return bool
+     * @param DateInterval|int|null $ttl
+     *
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function setGlobalData($key, $value, DateInterval|int|null $ttl = null): bool
     {
@@ -37,8 +39,10 @@ trait GlobalCacheProxy
 
     /**
      * @param $key
-     * @return bool
+     *
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function deleteGlobalData($key): bool
     {

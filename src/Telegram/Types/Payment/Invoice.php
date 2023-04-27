@@ -6,27 +6,28 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object contains basic information about an invoice.
+ *
  * @see https://core.telegram.org/bots/api#invoice
  */
 class Invoice extends BaseType
 {
     /**
-     * Product name
+     * Product name.
      */
     public string $title;
 
     /**
-     * Product description
+     * Product description.
      */
     public string $description;
 
     /**
-     * Unique bot deep-linking parameter that can be used to generate this invoice
+     * Unique bot deep-linking parameter that can be used to generate this invoice.
      */
     public string $start_parameter;
 
     /**
-     * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code
+     * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code.
      */
     public string $currency;
 

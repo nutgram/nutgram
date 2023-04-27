@@ -26,7 +26,7 @@ class ValidNoEndMenu extends InlineMenu
 
         $this->setCallbackQueryOptions([
             'show_alert' => true,
-            'text' => 'Alert!',
+            'text'       => 'Alert!',
         ]);
     }
 }

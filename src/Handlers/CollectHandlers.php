@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Handlers;
 
 use InvalidArgumentException;
@@ -8,7 +7,8 @@ use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 
 abstract class CollectHandlers
 {
-    use UpdateHandlers, MessageHandlers;
+    use UpdateHandlers;
+    use MessageHandlers;
 
     protected const FALLBACK = 'FALLBACK';
     protected const EXCEPTION = 'EXCEPTION';
@@ -42,7 +42,7 @@ abstract class CollectHandlers
     protected array $handlers = [];
 
     /**
-     * @param  callable|callable-string|array  $callable
+     * @param callable|callable-string|array $callable
      */
     public function middleware($callable): void
     {
@@ -50,7 +50,7 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param  Array<callable|callable-string|array>  $callable
+     * @param array<callable|callable-string|array> $callable
      */
     public function middlewares($callable): void
     {
@@ -62,8 +62,9 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param  callable|callable-string|array  $middlewares
-     * @param  callable  $closure
+     * @param callable|callable-string|array $middlewares
+     * @param callable                       $closure
+     *
      * @return void
      */
     public function group($middlewares, callable $closure): void
@@ -105,8 +106,9 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param  callable|string  $callableOrException
-     * @param  callable|null  $callable
+     * @param callable|string $callableOrException
+     * @param callable|null   $callable
+     *
      * @return Handler
      */
     public function onException($callableOrException, $callable = null): Handler
@@ -115,8 +117,9 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param  callable|string  $callableOrPattern
-     * @param  callable|null  $callable
+     * @param callable|string $callableOrPattern
+     * @param callable|null   $callable
+     *
      * @return Handler
      */
     public function onApiError($callableOrPattern, $callable = null): Handler
@@ -125,9 +128,10 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param  string  $type
+     * @param string $type
      * @param $callableOrPattern
      * @param $callable
+     *
      * @return Handler
      */
     private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
@@ -141,6 +145,7 @@ abstract class CollectHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function fallback($callable): Handler
@@ -149,8 +154,9 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param  string  $type
+     * @param string $type
      * @param $callable
+     *
      * @return Handler
      */
     public function fallbackOn(string $type, $callable): Handler
@@ -158,12 +164,14 @@ abstract class CollectHandlers
         if (!in_array($type, UpdateTypes::all(), true)) {
             throw new InvalidArgumentException('The parameter "type" is not a valid update type.');
         }
+
         return $this->{$this->target}[self::FALLBACK][$type] = new Handler($callable, $type);
     }
 
     /**
-     * @param  bool  $exception
-     * @param  bool  $apiError
+     * @param bool $exception
+     * @param bool $apiError
+     *
      * @return void
      */
     public function clearErrorHandlers(bool $exception = true, bool $apiError = true): void
@@ -179,6 +187,7 @@ abstract class CollectHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function beforeApiRequest($callable): Handler
@@ -188,6 +197,7 @@ abstract class CollectHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function afterApiRequest($callable): Handler

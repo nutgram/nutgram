@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Middleware;
 
 abstract class MiddlewareChain
@@ -12,6 +11,7 @@ abstract class MiddlewareChain
 
     /**
      * @param $callable
+     *
      * @return $this
      */
     public function middleware($callable): self

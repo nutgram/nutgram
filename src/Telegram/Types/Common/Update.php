@@ -23,6 +23,7 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 /**
  * This {@see https://core.telegram.org/bots/api#available-types object} represents an incoming update.
  * At most ONE of the optional parameters can be present in any given update.
+ *
  * @see https://core.telegram.org/bots/api#update
  */
 class Update extends BaseType
@@ -44,7 +45,7 @@ class Update extends BaseType
     public ?Message $message = null;
 
     /**
-     * Optional. New version of a message that is known to the bot and was edited
+     * Optional. New version of a message that is known to the bot and was edited.
      */
     public ?EditedMessage $edited_message = null;
 
@@ -54,12 +55,12 @@ class Update extends BaseType
     public ?ChannelPost $channel_post = null;
 
     /**
-     * Optional. New version of a channel post that is known to the bot and was edited
+     * Optional. New version of a channel post that is known to the bot and was edited.
      */
     public ?EditedChannelPost $edited_channel_post = null;
 
     /**
-     * Optional. New incoming {@see https://core.telegram.org/bots/api#inline-mode inline} query
+     * Optional. New incoming {@see https://core.telegram.org/bots/api#inline-mode inline} query.
      */
     public ?InlineQuery $inline_query = null;
 
@@ -73,22 +74,22 @@ class Update extends BaseType
     public ?ChosenInlineResult $chosen_inline_result = null;
 
     /**
-     * Optional. New incoming callback query
+     * Optional. New incoming callback query.
      */
     public ?CallbackQuery $callback_query = null;
 
     /**
-     * Optional. New incoming shipping query. Only for invoices with flexible price
+     * Optional. New incoming shipping query. Only for invoices with flexible price.
      */
     public ?ShippingQuery $shipping_query = null;
 
     /**
-     * Optional. New incoming pre-checkout query. Contains full information about checkout
+     * Optional. New incoming pre-checkout query. Contains full information about checkout.
      */
     public ?PreCheckoutQuery $pre_checkout_query = null;
 
     /**
-     * Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
+     * Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot.
      */
     public ?Poll $poll = null;
 
@@ -117,51 +118,53 @@ class Update extends BaseType
     public ?ChatJoinRequest $chat_join_request = null;
 
     /**
-     * Return the current update type
+     * Return the current update type.
+     *
      * @return string|null
      */
     public function getType(): ?string
     {
         return match (true) {
-            $this->message !== null => UpdateTypes::MESSAGE,
-            $this->edited_message !== null => UpdateTypes::EDITED_MESSAGE,
-            $this->channel_post !== null => UpdateTypes::CHANNEL_POST,
-            $this->edited_channel_post !== null => UpdateTypes::EDITED_CHANNEL_POST,
-            $this->inline_query !== null => UpdateTypes::INLINE_QUERY,
+            $this->message !== null              => UpdateTypes::MESSAGE,
+            $this->edited_message !== null       => UpdateTypes::EDITED_MESSAGE,
+            $this->channel_post !== null         => UpdateTypes::CHANNEL_POST,
+            $this->edited_channel_post !== null  => UpdateTypes::EDITED_CHANNEL_POST,
+            $this->inline_query !== null         => UpdateTypes::INLINE_QUERY,
             $this->chosen_inline_result !== null => UpdateTypes::CHOSEN_INLINE_RESULT,
-            $this->callback_query !== null => UpdateTypes::CALLBACK_QUERY,
-            $this->shipping_query !== null => UpdateTypes::SHIPPING_QUERY,
-            $this->pre_checkout_query !== null => UpdateTypes::PRE_CHECKOUT_QUERY,
-            $this->poll !== null => UpdateTypes::POLL,
-            $this->poll_answer !== null => UpdateTypes::POLL_ANSWER,
-            $this->my_chat_member !== null => UpdateTypes::MY_CHAT_MEMBER,
-            $this->chat_member !== null => UpdateTypes::CHAT_MEMBER,
-            $this->chat_join_request !== null => UpdateTypes::CHAT_JOIN_REQUEST,
-            default => null
+            $this->callback_query !== null       => UpdateTypes::CALLBACK_QUERY,
+            $this->shipping_query !== null       => UpdateTypes::SHIPPING_QUERY,
+            $this->pre_checkout_query !== null   => UpdateTypes::PRE_CHECKOUT_QUERY,
+            $this->poll !== null                 => UpdateTypes::POLL,
+            $this->poll_answer !== null          => UpdateTypes::POLL_ANSWER,
+            $this->my_chat_member !== null       => UpdateTypes::MY_CHAT_MEMBER,
+            $this->chat_member !== null          => UpdateTypes::CHAT_MEMBER,
+            $this->chat_join_request !== null    => UpdateTypes::CHAT_JOIN_REQUEST,
+            default                              => null
         };
     }
 
     /**
-     * Get the sender User
+     * Get the sender User.
+     *
      * @return User|null
      */
     public function getUser(): ?User
     {
         return match (true) {
-            $this->message !== null => $this->message->from,
-            $this->edited_message !== null => $this->edited_message->from,
-            $this->channel_post !== null => $this->channel_post->from,
-            $this->edited_channel_post !== null => $this->edited_channel_post->from,
-            $this->inline_query !== null => $this->inline_query->from,
+            $this->message !== null              => $this->message->from,
+            $this->edited_message !== null       => $this->edited_message->from,
+            $this->channel_post !== null         => $this->channel_post->from,
+            $this->edited_channel_post !== null  => $this->edited_channel_post->from,
+            $this->inline_query !== null         => $this->inline_query->from,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from,
-            $this->callback_query !== null => $this->callback_query->from,
-            $this->shipping_query !== null => $this->shipping_query->from,
-            $this->pre_checkout_query !== null => $this->pre_checkout_query->from,
-            $this->poll_answer !== null => $this->poll_answer->user,
-            $this->my_chat_member !== null => $this->my_chat_member->from,
-            $this->chat_member !== null => $this->chat_member->from,
-            $this->chat_join_request !== null => $this->chat_join_request->from,
-            default => null,
+            $this->callback_query !== null       => $this->callback_query->from,
+            $this->shipping_query !== null       => $this->shipping_query->from,
+            $this->pre_checkout_query !== null   => $this->pre_checkout_query->from,
+            $this->poll_answer !== null          => $this->poll_answer->user,
+            $this->my_chat_member !== null       => $this->my_chat_member->from,
+            $this->chat_member !== null          => $this->chat_member->from,
+            $this->chat_join_request !== null    => $this->chat_join_request->from,
+            default                              => null,
         };
     }
 
@@ -171,20 +174,20 @@ class Update extends BaseType
     public function setUser(?User $user): ?User
     {
         return match (true) {
-            $this->message !== null => $this->message->from = $user,
-            $this->edited_message !== null => $this->edited_message->from = $user,
-            $this->channel_post !== null => $this->channel_post->from = $user,
-            $this->edited_channel_post !== null => $this->edited_channel_post->from = $user,
-            $this->inline_query !== null => $this->inline_query->from = $user,
+            $this->message !== null              => $this->message->from = $user,
+            $this->edited_message !== null       => $this->edited_message->from = $user,
+            $this->channel_post !== null         => $this->channel_post->from = $user,
+            $this->edited_channel_post !== null  => $this->edited_channel_post->from = $user,
+            $this->inline_query !== null         => $this->inline_query->from = $user,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from = $user,
-            $this->callback_query !== null => $this->callback_query->from = $user,
-            $this->shipping_query !== null => $this->shipping_query->from = $user,
-            $this->pre_checkout_query !== null => $this->pre_checkout_query->from = $user,
-            $this->poll_answer !== null => $this->poll_answer->user = $user,
-            $this->my_chat_member !== null => $this->my_chat_member->from = $user,
-            $this->chat_member !== null => $this->chat_member->from = $user,
-            $this->chat_join_request !== null => $this->chat_join_request->from = $user,
-            default => null,
+            $this->callback_query !== null       => $this->callback_query->from = $user,
+            $this->shipping_query !== null       => $this->shipping_query->from = $user,
+            $this->pre_checkout_query !== null   => $this->pre_checkout_query->from = $user,
+            $this->poll_answer !== null          => $this->poll_answer->user = $user,
+            $this->my_chat_member !== null       => $this->my_chat_member->from = $user,
+            $this->chat_member !== null          => $this->chat_member->from = $user,
+            $this->chat_join_request !== null    => $this->chat_join_request->from = $user,
+            default                              => null,
         };
     }
 
@@ -194,34 +197,35 @@ class Update extends BaseType
     public function getChat(): ?Chat
     {
         return match (true) {
-            $this->message !== null => $this->message->chat,
-            $this->edited_message !== null => $this->edited_message->chat,
-            $this->channel_post !== null => $this->channel_post->chat,
+            $this->message !== null             => $this->message->chat,
+            $this->edited_message !== null      => $this->edited_message->chat,
+            $this->channel_post !== null        => $this->channel_post->chat,
             $this->edited_channel_post !== null => $this->edited_channel_post->chat,
-            $this->callback_query !== null => $this->callback_query->message?->chat,
-            $this->my_chat_member !== null => $this->my_chat_member->chat,
-            $this->chat_member !== null => $this->chat_member->chat,
-            $this->chat_join_request !== null => $this->chat_join_request->chat,
-            default => null
+            $this->callback_query !== null      => $this->callback_query->message?->chat,
+            $this->my_chat_member !== null      => $this->my_chat_member->chat,
+            $this->chat_member !== null         => $this->chat_member->chat,
+            $this->chat_join_request !== null   => $this->chat_join_request->chat,
+            default                             => null
         };
     }
 
     /**
-     * @param  Chat|null  $chat
+     * @param Chat|null $chat
+     *
      * @return Chat|null
      */
     public function setChat(?Chat $chat): ?Chat
     {
         return match (true) {
-            $this->message !== null => $this->message->chat = $chat,
-            $this->edited_message !== null => $this->edited_message->chat = $chat,
-            $this->channel_post !== null => $this->channel_post->chat = $chat,
+            $this->message !== null             => $this->message->chat = $chat,
+            $this->edited_message !== null      => $this->edited_message->chat = $chat,
+            $this->channel_post !== null        => $this->channel_post->chat = $chat,
             $this->edited_channel_post !== null => $this->edited_channel_post->chat = $chat,
-            $this->callback_query !== null => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
-            $this->my_chat_member !== null => $this->my_chat_member->chat = $chat,
-            $this->chat_member !== null => $this->chat_member->chat = $chat,
-            $this->chat_join_request !== null => $this->chat_join_request->chat = $chat,
-            default => null
+            $this->callback_query !== null      => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
+            $this->my_chat_member !== null      => $this->my_chat_member->chat = $chat,
+            $this->chat_member !== null         => $this->chat_member->chat = $chat,
+            $this->chat_join_request !== null   => $this->chat_join_request->chat = $chat,
+            default                             => null
         };
     }
 
@@ -231,12 +235,12 @@ class Update extends BaseType
     public function getMessage(): ?Message
     {
         return match (true) {
-            $this->message !== null => $this->message,
-            $this->edited_message !== null => $this->edited_message,
-            $this->channel_post !== null => $this->channel_post,
+            $this->message !== null             => $this->message,
+            $this->edited_message !== null      => $this->edited_message,
+            $this->channel_post !== null        => $this->channel_post,
             $this->edited_channel_post !== null => $this->edited_channel_post,
-            $this->callback_query !== null => $this->callback_query->message,
-            default => null
+            $this->callback_query !== null      => $this->callback_query->message,
+            default                             => null
         };
     }
 }

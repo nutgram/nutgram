@@ -151,7 +151,7 @@ test('nutgram:list with no handlers registered', function () {
 test('nutgram:list with handler registered', function () {
     $bot = Nutgram::fake();
 
-    $callback = new class {
+    $callback = new class() {
         public function foo(Nutgram $bot)
         {
         }

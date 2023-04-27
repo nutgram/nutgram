@@ -64,18 +64,21 @@ abstract class InlineMenu extends Conversation
     {
         $attributes = get_object_vars($this);
         unset($attributes['callbackQueryOpt']);
+
         return $attributes;
     }
 
     /**
-     * @param  string  $text
-     * @param  array  $opt
+     * @param string $text
+     * @param array  $opt
+     *
      * @return InlineMenu
      */
     protected function menuText(string $text, array $opt = []): self
     {
         $this->text = $text;
         $this->opt = $opt;
+
         return $this;
     }
 
@@ -87,11 +90,13 @@ abstract class InlineMenu extends Conversation
         $this->buttons = InlineKeyboardMarkup::make();
         $this->callbacks = [];
         $this->orNext = null;
+
         return $this;
     }
 
     /**
-     * @param  InlineKeyboardButton  $buttons
+     * @param InlineKeyboardButton $buttons
+     *
      * @return InlineMenu
      */
     protected function addButtonRow(...$buttons): self
@@ -120,22 +125,26 @@ abstract class InlineMenu extends Conversation
         }
 
         $this->buttons->addRow(...$buttons);
+
         return $this;
     }
 
     /**
-     * @param  string|null  $orNext
+     * @param string|null $orNext
+     *
      * @return InlineMenu
      */
     protected function orNext(?string $orNext): self
     {
         $this->orNext = $orNext;
+
         return $this;
     }
 
     /**
-     * @return mixed
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     *
+     * @return mixed
      */
     public function handleStep(): mixed
     {
@@ -151,24 +160,29 @@ abstract class InlineMenu extends Conversation
             }
 
             $this->bot->answerCallbackQuery($this->callbackQueryOpt);
+
             return $result;
         }
 
         if (isset($this->orNext)) {
             $this->step = $this->orNext;
+
             return $this($this->bot);
         }
 
         $this->end();
+
         return null;
     }
 
     /**
-     * @param  bool  $reopen
-     * @param  bool  $noHandlers
-     * @param  bool  $noMiddlewares
-     * @return Message|null
+     * @param bool $reopen
+     * @param bool $noHandlers
+     * @param bool $noMiddlewares
+     *
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     *
+     * @return Message|null
      */
     protected function showMenu(
         bool $reopen = false,
@@ -195,9 +209,9 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param  string|null  $finalText
-     * @param  array  $opt
-     * @param  bool  $reopen
+     * @param string|null $finalText
+     * @param array       $opt
+     * @param bool        $reopen
      *
      * @return Message|bool
      */
@@ -213,6 +227,7 @@ abstract class InlineMenu extends Conversation
                 $this->clearButtons();
                 $message = $this->doUpdate($finalText, $this->chatId, $this->messageId, $this->buttons, $opt);
                 $this->chatId = $this->messageId = null;
+
                 return $message ?? true;
             }
 
@@ -220,6 +235,7 @@ abstract class InlineMenu extends Conversation
             try {
                 $result = $this->doClose($this->chatId, $this->messageId);
                 $this->chatId = $this->messageId = null;
+
                 return $result;
             } catch (TelegramException) {
                 return false;
@@ -232,6 +248,7 @@ abstract class InlineMenu extends Conversation
             $this->clearButtons();
             $message = $this->doOpen($finalText, $this->buttons, $opt);
             $this->chatId = $this->messageId = null;
+
             return $message ?? true;
         }
 
@@ -239,17 +256,19 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param  array  $opt
+     * @param array $opt
+     *
      * @return $this
      */
     protected function setCallbackQueryOptions(array $opt): self
     {
         $this->callbackQueryOpt = $opt;
+
         return $this;
     }
 
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram $bot
      *
      * @return void
      */
@@ -259,10 +278,12 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param  string  $text
-     * @param  InlineKeyboardMarkup  $buttons
-     * @param  array  $opt
+     * @param string               $text
+     * @param InlineKeyboardMarkup $buttons
+     * @param array                $opt
+     *
      * @return Message|null
+     *
      * @internal Override only to change the Telegram method.
      */
     protected function doOpen(string $text, InlineKeyboardMarkup $buttons, array $opt): Message|null
@@ -279,11 +300,11 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param  string  $text
-     * @param  int|null  $chatId
-     * @param  int|null  $messageId
-     * @param  InlineKeyboardMarkup  $buttons
-     * @param  array  $opt
+     * @param string               $text
+     * @param int|null             $chatId
+     * @param int|null             $messageId
+     * @param InlineKeyboardMarkup $buttons
+     * @param array                $opt
      *
      * @return Message|bool|null
      *
@@ -298,15 +319,17 @@ abstract class InlineMenu extends Conversation
     ): bool|Message|null {
         return $this->bot->editMessageText($text, array_merge([
             'reply_markup' => $buttons,
-            'chat_id' => $chatId,
-            'message_id' => $messageId,
+            'chat_id'      => $chatId,
+            'message_id'   => $messageId,
         ], $opt));
     }
 
     /**
-     * @param  int  $chatId
-     * @param  int  $messageId
+     * @param int $chatId
+     * @param int $messageId
+     *
      * @return bool
+     *
      * @internal Override only to change the Telegram method.
      */
     protected function doClose(int $chatId, int $messageId): bool

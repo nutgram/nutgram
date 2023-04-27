@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram;
 
 use Illuminate\Contracts\Cache\Repository as Cache;
@@ -38,7 +37,7 @@ class NutgramServiceProvider extends ServiceProvider
     public string $telegramRoutes;
 
     /**
-     * Register the bot instance
+     * Register the bot instance.
      */
     public function register()
     {
@@ -53,8 +52,8 @@ class NutgramServiceProvider extends ServiceProvider
 
             $bot = new Nutgram(config('nutgram.token') ?? FakeNutgram::TOKEN, array_merge([
                 'container' => $app,
-                'cache' => $app->get(Cache::class),
-                'logger' => $app->get(LoggerInterface::class)->channel(config('nutgram.log_channel', 'null')),
+                'cache'     => $app->get(Cache::class),
+                'logger'    => $app->get(LoggerInterface::class)->channel(config('nutgram.log_channel', 'null')),
             ], config('nutgram.config', [])));
 
             if ($app->runningInConsole()) {
@@ -82,7 +81,7 @@ class NutgramServiceProvider extends ServiceProvider
     }
 
     /**
-     *  Load bot commands and callbacks
+     *  Load bot commands and callbacks.
      */
     public function boot(): void
     {

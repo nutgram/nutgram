@@ -19,23 +19,24 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  * It is, therefore, necessary to react by calling
  * {@see https://core.telegram.org/bots/api#answercallbackquery answerCallbackQuery}
  * even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
+ *
  * @see https://core.telegram.org/bots/api#callbackquery
  */
 class CallbackQuery extends BaseType
 {
     /**
-     * Unique identifier for this query
+     * Unique identifier for this query.
      */
     public string $id;
 
     /**
-     * Sender
+     * Sender.
      */
     public User $from;
 
     /**
      * Optional. Message with the callback button that originated the query.
-     * Note that message content and message date will not be available if the message is too old
+     * Note that message content and message date will not be available if the message is too old.
      */
     public ?Message $message = null;
 
@@ -58,7 +59,7 @@ class CallbackQuery extends BaseType
 
     /**
      * Optional. Short name of a Game to be returned, serves as the
-     * unique identifier for the {@see https://core.telegram.org/bots/api#games game}
+     * unique identifier for the {@see https://core.telegram.org/bots/api#games game}.
      */
     public ?string $game_short_name = null;
 }

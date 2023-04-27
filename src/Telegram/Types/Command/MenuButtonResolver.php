@@ -11,8 +11,8 @@ class MenuButtonResolver extends ConcreteResolver
 {
     protected array $concretes = [
         'commands' => MenuButtonCommands::class,
-        'default' => MenuButtonDefault::class,
-        'web_app' => MenuButtonWebApp::class,
+        'default'  => MenuButtonDefault::class,
+        'web_app'  => MenuButtonWebApp::class,
     ];
 
     public function concreteFor(array $data): ?string
