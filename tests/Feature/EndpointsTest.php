@@ -50,12 +50,12 @@ it('chunks long text message', function () {
 it('downloads a file', function ($update) {
     $bot = Nutgram::fake($update, [
         new Response(200, body: json_encode([
-            'ok' => true,
+            'ok'     => true,
             'result' => [
-                'file_id' => $update->message->document->file_id,
+                'file_id'        => $update->message->document->file_id,
                 'file_unique_id' => $update->message->document->file_unique_id,
-                'file_size' => $update->message->document->file_size,
-                'file_path' => 'bd63e83a-cebc-4a99-aa52-e9f76aca4f37.pdf',
+                'file_size'      => $update->message->document->file_size,
+                'file_path'      => 'bd63e83a-cebc-4a99-aa52-e9f76aca4f37.pdf',
             ],
         ])),
         new Response(200, body: 'ok'),
@@ -65,7 +65,7 @@ it('downloads a file', function ($update) {
         $document = $bot->message()->document;
         $file = $bot->getFile($document->file_id);
 
-        $response = $bot->downloadFile($file, __DIR__."/".$document->file_name);
+        $response = $bot->downloadFile($file, __DIR__.'/'.$document->file_name);
 
         expect($response)->toBeTrue();
     });
@@ -76,18 +76,18 @@ it('downloads a file', function ($update) {
 
     $bot->run();
 
-    expect(file_exists(__DIR__."/".$update->message->document->file_name))->toBeTrue();
+    expect(file_exists(__DIR__.'/'.$update->message->document->file_name))->toBeTrue();
     expect($bot->getData('caught_exception', false))->toBeFalse();
 
-    if (file_exists(__DIR__."/".$update->message->document->file_name)) {
-        unlink(__DIR__."/".$update->message->document->file_name);
+    if (file_exists(__DIR__.'/'.$update->message->document->file_name)) {
+        unlink(__DIR__.'/'.$update->message->document->file_name);
     }
 })->with('document');
 
 it('calls getUpdates method', function () {
     $bot = Nutgram::fake(responses: [
         new Response(200, body: json_encode([
-            'ok' => true,
+            'ok'     => true,
             'result' => [
                 json_decode(file_get_contents(__DIR__.'/../Updates/message.json'), true),
                 json_decode(file_get_contents(__DIR__.'/../Updates/message.json'), true),
@@ -107,7 +107,7 @@ it('calls getUpdates method', function () {
 it('calls setWebhook method', function () {
     $bot = Nutgram::fake(responses: [
         new Response(200, body: json_encode([
-            'ok' => true,
+            'ok'     => true,
             'result' => true,
         ])),
     ]);
@@ -118,7 +118,7 @@ it('calls setWebhook method', function () {
 it('calls deleteWebhook method', function () {
     $bot = Nutgram::fake(responses: [
         new Response(200, body: json_encode([
-            'ok' => true,
+            'ok'     => true,
             'result' => true,
         ])),
     ]);
@@ -128,20 +128,20 @@ it('calls deleteWebhook method', function () {
 
 it('calls getWebhookInfo method', function () {
     $info = [
-        'url' => 'https://example.com',
-        'has_custom_certificate' => false,
-        'pending_update_count' => 0,
-        'ip_address' => '1.2.3.4',
-        'last_error_date' => null,
-        'last_error_message' => null,
+        'url'                             => 'https://example.com',
+        'has_custom_certificate'          => false,
+        'pending_update_count'            => 0,
+        'ip_address'                      => '1.2.3.4',
+        'last_error_date'                 => null,
+        'last_error_message'              => null,
         'last_synchronization_error_date' => null,
-        'max_connections' => 50,
-        'allowed_updates' => [],
+        'max_connections'                 => 50,
+        'allowed_updates'                 => [],
     ];
 
     $bot = Nutgram::fake(responses: [
         new Response(200, body: json_encode([
-            'ok' => true,
+            'ok'     => true,
             'result' => $info,
         ])),
     ]);

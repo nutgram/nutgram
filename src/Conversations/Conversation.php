@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Conversations;
 
 use Psr\SimpleCache\InvalidArgumentException;
@@ -8,8 +7,7 @@ use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 
 /**
- * Class Conversation
- * @package SergiX44\Nutgram\Conversation
+ * Class Conversation.
  */
 abstract class Conversation
 {
@@ -39,7 +37,8 @@ abstract class Conversation
     private static bool $refreshInstance = false;
 
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram $bot
+     *
      * @return static
      */
     public static function begin(Nutgram $bot): self
@@ -64,7 +63,8 @@ abstract class Conversation
     }
 
     /**
-     * @param  bool  $flag
+     * @param bool $flag
+     *
      * @return void
      */
     public static function refreshOnDeserialize(bool $flag = true): void
@@ -73,9 +73,11 @@ abstract class Conversation
     }
 
     /**
-     * @param  string  $step
-     * @return void
+     * @param string $step
+     *
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     protected function next(string $step): void
     {
@@ -85,8 +87,9 @@ abstract class Conversation
     }
 
     /**
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     protected function end(): void
     {
@@ -96,7 +99,9 @@ abstract class Conversation
 
     /**
      * Developer defined function called before the current step.
-     * @param  Nutgram  $bot
+     *
+     * @param Nutgram $bot
+     *
      * @return void
      */
     protected function beforeStep(Nutgram $bot)
@@ -105,7 +110,9 @@ abstract class Conversation
 
     /**
      * Developer defined function called when the conversation is shut down.
-     * @param  Nutgram  $bot
+     *
+     * @param Nutgram $bot
+     *
      * @return void
      */
     protected function closing(Nutgram $bot)
@@ -114,8 +121,10 @@ abstract class Conversation
 
     /**
      * Invokes the correct conversation step.
-     * @param  Nutgram  $bot
-     * @param  mixed  ...$parameters
+     *
+     * @param Nutgram $bot
+     * @param mixed   ...$parameters
+     *
      * @return mixed
      */
     public function __invoke(Nutgram $bot, ...$parameters): mixed
@@ -123,6 +132,7 @@ abstract class Conversation
         if (method_exists($this, $this->step)) {
             $this->bot = $bot;
             $this->beforeStep($bot);
+
             return $this->{$this->step}($bot, ...$parameters);
         }
 
@@ -130,9 +140,10 @@ abstract class Conversation
     }
 
     /**
-     * @param  Nutgram  $bot
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
+     * @param Nutgram  $bot
+     * @param int|null $userId
+     * @param int|null $chatId
+     *
      * @throws InvalidArgumentException
      */
     public function terminate(Nutgram $bot, ?int $userId = null, ?int $chatId = null): void
@@ -143,7 +154,8 @@ abstract class Conversation
     }
 
     /**
-     * @param  bool  $skipHandlers
+     * @param bool $skipHandlers
+     *
      * @return Conversation
      */
     protected function setSkipHandlers(bool $skipHandlers): self
@@ -154,7 +166,8 @@ abstract class Conversation
     }
 
     /**
-     * @param  bool  $skipMiddlewares
+     * @param bool $skipMiddlewares
+     *
      * @return Conversation
      */
     protected function setSkipMiddlewares(bool $skipMiddlewares): self

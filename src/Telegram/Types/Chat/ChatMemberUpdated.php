@@ -7,32 +7,33 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object represents changes in the status of a chat member.
+ *
  * @see https://core.telegram.org/bots/api#chatmemberupdated
  */
 class ChatMemberUpdated extends BaseType
 {
     /**
-     * Chat the user belongs to
+     * Chat the user belongs to.
      */
     public Chat $chat;
 
     /**
-     * Performer of the action, which resulted in the change
+     * Performer of the action, which resulted in the change.
      */
     public User $from;
 
     /**
-     *  Date the change was done in Unix time
+     *  Date the change was done in Unix time.
      */
     public int $date;
 
     /**
-     * Previous information about the chat member
+     * Previous information about the chat member.
      */
     public ChatMember $old_chat_member;
 
     /**
-     * New information about the chat member
+     * New information about the chat member.
      */
     public ChatMember $new_chat_member;
 
@@ -42,7 +43,7 @@ class ChatMemberUpdated extends BaseType
     public ?ChatInviteLink $invite_link = null;
 
     /**
-     * Optional. True, if the user joined the chat via a chat folder invite link
+     * Optional. True, if the user joined the chat via a chat folder invite link.
      */
     public ?bool $via_chat_folder_invite_link = null;
 }

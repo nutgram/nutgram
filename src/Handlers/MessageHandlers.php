@@ -13,8 +13,9 @@ use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 trait MessageHandlers
 {
     /**
-     * @param  string  $command
+     * @param string $command
      * @param $callable
+     *
      * @return Command
      */
     public function onCommand(string $command, $callable): Command
@@ -23,7 +24,8 @@ trait MessageHandlers
     }
 
     /**
-     * @param  string|Command  $command
+     * @param string|Command $command
+     *
      * @return Command
      */
     public function registerCommand(string|Command $command): Command
@@ -39,8 +41,9 @@ trait MessageHandlers
     }
 
     /**
-     * @param  string  $pattern
+     * @param string $pattern
      * @param $callable
+     *
      * @return Handler
      */
     public function onText(string $pattern, $callable): Handler
@@ -50,6 +53,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onAnimation($callable): Handler
@@ -59,6 +63,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onAudio($callable): Handler
@@ -68,6 +73,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onDocument($callable): Handler
@@ -77,6 +83,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onPhoto($callable): Handler
@@ -86,6 +93,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onSticker($callable): Handler
@@ -95,6 +103,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onVideo($callable): Handler
@@ -104,6 +113,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onVideoNote($callable): Handler
@@ -113,6 +123,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onVoice($callable): Handler
@@ -122,6 +133,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onContact($callable): Handler
@@ -131,6 +143,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onDice($callable): Handler
@@ -140,6 +153,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onGame($callable): Handler
@@ -149,6 +163,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onMessagePoll($callable): Handler
@@ -158,6 +173,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onVenue($callable): Handler
@@ -167,6 +183,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onLocation($callable): Handler
@@ -176,6 +193,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onNewChatMembers($callable): Handler
@@ -185,6 +203,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onLeftChatMember($callable): Handler
@@ -194,6 +213,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onNewChatTitle($callable): Handler
@@ -203,6 +223,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onNewChatPhoto($callable): Handler
@@ -212,6 +233,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onDeleteChatPhoto($callable): Handler
@@ -221,6 +243,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onGroupChatCreated($callable): Handler
@@ -230,6 +253,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onSupergroupChatCreated($callable): Handler
@@ -239,6 +263,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onChannelChatCreated($callable): Handler
@@ -248,6 +273,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onMessageAutoDeleteTimerChanged($callable): Handler
@@ -257,6 +283,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onMigrateToChatId($callable): Handler
@@ -266,6 +293,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onMigrateFromChatId($callable): Handler
@@ -275,6 +303,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onPinnedMessage($callable): Handler
@@ -284,6 +313,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onInvoice($callable): Handler
@@ -293,6 +323,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onSuccessfulPayment($callable): Handler
@@ -301,8 +332,9 @@ trait MessageHandlers
     }
 
     /**
-     * @param  string  $pattern
+     * @param string $pattern
      * @param $callable
+     *
      * @return Handler
      */
     public function onSuccessfulPaymentPayload(string $pattern, $callable): Handler
@@ -315,6 +347,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onConnectedWebsite($callable): Handler
@@ -324,6 +357,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onPassportData($callable): Handler
@@ -333,6 +367,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onProximityAlertTriggered($callable): Handler
@@ -342,6 +377,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onForumTopicCreated($callable): Handler
@@ -351,6 +387,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onForumTopicEdited($callable): Handler
@@ -360,6 +397,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onForumTopicClosed($callable): Handler
@@ -369,6 +407,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onForumTopicReopened($callable): Handler
@@ -378,6 +417,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onVideoChatScheduled($callable): Handler
@@ -387,6 +427,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onVideoChatStarted($callable): Handler
@@ -396,6 +437,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onVideoChatEnded($callable): Handler
@@ -405,6 +447,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onVideoChatParticipantsInvited($callable): Handler
@@ -414,6 +457,7 @@ trait MessageHandlers
 
     /**
      * @param $callable
+     *
      * @return Handler
      */
     public function onWebAppData($callable): Handler

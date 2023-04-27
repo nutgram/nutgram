@@ -8,49 +8,51 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * This object contains information about a poll.
+ *
  * @see https://core.telegram.org/bots/api#poll
  */
 class Poll extends BaseType
 {
     /**
-     * Unique poll identifier
+     * Unique poll identifier.
      */
     public string $id;
 
     /**
-     * Poll question, 1-255 characters
+     * Poll question, 1-255 characters.
      */
     public string $question;
 
     /**
-     * List of poll options
+     * List of poll options.
+     *
      * @var \SergiX44\Nutgram\Telegram\Types\Poll\PollOption[] $options
      */
     #[ArrayType(PollOption::class)]
     public array $options;
 
     /**
-     * Total number of users that voted in the poll
+     * Total number of users that voted in the poll.
      */
     public int $total_voter_count;
 
     /**
-     * True, if the poll is closed
+     * True, if the poll is closed.
      */
     public bool $is_closed;
 
     /**
-     * True, if the poll is anonymous
+     * True, if the poll is anonymous.
      */
     public bool $is_anonymous;
 
     /**
-     * Poll type, currently can be “regular” or “quiz”
+     * Poll type, currently can be “regular” or “quiz”.
      */
     public string $type;
 
     /**
-     * True, if the poll allows multiple answers
+     * True, if the poll allows multiple answers.
      */
     public bool $allows_multiple_answers;
 
@@ -63,24 +65,25 @@ class Poll extends BaseType
 
     /**
      * Optional. Text that is shown when a user chooses an incorrect answer or taps
-     * on the lamp icon in a quiz-style poll, 0-200 characters
+     * on the lamp icon in a quiz-style poll, 0-200 characters.
      */
     public ?string $explanation = null;
 
     /**
-     * Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation
+     * Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation.
+     *
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $explanation_entities
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $explanation_entities = null;
 
     /**
-     * Optional. Amount of time in seconds the poll will be active after creation
+     * Optional. Amount of time in seconds the poll will be active after creation.
      */
     public ?int $open_period = null;
 
     /**
-     * Optional. Point in time (Unix timestamp) when the poll will be automatically closed
+     * Optional. Point in time (Unix timestamp) when the poll will be automatically closed.
      */
     public ?int $close_date = null;
 }

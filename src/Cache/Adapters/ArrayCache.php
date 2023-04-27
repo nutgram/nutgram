@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Cache\Adapters;
 
 use DateInterval;
@@ -8,8 +7,7 @@ use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Support\InteractsWithTime;
 
 /**
- * Class ArrayCache
- * @package SergiX44\Nutgram\Cache
+ * Class ArrayCache.
  */
 class ArrayCache implements CacheInterface
 {
@@ -19,8 +17,9 @@ class ArrayCache implements CacheInterface
     private array $expires = [];
 
     /**
-     * @param  string  $key
-     * @param  mixed  $default
+     * @param string $key
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function get($key, $default = null): mixed
@@ -31,9 +30,10 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  string  $key
-     * @param  mixed  $value
-     * @param  DateInterval|int|null  $ttl
+     * @param string                $key
+     * @param mixed                 $value
+     * @param DateInterval|int|null $ttl
+     *
      * @return bool
      */
     public function set($key, $value, $ttl = null): bool
@@ -49,7 +49,8 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  string  $key
+     * @param string $key
+     *
      * @return bool
      */
     public function delete($key): bool
@@ -71,8 +72,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  iterable  $keys
-     * @param  null  $default
+     * @param iterable $keys
+     * @param null     $default
+     *
      * @return array
      */
     public function getMultiple($keys, $default = null): array
@@ -87,8 +89,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  iterable  $values
-     * @param  DateInterval|int|null  $ttl
+     * @param iterable              $values
+     * @param DateInterval|int|null $ttl
+     *
      * @return bool
      */
     public function setMultiple($values, $ttl = null): bool
@@ -101,7 +104,8 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  iterable  $keys
+     * @param iterable $keys
+     *
      * @return bool
      */
     public function deleteMultiple($keys): bool
@@ -114,7 +118,8 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  string  $key
+     * @param string $key
+     *
      * @return bool
      */
     public function has($key): bool

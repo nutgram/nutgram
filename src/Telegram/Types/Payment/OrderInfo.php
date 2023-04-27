@@ -6,27 +6,28 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents information about an order.
+ *
  * @see https://core.telegram.org/bots/api#orderinfo
  */
 class OrderInfo extends BaseType
 {
     /**
-     * Optional. User name
+     * Optional. User name.
      */
     public ?string $name = null;
 
     /**
-     * Optional. User's phone number
+     * Optional. User's phone number.
      */
     public ?string $phone_number = null;
 
     /**
-     * Optional. User email
+     * Optional. User email.
      */
     public ?string $email = null;
 
     /**
-     * Optional. User shipping address
+     * Optional. User shipping address.
      */
     public ?ShippingAddress $shipping_address = null;
 }

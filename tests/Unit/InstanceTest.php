@@ -52,7 +52,7 @@ test('the fake instance can be serialized', function () {
     expect($o)->toBeInstanceOf(FakeNutgram::class);
 });
 
-class DummyPathTransformer
+class InstanceTest
 {
     public function __invoke($path)
     {

@@ -76,8 +76,8 @@ it('runs the bulk messenger with using method', function () {
         ->setChats([1, 2, 3])
         ->using(function (Nutgram $bot, int $chatId) {
             $bot->sendMessage('*AAA*', [
-                'chat_id' => $chatId,
-                'parse_mode' => ParseMode::MARKDOWN,
+                'chat_id'         => $chatId,
+                'parse_mode'      => ParseMode::MARKDOWN,
                 'protect_content' => true,
             ]);
         })

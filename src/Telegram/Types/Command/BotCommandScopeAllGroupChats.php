@@ -13,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Attributes\BotCommandScopeType;
 class BotCommandScopeAllGroupChats extends BotCommandScope
 {
     /**
-     * Scope type, must be all_group_chats
+     * Scope type, must be all_group_chats.
      */
     public string $type = BotCommandScopeType::ALL_GROUP_CHATS;
 }

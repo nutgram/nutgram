@@ -26,7 +26,7 @@ class ValidSameDataMenu extends InlineMenu
 
         $this->setCallbackQueryOptions([
             'show_alert' => true,
-            'text' => 'Alert!',
+            'text'       => 'Alert!',
         ]);
     }
 
@@ -39,7 +39,7 @@ class ValidSameDataMenu extends InlineMenu
 
         $this->setCallbackQueryOptions([
             'show_alert' => true,
-            'text' => 'Alert!',
+            'text'       => 'Alert!',
         ]);
     }
 
@@ -52,7 +52,7 @@ class ValidSameDataMenu extends InlineMenu
 
         $this->setCallbackQueryOptions([
             'show_alert' => true,
-            'text' => 'Alert!',
+            'text'       => 'Alert!',
         ]);
     }
 }

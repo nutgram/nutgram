@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
+ *
  * @see https://core.telegram.org/bots#keyboards custom keyboard
  * @see https://core.telegram.org/bots#keyboards Introduction to bots
  * @see https://core.telegram.org/bots/api#replykeyboardmarkup
@@ -15,7 +16,8 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
 {
     /**
-     * Array of button rows, each represented by an Array of KeyboardButton objects
+     * Array of button rows, each represented by an Array of KeyboardButton objects.
+     *
      * @var \SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton[][] $keyboard
      */
     #[ArrayType(KeyboardButton::class, depth: 2)]
@@ -44,7 +46,7 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
     public ?bool $one_time_keyboard = null;
 
     /**
-     * Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters
+     * Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
      */
     public ?string $input_field_placeholder = null;
 
@@ -56,6 +58,7 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
      * Example: A user requests to change the bot‘s language,
      * bot replies to the request with a keyboard to select the new language.
      * Other users in the group don’t see the keyboard.
+     *
      * @ee https://core.telegram.org/bots/api#message Message
      */
     public ?bool $selective = null;
@@ -92,24 +95,26 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
     }
 
     /**
-     * @param  KeyboardButton  ...$buttons
+     * @param KeyboardButton ...$buttons
+     *
      * @return $this
      */
     public function addRow(...$buttons): static
     {
         $this->keyboard[] = $buttons;
+
         return $this;
     }
 
     public function jsonSerialize(): array
     {
         return array_filter([
-            'keyboard' => $this->keyboard ?? [],
-            'is_persistent' => $this->is_persistent,
-            'resize_keyboard' => $this->resize_keyboard,
-            'one_time_keyboard' => $this->one_time_keyboard,
+            'keyboard'                => $this->keyboard ?? [],
+            'is_persistent'           => $this->is_persistent,
+            'resize_keyboard'         => $this->resize_keyboard,
+            'one_time_keyboard'       => $this->one_time_keyboard,
             'input_field_placeholder' => $this->input_field_placeholder,
-            'selective' => $this->selective,
+            'selective'               => $this->selective,
         ]);
     }
 }

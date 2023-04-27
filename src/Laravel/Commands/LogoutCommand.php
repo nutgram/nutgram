@@ -21,7 +21,7 @@ class LogoutCommand extends Command
      */
     public function handle(Nutgram $bot): int
     {
-        $dropPendingUpdates = (bool)$this->option('drop-pending-updates');
+        $dropPendingUpdates = (bool) $this->option('drop-pending-updates');
 
         try {
             $bot->deleteWebhook(['drop_pending_updates' => $dropPendingUpdates]);

@@ -14,7 +14,7 @@ use SergiX44\Nutgram\Telegram\Attributes\BotCommandScopeType;
 class BotCommandScopeDefault extends BotCommandScope
 {
     /**
-     * Scope type, must be default
+     * Scope type, must be default.
      */
     public string $type = BotCommandScopeType::DEFAULT;
 }

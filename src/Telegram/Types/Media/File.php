@@ -10,13 +10,14 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>.
  * It is guaranteed that the link will be valid for at least 1 hour.
  * When the link expires, a new one can be requested by calling {@see https://core.telegram.org/bots/api#getfile
- * getFile}. Maximum file size to download is 20 MB
+ * getFile}. Maximum file size to download is 20 MB.
+ *
  * @see https://core.telegram.org/bots/api#file
  */
 class File extends BaseType
 {
     /**
-     * Identifier for this file
+     * Identifier for this file.
      */
     public string $file_id;
 
@@ -27,7 +28,7 @@ class File extends BaseType
     public string $file_unique_id;
 
     /**
-     * Optional. File size, if known
+     * Optional. File size, if known.
      */
     public ?int $file_size = null;
 
@@ -37,10 +38,12 @@ class File extends BaseType
     public ?string $file_path = null;
 
     /**
-     * @param  string  $path
-     * @param  array  $clientOpt
-     * @return bool|null
+     * @param string $path
+     * @param array  $clientOpt
+     *
      * @throws GuzzleException
+     *
+     * @return bool|null
      */
     public function save(string $path, array $clientOpt = []): ?bool
     {
@@ -48,6 +51,7 @@ class File extends BaseType
             $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
             $path .= basename($this->file_path ?? $this->file_id);
         }
+
         return $this->bot?->downloadFile($this, $path, $clientOpt);
     }
 

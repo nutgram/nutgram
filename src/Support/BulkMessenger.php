@@ -19,7 +19,7 @@ class BulkMessenger
     private $callable;
 
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram $bot
      */
     public function __construct(Nutgram $bot)
     {
@@ -34,52 +34,62 @@ class BulkMessenger
     }
 
     /**
-     * @param  callable  $action
+     * @param callable $action
+     *
      * @return $this
      */
     public function using(callable $action): static
     {
         $this->callable = $action;
+
         return $this;
     }
 
     /**
-     * @param  array  $chats
+     * @param array $chats
+     *
      * @return $this
      */
     public function setChats(array $chats): static
     {
         $this->chats = $chats;
+
         return $this;
     }
 
     /**
-     * @param  int  $seconds
+     * @param int $seconds
+     *
      * @return $this
      */
     public function setInterval(int $seconds): static
     {
         $this->seconds = $seconds;
+
         return $this;
     }
 
     /**
-     * @param  string  $text
+     * @param string $text
+     *
      * @return $this
      */
     public function setText(string $text): static
     {
         $this->text = $text;
+
         return $this;
     }
 
     /**
-     * @param  array  $params
+     * @param array $params
+     *
      * @return $this
      */
     public function setOpt(array $params): static
     {
         $this->opt = $params;
+
         return $this;
     }
 

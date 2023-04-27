@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\RunningMode;
 
 use Psr\SimpleCache\InvalidArgumentException;
@@ -11,7 +10,8 @@ use Throwable;
 class Polling implements RunningMode
 {
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram $bot
+     *
      * @throws InvalidArgumentException
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \JsonException
@@ -25,9 +25,8 @@ class Polling implements RunningMode
         $timeout = $pollingConfig['timeout'] ?? $bot->getConfig()['timeout'] ?? 10;
         $allowedUpdates = isset($pollingConfig['allowed_updates']) ? ['allowed_updates' => $pollingConfig['allowed_updates']] : [];
 
-
         $parameters = array_merge([
-            'limit' => $pollingConfig['limit'] ?? 100,
+            'limit'   => $pollingConfig['limit'] ?? 100,
             'timeout' => $timeout,
         ], $allowedUpdates);
 
@@ -53,8 +52,9 @@ class Polling implements RunningMode
     }
 
     /**
-     * @param  Nutgram  $bot
-     * @param  Update[]  $updates
+     * @param Nutgram  $bot
+     * @param Update[] $updates
+     *
      * @return void
      */
     protected function fire(Nutgram $bot, array $updates = []): void

@@ -29,7 +29,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
 {
     /**
      * Text of the button.
-     * If none of the optional fields are used, it will be sent to the bot as a message when the button is pressed
+     * If none of the optional fields are used, it will be sent to the bot as a message when the button is pressed.
      */
     public string $text;
 
@@ -49,19 +49,19 @@ class KeyboardButton extends BaseType implements JsonSerializable
 
     /**
      * Optional. If True, the user's phone number will be sent as a contact when the button is pressed.
-     * Available in private chats only
+     * Available in private chats only.
      */
     public ?bool $request_contact = null;
 
     /**
      * Optional. If True, the user's current location will be sent when the button is pressed.
-     * Available in private chats only
+     * Available in private chats only.
      */
     public ?bool $request_location = null;
 
     /**
      * Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is
-     * pressed. Available in private chats only
+     * pressed. Available in private chats only.
      */
     public ?KeyboardButtonPollType $request_poll = null;
 
@@ -115,13 +115,13 @@ class KeyboardButton extends BaseType implements JsonSerializable
     public function jsonSerialize(): array
     {
         return array_filter([
-            'text' => $this->text,
-            'request_user' => $this->request_user,
-            'request_chat' => $this->request_chat,
-            'request_contact' => $this->request_contact,
+            'text'             => $this->text,
+            'request_user'     => $this->request_user,
+            'request_chat'     => $this->request_chat,
+            'request_contact'  => $this->request_contact,
             'request_location' => $this->request_location,
-            'request_poll' => $this->request_poll,
-            'web_app' => $this->web_app,
+            'request_poll'     => $this->request_poll,
+            'web_app'          => $this->web_app,
         ]);
     }
 }

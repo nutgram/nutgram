@@ -30,7 +30,7 @@ it('returns serialized json', function ($name, $output) {
     expect(json_encode($outgoingResource))->toContain($output);
 })->with([
     'filled name' => ['foo.txt', 'OutgoingResource{foo.txt}'],
-    'empty name' => [null, 'OutgoingResource'],
+    'empty name'  => [null, 'OutgoingResource'],
 ]);
 
 it('returns name', function () {

@@ -5,13 +5,14 @@ namespace SergiX44\Nutgram\Telegram\Types\Common;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
- * Response from an API request
+ * Response from an API request.
+ *
  * @see https://core.telegram.org/bots/api#making-requests
  */
 class Response extends BaseType
 {
     /**
-     * Response status
+     * Response status.
      */
     public bool $ok;
 
@@ -26,7 +27,7 @@ class Response extends BaseType
     public ?string $description = null;
 
     /**
-     * Result data
+     * Result data.
      */
     public object $result;
 

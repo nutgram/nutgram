@@ -14,16 +14,17 @@ class OutgoingResource implements JsonSerializable
 
     protected int $error;
 
-    /** @var resource|null $tmp_resource */
+    /** @var resource|null */
     protected $tmp_resource;
 
     /**
      * OutgoingResource constructor.
-     * @param  string|null  $name
-     * @param  string|null  $type
-     * @param  int  $size
-     * @param  int  $error
-     * @param  resource|null  $tmp_resource
+     *
+     * @param string|null   $name
+     * @param string|null   $type
+     * @param int           $size
+     * @param int           $error
+     * @param resource|null $tmp_resource
      */
     public function __construct(
         ?string $name,
@@ -45,7 +46,7 @@ class OutgoingResource implements JsonSerializable
             return basename(__CLASS__);
         }
 
-        return sprintf("%s{%s}", basename(__CLASS__), $this->name);
+        return sprintf('%s{%s}', basename(__CLASS__), $this->name);
     }
 
     /**

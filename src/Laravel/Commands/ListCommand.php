@@ -22,31 +22,32 @@ class ListCommand extends Command
     {
         $bot = app(Nutgram::class);
 
-        $refHandlers = new ReflectionProperty(Nutgram::class, "handlers");
+        $refHandlers = new ReflectionProperty(Nutgram::class, 'handlers');
         $refHandlers->setAccessible(true);
 
         $handlers = collect(Arr::dot($refHandlers->getValue($bot)))
             ->map(function (Handler $handler, string $key) {
-                $refCallable = new ReflectionProperty(Handler::class, "callable");
+                $refCallable = new ReflectionProperty(Handler::class, 'callable');
                 $refCallable->setAccessible(true);
                 $callable = $refCallable->getValue($handler);
 
                 return [
-                    'handler' => $this->getHandlerName($key),
-                    'arg' => $handler->getPattern(),
-                    'subtype' => $this->getMessageSubtype($key),
+                    'handler'  => $this->getHandlerName($key),
+                    'arg'      => $handler->getPattern(),
+                    'subtype'  => $this->getMessageSubtype($key),
                     'callable' => $this->getCallableName($callable),
                 ];
             });
 
         if ($handlers->isEmpty()) {
-            $this->warn("No handlers have been registered.");
+            $this->warn('No handlers have been registered.');
+
             return 0;
         }
 
-        $terminalWidth = (new Terminal)->getWidth();
+        $terminalWidth = (new Terminal())->getWidth();
         $padding = 2;
-        $maxHandler = (int)$handlers->max(fn ($item) => strlen($item['handler'])) + 1;
+        $maxHandler = (int) $handlers->max(fn ($item) => strlen($item['handler'])) + 1;
 
         foreach ($handlers as $data) {
             [$handler, $arg, $subtype, $callable] = array_values($data);
@@ -55,14 +56,14 @@ class ListCommand extends Command
             $arg = (!in_array($handler, ['onText', 'onCommand']) ? $arg : $subtype);
             $arg = $arg ?: $subtype;
 
-            $dots = str_repeat('.', max($terminalWidth - mb_strlen($handler . $arg . $callable) - ($padding * 2), 0));
+            $dots = str_repeat('.', max($terminalWidth - mb_strlen($handler.$arg.$callable) - ($padding * 2), 0));
 
             $output = "<fg=yellow>$handler</>";
             $output .= "<fg=gray>$arg</>";
             $output .= "<fg=blue>$dots</>";
             $output .= "<fg=blue>$callable</>";
 
-            $output = str_repeat(' ', $padding) . $output . str_repeat(' ', $padding);
+            $output = str_repeat(' ', $padding).$output.str_repeat(' ', $padding);
 
             $this->line($output);
         }
@@ -95,22 +96,22 @@ class ListCommand extends Command
                     return 'onMessageType';
                 }
             ),
-            'edited_message' => 'onEditedMessage',
-            'channel_post' => 'onChannelPost',
-            'edited_channel_post' => 'onEditedChannelPost',
-            'inline_query' => 'onInlineQuery',
+            'edited_message'       => 'onEditedMessage',
+            'channel_post'         => 'onChannelPost',
+            'edited_channel_post'  => 'onEditedChannelPost',
+            'inline_query'         => 'onInlineQuery',
             'chosen_inline_result' => 'onChosenInlineResult',
-            'callback_query' => 'onCallbackQuery',
-            'shipping_query' => 'onShippingQuery',
-            'pre_checkout_query' => 'onPreCheckoutQuery',
-            'poll' => 'onPoll',
-            'poll_answer' => 'onPollAnswer',
-            'my_chat_member' => 'onMyChatMember',
-            'chat_member' => 'onChatMember',
-            'chat_join_request' => 'onChatJoinRequest',
-            'api_error' => 'onApiError',
-            'exception' => 'onException',
-            default => null,
+            'callback_query'       => 'onCallbackQuery',
+            'shipping_query'       => 'onShippingQuery',
+            'pre_checkout_query'   => 'onPreCheckoutQuery',
+            'poll'                 => 'onPoll',
+            'poll_answer'          => 'onPollAnswer',
+            'my_chat_member'       => 'onMyChatMember',
+            'chat_member'          => 'onChatMember',
+            'chat_join_request'    => 'onChatJoinRequest',
+            'api_error'            => 'onApiError',
+            'exception'            => 'onException',
+            default                => null,
         };
     }
 
@@ -129,7 +130,7 @@ class ListCommand extends Command
             return null;
         }
 
-        return sprintf("MessageTypes::%s", Str::upper($subHandlerName ?? 'UNKNOWN'));
+        return sprintf('MessageTypes::%s', Str::upper($subHandlerName ?? 'UNKNOWN'));
     }
 
     protected function getCallableName(mixed $callable): string
@@ -140,10 +141,10 @@ class ListCommand extends Command
 
         if (is_array($callable)) {
             if (is_object($callable[0])) {
-                return sprintf("%s::%s", get_class($callable[0]), trim($callable[1]));
+                return sprintf('%s::%s', get_class($callable[0]), trim($callable[1]));
             }
 
-            return sprintf("%s::%s", trim($callable[0]), trim($callable[1]));
+            return sprintf('%s::%s', trim($callable[0]), trim($callable[1]));
         }
 
         if ($callable instanceof Closure) {

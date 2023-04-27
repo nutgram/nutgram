@@ -6,6 +6,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * Contains information about why a request was unsuccessfull.
+ *
  * @see https://core.telegram.org/bots/api#responseparameters
  */
 class ResponseParameters extends BaseType

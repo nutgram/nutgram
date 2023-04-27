@@ -17,32 +17,33 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * specified content instead of the the voice message.
  *
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ *
  * @see https://core.telegram.org/bots/api#inlinequeryresultvoice
  */
 class InlineQueryResultVoice extends InlineQueryResult
 {
     /**
-     * Type of the result, must be voice
+     * Type of the result, must be voice.
      */
     public string $type;
 
     /**
-     * Unique identifier for this result, 1-64 bytes
+     * Unique identifier for this result, 1-64 bytes.
      */
     public string $id;
 
     /**
-     * A valid URL for the voice recording
+     * A valid URL for the voice recording.
      */
     public string $voice_url;
 
     /**
-     * Recording title
+     * Recording title.
      */
     public string $title;
 
     /**
-     * Optional. Caption, 0-1024 characters
+     * Optional. Caption, 0-1024 characters.
      */
     public ?string $caption = null;
 
@@ -56,26 +57,27 @@ class InlineQueryResultVoice extends InlineQueryResult
     public ?string $parse_mode = null;
 
     /**
-     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
+     *
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $caption_entities
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $caption_entities = null;
 
     /**
-     * Optional. Recording duration in seconds
+     * Optional. Recording duration in seconds.
      */
     public ?int $voice_duration = null;
 
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
-     * attached to the message
+     * attached to the message.
      */
     public ?InlineKeyboardMarkup $reply_markup = null;
 
     /**
-     * Optional. Content of the message to be sent instead of the voice recording
+     * Optional. Content of the message to be sent instead of the voice recording.
      */
     public InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent|null $input_message_content;
 }

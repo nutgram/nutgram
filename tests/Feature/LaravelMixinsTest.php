@@ -34,7 +34,7 @@ test(
     }
 )->with([
     'full_path' => ['foo/bar.txt', 'text.txt', 'text.txt'],
-    'dir_path' => ['foo/bar.txt', 'texts/', 'texts/bar.txt'],
+    'dir_path'  => ['foo/bar.txt', 'texts/', 'texts/bar.txt'],
 ]);
 
 test(
@@ -64,5 +64,5 @@ test(
     }
 )->with([
     'full_path' => ['foo/bar.txt', 'text.txt', 'text.txt'],
-    'dir_path' => ['foo/bar.txt', 'texts/', 'texts/bar.txt'],
+    'dir_path'  => ['foo/bar.txt', 'texts/', 'texts/bar.txt'],
 ]);

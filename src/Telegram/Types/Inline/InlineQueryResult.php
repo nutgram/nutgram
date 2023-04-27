@@ -26,10 +26,11 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * - {@see https://core.telegram.org/bots/api#inlinequeryresultphoto InlineQueryResultPhoto}
  * - {@see https://core.telegram.org/bots/api#inlinequeryresultvenue InlineQueryResultVenue}
  * - {@see https://core.telegram.org/bots/api#inlinequeryresultvideo InlineQueryResultVideo}
- * - {@see https://core.telegram.org/bots/api#inlinequeryresultvoice InlineQueryResultVoice}
+ * - {@see https://core.telegram.org/bots/api#inlinequeryresultvoice InlineQueryResultVoice}.
  *
  * Note: All URLs passed in inline query results will be available to end users and
  * therefore must be assumed to be public.
+ *
  * @see https://core.telegram.org/bots/api#inlinequeryresult
  */
 abstract class InlineQueryResult extends BaseType

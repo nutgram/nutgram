@@ -11,17 +11,18 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 /**
  * This object represents a game.
  * Use BotFather to create and edit games, their short names will act as unique identifiers.
+ *
  * @see https://core.telegram.org/bots/api#game
  */
 class Game extends BaseType
 {
     /**
-     * Title of the game
+     * Title of the game.
      */
     public string $title;
 
     /**
-     * Description of the game
+     * Description of the game.
      */
     public string $description;
 
@@ -41,6 +42,7 @@ class Game extends BaseType
 
     /**
      * Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
+     *
      * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $text_entities
      */
     #[ArrayType(MessageEntity::class)]
@@ -48,7 +50,7 @@ class Game extends BaseType
 
     /**
      * Optional. Animation that will be displayed in the game message in chats.
-     * Upload via {@see https://t.me/botfather BotFather}
+     * Upload via {@see https://t.me/botfather BotFather}.
      */
     public ?Animation $animation = null;
 }

@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Command;
 
 /**
  * This object represents a bot command.
+ *
  * @see https://core.telegram.org/bots/api#botcommand
  */
 class BotCommand
@@ -19,8 +20,8 @@ class BotCommand
     public string $description;
 
     /**
-     * @param  string  $command
-     * @param  string  $description
+     * @param string $command
+     * @param string $description
      */
     public function __construct(string $command, string $description)
     {

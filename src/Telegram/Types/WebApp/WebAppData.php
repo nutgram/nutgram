@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\WebApp;
 
 /**
  * Contains data sent from a Web App to the bot.
+ *
  * @see https://core.telegram.org/bots/api#webappdata
  */
 class WebAppData

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Proxies;
 
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
@@ -19,8 +18,7 @@ use SergiX44\Nutgram\Telegram\Types\Poll\PollAnswer;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
- * Trait UpdateProxy
- * @package SergiX44\Nutgram\Proxies
+ * Trait UpdateProxy.
  */
 trait UpdateProxy
 {

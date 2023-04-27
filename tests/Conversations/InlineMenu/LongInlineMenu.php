@@ -27,7 +27,7 @@ class LongInlineMenu extends InlineMenu
 
         $this->setCallbackQueryOptions([
             'show_alert' => true,
-            'text' => 'Alert!',
+            'text'       => 'Alert!',
         ]);
     }
 }

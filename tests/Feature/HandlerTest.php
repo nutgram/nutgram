@@ -155,7 +155,7 @@ it('calls the right on command', function ($update) {
 it('allows defining commands with command instances', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $c = new class extends Command {
+    $c = new class() extends Command {
         protected string $command = 'start';
 
         public function handle(Nutgram $bot): void
@@ -213,7 +213,6 @@ it('parse callback queries', function ($update) {
         throw new Exception();
     });
 
-
     $bot->fallback(function ($bot) {
         throw new Exception();
     });
@@ -231,7 +230,6 @@ it('parse callback queries with specific data', function ($update) {
     $bot->onMessage(function ($bot) {
         throw new Exception();
     });
-
 
     $bot->fallback(function ($bot) {
         throw new Exception();
@@ -253,7 +251,6 @@ it('parse callback queries with specific data capturing', function ($update) {
         throw new Exception();
     });
 
-
     $bot->fallback(function ($bot) {
         throw new Exception();
     });
@@ -271,7 +268,6 @@ it('calls the exception handler', function ($update) {
     $bot->onMessage(function ($bot) {
         throw new Exception();
     });
-
 
     $bot->fallback(function ($bot) {
         throw new Exception();
@@ -312,7 +308,6 @@ it('calls the specific exception handler', function ($update) {
     $bot->onMessage(function ($bot) {
         throw new Exception();
     });
-
 
     $bot->fallback(function ($bot) {
         throw new Exception();
@@ -412,7 +407,6 @@ it('parse pre checkout queries with specific data', function ($update) {
         throw new Exception();
     });
 
-
     $bot->fallback(function ($bot) {
         throw new Exception();
     });
@@ -430,7 +424,6 @@ it('parse successful payment with specific data', function ($update) {
     $bot->onMessage(function ($bot) {
         throw new Exception();
     });
-
 
     $bot->fallback(function ($bot) {
         throw new Exception();
@@ -464,7 +457,6 @@ test('commands can have descriptions', function ($update) {
     expect($cmd3->isHidden())->toBeTrue();
 })->with('command_message');
 
-
 it('skips global middleware except one', function ($update) {
     $bot = Nutgram::fake($update);
 
@@ -487,7 +479,7 @@ it('skips global middleware except one', function ($update) {
             $test[] = 'Message';
         })
         ->skipGlobalMiddlewares([
-            $middleware1
+            $middleware1,
         ])
         ->middleware(function ($bot, $next) use (&$test) {
             $test[] = 'LM1';
@@ -576,7 +568,7 @@ it('dumps requests call', function () {
 
     expect($bot->getDumpHistory()[0])
         ->toContain('Nutgram Request History Dump')
-        ->toContain("[0] sendMessage")
+        ->toContain('[0] sendMessage')
         ->toContain('"text": "bar"');
 });
 
@@ -681,6 +673,7 @@ it('can manipulate the http request', function () {
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
         expect($request['json']['text'])->toBe('foo');
         $request['json']['text'] = 'foobar';
+
         return $request;
     });
 
@@ -697,6 +690,7 @@ it('can manipulate the http response', function () {
 
     $bot->afterApiRequest(function (Nutgram $bot, object $response) {
         $response->result->text = 'banane';
+
         return $response;
     });
 
@@ -741,6 +735,7 @@ it('calls beforeApiRequest with valid request', function () {
 
     $bot->beforeApiRequest(function ($bot, $request) use (&$history) {
         $history[] = $request['json']['text'];
+
         return $request;
     });
 
@@ -757,7 +752,7 @@ it('calls beforeApiRequest without global middlewares', function ($update) {
 
     $bot->middleware(function ($bot, $next) {
         $bot->sendMessage('nope');
-        return;
+
     });
 
     $bot->onText('aaaaaaaaaa', function ($bot) {
@@ -766,6 +761,7 @@ it('calls beforeApiRequest without global middlewares', function ($update) {
 
     $bot->beforeApiRequest(function ($bot, $request) use (&$history) {
         $history[] = $request['json']['text'];
+
         return $request;
     });
 

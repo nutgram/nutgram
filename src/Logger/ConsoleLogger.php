@@ -23,12 +23,12 @@ class ConsoleLogger extends AbstractLogger
             $message .= "\n{$stringContext}";
         }
 
-        print(sprintf(
+        echo sprintf(
             "[%s] %s: %s\n\n",
             date('Y-m-d H:i:s'),
             strtoupper($level),
             $message,
-        ));
+        );
     }
 
     protected function isCli(): bool

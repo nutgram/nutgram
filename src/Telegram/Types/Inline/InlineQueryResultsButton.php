@@ -8,12 +8,13 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 /**
  * This object represents a button to be shown above inline query results.
  * You must use exactly one of the optional fields.
+ *
  * @see https://core.telegram.org/bots/api#inlinequeryresultsbutton
  */
 class InlineQueryResultsButton extends BaseType
 {
     /**
-     * Label text on the button
+     * Label text on the button.
      */
     public string $text;
 

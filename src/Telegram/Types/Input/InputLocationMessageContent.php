@@ -7,22 +7,23 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content}
  * of a location message to be sent as the result of an inline query.
+ *
  * @see https://core.telegram.org/bots/api#inputlocationmessagecontent
  */
 class InputLocationMessageContent extends BaseType
 {
     /**
-     * Latitude of the location in degrees
+     * Latitude of the location in degrees.
      */
     public float $latitude;
 
     /**
-     * Longitude of the location in degrees
+     * Longitude of the location in degrees.
      */
     public float $longitude;
 
     /**
-     * Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+     * Optional. The radius of uncertainty for the location, measured in meters; 0-1500.
      */
     public ?float $horizontal_accuracy = null;
 

@@ -13,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * - {@see BotCommandScopeAllChatAdministrators BotCommandScopeAllChatAdministrators}
  * - {@see BotCommandScopeChat BotCommandScopeChat}
  * - {@see BotCommandScopeChatAdministrators BotCommandScopeChatAdministrators}
- * - {@see BotCommandScopeChatMember BotCommandScopeChatMember}
+ * - {@see BotCommandScopeChatMember BotCommandScopeChatMember}.
  *
  * @see https://core.telegram.org/bots/api#botcommandscope
  */

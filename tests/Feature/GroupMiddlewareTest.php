@@ -325,7 +325,6 @@ it('groups middleware with on*Data/Payload handlers', function ($update) {
             $test .= 'H1';
         });
 
-
         $bot->onCallbackQueryData('thedata', function (Nutgram $bot) use (&$test) {
             $test .= 'H2';
         });

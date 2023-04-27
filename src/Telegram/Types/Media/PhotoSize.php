@@ -6,6 +6,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents one size of a photo or a file / sticker thumbnail.
+ *
  * @see https://core.telegram.org/bots/api#document file
  * @see https://core.telegram.org/bots/api#sticker sticker
  * @see https://core.telegram.org/bots/api#photosize
@@ -13,7 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 class PhotoSize extends BaseType
 {
     /**
-     * Unique identifier for this file
+     * Unique identifier for this file.
      */
     public string $file_id;
 
@@ -24,17 +25,17 @@ class PhotoSize extends BaseType
     public string $file_unique_id;
 
     /**
-     * Photo width
+     * Photo width.
      */
     public int $width;
 
     /**
-     * Photo height
+     * Photo height.
      */
     public int $height;
 
     /**
-     * Optional. File size
+     * Optional. File size.
      */
     public ?int $file_size = null;
 }

@@ -34,7 +34,7 @@ class LoggerHandler extends AbstractProcessingHandler
         config(['nutgram.config.split_long_messages' => true]);
 
         $this->bot->sendMessage($this->formatText($record), [
-            'chat_id' => $this->chatId,
+            'chat_id'    => $this->chatId,
             'parse_mode' => 'html',
         ]);
 

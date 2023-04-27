@@ -14,7 +14,7 @@ abstract class BaseType
     protected ?Nutgram $bot;
 
     /**
-     * @param  Nutgram|null  $bot
+     * @param Nutgram|null $bot
      */
     public function __construct(?Nutgram $bot = null)
     {
@@ -22,8 +22,9 @@ abstract class BaseType
     }
 
     /**
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return mixed
      */
     public function __call($method, $parameters)
@@ -36,12 +37,14 @@ abstract class BaseType
     }
 
     /**
-     * @param  Nutgram|null  $bot
+     * @param Nutgram|null $bot
+     *
      * @return BaseType
      */
     public function bindToInstance(?Nutgram $bot): self
     {
         $this->bot = $bot;
+
         return $this;
     }
 

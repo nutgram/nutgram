@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Cache;
 
 use Closure;
@@ -19,9 +18,10 @@ class ConversationCache extends BotCache
 
     /**
      * ConversationCache constructor.
-     * @param  CacheInterface  $cache
-     * @param  int|null  $botId
-     * @param  DateInterval|int|null  $ttl
+     *
+     * @param CacheInterface        $cache
+     * @param int|null              $botId
+     * @param DateInterval|int|null $ttl
      */
     public function __construct(CacheInterface $cache, ?int $botId, DateInterval|int|null $ttl = self::CONVERSATION_TTL)
     {
@@ -29,11 +29,13 @@ class ConversationCache extends BotCache
     }
 
     /**
-     * @param  int  $userId
-     * @param  int  $chatId
-     * @return callable|Conversation|null
+     * @param int $userId
+     * @param int $chatId
+     *
      * @throws InvalidArgumentException
      * @throws PhpVersionNotSupportedException
+     *
+     * @return callable|Conversation|null
      */
     public function get(int $userId, int $chatId): null|callable|Conversation
     {
@@ -52,12 +54,14 @@ class ConversationCache extends BotCache
     }
 
     /**
-     * @param  int  $userId
-     * @param  int  $chatId
-     * @param  callable|Conversation|SerializableClosure  $conversation
-     * @return bool
+     * @param int                                       $userId
+     * @param int                                       $chatId
+     * @param callable|Conversation|SerializableClosure $conversation
+     *
      * @throws InvalidArgumentException
      * @throws PhpVersionNotSupportedException
+     *
+     * @return bool
      */
     public function set(int $userId, int $chatId, callable|Conversation|SerializableClosure $conversation): bool
     {
@@ -71,10 +75,12 @@ class ConversationCache extends BotCache
     }
 
     /**
-     * @param  int  $userId
-     * @param  int  $chatId
-     * @return bool
+     * @param int $userId
+     * @param int $chatId
+     *
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function delete(int $userId, int $chatId): bool
     {

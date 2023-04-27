@@ -9,7 +9,7 @@ use SergiX44\Nutgram\NutgramServiceProvider;
 class TestCase extends OrchestraTestCase
 {
     /**
-     * @param  Application  $app
+     * @param Application $app
      *
      * @return array
      */

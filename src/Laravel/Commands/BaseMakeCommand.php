@@ -31,23 +31,26 @@ abstract class BaseMakeCommand extends Command
         File::put($path, $stub);
 
         $this->info('Nutgram '.Str::singular($this->getSubDirName()).' created successfully.');
+
         return 0;
     }
 
     /**
-     * Return the sub directory name
+     * Return the sub directory name.
+     *
      * @return string
      */
     abstract protected function getSubDirName(): string;
 
     /**
-     * Return the stub file path
+     * Return the stub file path.
+     *
      * @return string
      */
     abstract protected function getStubPath(): string;
 
     /**
-     * Map the stub variables present in stub to its value
+     * Map the stub variables present in stub to its value.
      *
      * @return array
      */
@@ -58,14 +61,16 @@ abstract class BaseMakeCommand extends Command
 
         return [
             'namespace' => $this->getSubDirName().$this->getNamespace($name),
-            'name' => class_basename($name),
+            'name'      => class_basename($name),
         ];
     }
 
     /**
-     * Replace the stub variables with the desire value
-     * @param  string  $path
-     * @param  array  $variables
+     * Replace the stub variables with the desire value.
+     *
+     * @param string $path
+     * @param array  $variables
+     *
      * @return string
      */
     protected function getStubContent(string $path, array $variables = []): string
@@ -74,12 +79,15 @@ abstract class BaseMakeCommand extends Command
         foreach ($variables as $key => $value) {
             $content = str_replace("{{ $key }}", $value, $content);
         }
+
         return $content;
     }
 
     /**
      * Build the directory for the class if necessary.
-     * @param  string  $path
+     *
+     * @param string $path
+     *
      * @return void
      */
     protected function makeDirectory(string $path): void
@@ -99,7 +107,8 @@ abstract class BaseMakeCommand extends Command
      * Get the full namespace for a given class, without the class name.
      *
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return string
      */
     protected function getNamespace(string $name): string
@@ -113,12 +122,12 @@ abstract class BaseMakeCommand extends Command
         return '\\'.$namespace;
     }
 
-
     /**
-     * remove duplicated slashes
+     * remove duplicated slashes.
      *
-     * @param  string  $name
-     * @param  string  $replacement
+     * @param string $name
+     * @param string $replacement
+     *
      * @return string
      */
     protected function slashesTrim(string $name, string $replacement = '\\'): string
@@ -127,9 +136,10 @@ abstract class BaseMakeCommand extends Command
     }
 
     /**
-     * returns namespace from full class name
+     * returns namespace from full class name.
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return string
      */
     protected function removeClassName(string $name): string

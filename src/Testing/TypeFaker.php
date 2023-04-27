@@ -2,7 +2,6 @@
 
 namespace SergiX44\Nutgram\Testing;
 
-use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionProperty;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
@@ -11,7 +10,7 @@ use SergiX44\Nutgram\Hydrator\Hydrator;
 class TypeFaker
 {
     /**
-     * @param  Hydrator  $hydrator
+     * @param Hydrator $hydrator
      */
     public function __construct(private Hydrator $hydrator)
     {
@@ -19,13 +18,16 @@ class TypeFaker
 
     /**
      * @template T
-     * @param  class-string<T>  $type
-     * @param  array  $partial
-     * @param  bool  $fillNullable
-     * @return T|string|int|bool|array|null|float
+     *
+     * @param class-string<T> $type
+     * @param array           $partial
+     * @param bool            $fillNullable
+     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \ReflectionException
+     *
+     * @return T|string|int|bool|array|null|float
      */
     public function fakeInstanceOf(string $type, array $partial = [], bool $fillNullable = true): mixed
     {
@@ -39,9 +41,9 @@ class TypeFaker
     /**
      * @template T
      *
-     * @param class-string<T>  $class
-     * @param array  $additional
-     * @param array  $resolveStack
+     * @param class-string<T> $class
+     * @param array           $additional
+     * @param array           $resolveStack
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
@@ -120,11 +122,11 @@ class TypeFaker
         return $this->hydrator->hydrate($data, $reflectionClass->getName());
     }
 
-
     /**
-     * @param  string  $class
-     * @param  array  $stack
-     * @param  bool  $isNullable
+     * @param string $class
+     * @param array  $stack
+     * @param bool   $isNullable
+     *
      * @return bool
      */
     protected function shouldInstantiate(string $class, array $stack, bool $isNullable): bool
@@ -132,10 +134,10 @@ class TypeFaker
         return class_exists($class) && (!in_array($class, $stack, true) || !$isNullable);
     }
 
-
     /**
-     * @param  mixed  $what
-     * @param  int  $layer
+     * @param mixed $what
+     * @param int   $layer
+     *
      * @return array
      */
     protected function wrap(mixed $what, int $layer = 0): array
@@ -148,39 +150,44 @@ class TypeFaker
     }
 
     /**
-     * @param  string  $type
-     * @return string|int|bool|array|float|null
+     * @param string $type
+     *
      * @throws \Exception
+     *
+     * @return string|int|bool|array|float|null
      */
     public static function randomScalarOf(string $type): string|int|bool|array|null|float
     {
         return match ($type) {
-            'int' => self::randomInt(),
+            'int'    => self::randomInt(),
             'string' => self::randomString(),
-            'bool' => self::randomInt(0, 1) === 1,
-            'float' => self::randomFloat(),
-            'array' => [], // fallback
-            default => null
+            'bool'   => self::randomInt(0, 1) === 1,
+            'float'  => self::randomFloat(),
+            'array'  => [], // fallback
+            default  => null
         };
     }
 
     /**
-     * @param  int  $length
+     * @param int $length
+     *
      * @return string
      */
     public static function randomString(int $length = 8): string
     {
         return substr(str_shuffle(str_repeat(
             $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            (int)ceil($length / strlen($x))
+            (int) ceil($length / strlen($x))
         )), 1, $length);
     }
 
     /**
-     * @param  int  $min
-     * @param  int  $max
-     * @return int
+     * @param int $min
+     * @param int $max
+     *
      * @throws \Exception
+     *
+     * @return int
      */
     public static function randomInt(int $min = 0, int $max = PHP_INT_MAX): int
     {
@@ -188,8 +195,9 @@ class TypeFaker
     }
 
     /**
-     * @return float
      * @throws \Exception
+     *
+     * @return float
      */
     public static function randomFloat(): float
     {

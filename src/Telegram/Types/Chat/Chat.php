@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 /**
  * This object represents a chat.
+ *
  * @see https://core.telegram.org/bots/api#chat
  */
 class Chat extends BaseType
@@ -22,33 +23,33 @@ class Chat extends BaseType
     public int $id;
 
     /**
-     * Type of chat, can be either “private”, “group”, “supergroup” or “channel”
+     * Type of chat, can be either “private”, “group”, “supergroup” or “channel”.
      */
     public string $type;
 
     /**
-     * Optional. Title, for supergroups, channels and group chats
+     * Optional. Title, for supergroups, channels and group chats.
      */
     public ?string $title = null;
 
     /**
-     * Optional. Username, for private chats, supergroups and channels if available
+     * Optional. Username, for private chats, supergroups and channels if available.
      */
     public ?string $username = null;
 
     /**
-     * Optional. First name of the other party in a private chat
+     * Optional. First name of the other party in a private chat.
      */
     public ?string $first_name = null;
 
     /**
-     * Optional. Last name of the other party in a private chat
+     * Optional. Last name of the other party in a private chat.
      */
     public ?string $last_name = null;
 
     /**
      * Optional. True, if the supergroup chat is a forum
-     * (has {@see https://telegram.org/blog/topics-in-groups-collectible-usernames#topics-in-groups topics} enabled)
+     * (has {@see https://telegram.org/blog/topics-in-groups-collectible-usernames#topics-in-groups topics} enabled).
      */
     public ?bool $is_forum = null;
 
@@ -61,6 +62,7 @@ class Chat extends BaseType
     /**
      * Optional. If non-empty, the list of all
      * {@see https://telegram.org/blog/topics-in-groups-collectible-usernames#collectible-usernames active chat usernames}; for private chats, supergroups and channels. Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     *
      * @var string[]|null
      */
     public ?array $active_usernames = null;
@@ -80,6 +82,7 @@ class Chat extends BaseType
     /**
      * Optional. True, if privacy settings of the other party in the private chat allows to use tg://user?id=<user_id>
      * links only in chats with the user. Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     *
      * @var bool|null
      */
     public ?bool $has_private_forwards = null;
@@ -138,6 +141,7 @@ class Chat extends BaseType
     /**
      * Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     *
      * @var int|null
      */
     public ?int $message_auto_delete_time = null;
@@ -158,6 +162,7 @@ class Chat extends BaseType
     /**
      * Optional. True, if messages from the chat can't be forwarded to other chats.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     *
      * @var bool|null
      */
     public ?bool $has_protected_content = null;
@@ -220,7 +225,7 @@ class Chat extends BaseType
         ?bool $can_set_sticker_set = null,
         ?int $linked_chat_id = null,
         ?ChatLocation $location = null,
-    ): Chat {
+    ): self {
         $chat = new self();
         $chat->id = $id;
         $chat->type = $type;
@@ -250,6 +255,7 @@ class Chat extends BaseType
         $chat->can_set_sticker_set = $can_set_sticker_set;
         $chat->linked_chat_id = $linked_chat_id;
         $chat->location = $location;
+
         return $chat;
     }
 

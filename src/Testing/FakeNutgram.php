@@ -23,7 +23,8 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 
 class FakeNutgram extends Nutgram
 {
-    use Hears, Asserts;
+    use Hears;
+    use Asserts;
 
     public const TOKEN = '123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11';
 
@@ -83,8 +84,9 @@ class FakeNutgram extends Nutgram
     protected ?Chat $commonChat = null;
 
     /**
-     * @param  mixed  $update
-     * @param  array  $responses
+     * @param mixed $update
+     * @param array $responses
+     *
      * @return FakeNutgram
      */
     public static function instance(mixed $update = null, array $responses = [], array $config = []): self
@@ -93,7 +95,7 @@ class FakeNutgram extends Nutgram
         $handlerStack = HandlerStack::create($mock);
 
         $bot = new self(self::TOKEN, array_merge([
-            'client' => ['handler' => $handlerStack, 'base_uri' => ''],
+            'client'  => ['handler' => $handlerStack, 'base_uri' => ''],
             'api_url' => '',
         ], $config));
 
@@ -131,7 +133,7 @@ class FakeNutgram extends Nutgram
                     if ($this->mockHandler->count() === 0) {
                         [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
                         $return = (new ReflectionClass(self::class))
-                            ->getMethod((string)$request->getUri())
+                            ->getMethod((string) $request->getUri())
                             ->getReturnType();
 
                         $instance = null;
@@ -153,10 +155,11 @@ class FakeNutgram extends Nutgram
                         }
 
                         $this->mockHandler->append(new Response(body: json_encode([
-                            'ok' => $ok,
+                            'ok'     => $ok,
                             'result' => $instance,
                         ], JSON_THROW_ON_ERROR)));
                     }
+
                     return $handler($request, $options);
                 };
             }, 'handles_empty_queue');
@@ -177,10 +180,12 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  array  $result
-     * @param  bool  $ok
-     * @return $this
+     * @param array $result
+     * @param bool  $ok
+     *
      * @throws \JsonException
+     *
+     * @return $this
      */
     public function willReceive(array $result, bool $ok = true): self
     {
@@ -191,7 +196,8 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  array  $result
+     * @param array $result
+     *
      * @return $this
      */
     public function willReceivePartial(array $result, bool $ok = true): self
@@ -216,9 +222,10 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @return $this
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return $this
      */
     public function clearCache(): self
     {
@@ -230,49 +237,52 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  bool  $remember
+     * @param bool $remember
+     *
      * @return $this
      */
     public function willStartConversation(bool $remember = true): self
     {
         $this->rememberUserAndChat = $remember;
+
         return $this;
     }
 
     /**
-     * @return $this
      * @throws JsonException
+     *
+     * @return $this
      */
     public function dump(): self
     {
-        print(str_repeat('-', 25));
-        print("\e[32m Nutgram Request History Dump \e[39m");
-        print(str_repeat('-', 25).PHP_EOL);
+        echo str_repeat('-', 25);
+        echo "\e[32m Nutgram Request History Dump \e[39m";
+        echo str_repeat('-', 25).PHP_EOL;
 
         if (count($this->getRequestHistory()) > 0) {
             foreach ($this->getRequestHistory() as $i => $item) {
                 /** @var Request $request */
-                [$request,] = array_values($item);
+                [$request] = array_values($item);
 
                 $requestIndex = "[$i] ";
-                print($requestIndex."\e[34m".$request->getUri()->getPath()."\e[39m".PHP_EOL);
+                echo $requestIndex."\e[34m".$request->getUri()->getPath()."\e[39m".PHP_EOL;
                 $content = json_encode(
-                    value: FakeNutgram::getActualData($request),
+                    value: self::getActualData($request),
                     flags: JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE,
                 );
-                print(preg_replace('/"(.+)":/', "\"\e[33m\${1}\e[39m\":", $content));
+                echo preg_replace('/"(.+)":/', "\"\e[33m\${1}\e[39m\":", $content);
 
                 if ($i < count($this->getRequestHistory()) - 1) {
-                    print(PHP_EOL);
+                    echo PHP_EOL;
                 }
             }
         } else {
-            print('Request history empty');
+            echo 'Request history empty';
         }
 
-        print(PHP_EOL);
-        print(str_repeat('-', 80).PHP_EOL);
-        print(PHP_EOL);
+        echo PHP_EOL;
+        echo str_repeat('-', 80).PHP_EOL;
+        echo PHP_EOL;
         $this->dumpHistory[] = preg_replace("/\033\[[^m]*m/", '', ob_get_contents());
         flush();
         ob_flush();
@@ -286,11 +296,12 @@ class FakeNutgram extends Nutgram
     public function dd(): self
     {
         $this->dump();
-        die();
+        exit;
     }
 
     /**
-     * @param  string|string[]  $middleware
+     * @param string|string[] $middleware
+     *
      * @return $this
      */
     public function withoutMiddleware(string|array $middleware): self
@@ -304,7 +315,8 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  string|string[]  $middleware
+     * @param string|string[] $middleware
+     *
      * @return $this
      */
     public function overrideMiddleware(string|array $middleware): self
@@ -317,10 +329,13 @@ class FakeNutgram extends Nutgram
 
     /**
      * Get the actual data from the request.
-     * @param  Request  $request
-     * @param  array  $mapping
-     * @return array
+     *
+     * @param Request $request
+     * @param array   $mapping
+     *
      * @throws JsonException
+     *
+     * @return array
      */
     public static function getActualData(Request $request, array $mapping = []): array
     {
@@ -328,7 +343,7 @@ class FakeNutgram extends Nutgram
         $contentType = $request->getHeaderLine('Content-Type');
 
         //get body
-        $body = (string)$request->getBody();
+        $body = (string) $request->getBody();
 
         //get data from json
         if (str_contains($contentType, 'application/json')) {
@@ -346,13 +361,14 @@ class FakeNutgram extends Nutgram
                     if (array_key_exists($key, $mapping)) {
                         $value = match (gettype($mapping[$key])) {
                             'integer' => filter_var($value, FILTER_VALIDATE_INT),
-                            'double' => filter_var($value, FILTER_VALIDATE_FLOAT),
+                            'double'  => filter_var($value, FILTER_VALIDATE_FLOAT),
                             'boolean' => filter_var($value, FILTER_VALIDATE_BOOLEAN),
-                            default => $value,
+                            default   => $value,
                         };
                     }
                 });
             }
+
             return array_merge($params, $formData->files);
         }
 
@@ -360,8 +376,9 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @return array
      * @throws \SergiX44\Nutgram\Exception\CannotSerializeException
+     *
+     * @return array
      */
     public function __serialize(): array
     {
@@ -373,10 +390,12 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  array  $data
-     * @return void
+     * @param array $data
+     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return void
      */
     public function __unserialize(array $data): void
     {

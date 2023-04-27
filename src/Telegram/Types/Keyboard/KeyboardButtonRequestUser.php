@@ -7,12 +7,13 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 /**
  * This object defines the criteria used to request a suitable user.
  * The identifier of the selected user will be shared with the bot when the corresponding button is pressed.
+ *
  * @see https://core.telegram.org/bots/api#keyboardbuttonrequestuser
  */
 class KeyboardButtonRequestUser extends BaseType
 {
     /**
-     * Signed 32-bit identifier of the request
+     * Signed 32-bit identifier of the request.
      */
     public int $request_id;
 

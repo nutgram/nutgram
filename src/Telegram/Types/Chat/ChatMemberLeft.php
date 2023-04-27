@@ -13,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Attributes\ChatMemberType;
 class ChatMemberLeft extends ChatMember
 {
     /**
-     * The member's status in the chat, always “left”
+     * The member's status in the chat, always “left”.
      */
     public string $status = 'left';
 

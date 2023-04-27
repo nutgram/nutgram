@@ -6,6 +6,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents a chat photo.
+ *
  * @see https://core.telegram.org/bots/api#chatphoto
  */
 class ChatPhoto extends BaseType

@@ -7,17 +7,18 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * Represents a join request sent to a chat.
+ *
  * @see https://core.telegram.org/bots/api#chatjoinrequest
  */
 class ChatJoinRequest extends BaseType
 {
     /**
-     * Chat to which the request was sent
+     * Chat to which the request was sent.
      */
     public Chat $chat;
 
     /**
-     * User that sent the join request
+     * User that sent the join request.
      */
     public User $from;
 
@@ -33,7 +34,7 @@ class ChatJoinRequest extends BaseType
     public int $user_chat_id;
 
     /**
-     * Date the request was sent in Unix time
+     * Date the request was sent in Unix time.
      */
     public int $date;
 
@@ -43,7 +44,7 @@ class ChatJoinRequest extends BaseType
     public ?string $bio = null;
 
     /**
-     * Optional. Chat invite link that was used by the user to send the join request
+     * Optional. Chat invite link that was used by the user to send the join request.
      */
     public ?ChatInviteLink $invite_link = null;
 }

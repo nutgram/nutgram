@@ -7,6 +7,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 /**
  * This object represents type of a poll, which is allowed to be created
  * and sent when the corresponding button is pressed.
+ *
  * @see https://core.telegram.org/bots/api#keyboardbuttonpolltype
  */
 class KeyboardButtonPollType extends BaseType

@@ -22,7 +22,6 @@ it('makes a correct InlineKeyboardMarkup', function () {
             InlineKeyboardButton::make('test3', callback_data: 'test4')
         );
 
-
     expect(json_encode($keyboard))->toBe(json_encode($expected));
 });
 
@@ -34,16 +33,16 @@ it('makes a correct ReplyKeyboardMarkup', function () {
             ],
             [
                 [
-                    'text' => 'send contact',
+                    'text'            => 'send contact',
                     'request_contact' => true,
                 ],
             ],
         ],
-        'is_persistent' => true,
-        'resize_keyboard' => true,
-        'one_time_keyboard' => true,
+        'is_persistent'           => true,
+        'resize_keyboard'         => true,
+        'one_time_keyboard'       => true,
         'input_field_placeholder' => 'test',
-        'selective' => true,
+        'selective'               => true,
     ];
 
     $keyboard = ReplyKeyboardMarkup::make(
@@ -65,9 +64,9 @@ it('makes a correct ReplyKeyboardMarkup', function () {
 
 it('makes a correct ForceReply', function () {
     $expected = [
-        'force_reply' => true,
+        'force_reply'             => true,
         'input_field_placeholder' => 'test',
-        'selective' => true,
+        'selective'               => true,
     ];
 
     $keyboard = ForceReply::make(
