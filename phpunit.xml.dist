@@ -25,6 +25,7 @@
             <file>./src/NutgramServiceProvider.php</file>
             <file>./src/Laravel/Commands/RunCommand.php</file>
             <file>./src/Support/StrUtils.php</file>
+            <file>./src/Telegram/CustomEndpoints.php</file>
         </exclude>
     </source>
     <php>
