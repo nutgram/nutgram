@@ -15,6 +15,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\StrUtils;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\Games;
@@ -34,6 +35,7 @@ use stdClass;
 /**
  * Trait Client
  * @package SergiX44\Nutgram\Telegram
+ * @mixin Nutgram
  */
 trait Client
 {
@@ -44,6 +46,7 @@ trait Client
         Payments,
         Passport,
         Games,
+        CustomEndpoints,
         Macroable;
 
     /**
@@ -173,10 +176,10 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            0775,
-            true
-        ) && !is_dir($concurrentDirectory)) {
+                $concurrentDirectory = dirname($path),
+                0775,
+                true
+            ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -386,7 +389,7 @@ trait Client
      * @param  int  $length
      * @return array
      */
-    protected function chunkText(string $text, int $length = Limits::TEXT_LENGTH): array
+    protected function chunkText(string $text, int $length): array
     {
         return explode('%#TGMSG#%', StrUtils::wordWrap($text, $length, "%#TGMSG#%", true));
     }
