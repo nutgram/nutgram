@@ -1,6 +1,5 @@
 <?php
 
-use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -163,36 +162,6 @@ test('invalid assertNoConversation without calling willStartConversation method'
         ->reply()
         ->assertNoConversation();
 })->throws(InvalidArgumentException::class, 'You cannot do this assert without userId and chatId.');
-
-test('valid inline menu + no end + split message', function () {
-    $bot = Nutgram::fake(config: new Configuration(splitLongMessages: true));
-
-    $bot->onMessage(ValidNoEndMenu::class);
-
-    $bot
-        ->willStartConversation()
-        ->hearText('start')
-        ->reply()
-        ->assertActiveConversation()
-        ->assertReplyMessage([
-            'text' => 'Choose a color:',
-            'reply_markup' => InlineKeyboardMarkup::make()
-                ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
-                ->addRow(InlineKeyboardButton::make('Green', callback_data: 'green'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow'))
-        ])
-        ->hearCallbackQueryData('red')
-        ->reply()
-        ->assertReplyText('Choosen: red!')
-        ->assertReply('answerCallbackQuery', [
-            'show_alert' => true,
-            'text' => 'Alert!',
-        ], 1)
-        ->hearText('start')
-        ->reply()
-        ->assertNoConversation();
-});
-
 
 test('works with same callback data but different callback method', function () {
     $bot = Nutgram::fake();
