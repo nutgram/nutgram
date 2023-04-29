@@ -16,7 +16,6 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  */
 trait CustomEndpoints
 {
-
     /**
      * Use this method to send text messages.
      * In case the text exceeds the maximum character limit, the text will be split into multiple messages.
