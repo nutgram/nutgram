@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\Conversations;
 
 use InvalidArgumentException;
-use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
@@ -267,16 +266,10 @@ abstract class InlineMenu extends Conversation
      */
     protected function doOpen(string $text, InlineKeyboardMarkup $buttons, array $opt): Message|null
     {
-        $message = $this->bot->sendMessage($text, [
+        return $this->bot->sendMessage($text, [
             'reply_markup' => $buttons,
             ...$opt,
         ]);
-
-        if (is_array($message)) {
-            throw new RuntimeException('Multiple messages are not supported by the InlineMenu class. Please provide a shorter text.');
-        }
-
-        return $message;
     }
 
     /**

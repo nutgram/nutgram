@@ -28,7 +28,6 @@ final readonly class Configuration
      * @param  string|null  $botName
      * @param  bool  $testEnv
      * @param  bool  $isLocal
-     * @param  bool  $splitLongMessages
      * @param  int  $clientTimeout
      * @param  array  $clientOptions
      * @param  ContainerInterface|null  $container
@@ -46,7 +45,6 @@ final readonly class Configuration
         public ?string $botName = null,
         public bool $testEnv = false,
         public bool $isLocal = false,
-        public bool $splitLongMessages = false,
         public int $clientTimeout = self::DEFAULT_CLIENT_TIMEOUT,
         public array $clientOptions = [],
         public ?ContainerInterface $container = null,
@@ -69,7 +67,6 @@ final readonly class Configuration
             botName: $config['bot_name'] ?? null,
             testEnv: $config['test_env'] ?? false,
             isLocal: $config['is_local'] ?? false,
-            splitLongMessages: $config['split_long_messages'] ?? false,
             clientTimeout: $config['timeout'] ?? self::DEFAULT_CLIENT_TIMEOUT,
             clientOptions: $config['client'] ?? [],
             container: $config['container'] ?? null,
@@ -91,7 +88,6 @@ final readonly class Configuration
             'bot_name' => $this->botName,
             'test_env' => $this->testEnv,
             'is_local' => $this->isLocal,
-            'split_long_messages' => $this->splitLongMessages,
             'timeout' => $this->clientTimeout,
             'client' => $this->clientOptions,
             'container' => $this->container,

@@ -103,44 +103,14 @@ trait AvailableMethods
      *     allow_sending_without_reply?:bool,
      *     reply_markup?:InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply
      * }  $opt
-     * @return Message|Message[]|null
+     * @return Message|null
      */
-    public function sendMessage(string $text, array $opt = []): Message|array|null
+    public function sendMessage(string $text, array $opt = []): ?Message
     {
-        $functionName = __FUNCTION__;
         $chat_id = $this->chatId();
         $required = compact('text', 'chat_id');
-        $parameters = [...$required, ...$opt];
 
-        if ($this->config->splitLongMessages) {
-            //chunk text
-            $chunks = $this->chunkText($text);
-            $totalChunks = count($chunks);
-
-            //get reply_markup
-            $reply_markup = $parameters['reply_markup'] ?? null;
-            unset($parameters['reply_markup']);
-
-            //send messages
-            $messages = array_map(function ($chunk, $index) use (
-                &$parameters,
-                $totalChunks,
-                $reply_markup,
-                $functionName
-            ) {
-                $parameters['reply_markup'] = $index === $totalChunks - 1 ? $reply_markup : null;
-                $parameters['text'] = $chunk;
-                return $this->requestJson($functionName, array_filter($parameters), Message::class);
-            }, $chunks, array_keys($chunks));
-
-            if (count($messages) === 1) {
-                return $messages[0];
-            }
-
-            return $messages;
-        }
-
-        return $this->requestJson($functionName, $parameters, Message::class);
+        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
     }
 
     /**
