@@ -39,6 +39,7 @@ trait CustomEndpoints
         $chat_id = $this->chatId();
         $required = compact('text', 'chat_id');
         $parameters = [...$required, ...$opt];
+        unset($parameters['text']);
 
         //chunk text
         $chunks = $this->chunkText($text, Limits::TEXT_LENGTH);
@@ -51,8 +52,7 @@ trait CustomEndpoints
         //send messages
         return array_map(function ($chunk, $index) use (&$parameters, $totalChunks, $reply_markup) {
             $parameters['reply_markup'] = $index === $totalChunks - 1 ? $reply_markup : null;
-            $parameters['text'] = $chunk;
-            return $this->requestJson('sendMessage', array_filter($parameters), Message::class);
+            return $this->sendMessage($chunk, $parameters);
         }, $chunks, array_keys($chunks));
     }
 
@@ -321,7 +321,8 @@ trait CustomEndpoints
                 return $this->sendAttachment($endpoint, $param, $media, array_filter($opt), $clientOpt);
             }
 
-            return $this->requestJson('sendMessage', array_filter($opt), Message::class);
+            unset($opt['caption']);
+            return $this->sendMessage($chunk, array_filter($opt));
         }, $chunks, array_keys($chunks));
     }
 }
