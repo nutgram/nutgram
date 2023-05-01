@@ -100,7 +100,7 @@ trait AvailableMethods
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
-     * @return Message|Message[]|null
+     * @return Message|null
      */
     public function sendMessage(
         string $text,
@@ -114,7 +114,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): Message|array|null {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
