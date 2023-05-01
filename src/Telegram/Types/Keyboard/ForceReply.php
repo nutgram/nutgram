@@ -42,8 +42,7 @@ class ForceReply extends BaseType implements JsonSerializable
         bool $force_reply,
         ?string $input_field_placeholder = null,
         ?bool $selective = null,
-    ): ForceReply
-    {
+    ): ForceReply {
         return new self(
             $force_reply,
             $input_field_placeholder,

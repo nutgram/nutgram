@@ -37,8 +37,7 @@ trait Games
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -78,8 +77,7 @@ trait Games
         ?int $chat_id = null,
         ?int $message_id = null,
         ?string $inline_message_id = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         $chat_id ??= $this->chatId();
         $user_id ??= $this->userId();
         $parameters = compact(
@@ -114,8 +112,7 @@ trait Games
         ?int $chat_id = null,
         ?int $message_id = null,
         ?string $inline_message_id = null,
-    ): ?array
-    {
+    ): ?array {
         $chat_id ??= $this->chatId();
         $user_id ??= $this->userId();
         $parameters = compact(

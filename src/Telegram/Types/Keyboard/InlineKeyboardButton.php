@@ -115,8 +115,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?bool $pay = null,
         ?WebAppInfo $web_app = null,
         ?SwitchInlineQueryChosenChat $switch_inline_query_chosen_chat = null,
-    ): InlineKeyboardButton
-    {
+    ): InlineKeyboardButton {
         return new self(
             $text,
             $url,

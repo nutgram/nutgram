@@ -50,8 +50,7 @@ trait Stickers
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -100,8 +99,7 @@ trait Stickers
         StickerFormat|string $sticker_format,
         ?int $user_id = null,
         array $clientOpt = [],
-    ): ?File
-    {
+    ): ?File {
         $user_id ??= $this->userId();
         $parameters = compact(
             'user_id',
@@ -144,8 +142,7 @@ trait Stickers
         ?string $sticker_type = null,
         ?bool $needs_repainting = null,
         array $clientOpt = [],
-    ): ?bool
-    {
+    ): ?bool {
         $user_id ??= $this->userId();
         $parameters = compact(
             'user_id',
@@ -182,8 +179,7 @@ trait Stickers
         InputSticker $sticker,
         ?int $user_id = null,
         array $clientOpt = [],
-    ): ?bool
-    {
+    ): ?bool {
         $user_id ??= $this->userId();
         $parameters = compact(
             'user_id',
@@ -322,8 +318,7 @@ trait Stickers
         ?int $user_id = null,
         InputFile|string|null $thumbnail = null,
         array $clientOpt = [],
-    ): ?bool
-    {
+    ): ?bool {
         $user_id ??= $this->userId();
         $parameters = compact(
             'name',
