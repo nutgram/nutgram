@@ -15,8 +15,10 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\StrUtils;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
+use SergiX44\Nutgram\Telegram\Endpoints\CustomEndpoints;
 use SergiX44\Nutgram\Telegram\Endpoints\Games;
 use SergiX44\Nutgram\Telegram\Endpoints\InlineMode;
 use SergiX44\Nutgram\Telegram\Endpoints\Passport;
@@ -34,6 +36,7 @@ use stdClass;
 /**
  * Trait Client
  * @package SergiX44\Nutgram\Telegram
+ * @mixin Nutgram
  */
 trait Client
 {
@@ -44,6 +47,7 @@ trait Client
         Payments,
         Passport,
         Games,
+        CustomEndpoints,
         Macroable;
 
     /**
@@ -386,7 +390,7 @@ trait Client
      * @param  int  $length
      * @return array
      */
-    protected function chunkText(string $text, int $length = Limits::TEXT_LENGTH): array
+    protected function chunkText(string $text, int $length): array
     {
         return explode('%#TGMSG#%', StrUtils::wordWrap($text, $length, "%#TGMSG#%", true));
     }
