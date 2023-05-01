@@ -150,11 +150,12 @@ it('sends file works as mocked instance', function () {
         ->hearText('/test');
 
     $bot->onCommand('test', function (Nutgram $bot) use ($file) {
-        $bot->sendDocument(InputFile::make($file), [
-            'caption' => 'test',
-            'reply_to_message_id' => 123,
-            'allow_sending_without_reply' => true,
-        ]);
+        $bot->sendDocument(
+            document: InputFile::make($file),
+            caption: 'test',
+            reply_to_message_id: 123,
+            allow_sending_without_reply: true,
+        );
     });
 
     $bot->reply()
