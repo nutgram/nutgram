@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -11,8 +10,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class MessageId extends BaseType
 {
-    /**
-     * Unique message identifier
-     */
+    /** Unique message identifier */
     public int $message_id;
 }

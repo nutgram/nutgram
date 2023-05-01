@@ -14,7 +14,7 @@ class VideoChatParticipantsInvited extends BaseType
 {
     /**
      * New members that were invited to the video chat
-     * @var \SergiX44\Nutgram\Telegram\Types\User\User[] $users
+     * @var User[] $users
      */
     #[ArrayType(User::class)]
     public array $users;

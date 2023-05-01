@@ -10,8 +10,6 @@ use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
  */
 class MenuButtonCommands extends MenuButton
 {
-    /**
-     * Type of the button, must be commands
-     */
+    /** Type of the button, must be commands */
     public MenuButtonType $type = MenuButtonType::COMMANDS;
 }

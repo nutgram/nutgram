@@ -6,30 +6,27 @@ use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
 
 /**
- * Represents an issue with a list of scans. The error is considered resolved when the list of files containing the
- * scans changes.
+ * Represents an issue with a list of scans.
+ * The error is considered resolved when the list of files containing the scans changes.
  * @see https://core.telegram.org/bots/api#passportelementerrorfiles
  */
 class PassportElementErrorFiles extends PassportElementError
 {
-    /**
-     * Error source, must be files
-     */
+    /** Base64-encoded file hashes */
+    public string $file_hash;
+
+    /** Error source, must be files */
     public PassportSource $source = PassportSource::FILES;
 
-    /**
-     * The section of the user's Telegram Passport which has the issue, one of “utility_bill”,
-     * “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”
-     */
+    /** The section of the user's Telegram Passport which has the issue, one of “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration” */
     public PassportType $type;
 
     /**
-     * Base64-encoded file hashes
+     * List of base64-encoded file hashes
+     * @var string[] $file_hashes
      */
-    public string $file_hash;
+    public array $file_hashes;
 
-    /**
-     * Error message
-     */
+    /** Error message */
     public string $message;
 }

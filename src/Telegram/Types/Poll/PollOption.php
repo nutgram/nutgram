@@ -10,13 +10,9 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class PollOption extends BaseType
 {
-    /**
-     * Option text, 1-100 characters
-     */
+    /** Option text, 1-100 characters */
     public string $text;
 
-    /**
-     * Number of users that voted for this option
-     */
+    /** Number of users that voted for this option */
     public int $voter_count;
 }

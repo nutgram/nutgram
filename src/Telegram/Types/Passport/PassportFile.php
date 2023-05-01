@@ -11,9 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class PassportFile extends BaseType
 {
-    /**
-     * Unique identifier for this file
-     */
+    /** Identifier for this file, which can be used to download or reuse the file */
     public string $file_id;
 
     /**
@@ -22,13 +20,9 @@ class PassportFile extends BaseType
      */
     public string $file_unique_id;
 
-    /**
-     * File size
-     */
+    /** File size in bytes */
     public int $file_size;
 
-    /**
-     * Unix time when the file was uploaded
-     */
+    /** Unix time when the file was uploaded */
     public int $file_date;
 }

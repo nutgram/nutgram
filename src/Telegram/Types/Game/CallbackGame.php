@@ -1,14 +1,13 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Telegram\Types\Game;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
- * Just a placeholder (?)
- * Class CallbackGame
- * @package SergiX44\Nutgram\Telegram\Types
+ * A placeholder, currently holds no information.
+ * Use {@see https://t.me/botfather BotFather} to set up your game.
+ * @see https://core.telegram.org/bots/api#callbackgame
  */
 class CallbackGame extends BaseType
 {

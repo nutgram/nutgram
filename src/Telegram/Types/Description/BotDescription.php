@@ -10,8 +10,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class BotDescription extends BaseType
 {
-    /**
-     * The bot's description
-     */
+    /** The bot's description */
     public string $description;
 }

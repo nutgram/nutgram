@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -13,12 +12,14 @@ use SergiX44\Nutgram\Telegram\Types\Location\Location;
 class ChatLocation extends BaseType
 {
     /**
-     * The location to which the supergroup is connected. Can't be a live location.
+     * The location to which the supergroup is connected.
+     * Can't be a live location.
      */
     public Location $location;
 
     /**
-     * Location address; 1-64 characters, as defined by the chat owner
+     * Location address;
+     * 1-64 characters, as defined by the chat owner
      */
     public string $address;
 }

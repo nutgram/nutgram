@@ -2,98 +2,70 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
-use SergiX44\Nutgram\Telegram\Properties\ChatMemberStatus;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
- * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member}
- * that is under certain restrictions in the chat. Supergroups only.
- *
+ * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member} that is under certain restrictions in the chat.
+ * Supergroups only.
  * @see https://core.telegram.org/bots/api#chatmemberrestricted
  */
 class ChatMemberRestricted extends ChatMember
 {
-    /**
-     * The member's status in the chat, always “restricted”
-     */
-    public ChatMemberStatus $status = ChatMemberStatus::RESTRICTED;
+    /** The member's status in the chat, always “restricted” */
+    public string $status;
+
+    /** Information about the user */
+    public User $user;
+
+    /** True, if the user is a member of the chat at the moment of the request */
+    public bool $is_member;
+
+    /** True, if the user is allowed to send text messages, contacts, invoices, locations and venues */
+    public bool $can_send_messages;
+
+    /** True, if the user is allowed to send audios */
+    public bool $can_send_audios;
+
+    /** True, if the user is allowed to send documents */
+    public bool $can_send_documents;
+
+    /** True, if the user is allowed to send photos */
+    public bool $can_send_photos;
+
+    /** True, if the user is allowed to send videos */
+    public bool $can_send_videos;
+
+    /** True, if the user is allowed to send video notes */
+    public bool $can_send_video_notes;
+
+    /** True, if the user is allowed to send voice notes */
+    public bool $can_send_voice_notes;
+
+    /** True, if the user is allowed to send polls */
+    public bool $can_send_polls;
+
+    /** True, if the user is allowed to send animations, games, stickers and use inline bots */
+    public bool $can_send_other_messages;
+
+    /** True, if the user is allowed to add web page previews to their messages */
+    public bool $can_add_web_page_previews;
+
+    /** True, if the user is allowed to change the chat title, photo and other settings */
+    public bool $can_change_info;
+
+    /** True, if the user is allowed to invite new users to the chat */
+    public bool $can_invite_users;
+
+    /** True, if the user is allowed to pin messages */
+    public bool $can_pin_messages;
+
+    /** True, if the user is allowed to create forum topics */
+    public bool $can_manage_topics;
 
     /**
-     * True, if the user is a member of the chat at the moment of the request
+     * Date when restrictions will be lifted for this user;
+     * unix time.
+     * If 0, then the user is restricted forever
      */
-    public ?bool $is_member = null;
-
-    /**
-     * True, if the user is allowed to change the chat title, photo and other settings
-     */
-    public ?bool $can_change_info = null;
-
-    /**
-     * True, if the user is allowed to invite new users to the chat
-     */
-    public ?bool $can_invite_users = null;
-
-    /**
-     * True, if the user is allowed to pin messages; groups and supergroups only
-     */
-    public ?bool $can_pin_messages = null;
-
-    /**
-     * True, if the user is allowed to create forum topics
-     */
-    public ?bool $can_manage_topics = null;
-
-    /**
-     * True, if the user can send text messages, contacts, locations and venues
-     */
-    public ?bool $can_send_messages = null;
-
-    /**
-     * True, if the user is allowed to send audios
-     */
-    public ?bool $can_send_audios = null;
-
-    /**
-     * True, if the user is allowed to send documents
-     */
-    public ?bool $can_send_documents = null;
-
-    /**
-     * True, if the user is allowed to send photos
-     */
-    public ?bool $can_send_photos = null;
-
-    /**
-     * True, if the user is allowed to send videos
-     */
-    public ?bool $can_send_videos = null;
-
-    /**
-     * True, if the user is allowed to send video notes
-     */
-    public ?bool $can_send_video_notes = null;
-
-    /**
-     * True, if the user is allowed to send voice notes
-     */
-    public ?bool $can_send_voice_notes = null;
-
-    /**
-     * True, if the user is allowed to send polls
-     */
-    public ?bool $can_send_polls = null;
-
-    /**
-     * True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages
-     */
-    public ?bool $can_send_other_messages = null;
-
-    /**
-     * True, if user may add web page previews to his messages, implies can_send_media_messages
-     */
-    public ?bool $can_add_web_page_previews = null;
-
-    /**
-     * Date when restrictions will be lifted for this user; unix time. If 0, then the user is banned forever
-     */
-    public ?int $until_date = null;
+    public int $until_date;
 }

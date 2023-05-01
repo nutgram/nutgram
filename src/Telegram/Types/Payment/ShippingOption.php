@@ -11,19 +11,15 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class ShippingOption extends BaseType
 {
-    /**
-     * Shipping option identifier
-     */
+    /** Shipping option identifier */
     public string $id;
 
-    /**
-     * Option title
-     */
+    /** Option title */
     public string $title;
 
     /**
      * List of price portions
-     * @var \SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice[] $prices
+     * @var LabeledPrice[] $prices
      */
     #[ArrayType(LabeledPrice::class)]
     public array $prices;
