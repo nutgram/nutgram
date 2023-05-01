@@ -177,10 +177,10 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            0775,
-            true
-        ) && !is_dir($concurrentDirectory)) {
+                $concurrentDirectory = dirname($path),
+                0775,
+                true
+            ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -236,6 +236,7 @@ trait Client
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
+        $multipart = array_filter($multipart);
         $parameters = array_map(fn ($name, $contents) => match (true) {
             $contents instanceof InputFile => [
                 'name' => $name,
@@ -270,7 +271,7 @@ trait Client
             $this->logger->debug($endpoint, [
                 'content' => $content,
                 'parameters' => $parameters,
-                'options' => $options
+                'options' => $options,
             ]);
 
             return $content;
@@ -298,14 +299,13 @@ trait Client
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
+        $json = array_map(fn ($item) => match (true) {
+            $item instanceof BackedEnum => $item->value,
+            default => $item,
+        }, array_filter($json));
+
+        $request = ['json' => $json, ...$options];
         try {
-            $json = array_map(fn ($item) => match (true) {
-                $item instanceof BackedEnum => $item->value,
-                default => $item,
-            }, $json);
-
-            $request = ['json' => $json, ...$options];
-
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
             try {
                 $response = $this->http->post($endpoint, $requestPost ?? $request);
@@ -317,7 +317,7 @@ trait Client
             $rawResponse = (string)$response->getBody();
             $this->logger->debug($endpoint.PHP_EOL.$rawResponse, [
                 'parameters' => $json,
-                'options' => $options
+                'options' => $options,
             ]);
 
             return $content;

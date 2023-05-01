@@ -115,13 +115,10 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message|array|null {
-        // TODO: $chat_id ??= $this->chatId();
-        // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'text', 'parse_mode', 'entities', 'disable_web_page_preview', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup'));
+        $chat_id ??= $this->chatId();
+        $parameters = compact('chat_id', 'message_thread_id', 'text', 'parse_mode', 'entities', 'disable_web_page_preview', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup');
 
-        $chat_id = $this->chatId();
-        $required = compact('text', 'chat_id');
-
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -145,10 +142,9 @@ trait AvailableMethods
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
     ): ?Message {
-        // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'from_chat_id', 'disable_notification', 'protect_content', 'message_id'));
+        $parameters = compact('chat_id', 'message_thread_id', 'from_chat_id', 'disable_notification', 'protect_content', 'message_id');
 
-        $required = compact('chat_id', 'from_chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -186,10 +182,9 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?MessageId {
-        // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'from_chat_id', 'message_id', 'caption', 'parse_mode', 'caption_entities', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup'));
+        $parameters = compact('chat_id', 'message_thread_id', 'from_chat_id', 'message_id', 'caption', 'parse_mode', 'caption_entities', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup');
 
-        $required = compact('chat_id', 'from_chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], MessageId::class);
+        return $this->requestJson(__FUNCTION__, $parameters, MessageId::class);
     }
 
     /**
