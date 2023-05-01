@@ -669,14 +669,16 @@ trait AvailableMethods
             'media' => json_encode($inputMedia, JSON_THROW_ON_ERROR),
         ];
 
-        return $this->requestMultipart(__FUNCTION__, [...$required, ...$files, ...compact(
-            'chat_id',
-            'message_thread_id',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-        )], Message::class, $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, [
+            ...$required, ...$files, ...compact(
+                'chat_id',
+                'message_thread_id',
+                'disable_notification',
+                'protect_content',
+                'reply_to_message_id',
+                'allow_sending_without_reply',
+            ),
+        ], Message::class, $clientOpt);
     }
 
     /**
@@ -714,7 +716,8 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
-        $parameters = compact(
+
+        return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
             'latitude',
@@ -728,11 +731,7 @@ trait AvailableMethods
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_markup'
-        );
-
-        $chat_id = $this->chatId();
-        $required = compact('latitude', 'longitude', 'chat_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
+        ), Message::class);
     }
 
     /**
@@ -775,9 +774,8 @@ trait AvailableMethods
             'reply_markup'
         );
 
-        $required = compact('latitude', 'longitude');
-        $target = $this->targetChatMessageOrInlineMessageId($opt);
-        return $this->requestJson(__FUNCTION__, [...$target, ...$required, ...$opt], Message::class);
+        $target = $this->targetChatMessageOrInlineMessageId($parameters);
+        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter($parameters)], Message::class);
     }
 
     /**
@@ -804,8 +802,8 @@ trait AvailableMethods
             'reply_markup'
         );
 
-        $target = $this->targetChatMessageOrInlineMessageId($opt);
-        return $this->requestJson(__FUNCTION__, [...$target, ...$opt], Message::class);
+        $target = $this->targetChatMessageOrInlineMessageId($parameters);
+        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter($parameters)], Message::class);
     }
 
     /**
@@ -847,7 +845,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
-        $parameters = compact(
+        return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
             'latitude',
@@ -863,11 +861,7 @@ trait AvailableMethods
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_markup'
-        );
-
-        $chat_id = $this->chatId();
-        $required = compact('latitude', 'longitude', 'chat_id', 'title', 'address');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
+        ), Message::class);
     }
 
     /**
@@ -901,7 +895,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
-        $parameters = compact(
+        return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
             'phone_number',
@@ -913,11 +907,7 @@ trait AvailableMethods
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_markup'
-        );
-
-        $chat_id = $this->chatId();
-        $required = compact('chat_id', 'first_name', 'phone_number');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
+        ), Message::class);
     }
 
     /**
@@ -971,7 +961,6 @@ trait AvailableMethods
             'chat_id',
             'message_thread_id',
             'question',
-            'options',
             'is_anonymous',
             'type',
             'allows_multiple_answers',
@@ -988,13 +977,10 @@ trait AvailableMethods
             'allow_sending_without_reply',
             'reply_markup'
         );
-
-        $required = [
-            'chat_id' => $this->chatId(),
-            'question' => $question,
+        return $this->requestJson(__FUNCTION__, [
             'options' => json_encode($options, JSON_THROW_ON_ERROR),
-        ];
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
+            ...$parameters,
+        ], Message::class);
     }
 
     /**
@@ -1022,7 +1008,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
-        $parameters = compact(
+        return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
             'emoji',
@@ -1031,11 +1017,7 @@ trait AvailableMethods
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_markup'
-        );
-
-        $chat_id = $this->chatId();
-        $required = compact('chat_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
+        ), Message::class);
     }
 
     /**
@@ -1054,15 +1036,11 @@ trait AvailableMethods
         ?int $message_thread_id = null,
     ): ?bool {
         $chat_id ??= $this->chatId();
-        $parameters = compact(
+        return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
             'action'
-        );
-
-        $chat_id = $this->chatId();
-        $required = compact('chat_id', 'action');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        ));
     }
 
     /**
@@ -1080,15 +1058,11 @@ trait AvailableMethods
         ?int $limit = null,
     ): ?UserProfilePhotos {
         $user_id ??= $this->userId();
-        $parameters = compact(
+        return $this->requestJson(__FUNCTION__, compact(
             'user_id',
             'offset',
             'limit'
-        );
-
-        $user_id = $this->userId();
-        $required = compact('user_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], UserProfilePhotos::class);
+        ), UserProfilePhotos::class);
     }
 
     /**
@@ -1104,10 +1078,6 @@ trait AvailableMethods
      */
     public function getFile(string $file_id): ?File
     {
-        $parameters = compact(
-            'file_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('file_id'), File::class);
     }
 
@@ -1129,15 +1099,12 @@ trait AvailableMethods
         ?int $until_date = null,
         ?bool $revoke_messages = null,
     ): ?bool {
-        $parameters = compact(
+        return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'user_id',
             'until_date',
             'revoke_messages'
-        );
-
-        $required = compact('chat_id', 'user_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        ));
     }
 
     /**
@@ -1156,14 +1123,11 @@ trait AvailableMethods
      */
     public function unbanChatMember(int|string $chat_id, int $user_id, ?bool $only_if_banned = null): ?bool
     {
-        $parameters = compact(
+        return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'user_id',
             'only_if_banned'
-        );
-
-        $required = compact('chat_id', 'user_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        ));
     }
 
     /**
@@ -1186,17 +1150,15 @@ trait AvailableMethods
         ?bool $use_independent_chat_permissions = null,
         ?int $until_date = null,
     ): ?bool {
-        $parameters = compact(
-            'chat_id',
-            'user_id',
-            'permissions',
-            'use_independent_chat_permissions',
-            'until_date'
-        );
-
-        $required = compact('chat_id', 'user_id');
-        $required['permissions'] = json_encode($permissions);
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        return $this->requestJson(__FUNCTION__, [
+            'permissions' => json_encode($permissions),
+            ...compact(
+                'chat_id',
+                'user_id',
+                'use_independent_chat_permissions',
+                'until_date'
+            ),
+        ]);
     }
 
     /**
@@ -1237,7 +1199,7 @@ trait AvailableMethods
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
     ): ?bool {
-        $parameters = compact(
+        return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'user_id',
             'is_anonymous',
@@ -1252,10 +1214,7 @@ trait AvailableMethods
             'can_invite_users',
             'can_pin_messages',
             'can_manage_topics'
-        );
-
-        $required = compact('chat_id', 'user_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        ));
     }
 
     /**
@@ -1269,14 +1228,11 @@ trait AvailableMethods
      */
     public function setChatAdministratorCustomTitle(int|string $chat_id, int $user_id, string $custom_title): ?bool
     {
-        $parameters = compact(
+        return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'user_id',
             'custom_title'
-        );
-
-        $required = compact('chat_id', 'user_id', 'custom_title');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        ));
     }
 
     /**
@@ -1291,13 +1247,10 @@ trait AvailableMethods
      */
     public function banChatSenderChat(int|string $chat_id, int $sender_chat_id): ?bool
     {
-        $parameters = compact(
+        return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'sender_chat_id'
-        );
-
-        $required = compact('chat_id', 'sender_chat_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        ));
     }
 
     /**
@@ -1311,11 +1264,6 @@ trait AvailableMethods
      */
     public function unbanChatSenderChat(int|string $chat_id, int $sender_chat_id): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'sender_chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'sender_chat_id'));
     }
 
@@ -1334,15 +1282,14 @@ trait AvailableMethods
         ChatPermissions $permissions,
         ?bool $use_independent_chat_permissions = null,
     ): ?bool {
-        $parameters = compact(
-            'chat_id',
-            'permissions',
-            'use_independent_chat_permissions'
-        );
-
-        $required = compact('chat_id');
-        $required['permissions'] = json_encode($permissions);
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        return $this->requestJson(__FUNCTION__, [
+            'permissions' => json_encode($permissions),
+            ...compact(
+                'chat_id',
+                'permissions',
+                'use_independent_chat_permissions'
+            ),
+        ]);
     }
 
     /**
@@ -1356,10 +1303,6 @@ trait AvailableMethods
      */
     public function exportChatInviteLink(int|string $chat_id): ?string
     {
-        $parameters = compact(
-            'chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
@@ -1383,16 +1326,13 @@ trait AvailableMethods
         ?int $member_limit = null,
         ?bool $creates_join_request = null,
     ): ?ChatInviteLink {
-        $parameters = compact(
+        return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'name',
             'expire_date',
             'member_limit',
             'creates_join_request'
-        );
-
-        $required = compact('chat_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], ChatInviteLink::class);
+        ), ChatInviteLink::class);
     }
 
     /**
@@ -1416,17 +1356,14 @@ trait AvailableMethods
         ?int $member_limit = null,
         ?bool $creates_join_request = null,
     ): ?ChatInviteLink {
-        $parameters = compact(
+        return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'invite_link',
             'name',
             'expire_date',
             'member_limit',
             'creates_join_request'
-        );
-
-        $required = compact('chat_id', 'invite_link');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], ChatInviteLink::class);
+        ), ChatInviteLink::class);
     }
 
     /**
@@ -1441,11 +1378,6 @@ trait AvailableMethods
      */
     public function revokeChatInviteLink(int|string $chat_id, string $invite_link): ?ChatInviteLink
     {
-        $parameters = compact(
-            'chat_id',
-            'invite_link'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'invite_link'), ChatInviteLink::class);
     }
 
@@ -1460,11 +1392,6 @@ trait AvailableMethods
      */
     public function approveChatJoinRequest(int|string $chat_id, int $user_id): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'user_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'));
     }
 
@@ -1479,11 +1406,6 @@ trait AvailableMethods
      */
     public function declineChatJoinRequest(int|string $chat_id, int $user_id): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'user_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'));
     }
 
@@ -1495,15 +1417,11 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setchatphoto
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param InputFile $photo New chat photo, uploaded using multipart/form-data
+     * @param array $clientOpt Client options
      * @return bool|null
      */
-    public function setChatPhoto(int|string $chat_id, InputFile $photo): ?bool
+    public function setChatPhoto(int|string $chat_id, InputFile $photo, array $clientOpt): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'photo'
-        );
-
         return $this->requestMultipart(__FUNCTION__, compact('chat_id', 'photo'), options: $clientOpt);
     }
 
