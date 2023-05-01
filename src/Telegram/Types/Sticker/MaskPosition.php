@@ -30,7 +30,8 @@ class MaskPosition extends BaseType
     public float $y_shift;
 
     /**
-     * Mask scaling coefficient. For example, 2.0 means double size.
+     * Mask scaling coefficient.
+     * For example, 2.0 means double size.
      */
     public float $scale;
 }

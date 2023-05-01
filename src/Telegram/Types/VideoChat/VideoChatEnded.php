@@ -10,8 +10,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class VideoChatEnded extends BaseType
 {
-    /**
-     * Video chat duration; in seconds
-     */
+    /** Video chat duration in seconds */
     public int $duration;
 }

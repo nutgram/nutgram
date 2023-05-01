@@ -12,14 +12,12 @@ use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
  */
 class UserProfilePhotos extends BaseType
 {
-    /**
-     * Total number of profile pictures the target user has
-     */
+    /** Total number of profile pictures the target user has */
     public int $total_count;
 
     /**
      * Requested profile pictures (in up to 4 sizes each)
-     * @var \SergiX44\Nutgram\Telegram\Types\Media\PhotoSize[][] $photos
+     * @var PhotoSize[][] $photos
      */
     #[ArrayType(PhotoSize::class, depth: 2)]
     public array $photos;

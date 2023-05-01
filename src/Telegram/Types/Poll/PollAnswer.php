@@ -11,18 +11,15 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  */
 class PollAnswer extends BaseType
 {
-    /**
-     * Unique poll identifier
-     */
+    /** Unique poll identifier */
     public string $poll_id;
 
-    /**
-     * The user, who changed the answer to the poll
-     */
+    /** The user, who changed the answer to the poll */
     public User $user;
 
     /**
-     * 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote.
+     * 0-based identifiers of answer options, chosen by the user.
+     * May be empty if the user retracted their vote.
      * @var int[] $option_ids
      */
     public array $option_ids;

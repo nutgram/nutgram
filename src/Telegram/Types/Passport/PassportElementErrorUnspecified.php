@@ -12,23 +12,15 @@ use SergiX44\Nutgram\Telegram\Properties\PassportType;
  */
 class PassportElementErrorUnspecified extends PassportElementError
 {
-    /**
-     * Error source, must be unspecified
-     */
+    /** Error source, must be unspecified */
     public PassportSource $source = PassportSource::UNSPECIFIED;
 
-    /**
-     * Type of element of the user's Telegram Passport which has the issue
-     */
+    /** Type of element of the user's Telegram Passport which has the issue */
     public PassportType $type;
 
-    /**
-     * Base64-encoded element hash
-     */
+    /** Base64-encoded element hash */
     public string $element_hash;
 
-    /**
-     * Error message
-     */
+    /** Error message */
     public string $message;
 }
