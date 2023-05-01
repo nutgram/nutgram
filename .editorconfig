@@ -10,7 +10,6 @@ trim_trailing_whitespace = true
 max_line_length = 120
 
 [*.php]
-max_line_length = off
 ij_php_phpdoc_param_spaces_between_type_and_name = 1
 ij_php_phpdoc_param_spaces_between_tag_and_type = 1
 ij_php_phpdoc_param_spaces_between_name_and_description = 1
@@ -24,6 +23,9 @@ ij_php_space_before_closure_left_parenthesis = true
 ij_php_keep_indents_on_empty_lines = false
 ij_php_space_after_type_cast = false
 ij_php_concat_spaces = false
+
+[src/Telegram/**.php]
+max_line_length = off
 
 [*.json]
 indent_size = 2
