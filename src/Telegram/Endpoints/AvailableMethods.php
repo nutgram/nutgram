@@ -1518,10 +1518,6 @@ trait AvailableMethods
      */
     public function deleteChatPhoto(int|string $chat_id): ?bool
     {
-        $parameters = compact(
-            'chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
@@ -1537,11 +1533,6 @@ trait AvailableMethods
      */
     public function setChatTitle(int|string $chat_id, string $title): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'title'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'title'));
     }
 
@@ -1556,16 +1547,7 @@ trait AvailableMethods
      */
     public function setChatDescription(int|string $chat_id, ?string $description = null): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'description'
-        );
-
-        $parameters = compact('chat_id');
-        if ($description !== null) {
-            $parameters['description'] = $description;
-        }
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'description'));
     }
 
     /**
@@ -1580,14 +1562,7 @@ trait AvailableMethods
      */
     public function pinChatMessage(int|string $chat_id, int $message_id, ?bool $disable_notification = null): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'disable_notification'
-        );
-
-        $required = compact('chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id', 'disable_notification'));
     }
 
     /**
@@ -1601,16 +1576,7 @@ trait AvailableMethods
      */
     public function unpinChatMessage(int|string $chat_id, ?int $message_id = null): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'message_id'
-        );
-
-        $required = compact('chat_id');
-        if ($message_id) {
-            $required['message_id'] = $message_id;
-        }
-        return $this->requestJson(__FUNCTION__, $required);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id'));
     }
 
     /**
@@ -1623,10 +1589,6 @@ trait AvailableMethods
      */
     public function unpinAllChatMessages(int|string $chat_id): ?bool
     {
-        $parameters = compact(
-            'chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
@@ -1639,10 +1601,6 @@ trait AvailableMethods
      */
     public function leaveChat(int|string $chat_id): ?bool
     {
-        $parameters = compact(
-            'chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
@@ -1655,10 +1613,6 @@ trait AvailableMethods
      */
     public function getChat(int|string $chat_id): ?Chat
     {
-        $parameters = compact(
-            'chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id'), Chat::class);
     }
 
@@ -1671,10 +1625,6 @@ trait AvailableMethods
      */
     public function getChatAdministrators(int|string $chat_id): ?array
     {
-        $parameters = compact(
-            'chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id'), ChatMember::class);
     }
 
@@ -1687,10 +1637,6 @@ trait AvailableMethods
      */
     public function getChatMemberCount(int|string $chat_id): ?int
     {
-        $parameters = compact(
-            'chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
@@ -1705,11 +1651,6 @@ trait AvailableMethods
      */
     public function getChatMember(int|string $chat_id, int $user_id): ?ChatMember
     {
-        $parameters = compact(
-            'chat_id',
-            'user_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), ChatMember::class);
     }
 
@@ -1725,11 +1666,6 @@ trait AvailableMethods
      */
     public function setChatStickerSet(int|string $chat_id, string $sticker_set_name): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'sticker_set_name'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'sticker_set_name'));
     }
 
@@ -1744,10 +1680,6 @@ trait AvailableMethods
      */
     public function deleteChatStickerSet(int|string $chat_id): ?bool
     {
-        $parameters = compact(
-            'chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
@@ -1779,16 +1711,10 @@ trait AvailableMethods
         string $name,
         ForumIconColor|int|null $icon_color = null,
         ?string $icon_custom_emoji_id = null,
-    ): ?ForumTopic {
-        $parameters = compact(
-            'chat_id',
-            'name',
-            'icon_color',
-            'icon_custom_emoji_id'
-        );
-
-        $required = compact('chat_id', 'name');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], ForumTopic::class);
+    ): ?ForumTopic
+    {
+        $parameters = compact('chat_id', 'name', 'icon_color', 'icon_custom_emoji_id');
+        return $this->requestJson(__FUNCTION__, $parameters, ForumTopic::class);
     }
 
     /**
@@ -1807,16 +1733,10 @@ trait AvailableMethods
         int $message_thread_id,
         ?string $name = null,
         ?string $icon_custom_emoji_id = null,
-    ): ?bool {
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id',
-            'name',
-            'icon_custom_emoji_id'
-        );
-
-        $required = compact('chat_id', 'message_thread_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+    ): ?bool
+    {
+        $parameters = compact('chat_id', 'message_thread_id', 'name', 'icon_custom_emoji_id');
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1830,11 +1750,6 @@ trait AvailableMethods
      */
     public function closeForumTopic(int|string $chat_id, int $message_thread_id): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
     }
 
@@ -1849,11 +1764,6 @@ trait AvailableMethods
      */
     public function reopenForumTopic(int|string $chat_id, int $message_thread_id): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
     }
 
@@ -1868,11 +1778,6 @@ trait AvailableMethods
      */
     public function deleteForumTopic(int|string $chat_id, int $message_thread_id): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
     }
 
@@ -1887,11 +1792,6 @@ trait AvailableMethods
      */
     public function unpinAllForumTopicMessages(int|string $chat_id, int $message_thread_id): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
     }
 
@@ -1906,11 +1806,6 @@ trait AvailableMethods
      */
     public function editGeneralForumTopic(int|string $chat_id, string $name): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'name'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'name'));
     }
 
@@ -1924,10 +1819,6 @@ trait AvailableMethods
      */
     public function closeGeneralForumTopic(int|string $chat_id): ?bool
     {
-        $parameters = compact(
-            'chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
@@ -1942,10 +1833,6 @@ trait AvailableMethods
      */
     public function reopenGeneralForumTopic(int|string $chat_id): ?bool
     {
-        $parameters = compact(
-            'chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
@@ -1960,10 +1847,6 @@ trait AvailableMethods
      */
     public function hideGeneralForumTopic(int|string $chat_id): ?bool
     {
-        $parameters = compact(
-            'chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
@@ -1977,10 +1860,6 @@ trait AvailableMethods
      */
     public function unhideGeneralForumTopic(int|string $chat_id): ?bool
     {
-        $parameters = compact(
-            'chat_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
@@ -2012,8 +1891,7 @@ trait AvailableMethods
             'cache_time'
         );
 
-        $required = ['callback_query_id' => $this->callbackQuery()?->id];
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2028,17 +1906,17 @@ trait AvailableMethods
      */
     public function setMyCommands(array $commands, ?BotCommandScope $scope = null, ?string $language_code = null): ?bool
     {
-        $parameters = compact(
-            'commands',
-            'scope',
-            'language_code'
-        );
+        $parameters = compact('commands', 'scope', 'language_code');
 
-        $required = ['commands' => json_encode($commands)];
-        if (array_key_exists('scope', $opt)) {
-            $opt['scope'] = json_encode($opt['scope']);
+        if (array_key_exists('commands', $parameters)) {
+            $parameters['commands'] = json_encode($parameters['commands']);
         }
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+
+        if (array_key_exists('scope', $parameters)) {
+            $parameters['scope'] = json_encode($parameters['scope']);
+        }
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2052,12 +1930,7 @@ trait AvailableMethods
      */
     public function deleteMyCommands(?BotCommandScope $scope = null, ?string $language_code = null): ?bool
     {
-        $parameters = compact(
-            'scope',
-            'language_code'
-        );
-
-        return $this->requestJson(__FUNCTION__, $opt);
+        return $this->requestJson(__FUNCTION__, compact('scope', 'language_code'));
     }
 
     /**
@@ -2071,12 +1944,7 @@ trait AvailableMethods
      */
     public function getMyCommands(?BotCommandScope $scope = null, ?string $language_code = null): ?array
     {
-        $parameters = compact(
-            'scope',
-            'language_code'
-        );
-
-        return $this->requestJson(__FUNCTION__, $opt, BotCommand::class);
+        return $this->requestJson(__FUNCTION__, compact('scope', 'language_code'), BotCommand::class);
     }
 
     /**
@@ -2088,11 +1956,7 @@ trait AvailableMethods
      */
     public function getMyName(?string $language_code = null): ?BotName
     {
-        $parameters = compact(
-            'language_code'
-        );
-
-        return $this->requestJson(__FUNCTION__, $opt, BotName::class);
+        return $this->requestJson(__FUNCTION__, compact('language_code'), BotName::class);
     }
 
     /**
@@ -2105,12 +1969,7 @@ trait AvailableMethods
      */
     public function setMyName(?string $name = null, ?string $language_code = null): ?bool
     {
-        $parameters = compact(
-            'name',
-            'language_code'
-        );
-
-        return $this->requestJson(__FUNCTION__, $opt, BotCommand::class);
+        return $this->requestJson(__FUNCTION__, compact('name', 'language_code'), BotCommand::class);
     }
 
     /**
@@ -2123,12 +1982,7 @@ trait AvailableMethods
      */
     public function setMyDescription(?string $description = null, ?string $language_code = null): ?bool
     {
-        $parameters = compact(
-            'description',
-            'language_code'
-        );
-
-        return $this->requestJson(__FUNCTION__, $opt);
+        return $this->requestJson(__FUNCTION__, compact('description', 'language_code'));
     }
 
     /**
@@ -2140,11 +1994,7 @@ trait AvailableMethods
      */
     public function getMyDescription(?string $language_code = null): ?BotDescription
     {
-        $parameters = compact(
-            'language_code'
-        );
-
-        return $this->requestJson(__FUNCTION__, $opt, BotDescription::class);
+        return $this->requestJson(__FUNCTION__, compact('language_code'), BotDescription::class);
     }
 
     /**
