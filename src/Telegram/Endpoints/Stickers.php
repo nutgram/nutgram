@@ -52,10 +52,9 @@ trait Stickers
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
-        $parameters = compact(
+        $opt = compact(
             'chat_id',
             'message_thread_id',
-            'sticker',
             'emoji',
             'disable_notification',
             'protect_content',
@@ -77,10 +76,6 @@ trait Stickers
      */
     public function getStickerSet(string $name): ?StickerSet
     {
-        $parameters = compact(
-            'name'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('name'), StickerSet::class);
     }
 
@@ -88,34 +83,26 @@ trait Stickers
      * Use this method to upload a file with a sticker for later use in the {@see https://core.telegram.org/bots/api#createnewstickerset createNewStickerSet} and {@see https://core.telegram.org/bots/api#addstickertoset addStickerToSet} methods (the file can be used multiple times).
      * Returns the uploaded {@see https://core.telegram.org/bots/api#file File} on success.
      * @see https://core.telegram.org/bots/api#uploadstickerfile
-     * @param InputFile $sticker {@see https://core.telegram.org/stickers }A file with the sticker in .WEBP, .PNG, .TGS, or .WEBM format. See {@see https://core.telegram.org/stickers https://core.telegram.org/stickers} for technical requirements. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
+     * @param InputFile|string $sticker {@see https://core.telegram.org/stickers }A file with the sticker in .WEBP, .PNG, .TGS, or .WEBM format. See {@see https://core.telegram.org/stickers https://core.telegram.org/stickers} for technical requirements. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      * @param StickerFormat|string $sticker_format Format of the sticker, must be one of “static”, “animated”, “video”
      * @param int|null $user_id User identifier of sticker file owner
      * @param array $clientOpt Client options
      * @return File|null
      */
     public function uploadStickerFile(
-        InputFile $sticker,
+        InputFile|string $sticker,
         StickerFormat|string $sticker_format,
         ?int $user_id = null,
         array $clientOpt = [],
     ): ?File {
         $user_id ??= $this->userId();
-        $parameters = compact(
-            'user_id',
-            'sticker',
-            'sticker_format',
-            'clientOpt'
-        );
+        $parameters = compact('user_id', 'sticker', 'sticker_format');
 
-        $user_id = $this->userId();
-        $required = compact('user_id', 'sticker');
-
-        if (is_resource($sticker)) {
-            return $this->requestMultipart(__FUNCTION__, [...$required, ...$opt], File::class, $clientOpt);
+        if ($sticker instanceof InputFile) {
+            return $this->requestMultipart(__FUNCTION__, $parameters, File::class, $clientOpt);
         }
 
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], File::class);
+        return $this->requestJson(__FUNCTION__, $parameters, File::class);
     }
 
     /**
@@ -152,12 +139,9 @@ trait Stickers
             'sticker_format',
             'sticker_type',
             'needs_repainting',
-            'clientOpt'
         );
 
-        $user_id = $this->userId();
-        $required = compact('user_id', 'name', 'title');
-        return $this->requestMultipart(__FUNCTION__, [...$required, ...$opt], options: $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
     }
 
     /**
@@ -185,12 +169,9 @@ trait Stickers
             'user_id',
             'name',
             'sticker',
-            'clientOpt'
         );
 
-        $user_id = $this->userId();
-        $required = compact('user_id', 'name');
-        return $this->requestMultipart(__FUNCTION__, [...$required, ...$opt], options: $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
     }
 
     /**
@@ -203,11 +184,6 @@ trait Stickers
      */
     public function setStickerPositionInSet(string $sticker, int $position): ?bool
     {
-        $parameters = compact(
-            'sticker',
-            'position'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('sticker', 'position'));
     }
 
@@ -221,12 +197,7 @@ trait Stickers
      */
     public function setCustomEmojiStickerSetThumbnail(string $name, ?string $custom_emoji_id = null): ?bool
     {
-        $parameters = compact(
-            'name',
-            'custom_emoji_id'
-        );
-
-        return $this->requestJson(__FUNCTION__, [...compact('name'), ...$opt]);
+        return $this->requestJson(__FUNCTION__, compact('name', 'custom_emoji_id'));
     }
 
     /**
@@ -238,10 +209,6 @@ trait Stickers
      */
     public function deleteStickerFromSet(string $sticker): ?bool
     {
-        $parameters = compact(
-            'sticker'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('sticker'));
     }
 
@@ -256,11 +223,6 @@ trait Stickers
      */
     public function setStickerEmojiList(string $sticker, array $emoji_list): ?bool
     {
-        $parameters = compact(
-            'sticker',
-            'emoji_list'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('sticker', 'emoji_list'));
     }
 
@@ -275,12 +237,7 @@ trait Stickers
      */
     public function setStickerKeywords(string $sticker, ?array $keywords = null): ?bool
     {
-        $parameters = compact(
-            'sticker',
-            'keywords'
-        );
-
-        return $this->requestJson(__FUNCTION__, [...compact('sticker'), ...$opt]);
+        return $this->requestJson(__FUNCTION__, compact('sticker', 'keywords'));
     }
 
     /**
@@ -294,12 +251,7 @@ trait Stickers
      */
     public function setStickerMaskPosition(string $sticker, ?MaskPosition $mask_position = null): ?bool
     {
-        $parameters = compact(
-            'sticker',
-            'mask_position'
-        );
-
-        return $this->requestJson(__FUNCTION__, [...compact('sticker'), ...$opt]);
+        return $this->requestJson(__FUNCTION__, compact('sticker', 'mask_position'));
     }
 
     /**
@@ -320,16 +272,9 @@ trait Stickers
         array $clientOpt = [],
     ): ?bool {
         $user_id ??= $this->userId();
-        $parameters = compact(
-            'name',
-            'user_id',
-            'thumbnail',
-            'clientOpt'
-        );
+        $parameters = compact('name', 'user_id', 'thumbnail');
 
-        $user_id = $this->userId();
-        $required = compact('user_id', 'name');
-        return $this->requestMultipart(__FUNCTION__, [...$required, ...$opt], options: $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
     }
 
     /**
@@ -341,11 +286,7 @@ trait Stickers
      */
     public function getCustomEmojiStickers(array $custom_emoji_ids): ?array
     {
-        $parameters = compact(
-            'custom_emoji_ids'
-        );
-
-        return $this->requestJson(__FUNCTION__, $emoji_ids, Sticker::class);
+        return $this->requestJson(__FUNCTION__, compact('custom_emoji_ids'), Sticker::class);
     }
 
     /**
@@ -358,11 +299,6 @@ trait Stickers
      */
     public function setStickerSetTitle(string $name, string $title): ?bool
     {
-        $parameters = compact(
-            'name',
-            'title'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('name', 'title'));
     }
 
@@ -375,10 +311,6 @@ trait Stickers
      */
     public function deleteStickerSet(string $name): ?bool
     {
-        $parameters = compact(
-            'name'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('name'));
     }
 }
