@@ -41,7 +41,6 @@ trait UpdatesMessages
         ?bool $disable_web_page_preview = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): Message|bool|null {
-        $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
             'message_id',
@@ -52,10 +51,9 @@ trait UpdatesMessages
             'disable_web_page_preview',
             'reply_markup'
         );
+        $target = $this->targetChatMessageOrInlineMessageId($parameters);
 
-        $target = $this->targetChatMessageOrInlineMessageId($opt);
-        $required = compact('text');
-        return $this->requestJson(__FUNCTION__, [...$target, ...$required, ...$opt], Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter($parameters)], Message::class);
     }
 
     /**
@@ -80,7 +78,6 @@ trait UpdatesMessages
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): Message|bool|null {
-        $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
             'message_id',
@@ -90,9 +87,9 @@ trait UpdatesMessages
             'caption_entities',
             'reply_markup'
         );
+        $target = $this->targetChatMessageOrInlineMessageId($parameters);
 
-        $target = $this->targetChatMessageOrInlineMessageId($opt);
-        return $this->requestJson(__FUNCTION__, [...$target, ...$opt], Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter($parameters)], Message::class);
     }
 
     /**
@@ -117,8 +114,8 @@ trait UpdatesMessages
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         array $clientOpt = [],
-    ): Message|bool|null {
-        $chat_id ??= $this->chatId();
+    ): Message|bool|null
+    {
         $parameters = compact(
             'chat_id',
             'message_id',
@@ -127,11 +124,11 @@ trait UpdatesMessages
             'reply_markup',
             'clientOpt'
         );
+        $parameters['media'] = json_encode($media, JSON_THROW_ON_ERROR);
+        $target = $this->targetChatMessageOrInlineMessageId($parameters);
 
-        $target = $this->targetChatMessageOrInlineMessageId($opt);
-        $media = json_encode($mediaArray, JSON_THROW_ON_ERROR);
-        $required = compact('media');
-        return $this->requestMultipart(__FUNCTION__, [...$target, ...$required, ...$opt], Message::class, $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, [...$target, ...array_filter($parameters)], Message::class,
+            $clientOpt);
     }
 
     /**
@@ -150,16 +147,15 @@ trait UpdatesMessages
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): Message|bool|null {
-        $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
             'message_id',
             'inline_message_id',
             'reply_markup'
         );
+        $target = $this->targetChatMessageOrInlineMessageId($parameters);
 
-        $target = $this->targetChatMessageOrInlineMessageId($opt);
-        return $this->requestJson(__FUNCTION__, [...$target, ...$opt], Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter($parameters)], Message::class);
     }
 
     /**
@@ -173,14 +169,8 @@ trait UpdatesMessages
      */
     public function stopPoll(int|string $chat_id, int $message_id, ?InlineKeyboardMarkup $reply_markup = null): ?Poll
     {
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'reply_markup'
-        );
-
-        $required = compact('chat_id', 'message_id');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Poll::class);
+        $parameters = compact('chat_id', 'message_id', 'reply_markup');
+        return $this->requestJson(__FUNCTION__, $parameters, Poll::class);
     }
 
     /**
@@ -192,11 +182,6 @@ trait UpdatesMessages
      */
     public function deleteMessage(int|string $chat_id, int $message_id): ?bool
     {
-        $parameters = compact(
-            'chat_id',
-            'message_id'
-        );
-
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id'));
     }
 }
