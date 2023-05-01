@@ -41,7 +41,6 @@ class File extends BaseType
      * @param  string  $path
      * @param  array  $clientOpt
      * @return bool|null
-     * @throws GuzzleException
      */
     public function save(string $path, array $clientOpt = []): ?bool
     {
