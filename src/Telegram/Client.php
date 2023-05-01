@@ -18,6 +18,7 @@ use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\StrUtils;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
+use SergiX44\Nutgram\Telegram\Endpoints\CustomEndpoints;
 use SergiX44\Nutgram\Telegram\Endpoints\Games;
 use SergiX44\Nutgram\Telegram\Endpoints\InlineMode;
 use SergiX44\Nutgram\Telegram\Endpoints\Passport;

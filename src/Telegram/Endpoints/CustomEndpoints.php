@@ -1,7 +1,9 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram;
+namespace SergiX44\Nutgram\Telegram\Endpoints;
 
+use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
@@ -41,17 +43,17 @@ trait CustomEndpoints
         $parameters = [...$required, ...$opt];
         unset($parameters['text']);
 
-        //chunk text
+        // chunk text
         $chunks = $this->chunkText($text, Limits::TEXT_LENGTH);
         $totalChunks = count($chunks);
 
-        //get reply_markup
-        $reply_markup = $parameters['reply_markup'] ?? null;
+        // get reply_markup
+        $replyMarkup = $parameters['reply_markup'] ?? null;
         unset($parameters['reply_markup']);
 
         //send messages
-        return array_map(function ($chunk, $index) use (&$parameters, $totalChunks, $reply_markup) {
-            $parameters['reply_markup'] = $index === $totalChunks - 1 ? $reply_markup : null;
+        return array_map(function ($chunk, $index) use (&$parameters, $totalChunks, $replyMarkup) {
+            $parameters['reply_markup'] = $index === $totalChunks - 1 ? $replyMarkup : null;
             return $this->sendMessage($chunk, $parameters);
         }, $chunks, array_keys($chunks));
     }
@@ -296,13 +298,16 @@ trait CustomEndpoints
             return [$this->sendAttachment($endpoint, $param, $media, array_filter($opt), $clientOpt)];
         }
 
+        $opt = array_filter($opt);
+
         //chunk caption
         $chunks = $this->chunkText($caption, Limits::CAPTION_LENGTH);
         $totalChunks = count($chunks);
 
         //get reply_markup
-        $reply_markup = $opt['reply_markup'] ?? null;
-        unset($opt['reply_markup']);
+        $replyMarkup = $opt['reply_markup'] ?? null;
+
+        unset($opt['reply_markup'], $opt['caption']);
 
         //send messages
         return array_map(function ($chunk, $index) use (
@@ -311,18 +316,19 @@ trait CustomEndpoints
             $media,
             &$opt,
             $totalChunks,
-            $reply_markup,
+            $replyMarkup,
             $endpoint
         ) {
-            $opt['reply_markup'] = $index === $totalChunks - 1 ? $reply_markup : null;
-            $opt['caption'] = $chunk;
-
-            if ($index === 0) {
-                return $this->sendAttachment($endpoint, $param, $media, array_filter($opt), $clientOpt);
+            if ($index === $totalChunks - 1 && $replyMarkup !== null) {
+                $opt['reply_markup'] = $replyMarkup;
             }
 
-            unset($opt['caption']);
-            return $this->sendMessage($chunk, array_filter($opt));
+            if ($index === 0) {
+                $opt['caption'] = $chunk;
+                return $this->sendAttachment($endpoint, $param, $media, $opt, $clientOpt);
+            }
+
+            return $this->sendMessage($chunk, $opt);
         }, $chunks, array_keys($chunks));
     }
 }
