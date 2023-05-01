@@ -114,8 +114,7 @@ trait UpdatesMessages
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         array $clientOpt = [],
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         $parameters = compact(
             'chat_id',
             'message_id',
@@ -127,8 +126,12 @@ trait UpdatesMessages
         $parameters['media'] = json_encode($media, JSON_THROW_ON_ERROR);
         $target = $this->targetChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestMultipart(__FUNCTION__, [...$target, ...array_filter($parameters)], Message::class,
-            $clientOpt);
+        return $this->requestMultipart(
+            __FUNCTION__,
+            [...$target, ...array_filter($parameters)],
+            Message::class,
+            $clientOpt
+        );
     }
 
     /**
