@@ -1,0 +1,3 @@
+exclude_patterns:
+    - "src/Telegram/Endpoints/"
+    - "src/Telegram/Types/"
