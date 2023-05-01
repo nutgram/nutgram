@@ -1711,8 +1711,7 @@ trait AvailableMethods
         string $name,
         ForumIconColor|int|null $icon_color = null,
         ?string $icon_custom_emoji_id = null,
-    ): ?ForumTopic
-    {
+    ): ?ForumTopic {
         $parameters = compact('chat_id', 'name', 'icon_color', 'icon_custom_emoji_id');
         return $this->requestJson(__FUNCTION__, $parameters, ForumTopic::class);
     }
@@ -1733,8 +1732,7 @@ trait AvailableMethods
         int $message_thread_id,
         ?string $name = null,
         ?string $icon_custom_emoji_id = null,
-    ): ?bool
-    {
+    ): ?bool {
         $parameters = compact('chat_id', 'message_thread_id', 'name', 'icon_custom_emoji_id');
         return $this->requestJson(__FUNCTION__, $parameters);
     }
