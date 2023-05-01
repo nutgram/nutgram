@@ -78,8 +78,7 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
         ?string $input_field_placeholder = null,
         ?bool $selective = null,
         ?bool $is_persistent = null,
-    ): self
-    {
+    ): self {
         return new self(
             $resize_keyboard,
             $one_time_keyboard,

@@ -78,8 +78,7 @@ trait Payments
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'title', 'description', 'payload', 'provider_token', 'currency', 'prices', 'max_tip_amount', 'suggested_tip_amounts', 'start_parameter', 'provider_data', 'photo_url', 'photo_size', 'photo_width', 'photo_height', 'need_name', 'need_phone_number', 'need_email', 'need_shipping_address', 'send_phone_number_to_provider', 'send_email_to_provider', 'is_flexible', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup'));
 
@@ -136,8 +135,7 @@ trait Payments
         ?bool $send_phone_number_to_provider = null,
         ?bool $send_email_to_provider = null,
         ?bool $is_flexible = null,
-    ): ?string
-    {
+    ): ?string {
         // TODO: $parameters = array_filter(compact('title', 'description', 'payload', 'provider_token', 'currency', 'prices', 'max_tip_amount', 'suggested_tip_amounts', 'provider_data', 'photo_url', 'photo_size', 'photo_width', 'photo_height', 'need_name', 'need_phone_number', 'need_email', 'need_shipping_address', 'send_phone_number_to_provider', 'send_email_to_provider', 'is_flexible'));
 
         $required = compact('title', 'description', 'payload', 'provider_token', 'currency', 'prices');
@@ -160,8 +158,7 @@ trait Payments
         ?string $shipping_query_id = null,
         ?array $shipping_options = null,
         ?string $error_message = null,
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $shipping_query_id ??= $this->shippingQuery()?->id;
         // TODO: $parameters = array_filter(compact('shipping_query_id', 'ok', 'shipping_options', 'error_message'));
 
@@ -187,8 +184,7 @@ trait Payments
         bool $ok,
         ?string $pre_checkout_query_id = null,
         ?string $error_message = null,
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $pre_checkout_query_id ??= $this->preCheckoutQuery()?->id;
         // TODO: $parameters = array_filter(compact('pre_checkout_query_id', 'ok', 'error_message'));
 

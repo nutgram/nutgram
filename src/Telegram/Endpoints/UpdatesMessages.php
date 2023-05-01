@@ -40,8 +40,7 @@ trait UpdatesMessages
         ?array $entities = null,
         ?bool $disable_web_page_preview = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_id', 'inline_message_id', 'text', 'parse_mode', 'entities', 'disable_web_page_preview', 'reply_markup'));
 
@@ -71,8 +70,7 @@ trait UpdatesMessages
         ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_id', 'inline_message_id', 'caption', 'parse_mode', 'caption_entities', 'reply_markup'));
 
@@ -102,8 +100,7 @@ trait UpdatesMessages
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         array $clientOpt = [],
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_id', 'inline_message_id', 'media', 'reply_markup', 'clientOpt'));
 
@@ -128,8 +125,7 @@ trait UpdatesMessages
         ?int $message_id = null,
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_id', 'inline_message_id', 'reply_markup'));
 
