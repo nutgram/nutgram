@@ -1801,10 +1801,9 @@ trait AvailableMethods
      */
     public function setChatMenuButton(?int $chat_id = null, ?MenuButton $menu_button = null): ?bool
     {
-        // TODO: $chat_id ??= $this->chatId();
-        // TODO: $parameters = array_filter(compact('chat_id', 'menu_button'));
-
-        return $this->requestJson(__FUNCTION__, $opt);
+        $chat_id ??= $this->chatId();
+        $parameters = compact('chat_id', 'menu_button');
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1816,10 +1815,9 @@ trait AvailableMethods
      */
     public function getChatMenuButton(?int $chat_id = null): ?MenuButton
     {
-        // TODO: $chat_id ??= $this->chatId();
-        // TODO: $parameters = array_filter(compact('chat_id'));
-
-        return $this->requestJson(__FUNCTION__, $opt, MenuButton::class);
+        $chat_id ??= $this->chatId();
+        $parameters = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, $parameters, MenuButton::class);
     }
 
     /**
@@ -1835,9 +1833,7 @@ trait AvailableMethods
         ?ChatAdministratorRights $rights = null,
         ?bool $for_channels = null,
     ): ?bool {
-        // TODO: $parameters = array_filter(compact('rights', 'for_channels'));
-
-        return $this->requestJson(__FUNCTION__, $opt);
+        return $this->requestJson(__FUNCTION__, compact('rights', 'for_channels'));
     }
 
     /**
@@ -1849,8 +1845,6 @@ trait AvailableMethods
      */
     public function getMyDefaultAdministratorRights(?bool $for_channels = null): ?ChatAdministratorRights
     {
-        // TODO: $parameters = array_filter(compact('for_channels'));
-
-        return $this->requestJson(__FUNCTION__, $opt, ChatAdministratorRights::class);
+        return $this->requestJson(__FUNCTION__, compact('for_channels'), ChatAdministratorRights::class);
     }
 }

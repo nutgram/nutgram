@@ -285,7 +285,7 @@ trait Client
 
     /**
      * @param  string  $endpoint
-     * @param  array|null  $json
+     * @param  array  $parameters
      * @param  string  $mapTo
      * @param  array  $options
      * @return mixed
