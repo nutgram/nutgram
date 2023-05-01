@@ -114,8 +114,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): Message|array|null
-    {
+    ): Message|array|null {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -154,8 +153,7 @@ trait AvailableMethods
         ?int $message_thread_id = null,
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
-    ): ?Message
-    {
+    ): ?Message {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
@@ -200,8 +198,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?MessageId
-    {
+    ): ?MessageId {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
@@ -251,8 +248,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $opt = compact(
             'chat_id',
@@ -312,8 +308,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $opt = compact(
             'chat_id',
@@ -371,8 +366,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $opt = compact(
             'chat_id',
@@ -436,8 +430,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $opt = compact(
             'chat_id',
@@ -503,8 +496,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $opt = compact(
             'chat_id',
@@ -562,8 +554,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $opt = compact(
             'chat_id',
@@ -614,8 +605,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $opt = compact(
             'chat_id',
@@ -657,8 +647,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         array $clientOpt = [],
-    ): ?array
-    {
+    ): ?array {
         $inputMedia = [];
         $files = [];
         foreach ($media as $m) {
@@ -723,8 +712,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -773,8 +761,7 @@ trait AvailableMethods
         ?int $heading = null,
         ?int $proximity_alert_radius = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -808,8 +795,7 @@ trait AvailableMethods
         ?int $message_id = null,
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -859,8 +845,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -914,8 +899,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -981,8 +965,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -1037,8 +1020,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -1070,8 +1052,7 @@ trait AvailableMethods
         ChatAction|string $action,
         int|string|null $chat_id = null,
         ?int $message_thread_id = null,
-    ): ?bool
-    {
+    ): ?bool {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -1097,8 +1078,7 @@ trait AvailableMethods
         ?int $user_id = null,
         ?int $offset = null,
         ?int $limit = null,
-    ): ?UserProfilePhotos
-    {
+    ): ?UserProfilePhotos {
         $user_id ??= $this->userId();
         $parameters = compact(
             'user_id',
@@ -1148,8 +1128,7 @@ trait AvailableMethods
         int $user_id,
         ?int $until_date = null,
         ?bool $revoke_messages = null,
-    ): ?bool
-    {
+    ): ?bool {
         $parameters = compact(
             'chat_id',
             'user_id',
@@ -1206,8 +1185,7 @@ trait AvailableMethods
         ChatPermissions $permissions,
         ?bool $use_independent_chat_permissions = null,
         ?int $until_date = null,
-    ): ?bool
-    {
+    ): ?bool {
         $parameters = compact(
             'chat_id',
             'user_id',
@@ -1258,8 +1236,7 @@ trait AvailableMethods
         ?bool $can_invite_users = null,
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
-    ): ?bool
-    {
+    ): ?bool {
         $parameters = compact(
             'chat_id',
             'user_id',
@@ -1356,8 +1333,7 @@ trait AvailableMethods
         int|string $chat_id,
         ChatPermissions $permissions,
         ?bool $use_independent_chat_permissions = null,
-    ): ?bool
-    {
+    ): ?bool {
         $parameters = compact(
             'chat_id',
             'permissions',
@@ -1406,8 +1382,7 @@ trait AvailableMethods
         ?int $expire_date = null,
         ?int $member_limit = null,
         ?bool $creates_join_request = null,
-    ): ?ChatInviteLink
-    {
+    ): ?ChatInviteLink {
         $parameters = compact(
             'chat_id',
             'name',
@@ -1440,8 +1415,7 @@ trait AvailableMethods
         ?int $expire_date = null,
         ?int $member_limit = null,
         ?bool $creates_join_request = null,
-    ): ?ChatInviteLink
-    {
+    ): ?ChatInviteLink {
         $parameters = compact(
             'chat_id',
             'invite_link',
@@ -1805,8 +1779,7 @@ trait AvailableMethods
         string $name,
         ForumIconColor|int|null $icon_color = null,
         ?string $icon_custom_emoji_id = null,
-    ): ?ForumTopic
-    {
+    ): ?ForumTopic {
         $parameters = compact(
             'chat_id',
             'name',
@@ -1834,8 +1807,7 @@ trait AvailableMethods
         int $message_thread_id,
         ?string $name = null,
         ?string $icon_custom_emoji_id = null,
-    ): ?bool
-    {
+    ): ?bool {
         $parameters = compact(
             'chat_id',
             'message_thread_id',
@@ -2030,8 +2002,7 @@ trait AvailableMethods
         ?bool $show_alert = null,
         ?string $url = null,
         ?int $cache_time = null,
-    ): ?bool
-    {
+    ): ?bool {
         $callback_query_id ??= $this->callbackQuery()?->id;
         $parameters = compact(
             'callback_query_id',
@@ -2240,8 +2211,7 @@ trait AvailableMethods
     public function setMyDefaultAdministratorRights(
         ?ChatAdministratorRights $rights = null,
         ?bool $for_channels = null,
-    ): ?bool
-    {
+    ): ?bool {
         return $this->requestJson(__FUNCTION__, compact('rights', 'for_channels'));
     }
 

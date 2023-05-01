@@ -40,8 +40,7 @@ trait UpdatesMessages
         ?array $entities = null,
         ?bool $disable_web_page_preview = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -80,8 +79,7 @@ trait UpdatesMessages
         ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -119,8 +117,7 @@ trait UpdatesMessages
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         array $clientOpt = [],
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -152,8 +149,7 @@ trait UpdatesMessages
         ?int $message_id = null,
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',

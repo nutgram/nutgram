@@ -78,8 +78,7 @@ trait Payments
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
@@ -165,8 +164,7 @@ trait Payments
         ?bool $send_phone_number_to_provider = null,
         ?bool $send_email_to_provider = null,
         ?bool $is_flexible = null,
-    ): ?string
-    {
+    ): ?string {
         $parameters = compact(
             'title',
             'description',
@@ -210,8 +208,7 @@ trait Payments
         ?string $shipping_query_id = null,
         ?array $shipping_options = null,
         ?string $error_message = null,
-    ): ?bool
-    {
+    ): ?bool {
         $shipping_query_id ??= $this->shippingQuery()?->id;
         $parameters = compact(
             'shipping_query_id',
@@ -242,8 +239,7 @@ trait Payments
         bool $ok,
         ?string $pre_checkout_query_id = null,
         ?string $error_message = null,
-    ): ?bool
-    {
+    ): ?bool {
         $pre_checkout_query_id ??= $this->preCheckoutQuery()?->id;
         $parameters = compact(
             'pre_checkout_query_id',

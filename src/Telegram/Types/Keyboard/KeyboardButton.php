@@ -92,8 +92,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
         ?WebAppInfo $web_app = null,
         ?KeyboardButtonRequestUser $request_user = null,
         ?KeyboardButtonRequestChat $request_chat = null,
-    ): self
-    {
+    ): self {
         return new self(
             $text,
             $request_contact,

@@ -237,8 +237,7 @@ class Chat extends BaseType
         ?bool $can_set_sticker_set = null,
         ?int $linked_chat_id = null,
         ?ChatLocation $location = null,
-    ): Chat
-    {
+    ): Chat {
         $chat = new self();
         $chat->id = $id;
         $chat->type = $type;

@@ -86,8 +86,7 @@ class User extends BaseType
         ?bool $can_join_groups = null,
         ?bool $can_read_all_group_messages = null,
         ?bool $supports_inline_queries = null,
-    ): User
-    {
+    ): User {
         $user = new self();
         $user->id = $id;
         $user->is_bot = $is_bot;
