@@ -33,8 +33,7 @@ trait InlineMode
         ?bool $is_personal = null,
         ?string $next_offset = null,
         ?InlineQueryResultsButton $button = null,
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $inline_query_id ??= $this->inlineQuery()?->id;
         // TODO: $parameters = array_filter(compact('inline_query_id', 'results', 'cache_time', 'is_personal', 'next_offset', 'button'));
 

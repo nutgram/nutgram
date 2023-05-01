@@ -37,8 +37,7 @@ trait Games
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'game_short_name', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup'));
 
@@ -69,8 +68,7 @@ trait Games
         ?int $chat_id = null,
         ?int $message_id = null,
         ?string $inline_message_id = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $user_id ??= $this->userId();
         // TODO: $parameters = array_filter(compact('user_id', 'score', 'force', 'disable_edit_message', 'chat_id', 'message_id', 'inline_message_id'));
@@ -97,8 +95,7 @@ trait Games
         ?int $chat_id = null,
         ?int $message_id = null,
         ?string $inline_message_id = null,
-    ): ?array
-    {
+    ): ?array {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $user_id ??= $this->userId();
         // TODO: $parameters = array_filter(compact('user_id', 'chat_id', 'message_id', 'inline_message_id'));

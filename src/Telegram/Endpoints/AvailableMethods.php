@@ -114,8 +114,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): Message|array|null
-    {
+    ): Message|array|null {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'text', 'parse_mode', 'entities', 'disable_web_page_preview', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup'));
 
@@ -145,8 +144,7 @@ trait AvailableMethods
         ?int $message_thread_id = null,
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'from_chat_id', 'disable_notification', 'protect_content', 'message_id'));
 
         $required = compact('chat_id', 'from_chat_id', 'message_id');
@@ -187,8 +185,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?MessageId
-    {
+    ): ?MessageId {
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'from_chat_id', 'message_id', 'caption', 'parse_mode', 'caption_entities', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup'));
 
         $required = compact('chat_id', 'from_chat_id', 'message_id');
@@ -228,8 +225,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'photo', 'caption', 'parse_mode', 'caption_entities', 'has_spoiler', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup', 'clientOpt'));
 
@@ -277,8 +273,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'audio', 'caption', 'parse_mode', 'caption_entities', 'duration', 'performer', 'title', 'thumbnail', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup', 'clientOpt'));
 
@@ -321,8 +316,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'document', 'thumbnail', 'caption', 'parse_mode', 'caption_entities', 'disable_content_type_detection', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup', 'clientOpt'));
 
@@ -373,8 +367,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'video', 'duration', 'width', 'height', 'thumbnail', 'caption', 'parse_mode', 'caption_entities', 'has_spoiler', 'supports_streaming', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup', 'clientOpt'));
 
@@ -423,8 +416,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'animation', 'duration', 'width', 'height', 'thumbnail', 'caption', 'parse_mode', 'caption_entities', 'has_spoiler', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup', 'clientOpt'));
 
@@ -466,8 +458,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'voice', 'caption', 'parse_mode', 'caption_entities', 'duration', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup', 'clientOpt'));
 
@@ -506,8 +497,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'video_note', 'duration', 'length', 'thumbnail', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup', 'clientOpt'));
 
@@ -538,8 +528,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         array $clientOpt = [],
-    ): ?array
-    {
+    ): ?array {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'media', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'clientOpt'));
 
@@ -599,8 +588,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'latitude', 'longitude', 'horizontal_accuracy', 'live_period', 'heading', 'proximity_alert_radius', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup'));
 
@@ -635,8 +623,7 @@ trait AvailableMethods
         ?int $heading = null,
         ?int $proximity_alert_radius = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_id', 'inline_message_id', 'latitude', 'longitude', 'horizontal_accuracy', 'heading', 'proximity_alert_radius', 'reply_markup'));
 
@@ -660,8 +647,7 @@ trait AvailableMethods
         ?int $message_id = null,
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_id', 'inline_message_id', 'reply_markup'));
 
@@ -706,8 +692,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'latitude', 'longitude', 'title', 'address', 'foursquare_id', 'foursquare_type', 'google_place_id', 'google_place_type', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup'));
 
@@ -745,8 +730,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'phone_number', 'first_name', 'last_name', 'vcard', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup'));
 
@@ -800,8 +784,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'question', 'options', 'is_anonymous', 'type', 'allows_multiple_answers', 'correct_option_id', 'explanation', 'explanation_parse_mode', 'explanation_entities', 'open_period', 'close_date', 'is_closed', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup'));
 
@@ -836,8 +819,7 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'emoji', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup'));
 
@@ -860,8 +842,7 @@ trait AvailableMethods
         ChatAction|string $action,
         int|string|null $chat_id = null,
         ?int $message_thread_id = null,
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'action'));
 
@@ -883,8 +864,7 @@ trait AvailableMethods
         ?int $user_id = null,
         ?int $offset = null,
         ?int $limit = null,
-    ): ?UserProfilePhotos
-    {
+    ): ?UserProfilePhotos {
         // TODO: $user_id ??= $this->userId();
         // TODO: $parameters = array_filter(compact('user_id', 'offset', 'limit'));
 
@@ -928,8 +908,7 @@ trait AvailableMethods
         int $user_id,
         ?int $until_date = null,
         ?bool $revoke_messages = null,
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $parameters = array_filter(compact('chat_id', 'user_id', 'until_date', 'revoke_messages'));
 
         $required = compact('chat_id', 'user_id');
@@ -977,8 +956,7 @@ trait AvailableMethods
         ChatPermissions $permissions,
         ?bool $use_independent_chat_permissions = null,
         ?int $until_date = null,
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $parameters = array_filter(compact('chat_id', 'user_id', 'permissions', 'use_independent_chat_permissions', 'until_date'));
 
         $required = compact('chat_id', 'user_id');
@@ -1023,8 +1001,7 @@ trait AvailableMethods
         ?bool $can_invite_users = null,
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $parameters = array_filter(compact('chat_id', 'user_id', 'is_anonymous', 'can_manage_chat', 'can_post_messages', 'can_edit_messages', 'can_delete_messages', 'can_manage_video_chats', 'can_restrict_members', 'can_promote_members', 'can_change_info', 'can_invite_users', 'can_pin_messages', 'can_manage_topics'));
 
         $required = compact('chat_id', 'user_id');
@@ -1096,8 +1073,7 @@ trait AvailableMethods
         int|string $chat_id,
         ChatPermissions $permissions,
         ?bool $use_independent_chat_permissions = null,
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $parameters = array_filter(compact('chat_id', 'permissions', 'use_independent_chat_permissions'));
 
         $required = compact('chat_id');
@@ -1140,8 +1116,7 @@ trait AvailableMethods
         ?int $expire_date = null,
         ?int $member_limit = null,
         ?bool $creates_join_request = null,
-    ): ?ChatInviteLink
-    {
+    ): ?ChatInviteLink {
         // TODO: $parameters = array_filter(compact('chat_id', 'name', 'expire_date', 'member_limit', 'creates_join_request'));
 
         $required = compact('chat_id');
@@ -1168,8 +1143,7 @@ trait AvailableMethods
         ?int $expire_date = null,
         ?int $member_limit = null,
         ?bool $creates_join_request = null,
-    ): ?ChatInviteLink
-    {
+    ): ?ChatInviteLink {
         // TODO: $parameters = array_filter(compact('chat_id', 'invite_link', 'name', 'expire_date', 'member_limit', 'creates_join_request'));
 
         $required = compact('chat_id', 'invite_link');
@@ -1481,8 +1455,7 @@ trait AvailableMethods
         string $name,
         ForumIconColor|int|null $icon_color = null,
         ?string $icon_custom_emoji_id = null,
-    ): ?ForumTopic
-    {
+    ): ?ForumTopic {
         // TODO: $parameters = array_filter(compact('chat_id', 'name', 'icon_color', 'icon_custom_emoji_id'));
 
         $required = compact('chat_id', 'name');
@@ -1505,8 +1478,7 @@ trait AvailableMethods
         int $message_thread_id,
         ?string $name = null,
         ?string $icon_custom_emoji_id = null,
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'name', 'icon_custom_emoji_id'));
 
         $required = compact('chat_id', 'message_thread_id');
@@ -1673,8 +1645,7 @@ trait AvailableMethods
         ?bool $show_alert = null,
         ?string $url = null,
         ?int $cache_time = null,
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $callback_query_id ??= $this->callbackQuery()?->id;
         // TODO: $parameters = array_filter(compact('callback_query_id', 'text', 'show_alert', 'url', 'cache_time'));
 
@@ -1696,8 +1667,7 @@ trait AvailableMethods
         array $commands,
         ?BotCommandScope $scope = null,
         ?string $language_code = null,
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $parameters = array_filter(compact('commands', 'scope', 'language_code'));
 
         $required = ['commands' => json_encode($commands)];
@@ -1869,8 +1839,7 @@ trait AvailableMethods
     public function setMyDefaultAdministratorRights(
         ?ChatAdministratorRights $rights = null,
         ?bool $for_channels = null,
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $parameters = array_filter(compact('rights', 'for_channels'));
 
         return $this->requestJson(__FUNCTION__, $opt);

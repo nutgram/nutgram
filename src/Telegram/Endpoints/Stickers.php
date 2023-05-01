@@ -50,8 +50,7 @@ trait Stickers
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         // TODO: $chat_id ??= $this->chatId();
         // TODO: $parameters = array_filter(compact('chat_id', 'message_thread_id', 'sticker', 'emoji', 'disable_notification', 'protect_content', 'reply_to_message_id', 'allow_sending_without_reply', 'reply_markup', 'clientOpt'));
 
@@ -87,8 +86,7 @@ trait Stickers
         StickerFormat|string $sticker_format,
         ?int $user_id = null,
         array $clientOpt = [],
-    ): ?File
-    {
+    ): ?File {
         // TODO: $user_id ??= $this->userId();
         // TODO: $parameters = array_filter(compact('user_id', 'sticker', 'sticker_format', 'clientOpt'));
 
@@ -126,8 +124,7 @@ trait Stickers
         ?string $sticker_type = null,
         ?bool $needs_repainting = null,
         array $clientOpt = [],
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $user_id ??= $this->userId();
         // TODO: $parameters = array_filter(compact('user_id', 'name', 'title', 'stickers', 'sticker_format', 'sticker_type', 'needs_repainting', 'clientOpt'));
 
@@ -155,8 +152,7 @@ trait Stickers
         InputSticker $sticker,
         ?int $user_id = null,
         array $clientOpt = [],
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $user_id ??= $this->userId();
         // TODO: $parameters = array_filter(compact('user_id', 'name', 'sticker', 'clientOpt'));
 
@@ -273,8 +269,7 @@ trait Stickers
         ?int $user_id = null,
         InputFile|string|null $thumbnail = null,
         array $clientOpt = [],
-    ): ?bool
-    {
+    ): ?bool {
         // TODO: $user_id ??= $this->userId();
         // TODO: $parameters = array_filter(compact('name', 'user_id', 'thumbnail', 'clientOpt'));
 
