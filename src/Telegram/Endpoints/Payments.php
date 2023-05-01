@@ -110,11 +110,8 @@ trait Payments
             'allow_sending_without_reply',
             'reply_markup'
         );
-
-        $chat_id = $this->chatId();
-        $required = compact('chat_id', 'title', 'description', 'payload', 'provider_token', 'currency');
-        $required['prices'] = json_encode($prices, JSON_THROW_ON_ERROR);
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt], Message::class);
+        $parameters['prices'] = json_encode($prices, JSON_THROW_ON_ERROR);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -187,9 +184,7 @@ trait Payments
             'send_email_to_provider',
             'is_flexible'
         );
-
-        $required = compact('title', 'description', 'payload', 'provider_token', 'currency', 'prices');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -210,18 +205,9 @@ trait Payments
         ?string $error_message = null,
     ): ?bool {
         $shipping_query_id ??= $this->shippingQuery()?->id;
-        $parameters = compact(
-            'shipping_query_id',
-            'ok',
-            'shipping_options',
-            'error_message'
-        );
+        $parameters = compact('shipping_query_id', 'ok', 'shipping_options', 'error_message');
 
-        $required = [
-            'shipping_query_id' => $this->shippingQuery()?->id,
-            'ok' => $ok,
-        ];
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -241,16 +227,8 @@ trait Payments
         ?string $error_message = null,
     ): ?bool {
         $pre_checkout_query_id ??= $this->preCheckoutQuery()?->id;
-        $parameters = compact(
-            'pre_checkout_query_id',
-            'ok',
-            'error_message'
-        );
+        $parameters = compact('pre_checkout_query_id', 'ok', 'error_message');
 
-        $required = [
-            'pre_checkout_query_id' => $this->preCheckoutQuery()?->id,
-            'ok' => $ok,
-        ];
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 }
