@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Properties\ChatMemberStatus;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
@@ -11,7 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 class ChatMemberAdministrator extends ChatMember
 {
     /** The member's status in the chat, always “administrator” */
-    public string $status;
+    public ChatMemberStatus $status = ChatMemberStatus::ADMINISTRATOR;
 
     /** Information about the user */
     public User $user;
