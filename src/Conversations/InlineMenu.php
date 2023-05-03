@@ -149,7 +149,7 @@ abstract class InlineMenu extends Conversation
                 $result = $this($this->bot, $data);
             }
 
-            $this->bot->answerCallbackQuery($this->callbackQueryOpt);
+            $this->bot->answerCallbackQuery(...$this->callbackQueryOpt);
             return $result;
         }
 
@@ -266,8 +266,9 @@ abstract class InlineMenu extends Conversation
      */
     protected function doOpen(string $text, InlineKeyboardMarkup $buttons, array $opt): Message|null
     {
-        return $this->bot->sendMessage($text, [
+        return $this->bot->sendMessage(...[
             'reply_markup' => $buttons,
+            'text' => $text,
             ...$opt,
         ]);
     }
@@ -290,10 +291,11 @@ abstract class InlineMenu extends Conversation
         InlineKeyboardMarkup $buttons,
         array $opt
     ): bool|Message|null {
-        return $this->bot->editMessageText($text, [
+        return $this->bot->editMessageText(...[
             'reply_markup' => $buttons,
             'chat_id' => $chatId,
             'message_id' => $messageId,
+            'text' => $text,
             ...$opt
         ]);
     }
