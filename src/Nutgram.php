@@ -424,9 +424,10 @@ class Nutgram extends ResolveHandlers
 
         // set commands for each scope
         foreach ($scopes as $hashCode => $scope) {
-            $this->setMyCommands(array_unique($commands[$hashCode], SORT_REGULAR), [
-                'scope' => $scope,
-            ]);
+            $this->setMyCommands(
+                commands: array_unique($commands[$hashCode], SORT_REGULAR),
+                scope: $scope,
+            );
         }
     }
 

@@ -55,12 +55,12 @@ trait Client
      * An Array of Update objects is returned.
      * @see https://core.telegram.org/bots/api#getupdates
      * @see https://en.wikipedia.org/wiki/Push_technology#Long_polling
-     * @param  array{
+     * @param array{
      *     offset?:int,
      *     limit?:int,
      *     timeout?:int,
      *     allowed_updates?:string[]
-     * }  $parameters
+     * } $parameters
      * @return array|null
      * @throws GuzzleException
      * @throws JsonException
@@ -74,15 +74,15 @@ trait Client
     }
 
     /**
-     * @param  string  $url
-     * @param  array{
+     * @param string $url
+     * @param array{
      *     certificate?:InputFile,
      *     ip_address?:string,
      *     max_connections?:int,
      *     allowed_updates?:string[],
      *     drop_pending_updates?:bool,
      *     secret_token?:string
-     * }  $opt
+     * } $opt
      * @return bool|null
      * @throws GuzzleException
      * @throws JsonException
@@ -95,9 +95,9 @@ trait Client
     }
 
     /**
-     * @param  array{
+     * @param array{
      *     drop_pending_updates?:bool
-     * }  $opt
+     * } $opt
      * @return bool|null
      * @throws GuzzleException
      * @throws JsonException
@@ -120,9 +120,9 @@ trait Client
     }
 
     /**
-     * @param  string  $endpoint
-     * @param  array  $parameters
-     * @param  array  $options
+     * @param string $endpoint
+     * @param array $parameters
+     * @param array $options
      * @return mixed
      * @throws GuzzleException
      * @throws JsonException
@@ -134,11 +134,11 @@ trait Client
     }
 
     /**
-     * @param  string  $endpoint
-     * @param  string  $param
-     * @param  mixed  $value
-     * @param  array  $opt
-     * @param  array  $clientOpt
+     * @param string $endpoint
+     * @param string $param
+     * @param mixed $value
+     * @param array $opt
+     * @param array $clientOpt
      * @return Message|null
      * @throws GuzzleException
      * @throws JsonException
@@ -165,9 +165,9 @@ trait Client
     }
 
     /**
-     * @param  File  $file
-     * @param  string  $path
-     * @param  array  $clientOpt
+     * @param File $file
+     * @param string $path
+     * @param array $clientOpt
      * @return bool|null
      * @throws ContainerExceptionInterface
      * @throws GuzzleException
@@ -202,7 +202,7 @@ trait Client
     }
 
     /**
-     * @param  File  $file
+     * @param File $file
      * @return string|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -221,10 +221,10 @@ trait Client
     }
 
     /**
-     * @param  string  $endpoint
-     * @param  array|null  $multipart
-     * @param  string  $mapTo
-     * @param  array  $options
+     * @param string $endpoint
+     * @param array $multipart
+     * @param string $mapTo
+     * @param array $options
      * @return mixed
      * @throws GuzzleException
      * @throws JsonException
@@ -232,10 +232,11 @@ trait Client
      */
     protected function requestMultipart(
         string $endpoint,
-        ?array $multipart = null,
+        array $multipart = [],
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
+        $multipart = array_filter($multipart);
         $parameters = array_map(fn ($name, $contents) => match (true) {
             $contents instanceof InputFile => [
                 'name' => $name,
@@ -270,7 +271,7 @@ trait Client
             $this->logger->debug($endpoint, [
                 'content' => $content,
                 'parameters' => $parameters,
-                'options' => $options
+                'options' => $options,
             ]);
 
             return $content;
@@ -283,10 +284,10 @@ trait Client
     }
 
     /**
-     * @param  string  $endpoint
-     * @param  array|null  $json
-     * @param  string  $mapTo
-     * @param  array  $options
+     * @param string $endpoint
+     * @param array|null $json
+     * @param string $mapTo
+     * @param array $options
      * @return mixed
      * @throws GuzzleException
      * @throws JsonException
@@ -298,14 +299,14 @@ trait Client
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
+        $json = array_map(fn ($item) => match (true) {
+            $item instanceof BackedEnum => $item->value,
+            default => $item,
+        }, array_filter($json));
+
+        $request = ['json' => $json, ...$options];
+
         try {
-            $json = array_map(fn ($item) => match (true) {
-                $item instanceof BackedEnum => $item->value,
-                default => $item,
-            }, $json);
-
-            $request = ['json' => $json, ...$options];
-
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
             try {
                 $response = $this->http->post($endpoint, $requestPost ?? $request);
@@ -317,7 +318,7 @@ trait Client
             $rawResponse = (string)$response->getBody();
             $this->logger->debug($endpoint.PHP_EOL.$rawResponse, [
                 'parameters' => $json,
-                'options' => $options
+                'options' => $options,
             ]);
 
             return $content;
@@ -330,9 +331,9 @@ trait Client
     }
 
     /**
-     * @param  ResponseInterface  $response
-     * @param  string  $mapTo
-     * @param  Exception|null  $clientException
+     * @param ResponseInterface $response
+     * @param string $mapTo
+     * @param Exception|null $clientException
      * @return mixed
      * @throws JsonException
      * @throws TelegramException
@@ -367,7 +368,7 @@ trait Client
      * Returns the inline_message_id or
      * chat_id + message_id combination based on the current update.
      * The array is empty if none of them are set.
-     * @param  array  $opt
+     * @param array $opt
      * @return array
      */
     protected function targetChatMessageOrInlineMessageId(array $opt = []): array
@@ -386,8 +387,8 @@ trait Client
 
     /**
      * Chunk a string into an array of strings.
-     * @param  string  $text
-     * @param  int  $length
+     * @param string $text
+     * @param int $length
      * @return array
      */
     protected function chunkText(string $text, int $length): array

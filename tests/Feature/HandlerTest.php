@@ -740,9 +740,10 @@ it('sends enum value as json', function ($update) {
     $bot = Nutgram::fake($update);
 
     $bot->onMessage(function (Nutgram $bot) {
-        $bot->sendMessage('foo', [
-            'parse_mode' => ParseMode::HTML,
-        ]);
+        $bot->sendMessage(
+            text: 'foo',
+            parse_mode: ParseMode::HTML,
+        );
     });
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
@@ -759,10 +760,11 @@ it('sends enum value as multipart', function ($update) {
     $bot = Nutgram::fake($update);
 
     $bot->onMessage(function (Nutgram $bot) use ($file) {
-        $bot->sendDocument(InputFile::make($file), [
-            'caption' => 'test',
-            'parse_mode' => ParseMode::HTML,
-        ]);
+        $bot->sendDocument(
+            document: InputFile::make($file),
+            caption: 'test',
+            parse_mode: ParseMode::HTML,
+        );
     });
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) {

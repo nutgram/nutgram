@@ -9,12 +9,15 @@ namespace SergiX44\Nutgram\Telegram\Types\Command;
 class BotCommand
 {
     /**
-     * Text of the command, 1-32 characters. Can contain only lowercase English letters, digits and underscores.
+     * Text of the command;
+     * 1-32 characters.
+     * Can contain only lowercase English letters, digits and underscores.
      */
     public string $command;
 
     /**
-     * Description of the command, 3-256 characters.
+     * Description of the command;
+     * 1-256 characters.
      */
     public string $description;
 

@@ -10,8 +10,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class VideoChatScheduled extends BaseType
 {
-    /**
-     * Point in time (Unix timestamp) when the video chat is supposed to be started by a chat administrator
-     */
+    /** Point in time (Unix timestamp) when the video chat is supposed to be started by a chat administrator */
     public int $start_date;
 }

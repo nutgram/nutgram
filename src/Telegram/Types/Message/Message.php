@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicClosed;
@@ -14,7 +15,10 @@ use SergiX44\Nutgram\Telegram\Types\Forum\GeneralForumTopicHidden;
 use SergiX44\Nutgram\Telegram\Types\Forum\GeneralForumTopicUnhidden;
 use SergiX44\Nutgram\Telegram\Types\Forum\WriteAccessAllowed;
 use SergiX44\Nutgram\Telegram\Types\Game\Game;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
 use SergiX44\Nutgram\Telegram\Types\Location\ProximityAlertTriggered;
 use SergiX44\Nutgram\Telegram\Types\Location\Venue;
@@ -47,405 +51,455 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppData;
  */
 class Message extends BaseType
 {
-    /**
-     * Unique message identifier inside this chat
-     */
+    /** Unique message identifier inside this chat */
     public int $message_id;
 
     /**
-     * Optional. Unique identifier of a message thread to which the message belongs; for supergroups only
+     * Optional.
+     * Unique identifier of a message thread to which the message belongs;
+     * for supergroups only
      */
     public ?int $message_thread_id = null;
 
     /**
-     * Optional. Sender, can be empty for messages sent to channels
+     * Optional.
+     * Sender of the message;
+     * empty for messages sent to channels.
+     * For backward compatibility, the field contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat.
      */
     public ?User $from = null;
 
     /**
-     * Optional. Sender of the message, sent on behalf of a chat. The channel itself for channel messages.
-     * The supergroup itself for messages from anonymous group administrators.
-     * The linked channel for messages automatically forwarded to the discussion group
+     * Optional.
+     * Sender of the message, sent on behalf of a chat.
+     * For example, the channel itself for channel posts, the supergroup itself for messages from anonymous group administrators, the linked channel for messages automatically forwarded to the discussion group.
+     * For backward compatibility, the field from contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat.
      */
     public ?Chat $sender_chat = null;
 
-    /**
-     * Date the message was sent in Unix time
-     */
+    /** Date the message was sent in Unix time */
     public int $date;
 
-    /**
-     * Conversation the message belongs to
-     */
+    /** Conversation the message belongs to */
     public Chat $chat;
 
     /**
-     * Optional. For forwarded messages, sender of the original message
+     * Optional.
+     * For forwarded messages, sender of the original message
      */
     public ?User $forward_from = null;
 
     /**
-     * Optional. For messages forwarded from a channel, information about the original channel
+     * Optional.
+     * For messages forwarded from channels or from anonymous administrators, information about the original sender chat
      */
     public ?Chat $forward_from_chat = null;
 
     /**
-     * Optional. For forwarded channel posts, identifier of the original message in the channel
+     * Optional.
+     * For messages forwarded from channels, identifier of the original message in the channel
      */
     public ?int $forward_from_message_id = null;
 
     /**
-     * Optional. Signature of the post author for messages forwarded from channels
+     * Optional.
+     * For forwarded messages that were originally sent in channels or by an anonymous chat administrator, signature of the message sender if present
      */
     public ?string $forward_signature = null;
 
     /**
-     * Optional. Sender's name for messages forwarded from users who
-     * disallow adding a link to their account in forwarded messages
+     * Optional.
+     * Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages
      */
     public ?string $forward_sender_name = null;
 
     /**
-     * Optional. Sender's name for messages forwarded from users who disallow
-     * adding a link to their account in forwarded messages
+     * Optional.
+     * For forwarded messages, date the original message was sent in Unix time
      */
     public ?int $forward_date = null;
 
     /**
-     * Optional. True, if the message is sent to a forum topic
+     * Optional.
+     * True, if the message is sent to a forum topic
      */
     public ?bool $is_topic_message = null;
 
     /**
-     * Optional. True, if the message is a channel post that was automatically forwarded
-     * to the connected discussion group
-     * @var int|null
+     * Optional.
+     * True, if the message is a channel post that was automatically forwarded to the connected discussion group
      */
-    public ?int $is_automatic_forward = null;
+    public ?bool $is_automatic_forward = null;
 
     /**
-     * Optional. For replies, the original message.
-     * Note that the Message object in this field will not contain further
-     * reply_to_message fields even if it itself is a reply.
+     * Optional.
+     * For replies, the original message.
+     * Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
      */
     public ?Message $reply_to_message = null;
 
     /**
-     * Optional. Bot through which the message was sent
+     * Optional.
+     * Bot through which the message was sent
      */
     public ?User $via_bot = null;
 
     /**
-     * Optional. Date the message was last edited in Unix time
+     * Optional.
+     * Date the message was last edited in Unix time
      */
     public ?int $edit_date = null;
 
     /**
-     * Optional. True, if the message can't be forwarded
-     * @var bool|null
+     * Optional.
+     * True, if the message can't be forwarded
      */
     public ?bool $has_protected_content = null;
 
     /**
-     * Optional. The unique identifier of a media message group this message belongs to
+     * Optional.
+     * The unique identifier of a media message group this message belongs to
      */
     public ?string $media_group_id = null;
 
     /**
-     * Optional. Signature of the post author for messages in channels,
-     * or the custom title of an anonymous group administrator
+     * Optional.
+     * Signature of the post author for messages in channels, or the custom title of an anonymous group administrator
      */
     public ?string $author_signature = null;
 
     /**
-     * Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters
+     * Optional.
+     * For text messages, the actual UTF-8 text of the message
      */
     public ?string $text = null;
 
     /**
-     * Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
-     * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $entities
+     * Optional.
+     * For text messages, special entities like usernames, URLs, bot commands, etc.
+     * that appear in the text
+     * @var MessageEntity[] $entities
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $entities = null;
 
     /**
-     * Optional. Message is an animation, information about the animation.
+     * Optional.
+     * Message is an animation, information about the animation.
      * For backward compatibility, when this field is set, the document field will also be set
      */
     public ?Animation $animation = null;
 
     /**
-     * Optional. Message is an audio file, information about the file
+     * Optional.
+     * Message is an audio file, information about the file
      */
     public ?Audio $audio = null;
 
     /**
-     * Optional. Message is a general file, information about the file
+     * Optional.
+     * Message is a general file, information about the file
      */
     public ?Document $document = null;
 
     /**
-     * Optional. Message is a game, information about the game.
-     * @see https://core.telegram.org/bots/api#games More about games »
-     */
-    public ?Game $game = null;
-
-    /**
-     * Optional. Message is a photo, available sizes of the photo
-     * @var \SergiX44\Nutgram\Telegram\Types\Media\PhotoSize[] $photo
+     * Optional.
+     * Message is a photo, available sizes of the photo
+     * @var PhotoSize[] $photo
      */
     #[ArrayType(PhotoSize::class)]
     public ?array $photo = null;
 
     /**
-     * Optional. Message is a sticker, information about the sticker
+     * Optional.
+     * Message is a sticker, information about the sticker
      */
     public ?Sticker $sticker = null;
 
     /**
-     * Optional. Message is a video, information about the video
+     * Optional.
+     * Message is a video, information about the video
      */
     public ?Video $video = null;
 
     /**
-     * Optional. Message is a voice message, information about the file
-     */
-    public ?Voice $voice = null;
-
-    /**
-     * Optional. Message is a video note, information about the video message
-     * @see https://telegram.org/blog/video-messages-and-telescope video note
+     * Optional.
+     * Message is a {@see https://telegram.org/blog/video-messages-and-telescope video note}, information about the video message
      */
     public ?VideoNote $video_note = null;
 
     /**
-     * Optional. Caption for the document, photo or video, 0-1024 characters
+     * Optional.
+     * Message is a voice message, information about the file
+     */
+    public ?Voice $voice = null;
+
+    /**
+     * Optional.
+     * Caption for the animation, audio, document, photo, video or voice
      */
     public ?string $caption = null;
 
     /**
-     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
-     * @var \SergiX44\Nutgram\Telegram\Types\Message\MessageEntity[] $caption_entities
+     * Optional.
+     * For messages with a caption, special entities like usernames, URLs, bot commands, etc.
+     * that appear in the caption
+     * @var MessageEntity[] $caption_entities
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $caption_entities = null;
 
     /**
-     * Optional. True, if the message media is covered by a spoiler animation
+     * Optional.
+     * True, if the message media is covered by a spoiler animation
      */
     public ?bool $has_media_spoiler = null;
 
     /**
-     * Optional. Message is a shared contact, information about the contact
+     * Optional.
+     * Message is a shared contact, information about the contact
      */
     public ?Contact $contact = null;
 
     /**
-     * Optional. Message is a shared location, information about the location
-     */
-    public ?Location $location = null;
-
-    /**
-     * Optional. Message is a venue, information about the venue
-     */
-    public ?Venue $venue = null;
-
-    /**
-     * Optional. Message is a native poll, information about the poll
-     */
-    public ?Poll $poll = null;
-
-    /**
-     * Optional. Message is a dice with random value from 1 to 6
+     * Optional.
+     * Message is a dice with random value
      */
     public ?Dice $dice = null;
 
     /**
-     * Optional. New members that were added to the group or supergroup
-     * and information about them (the bot itself may be one of these members)
-     * @var \SergiX44\Nutgram\Telegram\Types\User\User[] $new_chat_members
+     * Optional.
+     * Message is a game, information about the game.
+     * {@see https://core.telegram.org/bots/api#games More about games »}
+     */
+    public ?Game $game = null;
+
+    /**
+     * Optional.
+     * Message is a native poll, information about the poll
+     */
+    public ?Poll $poll = null;
+
+    /**
+     * Optional.
+     * Message is a venue, information about the venue.
+     * For backward compatibility, when this field is set, the location field will also be set
+     */
+    public ?Venue $venue = null;
+
+    /**
+     * Optional.
+     * Message is a shared location, information about the location
+     */
+    public ?Location $location = null;
+
+    /**
+     * Optional.
+     * New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
+     * @var User[] $new_chat_members
      */
     #[ArrayType(User::class)]
     public ?array $new_chat_members = null;
 
     /**
-     * Optional. A member was removed from the group, information about them (this member may be the bot itself)
+     * Optional.
+     * A member was removed from the group, information about them (this member may be the bot itself)
      */
     public ?User $left_chat_member = null;
 
     /**
-     * Optional. A chat title was changed to this value
+     * Optional.
+     * A chat title was changed to this value
      */
     public ?string $new_chat_title = null;
 
     /**
-     * Optional. A chat photo was change to this value
-     * @var \SergiX44\Nutgram\Telegram\Types\Media\PhotoSize[] $new_chat_photo
+     * Optional.
+     * A chat photo was change to this value
+     * @var PhotoSize[] $new_chat_photo
      */
     #[ArrayType(PhotoSize::class)]
     public ?array $new_chat_photo = null;
 
     /**
-     * Optional. Service message: the chat photo was deleted
+     * Optional.
+     * Service message: the chat photo was deleted
      */
     public ?bool $delete_chat_photo = null;
 
     /**
-     * Optional. Service message: the group has been created
+     * Optional.
+     * Service message: the group has been created
      */
     public ?bool $group_chat_created = null;
 
     /**
-     * Optional. Service message: the supergroup has been created.
-     * This field can‘t be received in a message coming through updates,
-     * because bot can’t be a member of a supergroup when it is created.
-     * It can only be found in reply_to_message if someone replies to a
-     * very first message in a directly created supergroup.
+     * Optional.
+     * Service message: the supergroup has been created.
+     * This field can't be received in a message coming through updates, because bot can't be a member of a supergroup when it is created.
+     * It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup.
      */
     public ?bool $supergroup_chat_created = null;
 
     /**
-     * Optional. Service message: the channel has been created.
-     * This field can‘t be received in a message coming through updates,
-     * because bot can’t be a member of a channel when it is created.
+     * Optional.
+     * Service message: the channel has been created.
+     * This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created.
      * It can only be found in reply_to_message if someone replies to a very first message in a channel.
      */
     public ?bool $channel_chat_created = null;
 
     /**
-     * Optional. Service message: auto-delete timer settings changed in the chat
+     * Optional.
+     * Service message: auto-delete timer settings changed in the chat
      */
     public ?MessageAutoDeleteTimerChanged $message_auto_delete_timer_changed = null;
 
     /**
-     * Optional. The group has been migrated to a supergroup with the specified identifier.
-     * This number may be greater than 32 bits and some programming languages
-     * may have difficulty/silent defects in interpreting it.
-     * But it smaller than 52 bits, so a signed 64 bit integer or
-     * double-precision float type are safe for storing this identifier.
+     * Optional.
+     * The group has been migrated to a supergroup with the specified identifier.
+     * This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it.
+     * But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
      */
     public ?int $migrate_to_chat_id = null;
 
     /**
-     * Optional. The supergroup has been migrated from a group with the specified identifier.
-     * This number may be greater than 32 bits and some programming languages
-     * may have difficulty/silent defects in interpreting it.
-     * But it smaller than 52 bits, so a signed 64 bit integer or
-     * double-precision float type are safe for storing this identifier.
+     * Optional.
+     * The supergroup has been migrated from a group with the specified identifier.
+     * This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it.
+     * But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
      */
     public ?int $migrate_from_chat_id = null;
 
     /**
-     * Optional. Specified message was pinned.
-     * Note that the Message object in this field will not contain
-     * further reply_to_message fields even if it is itself a reply.
+     * Optional.
+     * Specified message was pinned.
+     * Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
      */
     public ?Message $pinned_message = null;
 
     /**
-     * Optional. Message is an invoice for a payment, information about the invoice.
-     * @see https://core.telegram.org/bots/api#payments invoice
-     * @see https://core.telegram.org/bots/api#payments More about payments
+     * Optional.
+     * Message is an invoice for a {@see https://core.telegram.org/bots/api#payments payment}, information about the invoice.
+     * {@see https://core.telegram.org/bots/api#payments More about payments »}
      */
     public ?Invoice $invoice = null;
 
     /**
-     * Optional. Message is a service message about a successful payment, information about the payment.
-     * @see https://core.telegram.org/bots/api#payments More about payments
+     * Optional.
+     * Message is a service message about a successful payment, information about the payment.
+     * {@see https://core.telegram.org/bots/api#payments More about payments »}
      */
     public ?SuccessfulPayment $successful_payment = null;
 
     /**
-     * Optional. Service message: a user was shared with the bot
+     * Optional.
+     * Service message: a user was shared with the bot
      */
     public ?UserShared $user_shared = null;
 
     /**
-     * Optional. Service message: a chat was shared with the bot
+     * Optional.
+     * Service message: a chat was shared with the bot
      */
     public ?ChatShared $chat_shared = null;
 
     /**
-     * Optional. The domain name of the website on which the user has logged in.
-     * @see https://core.telegram.org/widgets/login More about Telegram Login
+     * Optional.
+     * The domain name of the website on which the user has logged in.
+     * {@see https://core.telegram.org/widgets/login More about Telegram Login »}
      */
     public ?string $connected_website = null;
 
     /**
-     * Optional. Service message: the user allowed the bot added to the attachment menu to write messages
+     * Optional.
+     * Service message: the user allowed the bot added to the attachment menu to write messages
      */
     public ?WriteAccessAllowed $write_access_allowed = null;
 
     /**
-     * Optional. Telegram Passport data
+     * Optional.
+     * Telegram Passport data
      */
     public ?PassportData $passport_data = null;
 
     /**
-     * Optional. Service message.
+     * Optional.
+     * Service message.
      * A user in the chat triggered another user's proximity alert while sharing Live Location.
      */
     public ?ProximityAlertTriggered $proximity_alert_triggered = null;
 
     /**
-     * Optional. Service message: forum topic created
+     * Optional.
+     * Service message: forum topic created
      */
     public ?ForumTopicCreated $forum_topic_created = null;
 
     /**
-     * Optional. Service message: forum topic edited
+     * Optional.
+     * Service message: forum topic edited
      */
     public ?ForumTopicEdited $forum_topic_edited = null;
 
     /**
-     * Optional. Service message: forum topic closed
+     * Optional.
+     * Service message: forum topic closed
      */
     public ?ForumTopicClosed $forum_topic_closed = null;
 
     /**
-     * Optional. Service message: forum topic reopened
+     * Optional.
+     * Service message: forum topic reopened
      */
     public ?ForumTopicReopened $forum_topic_reopened = null;
 
     /**
-     * Optional. Service message: the 'General' forum topic hidden
+     * Optional.
+     * Service message: the 'General' forum topic hidden
      */
     public ?GeneralForumTopicHidden $general_forum_topic_hidden = null;
 
     /**
-     * Optional. Service message: the 'General' forum topic unhidden
+     * Optional.
+     * Service message: the 'General' forum topic unhidden
      */
     public ?GeneralForumTopicUnhidden $general_forum_topic_unhidden = null;
 
     /**
-     * Optional. Service message: voice chat scheduled
+     * Optional.
+     * Service message: video chat scheduled
      */
     public ?VideoChatScheduled $video_chat_scheduled = null;
 
     /**
-     * Optional. Service message: voice chat started
+     * Optional.
+     * Service message: video chat started
      */
     public ?VideoChatStarted $video_chat_started = null;
 
     /**
-     * Optional. Service message: voice chat ended
+     * Optional.
+     * Service message: video chat ended
      */
     public ?VideoChatEnded $video_chat_ended = null;
 
     /**
-     * Optional. Service message: new participants invited to a voice chat
+     * Optional.
+     * Service message: new participants invited to a video chat
      */
     public ?VideoChatParticipantsInvited $video_chat_participants_invited = null;
 
     /**
-     * Optional. Service message: data sent by a Web App
+     * Optional.
+     * Service message: data sent by a Web App
      */
     public ?WebAppData $web_app_data = null;
 
     /**
-     * Optional. Optional. Inline keyboard attached to the message.
-     * "login_url" buttons are represented as ordinary "url" buttons.
+     * Optional.
+     * Inline keyboard attached to the message.
+     * login_url buttons are represented as ordinary url buttons.
      */
     public ?InlineKeyboardMarkup $reply_markup = null;
 
@@ -553,46 +607,139 @@ class Message extends BaseType
      */
     public function delete(): ?bool
     {
-        return $this->bot->deleteMessage($this->chat->id, $this->message_id);
+        return $this->bot->deleteMessage(
+            chat_id: $this->chat->id,
+            message_id: $this->message_id
+        );
     }
 
     /**
      * Edit the current message text
-     * @param  string  $text
-     * @param  array  $opt
+     * On success, if the edited message is not an inline message, the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
+     * @see https://core.telegram.org/bots/api#editmessagetext
+     * @param string $text New text of the message, 1-4096 characters after entities parsing
+     * @param int|string|null $chat_id Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param int|null $message_id Required if inline_message_id is not specified. Identifier of the message to edit
+     * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message
+     * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message text. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
+     * @param bool|null $disable_web_page_preview Disables link previews for links in this message
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @return Message|bool|null
      * @see Nutgram::editMessageText
      */
-    public function editText(string $text, array $opt = []): Message|bool|null
-    {
-        return $this->bot->editMessageText($text, [
-            'chat_id' => $this->chat->id,
-            'message_id' => $this->message_id,
-            ...$opt,
-        ]);
+    public function editText(
+        string $text,
+        int|string|null $chat_id = null,
+        ?int $message_id = null,
+        ?string $inline_message_id = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $entities = null,
+        ?bool $disable_web_page_preview = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+    ): Message|bool|null {
+        $chat_id ??= $this->chat->id;
+        $message_id ??= $this->message_id;
+
+        return $this->bot->editMessageText(
+            text: $text,
+            chat_id: $chat_id,
+            message_id: $message_id,
+            inline_message_id: $inline_message_id,
+            parse_mode: $parse_mode,
+            entities: $entities,
+            disable_web_page_preview: $disable_web_page_preview,
+            reply_markup: $reply_markup,
+        );
     }
 
     /**
      * Copy the current message
-     * @param  string|int  $chatId
-     * @param  array  $opt
+     * Service messages and invoice messages can't be copied.
+     * A quiz {@see https://core.telegram.org/bots/api#poll poll} can be copied only if the value of the field correct_option_id is known to the bot.
+     * The method is analogous to the method {@see https://core.telegram.org/bots/api#forwardmessage forwardMessage}, but the copied message doesn't have a link to the original message.
+     * Returns the {@see https://core.telegram.org/bots/api#messageid MessageId} of the sent message on success.
+     * @see https://core.telegram.org/bots/api#copymessage
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param int|string|null $from_chat_id Unique identifier for the chat where the original message was sent (or channel username in the format &#64;channelusername)
+     * @param int|null $message_id Message identifier in the chat specified in from_chat_id
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param string|null $caption New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept
+     * @param ParseMode|string|null $parse_mode Mode for parsing entities in the new caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param MessageEntity[]|null $caption_entities A JSON-serialized list of special entities that appear in the new caption, which can be specified instead of parse_mode
+     * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
+     * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
+     * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @return MessageId|null
      * @see Nutgram::copyMessage
      */
-    public function copy(string|int $chatId, array $opt = []): ?MessageId
-    {
-        return $this->bot->copyMessage($chatId, $this->chat->id, $this->message_id, $opt);
+    public function copy(
+        int|string $chat_id,
+        int|string|null $from_chat_id = null,
+        ?int $message_id = null,
+        ?int $message_thread_id = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?int $reply_to_message_id = null,
+        ?bool $allow_sending_without_reply = null,
+        InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+    ): ?MessageId {
+        $from_chat_id ??= $this->chat->id;
+        $message_id ??= $this->message_id;
+
+        return $this->bot->copyMessage(
+            chat_id: $chat_id,
+            from_chat_id: $from_chat_id,
+            message_id: $message_id,
+            message_thread_id: $message_thread_id,
+            caption: $caption,
+            parse_mode: $parse_mode,
+            caption_entities: $caption_entities,
+            disable_notification: $disable_notification,
+            protect_content: $protect_content,
+            reply_to_message_id: $reply_to_message_id,
+            allow_sending_without_reply: $allow_sending_without_reply,
+            reply_markup: $reply_markup,
+        );
     }
 
     /**
      * Forward the current message
-     * @param  string|int  $chatId
-     * @param  array  $opt
+     * Service messages can't be forwarded.
+     * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
+     * @see https://core.telegram.org/bots/api#forwardmessage
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param int|string|null $from_chat_id Unique identifier for the chat where the original message was sent (or channel username in the format &#64;channelusername)
+     * @param int|null $message_id Message identifier in the chat specified in from_chat_id
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the forwarded message from forwarding and saving
      * @return Message|null
      * @see Nutgram::forwardMessage
      */
-    public function forward(string|int $chatId, array $opt = []): ?Message
-    {
-        return $this->bot->forwardMessage($chatId, $this->chat->id, $this->message_id, $opt);
+    public function forward(
+        int|string $chat_id,
+        int|string|null $from_chat_id = null,
+        ?int $message_id = null,
+        ?int $message_thread_id = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+    ): ?Message {
+        $from_chat_id ??= $this->chat->id;
+        $message_id ??= $this->message_id;
+
+        return $this->bot->forwardMessage(
+            chat_id: $chat_id,
+            from_chat_id: $from_chat_id,
+            message_id: $message_id,
+            message_thread_id: $message_thread_id,
+            disable_notification: $disable_notification,
+            protect_content: $protect_content,
+        );
     }
 }
