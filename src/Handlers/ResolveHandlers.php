@@ -42,6 +42,8 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected ?Update $update = null;
 
+    protected array $currentParameters = [];
+
     abstract public function getConfig(): array;
 
     /**
@@ -83,6 +85,8 @@ abstract class ResolveHandlers extends CollectHandlers
         }
 
         $this->addHandlersBy($resolvedHandlers, Update::class);
+
+        $this->setCurrentParametersFrom($resolvedHandlers);
 
         return $resolvedHandlers;
     }
@@ -229,5 +233,20 @@ abstract class ResolveHandlers extends CollectHandlers
         $currentAttributes = $getAttributes->call($conversation);
         $attributes = array_diff_key($freshAttributes, $currentAttributes);
         $setAttributes->call($conversation, $attributes);
+    }
+
+    /**
+     * @param  Handler[]  $handlers
+     * @return void
+     */
+    protected function setCurrentParametersFrom(array $handlers): void
+    {
+        $parameters = [];
+        foreach ($handlers as $handler) {
+            if ($handler->hasParameters()) {
+                $parameters[] = $handler->getParameters();
+            }
+        }
+        $this->currentParameters = array_merge(...$parameters);
     }
 }

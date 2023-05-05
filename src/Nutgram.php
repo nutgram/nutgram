@@ -453,4 +453,14 @@ class Nutgram extends ResolveHandlers
     {
         return $this->container->get(BulkMessenger::class);
     }
+
+    /**
+     * Returns a list of all parameters parsed by the current handlers
+     *
+     * @return array
+     */
+    public function currentParameters(): array
+    {
+        return $this->currentParameters;
+    }
 }

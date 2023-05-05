@@ -773,3 +773,49 @@ it('calls beforeApiRequest without global middlewares', function ($update) {
 
     expect($history)->toBe(['nope']);
 })->with('text');
+
+it('get handler parameters inside local middleware', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onText('I want {number} portions of (pizza|cake)', function (Nutgram $bot, $amount, $dish) {
+        expect($amount)->toBe('12')
+            ->and($dish)->toBe('pizza');
+    })->middleware(function (Nutgram $bot, $next) {
+        [$amount, $dish] = $bot->currentParameters();
+
+        expect($amount)->toBe('12')
+            ->and($dish)->toBe('pizza');
+
+        $next($bot);
+    });
+
+    $bot->run();
+    $bot->run();
+    $bot->run();
+})->with('food');
+
+
+it('get handlers parameters inside local middleware', function () {
+    $bot = Nutgram::fake();
+
+    $checkUserID = function (Nutgram $bot, $next) {
+        expect($bot->currentParameters())
+            ->sequence(
+                fn ($item) => $item->toBe('123'),
+                fn ($item) => $item->toBe('123'),
+            );
+
+        $next($bot);
+    };
+
+    $bot->group($checkUserID, function (Nutgram $bot) {
+        $bot->onCallbackQueryData('user/([0-9]+)/show', function (Nutgram $bot, string $id) {
+            expect($id)->toBe('123');
+        });
+        $bot->onCallbackQueryData('user/([0-9]+)/.*', function (Nutgram $bot, string $id) {
+            expect($id)->toBe('123');
+        });
+    });
+
+    $bot->hearCallbackQueryData('user/123/show')->reply();
+});
