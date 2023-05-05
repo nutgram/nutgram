@@ -128,7 +128,7 @@ abstract class ResolveHandlers extends CollectHandlers
                 ($value !== null && $handler->matching($value))
             ) {
                 $handlers[] = $handler;
-                $this->handlersParameters = [...$this->handlersParameters, ...$handler->getParameters()];
+                $this->handlersParameters = array_merge($this->handlersParameters, $handler->getParameters());
             }
         }
     }
