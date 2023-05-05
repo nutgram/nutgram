@@ -46,11 +46,6 @@ abstract class ResolveHandlers extends CollectHandlers
 
     abstract public function getConfig(): array;
 
-    public function currentParameters(): array
-    {
-        return $this->currentParameters;
-    }
-
     /**
      * @return array
      */

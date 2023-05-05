@@ -122,7 +122,7 @@ class Nutgram extends ResolveHandlers
             '%s/bot%s/%s',
             $this->config['api_url'] ?? self::DEFAULT_API_URL,
             $this->token,
-            $this->config['test_env'] ?? false ? 'test/' : ''
+                $this->config['test_env'] ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle(array_merge([
@@ -452,5 +452,15 @@ class Nutgram extends ResolveHandlers
     public function getBulkMessenger(): BulkMessenger
     {
         return $this->container->get(BulkMessenger::class);
+    }
+
+    /**
+     * Returns a list of all parameters parsed by the current handlers
+     *
+     * @return array
+     */
+    public function currentParameters(): array
+    {
+        return $this->currentParameters;
     }
 }
