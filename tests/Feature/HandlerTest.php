@@ -781,7 +781,7 @@ it('get handler parameters inside local middleware', function ($update) {
         expect($amount)->toBe('12')
             ->and($dish)->toBe('pizza');
     })->middleware(function (Nutgram $bot, $next) {
-        [$amount, $dish] = $bot->getHandlersParameters();
+        [$amount, $dish] = $bot->currentParameters();
 
         expect($amount)->toBe('12')
             ->and($dish)->toBe('pizza');
@@ -790,6 +790,8 @@ it('get handler parameters inside local middleware', function ($update) {
     });
 
     $bot->run();
+    $bot->run();
+    $bot->run();
 })->with('food');
 
 
@@ -797,7 +799,7 @@ it('get handlers parameters inside local middleware', function () {
     $bot = Nutgram::fake();
 
     $checkUserID = function (Nutgram $bot, $next) {
-        expect($bot->getHandlersParameters())
+        expect($bot->currentParameters())
             ->sequence(
                 fn ($item) => $item->toBe('123'),
                 fn ($item) => $item->toBe('123'),
