@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.20.0 - 2023-05-05
+
+### What's Changed
+
+- Apply fixes from StyleCI by @SergiX44 in https://github.com/nutgram/nutgram/pull/443
+- [3.x] Add currentParameters method to obtain target handler parameters by @Lukasss93 in https://github.com/nutgram/nutgram/pull/442
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.19.0...3.20.0
+
 ## 3.19.0 - 2023-04-24
 
 ### What's Changed
