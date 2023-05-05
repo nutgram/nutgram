@@ -42,7 +42,14 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected ?Update $update = null;
 
+    protected array $handlersParameters = [];
+
     abstract public function getConfig(): array;
+
+    public function getHandlersParameters(): array
+    {
+        return $this->handlersParameters;
+    }
 
     /**
      * @return array
@@ -121,6 +128,7 @@ abstract class ResolveHandlers extends CollectHandlers
                 ($value !== null && $handler->matching($value))
             ) {
                 $handlers[] = $handler;
+                $this->handlersParameters = [...$this->handlersParameters, ...$handler->getParameters()];
             }
         }
     }

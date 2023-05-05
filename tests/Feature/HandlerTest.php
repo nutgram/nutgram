@@ -773,3 +773,21 @@ it('calls beforeApiRequest without global middlewares', function ($update) {
 
     expect($history)->toBe(['nope']);
 })->with('text');
+
+it('get handler parameters inside local middleware', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onText('I want {number} portions of (pizza|cake)', function (Nutgram $bot, $amount, $dish) {
+        expect($amount)->toBe('12')
+            ->and($dish)->toBe('pizza');
+    })->middleware(function (Nutgram $bot, $next) {
+        [$amount, $dish] = $bot->getHandlersParameters();
+
+        expect($amount)->toBe('12')
+            ->and($dish)->toBe('pizza');
+
+        $next($bot);
+    });
+
+    $bot->run();
+})->with('food');

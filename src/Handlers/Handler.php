@@ -90,6 +90,11 @@ class Handler extends MiddlewareChain
         return $this;
     }
 
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
     /**
      * @param  array  $parameters
      * @return Handler
