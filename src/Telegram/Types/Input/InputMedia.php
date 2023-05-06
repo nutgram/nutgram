@@ -8,11 +8,11 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents the content of a media message to be sent. It should be one of
- * - {@see https://core.telegram.org/bots/api#inputmediaanimation InputMediaAnimation}
- * - {@see https://core.telegram.org/bots/api#inputmediadocument InputMediaDocument}
- * - {@see https://core.telegram.org/bots/api#inputmediaaudio InputMediaAudio}
- * - {@see https://core.telegram.org/bots/api#inputmediaphoto InputMediaPhoto}
- * - {@see https://core.telegram.org/bots/api#inputmediavideo InputMediaVideo}
+ * - {@see InputMediaAnimation InputMediaAnimation}
+ * - {@see InputMediaDocument InputMediaDocument}
+ * - {@see InputMediaAudio InputMediaAudio}
+ * - {@see InputMediaPhoto InputMediaPhoto}
+ * - {@see InputMediaVideo InputMediaVideo}
  */
 abstract class InputMedia extends BaseType
 {

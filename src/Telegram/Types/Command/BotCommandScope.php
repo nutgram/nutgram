@@ -15,7 +15,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * - {@see BotCommandScopeChat BotCommandScopeChat}
  * - {@see BotCommandScopeChatAdministrators BotCommandScopeChatAdministrators}
  * - {@see BotCommandScopeChatMember BotCommandScopeChatMember}
- *
  * @see https://core.telegram.org/bots/api#botcommandscope
  */
 #[BotCommandScopeResolver]
