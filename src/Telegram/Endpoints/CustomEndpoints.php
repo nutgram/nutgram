@@ -495,7 +495,7 @@ trait CustomEndpoints
 
     protected function sendChunkedMedia(
         string $endpoint,
-        mixed $media,
+        InputFile|string $media,
         string $param,
         array $opt = [],
         $clientOpt = []
