@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -34,4 +35,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 abstract class InlineQueryResult extends BaseType
 {
+    /** Type of the result */
+    public InlineQueryResultType $type;
 }
