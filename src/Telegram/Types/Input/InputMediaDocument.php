@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
@@ -13,7 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 class InputMediaDocument extends InputMedia
 {
     /** Type of the result, must be document */
-    public string $type;
+    public InputMediaType $type = InputMediaType::DOCUMENT;
 
     /**
      * File to send.
