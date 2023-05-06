@@ -19,33 +19,38 @@ class InputFile
     protected ?string $filename;
 
     /**
-     * @param  mixed  $resource
-     * @param  string|null  $filename
+     * @param resource|string $resource Resource or path to file
+     * @param string|null $filename Filename
      */
-    public function __construct($resource, ?string $filename = null)
+    public function __construct(mixed $resource, ?string $filename = null)
     {
         $this->filename = $filename;
         if (is_resource($resource)) {
             $this->resource = $resource;
         } elseif (is_string($resource) && file_exists($resource)) {
-            $this->resource = fopen($resource, 'rb+');
+            $res = fopen($resource, 'rb+');
+            if ($res === false) {
+                throw new \InvalidArgumentException('Invalid resource specified.');
+            }
+
+            $this->resource = $res;
         } else {
             throw new \InvalidArgumentException('Invalid resource specified.');
         }
     }
 
     /**
-     * @param  resource  $resource
-     * @param  string|null  $filename
+     * @param resource|string $resource Resource or path to file
+     * @param string|null $filename Filename
      * @return InputFile
      */
-    public static function make($resource, ?string $filename = null): InputFile
+    public static function make(mixed $resource, ?string $filename = null): InputFile
     {
         return new self($resource, $filename);
     }
 
     /**
-     * @param  string|null  $filename
+     * @param string|null $filename
      * @return InputFile
      */
     public function filename(?string $filename): InputFile
@@ -65,7 +70,7 @@ class InputFile
     /**
      * @return string
      */
-    public function getFilename()
+    public function getFilename(): string
     {
         $metadata = stream_get_meta_data($this->resource);
 
