@@ -16,5 +16,4 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 abstract class InputMessageContent extends BaseType
 {
-
 }
