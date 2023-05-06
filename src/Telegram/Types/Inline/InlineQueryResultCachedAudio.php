@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -17,7 +18,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 class InlineQueryResultCachedAudio extends InlineQueryResult
 {
     /** Type of the result, must be audio */
-    public string $type;
+    public InlineQueryResultType $type = InlineQueryResultType::AUDIO;
 
     /** Unique identifier for this result, 1-64 bytes */
     public string $id;

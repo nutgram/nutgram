@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
@@ -12,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 class InlineQueryResultArticle extends InlineQueryResult
 {
     /** Type of the result, must be article */
-    public string $type;
+    public InlineQueryResultType $type = InlineQueryResultType::ARTICLE;
 
     /** Unique identifier for this result, 1-64 Bytes */
     public string $id;
