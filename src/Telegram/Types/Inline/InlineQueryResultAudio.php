@@ -3,12 +3,9 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
-use SergiX44\Nutgram\Telegram\Types\Input\InputInvoiceMessageContent;
-use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
-use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
-use SergiX44\Nutgram\Telegram\Types\Input\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
@@ -21,7 +18,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 class InlineQueryResultAudio extends InlineQueryResult
 {
     /** Type of the result, must be audio */
-    public string $type;
+    public InlineQueryResultType $type = InlineQueryResultType::AUDIO;
 
     /** Unique identifier for this result, 1-64 bytes */
     public string $id;
@@ -75,5 +72,5 @@ class InlineQueryResultAudio extends InlineQueryResult
      * Optional.
      * Content of the message to be sent instead of the audio
      */
-    public InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent|InputInvoiceMessageContent|null $input_message_content = null;
+    public ?InputMessageContent $input_message_content = null;
 }

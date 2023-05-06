@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 /**
@@ -9,7 +10,7 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
  * You must use exactly one of the optional fields.
  * @see https://core.telegram.org/bots/api#inlinequeryresultsbutton
  */
-class InlineQueryResultsButton extends \SergiX44\Nutgram\Telegram\Types\BaseType
+class InlineQueryResultsButton extends BaseType
 {
     /** Label text on the button */
     public string $text;

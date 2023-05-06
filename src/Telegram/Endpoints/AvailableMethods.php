@@ -1420,7 +1420,7 @@ trait AvailableMethods
      * @param array $clientOpt Client options
      * @return bool|null
      */
-    public function setChatPhoto(int|string $chat_id, InputFile $photo, array $clientOpt): ?bool
+    public function setChatPhoto(int|string $chat_id, InputFile $photo, array $clientOpt = []): ?bool
     {
         return $this->requestMultipart(__FUNCTION__, compact('chat_id', 'photo'), options: $clientOpt);
     }
