@@ -4,11 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\Input\InputContactMessageContent;
-use SergiX44\Nutgram\Telegram\Types\Input\InputInvoiceMessageContent;
-use SergiX44\Nutgram\Telegram\Types\Input\InputLocationMessageContent;
-use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
-use SergiX44\Nutgram\Telegram\Types\Input\InputVenueMessageContent;
+use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
@@ -63,5 +59,5 @@ class InlineQueryResultCachedVoice extends InlineQueryResult
      * Optional.
      * Content of the message to be sent instead of the voice message
      */
-    public InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent|InputInvoiceMessageContent|null $input_message_content = null;
+    public ?InputMessageContent $input_message_content = null;
 }
