@@ -16,4 +16,5 @@ enum InlineQueryResultType: string
     case VENUE = 'venue';
     case VIDEO = 'video';
     case VOICE = 'voice';
+    case STICKER = 'sticker';
 }
