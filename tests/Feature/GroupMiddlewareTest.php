@@ -327,9 +327,9 @@ it('groups middleware with on*Data/Payload handlers', function ($update) {
             $test .= 'H2';
         });
 
-        $bot->group([$middlewareC, $middlewareD], function (Nutgram $bot) use (&$test) {
+        $bot->group(function (Nutgram $bot) use (&$test) {
             // TODO
-        });
+        })->middleware($middlewareC)->middleware($middlewareD);
     })->middleware($middlewareB);
 
     $bot->run();
