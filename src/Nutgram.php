@@ -18,7 +18,6 @@ use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversations\Conversation;
-use SergiX44\Nutgram\Exception\CannotSerializeException;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\Command;
@@ -69,11 +68,6 @@ class Nutgram extends ResolveHandlers
      * @var ContainerInterface
      */
     protected ContainerInterface $container;
-
-    /**
-     * @var bool
-     */
-    private bool $middlewareApplied = false;
 
     /**
      * Nutgram constructor.
@@ -150,7 +144,6 @@ class Nutgram extends ResolveHandlers
 
     /**
      * @return array
-     * @throws CannotSerializeException
      */
     public function __serialize(): array
     {
@@ -208,9 +201,10 @@ class Nutgram extends ResolveHandlers
      */
     public function run(): void
     {
-        if (!$this->middlewareApplied) {
+        if (!$this->finalized) {
+            $this->resolveGroups();
             $this->applyGlobalMiddleware();
-            $this->middlewareApplied = true;
+            $this->finalized = true;
         }
         $this->container->get(RunningMode::class)->processUpdates($this);
     }
