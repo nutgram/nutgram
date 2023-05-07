@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
@@ -21,7 +22,7 @@ class InputMediaAnimation extends InputMedia
      * Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
-    public mixed $media;
+    public InputFile|string $media;
 
     /**
      * Optional.
@@ -33,7 +34,7 @@ class InputMediaAnimation extends InputMedia
      * Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
-    public mixed $thumbnail = null;
+    public InputFile|string|null $thumbnail = null;
 
     /**
      * Optional.
