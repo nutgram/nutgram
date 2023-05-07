@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -12,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * Represents an audio file to be treated as music to be sent.
  * @see https://core.telegram.org/bots/api#inputmediaaudio
  */
-class InputMediaAudio extends InputMedia
+class InputMediaAudio extends InputMedia implements JsonSerializable
 {
     /** Type of the result, must be audio */
     public InputMediaType $type = InputMediaType::AUDIO;
@@ -76,7 +77,6 @@ class InputMediaAudio extends InputMedia
     public ?string $title = null;
 
     public function __construct(
-        InputMediaType $type,
         InputFile|string $media,
         InputFile|string|null $thumbnail,
         ?string $caption,
@@ -87,7 +87,6 @@ class InputMediaAudio extends InputMedia
         ?string $title
     ) {
         parent::__construct();
-        $this->type = $type;
         $this->media = $media;
         $this->thumbnail = $thumbnail;
         $this->caption = $caption;
@@ -99,7 +98,6 @@ class InputMediaAudio extends InputMedia
     }
 
     public static function make(
-        InputMediaType $type,
         InputFile|string $media,
         InputFile|string|null $thumbnail = null,
         ?string $caption = null,
@@ -110,7 +108,6 @@ class InputMediaAudio extends InputMedia
         ?string $title = null
     ): self {
         return new self(
-            type: $type,
             media: $media,
             thumbnail: $thumbnail,
             caption: $caption,
@@ -120,5 +117,20 @@ class InputMediaAudio extends InputMedia
             performer: $performer,
             title: $title
         );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type,
+            'media' => $this->media,
+            'thumb' => $this->thumbnail,
+            'caption' => $this->caption,
+            'parse_mode' => $this->parse_mode?->value,
+            'caption_entities' => $this->caption_entities,
+            'duration' => $this->duration,
+            'performer' => $this->performer,
+            'title' => $this->title
+        ]);
     }
 }

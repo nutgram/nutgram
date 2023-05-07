@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -12,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * Represents a video to be sent.
  * @see https://core.telegram.org/bots/api#inputmediavideo
  */
-class InputMediaVideo extends InputMedia
+class InputMediaVideo extends InputMedia implements JsonSerializable
 {
     /** Type of the result, must be video */
     public InputMediaType $type = InputMediaType::VIDEO;
@@ -88,7 +89,6 @@ class InputMediaVideo extends InputMedia
     public ?bool $has_spoiler = null;
 
     public function __construct(
-        InputMediaType $type,
         InputFile|string $media,
         InputFile|string|null $thumbnail,
         ?string $caption,
@@ -101,7 +101,6 @@ class InputMediaVideo extends InputMedia
         ?bool $has_spoiler
     ) {
         parent::__construct();
-        $this->type = $type;
         $this->media = $media;
         $this->thumbnail = $thumbnail;
         $this->caption = $caption;
@@ -115,7 +114,6 @@ class InputMediaVideo extends InputMedia
     }
 
     public static function make(
-        InputMediaType $type,
         InputFile|string $media,
         InputFile|string|null $thumbnail = null,
         ?string $caption = null,
@@ -128,7 +126,6 @@ class InputMediaVideo extends InputMedia
         ?bool $has_spoiler = null
     ): self {
         return new self(
-            $type,
             $media,
             $thumbnail,
             $caption,
@@ -140,5 +137,21 @@ class InputMediaVideo extends InputMedia
             $supports_streaming,
             $has_spoiler
         );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type,
+            'media' => $this->media,
+            'caption' => $this->caption,
+            'parse_mode' => $this->parse_mode?->value,
+            'caption_entities' => $this->caption_entities,
+            'width' => $this->width,
+            'height' => $this->height,
+            'duration' => $this->duration,
+            'supports_streaming' => $this->supports_streaming,
+            'has_spoiler' => $this->has_spoiler,
+        ]);
     }
 }

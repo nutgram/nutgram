@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -12,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * Represents a general file to be sent.
  * @see https://core.telegram.org/bots/api#inputmediadocument
  */
-class InputMediaDocument extends InputMedia
+class InputMediaDocument extends InputMedia implements JsonSerializable
 {
     /** Type of the result, must be document */
     public InputMediaType $type = InputMediaType::DOCUMENT;
@@ -65,7 +66,6 @@ class InputMediaDocument extends InputMedia
     public ?bool $disable_content_type_detection = null;
 
     public function __construct(
-        InputMediaType $type,
         InputFile|string $media,
         InputFile|string|null $thumbnail,
         ?string $caption,
@@ -74,7 +74,6 @@ class InputMediaDocument extends InputMedia
         ?bool $disable_content_type_detection
     ) {
         parent::__construct();
-        $this->type = $type;
         $this->media = $media;
         $this->thumbnail = $thumbnail;
         $this->caption = $caption;
@@ -84,7 +83,6 @@ class InputMediaDocument extends InputMedia
     }
 
     public static function make(
-        InputMediaType $type,
         InputFile|string $media,
         InputFile|string|null $thumbnail = null,
         ?string $caption = null,
@@ -93,7 +91,6 @@ class InputMediaDocument extends InputMedia
         ?bool $disable_content_type_detection = null
     ): self {
         return new self(
-            type: $type,
             media: $media,
             thumbnail: $thumbnail,
             caption: $caption,
@@ -101,5 +98,18 @@ class InputMediaDocument extends InputMedia
             caption_entities: $caption_entities,
             disable_content_type_detection: $disable_content_type_detection
         );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type,
+            'media' => $this->media,
+            'thumb' => $this->thumbnail,
+            'caption' => $this->caption,
+            'parse_mode' => $this->parse_mode?->value,
+            'caption_entities' => $this->caption_entities,
+            'disable_content_type_detection' => $this->disable_content_type_detection,
+        ]);
     }
 }
