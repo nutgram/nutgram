@@ -7,7 +7,6 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 
 class HandlerGroup
 {
-
     protected array $middlewares = [];
 
     protected array $scopes = [];
