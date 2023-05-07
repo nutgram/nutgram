@@ -336,3 +336,40 @@ it('groups middleware with on*Data/Payload handlers', function ($update) {
 
     expect($test)->toBe('-[MA][MB]H2');
 })->with('callback_query');
+
+it('groups handlers with no modifiers', function ($update) {
+    $bot = Nutgram::fake($update);
+    $test = '';
+
+    $middleware0 = function ($bot, $next) use (&$test) {
+        $test .= '-[MW0]';
+        $next($bot);
+    };
+
+    $middleware1 = function ($bot, $next) use (&$test) {
+        $test .= '[MW1]';
+        $next($bot);
+    };
+
+    $bot->middleware($middleware0);
+
+    $bot->group(function (Nutgram $bot) use (&$test) {
+        $bot->onMessage(function (Nutgram $bot) use (&$test) {
+            $test .= 'H1';
+        })->middleware(function (Nutgram $bot, $next) use (&$test) {
+            $test .= 'LM1';
+            $next($bot);
+        });
+    });
+
+    $bot->onMessage(function (Nutgram $bot) use (&$test) {
+        $test .= 'H2';
+    })->middleware(function (Nutgram $bot, $next) use (&$test) {
+        $test .= 'LM2';
+        $next($bot);
+    });
+
+    $bot->run();
+
+    expect($test)->toBe('-[MW0]LM2H2-[MW0]LM1H1');
+})->with('message');
