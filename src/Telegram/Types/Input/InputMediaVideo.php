@@ -86,4 +86,59 @@ class InputMediaVideo extends InputMedia
      * Pass True if the video needs to be covered with a spoiler animation
      */
     public ?bool $has_spoiler = null;
+
+    public function __construct(
+        InputMediaType $type,
+        InputFile|string $media,
+        InputFile|string|null $thumbnail,
+        ?string $caption,
+        ?ParseMode $parse_mode,
+        ?array $caption_entities,
+        ?int $width,
+        ?int $height,
+        ?int $duration,
+        ?bool $supports_streaming,
+        ?bool $has_spoiler
+    ) {
+        parent::__construct();
+        $this->type = $type;
+        $this->media = $media;
+        $this->thumbnail = $thumbnail;
+        $this->caption = $caption;
+        $this->parse_mode = $parse_mode;
+        $this->caption_entities = $caption_entities;
+        $this->width = $width;
+        $this->height = $height;
+        $this->duration = $duration;
+        $this->supports_streaming = $supports_streaming;
+        $this->has_spoiler = $has_spoiler;
+    }
+
+    public static function make(
+        InputMediaType $type,
+        InputFile|string $media,
+        InputFile|string|null $thumbnail = null,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?int $width = null,
+        ?int $height = null,
+        ?int $duration = null,
+        ?bool $supports_streaming = null,
+        ?bool $has_spoiler = null
+    ): self {
+        return new self(
+            $type,
+            $media,
+            $thumbnail,
+            $caption,
+            $parse_mode,
+            $caption_entities,
+            $width,
+            $height,
+            $duration,
+            $supports_streaming,
+            $has_spoiler
+        );
+    }
 }

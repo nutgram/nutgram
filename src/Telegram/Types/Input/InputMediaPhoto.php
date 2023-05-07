@@ -50,4 +50,39 @@ class InputMediaPhoto extends InputMedia
      * Pass True if the photo needs to be covered with a spoiler animation
      */
     public ?bool $has_spoiler = null;
+
+    public function __construct(
+        InputMediaType $type,
+        InputFile|string $media,
+        ?string $caption,
+        ?ParseMode $parse_mode,
+        ?array $caption_entities,
+        ?bool $has_spoiler
+    ) {
+        parent::__construct();
+        $this->type = $type;
+        $this->media = $media;
+        $this->caption = $caption;
+        $this->parse_mode = $parse_mode;
+        $this->caption_entities = $caption_entities;
+        $this->has_spoiler = $has_spoiler;
+    }
+
+    public static function make(
+        InputMediaType $type,
+        InputFile|string $media,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $has_spoiler = null
+    ): self {
+        return new self(
+            type: $type,
+            media: $media,
+            caption: $caption,
+            parse_mode: $parse_mode,
+            caption_entities: $caption_entities,
+            has_spoiler: $has_spoiler
+        );
+    }
 }
