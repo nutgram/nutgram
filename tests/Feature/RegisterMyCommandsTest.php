@@ -200,7 +200,7 @@ test('onCommand with description and scopes (as array)', function () {
     );
 });
 
-test('grouped scopes', function () {
+test('multiple scopes', function () {
     $bot = Nutgram::fake();
 
     $history = [];
@@ -405,3 +405,41 @@ test('all scopes', function () {
             ->commands->toBe('[{"command":"chat_member_c","description":"ChatMemberC command"}]'),
     );
 });
+
+test('grouped scopes with nesting level 1', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $history = [];
+
+    $bot->group(function (Nutgram $bot) use (&$test) {
+        $bot->onCommand('start', function (Nutgram $bot) {
+        })
+            ->description('Start command')
+            ->scope(new BotCommandScopeDefault);
+
+        $bot->onCommand('admin', function (Nutgram $bot) {
+        })
+            ->description('Admin command');
+    })->scope(new BotCommandScopeAllChatAdministrators);
+
+    $bot->onCommand('about', function (Nutgram $bot) {
+    })
+        ->description('About command');
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
+        $history[] = $request['json'];
+
+        return $request;
+    });
+
+    $bot->registerMyCommands();
+
+    expect($history)->sequence(
+        fn ($x) => $x
+            ->scope->toBe('{"type":"default"}')
+            ->commands->toBe('[{"command":"about","description":"About command"},{"command":"start","description":"Start command"}]'),
+        fn ($x) => $x
+            ->scope->toBe('{"type":"all_chat_administrators"}')
+            ->commands->toBe('[{"command":"start","description":"Start command"},{"command":"admin","description":"Admin command"}]'),
+    );
+})->with('message');

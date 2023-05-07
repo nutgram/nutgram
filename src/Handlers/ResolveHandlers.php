@@ -10,6 +10,7 @@ use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
+use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
@@ -93,10 +94,10 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  array  $handlers
-     * @param  string  $type
-     * @param  string|null  $subType
-     * @param  string|null  $value
+     * @param array $handlers
+     * @param string $type
+     * @param string|null $subType
+     * @param string|null $value
      */
     protected function addHandlersBy(
         array &$handlers,
@@ -131,8 +132,8 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
+     * @param int|null $userId
+     * @param int|null $chatId
      * @return callable|Conversation|\Closure|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
@@ -146,7 +147,7 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  Conversation|callable  $conversation
+     * @param Conversation|callable $conversation
      * @return array
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
@@ -186,7 +187,7 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  Handler  $handler
+     * @param Handler $handler
      */
     protected function applyGlobalMiddlewareTo(Handler $handler): void
     {
@@ -215,7 +216,7 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  Conversation  $conversation
+     * @param Conversation $conversation
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -237,7 +238,7 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  Handler[]  $handlers
+     * @param Handler[] $handlers
      * @return void
      */
     protected function setCurrentParametersFrom(array $handlers): void
@@ -249,5 +250,52 @@ abstract class ResolveHandlers extends CollectHandlers
             }
         }
         $this->currentParameters = array_merge(...$parameters);
+    }
+
+    protected function resolveGroups(): void
+    {
+        $this->target = 'groupHandlers';
+
+        // retrieve the starting groups and reset global state
+        $groups = $this->groups;
+        $this->groups = [];
+
+        $this->resolveNestedGroups($groups);
+    }
+
+    /**
+     * @param HandlerGroup[] $groups
+     * @param array $currentMiddlewares
+     * @param array $currentScopes
+     * @return void
+     */
+    private function resolveNestedGroups(array $groups, array $currentMiddlewares = [], array $currentScopes = [])
+    {
+        foreach ($groups as $group) {
+            $middlewares = [...$group->getMiddlewares(), ...$currentMiddlewares,];
+            $scopes = [...$currentScopes, ...$group->getScopes()];
+            $this->groupHandlers = [];
+            ($group->groupCallable)($this);
+
+            // apply the middleware stack to the current registered group handlers
+            array_walk_recursive($this->groupHandlers, function ($leaf) use ($middlewares, $scopes) {
+                if ($leaf instanceof Handler) {
+                    foreach ($middlewares as $middleware) {
+                        $leaf->middleware($middleware);
+                    }
+                    if ($leaf instanceof Command && !empty($scopes)) {
+                        $leaf->scope($scopes);
+                    }
+                }
+            });
+
+            $this->handlers = array_merge_recursive($this->handlers, $this->groupHandlers);
+
+            if (!empty($this->groups)) {
+                $groups = $this->groups;
+                $this->groups = [];
+                $this->resolveNestedGroups($groups, $middlewares, $scopes);
+            }
+        }
     }
 }

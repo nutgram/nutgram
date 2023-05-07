@@ -3,11 +3,14 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use SergiX44\Nutgram\Exception\StatusFinalizedException;
+use SergiX44\Nutgram\Handlers\Listeners\MessageListeners;
+use SergiX44\Nutgram\Handlers\Listeners\UpdateListeners;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
 abstract class CollectHandlers
 {
-    use UpdateHandlers, MessageHandlers;
+    use UpdateListeners, MessageListeners;
 
     protected const FALLBACK = 'FALLBACK';
     protected const EXCEPTION = 'EXCEPTION';
@@ -28,31 +31,38 @@ abstract class CollectHandlers
     /**
      * @var array
      */
-    protected array $groupHandlers = [];
-
-    /**
-     * @var array
-     */
-    protected array $groupMiddlewares = [];
-
-    /**
-     * @var array
-     */
     protected array $handlers = [];
 
     /**
-     * @param  callable|callable-string|array  $callable
+     * @var HandlerGroup[]
+     */
+    protected array $groups = [];
+
+    /**
+     * @var array
+     */
+    protected array $groupHandlers = [];
+
+    /**
+     * @var bool
+     */
+    protected bool $finalized = false;
+
+    /**
+     * @param callable|callable-string|array $callable
      */
     public function middleware($callable): void
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         array_unshift($this->globalMiddlewares, $callable);
     }
 
     /**
-     * @param  Array<callable|callable-string|array>  $callable
+     * @param Array<callable|callable-string|array> $callable
      */
     public function middlewares($callable): void
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         $middlewares = is_array($callable) ? $callable : [$callable];
 
         foreach ($middlewares as $middleware) {
@@ -60,77 +70,44 @@ abstract class CollectHandlers
         }
     }
 
-    /**
-     * @param  callable|callable-string|array  $middlewares
-     * @param  callable  $closure
-     * @return void
-     */
-    public function group($middlewares, callable $closure): void
+    public function group(callable $closure)
     {
-        $middlewares = is_array($middlewares) ? array_reverse($middlewares) : [$middlewares];
-
-        // get the current group status
-        $beforeMyMiddlewares = $this->groupMiddlewares;
-        $beforeMyHandlers = $this->groupHandlers;
-
-        // reset the current group status
-        $this->groupHandlers = [];
-
-        // push new middlewares to the stack
-        $this->groupMiddlewares = [...$middlewares, ...$this->groupMiddlewares];
-
-        // get the current target
-        $previousTarget = $this->target;
-        $this->target = 'groupHandlers';
-        $closure($this);
-        // restore the parent target
-        $this->target = $previousTarget;
-
-        // apply the middleware stack to the current registered group handlers
-        array_walk_recursive($this->groupHandlers, function ($leaf) {
-            if ($leaf instanceof Handler) {
-                foreach ($this->groupMiddlewares as $middleware) {
-                    $leaf->middleware($middleware);
-                }
-            }
-        });
-
-        // commit the handlers
-        $this->handlers = array_merge_recursive($this->handlers, $this->groupHandlers);
-
-        // restore the status of the parent group, if any
-        $this->groupMiddlewares = $beforeMyMiddlewares;
-        $this->groupHandlers = $beforeMyHandlers;
+        !$this->finalized ?: throw new StatusFinalizedException();
+        return $this->groups[] = new HandlerGroup($closure);
     }
 
     /**
-     * @param  callable|string  $callableOrException
-     * @param  callable|null  $callable
+     * @param callable|string $callableOrException
+     * @param callable|null $callable
      * @return Handler
      */
     public function onException($callableOrException, $callable = null): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->registerErrorHandlerFor(self::EXCEPTION, $callableOrException, $callable);
     }
 
     /**
-     * @param  callable|string  $callableOrPattern
-     * @param  callable|null  $callable
+     * @param callable|string $callableOrPattern
+     * @param callable|null $callable
      * @return Handler
      */
     public function onApiError($callableOrPattern, $callable = null): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->registerErrorHandlerFor(self::API_ERROR, $callableOrPattern, $callable);
     }
 
     /**
-     * @param  string  $type
+     * @param string $type
      * @param $callableOrPattern
      * @param $callable
      * @return Handler
      */
     private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
+
         if ($callable !== null) {
             return $this->{$this->target}[$type][$callableOrPattern] = new Handler($callable, $callableOrPattern);
         }
@@ -148,18 +125,19 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param  UpdateType  $type
+     * @param UpdateType $type
      * @param $callable
      * @return Handler
      */
     public function fallbackOn(UpdateType $type, $callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[self::FALLBACK][$type->value] = new Handler($callable, $type->value);
     }
 
     /**
-     * @param  bool  $exception
-     * @param  bool  $apiError
+     * @param bool $exception
+     * @param bool $apiError
      * @return void
      */
     public function clearErrorHandlers(bool $exception = true, bool $apiError = true): void
@@ -179,6 +157,7 @@ abstract class CollectHandlers
      */
     public function beforeApiRequest($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[self::BEFORE_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
     }
 
@@ -188,6 +167,7 @@ abstract class CollectHandlers
      */
     public function afterApiRequest($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[self::AFTER_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
     }
 }

@@ -849,14 +849,14 @@ it('get handlers parameters inside local middleware', function () {
         $next($bot);
     };
 
-    $bot->group($checkUserID, function (Nutgram $bot) {
+    $bot->group(function (Nutgram $bot) {
         $bot->onCallbackQueryData('user/([0-9]+)/show', function (Nutgram $bot, string $id) {
             expect($id)->toBe('123');
         });
         $bot->onCallbackQueryData('user/([0-9]+)/.*', function (Nutgram $bot, string $id) {
             expect($id)->toBe('123');
         });
-    });
+    })->middleware($checkUserID);
 
     $bot->hearCallbackQueryData('user/123/show')->reply();
 });
