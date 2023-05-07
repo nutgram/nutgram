@@ -402,6 +402,8 @@ class Nutgram extends ResolveHandlers
      */
     public function registerMyCommands(): void
     {
+        $this->resolveGroups();
+
         /** @var BotCommandScope[] $commands */
         $scopes = [];
         /** @var Command[] $commands */
