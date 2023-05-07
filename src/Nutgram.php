@@ -185,7 +185,7 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  CacheInterface  $cache
+     * @param CacheInterface $cache
      */
     public function setCache(CacheInterface $cache): void
     {
@@ -195,17 +195,22 @@ class Nutgram extends ResolveHandlers
         $this->userCache = $this->container->get(UserCache::class);
     }
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function run(): void
+    protected function preflight(): void
     {
         if (!$this->finalized) {
             $this->resolveGroups();
             $this->applyGlobalMiddleware();
             $this->finalized = true;
         }
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function run(): void
+    {
+        $this->preflight();
         $this->container->get(RunningMode::class)->processUpdates($this);
     }
 
@@ -402,7 +407,7 @@ class Nutgram extends ResolveHandlers
      */
     public function registerMyCommands(): void
     {
-        $this->resolveGroups();
+        $this->preflight();
 
         /** @var BotCommandScope[] $commands */
         $scopes = [];
