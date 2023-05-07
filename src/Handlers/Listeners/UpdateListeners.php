@@ -1,14 +1,17 @@
 <?php
 
-namespace SergiX44\Nutgram\Handlers;
+namespace SergiX44\Nutgram\Handlers\Listeners;
 
+use SergiX44\Nutgram\Exception\StatusFinalizedException;
+use SergiX44\Nutgram\Handlers\CollectHandlers;
+use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
 /**
  * @mixin CollectHandlers
  */
-trait UpdateHandlers
+trait UpdateListeners
 {
     /**
      * @param $callable
@@ -16,16 +19,18 @@ trait UpdateHandlers
      */
     public function onMessage($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::MESSAGE->value][] = new Handler($callable);
     }
 
     /**
-     * @param  string  $type
+     * @param  MessageType  $type
      * @param $callable
      * @return Handler
      */
     public function onMessageType(MessageType $type, $callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::MESSAGE->value][$type->value][] = new Handler($callable);
     }
 
@@ -35,6 +40,7 @@ trait UpdateHandlers
      */
     public function onEditedMessage($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::EDITED_MESSAGE->value][] = new Handler($callable);
     }
 
@@ -44,6 +50,7 @@ trait UpdateHandlers
      */
     public function onChannelPost($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::CHANNEL_POST->value][] = new Handler($callable);
     }
 
@@ -53,6 +60,7 @@ trait UpdateHandlers
      */
     public function onEditedChannelPost($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::EDITED_CHANNEL_POST->value][] = new Handler($callable);
     }
 
@@ -62,6 +70,7 @@ trait UpdateHandlers
      */
     public function onInlineQuery($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::INLINE_QUERY->value][] = new Handler($callable);
     }
 
@@ -71,6 +80,7 @@ trait UpdateHandlers
      */
     public function onChosenInlineResult($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::CHOSEN_INLINE_RESULT->value][] = new Handler($callable);
     }
 
@@ -80,6 +90,7 @@ trait UpdateHandlers
      */
     public function onCallbackQuery($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::CALLBACK_QUERY->value][] = new Handler($callable);
     }
 
@@ -90,6 +101,7 @@ trait UpdateHandlers
      */
     public function onCallbackQueryData(string $pattern, $callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::CALLBACK_QUERY->value][$pattern] = new Handler($callable, $pattern);
     }
 
@@ -99,6 +111,7 @@ trait UpdateHandlers
      */
     public function onShippingQuery($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::SHIPPING_QUERY->value][] = new Handler($callable);
     }
 
@@ -108,6 +121,7 @@ trait UpdateHandlers
      */
     public function onPreCheckoutQuery($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::PRE_CHECKOUT_QUERY->value][] = new Handler($callable);
     }
 
@@ -118,6 +132,7 @@ trait UpdateHandlers
      */
     public function onPreCheckoutQueryPayload(string $pattern, $callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::PRE_CHECKOUT_QUERY->value][$pattern] = new Handler(
             $callable,
             $pattern
@@ -130,6 +145,7 @@ trait UpdateHandlers
      */
     public function onUpdatePoll($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::POLL->value][] = new Handler($callable);
     }
 
@@ -139,6 +155,7 @@ trait UpdateHandlers
      */
     public function onPollAnswer($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::POLL_ANSWER->value][] = new Handler($callable);
     }
 
@@ -148,6 +165,7 @@ trait UpdateHandlers
      */
     public function onMyChatMember($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::MY_CHAT_MEMBER->value][] = new Handler($callable);
     }
 
@@ -157,6 +175,7 @@ trait UpdateHandlers
      */
     public function onChatMember($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::CHAT_MEMBER->value][] = new Handler($callable);
     }
 
@@ -166,6 +185,7 @@ trait UpdateHandlers
      */
     public function onChatJoinRequest($callable): Handler
     {
+        !$this->finalized ?: throw new StatusFinalizedException();
         return $this->{$this->target}[UpdateType::CHAT_JOIN_REQUEST->value][] = new Handler($callable);
     }
 }

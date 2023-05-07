@@ -368,7 +368,6 @@ class FakeNutgram extends Nutgram
 
     /**
      * @return array
-     * @throws \SergiX44\Nutgram\Exception\CannotSerializeException
      */
     public function __serialize(): array
     {
