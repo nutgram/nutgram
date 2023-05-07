@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\HasDownload;
 
 /**
  * This object represents one size of a photo or a {@see https://core.telegram.org/bots/api#document file} / {@see https://core.telegram.org/bots/api#sticker sticker} thumbnail.
@@ -10,6 +11,8 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class PhotoSize extends BaseType
 {
+    use HasDownload;
+
     /** Identifier for this file, which can be used to download or reuse the file */
     public string $file_id;
 

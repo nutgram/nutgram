@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\HasDownload;
 
 /**
  * This object represents a general file (as opposed to {@see https://core.telegram.org/bots/api#photosize photos}, {@see https://core.telegram.org/bots/api#voice voice messages} and {@see https://core.telegram.org/bots/api#audio audio files}).
@@ -10,6 +11,8 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class Document extends BaseType
 {
+    use HasDownload;
+
     /** Identifier for this file, which can be used to download or reuse the file */
     public string $file_id;
 
