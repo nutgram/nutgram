@@ -28,6 +28,7 @@ use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
+use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
@@ -235,28 +236,50 @@ trait Client
         array $multipart = [],
         string $mapTo = stdClass::class,
         array $options = []
-    ): mixed {
+    ): mixed
+    {
+        $files = [];
+
         $multipart = array_filter($multipart);
-        $parameters = array_map(fn ($name, $contents) => match (true) {
-            $contents instanceof InputFile => [
-                'name' => $name,
-                'contents' => $contents->getResource(),
-                'filename' => $contents->getFilename(),
-            ],
-            $contents instanceof JsonSerializable => [
-                'name' => $name,
-                'contents' => json_encode($contents),
-            ],
-            $contents instanceof BackedEnum => [
-                'name' => $name,
-                'contents' => $contents->value,
-            ],
-            default => [
+        $parameters = array_map(function ($name, $contents) use (&$files) {
+            if ($contents instanceof InputMedia) {
+                $files[] = $contents->media->toMultipart();
+
+                return [
+                    'name' => $name,
+                    'contents' => json_encode($contents),
+                ];
+            }
+
+            if ($contents instanceof InputFile) {
+                return [
+                    'name' => $name,
+                    'contents' => $contents->getResource(),
+                    'filename' => $contents->getFilename(),
+                ];
+            }
+
+            if ($contents instanceof JsonSerializable) {
+                return [
+                    'name' => $name,
+                    'contents' => json_encode($contents),
+                ];
+            }
+
+            if ($contents instanceof BackedEnum) {
+                return [
+                    'name' => $name,
+                    'contents' => $contents->value,
+                ];
+            }
+
+            return [
                 'name' => $name,
                 'contents' => $contents,
-            ]
+            ];
         }, array_keys($multipart), $multipart);
 
+        $parameters = array_merge($parameters, $files);
         $request = ['multipart' => $parameters, ...$options];
 
         try {

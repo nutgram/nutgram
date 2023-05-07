@@ -6,7 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Internal;
  * This object represents the contents of a file to be uploaded. Must be posted using
  * multipart/form-data in the usual way that files are uploaded via the browser.
  */
-class InputFile
+class InputFile implements \JsonSerializable
 {
     /**
      * @var resource
@@ -79,5 +79,24 @@ class InputFile
         }
 
         return basename($this->filename ?? uniqid(more_entropy: true));
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->getAttachString();
+    }
+
+    public function getAttachString(): string
+    {
+        return 'attach://'.$this->getFilename();
+    }
+
+    public function toMultipart(): array
+    {
+        return [
+            'name' => $this->getFilename(),
+            'contents' => $this->getResource(),
+            'filename' => $this->getFilename(),
+        ];
     }
 }
