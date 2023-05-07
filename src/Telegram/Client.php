@@ -236,8 +236,7 @@ trait Client
         array $multipart = [],
         string $mapTo = stdClass::class,
         array $options = []
-    ): mixed
-    {
+    ): mixed {
         $files = [];
 
         $multipart = array_filter($multipart);
