@@ -76,49 +76,6 @@ abstract class CollectHandlers
         return $this->groups[] = new HandlerGroup($closure);
     }
 
-//    /**
-//     * @param  callable|callable-string|array  $middlewares
-//     * @param  callable  $closure
-//     * @return void
-//     */
-//    public function group($middlewares, callable $closure): void
-//    {
-//        $middlewares = is_array($middlewares) ? array_reverse($middlewares) : [$middlewares];
-//
-//        // get the current group status
-//        $beforeMyMiddlewares = $this->groupMiddlewares;
-//        $beforeMyHandlers = $this->groupHandlers;
-//
-//        // reset the current group status
-//        $this->groupHandlers = [];
-//
-//        // push new middlewares to the stack
-//        $this->groupMiddlewares = [...$middlewares, ...$this->groupMiddlewares];
-//
-//        // get the current target
-//        $previousTarget = $this->target;
-//        $this->target = 'groupHandlers';
-//        $closure($this);
-//        // restore the parent target
-//        $this->target = $previousTarget;
-//
-//        // apply the middleware stack to the current registered group handlers
-//        array_walk_recursive($this->groupHandlers, function ($leaf) {
-//            if ($leaf instanceof Handler) {
-//                foreach ($this->groupMiddlewares as $middleware) {
-//                    $leaf->middleware($middleware);
-//                }
-//            }
-//        });
-//
-//        // commit the handlers
-//        $this->handlers = array_merge_recursive($this->handlers, $this->groupHandlers);
-//
-//        // restore the status of the parent group, if any
-//        $this->groupMiddlewares = $beforeMyMiddlewares;
-//        $this->groupHandlers = $beforeMyHandlers;
-//    }
-
     /**
      * @param callable|string $callableOrException
      * @param callable|null $callable

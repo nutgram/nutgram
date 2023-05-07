@@ -31,17 +31,11 @@ class HandlerGroup
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getMiddlewares(): array
     {
         return $this->middlewares;
     }
 
-    /**
-     * @return array
-     */
     public function getScopes(): array
     {
         return $this->scopes;
