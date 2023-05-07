@@ -282,9 +282,9 @@ abstract class ResolveHandlers extends CollectHandlers
                 if ($leaf instanceof Handler) {
                     foreach ($middlewares as $middleware) {
                         $leaf->middleware($middleware);
-                        if ($leaf instanceof Command && !empty($scopes)) {
-                            $leaf->scope($scopes);
-                        }
+                    }
+                    if ($leaf instanceof Command && !empty($scopes)) {
+                        $leaf->scope($scopes);
                     }
                 }
             });
