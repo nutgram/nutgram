@@ -28,6 +28,7 @@ use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
+use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
@@ -55,57 +56,70 @@ trait Client
      * An Array of Update objects is returned.
      * @see https://core.telegram.org/bots/api#getupdates
      * @see https://en.wikipedia.org/wiki/Push_technology#Long_polling
-     * @param array{
-     *     offset?:int,
-     *     limit?:int,
-     *     timeout?:int,
-     *     allowed_updates?:string[]
-     * } $parameters
+     * @param int|null $offset
+     * @param int|null $limit
+     * @param int|null $timeout
+     * @param string[]|null $allowed_updates
      * @return array|null
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
      */
-    public function getUpdates(array $parameters = []): ?array
+    public function getUpdates(?int $offset = null, ?int $limit = null, ?int $timeout = null, ?array $allowed_updates = null): ?array
     {
-        return $this->requestJson(__FUNCTION__, $parameters, Update::class, [
-            'timeout' => ($parameters['timeout'] ?? 0) + 1,
-        ]);
+        $timeout = ($timeout ?? $this->config->pollingTimeout) + 1;
+
+        return $this->requestJson(__FUNCTION__, compact(
+            'offset',
+            'limit',
+            'timeout',
+            'allowed_updates'
+        ), Update::class);
     }
 
     /**
      * @param string $url
-     * @param array{
-     *     certificate?:InputFile,
-     *     ip_address?:string,
-     *     max_connections?:int,
-     *     allowed_updates?:string[],
-     *     drop_pending_updates?:bool,
-     *     secret_token?:string
-     * } $opt
+     * @param InputFile|null $certificate
+     * @param string|null $ip_address
+     * @param int|null $max_connections
+     * @param string[]|null $allowed_updates
+     * @param bool|null $drop_pending_updates
+     * @param string|null $secret_token
      * @return bool|null
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
      */
-    public function setWebhook(string $url, array $opt = []): ?bool
-    {
-        $required = compact('url');
-        return $this->requestJson(__FUNCTION__, [...$required, ...$opt]);
+    public function setWebhook(
+        string $url,
+        ?InputFile $certificate = null,
+        ?string $ip_address = null,
+        ?int $max_connections = null,
+        ?array $allowed_updates = null,
+        ?bool $drop_pending_updates = null,
+        ?string $secret_token = null
+    ): ?bool {
+        return $this->requestJson(__FUNCTION__, compact(
+            'url',
+            'certificate',
+            'ip_address',
+            'max_connections',
+            'allowed_updates',
+            'drop_pending_updates',
+            'secret_token'
+        ));
     }
 
     /**
-     * @param array{
-     *     drop_pending_updates?:bool
-     * } $opt
+     * @param bool $drop_pending_updates
      * @return bool|null
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
      */
-    public function deleteWebhook(array $opt = []): ?bool
+    public function deleteWebhook(?bool $drop_pending_updates = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, $opt);
+        return $this->requestJson(__FUNCTION__, compact('drop_pending_updates'));
     }
 
     /**
@@ -236,26 +250,36 @@ trait Client
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
-        $multipart = array_filter($multipart);
-        $parameters = array_map(fn ($name, $contents) => match (true) {
-            $contents instanceof InputFile => [
-                'name' => $name,
-                'contents' => $contents->getResource(),
-                'filename' => $contents->getFilename(),
-            ],
-            $contents instanceof JsonSerializable => [
-                'name' => $name,
-                'contents' => json_encode($contents),
-            ],
-            $contents instanceof BackedEnum => [
-                'name' => $name,
-                'contents' => $contents->value,
-            ],
-            default => [
-                'name' => $name,
-                'contents' => $contents,
-            ]
-        }, array_keys($multipart), $multipart);
+        $parameters = [];
+        foreach (array_filter($multipart) as $name => $contents) {
+            if ($contents instanceof InputMedia) {
+                $parameters[] = [
+                    'name' => $contents->media->getFilename(),
+                    'contents' => $contents->media->getResource(),
+                    'filename' => $contents->media->getFilename(),
+                ];
+            }
+
+            $parameters[] = match (true) {
+                $contents instanceof InputFile => [
+                    'name' => $name,
+                    'contents' => $contents->getResource(),
+                    'filename' => $contents->getFilename(),
+                ],
+                $contents instanceof JsonSerializable => [
+                    'name' => $name,
+                    'contents' => json_encode($contents, JSON_THROW_ON_ERROR),
+                ],
+                $contents instanceof BackedEnum => [
+                    'name' => $name,
+                    'contents' => $contents->value,
+                ],
+                default => [
+                    'name' => $name,
+                    'contents' => $contents,
+                ]
+            };
+        }
 
         $request = ['multipart' => $parameters, ...$options];
 
@@ -285,7 +309,7 @@ trait Client
 
     /**
      * @param string $endpoint
-     * @param array|null $json
+     * @param array $json
      * @param string $mapTo
      * @param array $options
      * @return mixed

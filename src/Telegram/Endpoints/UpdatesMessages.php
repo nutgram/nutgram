@@ -123,7 +123,6 @@ trait UpdatesMessages
             'reply_markup',
             'clientOpt'
         );
-        $parameters['media'] = json_encode($media, JSON_THROW_ON_ERROR);
         $target = $this->targetChatMessageOrInlineMessageId($parameters);
 
         return $this->requestMultipart(

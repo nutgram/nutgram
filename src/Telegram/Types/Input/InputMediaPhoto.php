@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -12,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * Represents a photo to be sent.
  * @see https://core.telegram.org/bots/api#inputmediaphoto
  */
-class InputMediaPhoto extends InputMedia
+class InputMediaPhoto extends InputMedia implements JsonSerializable
 {
     /** Type of the result, must be photo */
     public InputMediaType $type = InputMediaType::PHOTO;
@@ -50,4 +51,48 @@ class InputMediaPhoto extends InputMedia
      * Pass True if the photo needs to be covered with a spoiler animation
      */
     public ?bool $has_spoiler = null;
+
+    public function __construct(
+        InputFile|string $media,
+        ?string $caption,
+        ?ParseMode $parse_mode,
+        ?array $caption_entities,
+        ?bool $has_spoiler
+    ) {
+        parent::__construct();
+        $this->media = $media;
+        $this->caption = $caption;
+        $this->parse_mode = $parse_mode;
+        $this->caption_entities = $caption_entities;
+        $this->has_spoiler = $has_spoiler;
+    }
+
+    public static function make(
+        InputFile|string $media,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $has_spoiler = null
+    ): self {
+        return new self(
+            media: $media,
+            caption: $caption,
+            parse_mode: $parse_mode,
+            caption_entities: $caption_entities,
+            has_spoiler: $has_spoiler
+        );
+    }
+
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type->value,
+            'media' => $this->media,
+            'caption' => $this->caption,
+            'parse_mode' => $this->parse_mode?->value,
+            'caption_entities' => $this->caption_entities,
+            'has_spoiler' => $this->has_spoiler,
+        ]);
+    }
 }
