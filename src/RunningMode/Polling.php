@@ -15,18 +15,16 @@ class Polling implements RunningMode
     public function processUpdates(Nutgram $bot): void
     {
         $config = $bot->getConfig();
-        $allowedUpdates = !empty($config->pollingAllowedUpdates) ? ['allowed_updates' => $config->pollingAllowedUpdates] : [];
-
-        $parameters = [
-            'limit' => $config->pollingLimit,
-            'timeout' => $config->pollingTimeout,
-            ...$allowedUpdates,
-        ];
-
         $offset = 1;
+
         echo "Listening...\n";
         while (true) {
-            $updates = $bot->getUpdates(['offset' => $offset, ...$parameters]);
+            $updates = $bot->getUpdates(
+                offset: $offset,
+                limit: $config->pollingLimit,
+                timeout: $config->pollingTimeout,
+                allowed_updates: $config->pollingAllowedUpdates
+            );
 
             if ($offset === 1) {
                 /** @var Update $last */
