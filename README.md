@@ -22,9 +22,7 @@
 
 This framework takes advantage of the latest **PHP 8.2** features, and tries to make the **speed**, **scalability** and
 **flexibility** of use its strength, it will allow you to quickly make simple bots, but at the same time, it provides
-more **advanced features** to handle even the most complicated flows. Some architectural concepts on which Nutgram is
-based are heavily influenced by other open source projects such as [Botman](https://github.com/botman/botman)
-and [Zanzara](https://github.com/badfarm/zanzara), check them out too!
+more **advanced features** to handle even the most complicated flows.
 
 ```php
 <?php
