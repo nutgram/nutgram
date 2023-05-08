@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Internal;
 
+use InvalidArgumentException;
+
 /**
  * This object represents the contents of a file to be uploaded. Must be posted using
  * multipart/form-data in the usual way that files are uploaded via the browser.
@@ -30,12 +32,12 @@ class InputFile implements \JsonSerializable
         } elseif (is_string($resource) && file_exists($resource)) {
             $res = fopen($resource, 'rb+');
             if ($res === false) {
-                throw new \InvalidArgumentException('Invalid resource specified.');
+                throw new InvalidArgumentException('Cannot open the specified resource.');
             }
 
             $this->resource = $res;
         } else {
-            throw new \InvalidArgumentException('Invalid resource specified.');
+            throw new InvalidArgumentException('Invalid resource specified.');
         }
     }
 
@@ -81,22 +83,8 @@ class InputFile implements \JsonSerializable
         return basename($this->filename ?? uniqid(more_entropy: true));
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): string
     {
-        return $this->getAttachString();
-    }
-
-    public function getAttachString(): string
-    {
-        return 'attach://'.$this->getFilename();
-    }
-
-    public function toMultipart(): array
-    {
-        return [
-            'name' => $this->getFilename(),
-            'contents' => $this->getResource(),
-            'filename' => $this->getFilename(),
-        ];
+        return "attach://{$this->getFilename()}";
     }
 }

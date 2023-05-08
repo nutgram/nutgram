@@ -178,10 +178,10 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            0775,
-            true
-        ) && !is_dir($concurrentDirectory)) {
+                $concurrentDirectory = dirname($path),
+                0775,
+                true
+            ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -237,48 +237,37 @@ trait Client
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
-        $files = [];
-
-        $multipart = array_filter($multipart);
-        $parameters = array_map(function ($name, $contents) use (&$files) {
+        $parameters = [];
+        foreach (array_filter($multipart) as $name => $contents) {
             if ($contents instanceof InputMedia) {
-                $files[] = $contents->media->toMultipart();
-
-                return [
-                    'name' => $name,
-                    'contents' => json_encode($contents),
+                $parameters[] = [
+                    'name' => $contents->media->getFilename(),
+                    'contents' => $contents->media->getResource(),
+                    'filename' => $contents->media->getFilename(),
                 ];
             }
 
-            if ($contents instanceof InputFile) {
-                return [
+            $parameters[] = match (true) {
+                $contents instanceof InputFile => [
                     'name' => $name,
                     'contents' => $contents->getResource(),
                     'filename' => $contents->getFilename(),
-                ];
-            }
-
-            if ($contents instanceof JsonSerializable) {
-                return [
+                ],
+                $contents instanceof JsonSerializable => [
                     'name' => $name,
-                    'contents' => json_encode($contents),
-                ];
-            }
-
-            if ($contents instanceof BackedEnum) {
-                return [
+                    'contents' => json_encode($contents, JSON_THROW_ON_ERROR),
+                ],
+                $contents instanceof BackedEnum => [
                     'name' => $name,
                     'contents' => $contents->value,
-                ];
-            }
+                ],
+                default => [
+                    'name' => $name,
+                    'contents' => $contents,
+                ]
+            };
+        }
 
-            return [
-                'name' => $name,
-                'contents' => $contents,
-            ];
-        }, array_keys($multipart), $multipart);
-
-        $parameters = array_merge($parameters, $files);
         $request = ['multipart' => $parameters, ...$options];
 
         try {
