@@ -28,6 +28,7 @@ use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
+use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
@@ -236,26 +237,36 @@ trait Client
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
-        $multipart = array_filter($multipart);
-        $parameters = array_map(fn ($name, $contents) => match (true) {
-            $contents instanceof InputFile => [
-                'name' => $name,
-                'contents' => $contents->getResource(),
-                'filename' => $contents->getFilename(),
-            ],
-            $contents instanceof JsonSerializable => [
-                'name' => $name,
-                'contents' => json_encode($contents),
-            ],
-            $contents instanceof BackedEnum => [
-                'name' => $name,
-                'contents' => $contents->value,
-            ],
-            default => [
-                'name' => $name,
-                'contents' => $contents,
-            ]
-        }, array_keys($multipart), $multipart);
+        $parameters = [];
+        foreach (array_filter($multipart) as $name => $contents) {
+            if ($contents instanceof InputMedia) {
+                $parameters[] = [
+                    'name' => $contents->media->getFilename(),
+                    'contents' => $contents->media->getResource(),
+                    'filename' => $contents->media->getFilename(),
+                ];
+            }
+
+            $parameters[] = match (true) {
+                $contents instanceof InputFile => [
+                    'name' => $name,
+                    'contents' => $contents->getResource(),
+                    'filename' => $contents->getFilename(),
+                ],
+                $contents instanceof JsonSerializable => [
+                    'name' => $name,
+                    'contents' => json_encode($contents, JSON_THROW_ON_ERROR),
+                ],
+                $contents instanceof BackedEnum => [
+                    'name' => $name,
+                    'contents' => $contents->value,
+                ],
+                default => [
+                    'name' => $name,
+                    'contents' => $contents,
+                ]
+            };
+        }
 
         $request = ['multipart' => $parameters, ...$options];
 

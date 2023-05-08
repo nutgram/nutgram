@@ -1,5 +1,6 @@
 <?php
 
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
@@ -7,6 +8,9 @@ use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
+use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Testing\FormDataParser;
 
 it('throws exception when text is too long', function ($responseBody) {
     $textOriginal = str_repeat('a', Limits::TEXT_LENGTH + 1);
@@ -136,4 +140,38 @@ it('calls getWebhookInfo method', function () {
         ->last_synchronization_error_date->toBe($info['last_synchronization_error_date'])
         ->max_connections->toBe($info['max_connections'])
         ->allowed_updates->toBe($info['allowed_updates']);
+});
+
+it('uploads a file with attach:// logic', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $message = $bot->sendPhoto(
+            photo: InputFile::make(fopen('php://temp', 'rb'), 'photoA.jpg'),
+            caption: 'A',
+        );
+
+        $bot->editMessageMedia(
+            media: InputMediaPhoto::make(
+                media: InputFile::make(fopen('php://temp', 'rb'), 'photoB.jpg'),
+                caption: 'B',
+            ),
+            chat_id: $message->chat->id,
+            message_id: $message->message_id
+        );
+    });
+
+    $bot
+        ->hearText('/start')
+        ->reply()
+        ->assertReply('sendPhoto', [
+            'caption' => 'A',
+        ], 0)
+        ->assertReply('editMessageMedia', [
+            'media' => '{"type":"photo","media":"attach:\\/\\/photoB.jpg","caption":"B"}',
+        ], 1)
+        ->assertRaw(function (Request $request) {
+            $photo = FormDataParser::parse($request)->files['photoB.jpg'];
+            return $photo->getName() === 'photoB.jpg';
+        }, 1);
 });

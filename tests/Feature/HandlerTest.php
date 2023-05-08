@@ -835,7 +835,6 @@ it('get handler parameters inside local middleware', function ($update) {
     $bot->run();
 })->with('food');
 
-
 it('get handlers parameters inside local middleware', function () {
     $bot = Nutgram::fake();
 

@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -12,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * Represents a general file to be sent.
  * @see https://core.telegram.org/bots/api#inputmediadocument
  */
-class InputMediaDocument extends InputMedia
+class InputMediaDocument extends InputMedia implements JsonSerializable
 {
     /** Type of the result, must be document */
     public InputMediaType $type = InputMediaType::DOCUMENT;
@@ -63,4 +64,52 @@ class InputMediaDocument extends InputMedia
      * Always True, if the document is sent as part of an album.
      */
     public ?bool $disable_content_type_detection = null;
+
+    public function __construct(
+        InputFile|string $media,
+        InputFile|string|null $thumbnail,
+        ?string $caption,
+        ?ParseMode $parse_mode,
+        ?array $caption_entities,
+        ?bool $disable_content_type_detection
+    ) {
+        parent::__construct();
+        $this->media = $media;
+        $this->thumbnail = $thumbnail;
+        $this->caption = $caption;
+        $this->parse_mode = $parse_mode;
+        $this->caption_entities = $caption_entities;
+        $this->disable_content_type_detection = $disable_content_type_detection;
+    }
+
+    public static function make(
+        InputFile|string $media,
+        InputFile|string|null $thumbnail = null,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $disable_content_type_detection = null
+    ): self {
+        return new self(
+            media: $media,
+            thumbnail: $thumbnail,
+            caption: $caption,
+            parse_mode: $parse_mode,
+            caption_entities: $caption_entities,
+            disable_content_type_detection: $disable_content_type_detection
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type,
+            'media' => $this->media,
+            'thumb' => $this->thumbnail,
+            'caption' => $this->caption,
+            'parse_mode' => $this->parse_mode?->value,
+            'caption_entities' => $this->caption_entities,
+            'disable_content_type_detection' => $this->disable_content_type_detection,
+        ]);
+    }
 }
