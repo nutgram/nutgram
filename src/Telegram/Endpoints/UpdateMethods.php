@@ -96,5 +96,4 @@ trait UpdateMethods
     {
         return $this->requestJson(__FUNCTION__, mapTo: WebhookInfo::class);
     }
-
 }
