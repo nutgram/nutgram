@@ -31,15 +31,12 @@ it('throws exception after finalization', function ($update) {
     $bot = Nutgram::fake($update);
 
     $bot->onMessage(function ($bot) use (&$test) {
-
     });
 
     $bot->run();
 
     $bot->onMessage(function ($bot) use (&$test) {
-
     });
-
 })->expectException(StatusFinalizedException::class)->with('message');
 
 it('calls the message handler with a middleware', function ($update) {
