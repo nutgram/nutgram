@@ -63,13 +63,6 @@
             "pestphp/pest-plugin": true
         }
     },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "SergiX44\\Nutgram\\NutgramServiceProvider"
-            ]
-        }
-    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
