@@ -1,6 +1,7 @@
 <?php
 
 use GuzzleHttp\Psr7\Response;
+use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
@@ -25,6 +26,21 @@ it('calls the message handler', function ($update) {
 
     expect($test)->toBe('A');
 })->with('message');
+
+it('throws exception after finalization', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessage(function ($bot) use (&$test) {
+
+    });
+
+    $bot->run();
+
+    $bot->onMessage(function ($bot) use (&$test) {
+
+    });
+
+})->expectException(StatusFinalizedException::class)->with('message');
 
 it('calls the message handler with a middleware', function ($update) {
     $bot = Nutgram::fake($update);

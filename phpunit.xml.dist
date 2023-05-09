@@ -9,7 +9,6 @@
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
-    <coverage/>
     <source>
         <include>
             <directory>./src</directory>
@@ -22,8 +21,6 @@
             <directory>./src/Telegram/Types</directory>
             <directory>./src/RunningMode</directory>
             <directory>./src/Testing/Constraints</directory>
-            <file>./src/NutgramServiceProvider.php</file>
-            <file>./src/Laravel/Commands/RunCommand.php</file>
             <file>./src/Support/StrUtils.php</file>
             <file>./src/Telegram/CustomEndpoints.php</file>
         </exclude>
