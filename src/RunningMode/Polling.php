@@ -10,14 +10,14 @@ use Throwable;
 class Polling implements RunningMode
 {
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram $bot
      */
     public function processUpdates(Nutgram $bot): void
     {
         $config = $bot->getConfig();
         $offset = 1;
 
-        echo "Listening...\n";
+        print("Listening...\n");
         while (true) {
             $updates = $bot->getUpdates(
                 offset: $offset,
@@ -43,8 +43,8 @@ class Polling implements RunningMode
     }
 
     /**
-     * @param  Nutgram  $bot
-     * @param  Update[]  $updates
+     * @param Nutgram $bot
+     * @param Update[] $updates
      * @return void
      */
     protected function fire(Nutgram $bot, array $updates = []): void
@@ -53,7 +53,7 @@ class Polling implements RunningMode
             try {
                 $bot->processUpdate($update);
             } catch (Throwable $e) {
-                echo "$e\n";
+                fwrite(STDERR, "$e\n");
             } finally {
                 $bot->clear();
             }

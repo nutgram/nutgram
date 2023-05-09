@@ -24,10 +24,9 @@ use SergiX44\Nutgram\Telegram\Endpoints\InlineMode;
 use SergiX44\Nutgram\Telegram\Endpoints\Passport;
 use SergiX44\Nutgram\Telegram\Endpoints\Payments;
 use SergiX44\Nutgram\Telegram\Endpoints\Stickers;
+use SergiX44\Nutgram\Telegram\Endpoints\UpdateMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
-use SergiX44\Nutgram\Telegram\Types\Common\Update;
-use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
@@ -49,89 +48,8 @@ trait Client
         Passport,
         Games,
         CustomEndpoints,
-        Macroable;
-
-    /**
-     * Use this method to receive incoming updates using long polling.
-     * An Array of Update objects is returned.
-     * @see https://core.telegram.org/bots/api#getupdates
-     * @see https://en.wikipedia.org/wiki/Push_technology#Long_polling
-     * @param int|null $offset
-     * @param int|null $limit
-     * @param int|null $timeout
-     * @param string[]|null $allowed_updates
-     * @return array|null
-     * @throws GuzzleException
-     * @throws JsonException
-     * @throws TelegramException
-     */
-    public function getUpdates(?int $offset = null, ?int $limit = null, ?int $timeout = null, ?array $allowed_updates = null): ?array
-    {
-        $timeout = ($timeout ?? $this->config->pollingTimeout) + 1;
-
-        return $this->requestJson(__FUNCTION__, compact(
-            'offset',
-            'limit',
-            'timeout',
-            'allowed_updates'
-        ), Update::class);
-    }
-
-    /**
-     * @param string $url
-     * @param InputFile|null $certificate
-     * @param string|null $ip_address
-     * @param int|null $max_connections
-     * @param string[]|null $allowed_updates
-     * @param bool|null $drop_pending_updates
-     * @param string|null $secret_token
-     * @return bool|null
-     * @throws GuzzleException
-     * @throws JsonException
-     * @throws TelegramException
-     */
-    public function setWebhook(
-        string $url,
-        ?InputFile $certificate = null,
-        ?string $ip_address = null,
-        ?int $max_connections = null,
-        ?array $allowed_updates = null,
-        ?bool $drop_pending_updates = null,
-        ?string $secret_token = null
-    ): ?bool {
-        return $this->requestJson(__FUNCTION__, compact(
-            'url',
-            'certificate',
-            'ip_address',
-            'max_connections',
-            'allowed_updates',
-            'drop_pending_updates',
-            'secret_token'
-        ));
-    }
-
-    /**
-     * @param bool $drop_pending_updates
-     * @return bool|null
-     * @throws GuzzleException
-     * @throws JsonException
-     * @throws TelegramException
-     */
-    public function deleteWebhook(?bool $drop_pending_updates = null): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('drop_pending_updates'));
-    }
-
-    /**
-     * @return WebhookInfo|null
-     * @throws GuzzleException
-     * @throws JsonException
-     * @throws TelegramException
-     */
-    public function getWebhookInfo(): ?WebhookInfo
-    {
-        return $this->requestJson(__FUNCTION__, mapTo: WebhookInfo::class);
-    }
+        Macroable,
+        UpdateMethods;
 
     /**
      * @param string $endpoint
