@@ -59,7 +59,7 @@ class TypeFaker
         array $additional = [],
     ): array {
         $this->resolveStack[] = $class;
-        $reflectionClass = $this->getReflectionClass($class);
+        $reflectionClass = $this->getReflectionClass($class, $additional);
 
         $data = [];
         $dummyInstance = $reflectionClass->newInstanceWithoutConstructor();
@@ -198,15 +198,24 @@ class TypeFaker
      * @return ReflectionClass
      * @throws \ReflectionException
      */
-    private function getReflectionClass(string $class): ReflectionClass
+    private function getReflectionClass(string $class, array $context = []): ReflectionClass
     {
         $reflectionClass = new ReflectionClass($class);
 
         if ($reflectionClass->isAbstract()) {
-            /** @var ConcreteResolver $concrete */
-            $concretes = $this->hydrator->getConcreteFor($reflectionClass->getName())?->getConcretes();
-            if ($concretes !== null) {
-                $reflectionClass = new ReflectionClass(array_shift($concretes));
+            /** @var ConcreteResolver $resolver */
+            $resolver = $this->hydrator->getConcreteFor($reflectionClass->getName());
+
+            if (empty($context)) {
+                $concretes = $resolver?->getConcretes();
+                if ($concretes !== null) {
+                    $reflectionClass = new ReflectionClass(array_shift($concretes));
+                }
+            } else {
+                $concreteClass = $resolver?->concreteFor($context);
+                if ($concreteClass !== null) {
+                    $reflectionClass = new ReflectionClass($concreteClass);
+                }
             }
         }
         return $reflectionClass;
