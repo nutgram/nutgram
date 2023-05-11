@@ -53,7 +53,7 @@ abstract class CollectHandlers
      */
     public function middleware($callable): void
     {
-        !$this->finalized ?: throw new StatusFinalizedException();
+        $this->checkFinalized();
         array_unshift($this->globalMiddlewares, $callable);
     }
 
@@ -62,7 +62,7 @@ abstract class CollectHandlers
      */
     public function middlewares($callable): void
     {
-        !$this->finalized ?: throw new StatusFinalizedException();
+        $this->checkFinalized();
         $middlewares = is_array($callable) ? $callable : [$callable];
 
         foreach ($middlewares as $middleware) {
@@ -70,9 +70,9 @@ abstract class CollectHandlers
         }
     }
 
-    public function group(callable $closure)
+    public function group(callable $closure): HandlerGroup
     {
-        !$this->finalized ?: throw new StatusFinalizedException();
+        $this->checkFinalized();
         return $this->groups[] = new HandlerGroup($closure);
     }
 
@@ -83,7 +83,7 @@ abstract class CollectHandlers
      */
     public function onException($callableOrException, $callable = null): Handler
     {
-        !$this->finalized ?: throw new StatusFinalizedException();
+        $this->checkFinalized();
         return $this->registerErrorHandlerFor(self::EXCEPTION, $callableOrException, $callable);
     }
 
@@ -94,7 +94,7 @@ abstract class CollectHandlers
      */
     public function onApiError($callableOrPattern, $callable = null): Handler
     {
-        !$this->finalized ?: throw new StatusFinalizedException();
+        $this->checkFinalized();
         return $this->registerErrorHandlerFor(self::API_ERROR, $callableOrPattern, $callable);
     }
 
@@ -106,7 +106,7 @@ abstract class CollectHandlers
      */
     private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
     {
-        !$this->finalized ?: throw new StatusFinalizedException();
+        $this->checkFinalized();
 
         if ($callable !== null) {
             return $this->{$this->target}[$type][$callableOrPattern] = new Handler($callable, $callableOrPattern);
@@ -131,7 +131,7 @@ abstract class CollectHandlers
      */
     public function fallbackOn(UpdateType $type, $callable): Handler
     {
-        !$this->finalized ?: throw new StatusFinalizedException();
+        $this->checkFinalized();
         return $this->{$this->target}[self::FALLBACK][$type->value] = new Handler($callable, $type->value);
     }
 
@@ -157,7 +157,7 @@ abstract class CollectHandlers
      */
     public function beforeApiRequest($callable): Handler
     {
-        !$this->finalized ?: throw new StatusFinalizedException();
+        $this->checkFinalized();
         return $this->{$this->target}[self::BEFORE_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
     }
 
@@ -167,7 +167,12 @@ abstract class CollectHandlers
      */
     public function afterApiRequest($callable): Handler
     {
-        !$this->finalized ?: throw new StatusFinalizedException();
+        $this->checkFinalized();
         return $this->{$this->target}[self::AFTER_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
+    }
+
+    private function checkFinalized(): void
+    {
+        !$this->finalized ?: throw new StatusFinalizedException();
     }
 }
