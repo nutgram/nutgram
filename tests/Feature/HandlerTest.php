@@ -872,3 +872,34 @@ it('get handlers parameters inside local middleware', function () {
 
     $bot->hearCallbackQueryData('user/123/show')->reply();
 });
+
+it('get user profile photos', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $result = $bot->getUserProfilePhotos(123);
+
+        expect($result)
+            ->total_count->toBe(2)
+            ->photos->toBeArray()
+            ->photos->toHaveCount(2);
+    });
+
+    $bot
+        ->hearText('/start')
+        ->willReceivePartial([
+            'total_count' => 2,
+            'photos' => [
+                [
+                    'file_id' => 'AAA'
+                ],
+                [
+                    'file_id' => 'BBB'
+                ],
+            ]
+        ])
+        ->reply()
+        ->assertReply('getUserProfilePhotos', [
+            'user_id' => 123,
+        ]);
+});
