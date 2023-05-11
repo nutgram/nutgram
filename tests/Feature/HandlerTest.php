@@ -10,6 +10,7 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberAdministrator;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Tests\Fixtures\TestStartCommand;
 
@@ -882,7 +883,17 @@ it('get user profile photos', function () {
         expect($result)
             ->total_count->toBe(2)
             ->photos->toBeArray()
-            ->photos->toHaveCount(2);
+            ->photos->toHaveCount(2)
+            ->and($result->photos[0])->toBeArray()
+            ->sequence(
+                fn ($item) => $item->toBeInstanceOf(PhotoSize::class)->file_id->toBe('1A'),
+                fn ($item) => $item->toBeInstanceOf(PhotoSize::class)->file_id->toBe('1B'),
+            )
+            ->and($result->photos[1])->toBeArray()
+            ->sequence(
+                fn ($item) => $item->toBeInstanceOf(PhotoSize::class)->file_id->toBe('2A'),
+                fn ($item) => $item->toBeInstanceOf(PhotoSize::class)->file_id->toBe('2B'),
+            );
     });
 
     $bot
@@ -891,11 +902,13 @@ it('get user profile photos', function () {
             'total_count' => 2,
             'photos' => [
                 [
-                    'file_id' => 'AAA'
+                    ['file_id' => '1A'],
+                    ['file_id' => '1B'],
                 ],
                 [
-                    'file_id' => 'BBB'
-                ],
+                    ['file_id' => '2A'],
+                    ['file_id' => '2B'],
+                ]
             ]
         ])
         ->reply()
