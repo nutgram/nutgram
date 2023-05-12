@@ -186,3 +186,27 @@ it('calls the message handler with regex all characters', function ($update) {
 
     expect($bot->getGlobalData('passed', false))->toBeTrue();
 })->with('food');
+
+it('calls handler with different pattern cases', function ($pattern, $input, $pass) {
+    $bot = Nutgram::fake();
+
+    $bot->onText($pattern, function (Nutgram $bot) {
+        $bot->sendMessage('called');
+    });
+
+    $bot->hearText($input)->reply();
+
+    expect($bot)
+        ->when($pass, fn ($bot) => $bot->assertCalled('sendMessage'))
+        ->unless($pass, fn ($bot) => $bot->assertNoReply());
+
+})->with([
+    'latin-lower-lower' => ['foo', 'foo', true],
+    'latin-lower-upper' => ['foo', 'FOO', false],
+    'latin-upper-lower' => ['FOO', 'foo', false],
+    'latin-upper-upper' => ['FOO', 'FOO', true],
+    'cyrillic-lower-lower' => ['пример', 'пример', true],
+    'cyrillic-lower-upper' => ['пример', 'ПРИМЕР', false],
+    'cyrillic-upper-lower' => ['ПРИМЕР', 'пример', false],
+    'cyrillic-upper-upper' => ['ПРИМЕР', 'ПРИМЕР', true],
+]);
