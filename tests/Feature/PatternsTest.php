@@ -199,7 +199,6 @@ it('calls handler with different pattern cases', function ($pattern, $input, $pa
     expect($bot)
         ->when($pass, fn ($bot) => $bot->assertCalled('sendMessage'))
         ->unless($pass, fn ($bot) => $bot->assertNoReply());
-
 })->with([
     'latin-lower-lower' => ['foo', 'foo', true],
     'latin-lower-upper' => ['foo', 'FOO', false],
