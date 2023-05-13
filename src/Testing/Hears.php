@@ -59,14 +59,13 @@ trait Hears
     }
 
     /**
-     * @param  string  $type
-     * @param  array  $partialAttributes
+     * @param UpdateType $type
+     * @param array $partialAttributes
      * @return $this
      */
     public function hearUpdateType(
         UpdateType $type,
         array $partialAttributes = [],
-        bool $fillNullableFields = false
     ): self {
         $typeName = $type->value;
 
@@ -78,7 +77,7 @@ trait Hears
             ->getType()
             ?->getName();
 
-        $update->{$typeName} = $this->typeFaker->fakeInstanceOf($class, $partialAttributes, $fillNullableFields);
+        $update->{$typeName} = $this->typeFaker->fakeInstanceOf($class, $partialAttributes);
 
         return $this->hearUpdate($update);
     }

@@ -21,6 +21,7 @@ class ChatMemberResolver extends ConcreteResolver
 
     public function concreteFor(array $data): ?string
     {
-        return $this->concretes[$data['status']] ?? throw new InvalidArgumentException('Unknown ChatMember status: '.$data['status']);
+        $status = $data['status'] ?? throw new InvalidArgumentException('Status must be defined');
+        return $this->concretes[$status] ?? throw new InvalidArgumentException("Unknown ChatMember status: {$status}");
     }
 }
