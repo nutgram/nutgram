@@ -502,7 +502,7 @@ it('skips global middleware except one', function ($update) {
             $test[] = 'Message';
         })
         ->skipGlobalMiddlewares([
-            $middleware1
+            $middleware1,
         ])
         ->middleware(function ($bot, $next) use (&$test) {
             $test[] = 'LM1';
@@ -584,10 +584,12 @@ it('dumps requests call', function () {
         $bot->sendMessage('bar');
     });
 
+    ob_start();
     $bot
         ->hearText('/foo')
         ->reply()
         ->dump();
+    ob_end_clean();
 
     expect($bot->getDumpHistory()[0])
         ->toContain('Nutgram Request History Dump')
@@ -598,10 +600,12 @@ it('dumps requests call', function () {
 it('dumps no requests call', function () {
     $bot = Nutgram::fake();
 
+    ob_start();
     $bot
         ->hearText('/foo')
         ->reply()
         ->dump();
+    ob_end_clean();
 
     expect($bot->getDumpHistory()[0])
         ->toContain('Nutgram Request History Dump')
