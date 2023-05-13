@@ -16,7 +16,7 @@ class TypeFaker
     private array $resolveStack = [];
 
     /**
-     * @param  Hydrator  $hydrator
+     * @param Hydrator $hydrator
      */
     public function __construct(private Hydrator $hydrator)
     {
@@ -24,8 +24,8 @@ class TypeFaker
 
     /**
      * @template T
-     * @param  class-string  $type
-     * @param  array  $partial
+     * @param class-string $type
+     * @param array $partial
      * @return T|string|int|bool|array|null|float
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -47,8 +47,8 @@ class TypeFaker
 
     /**
      *
-     * @param  class-string  $class
-     * @param  array  $additional
+     * @param class-string $class
+     * @param array $additional
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -98,10 +98,7 @@ class TypeFaker
             /** @var ArrayType|null $arrayType */
             $arrayType = array_shift($attributes)?->newInstance();
             if ($arrayType !== null && $this->shouldInstantiate($arrayType->class, $isNullable)) {
-                $data[$property->name] = $this->wrap(
-                    $this->fakeDataFor($arrayType->class, $userDefined),
-                    $arrayType->depth
-                );
+                $data[$property->name] = $this->fakeArray($arrayType, $userDefined);
                 continue;
             }
 
@@ -120,8 +117,8 @@ class TypeFaker
 
 
     /**
-     * @param  string  $class
-     * @param  bool  $isNullable
+     * @param string $class
+     * @param bool $isNullable
      * @return bool
      */
     protected function shouldInstantiate(string $class, bool $isNullable): bool
@@ -133,8 +130,8 @@ class TypeFaker
 
 
     /**
-     * @param  mixed  $what
-     * @param  int  $layer
+     * @param mixed $what
+     * @param int $layer
      * @return array
      */
     protected function wrap(mixed $what, int $layer = 0): array
@@ -147,7 +144,7 @@ class TypeFaker
     }
 
     /**
-     * @param  string  $type
+     * @param string $type
      * @return string|int|bool|array|float|null
      */
     public static function randomScalarOf(string $type): string|int|bool|array|null|float
@@ -163,7 +160,7 @@ class TypeFaker
     }
 
     /**
-     * @param  int  $length
+     * @param int $length
      * @return string
      */
     public static function randomString(int $length = 8): string
@@ -176,8 +173,8 @@ class TypeFaker
     }
 
     /**
-     * @param  int  $min
-     * @param  int|null  $max
+     * @param int $min
+     * @param int|null $max
      * @return int
      */
     public static function randomInt(int $min = 0, ?int $max = null): int
@@ -194,7 +191,7 @@ class TypeFaker
     }
 
     /**
-     * @param  string  $class
+     * @param string $class
      * @return ReflectionClass
      * @throws \ReflectionException
      */
@@ -216,5 +213,26 @@ class TypeFaker
             }
         }
         return $reflectionClass;
+    }
+
+    private function fakeArray(ArrayType $arrayType, array $userDefined = [], $depth = 1): array
+    {
+        $wrapped = [];
+        foreach ($userDefined as $layer) {
+            if ($depth < $arrayType->depth) {
+                $wrapped[] = $this->fakeArray($arrayType, $layer, $depth + 1);
+            } else {
+                $wrapped[] = $this->fakeDataFor($arrayType->class, $layer);
+            }
+        }
+
+        if (empty($wrapped)) {
+            $wrapped = $this->wrap(
+                $this->fakeDataFor($arrayType->class, $userDefined),
+                $arrayType->depth
+            );
+        }
+
+        return $wrapped;
     }
 }
