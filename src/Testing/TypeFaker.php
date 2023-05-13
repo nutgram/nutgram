@@ -3,13 +3,16 @@
 namespace SergiX44\Nutgram\Testing;
 
 use BackedEnum;
+use InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionProperty;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Hydrator\Hydrator;
+use Throwable;
 
 class TypeFaker
 {
@@ -24,12 +27,12 @@ class TypeFaker
 
     /**
      * @template T
-     * @param  class-string  $type
-     * @param  array  $partial
+     * @param class-string $type
+     * @param array $partial
      * @return T|string|int|bool|array|null|float
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function fakeInstanceOf(string $type, array $partial = []): mixed
     {
@@ -47,12 +50,12 @@ class TypeFaker
 
     /**
      *
-     * @param  class-string  $class
-     * @param  array  $additional
+     * @param class-string $class
+     * @param array $additional
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function fakeDataFor(
         string $class,
@@ -194,9 +197,9 @@ class TypeFaker
     }
 
     /**
-     * @param  string  $class
+     * @param string $class
      * @return ReflectionClass
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function getReflectionClass(string $class, array $context = []): ReflectionClass
     {
@@ -207,8 +210,12 @@ class TypeFaker
             $resolver = $this->hydrator->getConcreteFor($reflectionClass->getName());
 
             try {
+                if (empty($context)) {
+                    throw new InvalidArgumentException('Context is empty');
+                }
+
                 return new ReflectionClass($resolver?->concreteFor($context));
-            } catch (\Throwable|\ReflectionException) {
+            } catch (Throwable|ReflectionException) {
                 $concretes = $resolver?->getConcretes();
                 if (!empty($concretes)) {
                     return new ReflectionClass(array_shift($concretes));
