@@ -18,6 +18,7 @@ class MenuButtonResolver extends ConcreteResolver
 
     public function concreteFor(array $data): ?string
     {
-        return $this->concretes[$data['type']] ?? throw new InvalidArgumentException('Unknown MenuButton type: '.$data['type']);
+        $type = $data['type']  ?? throw new InvalidArgumentException('Type must be defined');
+        return $this->concretes[$type] ?? throw new InvalidArgumentException("Unknown MenuButton type: {$type}");
     }
 }

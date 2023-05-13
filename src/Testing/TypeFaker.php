@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\Testing;
 
 use BackedEnum;
-use InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
@@ -210,12 +209,8 @@ class TypeFaker
             $resolver = $this->hydrator->getConcreteFor($reflectionClass->getName());
 
             try {
-                if (empty($context)) {
-                    throw new InvalidArgumentException('Context is empty');
-                }
-
                 return new ReflectionClass($resolver?->concreteFor($context));
-            } catch (Throwable|ReflectionException) {
+            } catch (Throwable) {
                 $concretes = $resolver?->getConcretes();
                 if (!empty($concretes)) {
                     return new ReflectionClass(array_shift($concretes));
