@@ -11,6 +11,6 @@ trait HasDownload
 {
     public function download(string $path, array $clientOpt = []): ?bool
     {
-        return $this->bot->getFile($this->file_id)?->save($path, $clientOpt);
+        return $this->getBot()->getFile($this->file_id)?->save($path, $clientOpt);
     }
 }

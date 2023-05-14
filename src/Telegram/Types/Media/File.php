@@ -48,7 +48,7 @@ class File extends BaseType
             $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
             $path .= basename($this->file_path ?? $this->file_id);
         }
-        return $this->bot?->downloadFile($this, $path, $clientOpt);
+        return $this->getBot()?->downloadFile($this, $path, $clientOpt);
     }
 
     /**
@@ -56,6 +56,6 @@ class File extends BaseType
      */
     public function url(): string|null
     {
-        return $this->bot?->downloadUrl($this);
+        return $this->getBot()?->downloadUrl($this);
     }
 }

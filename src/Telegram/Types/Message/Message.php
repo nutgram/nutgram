@@ -607,7 +607,7 @@ class Message extends BaseType
      */
     public function delete(): ?bool
     {
-        return $this->bot->deleteMessage(
+        return $this->getBot()->deleteMessage(
             chat_id: $this->chat->id,
             message_id: $this->message_id
         );
@@ -641,7 +641,7 @@ class Message extends BaseType
         $chat_id ??= $this->chat->id;
         $message_id ??= $this->message_id;
 
-        return $this->bot->editMessageText(
+        return $this->getBot()->editMessageText(
             text: $text,
             chat_id: $chat_id,
             message_id: $message_id,
@@ -692,7 +692,7 @@ class Message extends BaseType
         $from_chat_id ??= $this->chat->id;
         $message_id ??= $this->message_id;
 
-        return $this->bot->copyMessage(
+        return $this->getBot()->copyMessage(
             chat_id: $chat_id,
             from_chat_id: $from_chat_id,
             message_id: $message_id,
@@ -733,7 +733,7 @@ class Message extends BaseType
         $from_chat_id ??= $this->chat->id;
         $message_id ??= $this->message_id;
 
-        return $this->bot->forwardMessage(
+        return $this->getBot()->forwardMessage(
             chat_id: $chat_id,
             from_chat_id: $from_chat_id,
             message_id: $message_id,

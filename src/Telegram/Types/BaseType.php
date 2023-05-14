@@ -11,14 +11,15 @@ abstract class BaseType
         __call as callMacro;
     }
 
-    protected ?Nutgram $bot;
+    /** @internal */
+    private ?Nutgram $_bot;
 
     /**
      * @param  Nutgram|null  $bot
      */
     public function __construct(?Nutgram $bot = null)
     {
-        $this->bot = $bot;
+        $this->_bot = $bot;
     }
 
     /**
@@ -28,8 +29,8 @@ abstract class BaseType
      */
     public function __call($method, $parameters)
     {
-        if (method_exists($this->bot, $method)) {
-            return $this->bot->$method(...$parameters);
+        if (method_exists($this->_bot, $method)) {
+            return $this->_bot->$method(...$parameters);
         }
 
         return $this->callMacro($method, $parameters);
@@ -41,12 +42,12 @@ abstract class BaseType
      */
     public function bindToInstance(?Nutgram $bot): self
     {
-        $this->bot = $bot;
+        $this->_bot = $bot;
         return $this;
     }
 
     public function getBot(): ?Nutgram
     {
-        return $this->bot;
+        return $this->_bot;
     }
 }
