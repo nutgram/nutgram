@@ -21,6 +21,22 @@ final readonly class Configuration
     public const DEFAULT_HYDRATOR = NutgramHydrator::class;
     public const DEFAULT_CACHE = ArrayCache::class;
     public const DEFAULT_LOGGER = NullLogger::class;
+    public const DEFAULT_ALLOWED_UPDATES = [
+        'message',
+        'edited_message',
+        'channel_post',
+        'edited_channel_post',
+        'inline_query',
+        'chosen_inline_result',
+        'callback_query',
+        'shipping_query',
+        'pre_checkout_query',
+        'poll',
+        'poll_answer',
+        'my_chat_member',
+        'chat_member',
+        'chat_join_request',
+    ];
 
     /**
      * @param  string  $apiUrl
@@ -53,22 +69,7 @@ final readonly class Configuration
         public string|LoggerInterface $logger = self::DEFAULT_LOGGER,
         public array|Closure|string|null $localPathTransformer = null,
         public int $pollingTimeout = self::DEFAULT_POLLING_TIMEOUT,
-        public array $pollingAllowedUpdates = [
-            'message',
-            'edited_message',
-            'channel_post',
-            'edited_channel_post',
-            'inline_query',
-            'chosen_inline_result',
-            'callback_query',
-            'shipping_query',
-            'pre_checkout_query',
-            'poll',
-            'poll_answer',
-            'my_chat_member',
-            'chat_member',
-            'chat_join_request',
-        ],
+        public array $pollingAllowedUpdates = self::DEFAULT_ALLOWED_UPDATES,
         public int $pollingLimit = self::DEFAULT_POLLING_LIMIT
     ) {
     }
@@ -90,7 +91,7 @@ final readonly class Configuration
             logger: $config['logger'] ?? self::DEFAULT_LOGGER,
             localPathTransformer: $config['local_path_transformer'] ?? null,
             pollingTimeout: $config['polling']['timeout'] ?? self::DEFAULT_POLLING_TIMEOUT,
-            pollingAllowedUpdates: $config['polling']['allowed_updates'] ?? [],
+            pollingAllowedUpdates: $config['polling']['allowed_updates'] ?? self::DEFAULT_ALLOWED_UPDATES,
             pollingLimit: $config['polling']['limit'] ?? self::DEFAULT_POLLING_LIMIT
         );
     }
