@@ -19,6 +19,7 @@ use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\Handler;
+use SergiX44\Nutgram\Handlers\HandlerCompiler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Hydrator\Hydrator;
@@ -37,7 +38,11 @@ use Throwable;
 
 class Nutgram extends ResolveHandlers
 {
-    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy;
+    use Client,
+        UpdateDataProxy,
+        GlobalCacheProxy,
+        UserCacheProxy,
+        HandlerCompiler;
 
     /**
      * @var string
@@ -140,6 +145,10 @@ class Nutgram extends ResolveHandlers
 
         $this->container->addShared(RunningMode::class, Polling::class);
         $this->container->addShared(__CLASS__, $this);
+
+        if ($config->compileTo !== null) {
+            $this->loadCompiledHandlers($config->compileTo);
+        }
     }
 
     /**
@@ -197,11 +206,19 @@ class Nutgram extends ResolveHandlers
 
     protected function preflight(): void
     {
-        if (!$this->finalized) {
-            $this->resolveGroups();
-            $this->applyGlobalMiddleware();
-            $this->finalized = true;
+        if ($this->finalized) {
+            return;
         }
+
+        $this->resolveGroups();
+        $this->applyGlobalMiddleware();
+
+
+        if ($this->config->compileTo !== null && !$this->loadedFromCache) {
+            $this->generateCompiledHandlers($this->config->compileTo, $this->handlers);
+        }
+
+        $this->finalized = true;
     }
 
     /**

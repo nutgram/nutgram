@@ -70,7 +70,8 @@ final readonly class Configuration
         public array|Closure|string|null $localPathTransformer = null,
         public int $pollingTimeout = self::DEFAULT_POLLING_TIMEOUT,
         public array $pollingAllowedUpdates = self::DEFAULT_ALLOWED_UPDATES,
-        public int $pollingLimit = self::DEFAULT_POLLING_LIMIT
+        public int $pollingLimit = self::DEFAULT_POLLING_LIMIT,
+        public ?string $compileTo = null
     ) {
     }
 
@@ -92,7 +93,8 @@ final readonly class Configuration
             localPathTransformer: $config['local_path_transformer'] ?? null,
             pollingTimeout: $config['polling']['timeout'] ?? self::DEFAULT_POLLING_TIMEOUT,
             pollingAllowedUpdates: $config['polling']['allowed_updates'] ?? self::DEFAULT_ALLOWED_UPDATES,
-            pollingLimit: $config['polling']['limit'] ?? self::DEFAULT_POLLING_LIMIT
+            pollingLimit: $config['polling']['limit'] ?? self::DEFAULT_POLLING_LIMIT,
+            compileTo: $config['compile_to'] ?? null
         );
     }
 
