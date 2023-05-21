@@ -71,7 +71,7 @@ final readonly class Configuration
         public int $pollingTimeout = self::DEFAULT_POLLING_TIMEOUT,
         public array $pollingAllowedUpdates = self::DEFAULT_ALLOWED_UPDATES,
         public int $pollingLimit = self::DEFAULT_POLLING_LIMIT,
-        public ?string $compileTo = null
+        public bool $enableCompilation = false
     ) {
     }
 
@@ -94,7 +94,7 @@ final readonly class Configuration
             pollingTimeout: $config['polling']['timeout'] ?? self::DEFAULT_POLLING_TIMEOUT,
             pollingAllowedUpdates: $config['polling']['allowed_updates'] ?? self::DEFAULT_ALLOWED_UPDATES,
             pollingLimit: $config['polling']['limit'] ?? self::DEFAULT_POLLING_LIMIT,
-            compileTo: $config['compile_to'] ?? null
+            enableCompilation: $config['enable_compilation'] ?? false
         );
     }
 
@@ -113,6 +113,7 @@ final readonly class Configuration
             'cache' => $this->cache,
             'logger' => $this->logger,
             'local_path_transformer' => $this->localPathTransformer,
+            'enable_compilation' => $this->enableCompilation,
             'polling' => [
                 'timeout' => $this->pollingTimeout,
                 'limit' => $this->pollingLimit,

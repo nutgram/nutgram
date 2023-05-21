@@ -18,19 +18,10 @@ abstract class CollectHandlers
     protected const AFTER_API_REQUEST = 'AFTER_API_REQUEST';
     protected const API_ERROR = 'API_ERROR';
 
-    /**
-     * @var array
-     */
     protected array $globalMiddlewares = [];
 
-    /**
-     * @var string
-     */
     protected string $target = 'handlers';
 
-    /**
-     * @var array
-     */
     protected array $handlers = [];
 
     /**
@@ -38,22 +29,18 @@ abstract class CollectHandlers
      */
     protected array $groups = [];
 
-    /**
-     * @var array
-     */
     protected array $groupHandlers = [];
 
-    /**
-     * @var bool
-     */
     protected bool $finalized = false;
+
+    protected bool $dirty = false;
 
     /**
      * @param callable|callable-string|array $callable
      */
     public function middleware($callable): void
     {
-        $this->checkFinalized();
+        $this->beforeRegister();
         array_unshift($this->globalMiddlewares, $callable);
     }
 
@@ -62,7 +49,7 @@ abstract class CollectHandlers
      */
     public function middlewares($callable): void
     {
-        $this->checkFinalized();
+        $this->beforeRegister();
         $middlewares = is_array($callable) ? $callable : [$callable];
 
         foreach ($middlewares as $middleware) {
@@ -72,7 +59,7 @@ abstract class CollectHandlers
 
     public function group(callable $closure): HandlerGroup
     {
-        $this->checkFinalized();
+        $this->beforeRegister();
         return $this->groups[] = new HandlerGroup($closure);
     }
 
@@ -83,7 +70,7 @@ abstract class CollectHandlers
      */
     public function onException($callableOrException, $callable = null): Handler
     {
-        $this->checkFinalized();
+        $this->beforeRegister();
         return $this->registerErrorHandlerFor(self::EXCEPTION, $callableOrException, $callable);
     }
 
@@ -94,7 +81,7 @@ abstract class CollectHandlers
      */
     public function onApiError($callableOrPattern, $callable = null): Handler
     {
-        $this->checkFinalized();
+        $this->beforeRegister();
         return $this->registerErrorHandlerFor(self::API_ERROR, $callableOrPattern, $callable);
     }
 
@@ -106,7 +93,7 @@ abstract class CollectHandlers
      */
     private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
     {
-        $this->checkFinalized();
+        $this->beforeRegister();
 
         if ($callable !== null) {
             return $this->{$this->target}[$type][$callableOrPattern] = new Handler($callable, $callableOrPattern);
@@ -131,7 +118,7 @@ abstract class CollectHandlers
      */
     public function fallbackOn(UpdateType $type, $callable): Handler
     {
-        $this->checkFinalized();
+        $this->beforeRegister();
         return $this->{$this->target}[self::FALLBACK][$type->value] = new Handler($callable, $type->value);
     }
 
@@ -157,7 +144,7 @@ abstract class CollectHandlers
      */
     public function beforeApiRequest($callable): Handler
     {
-        $this->checkFinalized();
+        $this->beforeRegister();
         return $this->{$this->target}[self::BEFORE_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
     }
 
@@ -167,12 +154,13 @@ abstract class CollectHandlers
      */
     public function afterApiRequest($callable): Handler
     {
-        $this->checkFinalized();
+        $this->beforeRegister();
         return $this->{$this->target}[self::AFTER_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
     }
 
-    private function checkFinalized(): void
+    private function beforeRegister(): void
     {
+        $this->dirty = true;
         !$this->finalized ?: throw new StatusFinalizedException();
     }
 }

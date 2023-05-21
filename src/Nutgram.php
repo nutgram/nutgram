@@ -146,8 +146,8 @@ class Nutgram extends ResolveHandlers
         $this->container->addShared(RunningMode::class, Polling::class);
         $this->container->addShared(__CLASS__, $this);
 
-        if ($config->compileTo !== null) {
-            $this->loadCompiledHandlers($config->compileTo);
+        if ($config->enableCompilation) {
+            $this->loadCompiledHandlers();
         }
     }
 
@@ -214,8 +214,10 @@ class Nutgram extends ResolveHandlers
         $this->applyGlobalMiddleware();
 
 
-        if ($this->config->compileTo !== null && !$this->loadedFromCache) {
-            $this->generateCompiledHandlers($this->config->compileTo, $this->handlers);
+        // when compilation is enabled
+        // if is not loaded from compiles, or the handlers has been modified, rebuild the cache
+        if ($this->config->enableCompilation && (!$this->loadedFromCompiled() || $this->dirty)) {
+            $this->generateCompiledHandlers($this->handlers);
         }
 
         $this->finalized = true;

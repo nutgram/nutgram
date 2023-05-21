@@ -3,6 +3,8 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use Closure;
+use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Middleware\Link;
@@ -45,7 +47,7 @@ class Handler extends MiddlewareChain
     /**
      * Handler constructor.
      * @param $callable
-     * @param  string|null  $pattern
+     * @param string|null $pattern
      */
     public function __construct($callable, ?string $pattern = null)
     {
@@ -55,7 +57,7 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param  string  $value
+     * @param string $value
      * @return bool
      */
     public function matching(string $value): bool
@@ -81,7 +83,7 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param  array  $parameters
+     * @param array $parameters
      * @return Handler
      */
     public function setParameters(...$parameters): Handler
@@ -101,7 +103,7 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param  array  $parameters
+     * @param array $parameters
      * @return Handler
      */
     public function addParameters(array $parameters): Handler
@@ -111,7 +113,7 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram $bot
      * @return mixed
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -125,10 +127,17 @@ class Handler extends MiddlewareChain
         }
     }
 
+    public function __serialize(): array
+    {
+        return array_map(function ($property) {
+            return $property instanceof Closure ? new SerializableClosure($property) : $property;
+        }, get_object_vars($this));
+    }
+
     /**
      * Skip global middlewares.
      * If you want to skip a specific global middleware, use the "$middlewares" parameter.
-     * @param  array  $middlewares
+     * @param array $middlewares
      * @return $this
      */
     public function skipGlobalMiddlewares(array $middlewares = []): Handler

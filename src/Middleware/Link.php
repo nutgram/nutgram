@@ -3,6 +3,8 @@
 
 namespace SergiX44\Nutgram\Middleware;
 
+use Closure;
+use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Nutgram;
@@ -39,5 +41,12 @@ class Link
     public function __invoke(Nutgram $bot): mixed
     {
         return call_user_func($bot->resolve($this->callable), $bot, $this->next);
+    }
+
+    public function __serialize(): array
+    {
+        return array_map(function ($property) {
+            return $property instanceof Closure ? new SerializableClosure($property) : $property;
+        }, get_object_vars($this));
     }
 }
