@@ -4,17 +4,16 @@ use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 
 it('compiles closure handlers', function ($update) {
-   $bot = Nutgram::fake($update, config: new Configuration(enableCompilation: true));
+    $bot = Nutgram::fake($update, config: new Configuration(enableCompilation: true));
 
-   $bot->onCommand('start', function () {
+    $bot->onCommand('start', function () {
       //
-   })->middleware(function () {
+    })->middleware(function () {
+    });
 
-   });
+    $bot->run();
 
-   $bot->run();
+    $cache = $bot->getGlobalData('handlers.cache');
 
-   $cache = $bot->getGlobalData('handlers.cache');
-
-   expect($cache)->not->toBeNull();
+    expect($cache)->not->toBeNull();
 })->with('message');
