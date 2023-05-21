@@ -216,8 +216,8 @@ class Nutgram extends ResolveHandlers
 
         // when compilation is enabled
         // if is not loaded from compiles, or the handlers has been modified, rebuild the cache
-        if ($this->config->enableCompilation && (!$this->loadedFromCompiled() || $this->dirty)) {
-            $this->generateCompiledHandlers($this->handlers);
+        if ($this->config->enableCompilation && (!$this->compiledHandlersAreLoaded() || $this->dirty)) {
+            $this->generateCompiledHandlers();
         }
 
         $this->finalized = true;

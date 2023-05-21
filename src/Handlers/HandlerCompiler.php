@@ -4,16 +4,23 @@ namespace SergiX44\Nutgram\Handlers;
 
 trait HandlerCompiler
 {
-    protected const NAME = 'handlers.cache';
+    private const NAME = 'handlers.cache';
 
-    protected bool $fromCompiled = false;
+    private bool $compiledLoaded = false;
 
-    /**
-     * @return bool
-     */
-    public function loadedFromCompiled(): bool
+    public function compiledHandlersAreLoaded(): bool
     {
-        return $this->fromCompiled;
+        return $this->compiledLoaded;
+    }
+
+    public function generateCompiledHandlers(): bool
+    {
+        return $this->globalCache->set(self::NAME, serialize($this->handlers));
+    }
+
+    public function clearCompiledHandlers(): bool
+    {
+        return $this->globalCache->delete(self::NAME);
     }
 
     protected function loadCompiledHandlers(): bool
@@ -31,12 +38,6 @@ trait HandlerCompiler
         }
 
         $this->handlers = $data;
-        $this->fromCompiled = true;
-        return true;
-    }
-
-    protected function generateCompiledHandlers(array $handlers): false|int
-    {
-        return $this->globalCache->set(self::NAME, serialize($handlers));
+        return $this->compiledLoaded = true;
     }
 }
