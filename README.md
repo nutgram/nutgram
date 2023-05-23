@@ -4,8 +4,8 @@
 
 # Nutgram
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/nutgram/nutgram.svg?style=flat-square)](https://packagist.org/packages/nutgram/nutgram)
-[![Total Downloads](https://img.shields.io/packagist/dt/nutgram/nutgram.svg?style=flat-square)](https://packagist.org/packages/nutgram/nutgram)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/nutgram/nutgram.svg)](https://packagist.org/packages/nutgram/nutgram)
+[![Total Downloads](http://poser.pugx.org/nutgram/nutgram/downloads)](https://packagist.org/packages/nutgram/nutgram)
 ![GitHub](https://img.shields.io/github/license/nutgram/nutgram)
 [![API](https://img.shields.io/badge/Telegram%20Bot%20API-6.7%09--%20April%2021,%202023-blue.svg)](https://core.telegram.org/bots/api)
 
