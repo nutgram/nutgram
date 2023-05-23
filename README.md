@@ -4,7 +4,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/nutgram/nutgram.svg?label=composer&logo=composer)](https://packagist.org/packages/nutgram/nutgram)
 ![PHP](https://img.shields.io/packagist/dependency-v/nutgram/nutgram/php?logo=php)
-[![Total Downloads](https://img.shields.io/packagist/dt/nutgram/nutgram.svg)](https://packagist.org/packages/nutgram/nutgram)
+[![Total Downloads](http://poser.pugx.org/nutgram/nutgram/downloads)](https://packagist.org/packages/nutgram/nutgram)
 ![GitHub](https://img.shields.io/github/license/nutgram/nutgram)
 [![API](https://img.shields.io/badge/Telegram%20Bot%20API-6.7%09--%20April%2021,%202023-blue.svg?logo=telegram)](https://core.telegram.org/bots/api)
 
