@@ -2,6 +2,18 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.20.1 - 2023-05-23
+
+### What's Changed
+
+- Case insensitive onText for Cyrillic by @Tiamenti in https://github.com/nutgram/nutgram/pull/463
+
+### New Contributors
+
+- @Tiamenti made their first contribution in https://github.com/nutgram/nutgram/pull/463
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.20.0...3.20.1
+
 ## 3.20.0 - 2023-05-05
 
 ### What's Changed
