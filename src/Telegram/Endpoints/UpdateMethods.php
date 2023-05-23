@@ -31,14 +31,14 @@ trait UpdateMethods
      */
     public function getUpdates(?int $offset = null, ?int $limit = null, ?int $timeout = null, ?array $allowed_updates = null): ?array
     {
-        $timeout = ($timeout ?? $this->config->pollingTimeout) + 1;
-
         return $this->requestJson(__FUNCTION__, compact(
             'offset',
             'limit',
             'timeout',
             'allowed_updates'
-        ), Update::class);
+        ), Update::class, [
+            'timeout' => ($timeout ?? $this->config->pollingTimeout) + 1
+        ]);
     }
 
     /**
