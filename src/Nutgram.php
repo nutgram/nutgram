@@ -281,6 +281,7 @@ class Nutgram extends ResolveHandlers
                 throw $e;
             }
         }
+        $this->currentHandler = null;
 
         return $result;
     }
