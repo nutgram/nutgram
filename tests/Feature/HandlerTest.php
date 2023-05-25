@@ -855,13 +855,10 @@ it('get handler parameters inside local middleware', function ($update) {
 it('get handlers parameters inside local middleware', function () {
     $bot = Nutgram::fake();
 
-    $checkUserID = function (Nutgram $bot, $next) {
-        expect($bot->currentParameters())
-            ->sequence(
-                fn ($item) => $item->toBe('123'),
-                fn ($item) => $item->toBe('123'),
-            );
+    $currentParametersHistory = [];
 
+    $checkUserID = function (Nutgram $bot, $next) use (&$currentParametersHistory) {
+        $currentParametersHistory[] = $bot->currentParameters();
         $next($bot);
     };
 
@@ -869,10 +866,15 @@ it('get handlers parameters inside local middleware', function () {
         $bot->onCallbackQueryData('user/([0-9]+)/show', function (Nutgram $bot, string $id) {
             expect($id)->toBe('123');
         });
-        $bot->onCallbackQueryData('user/([0-9]+)/.*', function (Nutgram $bot, string $id) {
+        $bot->onCallbackQueryData('user/([0-9]+)/(.*)', function (Nutgram $bot, string $id) {
             expect($id)->toBe('123');
         });
     })->middleware($checkUserID);
 
     $bot->hearCallbackQueryData('user/123/show')->reply();
+
+    expect($currentParametersHistory)->sequence(
+        fn ($item) => $item->toBe(['123']),
+        fn ($item) => $item->toBe(['123', 'show']),
+    );
 });

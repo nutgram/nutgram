@@ -69,10 +69,12 @@ class Nutgram extends ResolveHandlers
      */
     protected ContainerInterface $container;
 
+    protected ?Handler $currentHandler = null;
+
     /**
      * Nutgram constructor.
-     * @param  string  $token
-     * @param  Configuration|null  $config
+     * @param string $token
+     * @param Configuration|null $config
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -268,6 +270,7 @@ class Nutgram extends ResolveHandlers
         /** @var Handler $handler */
         foreach ($handlers as $handler) {
             try {
+                $this->currentHandler = $handler;
                 $result = $handler->addParameters($parameters)->getHead()($this);
             } catch (Throwable $e) {
                 if (!empty($this->handlers[self::EXCEPTION])) {
@@ -449,6 +452,6 @@ class Nutgram extends ResolveHandlers
      */
     public function currentParameters(): array
     {
-        return $this->currentParameters;
+        return $this->currentHandler?->getParameters() ?? [];
     }
 }
