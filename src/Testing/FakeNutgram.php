@@ -88,7 +88,7 @@ class FakeNutgram extends Nutgram
      * @param  array  $responses
      * @return FakeNutgram
      */
-    public static function instance(mixed $update = null, array $responses = [], Configuration $config = null): self
+    public static function instance(array|object $update = null, array $responses = [], Configuration $config = null): self
     {
         $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);
@@ -132,6 +132,7 @@ class FakeNutgram extends Nutgram
                     }
                 }
             }
+
             $handlerStack->push(Middleware::history($this->testingHistory));
             $handlerStack->push(function (callable $handler) {
                 return function (RequestInterface $request, array $options) use ($handler) {
