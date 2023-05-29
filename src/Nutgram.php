@@ -186,17 +186,6 @@ class Nutgram extends ResolveHandlers
         $this->container->extend(RunningMode::class)->setConcrete($classOrInstance);
     }
 
-    /**
-     * @param CacheInterface $cache
-     */
-    public function setCache(CacheInterface $cache): void
-    {
-        $this->container->extend(CacheInterface::class)->setConcrete($cache);
-        $this->conversationCache = $this->container->get(ConversationCache::class);
-        $this->globalCache = $this->container->get(GlobalCache::class);
-        $this->userCache = $this->container->get(UserCache::class);
-    }
-
     protected function preflight(): void
     {
         if (!$this->finalized) {
@@ -376,7 +365,7 @@ class Nutgram extends ResolveHandlers
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getUpdateMode(): string
+    public function getRunningMode(): string
     {
         return $this->container->get(RunningMode::class)::class;
     }

@@ -16,7 +16,7 @@ it('return the right running mode', function ($update) {
     /** @var \SergiX44\Nutgram\Nutgram $bot */
     $bot = Nutgram::fake($update);
 
-    expect($bot->getUpdateMode())->toBe(Fake::class);
+    expect($bot->getRunningMode())->toBe(Fake::class);
 })->with('callback_query');
 
 it('works as mocked instance', function () {
