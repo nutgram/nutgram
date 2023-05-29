@@ -49,16 +49,14 @@ test('getGlobalData() returns value after calling setGlobalData() with valid TTL
 });
 
 test('getGlobalData() returns default value after calling setGlobalData() with expired TTL', function () {
-    $bot = Nutgram::fake();
-
     $cache = mock(ArrayCache::class)
         ->makePartial()
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('getNow')
         ->andReturn(new DateTimeImmutable('2023-12-25 00:00:00'))
         ->getMock();
-    $bot->setCache($cache);
 
+    $bot = Nutgram::fake(config: new \SergiX44\Nutgram\Configuration(cache: $cache));
     $bot->setGlobalData('test', 'foo', 1);
 
     $cache = mock(ArrayCache::class)
@@ -67,7 +65,7 @@ test('getGlobalData() returns default value after calling setGlobalData() with e
         ->shouldReceive('getNow')
         ->andReturn(new DateTimeImmutable('2023-12-25 00:00:02'))
         ->getMock();
-    $bot->setCache($cache);
+    $bot = Nutgram::fake(config: new \SergiX44\Nutgram\Configuration(cache: $cache));
 
     $value = $bot->getGlobalData('test', 'bar');
 
