@@ -72,7 +72,7 @@ it('delete message works as mocked instance', function () {
         ->hearText('/test')
         ->willReceivePartial([
             'chat' => ['id' => 123],
-            'message_id' => 321
+            'message_id' => 321,
         ]);
 
     $bot->onCommand('test', function (Nutgram $bot) {
@@ -93,7 +93,7 @@ it('copy message works as mocked instance', function () {
         ->hearText('/test')
         ->willReceivePartial([
             'chat' => ['id' => $fromChatId],
-            'message_id' => $messageId
+            'message_id' => $messageId,
         ]);
 
     $bot->onCommand('test', function (Nutgram $bot) use ($chatId) {
@@ -107,7 +107,7 @@ it('copy message works as mocked instance', function () {
             expected: [
                 'message_id' => $messageId,
                 'chat_id' => $chatId,
-                'from_chat_id' => $fromChatId
+                'from_chat_id' => $fromChatId,
             ],
             index: 1
         );
@@ -123,7 +123,7 @@ it('forward message works as mocked instance', function () {
         ->hearText('/test')
         ->willReceivePartial([
             'chat' => ['id' => $fromChatId],
-            'message_id' => $messageId
+            'message_id' => $messageId,
         ]);
 
     $bot->onCommand('test', function (Nutgram $bot) use ($chatId) {
@@ -137,7 +137,7 @@ it('forward message works as mocked instance', function () {
             expected: [
                 'message_id' => $messageId,
                 'chat_id' => $chatId,
-                'from_chat_id' => $fromChatId
+                'from_chat_id' => $fromChatId,
             ],
             index: 1
         );
@@ -171,3 +171,8 @@ it('sends file works as mocked instance', function () {
             return is_resource($document->getTmpResource());
         });
 });
+
+it('throws an exception when no fake update specified', function () {
+    $bot = Nutgram::fake();
+    $bot->reply();
+})->expectException(InvalidArgumentException::class);
