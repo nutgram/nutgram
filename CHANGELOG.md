@@ -2,6 +2,39 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.0.0 - 2023-05-30
+
+### What's Changed
+
+#### ⚠️ Please check the [UPGRADING.md](https://nutgram.dev/docs/upgrading/from-3.x-to-4.x) file before upgrading to this major version!
+
+- [4.x] Add Supported versions table by @Lukasss93 in https://github.com/nutgram/nutgram/pull/355
+- [4.x] Remove deprecations by @Lukasss93 in https://github.com/nutgram/nutgram/pull/357
+- [4.x] Bump PHP version from 8.0 to 8.2 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/356
+- [4.x] Drop Laravel integration (it will be moved in another package) by @SergiX44 in https://github.com/nutgram/nutgram/pull/359
+- [4.x] Attributes to Enums by @Lukasss93 in https://github.com/nutgram/nutgram/pull/362
+- [4.x] Array_merge to spread by @Lukasss93 in https://github.com/nutgram/nutgram/pull/377
+- [4.x] Use configuration class for additional settings instead of array by @SergiX44 in https://github.com/nutgram/nutgram/pull/365
+- [4.x] Migrate phpunit.xml schema (PHPUnit 10.1 and Pest 2.5) by @Lukasss93 in https://github.com/nutgram/nutgram/pull/422
+- [4.x] Drop custom objects by @Lukasss93 in https://github.com/nutgram/nutgram/pull/421
+- [4.x] Chunked endpoints by @Lukasss93 in https://github.com/nutgram/nutgram/pull/429
+- [4.x] Convert $opt array to named parameters by @SergiX44 in https://github.com/nutgram/nutgram/pull/433
+- [4.x] Better abstract types integration by @Lukasss93 in https://github.com/nutgram/nutgram/pull/444
+- [4.x] Fix inputfile usages by @Lukasss93 in https://github.com/nutgram/nutgram/pull/446
+- [4.x] Add download method to Media types by @Lukasss93 in https://github.com/nutgram/nutgram/pull/447
+- [4.x] New group syntax by @SergiX44 in https://github.com/nutgram/nutgram/pull/451
+- [4.x] Fix InputFile inside InputMedia* classes by @Lukasss93 in https://github.com/nutgram/nutgram/pull/453
+- Update readme by @Lukasss93 in https://github.com/nutgram/nutgram/pull/457
+- [4.x] Fix type faker abstract resolver by @Lukasss93 in https://github.com/nutgram/nutgram/pull/461
+- [4.x] Fix warning by @Lukasss93 in https://github.com/nutgram/nutgram/pull/466
+- [4.x] Fix fakeDataFor for matrix type by @Lukasss93 in https://github.com/nutgram/nutgram/pull/462
+- [4.x] Case sensitive pattern by @Lukasss93 in https://github.com/nutgram/nutgram/pull/465
+- [4.x] Get current parameters for the current resolved handler by @Lukasss93 in https://github.com/nutgram/nutgram/pull/474
+- Drop setCache method by @SergiX44 in https://github.com/nutgram/nutgram/pull/476
+- Fake throws exception when the update is empty by @SergiX44 in https://github.com/nutgram/nutgram/pull/477
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.20.1...4.0.0
+
 ## 3.20.1 - 2023-05-23
 
 ### What's Changed
