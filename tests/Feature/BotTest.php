@@ -172,7 +172,7 @@ it('sends file works as mocked instance', function () {
         });
 });
 
-it('generate an empty update when no fake update specified', function () {
+it('throws an exception when no fake update specified', function () {
     $bot = Nutgram::fake();
     $bot->reply();
 })->expectException(InvalidArgumentException::class);
