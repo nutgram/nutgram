@@ -17,8 +17,7 @@ class ChatPhoto extends BaseType
     public string $small_file_id;
 
     /**
-     * Unique file identifier of small (160x160) chat photo,
-     * which is supposed to be the same over time and for different bots.
+     * Unique file identifier of small (160x160) chat photo, which is supposed to be the same over time and for different bots.
      * Can't be used to download or reuse the file.
      */
     public string $small_file_unique_id;
@@ -30,8 +29,7 @@ class ChatPhoto extends BaseType
     public string $big_file_id;
 
     /**
-     * Unique file identifier of big (640x640) chat photo,
-     * which is supposed to be the same over time and for different bots.
+     * Unique file identifier of big (640x640) chat photo, which is supposed to be the same over time and for different bots.
      * Can't be used to download or reuse the file.
      */
     public string $big_file_unique_id;

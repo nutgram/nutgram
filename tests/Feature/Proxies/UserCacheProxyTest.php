@@ -59,15 +59,15 @@ test('getUserData() returns value after calling setUserData() with valid TTL', f
 });
 
 test('getUserData() returns default value after calling setUserData() with expired TTL', function () {
-    $bot = Nutgram::fake();
-
     $cache = mock(ArrayCache::class)
         ->makePartial()
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('getNow')
         ->andReturn(new DateTimeImmutable('2023-12-25 00:00:00'))
         ->getMock();
-    $bot->setCache($cache);
+
+    $bot = Nutgram::fake(config: new \SergiX44\Nutgram\Configuration(cache: $cache));
+    $bot->setGlobalData('test', 'foo', 1);
 
     $bot->setUserData(key: 'test', value: 'foo', userId: 123, ttl: 1);
 
@@ -77,7 +77,8 @@ test('getUserData() returns default value after calling setUserData() with expir
         ->shouldReceive('getNow')
         ->andReturn(new DateTimeImmutable('2023-12-25 00:00:02'))
         ->getMock();
-    $bot->setCache($cache);
+
+    $bot = Nutgram::fake(config: new \SergiX44\Nutgram\Configuration(cache: $cache));
 
     $value = $bot->getUserData(key: 'test', userId: 123, default: 'bar');
 

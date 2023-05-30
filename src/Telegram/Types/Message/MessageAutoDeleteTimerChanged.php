@@ -11,7 +11,8 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 class MessageAutoDeleteTimerChanged extends BaseType
 {
     /**
-     * New auto-delete time for messages in the chat
+     * New auto-delete time for messages in the chat;
+     * in seconds
      */
     public int $message_auto_delete_time;
 }

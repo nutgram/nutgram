@@ -15,14 +15,14 @@ class ConversationWithConstructor extends Conversation
     public function start(Nutgram $bot)
     {
         expect($this->service)->toBeInstanceOf(CustomService::class);
-        $bot->setData('test', 1);
+        $bot->set('test', 1);
         $this->next('secondStep');
     }
 
     public function secondStep(Nutgram $bot)
     {
         expect($this->service)->toBeInstanceOf(CustomService::class);
-        $bot->setData('test', 2);
+        $bot->set('test', 2);
         $this->end();
     }
 }

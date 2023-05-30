@@ -12,37 +12,34 @@ trait UpdateDataProxy
     private array $store = [];
 
     /**
-     * @param $key
-     * @param  null  $default
+     * @param  array-key  $key
+     * @param  mixed  $default
      * @return mixed
      */
-    public function getData($key, $default = null): mixed
+    public function get(int|string $key, mixed $default = null): mixed
     {
         return $this->store[$key] ?? $default;
     }
 
     /**
-     * @param $key
-     * @param $value
+     * @param  array-key  $key
+     * @param mixed $value
      * @return mixed
      */
-    public function setData($key, $value): mixed
+    public function set(int|string $key, mixed $value): mixed
     {
         return $this->store[$key] = $value;
     }
 
     /**
-     * @param $key
+     * @param  array-key  $key
      */
-    public function deleteData($key): void
+    public function delete(int|string $key): void
     {
         unset($this->store[$key]);
     }
 
-    /**
-     *
-     */
-    public function clearData(): void
+    public function clear(): void
     {
         $this->store = [];
     }

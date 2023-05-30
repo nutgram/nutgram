@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use SergiX44\Nutgram\Telegram\Attributes\MenuButtonType;
+use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
 
 /**
  * Represents a menu button, which opens the bot's list of commands.
@@ -10,8 +10,6 @@ use SergiX44\Nutgram\Telegram\Attributes\MenuButtonType;
  */
 class MenuButtonCommands extends MenuButton
 {
-    /**
-     * Type of the button, must be commands
-     */
-    public string $type = MenuButtonType::COMMANDS;
+    /** Type of the button, must be commands */
+    public MenuButtonType $type = MenuButtonType::COMMANDS;
 }

@@ -25,7 +25,7 @@
         }
     ],
     "require": {
-      "php": ">=8.0",
+      "php": "^8.2",
       "ext-json": "*",
       "guzzlehttp/guzzle": "^7.2",
       "illuminate/macroable": "^8.0|^9.0|^10.0",
@@ -37,13 +37,10 @@
     },
     "require-dev": {
         "ext-reflection": "*",
-        "illuminate/testing": "^8.0|^9.0|^10.0",
-        "netresearch/jsonmapper": "^4.0.0",
-        "orchestra/testbench": "^6.0|^7.0|^8.0",
-        "pestphp/pest": "^1.1",
-        "pestphp/pest-plugin-mock": "^1.0",
+        "pestphp/pest": "^2.5",
+        "pestphp/pest-plugin-mock": "^2.0",
         "roave/security-advisories": "dev-latest",
-        "vimeo/psalm": "^4.30"
+        "vimeo/psalm": "^5.7.7"
     },
     "autoload": {
         "psr-4": {
@@ -56,21 +53,14 @@
         }
     },
     "scripts": {
-        "test": "@php vendor/bin/pest",
-        "test-coverage": "@php vendor/bin/pest --coverage --coverage-clover=coverage.xml",
-        "psalm": "@php vendor/bin/psalm"
+      "test": "@php vendor/bin/pest --fail-on-warning",
+      "test-coverage": "@php vendor/bin/pest --coverage --coverage-clover=coverage.xml --fail-on-warning",
+      "psalm": "@php vendor/bin/psalm"
     },
     "config": {
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "SergiX44\\Nutgram\\NutgramServiceProvider"
-            ]
         }
     },
     "minimum-stability": "dev",

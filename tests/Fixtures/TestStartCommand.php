@@ -13,7 +13,7 @@ class TestStartCommand extends Command
 
     public function handle(Nutgram $bot): void
     {
-        expect($bot->getData('called'))->toBeFalse();
-        $bot->setData('called', true);
+        expect($bot->get('called'))->toBeFalse();
+        $bot->set('called', true);
     }
 }

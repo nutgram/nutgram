@@ -68,7 +68,7 @@ class Handler extends MiddlewareChain
         $pattern = str_replace('/', '\/', $this->pattern);
 
         // replace named parameters with regex
-        $regex = '/^'.preg_replace(self::PARAM_NAME_REGEX, '(?<$1>.*)', $pattern).'?$/miUu';
+        $regex = '/^'.preg_replace(self::PARAM_NAME_REGEX, '(?<$1>.*)', $pattern).'?$/mUu';
 
         // match + return only named parameters
         $regexMatched = (bool)preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL);
@@ -106,7 +106,7 @@ class Handler extends MiddlewareChain
      */
     public function addParameters(array $parameters): Handler
     {
-        $this->parameters = array_merge($this->parameters, $parameters);
+        $this->parameters = [...$this->parameters, ...$parameters];
         return $this;
     }
 

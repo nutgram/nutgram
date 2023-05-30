@@ -1,12 +1,16 @@
 <?php
 
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
+use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
+use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Testing\FormDataParser;
 
 it('throws exception when text is too long', function ($responseBody) {
     $textOriginal = str_repeat('a', Limits::TEXT_LENGTH + 1);
@@ -26,27 +30,6 @@ it('throws exception when text is too long', function ($responseBody) {
     expect($messages)->toBeNull();
 })->with('too_long');
 
-it('chunks long text message', function () {
-    $textOriginal = str_repeat('a', Limits::TEXT_LENGTH + 1);
-    $textChunk1 = str_repeat('a', Limits::TEXT_LENGTH);
-    $textChunk2 = 'a';
-
-    /** @var Nutgram $bot */
-    $bot = Nutgram::fake(config: ['split_long_messages' => true])
-        ->willReceivePartial(['text' => $textChunk1])
-        ->willReceivePartial(['text' => $textChunk2]);
-
-    $messages = $bot->sendMessage($textOriginal);
-
-    expect($messages)
-        ->toBeArray()
-        ->toHaveCount(2)
-        ->sequence(
-            fn ($message) => $message->toHaveProperty('text', $textChunk1),
-            fn ($message) => $message->toHaveProperty('text', $textChunk2),
-        );
-});
-
 it('downloads a file', function ($update) {
     $bot = Nutgram::fake($update, [
         new Response(200, body: json_encode([
@@ -61,7 +44,7 @@ it('downloads a file', function ($update) {
         new Response(200, body: 'ok'),
     ]);
 
-    $bot->onMessageType(MessageTypes::DOCUMENT, function (Nutgram $bot) {
+    $bot->onMessageType(MessageType::DOCUMENT, function (Nutgram $bot) {
         $document = $bot->message()->document;
         $file = $bot->getFile($document->file_id);
 
@@ -71,13 +54,13 @@ it('downloads a file', function ($update) {
     });
 
     $bot->onException(function (Nutgram $bot, $e) {
-        $bot->setData('caught_exception', true);
+        $bot->set('caught_exception', true);
     });
 
     $bot->run();
 
     expect(file_exists(__DIR__."/".$update->message->document->file_name))->toBeTrue();
-    expect($bot->getData('caught_exception', false))->toBeFalse();
+    expect($bot->get('caught_exception', false))->toBeFalse();
 
     if (file_exists(__DIR__."/".$update->message->document->file_name)) {
         unlink(__DIR__."/".$update->message->document->file_name);
@@ -157,4 +140,38 @@ it('calls getWebhookInfo method', function () {
         ->last_synchronization_error_date->toBe($info['last_synchronization_error_date'])
         ->max_connections->toBe($info['max_connections'])
         ->allowed_updates->toBe($info['allowed_updates']);
+});
+
+it('uploads a file with attach:// logic', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $message = $bot->sendPhoto(
+            photo: InputFile::make(fopen('php://temp', 'rb'), 'photoA.jpg'),
+            caption: 'A',
+        );
+
+        $bot->editMessageMedia(
+            media: InputMediaPhoto::make(
+                media: InputFile::make(fopen('php://temp', 'rb'), 'photoB.jpg'),
+                caption: 'B',
+            ),
+            chat_id: $message->chat->id,
+            message_id: $message->message_id
+        );
+    });
+
+    $bot
+        ->hearText('/start')
+        ->reply()
+        ->assertReply('sendPhoto', [
+            'caption' => 'A',
+        ], 0)
+        ->assertReply('editMessageMedia', [
+            'media' => '{"type":"photo","media":"attach:\\/\\/photoB.jpg","caption":"B"}',
+        ], 1)
+        ->assertRaw(function (Request $request) {
+            $photo = FormDataParser::parse($request)->files['photoB.jpg'];
+            return $photo->getName() === 'photoB.jpg';
+        }, 1);
 });

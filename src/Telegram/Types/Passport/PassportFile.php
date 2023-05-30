@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\HasDownload;
 
 /**
  * This object represents a file uploaded to Telegram Passport.
@@ -11,9 +12,9 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class PassportFile extends BaseType
 {
-    /**
-     * Unique identifier for this file
-     */
+    use HasDownload;
+
+    /** Identifier for this file, which can be used to download or reuse the file */
     public string $file_id;
 
     /**
@@ -22,13 +23,9 @@ class PassportFile extends BaseType
      */
     public string $file_unique_id;
 
-    /**
-     * File size
-     */
+    /** File size in bytes */
     public int $file_size;
 
-    /**
-     * Unix time when the file was uploaded
-     */
+    /** Unix time when the file was uploaded */
     public int $file_date;
 }

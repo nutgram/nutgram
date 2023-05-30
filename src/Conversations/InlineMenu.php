@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\Conversations;
 
 use InvalidArgumentException;
-use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
@@ -150,7 +149,7 @@ abstract class InlineMenu extends Conversation
                 $result = $this($this->bot, $data);
             }
 
-            $this->bot->answerCallbackQuery($this->callbackQueryOpt);
+            $this->bot->answerCallbackQuery(...$this->callbackQueryOpt);
             return $result;
         }
 
@@ -267,15 +266,11 @@ abstract class InlineMenu extends Conversation
      */
     protected function doOpen(string $text, InlineKeyboardMarkup $buttons, array $opt): Message|null
     {
-        $message = $this->bot->sendMessage($text, array_merge([
+        return $this->bot->sendMessage(...[
             'reply_markup' => $buttons,
-        ], $opt));
-
-        if (is_array($message)) {
-            throw new RuntimeException('Multiple messages are not supported by the InlineMenu class. Please provide a shorter text.');
-        }
-
-        return $message;
+            'text' => $text,
+            ...$opt,
+        ]);
     }
 
     /**
@@ -296,11 +291,13 @@ abstract class InlineMenu extends Conversation
         InlineKeyboardMarkup $buttons,
         array $opt
     ): bool|Message|null {
-        return $this->bot->editMessageText($text, array_merge([
+        return $this->bot->editMessageText(...[
             'reply_markup' => $buttons,
             'chat_id' => $chatId,
             'message_id' => $messageId,
-        ], $opt));
+            'text' => $text,
+            ...$opt
+        ]);
     }
 
     /**

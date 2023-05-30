@@ -1,12 +1,15 @@
 <?php
 
 use GuzzleHttp\Psr7\Response;
+use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
+use SergiX44\Nutgram\Telegram\Properties\MessageType;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberAdministrator;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Tests\Fixtures\TestStartCommand;
 
@@ -23,6 +26,18 @@ it('calls the message handler', function ($update) {
 
     expect($test)->toBe('A');
 })->with('message');
+
+it('throws exception after finalization', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessage(function ($bot) use (&$test) {
+    });
+
+    $bot->run();
+
+    $bot->onMessage(function ($bot) use (&$test) {
+    });
+})->expectException(StatusFinalizedException::class)->with('message');
 
 it('calls the message handler with a middleware', function ($update) {
     $bot = Nutgram::fake($update);
@@ -91,7 +106,7 @@ it('calls the specific fallback and not the general one if not match any handler
         throw new Exception();
     });
 
-    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Attributes\UpdateTypes::MESSAGE, function ($bot) {
+    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Properties\UpdateType::MESSAGE, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -109,7 +124,7 @@ it('calls the right handler and no the fallback', function ($update) {
         throw new Exception();
     });
 
-    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Attributes\UpdateTypes::MESSAGE, function ($bot) {
+    $bot->fallbackOn(\SergiX44\Nutgram\Telegram\Properties\UpdateType::MESSAGE, function ($bot) {
         throw new Exception();
     });
 
@@ -176,7 +191,7 @@ it('allows defining commands with command instances', function ($update) {
 it('allows defining commands with classes', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->setData('called', false);
+    $bot->set('called', false);
     $bot->registerCommand(TestStartCommand::class);
 
     $bot->onMessage(function ($bot) {
@@ -185,7 +200,7 @@ it('allows defining commands with classes', function ($update) {
 
     $bot->run();
 
-    expect($bot->getData('called'))->toBeTrue();
+    expect($bot->get('called'))->toBeTrue();
 })->with('command_message');
 
 it('throws an error if not when not specifying a callable', function ($update) {
@@ -356,7 +371,7 @@ it('call the typed message handler', function ($update) {
         throw new Exception();
     });
 
-    $bot->onMessageType(MessageTypes::PHOTO, function ($bot) {
+    $bot->onMessageType(MessageType::PHOTO, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -366,7 +381,7 @@ it('call the typed message handler', function ($update) {
 it('calls the typed message handler: text', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onMessageType(MessageTypes::TEXT, function ($bot) {
+    $bot->onMessageType(MessageType::TEXT, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -376,7 +391,7 @@ it('calls the typed message handler: text', function ($update) {
 it('calls the onMessageTypeText handler and onText handlers', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onMessageType(MessageTypes::TEXT, function ($bot) {
+    $bot->onMessageType(MessageType::TEXT, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -394,7 +409,7 @@ it('the catch all handler text not called for media', function ($update) {
         throw new Exception();
     });
 
-    $bot->onMessageType(MessageTypes::PHOTO, function ($bot) {
+    $bot->onMessageType(MessageType::PHOTO, function ($bot) {
         expect($bot)->toBeInstanceOf(Nutgram::class);
     });
 
@@ -487,7 +502,7 @@ it('skips global middleware except one', function ($update) {
             $test[] = 'Message';
         })
         ->skipGlobalMiddlewares([
-            $middleware1
+            $middleware1,
         ])
         ->middleware(function ($bot, $next) use (&$test) {
             $test[] = 'LM1';
@@ -569,10 +584,12 @@ it('dumps requests call', function () {
         $bot->sendMessage('bar');
     });
 
+    ob_start();
     $bot
         ->hearText('/foo')
         ->reply()
         ->dump();
+    ob_end_clean();
 
     expect($bot->getDumpHistory()[0])
         ->toContain('Nutgram Request History Dump')
@@ -583,10 +600,12 @@ it('dumps requests call', function () {
 it('dumps no requests call', function () {
     $bot = Nutgram::fake();
 
+    ob_start();
     $bot
         ->hearText('/foo')
         ->reply()
         ->dump();
+    ob_end_clean();
 
     expect($bot->getDumpHistory()[0])
         ->toContain('Nutgram Request History Dump')
@@ -734,6 +753,45 @@ it('calls the message handler with multiple global middlewares', function ($upda
     expect($test)->toBe('ABM');
 })->with('message');
 
+it('sends enum value as json', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->sendMessage(
+            text: 'foo',
+            parse_mode: ParseMode::HTML,
+        );
+    });
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request['json']['parse_mode'])->toBe('HTML');
+        return $request;
+    });
+
+    $bot->run();
+})->with('message');
+
+it('sends enum value as multipart', function ($update) {
+    $file = fopen('php://temp', 'rb');
+
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessage(function (Nutgram $bot) use ($file) {
+        $bot->sendDocument(
+            document: InputFile::make($file),
+            caption: 'test',
+            parse_mode: ParseMode::HTML,
+        );
+    });
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request['multipart'][3]['contents'])->toBe('HTML');
+        return $request;
+    });
+
+    $bot->run();
+})->with('message');
+
 it('calls beforeApiRequest with valid request', function () {
     $bot = Nutgram::fake();
 
@@ -794,28 +852,29 @@ it('get handler parameters inside local middleware', function ($update) {
     $bot->run();
 })->with('food');
 
-
 it('get handlers parameters inside local middleware', function () {
     $bot = Nutgram::fake();
 
-    $checkUserID = function (Nutgram $bot, $next) {
-        expect($bot->currentParameters())
-            ->sequence(
-                fn ($item) => $item->toBe('123'),
-                fn ($item) => $item->toBe('123'),
-            );
+    $currentParametersHistory = [];
 
+    $checkUserID = function (Nutgram $bot, $next) use (&$currentParametersHistory) {
+        $currentParametersHistory[] = $bot->currentParameters();
         $next($bot);
     };
 
-    $bot->group($checkUserID, function (Nutgram $bot) {
+    $bot->group(function (Nutgram $bot) {
         $bot->onCallbackQueryData('user/([0-9]+)/show', function (Nutgram $bot, string $id) {
             expect($id)->toBe('123');
         });
-        $bot->onCallbackQueryData('user/([0-9]+)/.*', function (Nutgram $bot, string $id) {
+        $bot->onCallbackQueryData('user/([0-9]+)/(.*)', function (Nutgram $bot, string $id) {
             expect($id)->toBe('123');
         });
-    });
+    })->middleware($checkUserID);
 
     $bot->hearCallbackQueryData('user/123/show')->reply();
+
+    expect($currentParametersHistory)->sequence(
+        fn ($item) => $item->toBe(['123']),
+        fn ($item) => $item->toBe(['123', 'show']),
+    );
 });

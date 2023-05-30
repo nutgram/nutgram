@@ -2,13 +2,13 @@
 
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
+use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
 it('calls middleware() handler', function ($update) {
     $bot = Nutgram::fake($update);
     $bot->middleware(function (Nutgram $bot, $next) {
-        $bot->setData('called', true);
+        $bot->set('called', true);
         $next($bot);
     });
 
@@ -17,7 +17,7 @@ it('calls middleware() handler', function ($update) {
 
     $bot->run();
 
-    expect($bot->getData('called'))->toBeTrue();
+    expect($bot->get('called'))->toBeTrue();
 })->with('message');
 
 it('calls onException() handler', function ($update) {
@@ -28,12 +28,12 @@ it('calls onException() handler', function ($update) {
     });
 
     $bot->onException(function (Nutgram $bot) {
-        $bot->setData('called', true);
+        $bot->set('called', true);
     });
 
     $bot->run();
 
-    expect($bot->getData('called'))->toBeTrue();
+    expect($bot->get('called'))->toBeTrue();
 })->with('message');
 
 it('calls onException() handler + pattern', function ($update) {
@@ -44,12 +44,12 @@ it('calls onException() handler + pattern', function ($update) {
     });
 
     $bot->onException(DivisionByZeroError::class, function (Nutgram $bot) {
-        $bot->setData('called', true);
+        $bot->set('called', true);
     });
 
     $bot->run();
 
-    expect($bot->getData('called'))->toBeTrue();
+    expect($bot->get('called'))->toBeTrue();
 })->with('message');
 
 it('calls onApiError() handler', function ($update) {
@@ -65,12 +65,12 @@ it('calls onApiError() handler', function ($update) {
     });
 
     $bot->onApiError(function (Nutgram $bot, TelegramException $exception) {
-        $bot->setData('called', true);
+        $bot->set('called', true);
     });
 
     $bot->run();
 
-    expect($bot->getData('called'))->toBeTrue();
+    expect($bot->get('called'))->toBeTrue();
 })->with('message');
 
 it('calls onApiError() handler + pattern', function ($update) {
@@ -86,48 +86,37 @@ it('calls onApiError() handler + pattern', function ($update) {
     });
 
     $bot->onApiError('.*not modified.*', function (Nutgram $bot, TelegramException $exception) {
-        $bot->setData('called', true);
+        $bot->set('called', true);
     });
 
     $bot->run();
 
-    expect($bot->getData('called'))->toBeTrue();
+    expect($bot->get('called'))->toBeTrue();
 })->with('message');
 
 it('calls fallback() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
     $bot->fallback(function (Nutgram $bot) {
-        $bot->setData('called', true);
+        $bot->set('called', true);
     });
 
     $bot->run();
 
-    expect($bot->getData('called'))->toBeTrue();
+    expect($bot->get('called'))->toBeTrue();
 })->with('message');
 
 it('calls fallbackOn() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->fallbackOn(UpdateTypes::MESSAGE, function (Nutgram $bot) {
-        $bot->setData('called', true);
+    $bot->fallbackOn(UpdateType::MESSAGE, function (Nutgram $bot) {
+        $bot->set('called', true);
     });
 
     $bot->run();
 
-    expect($bot->getData('called'))->toBeTrue();
+    expect($bot->get('called'))->toBeTrue();
 })->with('message');
-
-it('calls fallbackOn() handler + pattern', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $bot->fallbackOn('foo', '/test', function (Nutgram $bot) {
-    });
-
-    $bot->run();
-
-    expect($bot->getData('called'))->toBeTrue();
-})->with('message')->throws(InvalidArgumentException::class, 'The parameter "type" is not a valid update type.');
 
 it('calls clearErrorHandlers() method', function ($update) {
     $bot = Nutgram::fake($update);
@@ -137,12 +126,12 @@ it('calls clearErrorHandlers() method', function ($update) {
     });
 
     $bot->onException(function (Nutgram $bot) {
-        $bot->setData('called', true);
+        $bot->set('called', true);
     });
 
     $bot->clearErrorHandlers();
 
     $bot->run();
 
-    expect($bot->getData('called'))->toBeNull();
+    expect($bot->get('called'))->toBeNull();
 })->with('message')->throws(DivisionByZeroError::class);

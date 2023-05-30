@@ -11,18 +11,12 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  */
 class GameHighScore extends BaseType
 {
-    /**
-     * Position in high score table for the game
-     */
+    /** Position in high score table for the game */
     public int $position;
 
-    /**
-     * User
-     */
+    /** User */
     public User $user;
 
-    /**
-     * Score
-     */
+    /** Score */
     public int $score;
 }

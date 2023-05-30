@@ -2,7 +2,7 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\BulkMessenger;
-use SergiX44\Nutgram\Telegram\Attributes\ParseMode;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 
 it('does not run when not in cli mode', function () {
     $bot = Nutgram::fake();
@@ -75,11 +75,12 @@ it('runs the bulk messenger with using method', function () {
         ->setInterval(0)
         ->setChats([1, 2, 3])
         ->using(function (Nutgram $bot, int $chatId) {
-            $bot->sendMessage('*AAA*', [
-                'chat_id' => $chatId,
-                'parse_mode' => ParseMode::MARKDOWN,
-                'protect_content' => true,
-            ]);
+            $bot->sendMessage(
+                text: '*AAA*',
+                chat_id: $chatId,
+                parse_mode: ParseMode::MARKDOWN,
+                protect_content: true,
+            );
         })
         ->startSync();
 

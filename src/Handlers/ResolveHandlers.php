@@ -8,10 +8,12 @@ use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
+use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+use SergiX44\Nutgram\Telegram\Properties\MessageType;
+use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 /**
@@ -42,9 +44,7 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected ?Update $update = null;
 
-    protected array $currentParameters = [];
-
-    abstract public function getConfig(): array;
+    abstract public function getConfig(): Configuration;
 
     /**
      * @return array
@@ -52,50 +52,48 @@ abstract class ResolveHandlers extends CollectHandlers
     protected function resolveHandlers(): array
     {
         $resolvedHandlers = [];
-        $updateType = $this->update->getType();
+        $updateType = $this->update?->getType();
 
-        if ($updateType === UpdateTypes::MESSAGE) {
+        if ($updateType === UpdateType::MESSAGE) {
             $messageType = $this->update->message->getType();
 
-            if ($messageType === MessageTypes::TEXT) {
-                $username = $this->getConfig()['bot_name'] ?? null;
+            if ($messageType === MessageType::TEXT) {
+                $username = $this->getConfig()->botName;
                 $text = $this->update?->message?->getParsedCommand($username) ?? $this->update->message?->text;
 
                 if ($text !== null) {
-                    $this->addHandlersBy($resolvedHandlers, $updateType, $messageType, $text);
+                    $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $text);
                 }
-            } elseif ($messageType === MessageTypes::SUCCESSFUL_PAYMENT) {
+            } elseif ($messageType === MessageType::SUCCESSFUL_PAYMENT) {
                 $data = $this->update->message->successful_payment?->invoice_payload;
-                $this->addHandlersBy($resolvedHandlers, $updateType, $messageType, $data);
+                $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $data);
             }
 
             if (count($resolvedHandlers) === 0) {
-                $this->addHandlersBy($resolvedHandlers, $updateType, $messageType);
+                $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value);
             }
-        } elseif ($updateType === UpdateTypes::CALLBACK_QUERY) {
+        } elseif ($updateType === UpdateType::CALLBACK_QUERY) {
             $data = $this->update->callback_query?->data;
-            $this->addHandlersBy($resolvedHandlers, $updateType, value: $data);
-        } elseif ($updateType === UpdateTypes::PRE_CHECKOUT_QUERY) {
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::PRE_CHECKOUT_QUERY) {
             $data = $this->update->pre_checkout_query?->invoice_payload;
-            $this->addHandlersBy($resolvedHandlers, $updateType, value: $data);
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         }
 
         if (empty($resolvedHandlers) && $updateType !== null) {
-            $this->addHandlersBy($resolvedHandlers, $updateType);
+            $this->addHandlersBy($resolvedHandlers, $updateType->value);
         }
 
         $this->addHandlersBy($resolvedHandlers, Update::class);
-
-        $this->setCurrentParametersFrom($resolvedHandlers);
 
         return $resolvedHandlers;
     }
 
     /**
-     * @param  array  $handlers
-     * @param  string  $type
-     * @param  string|null  $subType
-     * @param  string|null  $value
+     * @param array $handlers
+     * @param string $type
+     * @param string|null $subType
+     * @param string|null $value
      */
     protected function addHandlersBy(
         array &$handlers,
@@ -130,8 +128,8 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
+     * @param int|null $userId
+     * @param int|null $chatId
      * @return callable|Conversation|\Closure|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
@@ -145,7 +143,7 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  Conversation|callable  $conversation
+     * @param Conversation|callable $conversation
      * @return array
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
@@ -185,7 +183,7 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  Handler  $handler
+     * @param Handler $handler
      */
     protected function applyGlobalMiddlewareTo(Handler $handler): void
     {
@@ -214,7 +212,7 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param  Conversation  $conversation
+     * @param Conversation $conversation
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -235,18 +233,50 @@ abstract class ResolveHandlers extends CollectHandlers
         $setAttributes->call($conversation, $attributes);
     }
 
+    protected function resolveGroups(): void
+    {
+        $this->target = 'groupHandlers';
+
+        // retrieve the starting groups and reset global state
+        $groups = $this->groups;
+        $this->groups = [];
+
+        $this->resolveNestedGroups($groups);
+    }
+
     /**
-     * @param  Handler[]  $handlers
+     * @param HandlerGroup[] $groups
+     * @param array $currentMiddlewares
+     * @param array $currentScopes
      * @return void
      */
-    protected function setCurrentParametersFrom(array $handlers): void
+    private function resolveNestedGroups(array $groups, array $currentMiddlewares = [], array $currentScopes = [])
     {
-        $parameters = [];
-        foreach ($handlers as $handler) {
-            if ($handler->hasParameters()) {
-                $parameters[] = $handler->getParameters();
+        foreach ($groups as $group) {
+            $middlewares = [...$group->getMiddlewares(), ...$currentMiddlewares,];
+            $scopes = [...$currentScopes, ...$group->getScopes()];
+            $this->groupHandlers = [];
+            ($group->groupCallable)($this);
+
+            // apply the middleware stack to the current registered group handlers
+            array_walk_recursive($this->groupHandlers, function ($leaf) use ($middlewares, $scopes) {
+                if ($leaf instanceof Handler) {
+                    foreach ($middlewares as $middleware) {
+                        $leaf->middleware($middleware);
+                    }
+                    if ($leaf instanceof Command && !empty($scopes)) {
+                        $leaf->scope($scopes);
+                    }
+                }
+            });
+
+            $this->handlers = array_merge_recursive($this->handlers, $this->groupHandlers);
+
+            if (!empty($this->groups)) {
+                $groups = $this->groups;
+                $this->groups = [];
+                $this->resolveNestedGroups($groups, $middlewares, $scopes);
             }
         }
-        $this->currentParameters = array_merge(...$parameters);
     }
 }

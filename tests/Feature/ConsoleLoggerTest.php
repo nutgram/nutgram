@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Str;
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Logger\ConsoleLogger;
 use SergiX44\Nutgram\Nutgram;
 
@@ -17,13 +17,25 @@ it('does not log with ConsoleLogger if script is not running in cli mode', funct
     expect(ob_get_contents())->toBeEmpty();
 });
 
-it('logs with ConsoleLogger', function ($input, $expected) {
-    $bot = Nutgram::fake(config: ['logger' => ConsoleLogger::class]);
+it('logs with ConsoleLogger (with string)', function () {
+    $bot = Nutgram::fake(config: new Configuration(logger: ConsoleLogger::class));
+
+    $bot->getContainer()->get(ConsoleLogger::class)->debug('foo');
+
+    expect(ob_get_contents())->toContain('DEBUG: foo');
+});
+
+it('logs with ConsoleLogger (with stringable)', function () {
+    $bot = Nutgram::fake(config: new Configuration(logger: ConsoleLogger::class));
+
+    $input = new class implements Stringable {
+        public function __toString(): string
+        {
+            return 'bar';
+        }
+    };
 
     $bot->getContainer()->get(ConsoleLogger::class)->debug($input);
 
-    expect(ob_get_contents())->toContain($expected);
-})->with([
-    'string' => ['foo', 'DEBUG: foo'],
-    'stringable' => [Str::of('bar'), 'DEBUG: bar'],
-]);
+    expect(ob_get_contents())->toContain('DEBUG: bar');
+});
