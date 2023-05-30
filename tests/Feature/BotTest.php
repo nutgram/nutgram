@@ -174,8 +174,5 @@ it('sends file works as mocked instance', function () {
 
 it('generate an empty update when no fake update specified', function () {
     $bot = Nutgram::fake();
-    $bot->run();
-    $update = $bot->update();
-
-    expect($update->update_id)->toBe(-1);
-});
+    $bot->reply();
+})->expectException(InvalidArgumentException::class);

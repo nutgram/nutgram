@@ -33,10 +33,7 @@ class Fake implements RunningMode
             is_object($this->update), is_array($this->update) => $bot->getContainer()
                 ->get(Hydrator::class)
                 ->hydrate($this->update, Update::class),
-            $this->update === null => $bot->getContainer()
-                ->get(Hydrator::class)
-                ->hydrate(['update_id' => -1], Update::class), // an empty update
-            default => throw new InvalidArgumentException('Invalid update type specified.')
+            default => throw new InvalidArgumentException('Invalid update specified.')
         };
 
         $bot->processUpdate($update);
