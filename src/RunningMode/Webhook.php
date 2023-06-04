@@ -62,7 +62,7 @@ class Webhook implements RunningMode
 
         $bot->getContainer()
             ->get(LoggerInterface::class)
-            ->debug(sprintf('Received update: %s%s%s', $update->getType(), PHP_EOL, $input));
+            ->debug(sprintf('Received update: %s%s%s', $update->getType()?->value, PHP_EOL, $input));
 
         $bot->processUpdate($update);
     }
