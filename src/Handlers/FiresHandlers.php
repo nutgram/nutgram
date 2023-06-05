@@ -7,7 +7,6 @@ use Throwable;
 
 trait FiresHandlers
 {
-
     /**
      * @param string $type
      * @param array $parameters
@@ -74,5 +73,4 @@ trait FiresHandlers
         $handler = reset($handlers)->setParameters($e);
         return $handler($this);
     }
-
 }
