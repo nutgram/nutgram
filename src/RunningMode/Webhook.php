@@ -35,7 +35,7 @@ class Webhook implements RunningMode
     protected Closure $resolveIp;
 
     /**
-     * @param  Closure|null  $resolveIp
+     * @param Closure|null $resolveIp
      */
     public function __construct(?Closure $resolveIp = null)
     {
@@ -44,27 +44,35 @@ class Webhook implements RunningMode
 
 
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram $bot
      * @throws JsonMapper_Exception
      * @throws InvalidArgumentException
      * @throws Throwable
      */
     public function processUpdates(Nutgram $bot): void
     {
-        if ($this->safeMode && !$this->isSafeIpv4()) {
+        $input = $this->input();
+
+        if (empty($input) || ($this->safeMode && !$this->isSafeIpv4())) {
             return;
         }
 
-        $input = file_get_contents('php://input');
+        /** @var Update $update */
         $update = $bot->getContainer()
             ->get(Hydrator::class)
-            ->hydrate(json_decode($input, flags: JSON_THROW_ON_ERROR), Update::class);
+            ->hydrate(json_decode($input, true, flags: JSON_THROW_ON_ERROR), Update::class);
 
-        $bot->getContainer()
-            ->get(LoggerInterface::class)
-            ->debug(sprintf('Received update: %s%s%s', $update->getType()?->value, PHP_EOL, $input));
+        try {
+            $bot->processUpdate($update);
 
-        $bot->processUpdate($update);
+            $bot->getContainer()
+                ->get(LoggerInterface::class)
+                ->debug(sprintf('Update processed: %s%s%s', $update->getType()?->value, PHP_EOL, $input));
+        } catch (Throwable) {
+            $bot->getContainer()
+                ->get(LoggerInterface::class)
+                ->error(sprintf('Update failed: %s%s%s', $update->getType()?->value, PHP_EOL, $input));
+        }
     }
 
 
@@ -97,7 +105,7 @@ class Webhook implements RunningMode
     }
 
     /**
-     * @param  bool  $safeMode
+     * @param bool $safeMode
      * @return self
      */
     public function setSafeMode(bool $safeMode): self
@@ -107,12 +115,20 @@ class Webhook implements RunningMode
     }
 
     /**
-     * @param  Closure  $resolveIp
+     * @param Closure $resolveIp
      * @return Webhook
      */
     public function requestIpFrom(Closure $resolveIp): Webhook
     {
         $this->resolveIp = $resolveIp;
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function input(): ?string
+    {
+        return file_get_contents('php://input') ?: null;
     }
 }
