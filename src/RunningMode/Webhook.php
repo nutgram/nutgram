@@ -53,7 +53,7 @@ class Webhook implements RunningMode
     {
         $input = $this->input();
 
-        if (empty($input) || ($this->safeMode && !$this->isSafeIpv4())) {
+        if ($input === null || ($this->safeMode && !$this->isSafeIpv4())) {
             return;
         }
 
