@@ -2,6 +2,19 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.0.1 - 2023-06-05
+
+### What's Changed
+
+- Fixing UpdateType could not be converted to string error by @AntonLeontev in https://github.com/nutgram/nutgram/pull/478
+- improve webhook handling by @SergiX44 in https://github.com/nutgram/nutgram/pull/480
+
+### New Contributors
+
+- @AntonLeontev made their first contribution in https://github.com/nutgram/nutgram/pull/478
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.0.0...4.0.1
+
 ## 4.0.0 - 2023-05-30
 
 ### What's Changed
