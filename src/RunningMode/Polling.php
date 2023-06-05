@@ -9,16 +9,15 @@ use Throwable;
 
 class Polling implements RunningMode
 {
-    /**
-     * @param Nutgram $bot
-     */
+    public static bool $FOREVER = true;
+
     public function processUpdates(Nutgram $bot): void
     {
         $config = $bot->getConfig();
         $offset = 1;
 
         print("Listening...\n");
-        while (true) {
+        while (self::$FOREVER) {
             $updates = $bot->getUpdates(
                 offset: $offset,
                 limit: $config->pollingLimit,
