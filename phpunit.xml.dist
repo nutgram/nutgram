@@ -19,7 +19,6 @@
             <directory>./src/Telegram/Properties</directory>
             <directory>./src/Telegram/Endpoints</directory>
             <directory>./src/Telegram/Types</directory>
-            <directory>./src/RunningMode</directory>
             <directory>./src/Testing/Constraints</directory>
             <file>./src/Support/StrUtils.php</file>
             <file>./src/Telegram/CustomEndpoints.php</file>

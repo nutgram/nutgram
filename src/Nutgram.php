@@ -18,6 +18,7 @@ use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversations\Conversation;
+use SergiX44\Nutgram\Handlers\FiresHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\Command;
@@ -29,7 +30,6 @@ use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Support\BulkMessenger;
 use SergiX44\Nutgram\Telegram\Client;
-use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Testing\FakeNutgram;
@@ -37,7 +37,7 @@ use Throwable;
 
 class Nutgram extends ResolveHandlers
 {
-    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy;
+    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy, FiresHandlers;
 
     /**
      * @var string
@@ -231,73 +231,6 @@ class Nutgram extends ResolveHandlers
         }
 
         $this->fireHandlers($handlers);
-    }
-
-    /**
-     * @param  string  $type
-     * @param  array  $parameters
-     * @return mixed
-     * @throws Throwable
-     */
-    protected function fireHandlersBy(string $type, array $parameters = []): mixed
-    {
-        $handlers = [];
-        $this->addHandlersBy($handlers, $type);
-        return $this->fireHandlers($handlers, $parameters);
-    }
-
-    /**
-     * @param  array  $handlers
-     * @param  array  $parameters
-     * @return mixed
-     * @throws Throwable
-     */
-    protected function fireHandlers(array $handlers, array $parameters = []): mixed
-    {
-        $result = null;
-
-        /** @var Handler $handler */
-        foreach ($handlers as $handler) {
-            try {
-                $this->currentHandler = $handler;
-                $result = $handler->addParameters($parameters)->getHead()($this);
-            } catch (Throwable $e) {
-                if (!empty($this->handlers[self::EXCEPTION])) {
-                    $this->fireExceptionHandlerBy(self::EXCEPTION, $e);
-                    continue;
-                }
-
-                throw $e;
-            }
-        }
-        $this->currentHandler = null;
-
-        return $result;
-    }
-
-    /**
-     * @param  string  $type
-     * @param  Throwable  $e
-     * @return mixed
-     */
-    protected function fireExceptionHandlerBy(string $type, Throwable $e): mixed
-    {
-        $handlers = [];
-
-        if ($e instanceof TelegramException) {
-            $this->addHandlersBy($handlers, $type, value: $e->getMessage());
-        } else {
-            $this->addHandlersBy($handlers, $type, $e::class);
-        }
-
-
-        if (empty($handlers)) {
-            $this->addHandlersBy($handlers, $type);
-        }
-
-        /** @var Handler $handler */
-        $handler = reset($handlers)->setParameters($e);
-        return $handler($this);
     }
 
     /**

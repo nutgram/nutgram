@@ -16,8 +16,8 @@ use SergiX44\Nutgram\Testing\Constraints\ArraySubset;
 trait Asserts
 {
     /**
-     * @param  callable  $closure
-     * @param  int  $index
+     * @param callable $closure
+     * @param int $index
      * @return $this
      */
     public function assertRaw(callable $closure, int $index = 0): self
@@ -33,8 +33,8 @@ trait Asserts
     }
 
     /**
-     * @param  string  $method
-     * @param  int  $times
+     * @param string $method
+     * @param int $times
      * @return $this
      */
     public function assertCalled(string $method, int $times = 1): self
@@ -55,9 +55,9 @@ trait Asserts
     }
 
     /**
-     * @param  string|string[]  $method
-     * @param  array|null  $expected
-     * @param  int  $index
+     * @param string|string[] $method
+     * @param array|null $expected
+     * @param int $index
      * @return $this
      */
     public function assertReply(string|array $method, ?array $expected = null, int $index = 0): self
@@ -86,9 +86,9 @@ trait Asserts
     }
 
     /**
-     * @param  array  $expected
-     * @param  int  $index
-     * @param  string|null  $forceMethod
+     * @param array $expected
+     * @param int $index
+     * @param string|null $forceMethod
      * @return $this
      */
     public function assertReplyMessage(array $expected, int $index = 0, ?string $forceMethod = null): self
@@ -97,8 +97,8 @@ trait Asserts
     }
 
     /**
-     * @param  string  $expected
-     * @param  int  $index
+     * @param string $expected
+     * @param int $index
      * @return $this
      */
     public function assertReplyText(string $expected, int $index = 0): self
@@ -107,18 +107,13 @@ trait Asserts
     }
 
     /**
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
+     * @param int|null $userId
+     * @param int|null $chatId
      * @return $this
      */
     public function assertActiveConversation(?int $userId = null, ?int $chatId = null): self
     {
-        $userId = $this->storedUser?->id ?? $userId;
-        $chatId = $this->storedChat?->id ?? $chatId;
-
-        if ($userId === null || $chatId === null) {
-            throw new InvalidArgumentException('You cannot do this assert without userId and chatId.');
-        }
+        [$userId, $chatId] = $this->checkUserChatIds($userId, $chatId);
 
         PHPUnit::assertNotNull($this->currentConversation($userId, $chatId), 'No active conversation found');
 
@@ -126,18 +121,13 @@ trait Asserts
     }
 
     /**
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
+     * @param int|null $userId
+     * @param int|null $chatId
      * @return $this
      */
     public function assertNoConversation(?int $userId = null, ?int $chatId = null): self
     {
-        $userId = $this->storedUser?->id ?? $userId;
-        $chatId = $this->storedChat?->id ?? $chatId;
-
-        if ($userId === null || $chatId === null) {
-            throw new InvalidArgumentException('You cannot do this assert without userId and chatId.');
-        }
+        [$userId, $chatId] = $this->checkUserChatIds($userId, $chatId);
 
         PHPUnit::assertNull($this->currentConversation($userId, $chatId), 'Found an active conversation');
 
@@ -162,5 +152,21 @@ trait Asserts
     ): void {
         $constraint = new ArraySubset($subset, $checkForIdentity);
         PHPUnit::assertThat($array, $constraint, $msg);
+    }
+
+    /**
+     * @param int|null $userId
+     * @param int|null $chatId
+     * @return array
+     */
+    private function checkUserChatIds(?int $userId, ?int $chatId): array
+    {
+        $userId = $this->storedUser?->id ?? $userId;
+        $chatId = $this->storedChat?->id ?? $chatId;
+
+        if ($userId === null || $chatId === null) {
+            throw new InvalidArgumentException('You cannot do this assert without userId and chatId.');
+        }
+        return [$userId, $chatId];
     }
 }
