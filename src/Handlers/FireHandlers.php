@@ -5,7 +5,7 @@ namespace SergiX44\Nutgram\Handlers;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use Throwable;
 
-trait FiresHandlers
+trait FireHandlers
 {
     /**
      * @param string $type
