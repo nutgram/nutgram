@@ -3,14 +3,13 @@
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
-use SergiX44\Nutgram\Tests\Conversations\InlineMenu\LongInlineMenu;
-use SergiX44\Nutgram\Tests\Conversations\InlineMenu\MissingMethodMenu;
-use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidButtonNoCallbackMenu;
-use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidButtonNoDataMenu;
-use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidNoEndMenu;
-use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidReopenMenu;
-use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidSameDataMenu;
-use SergiX44\Nutgram\Tests\Conversations\InlineMenu\ValidWithFallbackMenu;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\MissingMethodMenu;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\ValidButtonNoCallbackMenu;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\ValidButtonNoDataMenu;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\ValidNoEndMenu;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\ValidReopenMenu;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\ValidSameDataMenu;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\ValidWithFallbackMenu;
 
 test('valid inline menu + no end', function () {
     $bot = Nutgram::fake();

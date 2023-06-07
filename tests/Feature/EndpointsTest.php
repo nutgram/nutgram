@@ -72,8 +72,8 @@ it('calls getUpdates method', function () {
         new Response(200, body: json_encode([
             'ok' => true,
             'result' => [
-                json_decode(file_get_contents(__DIR__.'/../Updates/message.json'), true),
-                json_decode(file_get_contents(__DIR__.'/../Updates/message.json'), true),
+                json_decode(file_get_contents(__DIR__.'/../Fixtures/Updates/message.json'), true),
+                json_decode(file_get_contents(__DIR__.'/../Fixtures/Updates/message.json'), true),
             ],
         ])),
     ]);

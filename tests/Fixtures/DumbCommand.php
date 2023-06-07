@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Tests\Feature\Commands;
+namespace SergiX44\Nutgram\Tests\Fixtures;
 
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;

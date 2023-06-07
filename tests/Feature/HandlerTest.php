@@ -11,6 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use SergiX44\Nutgram\Tests\Fixtures\HelloHandler;
 use SergiX44\Nutgram\Tests\Fixtures\TestStartCommand;
 
 it('calls the message handler', function ($update) {
@@ -877,4 +878,22 @@ it('get handlers parameters inside local middleware', function () {
         fn ($item) => $item->toBe(['123']),
         fn ($item) => $item->toBe(['123', 'show']),
     );
+});
+
+it('throws an exception when resolving an invalid callable', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onText('foo', 123);
+
+    $bot->hearText('foo')->reply();
+})->throws(InvalidArgumentException::class, 'The callback parameter must be a valid callable.');
+
+it('resolves a class method', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onText('hi', [HelloHandler::class, 'hello']);
+
+    $bot->hearText('hi')
+        ->reply()
+        ->assertReplyText('hello');
 });

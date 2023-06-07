@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Tests\Conversations\InlineMenu;
+namespace SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu;
 
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;

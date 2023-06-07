@@ -10,7 +10,7 @@ it('works with webhook mode', function () {
     $mock = mock(Webhook::class)
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('input')
-        ->andReturn(file_get_contents(__DIR__.'/../Updates/message.json'))
+        ->andReturn(file_get_contents(__DIR__.'/../Fixtures/Updates/message.json'))
         ->getMock()
         ->makePartial();
 
@@ -31,7 +31,7 @@ it('works with webhook mode with safe mode and wrong ip', function () {
     $mock = mock(Webhook::class)
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('input')
-        ->andReturn(file_get_contents(__DIR__.'/../Updates/message.json'))
+        ->andReturn(file_get_contents(__DIR__.'/../Fixtures/Updates/message.json'))
         ->getMock()
         ->makePartial();
 
@@ -53,7 +53,7 @@ it('works with webhook mode with safe mode and right ip', function () {
     $mock = mock(Webhook::class)
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('input')
-        ->andReturn(file_get_contents(__DIR__.'/../Updates/message.json'))
+        ->andReturn(file_get_contents(__DIR__.'/../Fixtures/Updates/message.json'))
         ->getMock()
         ->makePartial();
 
@@ -90,7 +90,7 @@ it('works with webhook mode with exceptions', function () {
     $mock = mock(Webhook::class)
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('input')
-        ->andReturn(file_get_contents(__DIR__.'/../Updates/message.json'))
+        ->andReturn(file_get_contents(__DIR__.'/../Fixtures/Updates/message.json'))
         ->getMock()
         ->makePartial();
 
