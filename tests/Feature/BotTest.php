@@ -184,7 +184,6 @@ it('throws an exception when no fake update specified', function () {
 })->expectException(InvalidArgumentException::class);
 
 it('uses a different container', function () {
-
     $differentContainer = new Container();
     $differentContainer->addShared(MyService::class)->addArguments(['hello']);
 
