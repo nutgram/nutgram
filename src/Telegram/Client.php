@@ -284,26 +284,23 @@ trait Client
     {
         $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
         $json = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$json]) ?? $json;
-        if ($json?->ok) {
-            return match (true) {
-                is_scalar($json->result) => $json->result,
-                is_array($json->result) => $this->hydrator->hydrateArray($json->result, $mapTo),
-                default => $this->hydrator->hydrate($json->result, $mapTo)
-            };
-        }
 
-        $e = new TelegramException(
-            message: $json?->description ?? 'Client exception',
-            code: $json?->error_code ?? 0,
-            previous: $clientException,
-            parameters: (array)($json?->parameters ?? []),
-        );
+        if (!$json?->ok) {
+            $e = new TelegramException(
+                message: $json?->description ?? 'Client exception',
+                code: $json?->error_code ?? 0,
+                previous: $clientException,
+                parameters: (array)($json?->parameters ?? []),
+            );
 
-        if (!empty($this->handlers[self::API_ERROR])) {
             return $this->fireExceptionHandlerBy(self::API_ERROR, $e);
         }
 
-        throw $e;
+        return match (true) {
+            is_scalar($json->result) => $json->result,
+            is_array($json->result) => $this->hydrator->hydrateArray($json->result, $mapTo),
+            default => $this->hydrator->hydrate($json->result, $mapTo)
+        };
     }
 
     /**
