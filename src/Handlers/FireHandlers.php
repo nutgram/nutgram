@@ -5,7 +5,7 @@ namespace SergiX44\Nutgram\Handlers;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use Throwable;
 
-trait FiresHandlers
+trait FireHandlers
 {
     /**
      * @param string $type
@@ -36,12 +36,7 @@ trait FiresHandlers
                 $this->currentHandler = $handler;
                 $result = $handler->addParameters($parameters)->getHead()($this);
             } catch (Throwable $e) {
-                if (!empty($this->handlers[self::EXCEPTION])) {
-                    $this->fireExceptionHandlerBy(self::EXCEPTION, $e);
-                    continue;
-                }
-
-                throw $e;
+                $this->fireExceptionHandlerBy(self::EXCEPTION, $e);
             }
         }
         $this->currentHandler = null;
@@ -53,6 +48,7 @@ trait FiresHandlers
      * @param string $type
      * @param Throwable $e
      * @return mixed
+     * @throws Throwable
      */
     protected function fireExceptionHandlerBy(string $type, Throwable $e): mixed
     {
@@ -64,13 +60,16 @@ trait FiresHandlers
             $this->addHandlersBy($handlers, $type, $e::class);
         }
 
-
         if (empty($handlers)) {
             $this->addHandlersBy($handlers, $type);
         }
 
+        if (empty($handlers)) {
+            throw $e;
+        }
+
         /** @var Handler $handler */
-        $handler = reset($handlers)->setParameters($e);
+        $handler = array_shift($handlers)?->setParameters($e);
         return $handler($this);
     }
 }
