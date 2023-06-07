@@ -25,7 +25,7 @@ abstract class BotCache
      */
     private ?int $botId;
 
-    public function __construct(CacheInterface $cache, string $key, ?int $botId, DateInterval|int|null $ttl = null)
+    public function __construct(CacheInterface $cache, string $key, int $botId, DateInterval|int|null $ttl = null)
     {
         $this->cache = $cache;
         $this->ttl = $ttl;
@@ -38,9 +38,6 @@ abstract class BotCache
      */
     protected function makeKey(): string
     {
-        if ($this->botId !== null) {
-            return implode('_', [$this->key, $this->botId, ...func_get_args()]);
-        }
-        return implode('_', [$this->key, ...func_get_args()]);
+        return implode('_', [$this->key, $this->botId, ...func_get_args()]);
     }
 }

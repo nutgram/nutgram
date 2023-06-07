@@ -1,13 +1,18 @@
 <?php
 
-namespace SergiX44\Nutgram\Tests\Conversations;
+namespace SergiX44\Nutgram\Tests\Fixtures\Conversations;
 
-use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 
-class ConversationWithClosing extends Conversation
+class ConversationWithClosingMultipleSteps extends ConversationWithClosing
 {
     public function start(Nutgram $bot)
+    {
+        $bot->set('test', $bot->get('test', 0) + 1);
+        $this->next('second');
+    }
+
+    public function second(Nutgram $bot)
     {
         $bot->set('test', $bot->get('test', 0) + 1);
         $this->end();

@@ -84,12 +84,15 @@ class FakeNutgram extends Nutgram
     protected ?Chat $commonChat = null;
 
     /**
-     * @param  mixed  $update
-     * @param  array  $responses
+     * @param mixed $update
+     * @param array $responses
      * @return FakeNutgram
      */
-    public static function instance(array|object $update = null, array $responses = [], Configuration $config = null): self
-    {
+    public static function instance(
+        array|object $update = null,
+        array $responses = [],
+        Configuration $config = null
+    ): self {
         $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);
 
@@ -185,8 +188,8 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  array  $result
-     * @param  bool  $ok
+     * @param array $result
+     * @param bool $ok
      * @return $this
      * @throws \JsonException
      */
@@ -199,7 +202,7 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  array  $result
+     * @param array $result
      * @return $this
      */
     public function willReceivePartial(array $result, bool $ok = true): self
@@ -238,7 +241,7 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  bool  $remember
+     * @param bool $remember
      * @return $this
      */
     public function willStartConversation(bool $remember = true): self
@@ -256,31 +259,8 @@ class FakeNutgram extends Nutgram
         print(str_repeat('-', 25));
         print("\e[32m Nutgram Request History Dump \e[39m");
         print(str_repeat('-', 25).PHP_EOL);
-
-        if (count($this->getRequestHistory()) > 0) {
-            foreach ($this->getRequestHistory() as $i => $item) {
-                /** @var Request $request */
-                [$request,] = array_values($item);
-
-                $requestIndex = "[$i] ";
-                print($requestIndex."\e[34m".$request->getUri()->getPath()."\e[39m".PHP_EOL);
-                $content = json_encode(
-                    value: FakeNutgram::getActualData($request),
-                    flags: JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR,
-                );
-                print(preg_replace('/"(.+)":/', "\"\e[33m\${1}\e[39m\":", $content));
-
-                if ($i < count($this->getRequestHistory()) - 1) {
-                    print(PHP_EOL);
-                }
-            }
-        } else {
-            print('Request history empty');
-        }
-
-        print(PHP_EOL);
-        print(str_repeat('-', 80).PHP_EOL);
-        print(PHP_EOL);
+        $this->printHistory();
+        print(sprintf("\n%s\n\n", str_repeat('-', 80)));
         $this->dumpHistory[] = preg_replace("/\033\[[^m]*m/", '', ob_get_contents());
         flush();
         ob_flush();
@@ -297,8 +277,36 @@ class FakeNutgram extends Nutgram
         die();
     }
 
+    protected function printHistory(): void
+    {
+        $history = $this->getRequestHistory();
+
+        if (count($history) === 0) {
+            print('Request history empty');
+            return;
+        }
+
+        foreach ($history as $i => $item) {
+            /** @var Request $request */
+            [$request,] = array_values($item);
+
+            $requestIndex = "[$i] ";
+            print($requestIndex."\e[34m".$request->getUri()->getPath()."\e[39m".PHP_EOL);
+            $content = json_encode(
+                value: self::getActualData($request),
+                flags: JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR,
+            );
+            print(preg_replace('/"(.+)":/', "\"\e[33m\${1}\e[39m\":", $content));
+
+            if ($i < count($history) - 1) {
+                print(PHP_EOL);
+            }
+        }
+    }
+
+
     /**
-     * @param  string|string[]  $middleware
+     * @param string|string[] $middleware
      * @return $this
      */
     public function withoutMiddleware(string|array $middleware): self
@@ -312,7 +320,7 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  string|string[]  $middleware
+     * @param string|string[] $middleware
      * @return $this
      */
     public function overrideMiddleware(string|array $middleware): self
@@ -325,8 +333,8 @@ class FakeNutgram extends Nutgram
 
     /**
      * Get the actual data from the request.
-     * @param  Request  $request
-     * @param  array  $mapping
+     * @param Request $request
+     * @param array $mapping
      * @return array
      * @throws JsonException
      */
@@ -382,7 +390,7 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param  array  $data
+     * @param array $data
      * @return void
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface

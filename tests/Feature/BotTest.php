@@ -1,12 +1,18 @@
 <?php
 
 use GuzzleHttp\Psr7\Request;
+use League\Container\Container;
+use Psr\Log\LoggerInterface;
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Testing\FormDataParser;
 use SergiX44\Nutgram\Testing\OutgoingResource;
+use SergiX44\Nutgram\Tests\Fixtures\CustomLogger;
+use SergiX44\Nutgram\Tests\Fixtures\MyService;
+use SergiX44\Nutgram\Tests\Fixtures\ServiceHandler;
 
 it('throws exception if the token is empty', function () {
     new Nutgram('');
@@ -176,3 +182,35 @@ it('throws an exception when no fake update specified', function () {
     $bot = Nutgram::fake();
     $bot->reply();
 })->expectException(InvalidArgumentException::class);
+
+it('uses a different container', function () {
+
+    $differentContainer = new Container();
+    $differentContainer->addShared(MyService::class)->addArguments(['hello']);
+
+    $bot = Nutgram::fake(config: new Configuration(
+        container: $differentContainer
+    ));
+
+    $bot->onCommand('test', ServiceHandler::class);
+
+    $bot->hearText('/test')
+        ->reply()
+        ->assertReplyText('hello');
+});
+
+it('use another logger', function () {
+    $bot = Nutgram::fake(config: new Configuration(
+        logger: new CustomLogger(),
+    ));
+
+    $a = serialize($bot);
+
+    /** @var Nutgram $instance */
+    $instance = unserialize($a);
+
+    expect($instance)
+        ->toBeInstanceOf(Nutgram::class)
+        ->and($instance->getContainer()->get(LoggerInterface::class))
+        ->toBeInstanceOf(Configuration::DEFAULT_LOGGER);
+});

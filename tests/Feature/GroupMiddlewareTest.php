@@ -1,7 +1,7 @@
 <?php
 
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Tests\Feature\Commands\DumbCommand;
+use SergiX44\Nutgram\Tests\Fixtures\DumbCommand;
 
 // NESTING
 

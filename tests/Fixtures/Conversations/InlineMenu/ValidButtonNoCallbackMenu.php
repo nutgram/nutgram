@@ -1,17 +1,17 @@
 <?php
 
-namespace SergiX44\Nutgram\Tests\Conversations\InlineMenu;
+namespace SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu;
 
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 
-class ValidButtonNoDataMenu extends InlineMenu
+class ValidButtonNoCallbackMenu extends InlineMenu
 {
     public function start(Nutgram $bot)
     {
         $this->menuText('Choose a color:')
-            ->addButtonRow(InlineKeyboardButton::make('Red', callback_data: '@handleColor'))
+            ->addButtonRow(InlineKeyboardButton::make('Red'))
             ->showMenu();
     }
 

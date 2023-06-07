@@ -2,18 +2,18 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
-use SergiX44\Nutgram\Tests\Conversations\ConversationEmpty;
-use SergiX44\Nutgram\Tests\Conversations\ConversationWithBeforeStep;
-use SergiX44\Nutgram\Tests\Conversations\ConversationWithClosing;
-use SergiX44\Nutgram\Tests\Conversations\ConversationWithClosingMultipleSteps;
-use SergiX44\Nutgram\Tests\Conversations\ConversationWithConstructor;
-use SergiX44\Nutgram\Tests\Conversations\ConversationWithDefault;
-use SergiX44\Nutgram\Tests\Conversations\ConversationWithMissingStep;
-use SergiX44\Nutgram\Tests\Conversations\ConversationWithSkipHandlersMultipleSteps;
-use SergiX44\Nutgram\Tests\Conversations\ConversationWithSkipMiddlewareMultipleSteps;
-use SergiX44\Nutgram\Tests\Conversations\NonSerializableConversation;
-use SergiX44\Nutgram\Tests\Conversations\OneStepNotCompletedConversation;
-use SergiX44\Nutgram\Tests\Conversations\TwoStepConversation;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationEmpty;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithBeforeStep;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithClosing;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithClosingMultipleSteps;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithConstructor;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithDefault;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithMissingStep;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithSkipHandlersMultipleSteps;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithSkipMiddlewareMultipleSteps;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\NonSerializableConversation;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\OneStepNotCompletedConversation;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\TwoStepConversation;
 use SergiX44\Nutgram\Tests\Fixtures\CustomService;
 
 it('calls the conversation steps', function ($update) {

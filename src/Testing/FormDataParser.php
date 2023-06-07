@@ -26,23 +26,16 @@ class FormDataParser
 
     protected function parseRequest(): self
     {
-        //get method type
         $this->method = $this->request->getMethod();
-
-        //get headers
         $this->headers = $this->request->getHeaders();
 
-        //get content-type
         $contentType = $this->request->getHeaderLine('Content-Type');
-
-        //get body
-        $body = (string)$this->request->getBody();
-
         if (!preg_match('/boundary=(.*)$/is', $contentType, $matches)) {
             return $this;
         }
 
         $boundary = $matches[1];
+        $body = (string)$this->request->getBody();
         $bodyParts = preg_split('/\\R?-+'.preg_quote($boundary, '/').'/s', $body);
         array_pop($bodyParts);
 
@@ -96,23 +89,26 @@ class FormDataParser
             if (!str_contains($headerPart, ':')) {
                 continue;
             }
+
             [$headerName, $headerValue] = explode(':', $headerPart, 2);
             $headerName = strtolower(trim($headerName));
             $headerValue = trim($headerValue);
+
             if (!str_contains($headerValue, ';')) {
                 $headers[$headerName] = $headerValue;
-            } else {
-                $headers[$headerName] = [];
-                foreach (explode(';', $headerValue) as $part) {
-                    $part = trim($part);
-                    if (!str_contains($part, '=')) {
-                        $headers[$headerName][] = $part;
-                    } else {
-                        [$name, $value] = explode('=', $part, 2);
-                        $name = strtolower(trim($name));
-                        $value = trim(trim($value), '"');
-                        $headers[$headerName][$name] = $value;
-                    }
+                continue;
+            }
+
+            $headers[$headerName] = [];
+            foreach (explode(';', $headerValue) as $part) {
+                $part = trim($part);
+                if (!str_contains($part, '=')) {
+                    $headers[$headerName][] = $part;
+                } else {
+                    [$name, $value] = explode('=', $part, 2);
+                    $name = strtolower(trim($name));
+                    $value = trim(trim($value), '"');
+                    $headers[$headerName][$name] = $value;
                 }
             }
         }

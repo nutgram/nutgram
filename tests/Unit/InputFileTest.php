@@ -26,14 +26,14 @@ it('returns custom filename if set', function () {
 });
 
 it('works for filesystem files and custom name', function () {
-    $f = fopen(__DIR__.'/../Updates/command.json', 'rb+');
+    $f = fopen(__DIR__.'/../Fixtures/Updates/command.json', 'rb+');
     $inputFile = new InputFile($f, 'name.txt');
 
     expect($inputFile->getFilename())->toBe('name.txt');
 });
 
 it('works for filesystem files', function () {
-    $f = fopen(__DIR__.'/../Updates/command.json', 'rb+');
+    $f = fopen(__DIR__.'/../Fixtures/Updates/command.json', 'rb+');
     $inputFile = new InputFile($f);
 
     expect($inputFile->getFilename())->toBe('command.json');
