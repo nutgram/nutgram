@@ -277,6 +277,11 @@ class FakeNutgram extends Nutgram
         die();
     }
 
+    public function getMethodsReturnTypes(): array
+    {
+        return $this->methodsReturnTypes;
+    }
+
     protected function printHistory(): void
     {
         $history = $this->getRequestHistory();

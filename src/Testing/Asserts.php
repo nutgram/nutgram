@@ -144,6 +144,17 @@ trait Asserts
         return $this;
     }
 
+    public function assertSequence(callable ...$callbacks): self
+    {
+        $closures = func_get_args();
+
+        foreach ($closures as $index => $closure) {
+            $closure(new SequenceAsserter($this, $index));
+        }
+
+        return $this;
+    }
+
     protected function assertArraySubset(
         ArrayAccess|array $subset,
         ArrayAccess|array $array,

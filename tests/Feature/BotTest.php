@@ -10,6 +10,7 @@ use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Testing\FormDataParser;
 use SergiX44\Nutgram\Testing\OutgoingResource;
+use SergiX44\Nutgram\Testing\SequenceAsserter;
 use SergiX44\Nutgram\Tests\Fixtures\CustomLogger;
 use SergiX44\Nutgram\Tests\Fixtures\MyService;
 use SergiX44\Nutgram\Tests\Fixtures\ServiceHandler;
@@ -212,4 +213,23 @@ it('use another logger', function () {
         ->toBeInstanceOf(Nutgram::class)
         ->and($instance->getContainer()->get(LoggerInterface::class))
         ->toBeInstanceOf(Configuration::DEFAULT_LOGGER);
+});
+
+it('asserts with sequence method', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('test', function (Nutgram $bot) {
+        $bot->sendMessage('foo');
+        $bot->sendMessage('bar');
+        $bot->sendMessage('baz');
+    });
+
+    $bot
+        ->hearText('/test')
+        ->reply()
+        ->assertSequence(
+            fn (SequenceAsserter $x) => $x->assertReplyText('foo'),
+            fn (SequenceAsserter $x) => $x->assertReplyText('bar'),
+            fn (SequenceAsserter $x) => $x->assertReplyText('baz'),
+        );
 });
