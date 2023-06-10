@@ -135,6 +135,8 @@ it('works with polling mode with exception', function ($update) {
         ->willReceive([$update]);
 
     Polling::$FOREVER = true;
+    Polling::$STDERR = fopen('php://memory', 'rb+');
+
     $bot->setRunningMode(Polling::class);
 
     $called = false;
@@ -146,5 +148,7 @@ it('works with polling mode with exception', function ($update) {
 
     $bot->run();
 
-    expect($called)->toBeTrue();
+    rewind(Polling::$STDERR);
+    expect($called)->toBeTrue()
+        ->and(stream_get_contents(Polling::$STDERR))->toContain('stop!');
 })->with('message');

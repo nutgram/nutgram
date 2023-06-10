@@ -10,6 +10,7 @@ use Throwable;
 class Polling implements RunningMode
 {
     public static bool $FOREVER = true;
+    public static mixed $STDERR = STDERR;
 
     public function processUpdates(Nutgram $bot): void
     {
@@ -52,7 +53,7 @@ class Polling implements RunningMode
             try {
                 $bot->processUpdate($update);
             } catch (Throwable $e) {
-                fwrite(STDERR, "$e\n");
+                fwrite(self::$STDERR, "$e\n");
             } finally {
                 $bot->clear();
             }
