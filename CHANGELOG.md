@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 3.20.2 - 2023-06-23
+
+### What's Changed
+
+- [3.x] Fix missing temp file deletion when using the mixin method by @Lukasss93 in https://github.com/nutgram/nutgram/pull/500
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/3.20.1...3.20.2
+
 ## 4.0.2 - 2023-06-23
 
 ### What's Changed
