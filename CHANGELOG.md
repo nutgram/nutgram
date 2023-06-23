@@ -2,6 +2,18 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.0.2 - 2023-06-23
+
+### What's Changed
+
+- running mode tests by @SergiX44 in https://github.com/nutgram/nutgram/pull/482
+- simplify closemenu by @SergiX44 in https://github.com/nutgram/nutgram/pull/483
+- Code refactoring by @Lukasss93 in https://github.com/nutgram/nutgram/pull/484
+- Add supportukrainenow.org banner by @Lukasss93 in https://github.com/nutgram/nutgram/pull/493
+- support http2 by @SergiX44 in https://github.com/nutgram/nutgram/pull/501
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.0.1...4.0.2
+
 ## 4.0.1 - 2023-06-05
 
 ### What's Changed
