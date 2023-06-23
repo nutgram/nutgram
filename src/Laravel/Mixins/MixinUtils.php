@@ -48,7 +48,7 @@ class MixinUtils
         $savedPath = $storage->putFileAs('/', new LaravelFile($tmpFile), $path);
 
         //delete temp file
-        if(file_exists($tmpFile)) {
+        if (file_exists($tmpFile)) {
             unlink($tmpFile);
         }
 
