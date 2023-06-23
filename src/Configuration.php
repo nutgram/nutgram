@@ -37,6 +37,7 @@ final readonly class Configuration
         'chat_member',
         'chat_join_request',
     ];
+    public const DEFAULT_ENABLE_HTTP2 = true;
 
     /**
      * @param  string  $apiUrl
@@ -70,7 +71,8 @@ final readonly class Configuration
         public array|Closure|string|null $localPathTransformer = null,
         public int $pollingTimeout = self::DEFAULT_POLLING_TIMEOUT,
         public array $pollingAllowedUpdates = self::DEFAULT_ALLOWED_UPDATES,
-        public int $pollingLimit = self::DEFAULT_POLLING_LIMIT
+        public int $pollingLimit = self::DEFAULT_POLLING_LIMIT,
+        public bool $enableHttp2 = self::DEFAULT_ENABLE_HTTP2,
     ) {
     }
 
@@ -92,7 +94,8 @@ final readonly class Configuration
             localPathTransformer: $config['local_path_transformer'] ?? null,
             pollingTimeout: $config['polling']['timeout'] ?? self::DEFAULT_POLLING_TIMEOUT,
             pollingAllowedUpdates: $config['polling']['allowed_updates'] ?? self::DEFAULT_ALLOWED_UPDATES,
-            pollingLimit: $config['polling']['limit'] ?? self::DEFAULT_POLLING_LIMIT
+            pollingLimit: $config['polling']['limit'] ?? self::DEFAULT_POLLING_LIMIT,
+            enableHttp2: $config['enable_http2'] ?? self::DEFAULT_ENABLE_HTTP2,
         );
     }
 
@@ -111,6 +114,7 @@ final readonly class Configuration
             'cache' => $this->cache,
             'logger' => $this->logger,
             'local_path_transformer' => $this->localPathTransformer,
+            'enable_http2' => $this->enableHttp2,
             'polling' => [
                 'timeout' => $this->pollingTimeout,
                 'limit' => $this->pollingLimit,
