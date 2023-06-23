@@ -35,13 +35,24 @@ class MixinUtils
         }
 
         //create temp file
-        $tmpFile = tempnam(sys_get_temp_dir(), uniqid(strftime('%G-%m-%d')));
+        $tmpFile = tempnam(
+            directory: sys_get_temp_dir(),
+            prefix: uniqid(sprintf('nutgram-%s-', date('Y-m-d')), true)
+        );
 
         //download file to temp file
         $http = $file->getContainer()->get(ClientInterface::class);
         $http->get($file->downloadUrl($file), array_merge(['sink' => $tmpFile], $clientOpt));
 
         //save temp file to disk
-        return $storage->putFileAs('/', new LaravelFile($tmpFile), $path);
+        $savedPath = $storage->putFileAs('/', new LaravelFile($tmpFile), $path);
+
+        //delete temp file
+        if(file_exists($tmpFile)) {
+            unlink($tmpFile);
+        }
+
+        //return result
+        return $savedPath !== false;
     }
 }
