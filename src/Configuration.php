@@ -72,7 +72,7 @@ final readonly class Configuration
         public int $pollingTimeout = self::DEFAULT_POLLING_TIMEOUT,
         public array $pollingAllowedUpdates = self::DEFAULT_ALLOWED_UPDATES,
         public int $pollingLimit = self::DEFAULT_POLLING_LIMIT,
-        public bool $enableHttp2 = self::DEFAULT_ENABLE_HTTP2
+        public bool $enableHttp2 = self::DEFAULT_ENABLE_HTTP2,
     ) {
     }
 
