@@ -41,8 +41,7 @@ class InlineQueryResultCachedSticker extends InlineQueryResult
         string $sticker_file_id,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
-    )
-    {
+    ) {
         parent::__construct();
         $this->id = $id;
         $this->sticker_file_id = $sticker_file_id;
@@ -55,8 +54,7 @@ class InlineQueryResultCachedSticker extends InlineQueryResult
         string $sticker_file_id,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
-    ): self
-    {
+    ): self {
         return new self(
             id: $id,
             sticker_file_id: $sticker_file_id,

@@ -101,7 +101,7 @@ class InlineQueryResultLocation extends InlineQueryResult
         ?string $thumbnail_url = null,
         ?int $thumbnail_width = null,
         ?int $thumbnail_height = null,
-    ){
+    ) {
         parent::__construct();
         $this->id = $id;
         $this->latitude = $latitude;
@@ -132,8 +132,7 @@ class InlineQueryResultLocation extends InlineQueryResult
         ?string $thumbnail_url = null,
         ?int $thumbnail_width = null,
         ?int $thumbnail_height = null,
-    ): self
-    {
+    ): self {
         return new self(
             id: $id,
             latitude: $latitude,

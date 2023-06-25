@@ -31,8 +31,7 @@ class InlineQueryResultGame extends InlineQueryResult
         string $id,
         string $game_short_name,
         ?InlineKeyboardMarkup $reply_markup = null,
-    )
-    {
+    ) {
         parent::__construct();
         $this->id = $id;
         $this->game_short_name = $game_short_name;
@@ -43,8 +42,7 @@ class InlineQueryResultGame extends InlineQueryResult
         string $id,
         string $game_short_name,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): self
-    {
+    ): self {
         return new self(
             id: $id,
             game_short_name: $game_short_name,

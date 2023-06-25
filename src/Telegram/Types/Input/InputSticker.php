@@ -48,8 +48,7 @@ class InputSticker extends BaseType implements JsonSerializable
         array $emoji_list,
         ?MaskPosition $mask_position = null,
         ?array $keywords = null,
-    )
-    {
+    ) {
         parent::__construct();
         $this->sticker = $sticker;
         $this->emoji_list = $emoji_list;
@@ -62,8 +61,7 @@ class InputSticker extends BaseType implements JsonSerializable
         array $emoji_list,
         ?MaskPosition $mask_position = null,
         ?array $keywords = null,
-    ): self
-    {
+    ): self {
         return new self(
             sticker: $sticker,
             emoji_list: $emoji_list,

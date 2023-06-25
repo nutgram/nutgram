@@ -79,7 +79,7 @@ class InlineQueryResultCachedDocument extends InlineQueryResult
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
-    ){
+    ) {
         parent::__construct();
         $this->id = $id;
         $this->title = $title;
@@ -102,8 +102,7 @@ class InlineQueryResultCachedDocument extends InlineQueryResult
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
-    ): self
-    {
+    ): self {
         return new self(
             id: $id,
             title: $title,

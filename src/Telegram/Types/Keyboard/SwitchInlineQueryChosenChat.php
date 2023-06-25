@@ -49,8 +49,7 @@ class SwitchInlineQueryChosenChat extends BaseType implements JsonSerializable
         ?bool $allow_bot_chats = null,
         ?bool $allow_group_chats = null,
         ?bool $allow_channel_chats = null,
-    )
-    {
+    ) {
         parent::__construct();
         $this->query = $query;
         $this->allow_user_chats = $allow_user_chats;
@@ -65,8 +64,7 @@ class SwitchInlineQueryChosenChat extends BaseType implements JsonSerializable
         ?bool $allow_bot_chats = null,
         ?bool $allow_group_chats = null,
         ?bool $allow_channel_chats = null,
-    ): self
-    {
+    ): self {
         return new self(
             query: $query,
             allow_user_chats: $allow_user_chats,

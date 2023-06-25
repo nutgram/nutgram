@@ -111,7 +111,7 @@ class InlineQueryResultGif extends InlineQueryResult
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
-    ){
+    ) {
         parent::__construct();
         $this->id = $id;
         $this->gif_url = $gif_url;
@@ -142,8 +142,7 @@ class InlineQueryResultGif extends InlineQueryResult
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
-    ): self
-    {
+    ): self {
         return new self(
             id: $id,
             gif_url: $gif_url,

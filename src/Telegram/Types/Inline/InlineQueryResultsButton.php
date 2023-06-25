@@ -38,8 +38,7 @@ class InlineQueryResultsButton extends BaseType implements JsonSerializable
         string $text,
         ?WebAppInfo $web_app = null,
         ?string $start_parameter = null,
-    )
-    {
+    ) {
         parent::__construct();
         $this->text = $text;
         $this->web_app = $web_app;
@@ -50,8 +49,7 @@ class InlineQueryResultsButton extends BaseType implements JsonSerializable
         string $text,
         ?WebAppInfo $web_app = null,
         ?string $start_parameter = null,
-    ): self
-    {
+    ): self {
         return new self(
             text: $text,
             web_app: $web_app,

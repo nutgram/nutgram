@@ -79,8 +79,7 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
         ?bool $can_edit_messages = null,
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
-    )
-    {
+    ) {
         parent::__construct();
         $this->is_anonymous = $is_anonymous;
         $this->can_manage_chat = $can_manage_chat;
@@ -109,7 +108,7 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
         ?bool $can_edit_messages = null,
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
-    ):self{
+    ):self {
         return new self(
             is_anonymous: $is_anonymous,
             can_manage_chat: $can_manage_chat,

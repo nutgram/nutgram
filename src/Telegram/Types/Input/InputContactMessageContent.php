@@ -46,8 +46,7 @@ class InputContactMessageContent extends InputMessageContent
         string $first_name,
         ?string $last_name = null,
         ?string $vcard = null,
-    ): self
-    {
+    ): self {
         return new self(
             phone_number: $phone_number,
             first_name: $first_name,
