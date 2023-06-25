@@ -2,13 +2,15 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
+use JsonSerializable;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents an inline button that switches the current user to inline mode in a chosen chat, with an optional default inline query.
  * @see https://core.telegram.org/bots/api#switchinlinequerychosenchat
  */
-class SwitchInlineQueryChosenChat extends BaseType
+class SwitchInlineQueryChosenChat extends BaseType implements JsonSerializable
 {
     /**
      * Optional.
@@ -40,4 +42,48 @@ class SwitchInlineQueryChosenChat extends BaseType
      * True, if channel chats can be chosen
      */
     public ?bool $allow_channel_chats = null;
+
+    public function __construct(
+        ?string $query = null,
+        ?bool $allow_user_chats = null,
+        ?bool $allow_bot_chats = null,
+        ?bool $allow_group_chats = null,
+        ?bool $allow_channel_chats = null,
+    )
+    {
+        parent::__construct();
+        $this->query = $query;
+        $this->allow_user_chats = $allow_user_chats;
+        $this->allow_bot_chats = $allow_bot_chats;
+        $this->allow_group_chats = $allow_group_chats;
+        $this->allow_channel_chats = $allow_channel_chats;
+    }
+
+    public static function make(
+        ?string $query = null,
+        ?bool $allow_user_chats = null,
+        ?bool $allow_bot_chats = null,
+        ?bool $allow_group_chats = null,
+        ?bool $allow_channel_chats = null,
+    ): self
+    {
+        return new self(
+            query: $query,
+            allow_user_chats: $allow_user_chats,
+            allow_bot_chats: $allow_bot_chats,
+            allow_group_chats: $allow_group_chats,
+            allow_channel_chats: $allow_channel_chats,
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'query' => $this->query,
+            'allow_user_chats' => $this->allow_user_chats,
+            'allow_bot_chats' => $this->allow_bot_chats,
+            'allow_group_chats' => $this->allow_group_chats,
+            'allow_channel_chats' => $this->allow_channel_chats,
+        ]);
+    }
 }

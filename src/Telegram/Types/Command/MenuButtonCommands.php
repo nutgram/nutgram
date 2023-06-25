@@ -12,4 +12,9 @@ class MenuButtonCommands extends MenuButton
 {
     /** Type of the button, must be commands */
     public MenuButtonType $type = MenuButtonType::COMMANDS;
+
+    public function make(): self
+    {
+        return new self();
+    }
 }

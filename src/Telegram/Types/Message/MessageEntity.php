@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
+use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Properties\MessageEntityType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -11,7 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  * For example, hashtags, usernames, URLs, etc.
  * @see https://core.telegram.org/bots/api#messageentity
  */
-class MessageEntity extends BaseType
+class MessageEntity extends BaseType implements JsonSerializable
 {
     /**
      * Type of the entity.
@@ -49,4 +50,57 @@ class MessageEntity extends BaseType
      * Use {@see https://core.telegram.org/bots/api#getcustomemojistickers getCustomEmojiStickers} to get full information about the sticker
      */
     public ?string $custom_emoji_id = null;
+
+    public function __construct(
+        MessageEntityType $type,
+        int $offset,
+        int $length,
+        ?string $url = null,
+        ?User $user = null,
+        ?string $language = null,
+        ?string $custom_emoji_id = null,
+    ) {
+        parent::__construct();
+        $this->type = $type;
+        $this->offset = $offset;
+        $this->length = $length;
+        $this->url = $url;
+        $this->user = $user;
+        $this->language = $language;
+        $this->custom_emoji_id = $custom_emoji_id;
+    }
+
+    public static function make(
+        MessageEntityType $type,
+        int $offset,
+        int $length,
+        ?string $url = null,
+        ?User $user = null,
+        ?string $language = null,
+        ?string $custom_emoji_id = null,
+    ): self
+    {
+        return new self(
+            type: $type,
+            offset: $offset,
+            length: $length,
+            url: $url,
+            user: $user,
+            language: $language,
+            custom_emoji_id: $custom_emoji_id
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type->value,
+            'offset' => $this->offset,
+            'length' => $this->length,
+            'url' => $this->url,
+            'user' => $this->user,
+            'language' => $this->language,
+            'custom_emoji_id' => $this->custom_emoji_id,
+        ]);
+    }
 }

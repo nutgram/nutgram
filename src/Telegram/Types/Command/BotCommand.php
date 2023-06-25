@@ -2,11 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
+use JsonSerializable;
+
 /**
  * This object represents a bot command.
  * @see https://core.telegram.org/bots/api#botcommand
  */
-class BotCommand
+class BotCommand implements JsonSerializable
 {
     /**
      * Text of the command;
@@ -21,13 +23,22 @@ class BotCommand
      */
     public string $description;
 
-    /**
-     * @param  string  $command
-     * @param  string  $description
-     */
     public function __construct(string $command, string $description)
     {
         $this->command = $command;
         $this->description = $description;
+    }
+
+    public static function make(string $command, string $description): self
+    {
+        return new self($command, $description);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'command' => $this->command,
+            'description' => $this->description,
+        ];
     }
 }

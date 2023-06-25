@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
@@ -22,4 +23,31 @@ class MenuButtonWebApp extends MenuButton
      * The Web App will be able to send an arbitrary message on behalf of the user using the method {@see https://core.telegram.org/bots/api#answerwebappquery answerWebAppQuery}.
      */
     public WebAppInfo $web_app;
+
+    public function __construct(
+        string $text,
+        WebAppInfo $web_app
+    )
+    {
+        parent::__construct();
+        $this->text = $text;
+        $this->web_app = $web_app;
+    }
+
+    public function make(
+        string $text,
+        WebAppInfo $web_app,
+    ): self
+    {
+        return new self($text, $web_app);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'type' => $this->type,
+            'text' => $this->text,
+            'web_app' => $this->web_app,
+        ];
+    }
 }

@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -67,4 +68,68 @@ class InlineQueryResultCachedDocument extends InlineQueryResult
      * Content of the message to be sent instead of the file
      */
     public ?InputMessageContent $input_message_content = null;
+
+    public function __construct(
+        string $id,
+        string $title,
+        string $document_file_id,
+        ?string $description = null,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+    ){
+        parent::__construct();
+        $this->id = $id;
+        $this->title = $title;
+        $this->document_file_id = $document_file_id;
+        $this->description = $description;
+        $this->caption = $caption;
+        $this->parse_mode = $parse_mode;
+        $this->caption_entities = $caption_entities;
+        $this->reply_markup = $reply_markup;
+        $this->input_message_content = $input_message_content;
+    }
+
+    public static function make(
+        string $id,
+        string $title,
+        string $document_file_id,
+        ?string $description = null,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+    ): self
+    {
+        return new self(
+            id: $id,
+            title: $title,
+            document_file_id: $document_file_id,
+            description: $description,
+            caption: $caption,
+            parse_mode: $parse_mode,
+            caption_entities: $caption_entities,
+            reply_markup: $reply_markup,
+            input_message_content: $input_message_content,
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type->value,
+            'id' => $this->id,
+            'title' => $this->title,
+            'document_file_id' => $this->document_file_id,
+            'description' => $this->description,
+            'caption' => $this->caption,
+            'parse_mode' => $this->parse_mode?->value,
+            'caption_entities' => $this->caption_entities,
+            'reply_markup' => $this->reply_markup,
+            'input_message_content' => $this->input_message_content,
+        ]);
+    }
 }

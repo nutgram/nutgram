@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
+use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -18,7 +19,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * @see https://core.telegram.org/bots/api#botcommandscope
  */
 #[BotCommandScopeResolver]
-abstract class BotCommandScope extends BaseType
+abstract class BotCommandScope extends BaseType implements JsonSerializable
 {
     public BotCommandScopeType $type;
 
@@ -30,5 +31,12 @@ abstract class BotCommandScope extends BaseType
     public function __serialize(): array
     {
         return ['type' => $this->getType()->value];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'type' => $this->type,
+        ];
     }
 }
