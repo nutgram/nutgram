@@ -111,8 +111,7 @@ class InlineQueryResultMpeg4Gif extends InlineQueryResult
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
-    )
-    {
+    ) {
         parent::__construct();
         $this->id = $id;
         $this->mpeg4_url = $mpeg4_url;

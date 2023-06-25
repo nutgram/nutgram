@@ -78,8 +78,7 @@ class MessageEntity extends BaseType implements JsonSerializable
         ?User $user = null,
         ?string $language = null,
         ?string $custom_emoji_id = null,
-    ): self
-    {
+    ): self {
         return new self(
             type: $type,
             offset: $offset,

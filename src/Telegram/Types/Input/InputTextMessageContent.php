@@ -41,8 +41,7 @@ class InputTextMessageContent extends InputMessageContent
         ?string $parse_mode = null,
         ?array $entities = null,
         ?bool $disable_web_page_preview = null,
-    )
-    {
+    ) {
         parent::__construct();
         $this->message_text = $message_text;
         $this->parse_mode = $parse_mode;
@@ -55,8 +54,7 @@ class InputTextMessageContent extends InputMessageContent
         ?string $parse_mode = null,
         ?array $entities = null,
         ?bool $disable_web_page_preview = null,
-    ): self
-    {
+    ): self {
         return new self(
             message_text: $message_text,
             parse_mode: $parse_mode,

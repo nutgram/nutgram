@@ -42,8 +42,7 @@ class MaskPosition extends BaseType implements JsonSerializable
         float $x_shift,
         float $y_shift,
         float $scale,
-    )
-    {
+    ) {
         parent::__construct();
         $this->point = $point;
         $this->x_shift = $x_shift;
@@ -56,8 +55,7 @@ class MaskPosition extends BaseType implements JsonSerializable
         float $x_shift,
         float $y_shift,
         float $scale,
-    ): self
-    {
+    ): self {
         return new self(
             point: $point,
             x_shift: $x_shift,

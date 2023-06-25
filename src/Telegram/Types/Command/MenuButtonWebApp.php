@@ -27,8 +27,7 @@ class MenuButtonWebApp extends MenuButton
     public function __construct(
         string $text,
         WebAppInfo $web_app
-    )
-    {
+    ) {
         parent::__construct();
         $this->text = $text;
         $this->web_app = $web_app;
@@ -37,8 +36,7 @@ class MenuButtonWebApp extends MenuButton
     public function make(
         string $text,
         WebAppInfo $web_app,
-    ): self
-    {
+    ): self {
         return new self($text, $web_app);
     }
 
