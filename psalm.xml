@@ -37,12 +37,8 @@
         </PossiblyNullPropertyAssignmentValue>
         <UndefinedInterfaceMethod>
             <errorLevel type="suppress">
-                <referencedMethod name="Psr\Container\ContainerInterface::getNew"/>
-                <referencedMethod name="Psr\Container\ContainerInterface::extend"/>
                 <referencedMethod name="Psr\Http\Client\ClientInterface::get"/>
                 <referencedMethod name="Psr\Http\Client\ClientInterface::post"/>
-                <referencedMethod name="Illuminate\Contracts\Filesystem\Filesystem::path"/>
-                <referencedMethod name="Illuminate\Contracts\Filesystem\Filesystem::putFileAs"/>
             </errorLevel>
         </UndefinedInterfaceMethod>
         <InvalidScope>

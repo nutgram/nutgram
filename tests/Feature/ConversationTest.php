@@ -216,7 +216,7 @@ it('calls the conversation constructor at every step', function ($update) {
     \SergiX44\Nutgram\Conversations\Conversation::refreshOnDeserialize();
     $bot->onMessage(ConversationWithConstructor::class);
 
-    $bot->getContainer()->addShared(CustomService::class, new CustomService());
+    $bot->getContainer()->set(CustomService::class, new CustomService());
 
     $bot->run();
     expect($bot->get('test'))->toBe(1);
