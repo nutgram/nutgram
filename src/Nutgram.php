@@ -6,14 +6,13 @@ namespace SergiX44\Nutgram;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use Laravel\SerializableClosure\SerializableClosure;
-use League\Container\Container;
-use League\Container\ReflectionContainer;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
+use SergiX44\Container\Container;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
@@ -89,8 +88,8 @@ class Nutgram extends ResolveHandlers
 
     /**
      * Initializes the current instance
-     * @param  string  $token
-     * @param  Configuration  $config
+     * @param string $token
+     * @param Configuration $config
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -101,10 +100,9 @@ class Nutgram extends ResolveHandlers
         $this->config = $config;
         $this->container = new Container();
         if ($config->container !== null) {
-            $this->container->delegate($config->container);
+            $this->container->delegateTo($config->container);
         }
-        $this->container->delegate(new ReflectionContainer());
-        $this->container->addShared(ContainerInterface::class, $this->container);
+        $this->container->set(ContainerInterface::class, $this->container);
 
         SerializableClosure::setSecretKey($this->token);
 
@@ -112,7 +110,7 @@ class Nutgram extends ResolveHandlers
             '%s/bot%s/%s',
             $config->apiUrl,
             $this->token,
-            $config->testEnv ?? false ? 'test/' : ''
+                $config->testEnv ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle([
@@ -121,28 +119,33 @@ class Nutgram extends ResolveHandlers
             'version' => $config->enableHttp2 ? '2.0' : '1.1',
             ...$config->clientOptions,
         ]);
-
-        $this->container->addShared(ClientInterface::class, $this->http);
-
-        $hydrator = $this->container->get($config->hydrator);
-        $this->container->addShared(Hydrator::class)->setConcrete($hydrator);
-        $this->hydrator = $this->container->get(Hydrator::class);
-
         $botId = $config->botId ?? (int)explode(':', $this->token)[0];
-        $this->container->addShared(CacheInterface::class, $config->cache);
-        $this->container->addShared(LoggerInterface::class, $config->logger);
 
-        $this->container->add(ConversationCache::class)->addArguments([CacheInterface::class, $botId]);
-        $this->container->add(GlobalCache::class)->addArguments([CacheInterface::class, $botId]);
-        $this->container->add(UserCache::class)->addArguments([CacheInterface::class, $botId]);
+        $this->container->register(ClientInterface::class, $this->http)->singleton();
+        $this->container->register(Hydrator::class, $config->hydrator)->singleton();
+        $this->container->register(CacheInterface::class, $config->cache)->singleton();
+        $this->container->register(LoggerInterface::class, $config->logger)->singleton();
+        $this->container->register(
+            ConversationCache::class,
+            fn (ContainerInterface $c) => new ConversationCache($c->get(CacheInterface::class), $botId)
+        )->singleton();
+        $this->container->register(
+            GlobalCache::class,
+            fn (ContainerInterface $c) => new GlobalCache($c->get(CacheInterface::class), $botId)
+        )->singleton();
+        $this->container->register(
+            UserCache::class,
+            fn (ContainerInterface $c) => new UserCache($c->get(CacheInterface::class), $botId)
+        )->singleton();
 
+        $this->hydrator = $this->container->get(Hydrator::class);
         $this->conversationCache = $this->container->get(ConversationCache::class);
         $this->globalCache = $this->container->get(GlobalCache::class);
         $this->userCache = $this->container->get(UserCache::class);
         $this->logger = $this->container->get(LoggerInterface::class);
 
-        $this->container->addShared(RunningMode::class, Polling::class);
-        $this->container->addShared(__CLASS__, $this);
+        $this->container->register(RunningMode::class, Polling::class);
+        $this->container->set(__CLASS__, $this);
     }
 
     /**
@@ -157,7 +160,7 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  array  $data
+     * @param array $data
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -168,8 +171,8 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  mixed  $update
-     * @param  array  $responses
+     * @param mixed $update
+     * @param array $responses
      * @return FakeNutgram
      */
     public static function fake(mixed $update = null, array $responses = [], ?Configuration $config = null): FakeNutgram
@@ -178,13 +181,13 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  string|RunningMode  $classOrInstance
+     * @param string|RunningMode $classOrInstance
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     public function setRunningMode(string|RunningMode $classOrInstance): void
     {
-        $this->container->extend(RunningMode::class)->setConcrete($classOrInstance);
+        $this->container->register(RunningMode::class, $classOrInstance);
     }
 
     protected function preflight(): void
@@ -207,7 +210,7 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  Update  $update
+     * @param Update $update
      * @throws Throwable
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
@@ -235,9 +238,9 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  Conversations\Conversation|callable  $callable
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
+     * @param Conversations\Conversation|callable $callable
+     * @param int|null $userId
+     * @param int|null $chatId
      * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
@@ -259,8 +262,8 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
+     * @param int|null $userId
+     * @param int|null $chatId
      * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
@@ -305,7 +308,7 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param  callable|array|string  $callable
+     * @param callable|array|string $callable
      * @return callable
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface

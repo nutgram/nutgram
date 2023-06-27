@@ -1,8 +1,8 @@
 <?php
 
 use GuzzleHttp\Psr7\Request;
-use League\Container\Container;
 use Psr\Log\LoggerInterface;
+use SergiX44\Container\Container;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
@@ -185,7 +185,7 @@ it('throws an exception when no fake update specified', function () {
 
 it('uses a different container', function () {
     $differentContainer = new Container();
-    $differentContainer->addShared(MyService::class)->addArguments(['hello']);
+    $differentContainer->register(MyService::class, fn() => new MyService('hello'))->singleton();
 
     $bot = Nutgram::fake(config: new Configuration(
         container: $differentContainer
