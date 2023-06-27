@@ -15,13 +15,16 @@ use SergiX44\Nutgram\Testing\Constraints\ArraySubset;
  */
 trait Asserts
 {
+    private int $sequenceIndex = 0;
+
     /**
      * @param callable $closure
-     * @param int $index
+     * @param int|null $index
      * @return $this
      */
-    public function assertRaw(callable $closure, int $index = 0): self
+    public function assertRaw(callable $closure, ?int $index = null): self
     {
+        $index = $index ?? $this->sequenceIndex;
         $reqRes = $this->testingHistory[$index];
 
         /** @var Request $request */
@@ -57,11 +60,12 @@ trait Asserts
     /**
      * @param string|string[] $method
      * @param array|null $expected
-     * @param int $index
+     * @param int|null $index
      * @return $this
      */
-    public function assertReply(string|array $method, ?array $expected = null, int $index = 0): self
+    public function assertReply(string|array $method, ?array $expected = null, ?int $index = null): self
     {
+        $index = $index ?? $this->sequenceIndex;
         $method = !is_array($method) ? [$method] : $method;
 
         $reqRes = $this->testingHistory[$index];
@@ -73,7 +77,7 @@ trait Asserts
 
         if ($expected !== null) {
             try {
-                $expected = json_decode(json_encode($expected), true);
+                $expected = json_decode(json_encode($expected), true, 512, JSON_THROW_ON_ERROR);
                 $actual = FakeNutgram::getActualData($request, $expected);
             } catch (JsonException) {
                 $actual = [];
@@ -87,22 +91,24 @@ trait Asserts
 
     /**
      * @param array $expected
-     * @param int $index
+     * @param int|null $index
      * @param string|null $forceMethod
      * @return $this
      */
-    public function assertReplyMessage(array $expected, int $index = 0, ?string $forceMethod = null): self
+    public function assertReplyMessage(array $expected, ?int $index = null, ?string $forceMethod = null): self
     {
+        $index = $index ?? $this->sequenceIndex;
         return $this->assertReply($forceMethod ?? $this->methodsReturnTypes[Message::class] ?? [], $expected, $index);
     }
 
     /**
      * @param string $expected
-     * @param int $index
+     * @param int|null $index
      * @return $this
      */
-    public function assertReplyText(string $expected, int $index = 0): self
+    public function assertReplyText(string $expected, ?int $index = null): self
     {
+        $index = $index ?? $this->sequenceIndex;
         return $this->assertReplyMessage(['text' => $expected], $index);
     }
 
@@ -110,6 +116,7 @@ trait Asserts
      * @param int|null $userId
      * @param int|null $chatId
      * @return $this
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function assertActiveConversation(?int $userId = null, ?int $chatId = null): self
     {
@@ -124,6 +131,7 @@ trait Asserts
      * @param int|null $userId
      * @param int|null $chatId
      * @return $this
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function assertNoConversation(?int $userId = null, ?int $chatId = null): self
     {
@@ -135,11 +143,25 @@ trait Asserts
     }
 
     /**
-     * @return self
+     * @return $this
      */
     public function assertNoReply(): self
     {
         PHPUnit::assertEmpty($this->testingHistory, 'A reply was sent');
+
+        return $this;
+    }
+
+    public function assertSequence(callable ...$callbacks): self
+    {
+        $closures = func_get_args();
+
+        foreach ($closures as $index => $closure) {
+            $this->sequenceIndex = $index;
+            $closure($this);
+        }
+
+        $this->sequenceIndex = 0;
 
         return $this;
     }
