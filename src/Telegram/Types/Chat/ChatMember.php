@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Nutgram\Telegram\Properties\ChatMemberStatus;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -19,6 +20,11 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 #[ChatMemberResolver]
 abstract class ChatMember extends BaseType
 {
+    /**
+     * The member's status in the chat
+     */
+    public ChatMemberStatus $status;
+
     /**
      * Information about the user
      */

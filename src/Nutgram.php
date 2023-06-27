@@ -118,6 +118,7 @@ class Nutgram extends ResolveHandlers
         $this->http = new Guzzle([
             'base_uri' => $baseUri,
             'timeout' => $config->clientTimeout,
+            'version' => $config->enableHttp2 ? '2.0' : '1.1',
             ...$config->clientOptions,
         ]);
 

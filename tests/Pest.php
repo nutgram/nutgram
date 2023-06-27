@@ -43,5 +43,9 @@ expect()->extend('getFileContent', fn () => $this->and(File::get($this->value)))
 
 function getUpdateType(string $type, bool $associative = false): array|stdClass
 {
-    return json_decode(file_get_contents(__DIR__."/Updates/$type.json"), $associative);
+    return json_decode(
+        file_get_contents(__DIR__."/Fixtures/Updates/$type.json"),
+        $associative,
+        flags: JSON_THROW_ON_ERROR
+    );
 }

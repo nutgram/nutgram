@@ -13,4 +13,9 @@ class BotCommandScopeDefault extends BotCommandScope
 {
     /** Scope type, must be default */
     public BotCommandScopeType $type = BotCommandScopeType::DEFAULT;
+
+    public function make(): self
+    {
+        return new self();
+    }
 }

@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Common\LoginUrl;
 use SergiX44\Nutgram\Telegram\Types\Game\CallbackGame;
@@ -13,6 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
  * You must use exactly one of the optional fields.
  * @see https://core.telegram.org/bots/api#inlinekeyboardbutton
  */
+#[SkipConstructor]
 class InlineKeyboardButton extends BaseType implements JsonSerializable
 {
     /** Label text on the button */
@@ -80,7 +82,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
     public ?bool $pay = null;
 
     public function __construct(
-        string $text = '',
+        string $text,
         ?string $url = null,
         ?LoginUrl $login_url = null,
         ?string $callback_data = null,

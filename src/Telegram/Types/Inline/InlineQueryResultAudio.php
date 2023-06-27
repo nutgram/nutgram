@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -73,4 +74,72 @@ class InlineQueryResultAudio extends InlineQueryResult
      * Content of the message to be sent instead of the audio
      */
     public ?InputMessageContent $input_message_content = null;
+
+    public function __construct(
+        string $id,
+        string $audio_url,
+        string $title,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?string $performer = null,
+        ?int $audio_duration = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+    ) {
+        parent::__construct();
+        $this->id = $id;
+        $this->audio_url = $audio_url;
+        $this->title = $title;
+        $this->caption = $caption;
+        $this->parse_mode = $parse_mode;
+        $this->caption_entities = $caption_entities;
+        $this->performer = $performer;
+        $this->audio_duration = $audio_duration;
+        $this->reply_markup = $reply_markup;
+        $this->input_message_content = $input_message_content;
+    }
+
+    public static function make(
+        string $id,
+        string $audio_url,
+        string $title,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?string $performer = null,
+        ?int $audio_duration = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+    ): self {
+        return new self(
+            id: $id,
+            audio_url: $audio_url,
+            title: $title,
+            caption: $caption,
+            parse_mode: $parse_mode,
+            caption_entities: $caption_entities,
+            performer: $performer,
+            audio_duration: $audio_duration,
+            reply_markup: $reply_markup,
+            input_message_content: $input_message_content,
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type->value,
+            'id' => $this->id,
+            'audio_url' => $this->audio_url,
+            'title' => $this->title,
+            'caption' => $this->caption,
+            'parse_mode' => $this->parse_mode?->value,
+            'caption_entities' => $this->caption_entities,
+            'performer' => $this->performer,
+            'audio_duration' => $this->audio_duration,
+            'reply_markup' => $this->reply_markup,
+            'input_message_content' => $this->input_message_content,
+        ]);
+    }
 }
