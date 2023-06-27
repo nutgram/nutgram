@@ -110,7 +110,7 @@ class Nutgram extends ResolveHandlers
             '%s/bot%s/%s',
             $config->apiUrl,
             $this->token,
-                $config->testEnv ?? false ? 'test/' : ''
+            $config->testEnv ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle([
