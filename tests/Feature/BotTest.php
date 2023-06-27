@@ -8,9 +8,9 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Testing\FakeNutgram;
 use SergiX44\Nutgram\Testing\FormDataParser;
 use SergiX44\Nutgram\Testing\OutgoingResource;
-use SergiX44\Nutgram\Testing\SequenceAsserter;
 use SergiX44\Nutgram\Tests\Fixtures\CustomLogger;
 use SergiX44\Nutgram\Tests\Fixtures\MyService;
 use SergiX44\Nutgram\Tests\Fixtures\ServiceHandler;
@@ -228,8 +228,8 @@ it('asserts with sequence method', function () {
         ->hearText('/test')
         ->reply()
         ->assertSequence(
-            fn (SequenceAsserter $x) => $x->assertReplyText('foo'),
-            fn (SequenceAsserter $x) => $x->assertReplyText('bar'),
-            fn (SequenceAsserter $x) => $x->assertReplyText('baz'),
+            fn (FakeNutgram $x) => $x->assertReplyText('foo'),
+            fn (FakeNutgram $x) => $x->assertReplyText('bar'),
+            fn (FakeNutgram $x) => $x->assertReplyText('baz'),
         );
 });
