@@ -65,4 +65,72 @@ class InlineQueryResultArticle extends InlineQueryResult
      * Thumbnail height
      */
     public ?int $thumbnail_height = null;
+
+    public function __construct(
+        string $id,
+        string $title,
+        InputMessageContent $input_message_content,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?string $url = null,
+        ?bool $hide_url = null,
+        ?string $description = null,
+        ?string $thumbnail_url = null,
+        ?int $thumbnail_width = null,
+        ?int $thumbnail_height = null,
+    ) {
+        parent::__construct();
+        $this->id = $id;
+        $this->title = $title;
+        $this->input_message_content = $input_message_content;
+        $this->reply_markup = $reply_markup;
+        $this->url = $url;
+        $this->hide_url = $hide_url;
+        $this->description = $description;
+        $this->thumbnail_url = $thumbnail_url;
+        $this->thumbnail_width = $thumbnail_width;
+        $this->thumbnail_height = $thumbnail_height;
+    }
+
+    public function make(
+        string $id,
+        string $title,
+        InputMessageContent $input_message_content,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?string $url = null,
+        ?bool $hide_url = null,
+        ?string $description = null,
+        ?string $thumbnail_url = null,
+        ?int $thumbnail_width = null,
+        ?int $thumbnail_height = null,
+    ): self {
+        return new self(
+            id: $id,
+            title: $title,
+            input_message_content: $input_message_content,
+            reply_markup: $reply_markup,
+            url: $url,
+            hide_url: $hide_url,
+            description: $description,
+            thumbnail_url: $thumbnail_url,
+            thumbnail_width: $thumbnail_width,
+            thumbnail_height: $thumbnail_height,
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type->value,
+            'id' => $this->id,
+            'title' => $this->title,
+            'input_message_content' => $this->input_message_content,
+            'reply_markup' => $this->reply_markup,
+            'url' => $this->url,
+            'hide_url' => $this->hide_url,
+            'description' => $this->description,
+            'thumbnail_url' => $this->thumbnail_url,
+            'thumbnail_width' => $this->thumbnail_width,
+            'thumbnail_height' => $this->thumbnail_height,
+        ]);
+    }
 }

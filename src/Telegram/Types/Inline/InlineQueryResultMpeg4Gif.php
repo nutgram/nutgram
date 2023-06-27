@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -95,4 +96,55 @@ class InlineQueryResultMpeg4Gif extends InlineQueryResult
      * Content of the message to be sent instead of the video animation
      */
     public ?InputMessageContent $input_message_content = null;
+
+    public function __construct(
+        string $id,
+        string $mpeg4_url,
+        string $thumbnail_url,
+        ?int $mpeg4_width = null,
+        ?int $mpeg4_height = null,
+        ?int $mpeg4_duration = null,
+        ?string $thumbnail_mime_type = null,
+        ?string $title = null,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+    ) {
+        parent::__construct();
+        $this->id = $id;
+        $this->mpeg4_url = $mpeg4_url;
+        $this->thumbnail_url = $thumbnail_url;
+        $this->mpeg4_width = $mpeg4_width;
+        $this->mpeg4_height = $mpeg4_height;
+        $this->mpeg4_duration = $mpeg4_duration;
+        $this->thumbnail_mime_type = $thumbnail_mime_type;
+        $this->title = $title;
+        $this->caption = $caption;
+        $this->parse_mode = $parse_mode;
+        $this->caption_entities = $caption_entities;
+        $this->reply_markup = $reply_markup;
+        $this->input_message_content = $input_message_content;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type->value,
+            'id' => $this->id,
+            'mpeg4_url' => $this->mpeg4_url,
+            'mpeg4_width' => $this->mpeg4_width,
+            'mpeg4_height' => $this->mpeg4_height,
+            'mpeg4_duration' => $this->mpeg4_duration,
+            'thumb_url' => $this->thumbnail_url,
+            'thumb_mime_type' => $this->thumbnail_mime_type,
+            'title' => $this->title,
+            'caption' => $this->caption,
+            'parse_mode' => $this->parse_mode?->value,
+            'caption_entities' => $this->caption_entities,
+            'reply_markup' => $this->reply_markup,
+            'input_message_content' => $this->input_message_content,
+        ]);
+    }
 }

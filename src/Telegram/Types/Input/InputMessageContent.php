@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -14,6 +15,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * - {@see InputInvoiceMessageContent InputInvoiceMessageContent}
  * @see https://core.telegram.org/bots/api#inputmessagecontent
  */
-abstract class InputMessageContent extends BaseType
+abstract class InputMessageContent extends BaseType implements JsonSerializable
 {
 }

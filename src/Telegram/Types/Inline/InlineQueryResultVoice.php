@@ -67,4 +67,67 @@ class InlineQueryResultVoice extends InlineQueryResult
      * Content of the message to be sent instead of the voice recording
      */
     public ?InputMessageContent $input_message_content = null;
+
+    public function __construct(
+        string $id,
+        string $voice_url,
+        string $title,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?int $voice_duration = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+    ) {
+        parent::__construct();
+        $this->id = $id;
+        $this->voice_url = $voice_url;
+        $this->title = $title;
+        $this->caption = $caption;
+        $this->parse_mode = $parse_mode;
+        $this->caption_entities = $caption_entities;
+        $this->voice_duration = $voice_duration;
+        $this->reply_markup = $reply_markup;
+        $this->input_message_content = $input_message_content;
+    }
+
+    public static function make(
+        string $id,
+        string $voice_url,
+        string $title,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?int $voice_duration = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+    ): self {
+        return new self(
+            id: $id,
+            voice_url: $voice_url,
+            title: $title,
+            caption: $caption,
+            parse_mode: $parse_mode,
+            caption_entities: $caption_entities,
+            voice_duration: $voice_duration,
+            reply_markup: $reply_markup,
+            input_message_content: $input_message_content,
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type->value,
+            'id' => $this->id,
+            'voice_url' => $this->voice_url,
+            'title' => $this->title,
+            'caption' => $this->caption,
+            'parse_mode' => $this->parse_mode?->value,
+            'caption_entities' => $this->caption_entities,
+            'voice_duration' => $this->voice_duration,
+            'reply_markup' => $this->reply_markup,
+            'input_message_content' => $this->input_message_content,
+        ]);
+    }
 }

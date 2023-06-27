@@ -12,4 +12,9 @@ class BotCommandScopeAllChatAdministrators extends BotCommandScope
 {
     /** Scope type, must be all_chat_administrators */
     public BotCommandScopeType $type = BotCommandScopeType::ALL_CHAT_ADMINISTRATORS;
+
+    public function make(): self
+    {
+        return new self();
+    }
 }

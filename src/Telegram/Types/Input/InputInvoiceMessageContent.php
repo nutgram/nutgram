@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
 
 /**
@@ -128,4 +129,121 @@ class InputInvoiceMessageContent extends InputMessageContent
      * Pass True if the final price depends on the shipping method
      */
     public ?bool $is_flexible = null;
+
+    public function __construct(
+        string $title,
+        string $description,
+        string $payload,
+        string $provider_token,
+        string $currency,
+        array $prices,
+        ?int $max_tip_amount = null,
+        ?array $suggested_tip_amounts = null,
+        ?string $provider_data = null,
+        ?string $photo_url = null,
+        ?int $photo_size = null,
+        ?int $photo_width = null,
+        ?int $photo_height = null,
+        ?bool $need_name = null,
+        ?bool $need_phone_number = null,
+        ?bool $need_email = null,
+        ?bool $need_shipping_address = null,
+        ?bool $send_phone_number_to_provider = null,
+        ?bool $send_email_to_provider = null,
+        ?bool $is_flexible = null,
+    ) {
+        parent::__construct();
+        $this->title = $title;
+        $this->description = $description;
+        $this->payload = $payload;
+        $this->provider_token = $provider_token;
+        $this->currency = $currency;
+        $this->prices = $prices;
+        $this->max_tip_amount = $max_tip_amount;
+        $this->suggested_tip_amounts = $suggested_tip_amounts;
+        $this->provider_data = $provider_data;
+        $this->photo_url = $photo_url;
+        $this->photo_size = $photo_size;
+        $this->photo_width = $photo_width;
+        $this->photo_height = $photo_height;
+        $this->need_name = $need_name;
+        $this->need_phone_number = $need_phone_number;
+        $this->need_email = $need_email;
+        $this->need_shipping_address = $need_shipping_address;
+        $this->send_phone_number_to_provider = $send_phone_number_to_provider;
+        $this->send_email_to_provider = $send_email_to_provider;
+        $this->is_flexible = $is_flexible;
+    }
+
+    public static function make(
+        string $title,
+        string $description,
+        string $payload,
+        string $provider_token,
+        string $currency,
+        array $prices,
+        ?int $max_tip_amount = null,
+        ?array $suggested_tip_amounts = null,
+        ?string $provider_data = null,
+        ?string $photo_url = null,
+        ?int $photo_size = null,
+        ?int $photo_width = null,
+        ?int $photo_height = null,
+        ?bool $need_name = null,
+        ?bool $need_phone_number = null,
+        ?bool $need_email = null,
+        ?bool $need_shipping_address = null,
+        ?bool $send_phone_number_to_provider = null,
+        ?bool $send_email_to_provider = null,
+        ?bool $is_flexible = null,
+    ): self {
+        return new self(
+            title: $title,
+            description: $description,
+            payload: $payload,
+            provider_token: $provider_token,
+            currency: $currency,
+            prices: $prices,
+            max_tip_amount: $max_tip_amount,
+            suggested_tip_amounts: $suggested_tip_amounts,
+            provider_data: $provider_data,
+            photo_url: $photo_url,
+            photo_size: $photo_size,
+            photo_width: $photo_width,
+            photo_height: $photo_height,
+            need_name: $need_name,
+            need_phone_number: $need_phone_number,
+            need_email: $need_email,
+            need_shipping_address: $need_shipping_address,
+            send_phone_number_to_provider: $send_phone_number_to_provider,
+            send_email_to_provider: $send_email_to_provider,
+            is_flexible: $is_flexible,
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'title' => $this->title,
+            'description' => $this->description,
+            'payload' => $this->payload,
+            'provider_token' => $this->provider_token,
+            'currency' => $this->currency,
+            'prices' => $this->prices,
+            'max_tip_amount' => $this->max_tip_amount,
+            'suggested_tip_amounts' => $this->suggested_tip_amounts,
+            'provider_data' => $this->provider_data,
+            'photo_url' => $this->photo_url,
+            'photo_size' => $this->photo_size,
+            'photo_width' => $this->photo_width,
+            'photo_height' => $this->photo_height,
+            'need_name' => $this->need_name,
+            'need_phone_number' => $this->need_phone_number,
+            'need_email' => $this->need_email,
+            'need_shipping_address' => $this->need_shipping_address,
+            'send_phone_number_to_provider' => $this->send_phone_number_to_provider,
+            'send_email_to_provider' => $this->send_email_to_provider,
+            'is_flexible' => $this->is_flexible,
+        ]);
+    }
 }
