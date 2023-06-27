@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Nutgram\Nutgram;
+
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a location message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputlocationmessagecontent
@@ -40,4 +42,51 @@ class InputLocationMessageContent extends InputMessageContent
      * Must be between 1 and 100000 if specified.
      */
     public ?int $proximity_alert_radius = null;
+
+    public function __construct(
+        float $latitude,
+        float $longitude,
+        ?float $horizontal_accuracy = null,
+        ?int $live_period = null,
+        ?int $heading = null,
+        ?int $proximity_alert_radius = null,
+    ) {
+        parent::__construct();
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+        $this->horizontal_accuracy = $horizontal_accuracy;
+        $this->live_period = $live_period;
+        $this->heading = $heading;
+        $this->proximity_alert_radius = $proximity_alert_radius;
+    }
+
+    public static function make(
+        float $latitude,
+        float $longitude,
+        ?float $horizontal_accuracy = null,
+        ?int $live_period = null,
+        ?int $heading = null,
+        ?int $proximity_alert_radius = null,
+    ): self {
+        return new self(
+            latitude: $latitude,
+            longitude: $longitude,
+            horizontal_accuracy: $horizontal_accuracy,
+            live_period: $live_period,
+            heading: $heading,
+            proximity_alert_radius: $proximity_alert_radius,
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+            'horizontal_accuracy' => $this->horizontal_accuracy,
+            'live_period' => $this->live_period,
+            'heading' => $this->heading,
+            'proximity_alert_radius' => $this->proximity_alert_radius,
+        ]);
+    }
 }

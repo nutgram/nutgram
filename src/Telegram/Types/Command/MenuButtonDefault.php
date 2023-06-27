@@ -12,4 +12,9 @@ class MenuButtonDefault extends MenuButton
 {
     /** Type of the button, must be default */
     public MenuButtonType $type = MenuButtonType::DEFAULT;
+
+    public function make(): self
+    {
+        return new self();
+    }
 }

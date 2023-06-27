@@ -87,4 +87,92 @@ class InlineQueryResultVenue extends InlineQueryResult
      * Thumbnail height
      */
     public ?int $thumbnail_height = null;
+
+    public function __construct(
+        string $id,
+        float $latitude,
+        float $longitude,
+        string $title,
+        string $address,
+        ?string $foursquare_id = null,
+        ?string $foursquare_type = null,
+        ?string $google_place_id = null,
+        ?string $google_place_type = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+        ?string $thumbnail_url = null,
+        ?int $thumbnail_width = null,
+        ?int $thumbnail_height = null,
+    ) {
+        parent::__construct();
+        $this->id = $id;
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+        $this->title = $title;
+        $this->address = $address;
+        $this->foursquare_id = $foursquare_id;
+        $this->foursquare_type = $foursquare_type;
+        $this->google_place_id = $google_place_id;
+        $this->google_place_type = $google_place_type;
+        $this->reply_markup = $reply_markup;
+        $this->input_message_content = $input_message_content;
+        $this->thumbnail_url = $thumbnail_url;
+        $this->thumbnail_width = $thumbnail_width;
+        $this->thumbnail_height = $thumbnail_height;
+    }
+
+    public static function make(
+        string $id,
+        float $latitude,
+        float $longitude,
+        string $title,
+        string $address,
+        ?string $foursquare_id = null,
+        ?string $foursquare_type = null,
+        ?string $google_place_id = null,
+        ?string $google_place_type = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+        ?string $thumbnail_url = null,
+        ?int $thumbnail_width = null,
+        ?int $thumbnail_height = null,
+    ): self {
+        return new self(
+            id: $id,
+            latitude: $latitude,
+            longitude: $longitude,
+            title: $title,
+            address: $address,
+            foursquare_id: $foursquare_id,
+            foursquare_type: $foursquare_type,
+            google_place_id: $google_place_id,
+            google_place_type: $google_place_type,
+            reply_markup: $reply_markup,
+            input_message_content: $input_message_content,
+            thumbnail_url: $thumbnail_url,
+            thumbnail_width: $thumbnail_width,
+            thumbnail_height: $thumbnail_height,
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type->value,
+            'id' => $this->id,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+            'title' => $this->title,
+            'address' => $this->address,
+            'foursquare_id' => $this->foursquare_id,
+            'foursquare_type' => $this->foursquare_type,
+            'google_place_id' => $this->google_place_id,
+            'google_place_type' => $this->google_place_type,
+            'reply_markup' => $this->reply_markup,
+            'input_message_content' => $this->input_message_content,
+            'thumb_url' => $this->thumbnail_url,
+            'thumb_width' => $this->thumbnail_width,
+            'thumb_height' => $this->thumbnail_height,
+        ]);
+    }
 }
