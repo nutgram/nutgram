@@ -18,7 +18,6 @@ use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\FireHandlers;
-use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Hydrator\Hydrator;
@@ -64,11 +63,9 @@ class Nutgram extends ResolveHandlers
     private LoggerInterface $logger;
 
     /**
-     * @var ContainerInterface
+     * @var Container
      */
-    protected ContainerInterface $container;
-
-    protected ?Handler $currentHandler = null;
+    protected Container $container;
 
     /**
      * Nutgram constructor.
@@ -281,10 +278,7 @@ class Nutgram extends ResolveHandlers
         return $this;
     }
 
-    /**
-     * @return ContainerInterface|Container
-     */
-    public function getContainer(): ContainerInterface|Container
+    public function getContainer(): ContainerInterface
     {
         return $this->container;
     }
