@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Properties\MessageEntityType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -12,6 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  * For example, hashtags, usernames, URLs, etc.
  * @see https://core.telegram.org/bots/api#messageentity
  */
+#[SkipConstructor]
 class MessageEntity extends BaseType implements JsonSerializable
 {
     /**
