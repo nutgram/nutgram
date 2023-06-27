@@ -8,9 +8,12 @@ use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Middleware\Link;
 use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Support\HasThrottle;
 
 class Handler extends MiddlewareChain
 {
+    use HasThrottle;
+
     /**
      * regular expression to capture named parameters but not quantifiers
      * captures {name}, but not {1}, {1,}, or {1,2}.

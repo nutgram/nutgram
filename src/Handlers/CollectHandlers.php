@@ -6,11 +6,12 @@ namespace SergiX44\Nutgram\Handlers;
 use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\Listeners\MessageListeners;
 use SergiX44\Nutgram\Handlers\Listeners\UpdateListeners;
+use SergiX44\Nutgram\Support\HasThrottle;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
 abstract class CollectHandlers
 {
-    use UpdateListeners, MessageListeners;
+    use UpdateListeners, MessageListeners, HasThrottle;
 
     protected const FALLBACK = 'FALLBACK';
     protected const EXCEPTION = 'EXCEPTION';
@@ -174,5 +175,10 @@ abstract class CollectHandlers
     private function checkFinalized(): void
     {
         !$this->finalized ?: throw new StatusFinalizedException();
+    }
+
+    public function getThrottleHash(): string
+    {
+        return 'global';
     }
 }

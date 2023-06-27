@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram;
 
+use Closure;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use Laravel\SerializableClosure\SerializableClosure;
@@ -71,6 +72,8 @@ class Nutgram extends ResolveHandlers
 
     protected ?Handler $currentHandler = null;
 
+    public static ?Closure $throttleMessageClosure = null;
+
     /**
      * Nutgram constructor.
      * @param string $token
@@ -112,7 +115,7 @@ class Nutgram extends ResolveHandlers
             '%s/bot%s/%s',
             $config->apiUrl,
             $this->token,
-            $config->testEnv ?? false ? 'test/' : ''
+                $config->testEnv ?? false ? 'test/' : ''
         );
 
         $this->http = new Guzzle([
@@ -376,6 +379,15 @@ class Nutgram extends ResolveHandlers
      */
     public function currentParameters(): array
     {
-        return $this->currentHandler?->getParameters() ?? [];
+        return $this->currentHandler()?->getParameters() ?? [];
+    }
+
+    /**
+     * Returns the current handler being executed
+     * @return Handler|null
+     */
+    public function currentHandler(): ?Handler
+    {
+        return $this->currentHandler;
     }
 }
