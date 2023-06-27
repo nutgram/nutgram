@@ -11,6 +11,7 @@ use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Middleware\ThrottleMiddleware;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
@@ -187,6 +188,8 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected function applyGlobalMiddlewareTo(Handler $handler): void
     {
+        $handler->middleware(ThrottleMiddleware::class);
+
         $skippedGlobalMiddlewares = $handler->getSkippedGlobalMiddlewares();
 
         if ($handler->isSkippingGlobalMiddlewares() && empty($skippedGlobalMiddlewares)) {
