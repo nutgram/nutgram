@@ -20,7 +20,7 @@ trait Asserts
     /**
      * @param callable $closure
      * @param int|null $index
-     * @return Asserts|FakeNutgram
+     * @return $this
      */
     public function assertRaw(callable $closure, ?int $index = null): self
     {
@@ -38,7 +38,7 @@ trait Asserts
     /**
      * @param string $method
      * @param int $times
-     * @return Asserts|FakeNutgram
+     * @return $this
      */
     public function assertCalled(string $method, int $times = 1): self
     {
@@ -61,7 +61,7 @@ trait Asserts
      * @param string|string[] $method
      * @param array|null $expected
      * @param int|null $index
-     * @return Asserts|FakeNutgram
+     * @return $this
      */
     public function assertReply(string|array $method, ?array $expected = null, ?int $index = null): self
     {
@@ -93,7 +93,7 @@ trait Asserts
      * @param array $expected
      * @param int|null $index
      * @param string|null $forceMethod
-     * @return Asserts|FakeNutgram
+     * @return $this
      */
     public function assertReplyMessage(array $expected, ?int $index = null, ?string $forceMethod = null): self
     {
@@ -104,7 +104,7 @@ trait Asserts
     /**
      * @param string $expected
      * @param int|null $index
-     * @return Asserts|FakeNutgram
+     * @return $this
      */
     public function assertReplyText(string $expected, ?int $index = null): self
     {
@@ -115,7 +115,7 @@ trait Asserts
     /**
      * @param int|null $userId
      * @param int|null $chatId
-     * @return Asserts|FakeNutgram
+     * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function assertActiveConversation(?int $userId = null, ?int $chatId = null): self
@@ -130,7 +130,7 @@ trait Asserts
     /**
      * @param int|null $userId
      * @param int|null $chatId
-     * @return Asserts|FakeNutgram
+     * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function assertNoConversation(?int $userId = null, ?int $chatId = null): self
@@ -143,7 +143,7 @@ trait Asserts
     }
 
     /**
-     * @return Asserts|FakeNutgram
+     * @return $this
      */
     public function assertNoReply(): self
     {
