@@ -103,22 +103,19 @@ class Nutgram extends ResolveHandlers
 
         SerializableClosure::setSecretKey($this->token);
 
-        $baseUri = sprintf(
-            '%s/bot%s/%s',
-            $config->apiUrl,
-            $this->token,
-            $config->testEnv ?? false ? 'test/' : ''
-        );
-
         $this->http = new Guzzle([
-            'base_uri' => $baseUri,
+            'base_uri' => sprintf(
+                '%s/bot%s/%s',
+                $config->apiUrl,
+                $this->token,
+                $config->testEnv ?? false ? 'test/' : ''
+            ),
             'timeout' => $config->clientTimeout,
             'version' => $config->enableHttp2 ? '2.0' : '1.1',
             ...$config->clientOptions,
         ]);
         $botId = $config->botId ?? (int)explode(':', $this->token)[0];
-
-        $this->container->register(ClientInterface::class, $this->http)->singleton();
+        $this->container->set(ClientInterface::class, $this->http);
         $this->container->register(Hydrator::class, $config->hydrator)->singleton();
         $this->container->register(CacheInterface::class, $config->cache)->singleton();
         $this->container->register(LoggerInterface::class, $config->logger)->singleton();
