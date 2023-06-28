@@ -2,6 +2,17 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.1.0 - 2023-06-28
+
+### What's Changed
+
+- Fix missing json serialized objects by @Lukasss93 in https://github.com/nutgram/nutgram/pull/504
+- Add assertSequence method to FakeNutgram by @Lukasss93 in https://github.com/nutgram/nutgram/pull/489
+- remove abandoned league/container by @SergiX44 in https://github.com/nutgram/nutgram/pull/508
+- allow extra non validated config by @SergiX44 in https://github.com/nutgram/nutgram/pull/510
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.0.2...4.1.0
+
 ## 3.20.2 - 2023-06-23
 
 ### What's Changed
