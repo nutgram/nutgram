@@ -92,4 +92,92 @@ class InlineQueryResultVideo extends InlineQueryResult
      * This field is required if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).
      */
     public ?InputMessageContent $input_message_content = null;
+
+    public function __construct(
+        string $id,
+        string $video_url,
+        string $mime_type,
+        string $thumbnail_url,
+        string $title,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?int $video_width = null,
+        ?int $video_height = null,
+        ?int $video_duration = null,
+        ?string $description = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+    ) {
+        parent::__construct();
+        $this->id = $id;
+        $this->video_url = $video_url;
+        $this->mime_type = $mime_type;
+        $this->thumbnail_url = $thumbnail_url;
+        $this->title = $title;
+        $this->caption = $caption;
+        $this->parse_mode = $parse_mode;
+        $this->caption_entities = $caption_entities;
+        $this->video_width = $video_width;
+        $this->video_height = $video_height;
+        $this->video_duration = $video_duration;
+        $this->description = $description;
+        $this->reply_markup = $reply_markup;
+        $this->input_message_content = $input_message_content;
+    }
+
+    public static function make(
+        string $id,
+        string $video_url,
+        string $mime_type,
+        string $thumbnail_url,
+        string $title,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?int $video_width = null,
+        ?int $video_height = null,
+        ?int $video_duration = null,
+        ?string $description = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+    ): self {
+        return new self(
+            id: $id,
+            video_url: $video_url,
+            mime_type: $mime_type,
+            thumbnail_url: $thumbnail_url,
+            title: $title,
+            caption: $caption,
+            parse_mode: $parse_mode,
+            caption_entities: $caption_entities,
+            video_width: $video_width,
+            video_height: $video_height,
+            video_duration: $video_duration,
+            description: $description,
+            reply_markup: $reply_markup,
+            input_message_content: $input_message_content,
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type->value,
+            'id' => $this->id,
+            'video_url' => $this->video_url,
+            'mime_type' => $this->mime_type,
+            'thumbnail_url' => $this->thumbnail_url,
+            'title' => $this->title,
+            'caption' => $this->caption,
+            'parse_mode' => $this->parse_mode?->value,
+            'caption_entities' => $this->caption_entities,
+            'video_width' => $this->video_width,
+            'video_height' => $this->video_height,
+            'video_duration' => $this->video_duration,
+            'description' => $this->description,
+            'reply_markup' => $this->reply_markup,
+            'input_message_content' => $this->input_message_content,
+        ]);
+    }
 }

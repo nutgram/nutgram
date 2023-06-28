@@ -39,23 +39,6 @@ final readonly class Configuration
     ];
     public const DEFAULT_ENABLE_HTTP2 = true;
 
-    /**
-     * @param  string  $apiUrl
-     * @param  int|null  $botId
-     * @param  string|null  $botName
-     * @param  bool  $testEnv
-     * @param  bool  $isLocal
-     * @param  int  $clientTimeout
-     * @param  array  $clientOptions
-     * @param  ContainerInterface|null  $container
-     * @param  HydratorInterface|string  $hydrator
-     * @param  CacheInterface|string  $cache
-     * @param  string|LoggerInterface  $logger
-     * @param  array|Closure|string|null  $localPathTransformer
-     * @param  int  $pollingTimeout
-     * @param  array  $pollingAllowedUpdates
-     * @param  int  $pollingLimit
-     */
     public function __construct(
         public string $apiUrl = self::DEFAULT_API_URL,
         public ?int $botId = null,
@@ -73,6 +56,7 @@ final readonly class Configuration
         public array $pollingAllowedUpdates = self::DEFAULT_ALLOWED_UPDATES,
         public int $pollingLimit = self::DEFAULT_POLLING_LIMIT,
         public bool $enableHttp2 = self::DEFAULT_ENABLE_HTTP2,
+        public array $extra = [],
     ) {
     }
 
@@ -96,6 +80,7 @@ final readonly class Configuration
             pollingAllowedUpdates: $config['polling']['allowed_updates'] ?? self::DEFAULT_ALLOWED_UPDATES,
             pollingLimit: $config['polling']['limit'] ?? self::DEFAULT_POLLING_LIMIT,
             enableHttp2: $config['enable_http2'] ?? self::DEFAULT_ENABLE_HTTP2,
+            extra: $config['extra'] ?? [],
         );
     }
 
@@ -120,6 +105,7 @@ final readonly class Configuration
                 'limit' => $this->pollingLimit,
                 'allowed_updates' => $this->pollingAllowedUpdates,
             ],
+            'extra' => $this->extra,
         ];
     }
 
@@ -127,7 +113,7 @@ final readonly class Configuration
     {
         $data = get_object_vars($this);
 
-        unset($data['cache']);
+        unset($data['cache'], $data['extra']);
 
         if ($this->logger instanceof LoggerInterface) {
             unset($data['logger']);
@@ -143,6 +129,7 @@ final readonly class Configuration
     public function __unserialize(array $data): void
     {
         $data['cache'] = self::DEFAULT_CACHE;
+        $data['extra'] = [];
 
         if (!isset($data['logger'])) {
             $data['logger'] = self::DEFAULT_LOGGER;
@@ -158,5 +145,10 @@ final readonly class Configuration
         foreach ($data as $attribute => $value) {
             $this->{$attribute} = $value;
         }
+    }
+
+    public function __get(string $name): mixed
+    {
+        return $this->extra[$name] ?? null;
     }
 }

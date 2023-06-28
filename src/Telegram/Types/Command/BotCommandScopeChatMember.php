@@ -25,4 +25,18 @@ class BotCommandScopeChatMember extends BotCommandScope
         $this->chat_id = $chat_id;
         $this->user_id = $user_id;
     }
+
+    public static function make(int|string $chat_id, int $user_id): self
+    {
+        return new self($chat_id, $user_id);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'type' => $this->type,
+            'chat_id' => $this->chat_id,
+            'user_id' => $this->user_id,
+        ];
+    }
 }

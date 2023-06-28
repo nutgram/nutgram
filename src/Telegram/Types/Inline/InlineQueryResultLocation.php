@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -85,4 +86,87 @@ class InlineQueryResultLocation extends InlineQueryResult
      * Thumbnail height
      */
     public ?int $thumbnail_height = null;
+
+    public function __construct(
+        string $id,
+        float $latitude,
+        float $longitude,
+        string $title,
+        ?float $horizontal_accuracy = null,
+        ?int $live_period = null,
+        ?int $heading = null,
+        ?int $proximity_alert_radius = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+        ?string $thumbnail_url = null,
+        ?int $thumbnail_width = null,
+        ?int $thumbnail_height = null,
+    ) {
+        parent::__construct();
+        $this->id = $id;
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+        $this->title = $title;
+        $this->horizontal_accuracy = $horizontal_accuracy;
+        $this->live_period = $live_period;
+        $this->heading = $heading;
+        $this->proximity_alert_radius = $proximity_alert_radius;
+        $this->reply_markup = $reply_markup;
+        $this->input_message_content = $input_message_content;
+        $this->thumbnail_url = $thumbnail_url;
+        $this->thumbnail_width = $thumbnail_width;
+        $this->thumbnail_height = $thumbnail_height;
+    }
+
+    public static function make(
+        string $id,
+        float $latitude,
+        float $longitude,
+        string $title,
+        ?float $horizontal_accuracy = null,
+        ?int $live_period = null,
+        ?int $heading = null,
+        ?int $proximity_alert_radius = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+        ?string $thumbnail_url = null,
+        ?int $thumbnail_width = null,
+        ?int $thumbnail_height = null,
+    ): self {
+        return new self(
+            id: $id,
+            latitude: $latitude,
+            longitude: $longitude,
+            title: $title,
+            horizontal_accuracy: $horizontal_accuracy,
+            live_period: $live_period,
+            heading: $heading,
+            proximity_alert_radius: $proximity_alert_radius,
+            reply_markup: $reply_markup,
+            input_message_content: $input_message_content,
+            thumbnail_url: $thumbnail_url,
+            thumbnail_width: $thumbnail_width,
+            thumbnail_height: $thumbnail_height,
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type->value,
+            'id' => $this->id,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+            'title' => $this->title,
+            'horizontal_accuracy' => $this->horizontal_accuracy,
+            'live_period' => $this->live_period,
+            'heading' => $this->heading,
+            'proximity_alert_radius' => $this->proximity_alert_radius,
+            'reply_markup' => $this->reply_markup,
+            'input_message_content' => $this->input_message_content,
+            'thumb_url' => $this->thumbnail_url,
+            'thumb_width' => $this->thumbnail_width,
+            'thumb_height' => $this->thumbnail_height,
+        ]);
+    }
 }

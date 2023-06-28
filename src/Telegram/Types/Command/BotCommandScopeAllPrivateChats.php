@@ -12,4 +12,9 @@ class BotCommandScopeAllPrivateChats extends BotCommandScope
 {
     /** Scope type, must be all_private_chats */
     public BotCommandScopeType $type = BotCommandScopeType::ALL_PRIVATE_CHATS;
+
+    public function make(): self
+    {
+        return new self();
+    }
 }

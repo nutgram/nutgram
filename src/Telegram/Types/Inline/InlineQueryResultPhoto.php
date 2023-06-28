@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -89,4 +90,82 @@ class InlineQueryResultPhoto extends InlineQueryResult
      * Content of the message to be sent instead of the photo
      */
     public ?InputMessageContent $input_message_content = null;
+
+    public function __construct(
+        string $id,
+        string $photo_url,
+        string $thumbnail_url,
+        ?int $photo_width = null,
+        ?int $photo_height = null,
+        ?string $title = null,
+        ?string $description = null,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+    ) {
+        parent::__construct();
+        $this->id = $id;
+        $this->photo_url = $photo_url;
+        $this->thumbnail_url = $thumbnail_url;
+        $this->photo_width = $photo_width;
+        $this->photo_height = $photo_height;
+        $this->title = $title;
+        $this->description = $description;
+        $this->caption = $caption;
+        $this->parse_mode = $parse_mode;
+        $this->caption_entities = $caption_entities;
+        $this->reply_markup = $reply_markup;
+        $this->input_message_content = $input_message_content;
+    }
+
+    public static function make(
+        string $id,
+        string $photo_url,
+        string $thumbnail_url,
+        ?int $photo_width = null,
+        ?int $photo_height = null,
+        ?string $title = null,
+        ?string $description = null,
+        ?string $caption = null,
+        ?ParseMode $parse_mode = null,
+        ?array $caption_entities = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputMessageContent $input_message_content = null,
+    ): self {
+        return new self(
+            id: $id,
+            photo_url: $photo_url,
+            thumbnail_url: $thumbnail_url,
+            photo_width: $photo_width,
+            photo_height: $photo_height,
+            title: $title,
+            description: $description,
+            caption: $caption,
+            parse_mode: $parse_mode,
+            caption_entities: $caption_entities,
+            reply_markup: $reply_markup,
+            input_message_content: $input_message_content,
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'type' => $this->type->value,
+            'id' => $this->id,
+            'photo_url' => $this->photo_url,
+            'thumb_url' => $this->thumbnail_url,
+            'photo_width' => $this->photo_width,
+            'photo_height' => $this->photo_height,
+            'title' => $this->title,
+            'description' => $this->description,
+            'caption' => $this->caption,
+            'parse_mode' => $this->parse_mode?->value,
+            'caption_entities' => $this->caption_entities,
+            'reply_markup' => $this->reply_markup,
+            'input_message_content' => $this->input_message_content,
+        ]);
+    }
 }

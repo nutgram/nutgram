@@ -7,6 +7,8 @@ use Throwable;
 
 trait FireHandlers
 {
+    protected ?Handler $currentHandler = null;
+
     /**
      * @param string $type
      * @param array $parameters

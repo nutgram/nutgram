@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -33,7 +34,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * therefore must be assumed to be public.
  * @see https://core.telegram.org/bots/api#inlinequeryresult
  */
-abstract class InlineQueryResult extends BaseType
+abstract class InlineQueryResult extends BaseType implements JsonSerializable
 {
     /** Type of the result */
     public InlineQueryResultType $type;

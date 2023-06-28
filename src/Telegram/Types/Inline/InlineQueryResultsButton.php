@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use JsonSerializable;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
@@ -10,7 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
  * You must use exactly one of the optional fields.
  * @see https://core.telegram.org/bots/api#inlinequeryresultsbutton
  */
-class InlineQueryResultsButton extends BaseType
+class InlineQueryResultsButton extends BaseType implements JsonSerializable
 {
     /** Label text on the button */
     public string $text;
@@ -31,4 +33,36 @@ class InlineQueryResultsButton extends BaseType
      * Once done, the bot can offer a {@see https://core.telegram.org/bots/api#inlinekeyboardmarkup switch_inline} button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
      */
     public ?string $start_parameter = null;
+
+    public function __construct(
+        string $text,
+        ?WebAppInfo $web_app = null,
+        ?string $start_parameter = null,
+    ) {
+        parent::__construct();
+        $this->text = $text;
+        $this->web_app = $web_app;
+        $this->start_parameter = $start_parameter;
+    }
+
+    public static function make(
+        string $text,
+        ?WebAppInfo $web_app = null,
+        ?string $start_parameter = null,
+    ): self {
+        return new self(
+            text: $text,
+            web_app: $web_app,
+            start_parameter: $start_parameter
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'text' => $this->text,
+            'web_app' => $this->web_app,
+            'start_parameter' => $this->start_parameter,
+        ]);
+    }
 }
