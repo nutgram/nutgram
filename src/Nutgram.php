@@ -19,6 +19,7 @@ use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\FireHandlers;
+use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Hydrator\Hydrator;
