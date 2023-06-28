@@ -24,6 +24,7 @@
             <file>./src/Telegram/Limits.php</file>
             <file>./src/RunningMode/RunningMode.php</file>
             <file>./src/Hydrator/Hydrator.php</file>
+            <file>./src/Support/RateLimiter.php</file>
         </exclude>
     </source>
     <php>

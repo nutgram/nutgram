@@ -19,6 +19,6 @@ trait HasThrottle
 
     public function getThrottleHash(): string
     {
-        return crc32(serialize(get_object_vars($this)));
+        return spl_object_hash($this);
     }
 }

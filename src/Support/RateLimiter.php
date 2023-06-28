@@ -126,7 +126,7 @@ class RateLimiter
             $delay = new DateInterval("PT{$delay}S");
         }
 
-        return (new DateTime())->add($delay)->getTimestamp();
+        return $this->getNow()->add($delay)->getTimestamp();
     }
 
     /**
@@ -137,7 +137,7 @@ class RateLimiter
     protected function parseDateInterval(DateTimeInterface|DateInterval|int $delay): DateTimeInterface|int
     {
         if ($delay instanceof DateInterval) {
-            $delay = (new DateTime())->add($delay);
+            $delay = $this->getNow()->add($delay);
         }
 
         return $delay;
@@ -150,7 +150,7 @@ class RateLimiter
      */
     protected function currentTime(): int
     {
-        return (new DateTime())->getTimestamp();
+        return $this->getNow()->getTimestamp();
     }
 
     /**
@@ -271,5 +271,10 @@ class RateLimiter
         $key = $this->cleanRateLimiterKey($key);
 
         return max(0, $this->cache->get($key.':timer') - $this->currentTime());
+    }
+
+    protected function getNow(): DateTime
+    {
+        return new DateTime();
     }
 }
