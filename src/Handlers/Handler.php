@@ -9,10 +9,11 @@ use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Middleware\Link;
 use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Support\Taggable;
 
 class Handler extends MiddlewareChain
 {
-    use HasMeta, Macroable;
+    use Taggable, Macroable;
 
     /**
      * regular expression to capture named parameters but not quantifiers

@@ -8,15 +8,15 @@ test('setMeta + getMeta + hasMeta', function () {
 
     $bot->middleware(function (Nutgram $bot, $next) {
         expect($bot->getCurrentHandler())
-            ->hasMeta('foo')->toBeTrue()
-            ->getMeta('foo')->toBe('bar');
+            ->hasTag('foo')->toBeTrue()
+            ->getTag('foo')->toBe('bar');
 
         $next($bot);
     });
 
     $bot->onCommand('start', function (Nutgram $bot) {
         $bot->sendMessage('Hello');
-    })->setMeta('foo', 'bar');
+    })->tag('foo', 'bar');
 
     $bot->hearText('/start')->reply();
 });
@@ -25,18 +25,18 @@ test('setMetas + removeMeta', function () {
     $bot = Nutgram::fake();
 
     $bot->middleware(function (Nutgram $bot, $next) {
-        $bot->getCurrentHandler()?->removeMeta('baz');
+        $bot->getCurrentHandler()?->removeTag('baz');
 
         expect($bot->getCurrentHandler())
-            ->hasMeta('foo')->toBeTrue()
-            ->hasMeta('baz')->toBeFalse();
+            ->hasTag('foo')->toBeTrue()
+            ->hasTag('baz')->toBeFalse();
 
         $next($bot);
     });
 
     $bot->onCommand('start', function (Nutgram $bot) {
         $bot->sendMessage('Hello');
-    })->setMetas(['foo' => 'bar', 'baz' => 'qux']);
+    })->tags(['foo' => 'bar', 'baz' => 'qux']);
 
     $bot->hearText('/start')->reply();
 });
@@ -45,32 +45,34 @@ test('clearMetas', function () {
     $bot = Nutgram::fake();
 
     $bot->middleware(function (Nutgram $bot, $next) {
-        $bot->getCurrentHandler()?->clearMetas();
+        $bot->getCurrentHandler()?->clearTags();
 
         expect($bot->getCurrentHandler())
-            ->hasMeta('foo')->toBeFalse();
+            ->hasTag('foo')->toBeFalse();
 
         $next($bot);
     });
 
     $bot->onCommand('start', function (Nutgram $bot) {
         $bot->sendMessage('Hello');
-    })->setMeta('foo', 'bar');
+    })->tag('foo', 'bar');
 
     $bot->hearText('/start')->reply();
 });
 
 test('use meta + macroable', function () {
     Handler::macro('emotions', function (int $happiness, int $sadness) {
-        return $this->setMeta('happiness', $happiness)->setMeta('sadness', $sadness);
+        return $this
+            ->tag('happiness', $happiness)
+            ->tag('sadness', $sadness);
     });
 
     $bot = Nutgram::fake();
 
     $bot->middleware(function (Nutgram $bot, $next) {
         expect($bot->getCurrentHandler())
-            ->getMeta('happiness')->toBe(80)
-            ->getMeta('sadness')->toBe(20);
+            ->getTag('happiness')->toBe(80)
+            ->getTag('sadness')->toBe(20);
 
         $next($bot);
     });
