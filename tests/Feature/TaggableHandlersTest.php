@@ -1,6 +1,7 @@
 <?php
 
 use SergiX44\Nutgram\Handlers\Handler;
+use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
 
 test('setMeta + getMeta + hasMeta', function () {
@@ -56,6 +57,35 @@ test('clearMetas', function () {
     $bot->onCommand('start', function (Nutgram $bot) {
         $bot->sendMessage('Hello');
     })->tag('foo', 'bar');
+
+    $bot->hearText('/start')->reply();
+});
+
+test('getTags', function () {
+    $bot = Nutgram::fake();
+
+    $bot->middleware(function (Nutgram $bot, $next) {
+        $bot->getCurrentHandler()?->clearTags();
+
+        expect($bot->getCurrentHandler())
+            ->hasTag('foo')->toBeFalse();
+
+        $next($bot);
+    });
+
+    $bot->registerCommand(new class extends Command {
+        protected string $command = 'start';
+
+        public function getTags(): array
+        {
+            return ['foo' => 'bar'];
+        }
+
+        public function handle(Nutgram $bot): void
+        {
+            $bot->sendMessage('Hello');
+        }
+    });
 
     $bot->hearText('/start')->reply();
 });
