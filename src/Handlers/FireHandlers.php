@@ -9,9 +9,25 @@ trait FireHandlers
 {
     protected ?Handler $currentHandler = null;
 
-    public function getCurrentHandler(): ?Handler
+
+    /**
+     * Return the current resolved handler
+     *
+     * @return Handler|null
+     */
+    public function currentHandler(): ?Handler
     {
         return $this->currentHandler;
+    }
+
+    /**
+     * Returns a list of all parameters parsed by the current handlers
+     *
+     * @return array
+     */
+    public function currentParameters(): array
+    {
+        return $this->currentHandler()?->getParameters() ?? [];
     }
 
     /**

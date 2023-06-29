@@ -8,7 +8,7 @@ test('setMeta + getMeta + hasMeta', function () {
     $bot = Nutgram::fake();
 
     $bot->middleware(function (Nutgram $bot, $next) {
-        expect($bot->getCurrentHandler())
+        expect($bot->currentHandler())
             ->hasTag('foo')->toBeTrue()
             ->getTag('foo')->toBe('bar');
 
@@ -26,9 +26,9 @@ test('setMetas + removeMeta', function () {
     $bot = Nutgram::fake();
 
     $bot->middleware(function (Nutgram $bot, $next) {
-        $bot->getCurrentHandler()?->removeTag('baz');
+        $bot->currentHandler()?->removeTag('baz');
 
-        expect($bot->getCurrentHandler())
+        expect($bot->currentHandler())
             ->hasTag('foo')->toBeTrue()
             ->hasTag('baz')->toBeFalse();
 
@@ -46,9 +46,9 @@ test('clearMetas', function () {
     $bot = Nutgram::fake();
 
     $bot->middleware(function (Nutgram $bot, $next) {
-        $bot->getCurrentHandler()?->clearTags();
+        $bot->currentHandler()?->clearTags();
 
-        expect($bot->getCurrentHandler())
+        expect($bot->currentHandler())
             ->hasTag('foo')->toBeFalse();
 
         $next($bot);
@@ -65,7 +65,7 @@ test('getTags', function () {
     $bot = Nutgram::fake();
 
     $bot->middleware(function (Nutgram $bot, $next) {
-        expect($bot->getCurrentHandler())
+        expect($bot->currentHandler())
             ->hasTag('foo')->toBeTrue();
 
         $next($bot);
@@ -98,7 +98,7 @@ test('use meta + macroable', function () {
     $bot = Nutgram::fake();
 
     $bot->middleware(function (Nutgram $bot, $next) {
-        expect($bot->getCurrentHandler())
+        expect($bot->currentHandler())
             ->getTag('happiness')->toBe(80)
             ->getTag('sadness')->toBe(20);
 
