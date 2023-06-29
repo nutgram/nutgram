@@ -56,7 +56,7 @@ trait Taggable
      */
     public function hasTag(string $key): bool
     {
-        return array_key_exists($key, $this->tags);
+        return array_key_exists($key, $this->getTags());
     }
 
     /**

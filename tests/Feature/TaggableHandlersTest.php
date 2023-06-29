@@ -65,10 +65,8 @@ test('getTags', function () {
     $bot = Nutgram::fake();
 
     $bot->middleware(function (Nutgram $bot, $next) {
-        $bot->getCurrentHandler()?->clearTags();
-
         expect($bot->getCurrentHandler())
-            ->hasTag('foo')->toBeFalse();
+            ->hasTag('foo')->toBeTrue();
 
         $next($bot);
     });
