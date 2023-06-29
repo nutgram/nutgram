@@ -10,7 +10,7 @@ trait HasMeta
      * Set a meta value
      * @param string $key
      * @param mixed $value
-     * @return HasMeta|Handler
+     * @return Handler
      */
     public function setMeta(string $key, mixed $value): self
     {
@@ -21,7 +21,7 @@ trait HasMeta
     /**
      * Set multiple meta values
      * @param array<string, mixed> $values
-     * @return HasMeta|Handler
+     * @return Handler
      */
     public function setMetas(array $values): self
     {
@@ -62,7 +62,7 @@ trait HasMeta
     /**
      * Remove a meta value
      * @param string $key
-     * @return HasMeta|Handler
+     * @return Handler
      */
     public function removeMeta(string $key): self
     {
@@ -72,7 +72,7 @@ trait HasMeta
 
     /**
      * Remove all meta values
-     * @return HasMeta|Handler
+     * @return Handler
      */
     public function clearMetas(): self
     {
