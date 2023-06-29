@@ -9,6 +9,11 @@ trait FireHandlers
 {
     protected ?Handler $currentHandler = null;
 
+    public function getCurrentHandler(): ?Handler
+    {
+        return $this->currentHandler;
+    }
+
     /**
      * @param string $type
      * @param array $parameters

@@ -370,6 +370,6 @@ class Nutgram extends ResolveHandlers
      */
     public function currentParameters(): array
     {
-        return $this->currentHandler?->getParameters() ?? [];
+        return $this->getCurrentHandler()?->getParameters() ?? [];
     }
 }

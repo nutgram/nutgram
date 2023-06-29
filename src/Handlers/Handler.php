@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use Illuminate\Support\Traits\Macroable;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Middleware\Link;
@@ -11,6 +12,8 @@ use SergiX44\Nutgram\Nutgram;
 
 class Handler extends MiddlewareChain
 {
+    use HasMeta, Macroable;
+
     /**
      * regular expression to capture named parameters but not quantifiers
      * captures {name}, but not {1}, {1,}, or {1,2}.
