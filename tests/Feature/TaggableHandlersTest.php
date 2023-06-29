@@ -1,0 +1,113 @@
+<?php
+
+use SergiX44\Nutgram\Handlers\Handler;
+use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Nutgram;
+
+test('setMeta + getMeta + hasMeta', function () {
+    $bot = Nutgram::fake();
+
+    $bot->middleware(function (Nutgram $bot, $next) {
+        expect($bot->currentHandler())
+            ->hasTag('foo')->toBeTrue()
+            ->getTag('foo')->toBe('bar');
+
+        $next($bot);
+    });
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendMessage('Hello');
+    })->tag('foo', 'bar');
+
+    $bot->hearText('/start')->reply();
+});
+
+test('setMetas + removeMeta', function () {
+    $bot = Nutgram::fake();
+
+    $bot->middleware(function (Nutgram $bot, $next) {
+        $bot->currentHandler()?->removeTag('baz');
+
+        expect($bot->currentHandler())
+            ->hasTag('foo')->toBeTrue()
+            ->hasTag('baz')->toBeFalse();
+
+        $next($bot);
+    });
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendMessage('Hello');
+    })->tags(['foo' => 'bar', 'baz' => 'qux']);
+
+    $bot->hearText('/start')->reply();
+});
+
+test('clearMetas', function () {
+    $bot = Nutgram::fake();
+
+    $bot->middleware(function (Nutgram $bot, $next) {
+        $bot->currentHandler()?->clearTags();
+
+        expect($bot->currentHandler())
+            ->hasTag('foo')->toBeFalse();
+
+        $next($bot);
+    });
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendMessage('Hello');
+    })->tag('foo', 'bar');
+
+    $bot->hearText('/start')->reply();
+});
+
+test('getTags', function () {
+    $bot = Nutgram::fake();
+
+    $bot->middleware(function (Nutgram $bot, $next) {
+        expect($bot->currentHandler())
+            ->hasTag('foo')->toBeTrue();
+
+        $next($bot);
+    });
+
+    $bot->registerCommand(new class extends Command {
+        protected string $command = 'start';
+
+        public function getTags(): array
+        {
+            return ['foo' => 'bar'];
+        }
+
+        public function handle(Nutgram $bot): void
+        {
+            $bot->sendMessage('Hello');
+        }
+    });
+
+    $bot->hearText('/start')->reply();
+});
+
+test('use meta + macroable', function () {
+    Handler::macro('emotions', function (int $happiness, int $sadness) {
+        return $this
+            ->tag('happiness', $happiness)
+            ->tag('sadness', $sadness);
+    });
+
+    $bot = Nutgram::fake();
+
+    $bot->middleware(function (Nutgram $bot, $next) {
+        expect($bot->currentHandler())
+            ->getTag('happiness')->toBe(80)
+            ->getTag('sadness')->toBe(20);
+
+        $next($bot);
+    });
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendMessage('Hello');
+    })->emotions(80, 20);
+
+    $bot->hearText('/start')->reply();
+});
