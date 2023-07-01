@@ -168,6 +168,10 @@ trait Client
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
+        if ($this->canHandleAsResponse()) {
+            throw new RuntimeException('Cannot use requestMultipart() when using asResponse()');
+        }
+
         $parameters = [];
         foreach (array_filter($multipart) as $name => $contents) {
             if ($contents instanceof InputMedia) {
@@ -250,6 +254,11 @@ trait Client
 
         try {
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+
+            if ($this->canHandleAsResponse()) {
+                return $this->sendResponse($endpoint, $requestPost ?? $request);
+            }
+
             try {
                 $response = $this->http->post($endpoint, $requestPost ?? $request);
             } catch (ConnectException $e) {

@@ -28,6 +28,7 @@ use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Support\BulkMessenger;
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Responsible;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Testing\FakeNutgram;
@@ -35,7 +36,7 @@ use Throwable;
 
 class Nutgram extends ResolveHandlers
 {
-    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy, FireHandlers;
+    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy, FireHandlers, Responsible;
 
     /**
      * @var string
@@ -210,6 +211,7 @@ class Nutgram extends ResolveHandlers
      */
     public function processUpdate(Update $update): void
     {
+        $this->resetAsResponse();
         $this->update = $update;
 
         $conversation = $this->currentConversation($this->userId(), $this->chatId());
