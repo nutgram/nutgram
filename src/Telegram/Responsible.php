@@ -13,7 +13,7 @@ trait Responsible
         return $this;
     }
 
-    protected function resetAsResponse(): void
+    protected function resetResponseSent(): void
     {
         $this->responseSent = false;
     }
