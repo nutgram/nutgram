@@ -168,10 +168,6 @@ trait Client
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
-        if ($this->canHandleAsResponse()) {
-            throw new RuntimeException('Cannot use requestMultipart() when using asResponse()');
-        }
-
         $parameters = [];
         foreach (array_filter($multipart) as $name => $contents) {
             if ($contents instanceof InputMedia) {
