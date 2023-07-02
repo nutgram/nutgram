@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram;
 
-trait Responsible
+trait ProvidesHttpResponse
 {
     protected bool $enableAsResponse = false;
     protected bool $responseSent = false;
@@ -20,18 +20,14 @@ trait Responsible
 
     protected function canHandleAsResponse(): bool
     {
-        return !$this->responseSent && $this->enableAsResponse && PHP_SAPI === 'fpm-fcgi' && function_exists('fastcgi_finish_request');
+        return !$this->responseSent && $this->enableAsResponse && function_exists('fastcgi_finish_request');
     }
 
     protected function sendResponse(string $methodName, array $payload): null
     {
-        $out = ['method' => $methodName, ...$payload['json']];
-        $response = json_encode($out, JSON_THROW_ON_ERROR);
-
-        header('Connection: close');
         header('Content-Type: application/json');
-        header(sprintf('HTTP/%s %s %s', '1.1', '200', 'OK'), true, 200);
-        echo $response;
+        echo json_encode(['method' => $methodName, ...$payload['json']], JSON_THROW_ON_ERROR);
+        @ob_end_flush();
         fastcgi_finish_request();
 
         $this->responseSent = true;
