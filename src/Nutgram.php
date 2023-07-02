@@ -211,7 +211,6 @@ class Nutgram extends ResolveHandlers
      */
     public function processUpdate(Update $update): void
     {
-        $this->resetResponseSent();
         $this->update = $update;
 
         $conversation = $this->currentConversation($this->userId(), $this->chatId());

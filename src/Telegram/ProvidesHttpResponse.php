@@ -13,11 +13,6 @@ trait ProvidesHttpResponse
         return $this;
     }
 
-    protected function resetResponseSent(): void
-    {
-        $this->responseSent = false;
-    }
-
     protected function canHandleAsResponse(): bool
     {
         return !$this->responseSent && $this->enableAsResponse && function_exists('fastcgi_finish_request');
