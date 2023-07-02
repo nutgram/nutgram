@@ -97,9 +97,8 @@ class Nutgram extends ResolveHandlers
         $this->config = $config;
         $this->container = new Container();
         if ($config->container !== null) {
-            $this->container->delegateTo($config->container);
+            $this->container->delegate($config->container);
         }
-        $this->container->set(ContainerInterface::class, $this->container);
 
         SerializableClosure::setSecretKey($this->token);
 
@@ -116,21 +115,21 @@ class Nutgram extends ResolveHandlers
         ]);
         $botId = $config->botId ?? (int)explode(':', $this->token)[0];
         $this->container->set(ClientInterface::class, $this->http);
-        $this->container->register(Hydrator::class, $config->hydrator)->singleton();
-        $this->container->register(CacheInterface::class, $config->cache)->singleton();
-        $this->container->register(LoggerInterface::class, $config->logger)->singleton();
-        $this->container->register(
+        $this->container->singleton(Hydrator::class, $config->hydrator);
+        $this->container->singleton(CacheInterface::class, $config->cache);
+        $this->container->singleton(LoggerInterface::class, $config->logger);
+        $this->container->singleton(
             ConversationCache::class,
             fn (ContainerInterface $c) => new ConversationCache($c->get(CacheInterface::class), $botId)
-        )->singleton();
-        $this->container->register(
+        );
+        $this->container->singleton(
             GlobalCache::class,
             fn (ContainerInterface $c) => new GlobalCache($c->get(CacheInterface::class), $botId)
-        )->singleton();
-        $this->container->register(
+        );
+        $this->container->singleton(
             UserCache::class,
             fn (ContainerInterface $c) => new UserCache($c->get(CacheInterface::class), $botId)
-        )->singleton();
+        );
 
         $this->hydrator = $this->container->get(Hydrator::class);
         $this->conversationCache = $this->container->get(ConversationCache::class);
@@ -138,7 +137,7 @@ class Nutgram extends ResolveHandlers
         $this->userCache = $this->container->get(UserCache::class);
         $this->logger = $this->container->get(LoggerInterface::class);
 
-        $this->container->register(RunningMode::class, Polling::class);
+        $this->container->singleton(RunningMode::class, Polling::class);
         $this->container->set(__CLASS__, $this);
     }
 
@@ -176,12 +175,10 @@ class Nutgram extends ResolveHandlers
 
     /**
      * @param string|RunningMode $classOrInstance
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function setRunningMode(string|RunningMode $classOrInstance): void
     {
-        $this->container->register(RunningMode::class, $classOrInstance);
+        $this->container->bind(RunningMode::class, $classOrInstance);
     }
 
     protected function preflight(): void

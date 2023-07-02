@@ -186,7 +186,7 @@ it('throws an exception when no fake update specified', function () {
 
 it('uses a different container', function () {
     $differentContainer = new Container();
-    $differentContainer->register(MyService::class, fn () => new MyService('hello'))->singleton();
+    $differentContainer->singleton(MyService::class, fn () => new MyService('hello'));
 
     $bot = Nutgram::fake(config: new Configuration(
         container: $differentContainer
