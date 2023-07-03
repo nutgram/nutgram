@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.2.0 - 2023-07-03
+
+### What's Changed
+
+- [4.x] Reply directly and give method as JSON payload in the reply by @Lukasss93 in https://github.com/nutgram/nutgram/pull/515
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.1.1...4.2.0
+
 ## 4.1.1 - 2023-07-03
 
 ### What's Changed
