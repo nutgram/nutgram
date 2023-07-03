@@ -49,7 +49,8 @@ trait Client
         Games,
         CustomEndpoints,
         Macroable,
-        UpdateMethods;
+        UpdateMethods,
+        ProvidesHttpResponse;
 
     /**
      * @param string $endpoint
@@ -250,6 +251,11 @@ trait Client
 
         try {
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+
+            if ($this->canHandleAsResponse()) {
+                return $this->sendResponse($endpoint, $requestPost ?? $request);
+            }
+
             try {
                 $response = $this->http->post($endpoint, $requestPost ?? $request);
             } catch (ConnectException $e) {
