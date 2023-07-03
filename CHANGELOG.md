@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.1.1 - 2023-07-03
+
+### What's Changed
+
+- Add tags + macroable to handler class by @Lukasss93 in https://github.com/nutgram/nutgram/pull/514
+- use container 2 by @SergiX44 in https://github.com/nutgram/nutgram/pull/517
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.1.0...4.1.1
+
 ## 4.1.0 - 2023-06-28
 
 ### What's Changed
