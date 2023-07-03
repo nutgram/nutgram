@@ -49,7 +49,8 @@ trait Client
         Games,
         CustomEndpoints,
         Macroable,
-        UpdateMethods;
+        UpdateMethods,
+        ProvidesHttpResponse;
 
     /**
      * @param string $endpoint

@@ -152,3 +152,29 @@ it('works with polling mode with exception', function ($update) {
     expect($called)->toBeTrue()
         ->and(stream_get_contents(Polling::$STDERR))->toContain('stop!');
 })->with('message');
+
+it('works with send as response', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    if (!function_exists('fastcgi_finish_request')) {
+        function fastcgi_finish_request()
+        {
+            return true;
+        }
+    }
+
+    $bot->onText('Ciao', function (Nutgram $bot) {
+        ob_start();
+        $u = $bot->asResponse()->sendMessage('Hello');
+        $contents = ob_get_contents();
+        ob_end_clean();
+        expect($u)->toBeNull()
+            ->and($contents)->toBe('{"method":"sendMessage","chat_id":456,"text":"Hello"}');
+    });
+
+    $bot->willReceivePartial([
+        'message' => [
+            'text' => 'Ciao',
+        ],
+    ])->reply();
+})->with('message');
