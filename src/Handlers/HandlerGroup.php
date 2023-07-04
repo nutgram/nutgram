@@ -3,10 +3,14 @@
 namespace SergiX44\Nutgram\Handlers;
 
 use Closure;
+use Illuminate\Support\Traits\Macroable;
+use SergiX44\Nutgram\Support\Taggable;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 
 class HandlerGroup
 {
+    use Taggable, Macroable;
+
     protected array $middlewares = [];
 
     protected array $scopes = [];

@@ -250,16 +250,21 @@ abstract class ResolveHandlers extends CollectHandlers
      * @param array $currentScopes
      * @return void
      */
-    private function resolveNestedGroups(array $groups, array $currentMiddlewares = [], array $currentScopes = [])
-    {
+    private function resolveNestedGroups(
+        array $groups,
+        array $currentMiddlewares = [],
+        array $currentScopes = [],
+        array $currentTags = []
+    ) {
         foreach ($groups as $group) {
             $middlewares = [...$group->getMiddlewares(), ...$currentMiddlewares,];
             $scopes = [...$currentScopes, ...$group->getScopes()];
+            $tags = [...$currentTags, ...$group->getTags()];
             $this->groupHandlers = [];
             ($group->groupCallable)($this);
 
             // apply the middleware stack to the current registered group handlers
-            array_walk_recursive($this->groupHandlers, function ($leaf) use ($middlewares, $scopes) {
+            array_walk_recursive($this->groupHandlers, function ($leaf) use ($tags, $middlewares, $scopes) {
                 if ($leaf instanceof Handler) {
                     foreach ($middlewares as $middleware) {
                         $leaf->middleware($middleware);
@@ -267,6 +272,7 @@ abstract class ResolveHandlers extends CollectHandlers
                     if ($leaf instanceof Command && !empty($scopes)) {
                         $leaf->scope($scopes);
                     }
+                    $leaf->tags([...$leaf->getTags(), ...$tags]);
                 }
             });
 
@@ -275,7 +281,7 @@ abstract class ResolveHandlers extends CollectHandlers
             if (!empty($this->groups)) {
                 $groups = $this->groups;
                 $this->groups = [];
-                $this->resolveNestedGroups($groups, $middlewares, $scopes);
+                $this->resolveNestedGroups($groups, $middlewares, $scopes, $tags);
             }
         }
     }
