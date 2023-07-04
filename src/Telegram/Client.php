@@ -137,14 +137,12 @@ trait Client
     /**
      * @param File $file
      * @return string|null
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function downloadUrl(File $file): string|null
     {
         if ($this->config->isLocal) {
             if (isset($this->config->localPathTransformer)) {
-                return call_user_func($this->resolve($this->config->localPathTransformer), $file->file_path);
+                return $this->invoke($this->config->localPathTransformer, [$file->file_path]);
             }
 
             return $file->file_path;

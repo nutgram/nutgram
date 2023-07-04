@@ -3,8 +3,6 @@
 
 namespace SergiX44\Nutgram\Middleware;
 
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Nutgram;
 
 class Link
@@ -31,13 +29,11 @@ class Link
     }
 
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram $bot
      * @return mixed
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function __invoke(Nutgram $bot): mixed
     {
-        return call_user_func($bot->resolve($this->callable), $bot, $this->next);
+        return $bot->invoke($this->callable, ['bot' => $bot, $this->next]);
     }
 }

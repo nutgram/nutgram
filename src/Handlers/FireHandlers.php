@@ -57,7 +57,7 @@ trait FireHandlers
         foreach ($handlers as $handler) {
             try {
                 $this->currentHandler = $handler;
-                $result = $handler->addParameters($parameters)->getHead()($this);
+                $result = $this->invoke($handler->addParameters($parameters)->getHead());
             } catch (Throwable $e) {
                 $this->fireExceptionHandlerBy(self::EXCEPTION, $e);
             }
@@ -93,6 +93,6 @@ trait FireHandlers
 
         /** @var Handler $handler */
         $handler = array_shift($handlers)?->setParameters($e);
-        return $handler($this);
+        return $this->invoke($handler);
     }
 }

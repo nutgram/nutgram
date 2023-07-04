@@ -208,6 +208,7 @@ class Nutgram extends ResolveHandlers
     public function processUpdate(Update $update): void
     {
         $this->update = $update;
+        $this->container->set(Update::class, $update);
 
         $conversation = $this->currentConversation($this->userId(), $this->chatId());
 
@@ -296,31 +297,6 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param callable|array|string $callable
-     * @return callable
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function resolve(callable|array|string $callable): callable
-    {
-        // if is a class definition, resolve it to an instance through the container
-        if (is_array($callable) && count($callable) === 2 && is_string($callable[0]) && class_exists($callable[0])) {
-            $callable[0] = $this->container->get($callable[0]);
-        }
-
-        // if passing a class, we probably want resolve that and call the __invoke method
-        if (is_string($callable) && class_exists($callable)) {
-            $callable = $this->container->get($callable);
-        }
-
-        if (!is_callable($callable)) {
-            throw new InvalidArgumentException('The callback parameter must be a valid callable.');
-        }
-
-        return $callable;
-    }
-
-    /**
      * Set my commands call to Telegram using all the registered commands
      */
     public function registerMyCommands(): void
@@ -358,5 +334,10 @@ class Nutgram extends ResolveHandlers
     public function getBulkMessenger(): BulkMessenger
     {
         return $this->container->get(BulkMessenger::class);
+    }
+
+    public function invoke(callable|array|string $callable, array $params = []): mixed
+    {
+        return $this->container->call($callable, $params);
     }
 }

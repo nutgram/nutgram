@@ -118,7 +118,7 @@ class Handler extends MiddlewareChain
     public function __invoke(Nutgram $bot): mixed
     {
         try {
-            return call_user_func($bot->resolve($this->callable), $bot, ...$this->parameters);
+            return $bot->invoke($this->callable, ['bot' => $bot, ...$this->parameters]);
         } finally {
             $this->parameters = [];
         }

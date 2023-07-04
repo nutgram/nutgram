@@ -886,7 +886,7 @@ it('throws an exception when resolving an invalid callable', function () {
     $bot->onText('foo', 123);
 
     $bot->hearText('foo')->reply();
-})->throws(InvalidArgumentException::class, 'The callback parameter must be a valid callable.');
+})->throws(\SergiX44\Container\Exception\ContainerException::class, 'Invalid callable specified');
 
 it('resolves a class method', function () {
     $bot = Nutgram::fake();
