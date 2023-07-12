@@ -74,6 +74,17 @@ trait UpdateListeners
     }
 
     /**
+     * @param string $pattern
+     * @param $callable
+     * @return Handler
+     */
+    public function onInlineQueryText(string $pattern, $callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::INLINE_QUERY->value][$pattern] = new Handler($callable, $pattern);
+    }
+
+    /**
      * @param $callable
      * @return Handler
      */
