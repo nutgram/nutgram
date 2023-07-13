@@ -75,6 +75,18 @@ it('calls onInlineQuery() handler', function ($update) {
     expect($bot->get('called'))->toBeTrue();
 })->with('inline_query');
 
+it('calls onInlineQueryText() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onInlineQueryText('test', function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('inline_query');
+
 it('calls onChosenInlineResult() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
