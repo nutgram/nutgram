@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.3.0 - 2023-07-17
+
+### What's Changed
+
+- Add tags + macroable to HandlerGroup class by @Lukasss93 in https://github.com/nutgram/nutgram/pull/519
+- invoke via container by @SergiX44 in https://github.com/nutgram/nutgram/pull/518
+- [4.x] Add onInlineQueryText handler by @Lukasss93 in https://github.com/nutgram/nutgram/pull/522
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.2.0...4.3.0
+
 ## 4.2.0 - 2023-07-03
 
 ### What's Changed
