@@ -42,6 +42,13 @@ class Webhook implements RunningMode
         $this->resolveIp = $resolveIp ?? static fn (): string => $_SERVER['REMOTE_ADDR'];
     }
 
+    
+    /**
+     * @param Nutgram $bot
+     * @throws JsonMapper_Exception
+     * @throws InvalidArgumentException
+     * @throws Throwable
+     */
     public function processUpdates(Nutgram $bot): void
     {
         $input = $this->input();
