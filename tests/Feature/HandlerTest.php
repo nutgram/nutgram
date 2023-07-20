@@ -911,10 +911,9 @@ it('sends boolean parameters', function () {
 
     $bot->hearText('/start')
         ->reply()
-        ->dump()
         ->assertReply('sendPoll', [
             'question' => 'test?',
             'options' => '["yes","no"]',
             'is_anonymous' => false,
         ]);
-})->only();
+});
