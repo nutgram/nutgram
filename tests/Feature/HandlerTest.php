@@ -897,3 +897,24 @@ it('resolves a class method', function () {
         ->reply()
         ->assertReplyText('hello');
 });
+
+it('sends boolean parameters', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendPoll(
+            question: 'test?',
+            options: ['yes', 'no'],
+            is_anonymous: false,
+        );
+    });
+
+    $bot->hearText('/start')
+        ->reply()
+        ->dump()
+        ->assertReply('sendPoll', [
+            'question' => 'test?',
+            'options' => '["yes","no"]',
+            'is_anonymous' => false,
+        ]);
+})->only();
