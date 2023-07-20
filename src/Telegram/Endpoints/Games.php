@@ -88,7 +88,7 @@ trait Games
         );
         $target = $this->targetChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter($parameters)]);
+        return $this->requestJson(__FUNCTION__, [...$target, ...$parameters], Message::class);
     }
 
     /**
@@ -117,6 +117,6 @@ trait Games
         );
         $target = $this->targetChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter($parameters)], GameHighScore::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...$parameters], GameHighScore::class);
     }
 }

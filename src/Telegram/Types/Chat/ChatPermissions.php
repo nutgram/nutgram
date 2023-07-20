@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Describes actions that a non-administrator user is allowed to take in a chat.
@@ -167,7 +168,7 @@ class ChatPermissions extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'can_send_messages' => $this->can_send_messages,
             'can_send_audios' => $this->can_send_audios,
             'can_send_documents' => $this->can_send_documents,

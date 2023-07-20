@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Inline;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a link to an article or web page.
@@ -119,7 +120,7 @@ class InlineQueryResultArticle extends InlineQueryResult
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'type' => $this->type->value,
             'id' => $this->id,
             'title' => $this->title,

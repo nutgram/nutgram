@@ -2,10 +2,10 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
-use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a location on a map.
@@ -152,7 +152,7 @@ class InlineQueryResultLocation extends InlineQueryResult
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'type' => $this->type->value,
             'id' => $this->id,
             'latitude' => $this->latitude,

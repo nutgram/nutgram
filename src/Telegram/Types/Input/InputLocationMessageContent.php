@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Nutgram\Nutgram;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a location message to be sent as the result of an inline query.
@@ -80,7 +80,7 @@ class InputLocationMessageContent extends InputMessageContent
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'horizontal_accuracy' => $this->horizontal_accuracy,

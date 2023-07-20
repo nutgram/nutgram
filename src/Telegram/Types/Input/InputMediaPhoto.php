@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a photo to be sent.
@@ -86,7 +87,7 @@ class InputMediaPhoto extends InputMedia implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'type' => $this->type->value,
             'media' => $this->media,
             'caption' => $this->caption,

@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object represents one button of the reply keyboard.
@@ -106,7 +107,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'text' => $this->text,
             'request_user' => $this->request_user,
             'request_chat' => $this->request_chat,

@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the rights of an administrator in a chat.
@@ -127,7 +128,7 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'is_anonymous' => $this->is_anonymous,
             'can_manage_chat' => $this->can_manage_chat,
             'can_delete_messages' => $this->can_delete_messages,

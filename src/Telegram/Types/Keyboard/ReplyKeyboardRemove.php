@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard.
@@ -41,7 +42,7 @@ class ReplyKeyboardRemove extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'remove_keyboard' => $this->remove_keyboard,
             'selective' => $this->selective,
         ]);

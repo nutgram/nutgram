@@ -21,6 +21,7 @@
             <directory>./src/Telegram/Types</directory>
             <directory>./src/Testing/Constraints</directory>
             <file>./src/Support/StrUtils.php</file>
+            <file>./src/Support/Helpers.php</file>
             <file>./src/Telegram/Limits.php</file>
             <file>./src/RunningMode/RunningMode.php</file>
             <file>./src/Hydrator/Hydrator.php</file>

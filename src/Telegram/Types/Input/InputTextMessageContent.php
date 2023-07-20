@@ -3,8 +3,8 @@
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a text message to be sent as the result of an inline query.
@@ -65,7 +65,7 @@ class InputTextMessageContent extends InputMessageContent
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'message_text' => $this->message_text,
             'parse_mode' => $this->parse_mode,
             'entities' => $this->entities,

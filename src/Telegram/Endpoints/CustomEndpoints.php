@@ -12,6 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * @mixin Client
@@ -503,10 +504,10 @@ trait CustomEndpoints
         $caption = $opt['caption'] ?? null;
 
         if ($caption === null) {
-            return [$this->sendAttachment($endpoint, $param, $media, array_filter($opt), $clientOpt)];
+            return [$this->sendAttachment($endpoint, $param, $media, array_filter_null($opt), $clientOpt)];
         }
 
-        $opt = array_filter($opt);
+        $opt = array_filter_null($opt);
 
         //chunk caption
         $chunks = $this->chunkText($caption, Limits::CAPTION_LENGTH);

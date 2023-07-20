@@ -10,6 +10,7 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberAdministrator;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Tests\Fixtures\HelloHandler;
 use SergiX44\Nutgram\Tests\Fixtures\TestStartCommand;
@@ -896,4 +897,45 @@ it('resolves a class method', function () {
     $bot->hearText('hi')
         ->reply()
         ->assertReplyText('hello');
+});
+
+it('sends boolean parameters via method', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendPoll(
+            question: 'test?',
+            options: ['yes', 'no'],
+            is_anonymous: false,
+        );
+    });
+
+    $bot->hearText('/start')
+        ->reply()
+        ->assertReply('sendPoll', [
+            'question' => 'test?',
+            'options' => '["yes","no"]',
+            'is_anonymous' => false,
+        ]);
+});
+
+it('sends boolean parameters via jsonSerialize', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendMessage(
+            text: 'Removing your keyboard...',
+            reply_markup: ReplyKeyboardRemove::make(true, false),
+        );
+    });
+
+    $bot->hearText('/start')
+        ->reply()
+        ->assertReply('sendMessage', [
+            'text' => 'Removing your keyboard...',
+            'reply_markup' => [
+                'remove_keyboard' => true,
+                'selective' => false,
+            ],
+        ]);
 });

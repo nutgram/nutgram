@@ -4,16 +4,15 @@ namespace SergiX44\Nutgram\Support;
 
 use InvalidArgumentException;
 
-class StrUtils
-{
-    /**
-     * @param  string  $string
-     * @param  int  $width
-     * @param  string  $break
-     * @param  bool  $cut
-     * @return string
-     */
-    public static function wordWrap(string $string, int $width = 75, string $break = "\n", bool $cut = false): string
+if (!function_exists(__NAMESPACE__.'\array_filter_null')) {
+    function array_filter_null(array $array): array
+    {
+        return array_filter($array, static fn ($value) => $value !== null);
+    }
+}
+
+if (!function_exists(__NAMESPACE__.'\word_wrap')) {
+    function word_wrap(string $string, int $width = 75, string $break = "\n", bool $cut = false): string
     {
         if ($string === '') {
             return '';

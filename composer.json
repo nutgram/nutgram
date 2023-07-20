@@ -43,14 +43,20 @@
         "vimeo/psalm": "^5.7.7"
     },
     "autoload": {
-        "psr-4": {
-            "SergiX44\\Nutgram\\": "src/"
-        }
+      "psr-4": {
+        "SergiX44\\Nutgram\\": "src/"
+      },
+      "files": [
+        "src/Support/Helpers.php"
+      ]
     },
     "autoload-dev": {
-        "psr-4": {
-            "SergiX44\\Nutgram\\Tests\\": "tests/"
-        }
+      "psr-4": {
+        "SergiX44\\Nutgram\\Tests\\": "tests/"
+      },
+      "files": [
+        "src/Support/Helpers.php"
+      ]
     },
     "scripts": {
       "test": "@php vendor/bin/pest --fail-on-warning",
