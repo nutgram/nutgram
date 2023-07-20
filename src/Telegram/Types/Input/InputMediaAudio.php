@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents an audio file to be treated as music to be sent.

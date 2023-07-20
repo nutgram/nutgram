@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Inline;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a venue.

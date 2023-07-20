@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Common\LoginUrl;
 use SergiX44\Nutgram\Telegram\Types\Game\CallbackGame;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object represents one button of an inline keyboard.

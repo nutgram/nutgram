@@ -16,7 +16,6 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Support\StrUtils;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\CustomEndpoints;
 use SergiX44\Nutgram\Telegram\Endpoints\Games;
@@ -32,6 +31,8 @@ use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use stdClass;
+use function SergiX44\Nutgram\Support\array_filter_null;
+use function SergiX44\Nutgram\Support\word_wrap;
 
 /**
  * Trait Client
@@ -336,7 +337,7 @@ trait Client
      */
     protected function chunkText(string $text, int $length): array
     {
-        return explode('%#TGMSG#%', StrUtils::wordWrap($text, $length, "%#TGMSG#%", true));
+        return explode('%#TGMSG#%', word_wrap($text, $length, "%#TGMSG#%", true));
     }
 
     protected function redactTokenFromConnectException(ConnectException $e): void

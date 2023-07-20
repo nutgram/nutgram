@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object represents a portion of the price for goods or services.

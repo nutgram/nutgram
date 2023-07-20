@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a link to a photo.

@@ -6,6 +6,7 @@ use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Sticker\MaskPosition;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object describes a sticker to be added to a sticker set.

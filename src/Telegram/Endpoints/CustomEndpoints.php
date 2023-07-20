@@ -12,6 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * @mixin Client

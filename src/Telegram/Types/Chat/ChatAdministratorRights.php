@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the rights of an administrator in a chat.

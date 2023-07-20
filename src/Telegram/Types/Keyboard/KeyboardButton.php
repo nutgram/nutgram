@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object represents one button of the reply keyboard.

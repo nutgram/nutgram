@@ -7,6 +7,7 @@ use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Properties\MessageEntityType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object represents one special entity in a text message.

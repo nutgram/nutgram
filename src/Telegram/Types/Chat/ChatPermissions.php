@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Describes actions that a non-administrator user is allowed to take in a chat.
