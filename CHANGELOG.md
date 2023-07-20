@@ -2,6 +2,19 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.3.1 - 2023-07-20
+
+### What's Changed
+
+- Log errors in Webhook by @asanikovich in https://github.com/nutgram/nutgram/pull/523
+- Fix missing boolean fields in requests by @Lukasss93 in https://github.com/nutgram/nutgram/pull/525
+
+### New Contributors
+
+- @asanikovich made their first contribution in https://github.com/nutgram/nutgram/pull/523
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.3.0...4.3.1
+
 ## 4.3.0 - 2023-07-17
 
 ### What's Changed
