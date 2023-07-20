@@ -162,7 +162,7 @@ class InlineQueryResultVideo extends InlineQueryResult
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'type' => $this->type->value,
             'id' => $this->id,
             'video_url' => $this->video_url,

@@ -168,7 +168,7 @@ trait Client
         array $options = []
     ): mixed {
         $parameters = [];
-        foreach (array_filter($multipart, fn ($x) => $x !== null) as $name => $contents) {
+        foreach (array_filter($multipart) as $name => $contents) {
             if ($contents instanceof InputMedia) {
                 $parameters[] = [
                     'name' => $contents->media->getFilename(),
@@ -243,7 +243,7 @@ trait Client
         $json = array_map(fn ($item) => match (true) {
             $item instanceof BackedEnum => $item->value,
             default => $item,
-        }, array_filter($json, fn ($x) => $x !== null));
+        }, array_filter_null($json));
 
         $request = ['json' => $json, ...$options];
 

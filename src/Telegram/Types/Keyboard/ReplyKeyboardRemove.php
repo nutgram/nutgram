@@ -41,7 +41,7 @@ class ReplyKeyboardRemove extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'remove_keyboard' => $this->remove_keyboard,
             'selective' => $this->selective,
         ]);

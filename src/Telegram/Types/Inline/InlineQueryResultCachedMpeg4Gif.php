@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -111,7 +110,7 @@ class InlineQueryResultCachedMpeg4Gif extends InlineQueryResult
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'type' => $this->type->value,
             'id' => $this->id,
             'mpeg4_file_id' => $this->mpeg4_file_id,

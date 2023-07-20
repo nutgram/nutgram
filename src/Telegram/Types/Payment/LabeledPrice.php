@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use JsonSerializable;
-use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -36,7 +35,7 @@ class LabeledPrice extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'label' => $this->label,
             'amount' => $this->amount,
         ]);

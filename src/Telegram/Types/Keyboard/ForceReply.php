@@ -52,7 +52,7 @@ class ForceReply extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'force_reply' => $this->force_reply,
             'input_field_placeholder' => $this->input_field_placeholder,
             'selective' => $this->selective,

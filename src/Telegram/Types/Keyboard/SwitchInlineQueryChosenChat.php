@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
-use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -76,7 +75,7 @@ class SwitchInlineQueryChosenChat extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'query' => $this->query,
             'allow_user_chats' => $this->allow_user_chats,
             'allow_bot_chats' => $this->allow_bot_chats,

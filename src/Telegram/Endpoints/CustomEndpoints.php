@@ -503,10 +503,10 @@ trait CustomEndpoints
         $caption = $opt['caption'] ?? null;
 
         if ($caption === null) {
-            return [$this->sendAttachment($endpoint, $param, $media, array_filter($opt), $clientOpt)];
+            return [$this->sendAttachment($endpoint, $param, $media, array_filter_null($opt), $clientOpt)];
         }
 
-        $opt = array_filter($opt);
+        $opt = array_filter_null($opt);
 
         //chunk caption
         $chunks = $this->chunkText($caption, Limits::CAPTION_LENGTH);

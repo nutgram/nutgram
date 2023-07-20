@@ -53,7 +53,7 @@ trait UpdatesMessages
         );
         $target = $this->targetChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter($parameters)], Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter_null($parameters)], Message::class);
     }
 
     /**
@@ -89,7 +89,7 @@ trait UpdatesMessages
         );
         $target = $this->targetChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter($parameters)], Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter_null($parameters)], Message::class);
     }
 
     /**
@@ -127,7 +127,7 @@ trait UpdatesMessages
 
         return $this->requestMultipart(
             __FUNCTION__,
-            [...$target, ...array_filter($parameters)],
+            [...$target, ...array_filter_null($parameters)],
             Message::class,
             $clientOpt
         );
@@ -157,7 +157,7 @@ trait UpdatesMessages
         );
         $target = $this->targetChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter($parameters)], Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter_null($parameters)], Message::class);
     }
 
     /**

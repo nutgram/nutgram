@@ -127,7 +127,7 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'is_anonymous' => $this->is_anonymous,
             'can_manage_chat' => $this->can_manage_chat,
             'can_delete_messages' => $this->can_delete_messages,

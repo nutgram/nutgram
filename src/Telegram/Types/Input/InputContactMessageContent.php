@@ -2,8 +2,6 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Nutgram\Nutgram;
-
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a contact message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputcontactmessagecontent
@@ -57,7 +55,7 @@ class InputContactMessageContent extends InputMessageContent
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'phone_number' => $this->phone_number,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,

@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
@@ -65,7 +64,7 @@ class InputTextMessageContent extends InputMessageContent
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'message_text' => $this->message_text,
             'parse_mode' => $this->parse_mode,
             'entities' => $this->entities,

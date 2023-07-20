@@ -775,7 +775,7 @@ trait AvailableMethods
         );
 
         $target = $this->targetChatMessageOrInlineMessageId($parameters);
-        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter($parameters)], Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter_null($parameters)], Message::class);
     }
 
     /**
@@ -803,7 +803,7 @@ trait AvailableMethods
         );
 
         $target = $this->targetChatMessageOrInlineMessageId($parameters);
-        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter($parameters)], Message::class);
+        return $this->requestJson(__FUNCTION__, [...$target, ...array_filter_null($parameters)], Message::class);
     }
 
     /**

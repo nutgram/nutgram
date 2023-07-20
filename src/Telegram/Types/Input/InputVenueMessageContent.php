@@ -2,8 +2,6 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Nutgram\Nutgram;
-
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a venue message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputvenuemessagecontent
@@ -93,7 +91,7 @@ class InputVenueMessageContent extends InputMessageContent
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'title' => $this->title,

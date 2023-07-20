@@ -141,7 +141,7 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'type' => $this->type,
             'media' => $this->media,
             'caption' => $this->caption,

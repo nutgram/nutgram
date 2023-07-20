@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use JsonSerializable;
-use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
@@ -59,7 +58,7 @@ class InlineQueryResultsButton extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'text' => $this->text,
             'web_app' => $this->web_app,
             'start_parameter' => $this->start_parameter,

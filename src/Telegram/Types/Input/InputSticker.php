@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
-use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Sticker\MaskPosition;
@@ -72,7 +71,7 @@ class InputSticker extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'sticker' => $this->sticker,
             'emoji' => $this->emoji_list,
             'mask_position' => $this->mask_position,

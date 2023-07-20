@@ -106,7 +106,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'text' => $this->text,
             'request_user' => $this->request_user,
             'request_chat' => $this->request_chat,

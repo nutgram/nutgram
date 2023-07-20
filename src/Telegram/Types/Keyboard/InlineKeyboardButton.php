@@ -134,7 +134,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'text' => $this->text,
             'url' => $this->url,
             'login_url' => $this->login_url,

@@ -94,7 +94,7 @@ class MessageEntity extends BaseType implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'type' => $this->type->value,
             'offset' => $this->offset,
             'length' => $this->length,

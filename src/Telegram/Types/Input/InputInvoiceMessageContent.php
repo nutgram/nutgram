@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
 
 /**
@@ -223,7 +222,7 @@ class InputInvoiceMessageContent extends InputMessageContent
 
     public function jsonSerialize(): array
     {
-        return array_filter([
+        return array_filter_null([
             'title' => $this->title,
             'description' => $this->description,
             'payload' => $this->payload,
