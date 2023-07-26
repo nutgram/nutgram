@@ -171,15 +171,9 @@ trait Client
     ): mixed {
         $parameters = [];
         foreach (array_filter($multipart) as $name => $contents) {
-            if ($contents instanceof Uploadable && $contents->isLocal()) {
-                $parameters[] = [
-                    'name' => $contents->getFilename(),
-                    'contents' => $contents->getResource(),
-                    'filename' => $contents->getFilename(),
-                ];
-            }
-            if ($contents instanceof UploadableArray) {
-                foreach ($contents->files as $file) {
+            if ($contents instanceof UploadableArray || $contents instanceof Uploadable) {
+                $files = $contents instanceof UploadableArray ? $contents->files : [$contents];
+                foreach ($files as $file) {
                     if ($file->isLocal()) {
                         $parameters[] = [
                             'name' => $file->getFilename(),
