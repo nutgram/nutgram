@@ -20,13 +20,6 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
     public InputMediaType $type = InputMediaType::VIDEO;
 
     /**
-     * File to send.
-     * Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
-     * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
-     */
-    public InputFile|string $media;
-
-    /**
      * Optional.
      * Thumbnail of the file sent;
      * can be ignored if thumbnail generation for the file is supported server-side.

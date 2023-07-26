@@ -215,17 +215,17 @@ it('creates a new sticker set using InputFile', function () {
                 ->name->toBe('title')
                 ->contents->toBe('MyPack By Nutgram'),
             fn ($x) => $x
-                ->name->toBe('sticker.png')
-                ->filename->toBe('sticker.png'),
-            fn ($x) => $x
-                ->name->toBe('stickers')
-                ->contents->toBe('[{"sticker":"attach:\/\/sticker.png","emoji_list":["\ud83e\udd14"]}]'),
-            fn ($x) => $x
                 ->name->toBe('sticker_format')
                 ->contents->toBe('static'),
             fn ($x) => $x
                 ->name->toBe('sticker_type')
                 ->contents->toBe('regular'),
+            fn ($x) => $x
+                ->name->toBe('sticker.png')
+                ->filename->toBe('sticker.png'),
+            fn ($x) => $x
+                ->name->toBe('stickers')
+                ->contents->toBe('[{"sticker":"attach:\/\/sticker.png","emoji_list":["\ud83e\udd14"]}]'),
         );
     });
 
@@ -267,14 +267,14 @@ it('creates a new sticker set using Url', function () {
                 ->name->toBe('title')
                 ->contents->toBe('MyPack By Nutgram'),
             fn ($x) => $x
-                ->name->toBe('stickers')
-                ->contents->toBe('[{"sticker":"https:\/\/example.com\/sticker.png","emoji_list":["\ud83e\udd14"]}]'),
-            fn ($x) => $x
                 ->name->toBe('sticker_format')
                 ->contents->toBe('static'),
             fn ($x) => $x
                 ->name->toBe('sticker_type')
                 ->contents->toBe('regular'),
+            fn ($x) => $x
+                ->name->toBe('stickers')
+                ->contents->toBe('[{"sticker":"https:\/\/example.com\/sticker.png","emoji_list":["\ud83e\udd14"]}]'),
         );
     });
 
