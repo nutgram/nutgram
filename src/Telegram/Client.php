@@ -27,6 +27,7 @@ use SergiX44\Nutgram\Telegram\Endpoints\UpdateMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
+use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
@@ -177,6 +178,24 @@ trait Client
                     'filename' => $contents->media->getFilename(),
                 ];
             }
+            if ($contents instanceof InputSticker) {
+                $parameters[] = [
+                    'name' => $contents->sticker->getFilename(),
+                    'contents' => $contents->sticker->getResource(),
+                    'filename' => $contents->sticker->getFilename(),
+                ];
+            }
+            if (is_array($contents)) {
+                foreach ($contents as $item) {
+                    if ($item instanceof InputSticker) {
+                        $parameters[] = [
+                            'name' => $item->sticker->getFilename(),
+                            'contents' => $item->sticker->getResource(),
+                            'filename' => $item->sticker->getFilename(),
+                        ];
+                    }
+                }
+            }
 
             $parameters[] = match (true) {
                 $contents instanceof InputFile => [
@@ -184,7 +203,7 @@ trait Client
                     'contents' => $contents->getResource(),
                     'filename' => $contents->getFilename(),
                 ],
-                $contents instanceof JsonSerializable => [
+                is_array($contents), $contents instanceof JsonSerializable => [
                     'name' => $name,
                     'contents' => json_encode($contents, JSON_THROW_ON_ERROR),
                 ],

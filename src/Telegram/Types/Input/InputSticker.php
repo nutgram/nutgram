@@ -74,7 +74,7 @@ class InputSticker extends BaseType implements JsonSerializable
     {
         return array_filter_null([
             'sticker' => $this->sticker,
-            'emoji' => $this->emoji_list,
+            'emoji_list' => $this->emoji_list,
             'mask_position' => $this->mask_position,
             'keywords' => $this->keywords,
         ]);
