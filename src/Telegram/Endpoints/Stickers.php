@@ -6,6 +6,7 @@ use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
@@ -135,11 +136,11 @@ trait Stickers
             'user_id',
             'name',
             'title',
-            'stickers',
             'sticker_format',
             'sticker_type',
             'needs_repainting',
         );
+        $parameters['stickers'] = new UploadableArray($stickers);
 
         return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
     }

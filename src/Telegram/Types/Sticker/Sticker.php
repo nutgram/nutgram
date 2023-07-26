@@ -4,7 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use SergiX44\Nutgram\Telegram\Properties\StickerType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
-use SergiX44\Nutgram\Telegram\Types\Internal\HasDownload;
+use SergiX44\Nutgram\Telegram\Types\Internal\Downloadable;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 
@@ -14,7 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
  */
 class Sticker extends BaseType
 {
-    use HasDownload;
+    use Downloadable;
 
     /** Identifier for this file, which can be used to download or reuse the file */
     public string $file_id;

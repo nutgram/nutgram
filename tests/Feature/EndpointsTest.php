@@ -9,7 +9,9 @@ use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
+use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Testing\FormDataParser;
 
 it('throws exception when text is too long', function ($responseBody) {
@@ -174,4 +176,190 @@ it('uploads a file with attach:// logic', function () {
             $photo = FormDataParser::parse($request)->files['photoB.jpg'];
             return $photo->getName() === 'photoB.jpg';
         }, 1);
+});
+
+it('creates a new sticker set using InputFile', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $file = InputFile::make(
+            resource: fopen('php://temp', 'rb'),
+            filename: 'sticker.png',
+        );
+
+        $sticker = InputSticker::make(
+            sticker: $file,
+            emoji_list: ['🤔'],
+        );
+
+        $bot->createNewStickerSet(
+            name: 'MyPack_by_NutgramBot',
+            title: 'MyPack By Nutgram',
+            stickers: [
+                $sticker
+            ],
+            sticker_format: 'static',
+            sticker_type: 'regular',
+        );
+    });
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $payload) {
+        expect($payload['multipart'])->sequence(
+            fn ($x) => $x
+                ->name->toBe('user_id')
+                ->contents->toBe(123),
+            fn ($x) => $x
+                ->name->toBe('name')
+                ->contents->toBe('MyPack_by_NutgramBot'),
+            fn ($x) => $x
+                ->name->toBe('title')
+                ->contents->toBe('MyPack By Nutgram'),
+            fn ($x) => $x
+                ->name->toBe('sticker_format')
+                ->contents->toBe('static'),
+            fn ($x) => $x
+                ->name->toBe('sticker_type')
+                ->contents->toBe('regular'),
+            fn ($x) => $x
+                ->name->toBe('sticker.png')
+                ->filename->toBe('sticker.png'),
+            fn ($x) => $x
+                ->name->toBe('stickers')
+                ->contents->toBe('[{"sticker":"attach:\/\/sticker.png","emoji_list":["\ud83e\udd14"]}]'),
+        );
+    });
+
+    $bot
+        ->setCommonUser(User::make(123, false, 'Foo'))
+        ->hearText('/start')
+        ->reply();
+});
+
+it('creates a new sticker set using Url', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $sticker = InputSticker::make(
+            sticker: 'https://example.com/sticker.png',
+            emoji_list: ['🤔'],
+        );
+
+        $bot->createNewStickerSet(
+            name: 'MyPack_by_NutgramBot',
+            title: 'MyPack By Nutgram',
+            stickers: [
+                $sticker
+            ],
+            sticker_format: 'static',
+            sticker_type: 'regular',
+        );
+    });
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $payload) {
+        expect($payload['multipart'])->sequence(
+            fn ($x) => $x
+                ->name->toBe('user_id')
+                ->contents->toBe(123),
+            fn ($x) => $x
+                ->name->toBe('name')
+                ->contents->toBe('MyPack_by_NutgramBot'),
+            fn ($x) => $x
+                ->name->toBe('title')
+                ->contents->toBe('MyPack By Nutgram'),
+            fn ($x) => $x
+                ->name->toBe('sticker_format')
+                ->contents->toBe('static'),
+            fn ($x) => $x
+                ->name->toBe('sticker_type')
+                ->contents->toBe('regular'),
+            fn ($x) => $x
+                ->name->toBe('stickers')
+                ->contents->toBe('[{"sticker":"https:\/\/example.com\/sticker.png","emoji_list":["\ud83e\udd14"]}]'),
+        );
+    });
+
+    $bot
+        ->setCommonUser(User::make(123, false, 'Foo'))
+        ->hearText('/start')
+        ->reply();
+});
+
+it('add sticker to set using InputFile', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $file = InputFile::make(
+            resource: fopen('php://temp', 'rb'),
+            filename: 'sticker.png',
+        );
+
+        $sticker = InputSticker::make(
+            sticker: $file,
+            emoji_list: ['🤔'],
+        );
+
+        $bot->addStickerToSet(
+            name: 'MyPack_by_NutgramBot',
+            sticker: $sticker,
+        );
+    });
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $payload) {
+        expect($payload['multipart'])
+            ->sequence(
+                fn ($x) => $x
+                    ->name->toBe('user_id')
+                    ->contents->toBe(123),
+                fn ($x) => $x
+                    ->name->toBe('name')
+                    ->contents->toBe('MyPack_by_NutgramBot'),
+                fn ($x) => $x
+                    ->name->toBe('sticker.png')
+                    ->filename->toBe('sticker.png'),
+                fn ($x) => $x
+                    ->name->toBe('sticker')
+                    ->contents->toBe('{"sticker":"attach:\/\/sticker.png","emoji_list":["\ud83e\udd14"]}'),
+            );
+    });
+
+    $bot
+        ->setCommonUser(User::make(123, false, 'Foo'))
+        ->hearText('/start')
+        ->reply();
+});
+
+it('add sticker to set using Url', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $sticker = InputSticker::make(
+            sticker: 'https://example.com/sticker.png',
+            emoji_list: ['🤔'],
+        );
+
+        $bot->addStickerToSet(
+            name: 'MyPack_by_NutgramBot',
+            sticker: $sticker,
+        );
+    });
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $payload) {
+        expect($payload['multipart'])
+            ->sequence(
+                fn ($x) => $x
+                    ->name->toBe('user_id')
+                    ->contents->toBe(123),
+                fn ($x) => $x
+                    ->name->toBe('name')
+                    ->contents->toBe('MyPack_by_NutgramBot'),
+                fn ($x) => $x
+                    ->name->toBe('sticker')
+                    ->contents->toBe('{"sticker":"https:\/\/example.com\/sticker.png","emoji_list":["\ud83e\udd14"]}'),
+            );
+    });
+
+    $bot
+        ->setCommonUser(User::make(123, false, 'Foo'))
+        ->hearText('/start')
+        ->reply();
 });

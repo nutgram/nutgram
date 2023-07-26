@@ -4,7 +4,6 @@ namespace SergiX44\Nutgram\Telegram\Types\Media;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Downloadable;
-use SergiX44\Nutgram\Telegram\Types\Internal\HasDownload;
 
 /**
  * This object represents a {@see https://telegram.org/blog/video-messages-and-telescope video message} (available in Telegram apps as of {@see https://telegram.org/blog/video-messages-and-telescope v.4.0}).
@@ -12,7 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\HasDownload;
  */
 class VideoNote extends BaseType
 {
-    use HasDownload;
+    use Downloadable;
 
     /** Identifier for this file, which can be used to download or reuse the file */
     public string $file_id;

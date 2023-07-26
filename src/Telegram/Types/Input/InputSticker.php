@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
 use SergiX44\Nutgram\Telegram\Types\Sticker\MaskPosition;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -12,7 +13,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * This object describes a sticker to be added to a sticker set.
  * @see https://core.telegram.org/bots/api#inputsticker
  */
-class InputSticker extends BaseType implements JsonSerializable
+class InputSticker extends BaseType implements JsonSerializable, Uploadable
 {
     /**
      * The added sticker.
@@ -74,9 +75,24 @@ class InputSticker extends BaseType implements JsonSerializable
     {
         return array_filter_null([
             'sticker' => $this->sticker,
-            'emoji' => $this->emoji_list,
+            'emoji_list' => $this->emoji_list,
             'mask_position' => $this->mask_position,
             'keywords' => $this->keywords,
         ]);
+    }
+
+    public function isLocal(): bool
+    {
+        return $this->sticker instanceof InputFile;
+    }
+
+    public function getFilename(): string
+    {
+        return $this->sticker->getFilename();
+    }
+
+    public function getResource()
+    {
+        return $this->sticker->getResource();
     }
 }

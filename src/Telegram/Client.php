@@ -26,8 +26,9 @@ use SergiX44\Nutgram\Telegram\Endpoints\Stickers;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdateMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
-use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
+use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use stdClass;
@@ -170,12 +171,17 @@ trait Client
     ): mixed {
         $parameters = [];
         foreach (array_filter($multipart) as $name => $contents) {
-            if ($contents instanceof InputMedia) {
-                $parameters[] = [
-                    'name' => $contents->media->getFilename(),
-                    'contents' => $contents->media->getResource(),
-                    'filename' => $contents->media->getFilename(),
-                ];
+            if ($contents instanceof UploadableArray || $contents instanceof Uploadable) {
+                $files = $contents instanceof UploadableArray ? $contents->files : [$contents];
+                foreach ($files as $file) {
+                    if ($file->isLocal()) {
+                        $parameters[] = [
+                            'name' => $file->getFilename(),
+                            'contents' => $file->getResource(),
+                            'filename' => $file->getFilename(),
+                        ];
+                    }
+                }
             }
 
             $parameters[] = match (true) {
@@ -184,17 +190,13 @@ trait Client
                     'contents' => $contents->getResource(),
                     'filename' => $contents->getFilename(),
                 ],
-                $contents instanceof JsonSerializable => [
+                $contents instanceof JsonSerializable, is_array($contents) => [
                     'name' => $name,
                     'contents' => json_encode($contents, JSON_THROW_ON_ERROR),
                 ],
-                $contents instanceof BackedEnum => [
-                    'name' => $name,
-                    'contents' => $contents->value,
-                ],
                 default => [
                     'name' => $name,
-                    'contents' => $contents,
+                    'contents' => $contents instanceof BackedEnum ? $contents->value : $contents,
                 ]
             };
         }
