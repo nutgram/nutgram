@@ -208,7 +208,8 @@ it('creates a new sticker set', function () {
             fn ($x) => $x->name->toBe('name')->contents->toBe('MyPack_by_NutgramBot'),
             fn ($x) => $x->name->toBe('title')->contents->toBe('MyPack By Nutgram'),
             fn ($x) => $x->name->toBe('sticker.png')->filename->toBe('sticker.png'),
-            fn ($x
+            fn (
+                $x
             ) => $x->name->toBe('stickers')->contents->toBe('[{"sticker":"attach:\/\/sticker.png","emoji_list":["\ud83e\udd14"]}]'),
             fn ($x) => $x->name->toBe('sticker_format')->contents->toBe('static'),
             fn ($x) => $x->name->toBe('sticker_type')->contents->toBe('regular'),
@@ -246,7 +247,8 @@ it('add sticker to set', function () {
                 fn ($x) => $x->name->toBe('user_id'),
                 fn ($x) => $x->name->toBe('name')->contents->toBe('MyPack_by_NutgramBot'),
                 fn ($x) => $x->name->toBe('sticker.png')->filename->toBe('sticker.png'),
-                fn ($x
+                fn (
+                    $x
                 ) => $x->name->toBe('sticker')->contents->toBe('{"sticker":"attach:\/\/sticker.png","emoji_list":["\ud83e\udd14"]}'),
             );
     });
