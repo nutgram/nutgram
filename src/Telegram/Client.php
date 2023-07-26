@@ -26,9 +26,9 @@ use SergiX44\Nutgram\Telegram\Endpoints\Stickers;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdateMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
-use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
-use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
+use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use stdClass;
@@ -169,7 +169,37 @@ trait Client
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
-        $parameters = $this->parseMultipartData(array_filter($multipart));
+        $parameters = [];
+        foreach (array_filter($multipart) as $name => $contents) {
+            if ($contents instanceof UploadableArray || $contents instanceof Uploadable) {
+                $files = $contents instanceof UploadableArray ? $contents->files : [$contents];
+                foreach ($files as $file) {
+                    if ($file->isLocal()) {
+                        $parameters[] = [
+                            'name' => $file->getFilename(),
+                            'contents' => $file->getResource(),
+                            'filename' => $file->getFilename(),
+                        ];
+                    }
+                }
+            }
+
+            $parameters[] = match (true) {
+                $contents instanceof InputFile => [
+                    'name' => $name,
+                    'contents' => $contents->getResource(),
+                    'filename' => $contents->getFilename(),
+                ],
+                $contents instanceof JsonSerializable, is_array($contents) => [
+                    'name' => $name,
+                    'contents' => json_encode($contents, JSON_THROW_ON_ERROR),
+                ],
+                default => [
+                    'name' => $name,
+                    'contents' => $contents instanceof BackedEnum ? $contents->value : $contents,
+                ]
+            };
+        }
 
         $request = ['multipart' => $parameters, ...$options];
 
@@ -320,60 +350,5 @@ trait Client
             $e->getPrevious(),
             $e->getHandlerContext(),
         );
-    }
-
-    protected function parseMultipartData(array $items): array
-    {
-        $parameters = [];
-        foreach ($items as $name => $contents) {
-            $parameters = [...$parameters, ...$this->getInputToArray($contents)];
-
-            if (is_array($contents)) {
-                foreach ($contents as $item) {
-                    $parameters = [...$parameters, ...$this->getInputToArray($item)];
-                }
-            }
-
-            $parameters[] = match (true) {
-                $contents instanceof InputFile => [
-                    'name' => $name,
-                    'contents' => $contents->getResource(),
-                    'filename' => $contents->getFilename(),
-                ],
-                is_array($contents), $contents instanceof JsonSerializable => [
-                    'name' => $name,
-                    'contents' => json_encode($contents, JSON_THROW_ON_ERROR),
-                ],
-                $contents instanceof BackedEnum => [
-                    'name' => $name,
-                    'contents' => $contents->value,
-                ],
-                default => [
-                    'name' => $name,
-                    'contents' => $contents,
-                ]
-            };
-        }
-        return $parameters;
-    }
-
-    protected function getInputToArray(mixed $input): array
-    {
-        $parameters = [];
-        if ($input instanceof InputMedia && $input->media instanceof InputFile) {
-            $parameters[] = [
-                'name' => $input->media->getFilename(),
-                'contents' => $input->media->getResource(),
-                'filename' => $input->media->getFilename(),
-            ];
-        }
-        if ($input instanceof InputSticker && $input->sticker instanceof InputFile) {
-            $parameters[] = [
-                'name' => $input->sticker->getFilename(),
-                'contents' => $input->sticker->getResource(),
-                'filename' => $input->sticker->getFilename(),
-            ];
-        }
-        return $parameters;
     }
 }

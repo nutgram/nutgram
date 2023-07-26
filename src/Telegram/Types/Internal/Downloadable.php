@@ -7,7 +7,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 /**
  * @mixin BaseType
  */
-trait HasDownload
+trait Downloadable
 {
     public function download(string $path, array $clientOpt = []): ?bool
     {
