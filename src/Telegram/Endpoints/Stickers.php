@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
+use SergiX44\Nutgram\Telegram\Properties\StickerType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
@@ -114,9 +115,9 @@ trait Stickers
      * @param string $name Short name of sticker set, to be used in t.me/addstickers/ URLs (e.g., animals). Can contain only English letters, digits and underscores. Must begin with a letter, can't contain consecutive underscores and must end in "_by_<bot_username>". <bot_username> is case insensitive. 1-64 characters.
      * @param string $title Sticker set title, 1-64 characters
      * @param InputSticker[] $stickers A JSON-serialized list of 1-50 initial stickers to be added to the sticker set
-     * @param string $sticker_format Format of stickers in the set, must be one of “static”, “animated”, “video”
+     * @param StickerFormat|string $sticker_format Format of stickers in the set, must be one of “static”, “animated”, “video”
      * @param int|null $user_id User identifier of created sticker set owner
-     * @param string|null $sticker_type Type of stickers in the set, pass “regular”, “mask”, or “custom_emoji”. By default, a regular sticker set is created.
+     * @param StickerType|string|null $sticker_type Type of stickers in the set, pass “regular”, “mask”, or “custom_emoji”. By default, a regular sticker set is created.
      * @param bool|null $needs_repainting Pass True if stickers in the sticker set must be repainted to the color of text when used in messages, the accent color if used as emoji status, white on chat photos, or another appropriate color based on context; for custom emoji sticker sets only
      * @param array $clientOpt Client options
      * @return bool|null
@@ -125,9 +126,9 @@ trait Stickers
         string $name,
         string $title,
         array $stickers,
-        string $sticker_format,
+        StickerFormat|string $sticker_format,
         ?int $user_id = null,
-        ?string $sticker_type = null,
+        StickerType|string|null $sticker_type = null,
         ?bool $needs_repainting = null,
         array $clientOpt = [],
     ): ?bool {
