@@ -169,54 +169,7 @@ trait Client
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
-        $parameters = [];
-        foreach (array_filter($multipart) as $name => $contents) {
-            if ($contents instanceof InputMedia) {
-                $parameters[] = [
-                    'name' => $contents->media->getFilename(),
-                    'contents' => $contents->media->getResource(),
-                    'filename' => $contents->media->getFilename(),
-                ];
-            }
-            if ($contents instanceof InputSticker) {
-                $parameters[] = [
-                    'name' => $contents->sticker->getFilename(),
-                    'contents' => $contents->sticker->getResource(),
-                    'filename' => $contents->sticker->getFilename(),
-                ];
-            }
-            if (is_array($contents)) {
-                foreach ($contents as $item) {
-                    if ($item instanceof InputSticker) {
-                        $parameters[] = [
-                            'name' => $item->sticker->getFilename(),
-                            'contents' => $item->sticker->getResource(),
-                            'filename' => $item->sticker->getFilename(),
-                        ];
-                    }
-                }
-            }
-
-            $parameters[] = match (true) {
-                $contents instanceof InputFile => [
-                    'name' => $name,
-                    'contents' => $contents->getResource(),
-                    'filename' => $contents->getFilename(),
-                ],
-                is_array($contents), $contents instanceof JsonSerializable => [
-                    'name' => $name,
-                    'contents' => json_encode($contents, JSON_THROW_ON_ERROR),
-                ],
-                $contents instanceof BackedEnum => [
-                    'name' => $name,
-                    'contents' => $contents->value,
-                ],
-                default => [
-                    'name' => $name,
-                    'contents' => $contents,
-                ]
-            };
-        }
+        $parameters = $this->parseMultipartData(array_filter($multipart));
 
         $request = ['multipart' => $parameters, ...$options];
 
@@ -367,5 +320,60 @@ trait Client
             $e->getPrevious(),
             $e->getHandlerContext(),
         );
+    }
+
+    protected function parseMultipartData(array $items): array
+    {
+        $parameters = [];
+        foreach ($items as $name => $contents) {
+            $parameters = [...$parameters, ...$this->getInputToArray($contents)];
+
+            if (is_array($contents)) {
+                foreach ($contents as $item) {
+                    $parameters = [...$parameters, ...$this->getInputToArray($item)];
+                }
+            }
+
+            $parameters[] = match (true) {
+                $contents instanceof InputFile => [
+                    'name' => $name,
+                    'contents' => $contents->getResource(),
+                    'filename' => $contents->getFilename(),
+                ],
+                is_array($contents), $contents instanceof JsonSerializable => [
+                    'name' => $name,
+                    'contents' => json_encode($contents, JSON_THROW_ON_ERROR),
+                ],
+                $contents instanceof BackedEnum => [
+                    'name' => $name,
+                    'contents' => $contents->value,
+                ],
+                default => [
+                    'name' => $name,
+                    'contents' => $contents,
+                ]
+            };
+        }
+        return $parameters;
+    }
+
+    protected function getInputToArray(mixed $input): array
+    {
+        $parameters = [];
+        if ($input instanceof InputMedia && $input->media instanceof InputFile) {
+            $parameters[] = [
+                'name' => $input->media->getFilename(),
+                'contents' => $input->media->getResource(),
+                'filename' => $input->media->getFilename(),
+            ];
+        }
+        if ($input instanceof InputSticker && $input->sticker instanceof InputFile) {
+            $parameters[] = [
+                'name' => $input->sticker->getFilename(),
+                'contents' => $input->sticker->getResource(),
+                'filename' => $input->sticker->getFilename(),
+            ];
+        }
+        return $parameters;
     }
 }
