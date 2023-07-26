@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.3.2 - 2023-07-26
+
+### What's Changed
+
+- wip by @SergiX44 in https://github.com/nutgram/nutgram/pull/530
+- Fix inability to use InputSticker object with multipart requests by @Lukasss93 in https://github.com/nutgram/nutgram/pull/528
+- Fix missing enums by @Lukasss93 in https://github.com/nutgram/nutgram/pull/531
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.3.1...4.3.2
+
 ## 4.3.1 - 2023-07-20
 
 ### What's Changed
