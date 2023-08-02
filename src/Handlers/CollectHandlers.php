@@ -4,8 +4,10 @@
 namespace SergiX44\Nutgram\Handlers;
 
 use SergiX44\Nutgram\Exception\StatusFinalizedException;
+use SergiX44\Nutgram\Exception\ThrowableApiError;
 use SergiX44\Nutgram\Handlers\Listeners\MessageListeners;
 use SergiX44\Nutgram\Handlers\Listeners\UpdateListeners;
+use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
 abstract class CollectHandlers
@@ -88,13 +90,25 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param callable|string $callableOrPattern
+     * @param callable|string|ThrowableApiError $callableOrPattern
      * @param callable|null $callable
      * @return Handler
      */
     public function onApiError($callableOrPattern, $callable = null): Handler
     {
         $this->checkFinalized();
+
+        if (is_subclass_of($callableOrPattern, ThrowableApiError::class) && $callable === null) {
+            return $this->registerErrorHandlerFor(
+                type: self::API_ERROR,
+                callableOrPattern: $callableOrPattern::pattern(),
+                callable: fn(TelegramException $e) => throw new $callableOrPattern(
+                    message: $e->getMessage(),
+                    previous: $e,
+                )
+            );
+        }
+
         return $this->registerErrorHandlerFor(self::API_ERROR, $callableOrPattern, $callable);
     }
 

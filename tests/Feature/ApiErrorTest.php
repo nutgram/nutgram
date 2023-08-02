@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Testing\FakeNutgram;
+use SergiX44\Nutgram\Tests\Fixtures\Exceptions\UserDeactivatedException;
 
 it('calls the api error handler', function ($responseBody) {
     $bot = Nutgram::fake(responses: [
@@ -117,3 +118,13 @@ it('redacts bot token when there is a connectexception', function () {
         expect($e->getMessage())->not->toContain(FakeNutgram::TOKEN);
     }
 });
+
+it('calls the specific api error handler using ThrowableApiError', function ($responseBody) {
+    $bot = Nutgram::fake(responses: [
+        new Response(403, body: $responseBody),
+    ]);
+
+    $bot->onApiError(UserDeactivatedException::class);
+
+    $bot->sendMessage('hi');
+})->with('response_user_deactivated')->throws(UserDeactivatedException::class);
