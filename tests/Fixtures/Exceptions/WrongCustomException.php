@@ -6,5 +6,4 @@ use SergiX44\Nutgram\Exception\ApiException;
 
 class WrongCustomException extends ApiException
 {
-
 }
