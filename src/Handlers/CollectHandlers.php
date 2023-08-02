@@ -102,7 +102,7 @@ abstract class CollectHandlers
             return $this->registerErrorHandlerFor(
                 type: self::API_ERROR,
                 callableOrPattern: $callableOrPattern::pattern(),
-                callable: fn(TelegramException $e) => throw new $callableOrPattern(
+                callable: fn (TelegramException $e) => throw new $callableOrPattern(
                     message: $e->getMessage(),
                     previous: $e,
                 )
