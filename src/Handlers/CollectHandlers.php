@@ -110,7 +110,7 @@ abstract class CollectHandlers
 
         if (!is_subclass_of($exceptionClass, ApiException::class)) {
             throw new InvalidArgumentException(
-                sprintf('The $exceptionClass must be a subclass of %s.', ApiException::class)
+                sprintf('The provided exception must be a subclass of %s.', ApiException::class)
             );
         }
 
