@@ -116,7 +116,7 @@ abstract class CollectHandlers
 
         if ($exceptionClass::$pattern === null) {
             throw new InvalidArgumentException(
-                sprintf('The $pattern must be defined on the class %s.', $exceptionClass::class)
+                sprintf('The $pattern must be defined on the class %s.', $exceptionClass)
             );
         }
 

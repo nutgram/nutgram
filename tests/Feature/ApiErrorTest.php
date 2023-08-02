@@ -7,6 +7,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 use SergiX44\Nutgram\Tests\Fixtures\Exceptions\UserDeactivatedException;
+use SergiX44\Nutgram\Tests\Fixtures\Exceptions\WrongCustomException;
 
 it('calls the api error handler', function ($responseBody) {
     $bot = Nutgram::fake(responses: [
@@ -128,3 +129,19 @@ it('calls the specific api error handler using a custom api exception', function
 
     $bot->sendMessage('hi');
 })->with('response_user_deactivated')->throws(UserDeactivatedException::class);
+
+it('throws an error with a wrong custom api exception class', function ($responseBody) {
+    $bot = Nutgram::fake(responses: [
+        new Response(403, body: $responseBody),
+    ]);
+
+    $bot->registerApiException(stdClass::class);
+})->with('response_user_deactivated')->throws(InvalidArgumentException::class);
+
+it('throws an error with a custom api exception class without pattern', function ($responseBody) {
+    $bot = Nutgram::fake(responses: [
+        new Response(403, body: $responseBody),
+    ]);
+
+    $bot->registerApiException(WrongCustomException::class);
+})->with('response_user_deactivated')->throws(InvalidArgumentException::class);
