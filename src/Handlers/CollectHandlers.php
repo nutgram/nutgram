@@ -3,11 +3,11 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use InvalidArgumentException;
+use SergiX44\Nutgram\Exception\ApiException;
 use SergiX44\Nutgram\Exception\StatusFinalizedException;
-use SergiX44\Nutgram\Exception\ThrowableApiError;
 use SergiX44\Nutgram\Handlers\Listeners\MessageListeners;
 use SergiX44\Nutgram\Handlers\Listeners\UpdateListeners;
-use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
 abstract class CollectHandlers
@@ -90,26 +90,37 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param callable|string|ThrowableApiError $callableOrPattern
+     * @param callable|string $callableOrPattern
      * @param callable|null $callable
      * @return Handler
      */
     public function onApiError($callableOrPattern, $callable = null): Handler
     {
         $this->checkFinalized();
+        return $this->registerErrorHandlerFor(self::API_ERROR, $callableOrPattern, $callable);
+    }
 
-        if (is_subclass_of($callableOrPattern, ThrowableApiError::class) && $callable === null) {
-            return $this->registerErrorHandlerFor(
-                type: self::API_ERROR,
-                callableOrPattern: $callableOrPattern::pattern(),
-                callable: fn (TelegramException $e) => throw new $callableOrPattern(
-                    message: $e->getMessage(),
-                    previous: $e,
-                )
+    /**
+     * @param string $exceptionClass
+     * @return Handler
+     */
+    public function registerApiException(string $exceptionClass): Handler
+    {
+        $this->checkFinalized();
+
+        if (!is_subclass_of($exceptionClass, ApiException::class)) {
+            throw new InvalidArgumentException(
+                sprintf('The $exceptionClass must be a subclass of %s.', ApiException::class)
             );
         }
 
-        return $this->registerErrorHandlerFor(self::API_ERROR, $callableOrPattern, $callable);
+        if ($exceptionClass::$pattern === null) {
+            throw new InvalidArgumentException(
+                sprintf('The $pattern must be defined on the class %s.', $exceptionClass::class)
+            );
+        }
+
+        return $this->registerErrorHandlerFor(self::API_ERROR, $exceptionClass::$pattern, $exceptionClass);
     }
 
     /**
@@ -120,8 +131,6 @@ abstract class CollectHandlers
      */
     private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
     {
-        $this->checkFinalized();
-
         if ($callable !== null) {
             return $this->{$this->target}[$type][$callableOrPattern] = new Handler($callable, $callableOrPattern);
         }

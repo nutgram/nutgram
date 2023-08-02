@@ -119,12 +119,12 @@ it('redacts bot token when there is a connectexception', function () {
     }
 });
 
-it('calls the specific api error handler using ThrowableApiError', function ($responseBody) {
+it('calls the specific api error handler using a custom api exception', function ($responseBody) {
     $bot = Nutgram::fake(responses: [
         new Response(403, body: $responseBody),
     ]);
 
-    $bot->onApiError(UserDeactivatedException::class);
+    $bot->registerApiException(UserDeactivatedException::class);
 
     $bot->sendMessage('hi');
 })->with('response_user_deactivated')->throws(UserDeactivatedException::class);
