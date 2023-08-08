@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.4.0 - 2023-08-08
+
+### What's Changed
+
+- Add throwable api error by @Lukasss93 in https://github.com/nutgram/nutgram/pull/533
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.3.2...4.4.0
+
 ## 4.3.2 - 2023-07-26
 
 ### What's Changed
