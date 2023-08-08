@@ -11,11 +11,11 @@ class TelegramException extends Exception
     /**
      * TelegramException constructor.
      * @param $message
-     * @param  int  $code
+     * @param int $code
      * @param  array  $parameters
      * @param  null  $previous
      */
-    public function __construct($message, $code = 0, $previous = null, array $parameters = [])
+    public function __construct($message = '', int $code = 0, $previous = null, array $parameters = [])
     {
         $this->parameters = $parameters;
         parent::__construct($message, $code, $previous);

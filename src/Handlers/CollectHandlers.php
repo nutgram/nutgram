@@ -3,6 +3,8 @@
 
 namespace SergiX44\Nutgram\Handlers;
 
+use InvalidArgumentException;
+use SergiX44\Nutgram\Exception\ApiException;
 use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\Listeners\MessageListeners;
 use SergiX44\Nutgram\Handlers\Listeners\UpdateListeners;
@@ -99,6 +101,29 @@ abstract class CollectHandlers
     }
 
     /**
+     * @param string $exceptionClass
+     * @return Handler
+     */
+    public function registerApiException(string $exceptionClass): Handler
+    {
+        $this->checkFinalized();
+
+        if (!is_subclass_of($exceptionClass, ApiException::class)) {
+            throw new InvalidArgumentException(
+                sprintf('The provided exception must be a subclass of %s.', ApiException::class)
+            );
+        }
+
+        if ($exceptionClass::$pattern === null) {
+            throw new InvalidArgumentException(
+                sprintf('The $pattern must be defined on the class %s.', $exceptionClass)
+            );
+        }
+
+        return $this->registerErrorHandlerFor(self::API_ERROR, $exceptionClass::$pattern, $exceptionClass);
+    }
+
+    /**
      * @param string $type
      * @param $callableOrPattern
      * @param $callable
@@ -106,8 +131,6 @@ abstract class CollectHandlers
      */
     private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
     {
-        $this->checkFinalized();
-
         if ($callable !== null) {
             return $this->{$this->target}[$type][$callableOrPattern] = new Handler($callable, $callableOrPattern);
         }
