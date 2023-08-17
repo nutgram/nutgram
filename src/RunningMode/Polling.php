@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\RunningMode;
 
+use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use Throwable;
@@ -10,13 +11,21 @@ use Throwable;
 class Polling implements RunningMode
 {
     public static bool $FOREVER = true;
-    public static mixed $STDERR = STDERR;
+    public static mixed $STDERR = null;
+
+    public function __construct()
+    {
+        if (!(\PHP_SAPI === 'cli' || \PHP_SAPI === 'phpdbg')) {
+            throw new RuntimeException('This mode can be only invoked via cli.');
+        }
+    }
 
     public function processUpdates(Nutgram $bot): void
     {
         $config = $bot->getConfig();
         $offset = 1;
 
+        $this->listenForSignals();
         print("Listening...\n");
         while (self::$FOREVER) {
             $updates = $bot->getUpdates(
@@ -42,6 +51,21 @@ class Polling implements RunningMode
         }
     }
 
+    private function listenForSignals(): void
+    {
+        if (extension_loaded('pcntl')) {
+            pcntl_async_signals(true);
+
+            pcntl_signal(SIGINT, function () {
+                self::$FOREVER = false;
+            });
+
+            pcntl_signal(SIGTERM, function () {
+                self::$FOREVER = false;
+            });
+        }
+    }
+
     /**
      * @param Nutgram $bot
      * @param Update[] $updates
@@ -53,7 +77,7 @@ class Polling implements RunningMode
             try {
                 $bot->processUpdate($update);
             } catch (Throwable $e) {
-                fwrite(self::$STDERR, "$e\n");
+                fwrite(self::$STDERR ?? STDERR, "$e\n");
             } finally {
                 $bot->clear();
             }
