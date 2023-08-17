@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.4.1 - 2023-08-17
+
+### What's Changed
+
+- improve polling running mode by @SergiX44 in https://github.com/nutgram/nutgram/pull/543
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.4.0...4.4.1
+
 ## 4.4.0 - 2023-08-08
 
 ### What's Changed
