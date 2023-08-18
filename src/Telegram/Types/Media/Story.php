@@ -11,5 +11,4 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Downloadable;
  */
 class Story extends BaseType
 {
-
 }
