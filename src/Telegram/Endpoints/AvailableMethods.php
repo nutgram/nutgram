@@ -1992,4 +1992,17 @@ trait AvailableMethods
     {
         return $this->requestJson(__FUNCTION__, compact('for_channels'), ChatAdministratorRights::class);
     }
+
+    /**
+     * Use this method to clear the list of pinned messages in a General forum topic.
+     * The bot must be an administrator in the chat for this to work and must have the can_pin_messages administrator right in the supergroup.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#unpinallgeneralforumtopicmessages
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
+     * @return bool|null
+     */
+    public function unpinAllGeneralForumTopicMessages(int|string $chat_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+    }
 }
