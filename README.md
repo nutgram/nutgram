@@ -10,7 +10,7 @@
 ![PHP](https://img.shields.io/packagist/dependency-v/nutgram/nutgram/php?logo=php)
 [![Total Downloads](http://poser.pugx.org/nutgram/nutgram/downloads)](https://packagist.org/packages/nutgram/nutgram)
 ![GitHub](https://img.shields.io/github/license/nutgram/nutgram)
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-6.7%09--%20April%2021,%202023-blue.svg?logo=telegram)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-6.8%09--%20August%2018,%202023-blue.svg?logo=telegram)](https://core.telegram.org/bots/api)
 
 [![Test Suite](https://github.com/nutgram/nutgram/actions/workflows/php.yml/badge.svg)](https://github.com/nutgram/nutgram/actions/workflows/php.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/86c4ca3dae8f64db80f7/maintainability)](https://codeclimate.com/github/nutgram/nutgram/maintainability)
