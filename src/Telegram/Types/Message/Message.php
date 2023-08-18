@@ -644,8 +644,7 @@ class Message extends BaseType
         ?array $entities = null,
         ?bool $disable_web_page_preview = null,
         ?InlineKeyboardMarkup $reply_markup = null,
-    ): Message|bool|null
-    {
+    ): Message|bool|null {
         $chat_id ??= $this->chat->id;
         $message_id ??= $this->message_id;
 
@@ -696,8 +695,7 @@ class Message extends BaseType
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?MessageId
-    {
+    ): ?MessageId {
         $from_chat_id ??= $this->chat->id;
         $message_id ??= $this->message_id;
 
@@ -738,8 +736,7 @@ class Message extends BaseType
         ?int $message_thread_id = null,
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
-    ): ?Message
-    {
+    ): ?Message {
         $from_chat_id ??= $this->chat->id;
         $message_id ??= $this->message_id;
 
