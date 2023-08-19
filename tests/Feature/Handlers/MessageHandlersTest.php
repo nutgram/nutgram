@@ -191,6 +191,17 @@ it('calls onLocation() handler', function ($update) {
     expect($bot->get('called'))->toBeTrue();
 })->with('location');
 
+it('calls onStory() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onStory(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('story');
+
 it('calls onNewChatMembers() handler', function ($update) {
     $bot = Nutgram::fake($update);
     $bot->onNewChatMembers(function (Nutgram $bot) {

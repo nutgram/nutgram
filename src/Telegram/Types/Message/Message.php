@@ -558,6 +558,7 @@ class Message extends BaseType
             $this->contact !== null => MessageType::CONTACT,
             $this->venue !== null => MessageType::VENUE,
             $this->location !== null => MessageType::LOCATION,
+            $this->story !== null => MessageType::STORY,
             $this->poll !== null => MessageType::POLL,
             $this->dice !== null => MessageType::DICE,
             $this->new_chat_members !== null => MessageType::NEW_CHAT_MEMBERS,
