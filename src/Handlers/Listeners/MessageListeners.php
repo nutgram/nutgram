@@ -199,6 +199,12 @@ trait MessageListeners
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::LOCATION->value][] = new Handler($callable);
     }
 
+    public function onStory($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::STORY->value][] = new Handler($callable);
+    }
+
     /**
      * @param $callable
      * @return Handler

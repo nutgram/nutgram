@@ -19,6 +19,7 @@ enum MessageType: string
     case POLL = 'poll';
     case VENUE = 'venue';
     case LOCATION = 'location';
+    case STORY = 'story';
     case NEW_CHAT_MEMBERS = 'new_chat_members';
     case LEFT_CHAT_MEMBER = 'left_chat_member';
     case NEW_CHAT_TITLE = 'new_chat_title';

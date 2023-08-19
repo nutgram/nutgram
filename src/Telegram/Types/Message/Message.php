@@ -28,6 +28,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Contact;
 use SergiX44\Nutgram\Telegram\Types\Media\Dice;
 use SergiX44\Nutgram\Telegram\Types\Media\Document;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
+use SergiX44\Nutgram\Telegram\Types\Media\Story;
 use SergiX44\Nutgram\Telegram\Types\Media\Video;
 use SergiX44\Nutgram\Telegram\Types\Media\VideoNote;
 use SergiX44\Nutgram\Telegram\Types\Media\Voice;
@@ -215,6 +216,12 @@ class Message extends BaseType
      * Message is a sticker, information about the sticker
      */
     public ?Sticker $sticker = null;
+
+    /**
+     * Optional.
+     * Message is a forwarded story
+     */
+    public ?Story $story = null;
 
     /**
      * Optional.
@@ -551,6 +558,7 @@ class Message extends BaseType
             $this->contact !== null => MessageType::CONTACT,
             $this->venue !== null => MessageType::VENUE,
             $this->location !== null => MessageType::LOCATION,
+            $this->story !== null => MessageType::STORY,
             $this->poll !== null => MessageType::POLL,
             $this->dice !== null => MessageType::DICE,
             $this->new_chat_members !== null => MessageType::NEW_CHAT_MEMBERS,

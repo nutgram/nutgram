@@ -77,6 +77,13 @@ class Chat extends BaseType
 
     /**
      * Optional.
+     * Expiration date of the emoji status of the other party in a private chat, if any.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?int $emoji_status_expiration_date = null;
+
+    /**
+     * Optional.
      * Bio of the other party in a private chat.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
