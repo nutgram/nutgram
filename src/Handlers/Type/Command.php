@@ -30,7 +30,7 @@ class Command extends Handler
         }
 
         if (!method_exists($this, 'handle')) {
-            throw new RuntimeException('The handle method must be extended!');
+            throw new RuntimeException('The handle method must be implemented!');
         }
 
         parent::__construct([$this, 'handle'], "/{$command}");

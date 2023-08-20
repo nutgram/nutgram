@@ -216,7 +216,7 @@ it('allows defining commands with classes with missing handle method', function 
     $bot->run();
 
     expect($bot->get('called'))->toBeFalse();
-})->with('command_message')->throws(RuntimeException::class, 'The handle method must be extended!');
+})->with('command_message')->throws(RuntimeException::class, 'The handle method must be implemented!');
 
 it('allows defining commands with classes with parameter', function () {
     $bot = Nutgram::fake();
