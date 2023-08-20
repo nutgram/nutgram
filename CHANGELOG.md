@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.5.1 - 2023-08-20
+
+### What's Changed
+
+- Fix missing DI in Command class by @Lukasss93 in https://github.com/nutgram/nutgram/pull/546
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.5.0...4.5.1
+
 ## 4.5.0 - 2023-08-19
 
 ### What's Changed
