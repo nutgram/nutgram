@@ -12,7 +12,9 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use SergiX44\Nutgram\Tests\Fixtures\ComplexCommand;
 use SergiX44\Nutgram\Tests\Fixtures\HelloHandler;
+use SergiX44\Nutgram\Tests\Fixtures\InvalidCommand;
 use SergiX44\Nutgram\Tests\Fixtures\TestStartCommand;
 
 it('calls the message handler', function ($update) {
@@ -204,6 +206,28 @@ it('allows defining commands with classes', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('command_message');
+
+it('allows defining commands with classes with missing handle method', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->set('called', false);
+    $bot->registerCommand(InvalidCommand::class);
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeFalse();
+})->with('command_message')->throws(RuntimeException::class, 'The handle method must be extended!');
+
+it('allows defining commands with classes with parameter', function () {
+    $bot = Nutgram::fake();
+
+    $bot->set('called', false);
+    $bot->registerCommand(ComplexCommand::class);
+
+    $bot->hearText('/start test')->reply();
+
+    expect($bot->get('called'))->toBeTrue();
+});
 
 it('throws an error if not when not specifying a callable', function ($update) {
     $bot = Nutgram::fake($update);
