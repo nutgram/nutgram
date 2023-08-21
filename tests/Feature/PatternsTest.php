@@ -209,3 +209,16 @@ it('calls handler with different pattern cases', function ($pattern, $input, $pa
     'cyrillic-upper-lower' => ['ПРИМЕР', 'пример', false],
     'cyrillic-upper-upper' => ['ПРИМЕР', 'ПРИМЕР', true],
 ]);
+
+it('calls handler with optional regex group', function (string $hear, ?string $expected) {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start ?(.*)?', function (Nutgram $bot, ?string $param) use ($expected) {
+        expect($param)->toBe($expected);
+    });
+
+    $bot->hearText($hear)->reply();
+})->with([
+    'without-param' => ['/start', null],
+    'with-param' => ['/start foo', 'foo'],
+]);
