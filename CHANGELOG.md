@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.5.2 - 2023-08-22
+
+### What's Changed
+
+- Fix wrong regex capture group by @Lukasss93 in https://github.com/nutgram/nutgram/pull/548
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.5.1...4.5.2
+
 ## 4.5.1 - 2023-08-20
 
 ### What's Changed
