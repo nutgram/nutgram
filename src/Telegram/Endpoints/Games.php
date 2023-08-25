@@ -76,7 +76,6 @@ trait Games
         ?int $message_id = null,
         ?string $inline_message_id = null,
     ): Message|bool|null {
-        $user_id ??= $this->userId();
         $parameters = compact(
             'user_id',
             'score',
@@ -86,9 +85,9 @@ trait Games
             'message_id',
             'inline_message_id'
         );
-        $target = $this->targetChatMessageOrInlineMessageId($parameters);
+        $this->setChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestJson(__FUNCTION__, [...$target, ...$parameters], Message::class);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -108,15 +107,14 @@ trait Games
         ?int $message_id = null,
         ?string $inline_message_id = null,
     ): ?array {
-        $user_id ??= $this->userId();
         $parameters = compact(
             'user_id',
             'chat_id',
             'message_id',
             'inline_message_id'
         );
-        $target = $this->targetChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestJson(__FUNCTION__, [...$target, ...$parameters], GameHighScore::class);
+        $this->setChatMessageOrInlineMessageId($parameters);
+        return $this->requestJson(__FUNCTION__, $parameters, GameHighScore::class);
     }
 }

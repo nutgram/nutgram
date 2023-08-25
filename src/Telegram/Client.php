@@ -112,10 +112,10 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            0775,
-            true
-        ) && !is_dir($concurrentDirectory)) {
+                $concurrentDirectory = dirname($path),
+                0775,
+                true
+            ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -311,24 +311,29 @@ trait Client
     }
 
     /**
-     * Returns the inline_message_id or
-     * chat_id + message_id combination based on the current update.
-     * The array is empty if none of them are set.
-     * @param array $opt
-     * @return array
+     * Sets the chat_id + message_id or inline_message_id combination based on the current update.
+     * @param array $params
+     * @return void
      */
-    protected function targetChatMessageOrInlineMessageId(array $opt = []): array
+    protected function setChatMessageOrInlineMessageId(array &$params = []): void
     {
         $inlineMessageId = $this->inlineMessageId();
 
-        if ($inlineMessageId !== null && !isset($opt['chat_id']) && !isset($opt['message_id'])) {
-            return ['inline_message_id' => $inlineMessageId];
+        if (
+            $inlineMessageId !== null &&
+            empty($params['chat_id']) &&
+            empty($params['message_id']) &&
+            empty($params['inline_message_id'])
+        ) {
+            $params['inline_message_id'] = $inlineMessageId;
+        } else {
+            if (empty($params['chat_id'])) {
+                $params['chat_id'] = $this->chatId();
+            }
+            if (empty($params['message_id'])) {
+                $params['message_id'] = $this->messageId();
+            }
         }
-
-        return array_filter([
-            'chat_id' => $this->chatId(),
-            'message_id' => $this->messageId(),
-        ]);
     }
 
     /**
