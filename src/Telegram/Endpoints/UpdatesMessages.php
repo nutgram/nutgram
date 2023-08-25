@@ -51,9 +51,9 @@ trait UpdatesMessages
             'disable_web_page_preview',
             'reply_markup'
         );
-        $target = $this->targetChatMessageOrInlineMessageId($parameters);
+        $this->setChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestJson(__FUNCTION__, [...$target, ...$parameters], Message::class);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -87,9 +87,9 @@ trait UpdatesMessages
             'caption_entities',
             'reply_markup'
         );
-        $target = $this->targetChatMessageOrInlineMessageId($parameters);
+        $this->setChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestJson(__FUNCTION__, [...$target, ...$parameters], Message::class);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -123,14 +123,9 @@ trait UpdatesMessages
             'reply_markup',
             'clientOpt'
         );
-        $target = $this->targetChatMessageOrInlineMessageId($parameters);
+        $this->setChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestMultipart(
-            __FUNCTION__,
-            [...$target, ...$parameters],
-            Message::class,
-            $clientOpt
-        );
+        return $this->requestMultipart(__FUNCTION__, $parameters, Message::class, $clientOpt);
     }
 
     /**
@@ -155,9 +150,9 @@ trait UpdatesMessages
             'inline_message_id',
             'reply_markup'
         );
-        $target = $this->targetChatMessageOrInlineMessageId($parameters);
+        $this->setChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestJson(__FUNCTION__, [...$target, ...$parameters], Message::class);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**

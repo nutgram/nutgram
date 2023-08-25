@@ -761,7 +761,6 @@ trait AvailableMethods
         ?int $proximity_alert_radius = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): Message|bool|null {
-        $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
             'message_id',
@@ -774,8 +773,8 @@ trait AvailableMethods
             'reply_markup'
         );
 
-        $target = $this->targetChatMessageOrInlineMessageId($parameters);
-        return $this->requestJson(__FUNCTION__, [...$target, ...$parameters], Message::class);
+        $this->setChatMessageOrInlineMessageId($parameters);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -794,7 +793,6 @@ trait AvailableMethods
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): Message|bool|null {
-        $chat_id ??= $this->chatId();
         $parameters = compact(
             'chat_id',
             'message_id',
@@ -802,8 +800,8 @@ trait AvailableMethods
             'reply_markup'
         );
 
-        $target = $this->targetChatMessageOrInlineMessageId($parameters);
-        return $this->requestJson(__FUNCTION__, [...$target, ...$parameters], Message::class);
+        $this->setChatMessageOrInlineMessageId($parameters);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**

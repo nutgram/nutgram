@@ -311,24 +311,20 @@ trait Client
     }
 
     /**
-     * Returns the inline_message_id or
-     * chat_id + message_id combination based on the current update.
-     * The array is empty if none of them are set.
-     * @param array $opt
-     * @return array
+     * Sets the chat_id + message_id or inline_message_id combination based on the current update.
+     * @param array $params
+     * @return void
      */
-    protected function targetChatMessageOrInlineMessageId(array $opt = []): array
+    protected function setChatMessageOrInlineMessageId(array &$params = []): void
     {
         $inlineMessageId = $this->inlineMessageId();
-
-        if ($inlineMessageId !== null && !isset($opt['chat_id']) && !isset($opt['message_id'])) {
-            return ['inline_message_id' => $inlineMessageId];
+        if ($inlineMessageId !== null && empty($params['chat_id']) && empty($params['message_id'])) {
+            $params['inline_message_id'] = $params['inline_message_id'] ?? $inlineMessageId;
+            return;
         }
 
-        return array_filter([
-            'chat_id' => $this->chatId(),
-            'message_id' => $this->messageId(),
-        ]);
+        $params['chat_id'] = $params['chat_id'] ?? $this->chatId();
+        $params['message_id'] = $params['message_id'] ?? $this->messageId();
     }
 
     /**
