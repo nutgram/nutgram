@@ -113,7 +113,7 @@ final readonly class Configuration
     {
         $data = get_object_vars($this);
 
-        unset($data['cache'], $data['extra']);
+        unset($data['cache'], $data['extra'], $data['container']);
 
         if ($this->logger instanceof LoggerInterface) {
             unset($data['logger']);
@@ -130,12 +130,10 @@ final readonly class Configuration
     {
         $data['cache'] = self::DEFAULT_CACHE;
         $data['extra'] = [];
+        $data['container'] = null;
 
         if (!isset($data['logger'])) {
             $data['logger'] = self::DEFAULT_LOGGER;
-        }
-        if (!isset($data['container'])) {
-            $data['container'] = null;
         }
 
         if ($data['localPathTransformer'] instanceof SerializableClosure) {
