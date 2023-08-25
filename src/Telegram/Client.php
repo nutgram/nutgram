@@ -112,10 +112,10 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            0775,
-            true
-        ) && !is_dir($concurrentDirectory)) {
+                $concurrentDirectory = dirname($path),
+                0775,
+                true
+            ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -318,23 +318,13 @@ trait Client
     protected function setChatMessageOrInlineMessageId(array &$params = []): void
     {
         $inlineMessageId = $this->inlineMessageId();
-
-        if (
-            $inlineMessageId !== null &&
-            empty($params['chat_id']) &&
-            empty($params['message_id']) &&
-            empty($params['inline_message_id'])
-        ) {
-            $params['inline_message_id'] = $inlineMessageId;
+        if ($inlineMessageId !== null && empty($params['chat_id']) && empty($params['message_id'])) {
+            $params['inline_message_id'] = $params['inline_message_id'] ?? $inlineMessageId;
             return;
         }
 
-        if (empty($params['chat_id'])) {
-            $params['chat_id'] = $this->chatId();
-        }
-        if (empty($params['message_id'])) {
-            $params['message_id'] = $this->messageId();
-        }
+        $params['chat_id'] = $params['chat_id'] ?? $this->chatId();
+        $params['message_id'] = $params['message_id'] ?? $this->messageId();
     }
 
     /**
