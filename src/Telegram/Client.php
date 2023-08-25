@@ -263,6 +263,7 @@ trait Client
                 unset($requestData['json']);
                 $options = $requestData;
 
+                /** @psalm-suppress UndefinedInterfaceMethod */
                 $response = $this->http->request('POST', $endpoint, [
                     'body' => json_encode($json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
                     'headers' => ['Content-Type' => 'application/json'],
