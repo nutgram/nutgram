@@ -252,13 +252,22 @@ trait Client
 
         try {
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+            $requestData = $requestPost ?? $request;
 
             if ($this->canHandleAsResponse()) {
-                return $this->sendResponse($endpoint, $requestPost ?? $request);
+                return $this->sendResponse($endpoint, $requestData);
             }
 
             try {
-                $response = $this->http->post($endpoint, $requestPost ?? $request);
+                $json = $requestData['json'];
+                unset($requestData['json']);
+                $options = $requestData;
+
+                $response = $this->http->request('POST', $endpoint, [
+                    'body' => json_encode($json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
+                    'headers' => ['Content-Type' => 'application/json'],
+                    ...$options,
+                ]);
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
