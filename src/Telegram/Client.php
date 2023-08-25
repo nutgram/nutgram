@@ -326,13 +326,14 @@ trait Client
             empty($params['inline_message_id'])
         ) {
             $params['inline_message_id'] = $inlineMessageId;
-        } else {
-            if (empty($params['chat_id'])) {
-                $params['chat_id'] = $this->chatId();
-            }
-            if (empty($params['message_id'])) {
-                $params['message_id'] = $this->messageId();
-            }
+            return;
+        }
+
+        if (empty($params['chat_id'])) {
+            $params['chat_id'] = $this->chatId();
+        }
+        if (empty($params['message_id'])) {
+            $params['message_id'] = $this->messageId();
         }
     }
 
