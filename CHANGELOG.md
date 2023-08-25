@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.5.3 - 2023-08-25
+
+### What's Changed
+
+- Do not try to serialize the delegate container by @SergiX44 in https://github.com/nutgram/nutgram/pull/549
+- Fix inline or message chat guess by @SergiX44 in https://github.com/nutgram/nutgram/pull/551
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.5.2...4.5.3
+
 ## 4.5.2 - 2023-08-22
 
 ### What's Changed
