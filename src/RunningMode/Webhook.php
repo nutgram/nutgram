@@ -14,7 +14,6 @@ use Throwable;
 
 class Webhook implements RunningMode
 {
-
     protected bool $safeMode = false;
 
     protected Closure $resolveSecretToken;
