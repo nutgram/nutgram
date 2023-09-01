@@ -14,35 +14,23 @@ use Throwable;
 
 class Webhook implements RunningMode
 {
-    /**
-     * @var array|string[]
-     */
-    public const TELEGRAM_IPV4_RANGES = [
-        '149.154.160.0' => '149.154.175.255', // literally 149.154.160.0/20
-        '91.108.4.0' => '91.108.7.255',    // literally 91.108.4.0/22
-    ];
 
-
-    /**
-     * In safe mode If received request from a ip other than telegram ips, the robot will not respond
-     * @var bool
-     */
     protected bool $safeMode = false;
 
-    /**
-     * @var Closure
-     */
-    protected Closure $resolveIp;
+    protected Closure $resolveSecretToken;
+    protected ?string $secretToken = null;
 
     /**
-     * @param Closure|null $resolveIp
+     * @param Closure|null $getToken
+     * @param string|null $secretToken
      */
-    public function __construct(?Closure $resolveIp = null)
+    public function __construct(?Closure $getToken = null, ?string $secretToken = null)
     {
-        $this->resolveIp = $resolveIp ?? static fn (): string => $_SERVER['REMOTE_ADDR'];
+        $this->resolveSecretToken = $getToken ?? static fn (): string => $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'];
+        $this->secretToken = $secretToken;
     }
 
-    
+
     /**
      * @param Nutgram $bot
      * @throws JsonMapper_Exception
@@ -53,7 +41,7 @@ class Webhook implements RunningMode
     {
         $input = $this->input();
 
-        if ($input === null || ($this->safeMode && !$this->isSafeIpv4())) {
+        if ($input === null || ($this->safeMode && ($this->resolveSecretToken)() !== $this->secretToken)) {
             return;
         }
 
@@ -62,7 +50,7 @@ class Webhook implements RunningMode
             $update = $bot->getContainer()
                 ->get(Hydrator::class)
                 ->hydrate(json_decode($input, true, flags: JSON_THROW_ON_ERROR), Update::class);
-            
+
             $bot->processUpdate($update);
 
             $bot->getContainer()
@@ -73,27 +61,6 @@ class Webhook implements RunningMode
                 ->get(LoggerInterface::class)
                 ->error(sprintf('Update failed: %s%s%s', $update->getType()?->value, PHP_EOL, $input), ['exception' => $e]);
         }
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isSafeIpv4(): bool
-    {
-        $ip = ip2long(call_user_func($this->resolveIp));
-
-        if ($ip === false) {
-            return false;
-        }
-
-        foreach (self::TELEGRAM_IPV4_RANGES as $lower => $upper) {
-            // Make sure the IPv4 is valid.
-            if ($ip >= ip2long($lower) && $ip <= ip2long($upper)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -115,12 +82,12 @@ class Webhook implements RunningMode
     }
 
     /**
-     * @param Closure $resolveIp
+     * @param Closure $closure
      * @return Webhook
      */
-    public function requestIpFrom(Closure $resolveIp): Webhook
+    public function getSecretTokenFrom(Closure $closure): Webhook
     {
-        $this->resolveIp = $resolveIp;
+        $this->resolveSecretToken = $closure;
         return $this;
     }
 
@@ -130,5 +97,10 @@ class Webhook implements RunningMode
     protected function input(): ?string
     {
         return file_get_contents('php://input') ?: null;
+    }
+
+    public function setSecretToken(?string $secretToken): void
+    {
+        $this->secretToken = $secretToken;
     }
 }

@@ -23,19 +23,20 @@ it('works with webhook mode', function () {
     $bot->run();
 });
 
-it('works with webhook mode with safe mode and wrong ip', function () {
+it('works with webhook mode with safe mode and wrong secret', function () {
     $this->expectNotToPerformAssertions();
+
+    $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] = 'foo';
 
     $bot = Nutgram::fake();
 
-    $mock = mock(Webhook::class)
+    $mock = mock(Webhook::class, [null, 'bar'])
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('input')
         ->andReturn(file_get_contents(__DIR__.'/../Fixtures/Updates/message.json'))
         ->getMock()
         ->makePartial();
 
-    $mock->requestIpFrom(fn () => '1.1.1.1');
     $mock->setSafeMode(true);
 
     $bot->setRunningMode($mock);
@@ -47,17 +48,18 @@ it('works with webhook mode with safe mode and wrong ip', function () {
     $bot->run();
 });
 
-it('works with webhook mode with safe mode and right ip', function () {
+it('works with webhook mode with safe mode and right secret', function () {
     $bot = Nutgram::fake();
 
-    $mock = mock(Webhook::class)
+    $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] = 'foo';
+
+    $mock = mock(Webhook::class, [null, 'foo'])
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('input')
         ->andReturn(file_get_contents(__DIR__.'/../Fixtures/Updates/message.json'))
         ->getMock()
         ->makePartial();
 
-    $mock->requestIpFrom(fn () => '91.108.4.1');
     $mock->setSafeMode(true);
     expect($mock->isSafeMode())->toBeTrue();
 
