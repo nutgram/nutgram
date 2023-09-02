@@ -81,25 +81,10 @@ class Webhook implements RunningMode
     }
 
     /**
-     * @param Closure $closure
-     * @return Webhook
-     */
-    public function getSecretTokenFrom(Closure $closure): Webhook
-    {
-        $this->resolveSecretToken = $closure;
-        return $this;
-    }
-
-    /**
      * @return string|null
      */
     protected function input(): ?string
     {
         return file_get_contents('php://input') ?: null;
-    }
-
-    public function setSecretToken(?string $secretToken): void
-    {
-        $this->secretToken = $secretToken;
     }
 }
