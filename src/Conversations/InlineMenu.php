@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Conversations;
 use InvalidArgumentException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
+use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
@@ -101,10 +102,10 @@ abstract class InlineMenu extends Conversation
             }
 
             if (str_starts_with($button->callback_data, '@')) {
-                $button->callback_data = $button->text.$button->callback_data;
+                $button->callback_data = substr($button->text, 0, Limits::CALLBACK_DATA_LENGTH).$button->callback_data;
             }
 
-            @[$callbackData, $method] = explode('@', $button->callback_data ?? $button->text);
+            @[$callbackData, $method] = explode('@', $button->callback_data);
 
             if (!method_exists($this, $method)) {
                 throw new InvalidArgumentException("The method $method does not exists.");
