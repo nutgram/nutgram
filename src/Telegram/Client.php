@@ -261,13 +261,11 @@ trait Client
             try {
                 $json = $requestData['json'];
                 unset($requestData['json']);
-                $options = $requestData;
 
-                /** @psalm-suppress UndefinedInterfaceMethod */
-                $response = $this->http->request('POST', $endpoint, [
+                $response = $this->http->post($endpoint, [
                     'body' => json_encode($json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
                     'headers' => ['Content-Type' => 'application/json'],
-                    ...$options,
+                    ...$requestData,
                 ]);
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
