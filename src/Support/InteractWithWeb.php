@@ -16,7 +16,7 @@ trait InteractWithWeb
     public function isLoginDataValid(string $initData): bool
     {
         [$remoteHash, $sortedInitData] = $this->parseInitData($initData);
-        $localHash = $this->createHashHmac($sortedInitData, $this->createHash($this->token));
+        $localHash = bin2hex($this->createHashHmac($sortedInitData, $this->createHash($this->token)));
 
         return hash_equals($remoteHash, $localHash);
     }
