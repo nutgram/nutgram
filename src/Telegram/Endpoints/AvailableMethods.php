@@ -26,6 +26,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaDocument;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
@@ -648,29 +649,11 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         array $clientOpt = [],
     ): ?array {
-        $inputMedia = [];
-        $files = [];
-        foreach ($media as $m) {
-            if ($m instanceof InputMedia && is_resource($m->media)) {
-                $id = uniqid(more_entropy: true);
-                $files[$id] = $m->media;
-                $m->media = "attach://$id";
-            } elseif (is_array($m) && is_resource($m['media'])) {
-                $id = uniqid(more_entropy: true);
-                $files[$id] = $m['media'];
-                $m['media'] = "attach://$id";
-            }
-
-            $inputMedia[] = $m;
-        }
-
-        $required = [
-            'chat_id' => $this->chatId(),
-            'media' => json_encode($inputMedia, JSON_THROW_ON_ERROR),
-        ];
+        $chat_id ??= $this->chatId();
 
         return $this->requestMultipart(__FUNCTION__, [
-            ...$required, ...$files, ...compact(
+            'media' => new UploadableArray($media),
+            ...compact(
                 'chat_id',
                 'message_thread_id',
                 'disable_notification',
