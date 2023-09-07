@@ -4,20 +4,20 @@ namespace SergiX44\Nutgram\Web;
 
 trait ValidatesWebData
 {
-    public function validateWebAppData(string $initData): bool
+    public function validateWebAppData(string $queryString): bool
     {
-        [$remoteHash, $sortedInitData] = $this->parseInitData($initData);
+        [$remoteHash, $sortedData] = $this->parseQueryString($queryString);
         $secretKey = $this->createHashHmac($this->token, 'WebAppData');
-        $localHash = bin2hex($this->createHashHmac($sortedInitData, $secretKey));
+        $localHash = bin2hex($this->createHashHmac($sortedData, $secretKey));
 
         return strcmp($localHash, $remoteHash) === 0;
     }
 
-    public function validateLoginData(string $initData): bool
+    public function validateLoginData(string $queryString): bool
     {
-        [$remoteHash, $sortedInitData] = $this->parseInitData($initData);
+        [$remoteHash, $sortedData] = $this->parseQueryString($queryString);
         $secretKey = $this->createHash($this->token);
-        $localHash = bin2hex($this->createHashHmac($sortedInitData, $secretKey));
+        $localHash = bin2hex($this->createHashHmac($sortedData, $secretKey));
 
         return hash_equals($remoteHash, $localHash);
     }
@@ -32,27 +32,27 @@ trait ValidatesWebData
         return hash('sha256', $data, true);
     }
 
-    protected function parseInitData(string $initData): array
+    protected function parseQueryString(string $queryString): array
     {
         // convert url encoded string to array
-        $initDataArray = [];
-        parse_str($initData, $initDataArray);
+        $data = [];
+        parse_str($queryString, $data);
 
         // pull out the hash
-        $hash = $initDataArray['hash'];
-        unset($initDataArray['hash']);
+        $hash = $data['hash'];
+        unset($data['hash']);
 
         // sort and stringify the remaining data
-        ksort($initDataArray);
-        $initDataArray = array_filter($initDataArray);
-        $initDataArray = array_map(
+        ksort($data);
+        $data = array_filter($data);
+        $data = array_map(
             fn ($key, $value) => sprintf('%s=%s', $key, $value),
-            array_keys($initDataArray),
-            $initDataArray,
+            array_keys($data),
+            $data,
         );
-        $initDataString = implode("\n", $initDataArray);
+        $stringData = implode("\n", $data);
 
         // return the hash and the sorted data
-        return [$hash, $initDataString];
+        return [$hash, $stringData];
     }
 }
