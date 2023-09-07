@@ -363,3 +363,35 @@ it('add sticker to set using Url', function () {
         ->hearText('/start')
         ->reply();
 });
+
+it('sends a media group', function () {
+    $bot = Nutgram::fake();
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $payload) {
+        expect($payload['multipart'])
+            ->sequence(
+                fn ($x) => $x
+                    ->name->toBe('photoA.jpg')
+                    ->filename->toBe('photoA.jpg')
+                    ->contents->toBeResource(),
+                fn ($x) => $x
+                    ->name->toBe('photoB.jpg')
+                    ->filename->toBe('photoB.jpg')
+                    ->contents->toBeResource(),
+                fn ($x) => $x
+                    ->name->toBe('media')
+                    ->contents->toBe('[{"type":"photo","media":"attach:\/\/photoA.jpg","caption":"150"},{"type":"photo","media":"attach:\/\/photoB.jpg","caption":"200"}]'),
+            );
+    });
+
+    $bot->sendMediaGroup([
+        InputMediaPhoto::make(
+            media: InputFile::make(fopen('php://temp', 'rb'), 'photoA.jpg'),
+            caption: '150',
+        ),
+        InputMediaPhoto::make(
+            media: InputFile::make(fopen('php://temp', 'rb'), 'photoB.jpg'),
+            caption: '200',
+        ),
+    ]);
+});
