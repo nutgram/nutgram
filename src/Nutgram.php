@@ -27,16 +27,16 @@ use SergiX44\Nutgram\Proxies\UserCacheProxy;
 use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Support\BulkMessenger;
-use SergiX44\Nutgram\Support\InteractWithWeb;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Testing\FakeNutgram;
+use SergiX44\Nutgram\Web\ValidatesWebData;
 use Throwable;
 
 class Nutgram extends ResolveHandlers
 {
-    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy, FireHandlers, InteractWithWeb;
+    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy, FireHandlers, ValidatesWebData;
 
     /**
      * @var string

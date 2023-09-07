@@ -1,10 +1,10 @@
 <?php
 
-namespace SergiX44\Nutgram\Support;
+namespace SergiX44\Nutgram\Web;
 
-trait InteractWithWeb
+trait ValidatesWebData
 {
-    public function isWebAppDataValid(string $initData): bool
+    public function validateWebAppData(string $initData): bool
     {
         [$remoteHash, $sortedInitData] = $this->parseInitData($initData);
         $secretKey = $this->createHashHmac($this->token, 'WebAppData');
@@ -13,10 +13,11 @@ trait InteractWithWeb
         return strcmp($localHash, $remoteHash) === 0;
     }
 
-    public function isLoginDataValid(string $initData): bool
+    public function validateLoginData(string $initData): bool
     {
         [$remoteHash, $sortedInitData] = $this->parseInitData($initData);
-        $localHash = bin2hex($this->createHashHmac($sortedInitData, $this->createHash($this->token)));
+        $secretKey = $this->createHash($this->token);
+        $localHash = bin2hex($this->createHashHmac($sortedInitData, $secretKey));
 
         return hash_equals($remoteHash, $localHash);
     }
