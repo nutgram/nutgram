@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Web\Entities;
 
-readonly class WebAppUser extends Entity
+class WebAppUser extends Entity
 {
     /**
      * A unique identifier for the user or bot.

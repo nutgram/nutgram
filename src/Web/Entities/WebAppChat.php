@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Web\Entities;
 
-readonly class WebAppChat extends Entity
+class WebAppChat extends Entity
 {
     /**
      * Unique identifier for this chat.

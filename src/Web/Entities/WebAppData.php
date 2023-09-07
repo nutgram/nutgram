@@ -4,7 +4,7 @@ namespace SergiX44\Nutgram\Web\Entities;
 
 use DateTime;
 
-readonly class WebAppData extends Entity
+class WebAppData extends Entity
 {
     /**
      * Optional. A unique identifier for the Web App session, required for sending messages

@@ -4,7 +4,7 @@ namespace SergiX44\Nutgram\Web\Entities;
 
 use DateTime;
 
-abstract readonly class Entity
+abstract class Entity
 {
     public function __construct(array $data)
     {

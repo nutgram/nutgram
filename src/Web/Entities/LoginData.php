@@ -4,7 +4,7 @@ namespace SergiX44\Nutgram\Web\Entities;
 
 use DateTime;
 
-readonly class LoginData extends Entity
+class LoginData extends Entity
 {
     /**
      * Represents the identifier for a user.
