@@ -2,24 +2,47 @@
 
 namespace SergiX44\Nutgram\Web;
 
+use SergiX44\Nutgram\Web\Entities\LoginData;
+use SergiX44\Nutgram\Web\Entities\WebAppData;
+
 trait ValidatesWebData
 {
-    public function validateWebAppData(string $queryString): bool
+    /**
+     * Validates webapp data.
+     * @param string $queryString The query string to validate.
+     * @return WebAppData The validated web application data.
+     * @throws InvalidDataException If the webapp data is invalid.
+     */
+    public function validateWebAppData(string $queryString): WebAppData
     {
         [$remoteHash, $sortedData] = $this->parseQueryString($queryString);
         $secretKey = $this->createHashHmac($this->token, 'WebAppData');
         $localHash = bin2hex($this->createHashHmac($sortedData, $secretKey));
 
-        return strcmp($localHash, $remoteHash) === 0;
+        if (strcmp($localHash, $remoteHash) !== 0) {
+            throw new InvalidDataException('Invalid webapp data');
+        }
+
+        return WebAppData::fromArray($this->queryStringToArray($queryString));
     }
 
-    public function validateLoginData(string $queryString): bool
+    /**
+     * Validate login data.
+     * @param string $queryString The query string containing login data.
+     * @return LoginData The validated login data.
+     * @throws InvalidDataException If the login data is invalid.
+     */
+    public function validateLoginData(string $queryString): LoginData
     {
         [$remoteHash, $sortedData] = $this->parseQueryString($queryString);
         $secretKey = $this->createHash($this->token);
         $localHash = bin2hex($this->createHashHmac($sortedData, $secretKey));
 
-        return hash_equals($remoteHash, $localHash);
+        if (!hash_equals($remoteHash, $localHash)) {
+            throw new InvalidDataException('Invalid login data');
+        }
+
+        return LoginData::fromArray($this->queryStringToArray($queryString));
     }
 
     protected function createHashHmac(string $data, string $secretKey): string
@@ -32,11 +55,17 @@ trait ValidatesWebData
         return hash('sha256', $data, true);
     }
 
+    protected function queryStringToArray(string $queryString): array
+    {
+        $data = [];
+        parse_str($queryString, $data);
+        return $data;
+    }
+
     protected function parseQueryString(string $queryString): array
     {
         // convert url encoded string to array
-        $data = [];
-        parse_str($queryString, $data);
+        $data = $this->queryStringToArray($queryString);
 
         // pull out the hash
         $hash = $data['hash'];
