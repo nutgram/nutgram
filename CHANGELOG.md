@@ -2,6 +2,19 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.6.0 - 2023-09-08
+
+### What's Changed
+
+- Replace ip safe mode by @SergiX44 in https://github.com/nutgram/nutgram/pull/557
+- Add PHP 8.3 to the GitHub Actions workflow by @Lukasss93 in https://github.com/nutgram/nutgram/pull/560
+- Fix regression for sendMediaGroup by @Lukasss93 in https://github.com/nutgram/nutgram/pull/565
+- Fix BUTTON_DATA_INVALID using inline menu by @SergiX44 in https://github.com/nutgram/nutgram/pull/561
+- Add ValidatesWebData trait by @Lukasss93 in https://github.com/nutgram/nutgram/pull/562
+- Fix chunked endpoints by @Lukasss93 in https://github.com/nutgram/nutgram/pull/553
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.5.3...4.6.0
+
 ## 4.5.3 - 2023-08-25
 
 ### What's Changed
