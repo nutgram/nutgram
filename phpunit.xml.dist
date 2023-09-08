@@ -20,6 +20,7 @@
             <directory>./src/Telegram/Endpoints</directory>
             <directory>./src/Telegram/Types</directory>
             <directory>./src/Testing/Constraints</directory>
+            <directory>./src/Telegram/Web</directory>
             <file>./src/Support/StrUtils.php</file>
             <file>./src/Support/Helpers.php</file>
             <file>./src/Telegram/Limits.php</file>

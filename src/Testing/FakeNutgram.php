@@ -412,4 +412,38 @@ class FakeNutgram extends Nutgram
         parent::__unserialize($data);
         self::inject($this, $mock, $handlerStack);
     }
+
+    /**
+     * Generates webapp data + hash.
+     * @param array $data The data to generate webapp data from.
+     * @return string The generated webapp data as query string.
+     * @internal For testing purposes only.
+     */
+    public function generateWebAppData(array $data): string
+    {
+        $queryString = http_build_query(array_filter($data));
+
+        [, $sortedData] = $this->parseQueryString($queryString);
+        $secretKey = $this->createHashHmac(self::TOKEN, 'WebAppData');
+        $hash = bin2hex($this->createHashHmac($sortedData, $secretKey));
+
+        return $queryString.'&hash='.$hash;
+    }
+
+    /**
+     * Generates login data + hash.
+     * @param array $data The data to generate login data from.
+     * @return string The generated login data as query string.
+     * @internal For testing purposes only.
+     */
+    public function generateLoginData(array $data): string
+    {
+        $queryString = http_build_query(array_filter($data));
+
+        [, $sortedData] = $this->parseQueryString($queryString);
+        $secretKey = $this->createHash(self::TOKEN);
+        $hash = bin2hex($this->createHashHmac($sortedData, $secretKey));
+
+        return $queryString.'&hash='.$hash;
+    }
 }
