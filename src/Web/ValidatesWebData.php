@@ -68,7 +68,7 @@ trait ValidatesWebData
         $data = $this->queryStringToArray($queryString);
 
         // pull out the hash
-        $hash = $data['hash'];
+        $hash = $data['hash'] ?? null;
         unset($data['hash']);
 
         // sort and stringify the remaining data
@@ -83,5 +83,39 @@ trait ValidatesWebData
 
         // return the hash and the sorted data
         return [$hash, $stringData];
+    }
+
+    /**
+     * Generates webapp data + hash.
+     * @param array $data The data to generate webapp data from.
+     * @return string The generated webapp data as query string.
+     * @internal For testing purposes only.
+     */
+    public function generateWebAppData(array $data): string
+    {
+        $queryString = http_build_query(array_filter($data), encoding_type: PHP_QUERY_RFC3986);
+
+        [, $sortedData] = $this->parseQueryString($queryString);
+        $secretKey = $this->createHashHmac($this->token, 'WebAppData');
+        $hash = bin2hex($this->createHashHmac($sortedData, $secretKey));
+
+        return $queryString.'&hash='.$hash;
+    }
+
+    /**
+     * Generates login data + hash.
+     * @param array $data The data to generate login data from.
+     * @return string The generated login data as query string.
+     * @internal For testing purposes only.
+     */
+    public function generateLoginData(array $data): string
+    {
+        $queryString = http_build_query(array_filter($data));
+
+        [, $sortedData] = $this->parseQueryString($queryString);
+        $secretKey = $this->createHash($this->token);
+        $hash = bin2hex($this->createHashHmac($sortedData, $secretKey));
+
+        return $queryString.'&hash='.$hash;
     }
 }
