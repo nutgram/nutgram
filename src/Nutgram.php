@@ -49,9 +49,9 @@ class Nutgram extends ResolveHandlers
     private Configuration $config;
 
     /**
-     * @var ClientInterface
+     * @var Guzzle
      */
-    private ClientInterface $http;
+    private Guzzle $http;
 
     /**
      * @var Hydrator

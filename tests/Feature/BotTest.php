@@ -233,3 +233,21 @@ it('asserts with sequence method', function () {
             fn (FakeNutgram $x) => $x->assertReplyText('baz'),
         );
 });
+
+it('unescape unicode before sending payload', function (string $text) {
+    $bot = Nutgram::fake();
+    $bot->sendMessage($text);
+
+    $bot->assertRaw(function (Request $request) use ($text) {
+        $content = (string)$request->getBody();
+        return $content === sprintf('{"text":"%s"}', $text);
+    });
+})->with([
+    'Hello',
+    'пример',
+    'hàçòùéì',
+    'He🧜‍♀️llo',
+    'Hello💁🏽',
+    '💁🏽🧜‍♀️💁🏽🧜‍♀️💁🏽🧜‍♀️',
+    'Allahümme',
+]);
