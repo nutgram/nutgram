@@ -39,4 +39,9 @@ class Limits
      * Maximum poll question length
      */
     public const POLL_QUESTION_LENGTH = 300;
+
+    /**
+     * Callback data max length in bytes
+     */
+    public const CALLBACK_DATA_LENGTH = 64;
 }
