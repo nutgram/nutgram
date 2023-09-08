@@ -26,22 +26,22 @@ if (!function_exists(__NAMESPACE__.'\word_wrap')) {
             throw new InvalidArgumentException('Cannot force cut when width is zero');
         }
 
-        $stringWidth = grapheme_strlen($string);
-        $breakWidth = grapheme_strlen($break);
+        $stringWidth = mb_strlen($string);
+        $breakWidth = mb_strlen($break);
 
         $result = '';
         $lastStart = $lastSpace = 0;
 
         for ($current = 0; $current < $stringWidth; $current++) {
-            $char = grapheme_substr($string, $current, 1);
+            $char = mb_substr($string, $current, 1);
 
             $possibleBreak = $char;
             if ($breakWidth !== 1) {
-                $possibleBreak = grapheme_substr($string, $current, $breakWidth);
+                $possibleBreak = mb_substr($string, $current, $breakWidth);
             }
 
             if ($possibleBreak === $break) {
-                $result .= grapheme_substr($string, $lastStart, $current - $lastStart + $breakWidth);
+                $result .= mb_substr($string, $lastStart, $current - $lastStart + $breakWidth);
                 $current += $breakWidth - 1;
                 $lastStart = $lastSpace = $current + 1;
                 continue;
@@ -49,7 +49,7 @@ if (!function_exists(__NAMESPACE__.'\word_wrap')) {
 
             if ($char === ' ') {
                 if ($current - $lastStart >= $width) {
-                    $result .= grapheme_substr($string, $lastStart, $current - $lastStart).$break;
+                    $result .= mb_substr($string, $lastStart, $current - $lastStart).$break;
                     $lastStart = $current + 1;
                 }
 
@@ -58,19 +58,19 @@ if (!function_exists(__NAMESPACE__.'\word_wrap')) {
             }
 
             if ($current - $lastStart >= $width && $cut && $lastStart >= $lastSpace) {
-                $result .= grapheme_substr($string, $lastStart, $current - $lastStart).$break;
+                $result .= mb_substr($string, $lastStart, $current - $lastStart).$break;
                 $lastStart = $lastSpace = $current;
                 continue;
             }
 
             if ($current - $lastStart >= $width && $lastStart < $lastSpace) {
-                $result .= grapheme_substr($string, $lastStart, $lastSpace - $lastStart).$break;
+                $result .= mb_substr($string, $lastStart, $lastSpace - $lastStart).$break;
                 $lastStart = ++$lastSpace;
             }
         }
 
         if ($lastStart !== $current) {
-            $result .= grapheme_substr($string, $lastStart, $current - $lastStart);
+            $result .= mb_substr($string, $lastStart, $current - $lastStart);
         }
 
         return $result;
