@@ -19,17 +19,17 @@ class LoginData extends Entity
     /**
      * The last name of a person.
      */
-    public ?string $last_name;
+    public ?string $last_name = null;
 
     /**
      * The username of the user
      */
-    public ?string $username;
+    public ?string $username = null;
 
     /**
      * The photo url of the user
      */
-    public ?string $photo_url;
+    public ?string $photo_url = null;
 
     /**
      * The date of authentication
@@ -40,12 +40,4 @@ class LoginData extends Entity
      * The hash of the data
      */
     public string $hash;
-
-    protected function cast(): array
-    {
-        return [
-            'id' => 'int',
-            'auth_date' => 'datetime',
-        ];
-    }
 }

@@ -17,7 +17,7 @@ class WebAppUser extends Entity
      * Optional. True, if this user is a bot.
      * Returns in the {@see https://core.telegram.org/bots/webapps#webappinitdata receiver} field only.
      */
-    public bool $is_bot;
+    public bool $is_bot = false;
 
     /**
      * First name of the user or bot.
@@ -27,37 +27,28 @@ class WebAppUser extends Entity
     /**
      * Optional. Last name of the user or bot.
      */
-    public ?string $last_name;
+    public ?string $last_name = null;
 
     /**
      * Optional. Username of the user or bot.
      */
-    public ?string $username;
+    public ?string $username = null;
 
     /**
      * Optional. {@see https://en.wikipedia.org/wiki/IETF_language_tag IETF language tag} of the user's language.
      * Returns in user field only.
      */
-    public ?string $language_code;
+    public ?string $language_code = null;
 
     /**
      * Optional. True, if this user is a Telegram Premium user
      */
-    public bool $is_premium;
+    public bool $is_premium = false;
 
     /**
      * Optional. URL of the user’s profile photo.
      * The photo can be in .jpeg or .svg formats.
      * Only returned for Web Apps launched from the attachment menu.
      */
-    public ?string $photo_url;
-
-    protected function cast(): array
-    {
-        return [
-            'id' => 'int',
-            'is_bot' => 'bool',
-            'is_premium' => 'bool',
-        ];
-    }
+    public ?string $photo_url = null;
 }

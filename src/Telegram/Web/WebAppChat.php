@@ -26,19 +26,12 @@ class WebAppChat extends Entity
     /**
      * Optional. Username of the chat
      */
-    public ?string $username;
+    public ?string $username = null;
 
     /**
      * Optional. URL of the chat’s photo.
      * The photo can be in .jpeg or .svg formats.
      * Only returned for Web Apps launched from the attachment menu.
      */
-    public ?string $photo_url;
-
-    protected function cast(): array
-    {
-        return [
-            'id' => 'int',
-        ];
-    }
+    public ?string $photo_url = null;
 }
