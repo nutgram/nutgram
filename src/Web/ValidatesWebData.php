@@ -93,7 +93,7 @@ trait ValidatesWebData
      */
     public function generateWebAppData(array $data): string
     {
-        $queryString = http_build_query(array_filter($data), encoding_type: PHP_QUERY_RFC3986);
+        $queryString = http_build_query(array_filter($data));
 
         [, $sortedData] = $this->parseQueryString($queryString);
         $secretKey = $this->createHashHmac($this->token, 'WebAppData');
