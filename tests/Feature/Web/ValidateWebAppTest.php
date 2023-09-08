@@ -1,8 +1,8 @@
 <?php
 
+use SergiX44\Nutgram\Exception\InvalidDataException;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Web\Entities\WebAppData;
-use SergiX44\Nutgram\Web\InvalidDataException;
+use SergiX44\Nutgram\Telegram\Web\WebAppData;
 
 beforeEach(function () {
     $this->input = [

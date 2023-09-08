@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Web\Entities;
+namespace SergiX44\Nutgram\Telegram\Web;
 
 class WebAppUser extends Entity
 {

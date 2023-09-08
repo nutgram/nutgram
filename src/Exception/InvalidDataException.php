@@ -1,6 +1,6 @@
 <?php
 
-namespace SergiX44\Nutgram\Web;
+namespace SergiX44\Nutgram\Exception;
 
 use Exception;
 
