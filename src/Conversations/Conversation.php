@@ -13,38 +13,27 @@ use SergiX44\Nutgram\Nutgram;
  */
 abstract class Conversation
 {
-    /**
-     * @var bool
-     */
     protected bool $skipHandlers = false;
-
-    /**
-     * @var bool
-     */
     protected bool $skipMiddlewares = false;
-
-    /**
-     * @var string|null
-     */
     protected ?string $step = 'start';
-
-    /**
-     * @var Nutgram
-     */
     protected Nutgram $bot;
-
-    /**
-     * @var bool
-     */
     private static bool $refreshInstance = false;
+    private ?int $userId = null;
+    private ?int $chatId = null;
 
-    /**
-     * @param  Nutgram  $bot
-     * @return static
-     */
     public static function begin(Nutgram $bot): self
     {
         $instance = $bot->getContainer()->get(static::class);
+        $instance($bot);
+
+        return $instance;
+    }
+
+    public static function beginFor(Nutgram $bot, int $userId, int $chatId): self
+    {
+        $instance = $bot->getContainer()->get(static::class);
+        $instance->userId = $userId;
+        $instance->chatId = $chatId;
         $instance($bot);
 
         return $instance;
@@ -81,7 +70,7 @@ abstract class Conversation
     {
         $this->step = $step;
 
-        $this->bot->stepConversation($this);
+        $this->bot->stepConversation($this, $this->userId, $this->chatId);
     }
 
     /**
@@ -91,7 +80,7 @@ abstract class Conversation
     protected function end(): void
     {
         $this->closing($this->bot);
-        $this->bot->endConversation();
+        $this->bot->endConversation($this->userId, $this->chatId);
     }
 
     /**

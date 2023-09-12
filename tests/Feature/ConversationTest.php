@@ -1,5 +1,6 @@
 <?php
 
+use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationEmpty;
@@ -213,7 +214,7 @@ it('does not work with missing step', function ($update) {
 
 it('calls the conversation constructor at every step', function ($update) {
     $bot = Nutgram::fake($update);
-    \SergiX44\Nutgram\Conversations\Conversation::refreshOnDeserialize();
+    Conversation::refreshOnDeserialize();
     $bot->onMessage(ConversationWithConstructor::class);
 
     $bot->getContainer()->set(CustomService::class, new CustomService());
@@ -226,7 +227,7 @@ it('calls the conversation constructor at every step', function ($update) {
 
     $bot->run();
     expect($bot->get('test'))->toBe(1);
-    \SergiX44\Nutgram\Conversations\Conversation::refreshOnDeserialize(false);
+    Conversation::refreshOnDeserialize(false);
 })->with('message');
 
 it('works with explicit set of non serializable attributes', function ($update) {
@@ -237,3 +238,16 @@ it('works with explicit set of non serializable attributes', function ($update) 
     $bot->run();
     expect($bot->get('test'))->toBe('ok');
 })->with('message');
+
+it('starts manually for a specific user/chat', function () {
+    $userId = 123;
+    $chatId = 456;
+
+    $bot = Nutgram::fake();
+
+    TwoStepConversation::beginFor($bot, $userId, $chatId);
+
+    $bot->assertActiveConversation($userId, $chatId);
+
+    expect($bot->get('test'))->toBe(1);
+});
