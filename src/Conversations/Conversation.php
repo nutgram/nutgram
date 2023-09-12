@@ -21,16 +21,12 @@ abstract class Conversation
     private ?int $userId = null;
     private ?int $chatId = null;
 
-    public static function begin(Nutgram $bot): self
+    public static function begin(Nutgram $bot, ?int $userId, ?int $chatId): self
     {
-        $instance = $bot->getContainer()->get(static::class);
-        $instance($bot);
+        if ($userId xor $chatId) {
+            throw new \InvalidArgumentException('You need to provide both userId and chatId.');
+        }
 
-        return $instance;
-    }
-
-    public static function beginFor(Nutgram $bot, int $userId, int $chatId): self
-    {
         $instance = $bot->getContainer()->get(static::class);
         $instance->userId = $userId;
         $instance->chatId = $chatId;

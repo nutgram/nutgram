@@ -245,9 +245,14 @@ it('starts manually for a specific user/chat', function () {
 
     $bot = Nutgram::fake();
 
-    TwoStepConversation::beginFor($bot, $userId, $chatId);
+    TwoStepConversation::begin($bot, $userId, $chatId);
 
     $bot->assertActiveConversation($userId, $chatId);
 
     expect($bot->get('test'))->toBe(1);
 });
+
+it('fails to start manually for a specific user/chat', function () {
+    $bot = Nutgram::fake();
+    TwoStepConversation::begin($bot, 123, null);
+})->throws(InvalidArgumentException::class, 'You need to provide both userId and chatId.');
