@@ -21,7 +21,7 @@ abstract class Conversation
     private ?int $userId = null;
     private ?int $chatId = null;
 
-    public static function begin(Nutgram $bot, ?int $userId, ?int $chatId): self
+    public static function begin(Nutgram $bot, ?int $userId = null, ?int $chatId = null): self
     {
         if ($userId xor $chatId) {
             throw new \InvalidArgumentException('You need to provide both userId and chatId.');
