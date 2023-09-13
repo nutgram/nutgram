@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.7.0 - 2023-09-13
+
+### What's Changed
+
+- Add the ability to start conversations for specific user/chat by @Lukasss93 in https://github.com/nutgram/nutgram/pull/569
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.6.0...4.7.0
+
 ## 4.6.0 - 2023-09-08
 
 ### What's Changed
