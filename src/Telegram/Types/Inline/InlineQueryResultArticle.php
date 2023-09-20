@@ -92,7 +92,7 @@ class InlineQueryResultArticle extends InlineQueryResult
         $this->thumbnail_height = $thumbnail_height;
     }
 
-    public function make(
+    public static function make(
         string $id,
         string $title,
         InputMessageContent $input_message_content,
