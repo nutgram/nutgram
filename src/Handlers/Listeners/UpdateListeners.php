@@ -95,6 +95,20 @@ trait UpdateListeners
     }
 
     /**
+     * @param string $pattern
+     * @param $callable
+     * @return Handler
+     */
+    public function onChosenInlineResultQuery(string $pattern, $callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::CHOSEN_INLINE_RESULT->value][$pattern] = new Handler(
+            $callable,
+            $pattern
+        );
+    }
+
+    /**
      * @param $callable
      * @return Handler
      */
