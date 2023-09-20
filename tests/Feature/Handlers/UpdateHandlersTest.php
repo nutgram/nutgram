@@ -99,6 +99,18 @@ it('calls onChosenInlineResult() handler', function ($update) {
     expect($bot->get('called'))->toBeTrue();
 })->with('chosen_inline_result');
 
+it('calls onChosenInlineResultData() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onChosenInlineResultQuery('test', function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('chosen_inline_result');
+
 it('calls onCallbackQuery() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
