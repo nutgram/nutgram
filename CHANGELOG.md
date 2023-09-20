@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.8.0 - 2023-09-20
+
+### What's Changed
+
+- Add onChosenInlineResultQuery handler by @Lukasss93 in https://github.com/nutgram/nutgram/pull/575
+- Fix missing static make method and add support for ParseMode enum by @Lukasss93 in https://github.com/nutgram/nutgram/pull/573
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.7.0...4.8.0
+
 ## 4.7.0 - 2023-09-13
 
 ### What's Changed
