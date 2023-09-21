@@ -1,6 +1,7 @@
 <?php
 
 use GuzzleHttp\Psr7\Response;
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
@@ -962,4 +963,16 @@ it('sends boolean parameters via jsonSerialize', function () {
                 'selective' => false,
             ],
         ]);
+});
+
+it('calls onCommand() handler with bot command with underscore', function () {
+    $bot = Nutgram::fake(config: new Configuration(botName: 'foo_bot'));
+
+    $bot->onCommand('my_test', function (Nutgram $bot) {
+        $bot->sendMessage('foo');
+    });
+
+    $bot->hearText('/my_test@foo_bot')
+        ->reply()
+        ->assertReplyText('foo');
 });
