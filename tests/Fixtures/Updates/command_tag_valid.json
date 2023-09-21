@@ -18,11 +18,11 @@
       "type": "private"
     },
     "date": 1632176928,
-    "text": "/test@foo",
+    "text": "/test@foo_bot",
     "entities": [
       {
         "offset": 0,
-        "length": 9,
+        "length": 13,
         "type": "bot_command"
       }
     ]

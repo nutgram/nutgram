@@ -27,7 +27,7 @@ it('calls onCommand() handler', function ($update) {
 })->with('command');
 
 it('calls onCommand() handler with different tags', function ($update, $valid) {
-    $bot = Nutgram::fake($update, config: new Configuration(botName: 'foo'));
+    $bot = Nutgram::fake($update, config: new Configuration(botName: 'foo_bot'));
     $bot->onCommand('test', function (Nutgram $bot) {
         $bot->set('called', true);
     });
