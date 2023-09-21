@@ -521,7 +521,7 @@ class Message extends BaseType
     public function getParsedCommand(?string $username = null): ?string
     {
         $tag = $username !== null ? "(@$username)?" : '';
-        $pattern = sprintf("/^(?<name>\\/[a-z]+)%s(?<args> .+)?\$/i", $tag);
+        $pattern = sprintf("/^(?<name>\\/[a-z_]+)%s(?<args> .+)?\$/i", $tag);
 
         if ($this->text !== null && preg_match($pattern, $this->text, $matches)) {
             return $matches['name'].($matches['args'] ?? '');
