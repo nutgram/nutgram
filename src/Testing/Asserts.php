@@ -70,6 +70,10 @@ trait Asserts
 
         $reqRes = $this->testingHistory[$index];
 
+        if ($reqRes === null) {
+            PHPUnit::fail('No request found');
+        }
+
         /** @var Request $request */
         [$request,] = array_values($reqRes);
 
