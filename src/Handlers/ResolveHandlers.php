@@ -120,9 +120,10 @@ abstract class ResolveHandlers extends CollectHandlers
 
         /** @var Handler|array $handler */
         foreach ($typedHandlers as $handler) {
-            if (is_array($handler)) {
+            if (is_array($handler) || $handler->isDisabled()) {
                 continue;
             }
+
             if (
                 ($subType !== null && $handler->getPattern() === $subType) ||
                 ($value === null && $handler->getPattern() === null) ||
@@ -270,7 +271,7 @@ abstract class ResolveHandlers extends CollectHandlers
             ($group->groupCallable)($this);
 
             // apply the middleware stack to the current registered group handlers
-            array_walk_recursive($this->groupHandlers, function ($leaf) use ($tags, $middlewares, $scopes) {
+            array_walk_recursive($this->groupHandlers, function ($leaf) use ($tags, $middlewares, $scopes, $group) {
                 if ($leaf instanceof Handler) {
                     foreach ($middlewares as $middleware) {
                         $leaf->middleware($middleware);
@@ -279,6 +280,7 @@ abstract class ResolveHandlers extends CollectHandlers
                         $leaf->scope($scopes);
                     }
                     $leaf->tags([...$leaf->getTags(), ...$tags]);
+                    $leaf->unless($group->isDisabled());
                 }
             });
 
