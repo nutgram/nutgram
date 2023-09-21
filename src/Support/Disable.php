@@ -6,7 +6,7 @@ trait Disable
 {
     protected bool $disabled = false;
 
-    public function disable(bool $condition = true): self
+    public function unless(bool $condition): self
     {
         $this->disabled = $condition;
         return $this;

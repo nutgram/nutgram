@@ -280,7 +280,7 @@ abstract class ResolveHandlers extends CollectHandlers
                         $leaf->scope($scopes);
                     }
                     $leaf->tags([...$leaf->getTags(), ...$tags]);
-                    $leaf->disable($group->isDisabled());
+                    $leaf->unless($group->isDisabled());
                 }
             });
 

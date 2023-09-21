@@ -7,7 +7,7 @@ it('does not disable handler', function () {
 
     $bot->onCommand('start', function (Nutgram $bot) {
         $bot->sendMessage('hello');
-    })->disable(false);
+    })->unless(false);
 
     $bot->hearText('/start')
         ->reply()
@@ -19,7 +19,7 @@ it('does not run disabled handler', function () {
 
     $bot->onCommand('start', function (Nutgram $bot) {
         $bot->sendMessage('hello');
-    })->disable();
+    })->unless(true);
 
     $bot->hearText('/start')
         ->reply()
@@ -33,7 +33,7 @@ it('does not run disabled handler inside group', function () {
         $bot->onCommand('start', function (Nutgram $bot) {
             $bot->sendMessage('hello');
         });
-    })->disable();
+    })->unless(true);
 
     $bot->hearText('/start')
         ->reply()
