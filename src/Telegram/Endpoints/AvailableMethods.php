@@ -20,7 +20,6 @@ use SergiX44\Nutgram\Telegram\Types\Description\BotDescription;
 use SergiX44\Nutgram\Telegram\Types\Description\BotName;
 use SergiX44\Nutgram\Telegram\Types\Description\BotShortDescription;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopic;
-use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaAudio;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaDocument;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
@@ -1155,6 +1154,9 @@ trait AvailableMethods
      * @param bool|null $can_post_messages Pass True if the administrator can create channel posts, channels only
      * @param bool|null $can_edit_messages Pass True if the administrator can edit messages of other users and can pin messages, channels only
      * @param bool|null $can_delete_messages Pass True if the administrator can delete messages of other users
+     * @param bool|null $can_post_stories Pass True if the administrator can post stories in the channel; channels only
+     * @param bool|null $can_edit_stories Pass True if the administrator can edit stories posted by other users; channels only
+     * @param bool|null $can_delete_stories Pass True if the administrator can delete stories posted by other users; channels only
      * @param bool|null $can_manage_video_chats Pass True if the administrator can manage video chats
      * @param bool|null $can_restrict_members Pass True if the administrator can restrict, ban or unban chat members
      * @param bool|null $can_promote_members Pass True if the administrator can add new administrators with a subset of their own privileges or demote administrators that they have promoted, directly or indirectly (promoted by administrators that were appointed by him)
@@ -1172,6 +1174,9 @@ trait AvailableMethods
         ?bool $can_post_messages = null,
         ?bool $can_edit_messages = null,
         ?bool $can_delete_messages = null,
+        ?bool $can_post_stories = null,
+        ?bool $can_edit_stories = null,
+        ?bool $can_delete_stories = null,
         ?bool $can_manage_video_chats = null,
         ?bool $can_restrict_members = null,
         ?bool $can_promote_members = null,
@@ -1188,6 +1193,9 @@ trait AvailableMethods
             'can_post_messages',
             'can_edit_messages',
             'can_delete_messages',
+            'can_post_stories',
+            'can_edit_stories',
+            'can_delete_stories',
             'can_manage_video_chats',
             'can_restrict_members',
             'can_promote_members',

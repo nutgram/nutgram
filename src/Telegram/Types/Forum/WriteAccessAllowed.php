@@ -11,8 +11,18 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 class WriteAccessAllowed extends BaseType
 {
     /**
+     * Optional. True, if the access was granted after the user accepted an explicit request from a
+     * Web App sent by the method {@see https://core.telegram.org/bots/webapps#initializing-mini-apps requestWriteAccess}
+     */
+    public ?bool $from_request = null;
+    /**
      * Optional.
      * Name of the Web App which was launched from a link
      */
     public ?string $web_app_name = null;
+
+    /**
+     * Optional. True, if the access was granted when the bot was added to the attachment or side menu
+     */
+    public ?bool $from_attachment_menu = null;
 }

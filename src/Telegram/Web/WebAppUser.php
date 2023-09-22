@@ -46,6 +46,18 @@ class WebAppUser extends Entity
     public bool $is_premium = false;
 
     /**
+     * Optional. True, if this user added the bot to the attachment menu.
+     * @var bool
+     */
+    public bool $added_to_attachment_menu = false;
+
+    /**
+     * Optional. True, if this user allowed the bot to message them.
+     * @var bool
+     */
+    public bool $allows_write_to_pm = false;
+
+    /**
      * Optional. URL of the user’s profile photo.
      * The photo can be in .jpeg or .svg formats.
      * Only returned for Web Apps launched from the attachment menu.
