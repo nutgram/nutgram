@@ -2,6 +2,20 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.9.0 - 2023-09-22
+
+### What's Changed
+
+- Fix missing support for underscores in bot command names when used with bot username set by @Lukasss93 in https://github.com/nutgram/nutgram/pull/578
+- Add the ability to disable handler registration by @Lukasss93 in https://github.com/nutgram/nutgram/pull/579
+- Update to Bot API 6.9 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/580
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.8.0...4.9.0
+
+### ⚠️ Warning
+
+The "promoteChatMember" signature has been changed, if you don't use named parameters, remember to change the method calls before releasing to production.
+
 ## 4.8.0 - 2023-09-20
 
 ### What's Changed
