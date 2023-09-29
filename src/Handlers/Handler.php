@@ -77,8 +77,8 @@ class Handler extends MiddlewareChain
 
         // match + return only named parameters
         $regexMatched = (bool)preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL);
-        array_walk($matches, fn (&$x) => $x = ($x === '' ? null : $x));
         if ($regexMatched) {
+            array_walk($matches, fn (&$x) => $x = ($x === '' ? null : $x));
             array_shift($matches);
             $this->setParameters(...array_filter($matches, 'is_numeric', ARRAY_FILTER_USE_KEY));
         }
