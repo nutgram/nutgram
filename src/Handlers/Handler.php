@@ -50,7 +50,7 @@ class Handler extends MiddlewareChain
     /**
      * Handler constructor.
      * @param $callable
-     * @param  string|null  $pattern
+     * @param string|null $pattern
      */
     public function __construct($callable, ?string $pattern = null)
     {
@@ -60,7 +60,7 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param  string  $value
+     * @param string $value
      * @return bool
      */
     public function matching(string $value): bool
@@ -73,11 +73,12 @@ class Handler extends MiddlewareChain
         $pattern = str_replace('/', '\/', $this->pattern);
 
         // replace named parameters with regex
-        $regex = '/^'.preg_replace(self::PARAM_NAME_REGEX, '(?<$1>.*?)', $pattern).'?$/mu';
+        $regex = '/^'.preg_replace(self::PARAM_NAME_REGEX, '(?<$1>.*?)', $pattern).'$/mu';
 
         // match + return only named parameters
         $regexMatched = (bool)preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL);
         if ($regexMatched) {
+            array_walk($matches, fn (&$x) => $x = ($x === '' ? null : $x));
             array_shift($matches);
             $this->setParameters(...array_filter($matches, 'is_numeric', ARRAY_FILTER_USE_KEY));
         }
@@ -86,7 +87,7 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param  array  $parameters
+     * @param array $parameters
      * @return Handler
      */
     public function setParameters(...$parameters): Handler
@@ -101,7 +102,7 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param  array  $parameters
+     * @param array $parameters
      * @return Handler
      */
     public function addParameters(array $parameters): Handler
@@ -111,7 +112,7 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param  Nutgram  $bot
+     * @param Nutgram $bot
      * @return mixed
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -128,7 +129,7 @@ class Handler extends MiddlewareChain
     /**
      * Skip global middlewares.
      * If you want to skip a specific global middleware, use the "$middlewares" parameter.
-     * @param  array  $middlewares
+     * @param array $middlewares
      * @return $this
      */
     public function skipGlobalMiddlewares(array $middlewares = []): Handler
