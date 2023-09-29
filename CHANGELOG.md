@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.9.1 - 2023-09-29
+
+### What's Changed
+
+- Fix regex matching by @Lukasss93 in https://github.com/nutgram/nutgram/pull/584
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.9.0...4.9.1
+
 ## 4.9.0 - 2023-09-22
 
 ### What's Changed
