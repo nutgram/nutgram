@@ -210,6 +210,7 @@ it('calls handler with different pattern cases', function ($pattern, $input, $pa
     'cyrillic-upper-upper' => ['ПРИМЕР', 'ПРИМЕР', true],
 ]);
 
+
 it('calls handler with optional regex group', function (string $hear, ?string $expected) {
     $bot = Nutgram::fake();
 
@@ -222,3 +223,15 @@ it('calls handler with optional regex group', function (string $hear, ?string $e
     'without-param' => ['/start', null],
     'with-param' => ['/start foo', 'foo'],
 ]);
+
+it('does not call similar pattern', function (string $hear) {
+    $bot = Nutgram::fake();
+
+    $bot->onText('ping', fn (Nutgram $bot) => $bot->sendMessage('ping'));
+    $bot->onText('pin', fn (Nutgram $bot) => $bot->sendMessage('pin'));
+
+    $bot->hearText($hear)
+        ->reply()
+        ->assertReplyText($hear)
+        ->assertCalled('sendMessage');
+})->with(['ping', 'pin']);
