@@ -235,3 +235,24 @@ it('does not call similar pattern', function (string $hear) {
         ->assertReplyText($hear)
         ->assertCalled('sendMessage');
 })->with(['ping', 'pin']);
+
+it('calls handler with optional named parameter', function (string $hear, string $constraint, bool $expected) {
+    $bot = Nutgram::fake();
+
+    $called = false;
+    $bot->onCommand('start {value}', function (Nutgram $bot, string $param) use (&$called) {
+        $called = true;
+    })->where('value', $constraint);
+
+    $bot->hearText($hear)->reply();
+    expect($called)->toBe($expected);
+
+})->with([
+    'word-ok' => ['/start hello', '[a-z]+', true],
+    'word-ko' => ['/start 123', '[a-z]+', false],
+    'numeric-ok' => ['/start 123', '\d+', true],
+    'numeric-ko' => ['/start hello', '\d+', false],
+    'letter-number-ok' => ['/start a1', '[a-z]\d', true],
+    'letter-number-ko' => ['/start hello', '[a-z]\d', false],
+]);
+
