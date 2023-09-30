@@ -256,7 +256,8 @@ it('calls handler with optional named parameter', function (string $hear, string
     'letter-number-ko' => ['/start hello', '[a-z]\d', false],
 ]);
 
-it('calls handler with optional named parameter using command class',
+it(
+    'calls handler with optional named parameter using command class',
     function (string $hear, string $constraint, bool $expected) {
         $bot = Nutgram::fake();
 
@@ -265,7 +266,8 @@ it('calls handler with optional named parameter using command class',
         $bot->hearText($hear)->reply();
 
         expect($bot->get('called', false))->toBe($expected);
-    })->with([
+    }
+)->with([
     'valid' => ['/start hello', '[a-z]+', true],
     'invalid' => ['/start 123', '[a-z]+', false],
 ]);
