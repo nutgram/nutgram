@@ -246,7 +246,6 @@ it('calls handler with optional named parameter', function (string $hear, string
 
     $bot->hearText($hear)->reply();
     expect($called)->toBe($expected);
-
 })->with([
     'word-ok' => ['/start hello', '[a-z]+', true],
     'word-ko' => ['/start 123', '[a-z]+', false],
@@ -255,4 +254,3 @@ it('calls handler with optional named parameter', function (string $hear, string
     'letter-number-ok' => ['/start a1', '[a-z]\d', true],
     'letter-number-ko' => ['/start hello', '[a-z]\d', false],
 ]);
-
