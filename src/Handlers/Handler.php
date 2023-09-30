@@ -80,7 +80,7 @@ class Handler extends MiddlewareChain
         // replace named parameters with regex
         $replaceRule = function ($matches) {
             $parameterName = $matches[1];
-            $constraint = $this->constraints()[$parameterName] ?? '.*';
+            $constraint = $this->constraints[$parameterName] ?? '.*';
             return sprintf("(?<%s>%s?)", $parameterName, $constraint);
         };
         $regex = '/^'.preg_replace_callback(self::PARAM_NAME_REGEX, $replaceRule, $pattern).'$/mu';
@@ -173,11 +173,6 @@ class Handler extends MiddlewareChain
     public function getPattern(): ?string
     {
         return $this->pattern;
-    }
-
-    public function constraints(): array
-    {
-        return $this->constraints;
     }
 
     public function where(array|string $parameter, ?string $constraint = null): Handler
