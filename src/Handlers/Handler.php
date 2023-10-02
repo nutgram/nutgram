@@ -28,6 +28,11 @@ class Handler extends MiddlewareChain
     protected ?string $pattern;
 
     /**
+     * @var array<string, string>
+     */
+    protected array $constraints = [];
+
+    /**
      * @var array
      */
     protected array $parameters = [];
@@ -73,7 +78,12 @@ class Handler extends MiddlewareChain
         $pattern = str_replace('/', '\/', $this->pattern);
 
         // replace named parameters with regex
-        $regex = '/^'.preg_replace(self::PARAM_NAME_REGEX, '(?<$1>.*?)', $pattern).'$/mu';
+        $replaceRule = function ($matches) {
+            $parameterName = $matches[1];
+            $constraint = $this->constraints[$parameterName] ?? '.*';
+            return sprintf("(?<%s>%s?)", $parameterName, $constraint);
+        };
+        $regex = '/^'.preg_replace_callback(self::PARAM_NAME_REGEX, $replaceRule, $pattern).'$/mu';
 
         // match + return only named parameters
         $regexMatched = (bool)preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL);
@@ -163,5 +173,18 @@ class Handler extends MiddlewareChain
     public function getPattern(): ?string
     {
         return $this->pattern;
+    }
+
+    public function where(array|string $parameter, ?string $constraint = null): Handler
+    {
+        if (!is_array($parameter)) {
+            $constraints = [$parameter => $constraint];
+        } else {
+            $constraints = $parameter;
+        }
+
+        $this->constraints = [...$this->constraints, ...$constraints];
+
+        return $this;
     }
 }
