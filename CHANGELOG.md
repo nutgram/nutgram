@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.10.0 - 2023-10-03
+
+### What's Changed
+
+- Add where constraint by @Lukasss93 in https://github.com/nutgram/nutgram/pull/588
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.9.1...4.10.0
+
 ## 4.9.1 - 2023-09-29
 
 ### What's Changed
