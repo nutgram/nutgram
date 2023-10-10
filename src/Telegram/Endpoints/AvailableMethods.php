@@ -115,20 +115,8 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id',
-            'text',
-            'parse_mode',
-            'entities',
-            'disable_web_page_preview',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup'
-        );
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
@@ -148,20 +136,16 @@ trait AvailableMethods
      */
     public function forwardMessage(
         int|string $chat_id,
-        int|string $from_chat_id,
-        int $message_id,
+        ?int $message_id = null,
+        null|int|string $from_chat_id,
         ?int $message_thread_id = null,
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
     ): ?Message {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'from_chat_id',
-            'disable_notification',
-            'protect_content',
-            'message_id'
-        ), Message::class);
+        $parameters = get_defined_vars();
+        $parameters['from_chat_id'] ??= $this->chatId();
+        $parameters['message_id'] ??= $this->messageId();
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -187,8 +171,8 @@ trait AvailableMethods
      */
     public function copyMessage(
         int|string $chat_id,
-        int|string $from_chat_id,
-        int $message_id,
+        ?int $message_id,
+        null|int|string $from_chat_id,
         ?int $message_thread_id = null,
         ?string $caption = null,
         ParseMode|string|null $parse_mode = null,
@@ -199,20 +183,10 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?MessageId {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'from_chat_id',
-            'message_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup'
-        ), MessageId::class);
+        $parameters = get_defined_vars();
+        $parameters['from_chat_id'] ??= $this->chatId();
+        $parameters['message_id'] ??= $this->messageId();
+        return $this->requestJson(__FUNCTION__, $parameters, MessageId::class);
     }
 
     /**
@@ -249,22 +223,11 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'has_spoiler',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-        );
-
-        return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $opt, $clientOpt);
+        $vars = get_defined_vars();
+        unset($vars['clientOpt']);
+        $parameters = $vars;
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $parameters, $clientOpt);
     }
 
     /**
@@ -309,25 +272,11 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'duration',
-            'performer',
-            'title',
-            'thumbnail',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-        );
-
-        return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $opt, $clientOpt);
+        $vars = get_defined_vars();
+        unset($vars['clientOpt']);
+        $parameters = $vars;
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $parameters, $clientOpt);
     }
 
     /**
@@ -367,23 +316,11 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'thumbnail',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'disable_content_type_detection',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-        );
-
-        return $this->sendAttachment(__FUNCTION__, 'document', $document, $opt, $clientOpt);
+        $vars = get_defined_vars();
+        unset($vars['clientOpt']);
+        $parameters = $vars;
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->sendAttachment(__FUNCTION__, 'document', $document, $parameters, $clientOpt);
     }
 
     /**
@@ -431,27 +368,11 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'duration',
-            'width',
-            'height',
-            'thumbnail',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'has_spoiler',
-            'supports_streaming',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-        );
-
-        return $this->sendAttachment(__FUNCTION__, 'video', $video, $opt, $clientOpt);
+        $vars = get_defined_vars();
+        unset($vars['clientOpt']);
+        $parameters = $vars;
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->sendAttachment(__FUNCTION__, 'video', $video, $parameters, $clientOpt);
     }
 
     /**
@@ -497,26 +418,11 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'duration',
-            'width',
-            'height',
-            'thumbnail',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'has_spoiler',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-        );
-
-        return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $opt, $clientOpt);
+        $vars = get_defined_vars();
+        unset($vars['clientOpt']);
+        $parameters = $vars;
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $parameters, $clientOpt);
     }
 
     /**
@@ -555,22 +461,11 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'duration',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-        );
-
-        return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $opt, $clientOpt);
+        $vars = get_defined_vars();
+        unset($vars['clientOpt']);
+        $parameters = $vars;
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $parameters, $clientOpt);
     }
 
     /**
@@ -606,21 +501,11 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'duration',
-            'length',
-            'thumbnail',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-        );
-
-        return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $opt, $clientOpt);
+        $vars = get_defined_vars();
+        unset($vars['clientOpt']);
+        $parameters = $vars;
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $parameters, $clientOpt);
     }
 
     /**
@@ -648,18 +533,13 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-
+        $vars = get_defined_vars();
+        unset($vars['clientOpt']);
+        $parameters = $vars;
+        $parameters['chat_id'] ??= $this->chatId();
         return $this->requestMultipart(__FUNCTION__, [
             'media' => new UploadableArray($media),
-            ...compact(
-                'chat_id',
-                'message_thread_id',
-                'disable_notification',
-                'protect_content',
-                'reply_to_message_id',
-                'allow_sending_without_reply',
-            ),
+            ...$parameters,
         ], Message::class, $clientOpt);
     }
 
@@ -697,23 +577,9 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'latitude',
-            'longitude',
-            'horizontal_accuracy',
-            'live_period',
-            'heading',
-            'proximity_alert_radius',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup'
-        ), Message::class);
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -743,18 +609,7 @@ trait AvailableMethods
         ?int $proximity_alert_radius = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): Message|bool|null {
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'inline_message_id',
-            'latitude',
-            'longitude',
-            'horizontal_accuracy',
-            'heading',
-            'proximity_alert_radius',
-            'reply_markup'
-        );
-
+        $parameters = get_defined_vars();
         $this->setChatMessageOrInlineMessageId($parameters);
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
@@ -775,13 +630,7 @@ trait AvailableMethods
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): Message|bool|null {
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'inline_message_id',
-            'reply_markup'
-        );
-
+        $parameters = get_defined_vars();
         $this->setChatMessageOrInlineMessageId($parameters);
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
@@ -824,24 +673,9 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'latitude',
-            'longitude',
-            'title',
-            'address',
-            'foursquare_id',
-            'foursquare_type',
-            'google_place_id',
-            'google_place_type',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup'
-        ), Message::class);
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -874,20 +708,9 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'phone_number',
-            'first_name',
-            'last_name',
-            'vcard',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup'
-        ), Message::class);
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -936,27 +759,8 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id',
-            'question',
-            'is_anonymous',
-            'type',
-            'allows_multiple_answers',
-            'correct_option_id',
-            'explanation',
-            'explanation_parse_mode',
-            'explanation_entities',
-            'open_period',
-            'close_date',
-            'is_closed',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup'
-        );
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
         return $this->requestJson(__FUNCTION__, [
             'options' => json_encode($options, JSON_THROW_ON_ERROR),
             ...$parameters,
@@ -987,17 +791,9 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'emoji',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup'
-        ), Message::class);
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -1015,12 +811,9 @@ trait AvailableMethods
         int|string|null $chat_id = null,
         ?int $message_thread_id = null,
     ): ?bool {
-        $chat_id ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'action'
-        ));
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1037,12 +830,9 @@ trait AvailableMethods
         ?int $offset = null,
         ?int $limit = null,
     ): ?UserProfilePhotos {
-        $user_id ??= $this->userId();
-        return $this->requestJson(__FUNCTION__, compact(
-            'user_id',
-            'offset',
-            'limit'
-        ), UserProfilePhotos::class);
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters, UserProfilePhotos::class);
     }
 
     /**
@@ -1067,24 +857,22 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#banchatmember
-     * @param int|string $chat_id Unique identifier for the target group or username of the target supergroup or channel (in the format &#64;channelusername)
-     * @param int $user_id Unique identifier of the target user
+     * @param null|int $user_id Unique identifier of the target user
+     * @param null|int|string $chat_id Unique identifier for the target group or username of the target supergroup or channel (in the format &#64;channelusername)
      * @param int|null $until_date Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only.
      * @param bool|null $revoke_messages Pass True to delete all messages from the chat for the user that is being removed. If False, the user will be able to see messages in the group that were sent before the user was removed. Always True for supergroups and channels.
      * @return bool|null
      */
     public function banChatMember(
-        int|string $chat_id,
-        int $user_id,
+        ?int $user_id = null,
+        null|int|string $chat_id = null,
         ?int $until_date = null,
         ?bool $revoke_messages = null,
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'user_id',
-            'until_date',
-            'revoke_messages'
-        ));
+        $parameters = get_defined_vars();
+        $parameters['user_id'] ??= $this->userId();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1096,18 +884,20 @@ trait AvailableMethods
      * If you don't want this, use the parameter only_if_banned.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#unbanchatmember
-     * @param int|string $chat_id Unique identifier for the target group or username of the target supergroup or channel (in the format &#64;channelusername)
-     * @param int $user_id Unique identifier of the target user
+     * @param null|int $user_id Unique identifier of the target user
+     * @param null|int|string $chat_id Unique identifier for the target group or username of the target supergroup or channel (in the format &#64;channelusername)
      * @param bool|null $only_if_banned Do nothing if the user is not banned
      * @return bool|null
      */
-    public function unbanChatMember(int|string $chat_id, int $user_id, ?bool $only_if_banned = null): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'user_id',
-            'only_if_banned'
-        ));
+    public function unbanChatMember(
+        ?int $user_id = null,
+        null|int|string $chat_id = null,
+        ?bool $only_if_banned = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['user_id'] ??= $this->userId();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1116,28 +906,26 @@ trait AvailableMethods
      * Pass True for all permissions to lift restrictions from a user.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#restrictchatmember
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
-     * @param int $user_id Unique identifier of the target user
+     * @param null|int $user_id Unique identifier of the target user
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param ChatPermissions $permissions A JSON-serialized object for new user permissions
      * @param bool|null $use_independent_chat_permissions Pass True if chat permissions are set independently. Otherwise, the can_send_other_messages and can_add_web_page_previews permissions will imply the can_send_messages, can_send_audios, can_send_documents, can_send_photos, can_send_videos, can_send_video_notes, and can_send_voice_notes permissions; the can_send_polls permission will imply the can_send_messages permission.
      * @param int|null $until_date Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever
      * @return bool|null
      */
     public function restrictChatMember(
-        int|string $chat_id,
-        int $user_id,
+        ?int $user_id = null,
+        null|int|string $chat_id = null,
         ChatPermissions $permissions,
         ?bool $use_independent_chat_permissions = null,
         ?int $until_date = null,
     ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['user_id'] ??= $this->userId();
+        $parameters['chat_id'] ??= $this->chatId();
         return $this->requestJson(__FUNCTION__, [
             'permissions' => json_encode($permissions),
-            ...compact(
-                'chat_id',
-                'user_id',
-                'use_independent_chat_permissions',
-                'until_date'
-            ),
+            ...$parameters,
         ]);
     }
 
@@ -1147,8 +935,8 @@ trait AvailableMethods
      * Pass False for all boolean parameters to demote a user.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#promotechatmember
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int $user_id Unique identifier of the target user
+     * @param null|int $user_id Unique identifier of the target user
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param bool|null $is_anonymous Pass True if the administrator's presence in the chat is hidden
      * @param bool|null $can_manage_chat Pass True if the administrator can access the chat event log, chat statistics, message statistics in channels, see channel members, see anonymous administrators in supergroups and ignore slow mode. Implied by any other administrator privilege
      * @param bool|null $can_post_messages Pass True if the administrator can create channel posts, channels only
@@ -1167,8 +955,8 @@ trait AvailableMethods
      * @return bool|null
      */
     public function promoteChatMember(
-        int|string $chat_id,
-        int $user_id,
+        ?int $user_id = null,
+        null|int|string $chat_id = null,
         ?bool $is_anonymous = null,
         ?bool $can_manage_chat = null,
         ?bool $can_post_messages = null,
@@ -1185,43 +973,30 @@ trait AvailableMethods
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'user_id',
-            'is_anonymous',
-            'can_manage_chat',
-            'can_post_messages',
-            'can_edit_messages',
-            'can_delete_messages',
-            'can_post_stories',
-            'can_edit_stories',
-            'can_delete_stories',
-            'can_manage_video_chats',
-            'can_restrict_members',
-            'can_promote_members',
-            'can_change_info',
-            'can_invite_users',
-            'can_pin_messages',
-            'can_manage_topics'
-        ));
+        $parameters = get_defined_vars();
+        $parameters['user_id'] ??= $this->userId();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
      * Use this method to set a custom title for an administrator in a supergroup promoted by the bot.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setchatadministratorcustomtitle
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
-     * @param int $user_id Unique identifier of the target user
+     * @param null|int $user_id Unique identifier of the target user
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param string $custom_title New custom title for the administrator; 0-16 characters, emoji are not allowed
      * @return bool|null
      */
-    public function setChatAdministratorCustomTitle(int|string $chat_id, int $user_id, string $custom_title): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'user_id',
-            'custom_title'
-        ));
+    public function setChatAdministratorCustomTitle(
+        ?int $user_id,
+        null|int|string $chat_id = null,
+        string $custom_title
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['user_id'] ??= $this->userId();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1230,16 +1005,17 @@ trait AvailableMethods
      * The bot must be an administrator in the supergroup or channel for this to work and must have the appropriate administrator rights.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#banchatsenderchat
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int $sender_chat_id Unique identifier of the target sender chat
+     * @param null|int $sender_chat_id Unique identifier of the target sender chat
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return bool|null
      */
-    public function banChatSenderChat(int|string $chat_id, int $sender_chat_id): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'sender_chat_id'
-        ));
+    public function banChatSenderChat(
+        int $sender_chat_id,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1247,13 +1023,17 @@ trait AvailableMethods
      * The bot must be an administrator for this to work and must have the appropriate administrator rights.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#unbanchatsenderchat
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int $sender_chat_id Unique identifier of the target sender chat
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return bool|null
      */
-    public function unbanChatSenderChat(int|string $chat_id, int $sender_chat_id): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'sender_chat_id'));
+    public function unbanChatSenderChat(
+        int $sender_chat_id,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1261,23 +1041,21 @@ trait AvailableMethods
      * The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members administrator rights.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setchatpermissions
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param ChatPermissions $permissions A JSON-serialized object for new default chat permissions
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param bool|null $use_independent_chat_permissions Pass True if chat permissions are set independently. Otherwise, the can_send_other_messages and can_add_web_page_previews permissions will imply the can_send_messages, can_send_audios, can_send_documents, can_send_photos, can_send_videos, can_send_video_notes, and can_send_voice_notes permissions; the can_send_polls permission will imply the can_send_messages permission.
      * @return bool|null
      */
     public function setChatPermissions(
-        int|string $chat_id,
         ChatPermissions $permissions,
+        null|int|string $chat_id = null,
         ?bool $use_independent_chat_permissions = null,
     ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
         return $this->requestJson(__FUNCTION__, [
             'permissions' => json_encode($permissions),
-            ...compact(
-                'chat_id',
-                'permissions',
-                'use_independent_chat_permissions'
-            ),
+            ...$parameters,
         ]);
     }
 
@@ -1287,12 +1065,14 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights.
      * Returns the new invite link as String on success.
      * @see https://core.telegram.org/bots/api#exportchatinvitelink
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return string|null
      */
-    public function exportChatInviteLink(int|string $chat_id): ?string
+    public function exportChatInviteLink(null|int|string $chat_id = null): ?string
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1301,27 +1081,23 @@ trait AvailableMethods
      * The link can be revoked using the method {@see https://core.telegram.org/bots/api#revokechatinvitelink revokeChatInviteLink}core.telegram.org/bots/api#chatinvitelink ChatInviteLink}.
      * Returns the new invite link as ChatInviteLink object.
      * @see https://core.telegram.org/bots/api#createchatinvitelink
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string|null $name Invite link name; 0-32 characters
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $expire_date Point in time (Unix timestamp) when the link will expire
      * @param int|null $member_limit The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
      * @param bool|null $creates_join_request True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified
      * @return ChatInviteLink|null
      */
     public function createChatInviteLink(
-        int|string $chat_id,
         ?string $name = null,
+        null|int|string $chat_id = null,
         ?int $expire_date = null,
         ?int $member_limit = null,
         ?bool $creates_join_request = null,
     ): ?ChatInviteLink {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'name',
-            'expire_date',
-            'member_limit',
-            'creates_join_request'
-        ), ChatInviteLink::class);
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters, ChatInviteLink::class);
     }
 
     /**
@@ -1329,8 +1105,8 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights.
      * Returns the edited invite link as a {@see https://core.telegram.org/bots/api#chatinvitelink ChatInviteLink} object.
      * @see https://core.telegram.org/bots/api#editchatinvitelink
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string $invite_link The invite link to edit
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string|null $name Invite link name; 0-32 characters
      * @param int|null $expire_date Point in time (Unix timestamp) when the link will expire
      * @param int|null $member_limit The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
@@ -1338,21 +1114,16 @@ trait AvailableMethods
      * @return ChatInviteLink|null
      */
     public function editChatInviteLink(
-        int|string $chat_id,
         string $invite_link,
+        null|int|string $chat_id = null,
         ?string $name = null,
         ?int $expire_date = null,
         ?int $member_limit = null,
         ?bool $creates_join_request = null,
     ): ?ChatInviteLink {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'invite_link',
-            'name',
-            'expire_date',
-            'member_limit',
-            'creates_join_request'
-        ), ChatInviteLink::class);
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters, ChatInviteLink::class);
     }
 
     /**
@@ -1361,13 +1132,17 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights.
      * Returns the revoked invite link as {@see https://core.telegram.org/bots/api#chatinvitelink ChatInviteLink} object.
      * @see https://core.telegram.org/bots/api#revokechatinvitelink
-     * @param int|string $chat_id Unique identifier of the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string $invite_link The invite link to revoke
+     * @param null|int|string $chat_id Unique identifier of the target chat or username of the target channel (in the format &#64;channelusername)
      * @return ChatInviteLink|null
      */
-    public function revokeChatInviteLink(int|string $chat_id, string $invite_link): ?ChatInviteLink
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'invite_link'), ChatInviteLink::class);
+    public function revokeChatInviteLink(
+        string $invite_link,
+        null|int|string $chat_id = null,
+    ): ?ChatInviteLink {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters, ChatInviteLink::class);
     }
 
     /**
@@ -1375,13 +1150,18 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the can_invite_users administrator right.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#approvechatjoinrequest
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int $user_id Unique identifier of the target user
+     * @param null|int $user_id Unique identifier of the target user
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return bool|null
      */
-    public function approveChatJoinRequest(int|string $chat_id, int $user_id): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'));
+    public function approveChatJoinRequest(
+        ?int $user_id = null,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['user_id'] ??= $this->userId();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1389,13 +1169,18 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the can_invite_users administrator right.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#declinechatjoinrequest
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int $user_id Unique identifier of the target user
+     * @param null|int $user_id Unique identifier of the target user
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return bool|null
      */
-    public function declineChatJoinRequest(int|string $chat_id, int $user_id): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'));
+    public function declineChatJoinRequest(
+        ?int $user_id = null,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['user_id'] ??= $this->userId();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1404,14 +1189,21 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setchatphoto
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param InputFile $photo New chat photo, uploaded using multipart/form-data
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param array $clientOpt Client options
      * @return bool|null
      */
-    public function setChatPhoto(int|string $chat_id, InputFile $photo, array $clientOpt = []): ?bool
-    {
-        return $this->requestMultipart(__FUNCTION__, compact('chat_id', 'photo'), options: $clientOpt);
+    public function setChatPhoto(
+        InputFile $photo,
+        null|int|string $chat_id = null,
+        array $clientOpt = []
+    ): ?bool {
+        $vars = get_defined_vars();
+        unset($vars['clientOpt']);
+        $parameters = $vars;
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
     }
 
     /**
@@ -1420,12 +1212,14 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#deletechatphoto
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return bool|null
      */
-    public function deleteChatPhoto(int|string $chat_id): ?bool
+    public function deleteChatPhoto(null|int|string $chat_id = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1434,13 +1228,17 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setchattitle
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string $title New chat title, 1-128 characters
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return bool|null
      */
-    public function setChatTitle(int|string $chat_id, string $title): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'title'));
+    public function setChatTitle(
+        string $title,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1448,13 +1246,17 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setchatdescription
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string|null $description New chat description, 0-255 characters
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return bool|null
      */
-    public function setChatDescription(int|string $chat_id, ?string $description = null): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'description'));
+    public function setChatDescription(
+        ?string $description = null,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1462,14 +1264,20 @@ trait AvailableMethods
      * If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' administrator right in a supergroup or 'can_edit_messages' administrator right in a channel.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#pinchatmessage
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int $message_id Identifier of a message to pin
+     * @param null|int $message_id Identifier of a message to pin
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param bool|null $disable_notification Pass True if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels and private chats.
      * @return bool|null
      */
-    public function pinChatMessage(int|string $chat_id, int $message_id, ?bool $disable_notification = null): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id', 'disable_notification'));
+    public function pinChatMessage(
+        ?int $message_id = null,
+        null|int|string $chat_id = null,
+        ?bool $disable_notification = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['message_id'] ??= $this->messageId();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1477,13 +1285,18 @@ trait AvailableMethods
      * If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' administrator right in a supergroup or 'can_edit_messages' administrator right in a channel.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#unpinchatmessage
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_id Identifier of a message to unpin. If not specified, the most recent pinned message (by sending date) will be unpinned.
+     * @param null|int $message_id Identifier of a message to unpin. If not specified, the most recent pinned message (by sending date) will be unpinned.
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return bool|null
      */
-    public function unpinChatMessage(int|string $chat_id, ?int $message_id = null): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id'));
+    public function unpinChatMessage(
+        ?int $message_id = null,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['message_id'] ??= $this->messageId();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1491,60 +1304,70 @@ trait AvailableMethods
      * If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' administrator right in a supergroup or 'can_edit_messages' administrator right in a channel.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#unpinallchatmessages
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return bool|null
      */
-    public function unpinAllChatMessages(int|string $chat_id): ?bool
+    public function unpinAllChatMessages(null|int|string $chat_id = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
      * Use this method for your bot to leave a group, supergroup or channel.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#leavechat
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
      * @return bool|null
      */
-    public function leaveChat(int|string $chat_id): ?bool
+    public function leaveChat(null|int|string $chat_id = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
      * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.).
      * Returns a {@see https://core.telegram.org/bots/api#chat Chat} object on success.
      * @see https://core.telegram.org/bots/api#getchat
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
      * @return Chat|null
      */
-    public function getChat(int|string $chat_id): ?Chat
+    public function getChat(null|int|string $chat_id = null): ?Chat
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'), Chat::class);
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters, Chat::class);
     }
 
     /**
      * Use this method to get a list of administrators in a chat, which aren't bots.
      * Returns an Array of {@see https://core.telegram.org/bots/api#chatmember ChatMember} objects.
      * @see https://core.telegram.org/bots/api#getchatadministrators
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
      * @return ChatMember[]|null
      */
-    public function getChatAdministrators(int|string $chat_id): ?array
+    public function getChatAdministrators(null|int|string $chat_id = null): ?array
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'), ChatMember::class);
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters, ChatMember::class);
     }
 
     /**
      * Use this method to get the number of members in a chat.
      * Returns Int on success.
      * @see https://core.telegram.org/bots/api#getchatmembercount
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
      * @return int|null
      */
-    public function getChatMemberCount(int|string $chat_id): ?int
+    public function getChatMemberCount(null|int|string $chat_id = null): ?int
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1552,13 +1375,18 @@ trait AvailableMethods
      * The method is only guaranteed to work for other users if the bot is an administrator in the chat.
      * Returns a {@see https://core.telegram.org/bots/api#chatmember ChatMember} object on success.
      * @see https://core.telegram.org/bots/api#getchatmember
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
-     * @param int $user_id Unique identifier of the target user
+     * @param null|int $user_id Unique identifier of the target user
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
      * @return ChatMember|null
      */
-    public function getChatMember(int|string $chat_id, int $user_id): ?ChatMember
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), ChatMember::class);
+    public function getChatMember(
+        ?int $user_id = null,
+        null|int|string $chat_id = null,
+    ): ?ChatMember {
+        $parameters = get_defined_vars();
+        $parameters['user_id'] ??= $this->chatId();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters, ChatMember::class);
     }
 
     /**
@@ -1567,13 +1395,17 @@ trait AvailableMethods
      * Use the field can_set_sticker_set optionally returned in {@see https://core.telegram.org/bots/api#getchat getChat} requests to check if the bot can use this method.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setchatstickerset
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param string $sticker_set_name Name of the sticker set to be set as the group sticker set
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool|null
      */
-    public function setChatStickerSet(int|string $chat_id, string $sticker_set_name): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'sticker_set_name'));
+    public function setChatStickerSet(
+        string $sticker_set_name,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1582,12 +1414,14 @@ trait AvailableMethods
      * Use the field can_set_sticker_set optionally returned in {@see https://core.telegram.org/bots/api#getchat getChat} requests to check if the bot can use this method.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#deletechatstickerset
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool|null
      */
-    public function deleteChatStickerSet(int|string $chat_id): ?bool
+    public function deleteChatStickerSet(null|int|string $chat_id = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1607,19 +1441,20 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
      * Returns information about the created topic as a {@see https://core.telegram.org/bots/api#forumtopic ForumTopic} object.
      * @see https://core.telegram.org/bots/api#createforumtopic
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param string $name Topic name, 1-128 characters
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param ForumIconColor|int|null $icon_color Color of the topic icon in RGB format. Currently, must be one of 7322096 (0x6FB9F0), 16766590 (0xFFD67E), 13338331 (0xCB86DB), 9367192 (0x8EEE98), 16749490 (0xFF93B2), or 16478047 (0xFB6F5F)
      * @param string|null $icon_custom_emoji_id Unique identifier of the custom emoji shown as the topic icon. Use {@see https://core.telegram.org/bots/api#getforumtopiciconstickers getForumTopicIconStickers} to get all allowed custom emoji identifiers.
      * @return ForumTopic|null
      */
     public function createForumTopic(
-        int|string $chat_id,
         string $name,
+        null|int|string $chat_id = null,
         ForumIconColor|int|null $icon_color = null,
         ?string $icon_custom_emoji_id = null,
     ): ?ForumTopic {
-        $parameters = compact('chat_id', 'name', 'icon_color', 'icon_custom_emoji_id');
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
         return $this->requestJson(__FUNCTION__, $parameters, ForumTopic::class);
     }
 
@@ -1628,19 +1463,20 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have can_manage_topics administrator rights, unless it is the creator of the topic.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#editforumtopic
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
-     * @param int $message_thread_id Unique identifier for the target message thread of the forum topic
      * @param string|null $name New topic name, 0-128 characters. If not specified or empty, the current name of the topic will be kept
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
+     * @param int $message_thread_id Unique identifier for the target message thread of the forum topic
      * @param string|null $icon_custom_emoji_id New unique identifier of the custom emoji shown as the topic icon. Use {@see https://core.telegram.org/bots/api#getforumtopiciconstickers getForumTopicIconStickers} to get all allowed custom emoji identifiers. Pass an empty string to remove the icon. If not specified, the current icon will be kept
      * @return bool|null
      */
     public function editForumTopic(
-        int|string $chat_id,
-        int $message_thread_id,
         ?string $name = null,
+        null|int|string $chat_id = null,
+        int $message_thread_id,
         ?string $icon_custom_emoji_id = null,
     ): ?bool {
-        $parameters = compact('chat_id', 'message_thread_id', 'name', 'icon_custom_emoji_id');
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
         return $this->requestJson(__FUNCTION__, $parameters);
     }
 
@@ -1649,13 +1485,17 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights, unless it is the creator of the topic.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#closeforumtopic
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param int $message_thread_id Unique identifier for the target message thread of the forum topic
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool|null
      */
-    public function closeForumTopic(int|string $chat_id, int $message_thread_id): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
+    public function closeForumTopic(
+        int $message_thread_id,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1663,13 +1503,17 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights, unless it is the creator of the topic.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#reopenforumtopic
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param int $message_thread_id Unique identifier for the target message thread of the forum topic
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool|null
      */
-    public function reopenForumTopic(int|string $chat_id, int $message_thread_id): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
+    public function reopenForumTopic(
+        int $message_thread_id,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1677,13 +1521,17 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the can_delete_messages administrator rights.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#deleteforumtopic
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param int $message_thread_id Unique identifier for the target message thread of the forum topic
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool|null
      */
-    public function deleteForumTopic(int|string $chat_id, int $message_thread_id): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
+    public function deleteForumTopic(
+        int $message_thread_id,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1691,13 +1539,17 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the can_pin_messages administrator right in the supergroup.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#unpinallforumtopicmessages
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param int $message_thread_id Unique identifier for the target message thread of the forum topic
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool|null
      */
-    public function unpinAllForumTopicMessages(int|string $chat_id, int $message_thread_id): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
+    public function unpinAllForumTopicMessages(
+        int $message_thread_id,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1705,13 +1557,17 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have can_manage_topics administrator rights.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#editgeneralforumtopic
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param string $name New topic name, 1-128 characters
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool|null
      */
-    public function editGeneralForumTopic(int|string $chat_id, string $name): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'name'));
+    public function editGeneralForumTopic(
+        string $name,
+        null|int|string $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1719,12 +1575,14 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#closegeneralforumtopic
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool|null
      */
-    public function closeGeneralForumTopic(int|string $chat_id): ?bool
+    public function closeGeneralForumTopic(null|int|string $chat_id = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1733,12 +1591,14 @@ trait AvailableMethods
      * The topic will be automatically unhidden if it was hidden.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#reopengeneralforumtopic
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool|null
      */
-    public function reopenGeneralForumTopic(int|string $chat_id): ?bool
+    public function reopenGeneralForumTopic(null|int|string $chat_id = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1747,12 +1607,14 @@ trait AvailableMethods
      * The topic will be automatically closed if it was open.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#hidegeneralforumtopic
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool|null
      */
-    public function hideGeneralForumTopic(int|string $chat_id): ?bool
+    public function hideGeneralForumTopic(null|int|string $chat_id = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1760,12 +1622,14 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#unhidegeneralforumtopic
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool|null
      */
-    public function unhideGeneralForumTopic(int|string $chat_id): ?bool
+    public function unhideGeneralForumTopic(null|int|string $chat_id = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1781,21 +1645,14 @@ trait AvailableMethods
      * @return bool|null
      */
     public function answerCallbackQuery(
-        ?string $callback_query_id = null,
         ?string $text = null,
         ?bool $show_alert = null,
         ?string $url = null,
         ?int $cache_time = null,
+        ?string $callback_query_id = null,
     ): ?bool {
-        $callback_query_id ??= $this->callbackQuery()?->id;
-        $parameters = compact(
-            'callback_query_id',
-            'text',
-            'show_alert',
-            'url',
-            'cache_time'
-        );
-
+        $parameters = get_defined_vars();
+        $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
         return $this->requestJson(__FUNCTION__, $parameters);
     }
 
@@ -1811,16 +1668,13 @@ trait AvailableMethods
      */
     public function setMyCommands(array $commands, ?BotCommandScope $scope = null, ?string $language_code = null): ?bool
     {
-        $parameters = compact('commands', 'scope', 'language_code');
-
+        $parameters = get_defined_vars();
         if (array_key_exists('commands', $parameters)) {
             $parameters['commands'] = json_encode($parameters['commands']);
         }
-
         if (array_key_exists('scope', $parameters)) {
             $parameters['scope'] = json_encode($parameters['scope']);
         }
-
         return $this->requestJson(__FUNCTION__, $parameters);
     }
 
@@ -1835,7 +1689,7 @@ trait AvailableMethods
      */
     public function deleteMyCommands(?BotCommandScope $scope = null, ?string $language_code = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('scope', 'language_code'));
+        return $this->requestJson(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1849,7 +1703,7 @@ trait AvailableMethods
      */
     public function getMyCommands(?BotCommandScope $scope = null, ?string $language_code = null): ?array
     {
-        return $this->requestJson(__FUNCTION__, compact('scope', 'language_code'), BotCommand::class);
+        return $this->requestJson(__FUNCTION__, get_defined_vars(), BotCommand::class);
     }
 
     /**
@@ -1861,7 +1715,7 @@ trait AvailableMethods
      */
     public function getMyName(?string $language_code = null): ?BotName
     {
-        return $this->requestJson(__FUNCTION__, compact('language_code'), BotName::class);
+        return $this->requestJson(__FUNCTION__, get_defined_vars(), BotName::class);
     }
 
     /**
@@ -1874,7 +1728,7 @@ trait AvailableMethods
      */
     public function setMyName(?string $name = null, ?string $language_code = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('name', 'language_code'), BotCommand::class);
+        return $this->requestJson(__FUNCTION__, get_defined_vars(), BotCommand::class);
     }
 
     /**
@@ -1887,7 +1741,7 @@ trait AvailableMethods
      */
     public function setMyDescription(?string $description = null, ?string $language_code = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('description', 'language_code'));
+        return $this->requestJson(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1899,7 +1753,7 @@ trait AvailableMethods
      */
     public function getMyDescription(?string $language_code = null): ?BotDescription
     {
-        return $this->requestJson(__FUNCTION__, compact('language_code'), BotDescription::class);
+        return $this->requestJson(__FUNCTION__, get_defined_vars(), BotDescription::class);
     }
 
     /**
@@ -1912,7 +1766,7 @@ trait AvailableMethods
      */
     public function setMyShortDescription(?string $short_description = null, ?string $language_code = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('short_description', 'language_code'));
+        return $this->requestJson(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1924,7 +1778,7 @@ trait AvailableMethods
      */
     public function getMyShortDescription(?string $language_code = null): ?BotShortDescription
     {
-        return $this->requestJson(__FUNCTION__, compact('language_code'), BotShortDescription::class);
+        return $this->requestJson(__FUNCTION__, get_defined_vars(), BotShortDescription::class);
     }
 
     /**
@@ -1935,10 +1789,13 @@ trait AvailableMethods
      * @param MenuButton|null $menu_button A JSON-serialized object for the bot's new menu button. Defaults to {@see https://core.telegram.org/bots/api#menubuttondefault MenuButtonDefault}
      * @return bool|null
      */
-    public function setChatMenuButton(?int $chat_id = null, ?MenuButton $menu_button = null): ?bool
-    {
-        $chat_id ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'menu_button'));
+    public function setChatMenuButton(
+        ?MenuButton $menu_button = null,
+        ?int $chat_id = null,
+    ): ?bool {
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1950,8 +1807,9 @@ trait AvailableMethods
      */
     public function getChatMenuButton(?int $chat_id = null): ?MenuButton
     {
-        $chat_id ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, compact('chat_id'), MenuButton::class);
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] ??= $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters, MenuButton::class);
     }
 
     /**
@@ -1967,7 +1825,7 @@ trait AvailableMethods
         ?ChatAdministratorRights $rights = null,
         ?bool $for_channels = null,
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, compact('rights', 'for_channels'));
+        return $this->requestJson(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1979,7 +1837,7 @@ trait AvailableMethods
      */
     public function getMyDefaultAdministratorRights(?bool $for_channels = null): ?ChatAdministratorRights
     {
-        return $this->requestJson(__FUNCTION__, compact('for_channels'), ChatAdministratorRights::class);
+        return $this->requestJson(__FUNCTION__, get_defined_vars(), ChatAdministratorRights::class);
     }
 
     /**
@@ -1987,11 +1845,13 @@ trait AvailableMethods
      * The bot must be an administrator in the chat for this to work and must have the can_pin_messages administrator right in the supergroup.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#unpinallgeneralforumtopicmessages
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
+     * @param null|int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool|null
      */
-    public function unpinAllGeneralForumTopicMessages(int|string $chat_id): ?bool
+    public function unpinAllGeneralForumTopicMessages(null|int|string $chat_id = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = get_defined_vars();
+        $parameters['chat_id'] = $this->chatId();
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 }
