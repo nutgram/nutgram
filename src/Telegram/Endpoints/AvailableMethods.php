@@ -137,7 +137,7 @@ trait AvailableMethods
     public function forwardMessage(
         int|string $chat_id,
         ?int $message_id = null,
-        null|int|string $from_chat_id,
+        null|int|string $from_chat_id = null,
         ?int $message_thread_id = null,
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
@@ -171,8 +171,8 @@ trait AvailableMethods
      */
     public function copyMessage(
         int|string $chat_id,
-        ?int $message_id,
-        null|int|string $from_chat_id,
+        ?int $message_id = null,
+        null|int|string $from_chat_id = null,
         ?int $message_thread_id = null,
         ?string $caption = null,
         ParseMode|string|null $parse_mode = null,
