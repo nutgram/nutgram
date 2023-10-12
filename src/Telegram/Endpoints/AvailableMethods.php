@@ -214,7 +214,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class, $clientOpt);
     }
 
     /**
@@ -259,7 +259,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class, $clientOpt);
     }
 
     /**
@@ -299,7 +299,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class, $clientOpt);
     }
 
     /**
@@ -347,7 +347,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class, $clientOpt);
     }
 
     /**
@@ -393,7 +393,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class, $clientOpt);
     }
 
     /**
@@ -432,7 +432,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class, $clientOpt);
     }
 
     /**
@@ -468,7 +468,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class, $clientOpt);
     }
 
     /**
@@ -496,10 +496,9 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         array $clientOpt = [],
     ): ?array {
-        return $this->requestMultipart(__FUNCTION__, [
-            'media' => new UploadableArray($media),
-            ...$this->prepareAndGetCommonParameters(get_defined_vars()),
-        ], Message::class, $clientOpt);
+        $parameters = get_defined_vars();
+        $parameters['media'] = new UploadableArray($media);
+        return $this->prepareAndSendRequest(__FUNCTION__, $parameters, Message::class, $clientOpt);
     }
 
     /**

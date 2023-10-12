@@ -256,49 +256,128 @@ trait Client
         string $endpoint,
         array $parameters = [],
         string $mapTo = stdClass::class,
-        array $options = []
+        array $options = [],
     ): mixed {
-        $parameters = array_map(fn ($item) => match (true) {
-            $item instanceof BackedEnum => $item->value,
-            default => $item,
-        }, array_filter_null($this->prepareAndGetCommonParameters($parameters)));
-
-        $request = ['json' => $parameters, ...$options];
-
-        try {
-            $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
-            $requestData = $requestPost ?? $request;
-
-            if ($this->canHandleAsResponse()) {
-                return $this->sendResponse($endpoint, $requestData);
+        $parameters = $this->prepareAndGetCommonParameters($parameters);
+        $type = match(true) {
+            isset($parameters[MessageType::PHOTO->value]) => MessageType::PHOTO->value,
+            isset($parameters[MessageType::AUDIO->value]) => MessageType::AUDIO->value,
+            isset($parameters[MessageType::DOCUMENT->value]) => MessageType::DOCUMENT->value,
+            isset($parameters[MessageType::VIDEO->value]) => MessageType::VIDEO->value,
+            isset($parameters[MessageType::VIDEO_NOTE->value]) => MessageType::VIDEO_NOTE->value,
+            isset($parameters[MessageType::ANIMATION->value]) => MessageType::ANIMATION->value,
+            isset($parameters[MessageType::VOICE->value]) => MessageType::VOICE->value,
+            isset($parameters[MessageType::STICKER->value]) => MessageType::STICKER->value,
+            default => null,
+        };
+        $isAttachment = isset($parameters[$type]);
+        if ($isAttachment) {
+            $file = &$parameters[$type];
+            if (is_resource($file)) {
+                $file = new InputFile($file);
             }
-
+            if (!is_string($file)) {
+                $multipart = [];
+                foreach ($parameters as $k => $v) {
+                    $files = match(true) {
+                        $v instanceof UploadableArray => $v->files,
+                        $v instanceof Uploadable => [$v],
+                        default => null,
+                    };
+                    if ($files) {
+                        foreach ($files as $file) {
+                            if ($file->isLocal()) {
+                                $multipart[] = [
+                                    'name' => $file->getFilename(),
+                                    'contents' => $file->getResource(),
+                                    'filename' => $file->getFilename(),
+                                ];
+                            }
+                        }
+                    } else {
+                        $multipart[] = match (true) {
+                            $v instanceof InputFile => [
+                                'name' => $k,
+                                'contents' => $v->getResource(),
+                                'filename' => $v->getFilename(),
+                            ],
+                            $v instanceof JsonSerializable, is_array($v) => [
+                                'name' => $k,
+                                'contents' => json_encode($v, JSON_THROW_ON_ERROR),
+                            ],
+                            default => [
+                                'name' => $k,
+                                'contents' => $v instanceof BackedEnum ? $v->value : $v,
+                            ]
+                        };
+                    }
+                }
+                $request = ['multipart' => $multipart, ...$options];
+                try {
+                    $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+                    try {
+                        $response = $this->http->post(
+                            $endpoint,
+                            $requestPost ?? $request
+                        );
+                    } catch (ConnectException $e) {
+                        $this->redactTokenFromConnectException($e);
+                    }
+                    $content = $this->mapResponse($response, $mapTo);
+                    $this->logger->debug($endpoint, [
+                        'content' => $content,
+                        'parameters' => $multipart,
+                        'options' => $options,
+                    ]);
+                    return $content;
+                } catch (RequestException $exception) {
+                    if (!$exception->hasResponse()) {
+                        throw $exception;
+                    }
+                    return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
+                }
+            }
+        } else {
+            $parameters = array_map(fn ($item) => match (true) {
+                $item instanceof BackedEnum => $item->value,
+                default => $item,
+            }, array_filter_null($parameters));
+            $request = ['json' => $parameters, ...$options];
+    
             try {
-                $json = $requestData['json'];
-                unset($requestData['json']);
-
-                $response = $this->http->post($endpoint, [
-                    'body' => json_encode($json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
-                    'headers' => ['Content-Type' => 'application/json'],
-                    ...$requestData,
+                $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+                $requestData = $requestPost ?? $request;
+                if ($this->canHandleAsResponse()) {
+                    return $this->sendResponse($endpoint, $requestData);
+                }
+                try {
+                    $json = $requestData['json'];
+                    unset($requestData['json']);
+    
+                    $response = $this->http->post(
+                        $endpoint,
+                        [
+                            'body' => json_encode($json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
+                            'headers' => ['Content-Type' => 'application/json'],
+                            ...$requestData,
+                        ]
+                    );
+                } catch (ConnectException $e) {
+                    $this->redactTokenFromConnectException($e);
+                }
+                $content = $this->mapResponse($response, $mapTo);
+                $rawResponse = (string)$response->getBody();
+                $this->logger->debug($endpoint.PHP_EOL.$rawResponse, [
+                    'parameters' => $json,
+                    'options' => $options,
                 ]);
-            } catch (ConnectException $e) {
-                $this->redactTokenFromConnectException($e);
+                return $content;
+            } catch (RequestException $exception) {
+                if (!$exception->hasResponse()) {
+                    throw $exception;
+                }
+                return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
             }
-            $content = $this->mapResponse($response, $mapTo);
-
-            $rawResponse = (string)$response->getBody();
-            $this->logger->debug($endpoint.PHP_EOL.$rawResponse, [
-                'parameters' => $json,
-                'options' => $options,
-            ]);
-
-            return $content;
-        } catch (RequestException $exception) {
-            if (!$exception->hasResponse()) {
-                throw $exception;
-            }
-            return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
         }
     }
 
@@ -367,6 +446,9 @@ trait Client
             }
             if (key_exists('pre_checkout_query_id', $parameters) && !$parameters['pre_checkout_query_id']) {
                 $parameters['pre_checkout_query_id'] ??= $this->preCheckoutQuery()?->id;
+            }
+            if (key_exists('inline_query_id', $parameters) && !$parameters['inline_query_id']) {
+                $parameters['inline_query_id'] ??= $this->inlineQuery()?->id;
             }
         }
         return $parameters;

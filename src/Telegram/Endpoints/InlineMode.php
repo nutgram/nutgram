@@ -34,17 +34,8 @@ trait InlineMode
         ?string $next_offset = null,
         ?InlineQueryResultsButton $button = null,
     ): ?bool {
-        $inline_query_id ??= $this->inlineQuery()?->id;
-        $parameters = compact(
-            'inline_query_id',
-            'results',
-            'cache_time',
-            'is_personal',
-            'next_offset',
-            'button'
-        );
+        $parameters = get_defined_vars();
         $parameters['results'] = json_encode($results, JSON_THROW_ON_ERROR);
-
         return $this->prepareAndSendRequest(__FUNCTION__, $parameters);
     }
 

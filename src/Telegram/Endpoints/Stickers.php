@@ -53,7 +53,7 @@ trait Stickers
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), options: $clientOpt);
     }
 
     /**
@@ -84,7 +84,7 @@ trait Stickers
         ?int $user_id = null,
         array $clientOpt = [],
     ): ?File {
-        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt, File::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), File::class, options: $clientOpt);
     }
 
     /**
@@ -112,9 +112,9 @@ trait Stickers
         ?bool $needs_repainting = null,
         array $clientOpt = [],
     ): ?bool {
-        $parameters = $this->prepareAndGetCommonParameters(get_defined_vars());
+        $parameters = get_defined_vars();
         $parameters['stickers'] = new UploadableArray($stickers);
-        return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
+        return $this->prepareAndSendRequest(__FUNCTION__, $parameters, options: $clientOpt);
     }
 
     /**
@@ -137,8 +137,7 @@ trait Stickers
         ?int $user_id = null,
         array $clientOpt = [],
     ): ?bool {
-        $parameters = $this->prepareAndGetCommonParameters(get_defined_vars());
-        return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), options: $clientOpt);
     }
 
     /**
@@ -238,8 +237,7 @@ trait Stickers
         InputFile|string|null $thumbnail = null,
         array $clientOpt = [],
     ): ?bool {
-        $parameters = $this->prepareAndGetCommonParameters(get_defined_vars());
-        return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), options: $clientOpt);
     }
 
     /**
