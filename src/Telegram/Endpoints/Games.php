@@ -38,19 +38,7 @@ trait Games
         ?bool $allow_sending_without_reply = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id',
-            'game_short_name',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup'
-        );
-
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class);
     }
 
     /**
@@ -76,18 +64,7 @@ trait Games
         ?int $message_id = null,
         ?string $inline_message_id = null,
     ): Message|bool|null {
-        $parameters = compact(
-            'user_id',
-            'score',
-            'force',
-            'disable_edit_message',
-            'chat_id',
-            'message_id',
-            'inline_message_id'
-        );
-        $this->setChatMessageOrInlineMessageId($parameters);
-
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class);
     }
 
     /**
@@ -107,14 +84,6 @@ trait Games
         ?int $message_id = null,
         ?string $inline_message_id = null,
     ): ?array {
-        $parameters = compact(
-            'user_id',
-            'chat_id',
-            'message_id',
-            'inline_message_id'
-        );
-
-        $this->setChatMessageOrInlineMessageId($parameters);
-        return $this->requestJson(__FUNCTION__, $parameters, GameHighScore::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), GameHighScore::class);
     }
 }

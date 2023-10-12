@@ -54,7 +54,7 @@ trait AvailableMethods
      */
     public function getMe(): ?User
     {
-        return $this->requestJson(__FUNCTION__, mapTo: User::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, mapTo: User::class);
     }
 
     /**
@@ -68,7 +68,7 @@ trait AvailableMethods
      */
     public function logOut(): ?bool
     {
-        return $this->requestJson(__FUNCTION__);
+        return $this->prepareAndSendRequest(__FUNCTION__);
     }
 
     /**
@@ -82,7 +82,7 @@ trait AvailableMethods
      */
     public function close(): ?bool
     {
-        return $this->requestJson(__FUNCTION__);
+        return $this->prepareAndSendRequest(__FUNCTION__);
     }
 
     /**
@@ -115,10 +115,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class);
     }
 
     /**
@@ -142,10 +139,7 @@ trait AvailableMethods
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
     ): ?Message {
-        $parameters = get_defined_vars();
-        $parameters['from_chat_id'] ??= $this->chatId();
-        $parameters['message_id'] ??= $this->messageId();
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class);
     }
 
     /**
@@ -183,10 +177,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?MessageId {
-        $parameters = get_defined_vars();
-        $parameters['from_chat_id'] ??= $this->chatId();
-        $parameters['message_id'] ??= $this->messageId();
-        return $this->requestJson(__FUNCTION__, $parameters, MessageId::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), MessageId::class);
     }
 
     /**
@@ -223,11 +214,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $vars = get_defined_vars();
-        unset($vars['clientOpt']);
-        $parameters = $vars;
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $parameters, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
     }
 
     /**
@@ -272,11 +259,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $vars = get_defined_vars();
-        unset($vars['clientOpt']);
-        $parameters = $vars;
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $parameters, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
     }
 
     /**
@@ -316,11 +299,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $vars = get_defined_vars();
-        unset($vars['clientOpt']);
-        $parameters = $vars;
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->sendAttachment(__FUNCTION__, 'document', $document, $parameters, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
     }
 
     /**
@@ -368,11 +347,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $vars = get_defined_vars();
-        unset($vars['clientOpt']);
-        $parameters = $vars;
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->sendAttachment(__FUNCTION__, 'video', $video, $parameters, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
     }
 
     /**
@@ -418,11 +393,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $vars = get_defined_vars();
-        unset($vars['clientOpt']);
-        $parameters = $vars;
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $parameters, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
     }
 
     /**
@@ -461,11 +432,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $vars = get_defined_vars();
-        unset($vars['clientOpt']);
-        $parameters = $vars;
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $parameters, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
     }
 
     /**
@@ -501,11 +468,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
-        $vars = get_defined_vars();
-        unset($vars['clientOpt']);
-        $parameters = $vars;
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $parameters, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, get_defined_vars(), $clientOpt);
     }
 
     /**
@@ -533,13 +496,9 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         array $clientOpt = [],
     ): ?array {
-        $vars = get_defined_vars();
-        unset($vars['clientOpt']);
-        $parameters = $vars;
-        $parameters['chat_id'] ??= $this->chatId();
         return $this->requestMultipart(__FUNCTION__, [
             'media' => new UploadableArray($media),
-            ...$parameters,
+            ...$this->prepareAndGetCommonParameters(get_defined_vars()),
         ], Message::class, $clientOpt);
     }
 
@@ -577,9 +536,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class);
     }
 
     /**
@@ -609,9 +566,7 @@ trait AvailableMethods
         ?int $proximity_alert_radius = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): Message|bool|null {
-        $parameters = get_defined_vars();
-        $this->setChatMessageOrInlineMessageId($parameters);
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class);
     }
 
     /**
@@ -630,9 +585,7 @@ trait AvailableMethods
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): Message|bool|null {
-        $parameters = get_defined_vars();
-        $this->setChatMessageOrInlineMessageId($parameters);
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class);
     }
 
     /**
@@ -673,9 +626,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class);
     }
 
     /**
@@ -708,9 +659,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class);
     }
 
     /**
@@ -759,11 +708,9 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, [
+        return $this->prepareAndSendRequest(__FUNCTION__, [
             'options' => json_encode($options, JSON_THROW_ON_ERROR),
-            ...$parameters,
+            ...get_defined_vars()
         ], Message::class);
     }
 
@@ -791,9 +738,7 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Message::class);
     }
 
     /**
@@ -811,9 +756,7 @@ trait AvailableMethods
         int|string|null $chat_id = null,
         ?int $message_thread_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -830,9 +773,7 @@ trait AvailableMethods
         ?int $offset = null,
         ?int $limit = null,
     ): ?UserProfilePhotos {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, UserProfilePhotos::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), UserProfilePhotos::class);
     }
 
     /**
@@ -848,7 +789,7 @@ trait AvailableMethods
      */
     public function getFile(string $file_id): ?File
     {
-        return $this->requestJson(__FUNCTION__, compact('file_id'), File::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), File::class);
     }
 
     /**
@@ -869,10 +810,7 @@ trait AvailableMethods
         ?int $until_date = null,
         ?bool $revoke_messages = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['user_id'] ??= $this->userId();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -894,10 +832,7 @@ trait AvailableMethods
         null|int|string $chat_id = null,
         ?bool $only_if_banned = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['user_id'] ??= $this->userId();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -920,12 +855,9 @@ trait AvailableMethods
         ?bool $use_independent_chat_permissions = null,
         ?int $until_date = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['user_id'] ??= $this->userId();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, [
+        return $this->prepareAndSendRequest(__FUNCTION__, [
             'permissions' => json_encode($permissions),
-            ...$parameters,
+            ...get_defined_vars(),
         ]);
     }
 
@@ -973,10 +905,7 @@ trait AvailableMethods
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['user_id'] ??= $this->userId();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -993,10 +922,7 @@ trait AvailableMethods
         null|int|string $chat_id = null,
         string $custom_title
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['user_id'] ??= $this->userId();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1013,9 +939,7 @@ trait AvailableMethods
         int $sender_chat_id,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1031,9 +955,7 @@ trait AvailableMethods
         int $sender_chat_id,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1051,11 +973,9 @@ trait AvailableMethods
         null|int|string $chat_id = null,
         ?bool $use_independent_chat_permissions = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, [
+        return $this->prepareAndSendRequest(__FUNCTION__, [
             'permissions' => json_encode($permissions),
-            ...$parameters,
+            ...get_defined_vars()
         ]);
     }
 
@@ -1070,9 +990,7 @@ trait AvailableMethods
      */
     public function exportChatInviteLink(null|int|string $chat_id = null): ?string
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1095,9 +1013,7 @@ trait AvailableMethods
         ?int $member_limit = null,
         ?bool $creates_join_request = null,
     ): ?ChatInviteLink {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, ChatInviteLink::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), ChatInviteLink::class);
     }
 
     /**
@@ -1121,9 +1037,7 @@ trait AvailableMethods
         ?int $member_limit = null,
         ?bool $creates_join_request = null,
     ): ?ChatInviteLink {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, ChatInviteLink::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), ChatInviteLink::class);
     }
 
     /**
@@ -1140,9 +1054,7 @@ trait AvailableMethods
         string $invite_link,
         null|int|string $chat_id = null,
     ): ?ChatInviteLink {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, ChatInviteLink::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), ChatInviteLink::class);
     }
 
     /**
@@ -1158,10 +1070,7 @@ trait AvailableMethods
         ?int $user_id = null,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['user_id'] ??= $this->userId();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1177,10 +1086,7 @@ trait AvailableMethods
         ?int $user_id = null,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['user_id'] ??= $this->userId();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1199,11 +1105,7 @@ trait AvailableMethods
         null|int|string $chat_id = null,
         array $clientOpt = []
     ): ?bool {
-        $vars = get_defined_vars();
-        unset($vars['clientOpt']);
-        $parameters = $vars;
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, get_defined_vars(), options: $clientOpt);
     }
 
     /**
@@ -1217,9 +1119,7 @@ trait AvailableMethods
      */
     public function deleteChatPhoto(null|int|string $chat_id = null): ?bool
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1236,9 +1136,7 @@ trait AvailableMethods
         string $title,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1254,9 +1152,7 @@ trait AvailableMethods
         ?string $description = null,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1274,10 +1170,7 @@ trait AvailableMethods
         null|int|string $chat_id = null,
         ?bool $disable_notification = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['message_id'] ??= $this->messageId();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1293,10 +1186,7 @@ trait AvailableMethods
         ?int $message_id = null,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['message_id'] ??= $this->messageId();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1309,9 +1199,7 @@ trait AvailableMethods
      */
     public function unpinAllChatMessages(null|int|string $chat_id = null): ?bool
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1323,9 +1211,7 @@ trait AvailableMethods
      */
     public function leaveChat(null|int|string $chat_id = null): ?bool
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1337,9 +1223,7 @@ trait AvailableMethods
      */
     public function getChat(null|int|string $chat_id = null): ?Chat
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, Chat::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Chat::class);
     }
 
     /**
@@ -1351,9 +1235,7 @@ trait AvailableMethods
      */
     public function getChatAdministrators(null|int|string $chat_id = null): ?array
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, ChatMember::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), ChatMember::class);
     }
 
     /**
@@ -1365,9 +1247,7 @@ trait AvailableMethods
      */
     public function getChatMemberCount(null|int|string $chat_id = null): ?int
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1383,10 +1263,7 @@ trait AvailableMethods
         ?int $user_id = null,
         null|int|string $chat_id = null,
     ): ?ChatMember {
-        $parameters = get_defined_vars();
-        $parameters['user_id'] ??= $this->chatId();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, ChatMember::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), ChatMember::class);
     }
 
     /**
@@ -1403,9 +1280,7 @@ trait AvailableMethods
         string $sticker_set_name,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1419,9 +1294,7 @@ trait AvailableMethods
      */
     public function deleteChatStickerSet(null|int|string $chat_id = null): ?bool
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1433,7 +1306,7 @@ trait AvailableMethods
      */
     public function getForumTopicIconStickers(): ?array
     {
-        return $this->requestJson(__FUNCTION__, mapTo: Sticker::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, mapTo: Sticker::class);
     }
 
     /**
@@ -1453,9 +1326,7 @@ trait AvailableMethods
         ForumIconColor|int|null $icon_color = null,
         ?string $icon_custom_emoji_id = null,
     ): ?ForumTopic {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, ForumTopic::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), ForumTopic::class);
     }
 
     /**
@@ -1475,9 +1346,7 @@ trait AvailableMethods
         int $message_thread_id,
         ?string $icon_custom_emoji_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1493,9 +1362,7 @@ trait AvailableMethods
         int $message_thread_id,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1511,9 +1378,7 @@ trait AvailableMethods
         int $message_thread_id,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1529,9 +1394,7 @@ trait AvailableMethods
         int $message_thread_id,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1547,9 +1410,7 @@ trait AvailableMethods
         int $message_thread_id,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1565,9 +1426,7 @@ trait AvailableMethods
         string $name,
         null|int|string $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1580,9 +1439,7 @@ trait AvailableMethods
      */
     public function closeGeneralForumTopic(null|int|string $chat_id = null): ?bool
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1596,9 +1453,7 @@ trait AvailableMethods
      */
     public function reopenGeneralForumTopic(null|int|string $chat_id = null): ?bool
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1612,9 +1467,7 @@ trait AvailableMethods
      */
     public function hideGeneralForumTopic(null|int|string $chat_id = null): ?bool
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1627,9 +1480,7 @@ trait AvailableMethods
      */
     public function unhideGeneralForumTopic(null|int|string $chat_id = null): ?bool
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1651,9 +1502,7 @@ trait AvailableMethods
         ?int $cache_time = null,
         ?string $callback_query_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1675,7 +1524,7 @@ trait AvailableMethods
         if (array_key_exists('scope', $parameters)) {
             $parameters['scope'] = json_encode($parameters['scope']);
         }
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1689,7 +1538,7 @@ trait AvailableMethods
      */
     public function deleteMyCommands(?BotCommandScope $scope = null, ?string $language_code = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, get_defined_vars());
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1703,7 +1552,7 @@ trait AvailableMethods
      */
     public function getMyCommands(?BotCommandScope $scope = null, ?string $language_code = null): ?array
     {
-        return $this->requestJson(__FUNCTION__, get_defined_vars(), BotCommand::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), BotCommand::class);
     }
 
     /**
@@ -1715,7 +1564,7 @@ trait AvailableMethods
      */
     public function getMyName(?string $language_code = null): ?BotName
     {
-        return $this->requestJson(__FUNCTION__, get_defined_vars(), BotName::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), BotName::class);
     }
 
     /**
@@ -1728,7 +1577,7 @@ trait AvailableMethods
      */
     public function setMyName(?string $name = null, ?string $language_code = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, get_defined_vars(), BotCommand::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), BotCommand::class);
     }
 
     /**
@@ -1741,7 +1590,7 @@ trait AvailableMethods
      */
     public function setMyDescription(?string $description = null, ?string $language_code = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, get_defined_vars());
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1753,7 +1602,7 @@ trait AvailableMethods
      */
     public function getMyDescription(?string $language_code = null): ?BotDescription
     {
-        return $this->requestJson(__FUNCTION__, get_defined_vars(), BotDescription::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), BotDescription::class);
     }
 
     /**
@@ -1766,7 +1615,7 @@ trait AvailableMethods
      */
     public function setMyShortDescription(?string $short_description = null, ?string $language_code = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, get_defined_vars());
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1778,7 +1627,7 @@ trait AvailableMethods
      */
     public function getMyShortDescription(?string $language_code = null): ?BotShortDescription
     {
-        return $this->requestJson(__FUNCTION__, get_defined_vars(), BotShortDescription::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), BotShortDescription::class);
     }
 
     /**
@@ -1793,9 +1642,7 @@ trait AvailableMethods
         ?MenuButton $menu_button = null,
         ?int $chat_id = null,
     ): ?bool {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1807,9 +1654,7 @@ trait AvailableMethods
      */
     public function getChatMenuButton(?int $chat_id = null): ?MenuButton
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters, MenuButton::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), MenuButton::class);
     }
 
     /**
@@ -1825,7 +1670,7 @@ trait AvailableMethods
         ?ChatAdministratorRights $rights = null,
         ?bool $for_channels = null,
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, get_defined_vars());
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -1837,7 +1682,7 @@ trait AvailableMethods
      */
     public function getMyDefaultAdministratorRights(?bool $for_channels = null): ?ChatAdministratorRights
     {
-        return $this->requestJson(__FUNCTION__, get_defined_vars(), ChatAdministratorRights::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), ChatAdministratorRights::class);
     }
 
     /**
@@ -1850,8 +1695,6 @@ trait AvailableMethods
      */
     public function unpinAllGeneralForumTopicMessages(null|int|string $chat_id = null): ?bool
     {
-        $parameters = get_defined_vars();
-        $parameters['chat_id'] = $this->chatId();
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 }

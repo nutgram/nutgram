@@ -26,6 +26,7 @@ use SergiX44\Nutgram\Telegram\Endpoints\Stickers;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdateMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
+use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
 use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
@@ -81,22 +82,36 @@ trait Client
      */
     protected function sendAttachment(
         string $endpoint,
-        string $param,
-        mixed $value,
-        array $opt = [],
-        array $clientOpt = []
+        array $parameters,
+        array $clientOpt = [],
+        ?string $mapTo = null,
     ): ?Message {
-        $required = [
-            'chat_id' => $this->chatId(),
-            $param => $value,
-        ];
+        $type = match(true) {
+            isset($parameters[MessageType::PHOTO->value]) => MessageType::PHOTO->value,
+            isset($parameters[MessageType::AUDIO->value]) => MessageType::AUDIO->value,
+            isset($parameters[MessageType::DOCUMENT->value]) => MessageType::DOCUMENT->value,
+            isset($parameters[MessageType::VIDEO->value]) => MessageType::VIDEO->value,
+            isset($parameters[MessageType::VIDEO_NOTE->value]) => MessageType::VIDEO_NOTE->value,
+            isset($parameters[MessageType::ANIMATION->value]) => MessageType::ANIMATION->value,
+            isset($parameters[MessageType::VOICE->value]) => MessageType::VOICE->value,
+            isset($parameters[MessageType::STICKER->value]) => MessageType::STICKER->value,
+        };
 
-        if (is_resource($value) || $value instanceof InputFile) {
-            $required[$param] = $value instanceof InputFile ? $value : new InputFile($value);
-            return $this->requestMultipart($endpoint, [...$required, ...$opt], Message::class, $clientOpt);
+        if (!isset($parameters[$type])) {
+            return null;
         }
 
-        return $this->requestJson($endpoint, [...$required, ...$opt], Message::class);
+        $file = &$parameters[$type];
+
+        if (is_resource($file)) {
+            $file = new InputFile($file);
+        }
+
+        if (!$file instanceof InputFile) {
+            return $this->prepareAndSendRequest($endpoint, $parameters, $mapTo ?? Message::class);
+        }
+
+        return $this->requestMultipart($endpoint, $parameters, $mapTo ?? Message::class, $clientOpt);
     }
 
     /**
@@ -237,18 +252,18 @@ trait Client
      * @throws JsonException
      * @throws TelegramException
      */
-    protected function requestJson(
+    protected function prepareAndSendRequest(
         string $endpoint,
-        array $json = [],
+        array $parameters = [],
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
         $json = array_map(fn ($item) => match (true) {
             $item instanceof BackedEnum => $item->value,
             default => $item,
-        }, array_filter_null($json));
+        }, array_filter_null($this->prepareAndGetCommonParameters($parameters)));
 
-        $request = ['json' => $json, ...$options];
+        $request = ['json' => $parameters, ...$options];
 
         try {
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
@@ -320,19 +335,27 @@ trait Client
 
     /**
      * Sets the chat_id + message_id or inline_message_id combination based on the current update.
-     * @param array $params
-     * @return void
+     * @param array $parameters
+     * @return array
      */
-    protected function setChatMessageOrInlineMessageId(array &$params = []): void
+    protected function prepareAndGetCommonParameters(array $parameters = []): array
     {
-        $inlineMessageId = $this->inlineMessageId();
-        if ($inlineMessageId !== null && empty($params['chat_id']) && empty($params['message_id'])) {
-            $params['inline_message_id'] = $params['inline_message_id'] ?? $inlineMessageId;
-            return;
+        if (isset($parameters['clientOpt'])) {
+            unset($parameters['clientOpt']);
         }
-
-        $params['chat_id'] = $params['chat_id'] ?? $this->chatId();
-        $params['message_id'] = $params['message_id'] ?? $this->messageId();
+        $inlineMessageId = $this->inlineMessageId();
+        if ($inlineMessageId !== null && empty($parameters['chat_id']) && empty($parameters['message_id'])) {
+            $parameters['inline_message_id'] ??= $inlineMessageId;
+        } else {
+            $parameters['chat_id'] ??= $this->chatId();
+            $parameters['message_id'] ??= $this->messageId();
+            $parameters['user_id'] ??= $this->userId();
+            $parameters['from_chat_id'] ??= $this->chatId();
+            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['shipping_query_id'] ??= $this->shippingQuery()?->id;
+            $parameters['pre_checkout_query_id'] ??= $this->preCheckoutQuery()?->id;
+        }
+        return $parameters;
     }
 
     /**

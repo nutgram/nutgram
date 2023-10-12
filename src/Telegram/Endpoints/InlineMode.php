@@ -45,7 +45,7 @@ trait InlineMode
         );
         $parameters['results'] = json_encode($results, JSON_THROW_ON_ERROR);
 
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, $parameters);
     }
 
     /**
@@ -58,9 +58,8 @@ trait InlineMode
      */
     public function answerWebAppQuery(string $web_app_query_id, InlineQueryResult $result): ?SentWebAppMessage
     {
-        $parameters = compact('web_app_query_id', 'result');
+        $parameters = get_defined_vars();
         $parameters['result'] = json_encode($result, JSON_THROW_ON_ERROR);
-
-        return $this->requestJson(__FUNCTION__, $parameters, SentWebAppMessage::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, $parameters, SentWebAppMessage::class);
     }
 }

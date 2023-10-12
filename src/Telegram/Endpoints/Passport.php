@@ -23,9 +23,8 @@ trait Passport
      */
     public function setPassportDataErrors(int $user_id, array $errors): ?bool
     {
-        $parameters = compact('user_id', 'errors');
+        $parameters = get_defined_vars();
         $parameters['errors'] = json_encode($parameters['errors'], JSON_THROW_ON_ERROR);
-
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->prepareAndSendRequest(__FUNCTION__, $parameters);
     }
 }

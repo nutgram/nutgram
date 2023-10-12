@@ -31,12 +31,7 @@ trait UpdateMethods
      */
     public function getUpdates(?int $offset = null, ?int $limit = null, ?int $timeout = null, ?array $allowed_updates = null): ?array
     {
-        return $this->requestJson(__FUNCTION__, compact(
-            'offset',
-            'limit',
-            'timeout',
-            'allowed_updates'
-        ), Update::class, [
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars(), Update::class, [
             'timeout' => ($timeout ?? $this->config->pollingTimeout) + 1
         ]);
     }
@@ -63,15 +58,7 @@ trait UpdateMethods
         ?bool $drop_pending_updates = null,
         ?string $secret_token = null
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, compact(
-            'url',
-            'certificate',
-            'ip_address',
-            'max_connections',
-            'allowed_updates',
-            'drop_pending_updates',
-            'secret_token'
-        ));
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -83,7 +70,7 @@ trait UpdateMethods
      */
     public function deleteWebhook(?bool $drop_pending_updates = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('drop_pending_updates'));
+        return $this->prepareAndSendRequest(__FUNCTION__, get_defined_vars());
     }
 
     /**
@@ -94,6 +81,6 @@ trait UpdateMethods
      */
     public function getWebhookInfo(): ?WebhookInfo
     {
-        return $this->requestJson(__FUNCTION__, mapTo: WebhookInfo::class);
+        return $this->prepareAndSendRequest(__FUNCTION__, mapTo: WebhookInfo::class);
     }
 }
