@@ -258,7 +258,7 @@ trait Client
         string $mapTo = stdClass::class,
         array $options = []
     ): mixed {
-        $json = array_map(fn ($item) => match (true) {
+        $parameters = array_map(fn ($item) => match (true) {
             $item instanceof BackedEnum => $item->value,
             default => $item,
         }, array_filter_null($this->prepareAndGetCommonParameters($parameters)));
@@ -347,13 +347,27 @@ trait Client
         if ($inlineMessageId !== null && empty($parameters['chat_id']) && empty($parameters['message_id'])) {
             $parameters['inline_message_id'] ??= $inlineMessageId;
         } else {
-            $parameters['chat_id'] ??= $this->chatId();
-            $parameters['message_id'] ??= $this->messageId();
-            $parameters['user_id'] ??= $this->userId();
-            $parameters['from_chat_id'] ??= $this->chatId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
-            $parameters['shipping_query_id'] ??= $this->shippingQuery()?->id;
-            $parameters['pre_checkout_query_id'] ??= $this->preCheckoutQuery()?->id;
+            if (key_exists('chat_id', $parameters) && !$parameters['chat_id']) {
+                $parameters['chat_id'] ??= $this->chatId();
+            }
+            if (key_exists('message_id', $parameters) && !$parameters['message_id']) {
+                $parameters['message_id'] ??= $this->messageId();
+            }
+            if (key_exists('user_id', $parameters) && !$parameters['user_id']) {
+                $parameters['user_id'] ??= $this->userId();
+            }
+            if (key_exists('from_chat_id', $parameters) && !$parameters['from_chat_id']) {
+                $parameters['from_chat_id'] ??= $this->chatId();
+            }
+            if (key_exists('callback_query_id', $parameters) && !$parameters['callback_query_id']) {
+                $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            }
+            if (key_exists('shipping_query_id', $parameters) && !$parameters['shipping_query_id']) {
+                $parameters['shipping_query_id'] ??= $this->shippingQuery()?->id;
+            }
+            if (key_exists('pre_checkout_query_id', $parameters) && !$parameters['pre_checkout_query_id']) {
+                $parameters['pre_checkout_query_id'] ??= $this->preCheckoutQuery()?->id;
+            }
         }
         return $parameters;
     }
