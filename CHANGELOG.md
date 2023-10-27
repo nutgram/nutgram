@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.11.0 - 2023-10-27
+
+### What's Changed
+
+- Refactor logging system by @Lukasss93 in https://github.com/nutgram/nutgram/pull/603
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.10.0...4.11.0
+
 ## 4.10.0 - 2023-10-03
 
 ### What's Changed
