@@ -207,13 +207,11 @@ trait Client
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
             $requestData = $requestPost ?? $request;
 
-            $logData = $requestData;
-            $logContent = $logData['multipart'];
-            unset($logData['multipart']);
-            $logOptions = $logContent;
-            unset($logData);
-
-            $this->logRequest($endpoint, $logContent, $logOptions);
+            $this->logRequest(
+                endpoint: $endpoint,
+                content: $requestData['multipart'],
+                options: array_filter($requestData, fn ($x) => $x !== 'multipart', ARRAY_FILTER_USE_KEY)
+            );
 
             try {
                 $response = $this->http->post($endpoint, $requestData);
