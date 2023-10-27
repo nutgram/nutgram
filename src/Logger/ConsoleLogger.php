@@ -24,11 +24,15 @@ class ConsoleLogger extends AbstractLogger
         }
 
         printf(
-            "[%s] %s: %s\n\n",
-            date('Y-m-d H:i:s'),
+            "[%s] %s: %s\n",
+            "\033[33m".date('Y-m-d H:i:s')."\033[0m",
             strtoupper($level),
             $message,
         );
+
+        if (array_key_exists('type', $context) && $context['type'] === 'response') {
+            echo "===============================\n";
+        }
     }
 
     protected function isCli(): bool

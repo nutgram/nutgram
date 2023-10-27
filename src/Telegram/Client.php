@@ -205,18 +205,24 @@ trait Client
 
         try {
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+            $requestData = $requestPost ?? $request;
+
+            $logData = $requestData;
+            $logContent = $logData['multipart'];
+            unset($logData['multipart']);
+            $logOptions = $logContent;
+            unset($logData);
+
+            $this->logRequest($endpoint, $logContent, $logOptions);
+
             try {
-                $response = $this->http->post($endpoint, $requestPost ?? $request);
+                $response = $this->http->post($endpoint, $requestData);
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
             $content = $this->mapResponse($response, $mapTo);
 
-            $this->logger->debug($endpoint, [
-                'content' => $content,
-                'parameters' => $parameters,
-                'options' => $options,
-            ]);
+            $this->logResponse((string)$response->getBody());
 
             return $content;
         } catch (RequestException $exception) {
@@ -258,10 +264,12 @@ trait Client
                 return $this->sendResponse($endpoint, $requestData);
             }
 
-            try {
-                $json = $requestData['json'];
-                unset($requestData['json']);
+            $json = $requestData['json'];
+            unset($requestData['json']);
 
+            $this->logRequest($endpoint, $json, $requestData);
+
+            try {
                 $response = $this->http->post($endpoint, [
                     'body' => json_encode($json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
                     'headers' => ['Content-Type' => 'application/json'],
@@ -272,11 +280,7 @@ trait Client
             }
             $content = $this->mapResponse($response, $mapTo);
 
-            $rawResponse = (string)$response->getBody();
-            $this->logger->debug($endpoint.PHP_EOL.$rawResponse, [
-                'parameters' => $json,
-                'options' => $options,
-            ]);
+            $this->logResponse((string)$response->getBody());
 
             return $content;
         } catch (RequestException $exception) {
