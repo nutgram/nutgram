@@ -36,7 +36,7 @@ enum UpdateType: string
         return in_array($this, self::messageTypes(), true);
     }
 
-    public function checkMessageType(): void
+    public function validateMessageType(): void
     {
         if (!$this->isMessageType()) {
             throw new InvalidArgumentException('UpdateType must be a message type');
