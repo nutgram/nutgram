@@ -282,22 +282,20 @@ trait MessageListeners
      * @param $callable
      * @return Handler
      */
-    public function onGroupChatCreated($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    public function onGroupChatCreated($callable): Handler
     {
         $this->checkFinalized();
-        $target->validateMessageType();
-        return $this->{$this->target}[$target->value][MessageType::GROUP_CHAT_CREATED->value][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::GROUP_CHAT_CREATED->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onSupergroupChatCreated($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    public function onSupergroupChatCreated($callable): Handler
     {
         $this->checkFinalized();
-        $target->validateMessageType();
-        return $this->{$this->target}[$target->value][MessageType::SUPERGROUP_CHAT_CREATED->value][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::SUPERGROUP_CHAT_CREATED->value][] = new Handler($callable);
     }
 
     /**
@@ -411,11 +409,10 @@ trait MessageListeners
      * @param $callable
      * @return Handler
      */
-    public function onProximityAlertTriggered($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    public function onProximityAlertTriggered($callable): Handler
     {
         $this->checkFinalized();
-        $target->validateMessageType();
-        return $this->{$this->target}[$target->value][MessageType::PROXIMITY_ALERT_TRIGGERED->value][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::PROXIMITY_ALERT_TRIGGERED->value][] = new Handler($callable);
     }
 
     /**
