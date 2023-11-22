@@ -386,8 +386,7 @@ trait MessageListeners
         string $pattern,
         $callable,
         UpdateType $target = UpdateType::MESSAGE
-    ): Handler
-    {
+    ): Handler {
         $this->checkFinalized();
         $target->checkMessageType();
         return $this->{$this->target}[$target->value][MessageType::SUCCESSFUL_PAYMENT->value][$pattern] = new Handler(
