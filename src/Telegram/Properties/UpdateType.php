@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Properties;
 
+use InvalidArgumentException;
+
 enum UpdateType: string
 {
     case MESSAGE = 'message';
@@ -18,4 +20,26 @@ enum UpdateType: string
     case MY_CHAT_MEMBER = 'my_chat_member';
     case CHAT_MEMBER = 'chat_member';
     case CHAT_JOIN_REQUEST = 'chat_join_request';
+
+    public static function messageTypes(): array
+    {
+        return [
+            self::MESSAGE,
+            self::EDITED_MESSAGE,
+            self::CHANNEL_POST,
+            self::EDITED_CHANNEL_POST,
+        ];
+    }
+
+    public function isMessageType(): bool
+    {
+        return in_array($this, self::messageTypes(), true);
+    }
+
+    public function checkMessageType(): void
+    {
+        if (!$this->isMessageType()) {
+            throw new InvalidArgumentException('UpdateType must be a message type');
+        }
+    }
 }

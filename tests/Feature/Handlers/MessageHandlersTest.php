@@ -2,6 +2,7 @@
 
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
 it('calls onText() handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -14,6 +15,18 @@ it('calls onText() handler', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('message');
+
+it('calls onText() handler as channel_post', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onText('Ciao', function (Nutgram $bot) {
+        $bot->set('called', true);
+    }, UpdateType::CHANNEL_POST);
+
+    $bot->run();
+
+    expect($bot->get('called', false))->toBeTrue();
+})->with('channel_post');
 
 it('calls onCommand() handler', function ($update) {
     $bot = Nutgram::fake($update);

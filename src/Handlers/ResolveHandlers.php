@@ -47,6 +47,21 @@ abstract class ResolveHandlers extends CollectHandlers
     abstract public function getConfig(): Configuration;
 
     /**
+     * @param int|null $userId
+     * @param int|null $chatId
+     * @return callable|Conversation|\Closure|null
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function currentConversation(?int $userId, ?int $chatId): callable|Conversation|\Closure|null
+    {
+        if ($chatId === null || $userId === null) {
+            return null;
+        }
+
+        return $this->conversationCache->get($userId, $chatId);
+    }
+
+    /**
      * @return array
      */
     protected function resolveHandlers(): array
@@ -54,18 +69,18 @@ abstract class ResolveHandlers extends CollectHandlers
         $resolvedHandlers = [];
         $updateType = $this->update?->getType();
 
-        if ($updateType === UpdateType::MESSAGE) {
-            $messageType = $this->update->message->getType();
+        if ($updateType?->isMessageType()) {
+            $messageType = $this->update->getMessage()?->getType();
 
             if ($messageType === MessageType::TEXT) {
                 $username = $this->getConfig()->botName;
-                $text = $this->update?->message?->getParsedCommand($username) ?? $this->update->message?->text;
+                $text = $this->update?->getMessage()?->getParsedCommand($username) ?? $this->update->getMessage()?->text;
 
                 if ($text !== null) {
                     $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $text);
                 }
             } elseif ($messageType === MessageType::SUCCESSFUL_PAYMENT) {
-                $data = $this->update->message->successful_payment?->invoice_payload;
+                $data = $this->update->getMessage()->successful_payment?->invoice_payload;
                 $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $data);
             }
 
@@ -132,21 +147,6 @@ abstract class ResolveHandlers extends CollectHandlers
                 $handlers[] = $handler;
             }
         }
-    }
-
-    /**
-     * @param int|null $userId
-     * @param int|null $chatId
-     * @return callable|Conversation|\Closure|null
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     */
-    public function currentConversation(?int $userId, ?int $chatId): callable|Conversation|\Closure|null
-    {
-        if ($chatId === null || $userId === null) {
-            return null;
-        }
-
-        return $this->conversationCache->get($userId, $chatId);
     }
 
     /**
