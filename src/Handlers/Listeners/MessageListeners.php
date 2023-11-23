@@ -19,10 +19,11 @@ trait MessageListeners
      * @param $callable
      * @return Command
      */
-    public function onCommand(string $command, $callable): Command
+    public function onCommand(string $command, $callable, UpdateType $target = UpdateType::MESSAGE): Command
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::TEXT->value][$command] = new Command(
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command] = new Command(
             $callable,
             $command
         );
@@ -32,9 +33,10 @@ trait MessageListeners
      * @param  string|Command  $command
      * @return Command
      */
-    public function registerCommand(string|Command $command): Command
+    public function registerCommand(string|Command $command, UpdateType $target = UpdateType::MESSAGE): Command
     {
         $this->checkFinalized();
+        $target->validateMessageType();
         if (is_string($command)) {
             if (!is_subclass_of($command, Command::class)) {
                 throw new InvalidArgumentException(sprintf('You must provide subclass of the %s class or an instance.', Command::class));
@@ -42,7 +44,7 @@ trait MessageListeners
             $command = new $command();
         }
 
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::TEXT->value][$command->getPattern()] = $command;
+        return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command->getPattern()] = $command;
     }
 
     /**
@@ -50,10 +52,11 @@ trait MessageListeners
      * @param $callable
      * @return Handler
      */
-    public function onText(string $pattern, $callable): Handler
+    public function onText(string $pattern, $callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::TEXT->value][$pattern] = new Handler(
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::TEXT->value][$pattern] = new Handler(
             $callable,
             $pattern
         );
@@ -63,100 +66,110 @@ trait MessageListeners
      * @param $callable
      * @return Handler
      */
-    public function onAnimation($callable): Handler
+    public function onAnimation($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::ANIMATION->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::ANIMATION->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onAudio($callable): Handler
+    public function onAudio($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::AUDIO->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::AUDIO->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onDocument($callable): Handler
+    public function onDocument($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::DOCUMENT->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::DOCUMENT->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onPhoto($callable): Handler
+    public function onPhoto($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::PHOTO->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::PHOTO->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onSticker($callable): Handler
+    public function onSticker($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::STICKER->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::STICKER->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onVideo($callable): Handler
+    public function onVideo($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::VIDEO->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::VIDEO->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onVideoNote($callable): Handler
+    public function onVideoNote($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::VIDEO_NOTE->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::VIDEO_NOTE->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onVoice($callable): Handler
+    public function onVoice($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::VOICE->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::VOICE->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onContact($callable): Handler
+    public function onContact($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::CONTACT->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::CONTACT->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onDice($callable): Handler
+    public function onDice($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::DICE->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::DICE->value][] = new Handler($callable);
     }
 
     /**
@@ -173,86 +186,95 @@ trait MessageListeners
      * @param $callable
      * @return Handler
      */
-    public function onMessagePoll($callable): Handler
+    public function onMessagePoll($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::POLL->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::POLL->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onVenue($callable): Handler
+    public function onVenue($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::VENUE->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::VENUE->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onLocation($callable): Handler
+    public function onLocation($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::LOCATION->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::LOCATION->value][] = new Handler($callable);
     }
 
-    public function onStory($callable): Handler
+    public function onStory($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::STORY->value][] = new Handler($callable);
-    }
-
-    /**
-     * @param $callable
-     * @return Handler
-     */
-    public function onNewChatMembers($callable): Handler
-    {
-        $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::NEW_CHAT_MEMBERS->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::STORY->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onLeftChatMember($callable): Handler
+    public function onNewChatMembers($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::LEFT_CHAT_MEMBER->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::NEW_CHAT_MEMBERS->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onNewChatTitle($callable): Handler
+    public function onLeftChatMember($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::NEW_CHAT_TITLE->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::LEFT_CHAT_MEMBER->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onNewChatPhoto($callable): Handler
+    public function onNewChatTitle($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::NEW_CHAT_PHOTO->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::NEW_CHAT_TITLE->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onDeleteChatPhoto($callable): Handler
+    public function onNewChatPhoto($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::DELETE_CHAT_PHOTO->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::NEW_CHAT_PHOTO->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onDeleteChatPhoto($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    {
+        $this->checkFinalized();
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::DELETE_CHAT_PHOTO->value][] = new Handler($callable);
     }
 
     /**
@@ -279,20 +301,22 @@ trait MessageListeners
      * @param $callable
      * @return Handler
      */
-    public function onChannelChatCreated($callable): Handler
+    public function onChannelChatCreated($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::CHANNEL_CHAT_CREATED->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::CHANNEL_CHAT_CREATED->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onMessageAutoDeleteTimerChanged($callable): Handler
+    public function onMessageAutoDeleteTimerChanged($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::MESSAGE_AUTO_DELETE_TIMER_CHANGED->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::MESSAGE_AUTO_DELETE_TIMER_CHANGED->value][] = new Handler($callable);
     }
 
     /**
@@ -319,10 +343,11 @@ trait MessageListeners
      * @param $callable
      * @return Handler
      */
-    public function onPinnedMessage($callable): Handler
+    public function onPinnedMessage($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::PINNED_MESSAGE->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::PINNED_MESSAGE->value][] = new Handler($callable);
     }
 
     /**
@@ -433,40 +458,44 @@ trait MessageListeners
      * @param $callable
      * @return Handler
      */
-    public function onVideoChatScheduled($callable): Handler
+    public function onVideoChatScheduled($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::VIDEO_CHAT_SCHEDULED->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::VIDEO_CHAT_SCHEDULED->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onVideoChatStarted($callable): Handler
+    public function onVideoChatStarted($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::VIDEO_CHAT_STARTED->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::VIDEO_CHAT_STARTED->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onVideoChatEnded($callable): Handler
+    public function onVideoChatEnded($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::VIDEO_CHAT_ENDED->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::VIDEO_CHAT_ENDED->value][] = new Handler($callable);
     }
 
     /**
      * @param $callable
      * @return Handler
      */
-    public function onVideoChatParticipantsInvited($callable): Handler
+    public function onVideoChatParticipantsInvited($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::VIDEO_CHAT_PARTICIPANTS_INVITED->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::VIDEO_CHAT_PARTICIPANTS_INVITED->value][] = new Handler($callable);
     }
 
     /**
