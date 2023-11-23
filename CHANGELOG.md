@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.11.1 - 2023-11-23
+
+### What's Changed
+
+- Fix missing message handlers by @Lukasss93 in https://github.com/nutgram/nutgram/pull/613
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.11.0...4.11.1
+
 ## 4.11.0 - 2023-10-27
 
 ### What's Changed
