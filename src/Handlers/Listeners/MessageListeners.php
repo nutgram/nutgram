@@ -176,11 +176,10 @@ trait MessageListeners
      * @param $callable
      * @return Handler
      */
-    public function onGame($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    public function onGame($callable): Handler
     {
         $this->checkFinalized();
-        $target->validateMessageType();
-        return $this->{$this->target}[$target->value][MessageType::GAME->value][] = new Handler($callable);
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::GAME->value][] = new Handler($callable);
     }
 
     /**
