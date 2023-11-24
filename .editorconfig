@@ -27,5 +27,5 @@ ij_php_concat_spaces = false
 [src/Telegram/**.php]
 max_line_length = off
 
-[*.json]
+[{*.json,*.yml}]
 indent_size = 2
