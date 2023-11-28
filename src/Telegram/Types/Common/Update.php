@@ -223,6 +223,7 @@ class Update extends BaseType
             $this->channel_post !== null => $this->channel_post->chat = $chat,
             $this->edited_channel_post !== null => $this->edited_channel_post->chat = $chat,
             $this->callback_query !== null => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
+            $this->poll_answer !== null => $chat,
             $this->my_chat_member !== null => $this->my_chat_member->chat = $chat,
             $this->chat_member !== null => $this->chat_member->chat = $chat,
             $this->chat_join_request !== null => $this->chat_join_request->chat = $chat,
