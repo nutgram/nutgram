@@ -91,8 +91,8 @@ Official Documentation on [https://nutgram.dev/](https://nutgram.dev)
 
 | Nutgram | PHP  | Support Until |
 |---------|------|---------------|
-| ^3.0    | ^8.0 | 2023-11-26    |
-| ^4.0    | ^8.2 | -             |
+| ^3.0    | ^8.0 | EOL           |
+| ^4.0    | ^8.2 | On going      |
 
 ## ✨ Projects with this library
 

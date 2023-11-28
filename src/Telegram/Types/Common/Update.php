@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
+use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
@@ -164,6 +165,7 @@ class Update extends BaseType
             $this->callback_query !== null => $this->callback_query->from,
             $this->shipping_query !== null => $this->shipping_query->from,
             $this->pre_checkout_query !== null => $this->pre_checkout_query->from,
+            // poll doesn't have a user
             $this->poll_answer !== null => $this->poll_answer->user,
             $this->my_chat_member !== null => $this->my_chat_member->from,
             $this->chat_member !== null => $this->chat_member->from,
@@ -172,9 +174,6 @@ class Update extends BaseType
         };
     }
 
-    /**
-     * @return User|null
-     */
     public function setUser(?User $user): ?User
     {
         return match (true) {
@@ -195,9 +194,6 @@ class Update extends BaseType
         };
     }
 
-    /**
-     * @return Chat|null
-     */
     public function getChat(): ?Chat
     {
         return match (true) {
@@ -205,7 +201,13 @@ class Update extends BaseType
             $this->edited_message !== null => $this->edited_message->chat,
             $this->channel_post !== null => $this->channel_post->chat,
             $this->edited_channel_post !== null => $this->edited_channel_post->chat,
+            // inline query doesn't have a chat
+            // chosen inline result doesn't have a chat
             $this->callback_query !== null => $this->callback_query->message?->chat,
+            // shipping query doesn't have a chat
+            // pre checkout query doesn't have a chat
+            // poll doesn't have a chat
+            $this->poll_answer !== null => Chat::make($this->poll_answer->user->id, ChatType::PRIVATE),
             $this->my_chat_member !== null => $this->my_chat_member->chat,
             $this->chat_member !== null => $this->chat_member->chat,
             $this->chat_join_request !== null => $this->chat_join_request->chat,
@@ -213,10 +215,6 @@ class Update extends BaseType
         };
     }
 
-    /**
-     * @param  Chat|null  $chat
-     * @return Chat|null
-     */
     public function setChat(?Chat $chat): ?Chat
     {
         return match (true) {
@@ -225,6 +223,7 @@ class Update extends BaseType
             $this->channel_post !== null => $this->channel_post->chat = $chat,
             $this->edited_channel_post !== null => $this->edited_channel_post->chat = $chat,
             $this->callback_query !== null => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
+            $this->poll_answer !== null => $chat,
             $this->my_chat_member !== null => $this->my_chat_member->chat = $chat,
             $this->chat_member !== null => $this->chat_member->chat = $chat,
             $this->chat_join_request !== null => $this->chat_join_request->chat = $chat,
@@ -232,9 +231,6 @@ class Update extends BaseType
         };
     }
 
-    /**
-     * @return Message|null
-     */
     public function getMessage(): ?Message
     {
         return match (true) {
