@@ -443,3 +443,29 @@ test('grouped scopes with nesting level 1', function ($update) {
             ->commands->toBe('[{"command":"start","description":"Start command"},{"command":"admin","description":"Admin command"}]'),
     );
 })->with('message');
+
+test('onCommand with optional parameter + description', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendMessage('Hello!');
+    })->description('Start command');
+
+    $bot->onCommand('start {value}', function (Nutgram $bot, string $value) {
+        $bot->sendMessage("Hello $value!");
+    })->description('Start command');
+
+    $bot->onCommand('foo', function (Nutgram $bot) {
+        $bot->sendMessage('foo');
+    })->description('foo command');
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request['json'])
+            ->scope->toBe('{"type":"default"}')
+            ->commands->toBe('[{"command":"start","description":"Start command"},{"command":"foo","description":"foo command"}]');
+
+        return $request;
+    });
+
+    $bot->registerMyCommands();
+});
