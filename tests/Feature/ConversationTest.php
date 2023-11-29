@@ -14,6 +14,7 @@ use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithSkipHandlersMu
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithSkipMiddlewareMultipleSteps;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\NonSerializableConversation;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\OneStepNotCompletedConversation;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\SurveyConversation;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\TwoStepConversation;
 use SergiX44\Nutgram\Tests\Fixtures\CustomService;
 
@@ -256,3 +257,24 @@ it('fails to start manually for a specific user/chat', function () {
     $bot = Nutgram::fake();
     TwoStepConversation::begin($bot, 123, null);
 })->throws(InvalidArgumentException::class, 'You need to provide both userId and chatId.');
+
+it('starts manually with additional data', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('survey-66', function (Nutgram $bot) {
+        SurveyConversation::begin($bot, data: [
+            'surveyID' => 66,
+        ]);
+    });
+
+    $bot
+        ->willStartConversation()
+        ->hearText('/survey-66')
+        ->reply()
+        ->assertActiveConversation()
+        ->hearText('wow')
+        ->reply()
+        ->assertNoConversation();
+
+    expect($bot->get('test'))->toBe(66);
+});
