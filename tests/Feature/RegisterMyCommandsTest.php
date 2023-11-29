@@ -468,4 +468,4 @@ test('onCommand with optional parameter + description', function () {
     });
 
     $bot->registerMyCommands();
-})->only();
+});
