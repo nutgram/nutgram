@@ -35,11 +35,6 @@ abstract class Conversation
         return $instance;
     }
 
-    public function start(Nutgram $bot)
-    {
-        throw new RuntimeException('Attempt to start an empty conversation.');
-    }
-
     /**
      * @return bool
      */

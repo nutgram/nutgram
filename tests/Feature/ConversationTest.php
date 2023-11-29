@@ -202,7 +202,7 @@ it('does not work with empty conversation class', function ($update) {
     $bot->onMessage(ConversationEmpty::class);
 
     $bot->run();
-})->with('message')->throws(RuntimeException::class, 'Attempt to start an empty conversation.');
+})->with('message')->throws(RuntimeException::class, "Conversation step 'start' not found.");
 
 it('does not work with missing step', function ($update) {
     $bot = Nutgram::fake($update);
