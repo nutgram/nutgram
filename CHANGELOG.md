@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.11.2 - 2023-11-29
+
+### What's Changed
+
+* Refine user and chat matching by @Lukasss93 in https://github.com/nutgram/nutgram/pull/617
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.11.1...4.11.2
+
 ## 4.11.1 - 2023-11-23
 
 ### What's Changed
