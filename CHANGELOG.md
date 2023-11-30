@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.12.0 - 2023-11-30
+
+### What's Changed
+
+* Fix registerMyCommands with commands with optional parameters by @Lukasss93 in https://github.com/nutgram/nutgram/pull/619
+* Add ability to manually pass additional parameters to conversations by @Lukasss93 in https://github.com/nutgram/nutgram/pull/620
+* Resolve parameters in the default conversation step by @Lukasss93 in https://github.com/nutgram/nutgram/pull/620
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.11.2...4.12
+
 ## 4.11.2 - 2023-11-29
 
 ### What's Changed
