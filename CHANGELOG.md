@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.12.1 - 2023-12-01
+
+### What's Changed
+
+* Fix missing onUpdate handler + refactor handler structure by @Lukasss93 in https://github.com/nutgram/nutgram/pull/621
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.12.0...4.12.1
+
 ## 4.12.0 - 2023-11-30
 
 ### What's Changed
