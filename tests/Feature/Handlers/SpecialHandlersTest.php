@@ -135,3 +135,21 @@ it('calls clearErrorHandlers() method', function ($update) {
 
     expect($bot->get('called'))->toBeNull();
 })->with('message')->throws(DivisionByZeroError::class);
+
+it('calls onUpdate() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onUpdate(function (Nutgram $bot) {
+        $bot->set('onUpdate called', true);
+    });
+
+    $bot->onSticker(function (Nutgram $bot) {
+        $bot->set('onSticker called', true);
+    });
+
+    $bot->run();
+
+    expect($bot)
+        ->get('onUpdate called', false)->toBeTrue()
+        ->get('onSticker called', false)->toBeTrue();
+})->with('sticker');
