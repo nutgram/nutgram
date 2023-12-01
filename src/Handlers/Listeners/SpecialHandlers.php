@@ -7,7 +7,6 @@ use SergiX44\Nutgram\Exception\ApiException;
 use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
-use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 /**
  * @mixin CollectHandlers
@@ -19,16 +18,6 @@ trait SpecialHandlers
     protected const BEFORE_API_REQUEST = 'BEFORE_API_REQUEST';
     protected const AFTER_API_REQUEST = 'AFTER_API_REQUEST';
     protected const API_ERROR = 'API_ERROR';
-
-    /**
-     * @param $callable
-     * @return Handler
-     */
-    public function onUpdate($callable): Handler
-    {
-        $this->checkFinalized();
-        return $this->{$this->target}[Update::class] = new Handler($callable);
-    }
 
     /**
      * @param $callable

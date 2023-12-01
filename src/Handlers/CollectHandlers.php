@@ -7,6 +7,7 @@ use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\Listeners\MessageListeners;
 use SergiX44\Nutgram\Handlers\Listeners\SpecialHandlers;
 use SergiX44\Nutgram\Handlers\Listeners\UpdateListeners;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 abstract class CollectHandlers
 {
@@ -104,5 +105,15 @@ abstract class CollectHandlers
     private function checkFinalized(): void
     {
         !$this->finalized ?: throw new StatusFinalizedException();
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onUpdate($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[Update::class] = new Handler($callable);
     }
 }
