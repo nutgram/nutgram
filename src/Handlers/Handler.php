@@ -9,12 +9,13 @@ use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Middleware\Link;
 use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
 use SergiX44\Nutgram\Support\Taggable;
 
 class Handler extends MiddlewareChain
 {
-    use Taggable, Macroable, Disable;
+    use Taggable, Macroable, Disable, Constraints;
 
     /**
      * regular expression to capture named parameters but not quantifiers
@@ -27,10 +28,6 @@ class Handler extends MiddlewareChain
      */
     protected ?string $pattern;
 
-    /**
-     * @var array<string, string>
-     */
-    protected array $constraints = [];
 
     /**
      * @var array
@@ -173,18 +170,5 @@ class Handler extends MiddlewareChain
     public function getPattern(): ?string
     {
         return $this->pattern;
-    }
-
-    public function where(array|string $parameter, ?string $constraint = null): Handler
-    {
-        if (!is_array($parameter)) {
-            $constraints = [$parameter => $constraint];
-        } else {
-            $constraints = $parameter;
-        }
-
-        $this->constraints = [...$this->constraints, ...$constraints];
-
-        return $this;
     }
 }

@@ -286,3 +286,110 @@ it('calls handler with optional named parameters', function (string $hear, bool 
     'valid' => ['/start luke 4316', true],
     'invalid' => ['/start 4316 luke', false],
 ]);
+
+it('uses where constraint via group method', function () {
+    $bot = Nutgram::fake();
+
+    $bot->group(function (Nutgram $bot) {
+        $bot->onCommand('start {age}', function (Nutgram $bot, $age) {
+            $bot->sendMessage("You're $age");
+        });
+
+        $bot->onCommand('hello {age}', function (Nutgram $bot, $age) {
+            $bot->sendMessage("You're $age");
+        });
+    })->where('age', '\d+');
+
+    $bot->hearText('/start 18')
+        ->reply()
+        ->assertReplyText('You\'re 18');
+
+    $bot->hearText('/hello 18')
+        ->reply()
+        ->assertReplyText('You\'re 18');
+});
+
+it('uses whereIn constraints', function ($hearValue, $expected) {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start {value}', function (Nutgram $bot, $value) {
+        $bot->sendMessage('called');
+    })->whereIn('value', ['y', 'n']);
+
+    $bot->hearText("/start $hearValue")->reply();
+
+    if ($expected) {
+        $bot->assertCalled('sendMessage');
+    } else {
+        $bot->assertNoReply();
+    }
+})->with([
+    ['y', true],
+    ['n', true],
+    ['yn', false],
+]);
+
+it('uses whereAlpha constraint', function ($hearValue, $expected) {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start {value}', function (Nutgram $bot, $value) {
+        $bot->sendMessage('called');
+    })->whereAlpha('value');
+
+    $bot->hearText("/start $hearValue")->reply();
+
+    if ($expected) {
+        $bot->assertCalled('sendMessage');
+    } else {
+        $bot->assertNoReply();
+    }
+})->with([
+    ['y', true],
+    ['n', true],
+    ['yn', true],
+    ['123', false],
+]);
+
+it('uses whereNumber constraint', function ($hearValue, $expected) {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start {value}', function (Nutgram $bot, $value) {
+        $bot->sendMessage('called');
+    })->whereNumber('value');
+
+    $bot->hearText("/start $hearValue")->reply();
+
+    if ($expected) {
+        $bot->assertCalled('sendMessage');
+    } else {
+        $bot->assertNoReply();
+    }
+})->with([
+    ['abc', false],
+    ['123a', false],
+    ['123', true],
+    ['1', true],
+]);
+
+it('uses whereAlphaNumeric constraint', function ($hearValue, $expected) {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start {value}', function (Nutgram $bot, $value) {
+        $bot->sendMessage('called');
+    })->whereAlphaNumeric('value');
+
+    $bot->hearText("/start $hearValue")->reply();
+
+    if ($expected) {
+        $bot->assertCalled('sendMessage');
+    } else {
+        $bot->assertNoReply();
+    }
+})->with([
+    ['abc', true],
+    ['123a', true],
+    ['123', true],
+    ['1', true],
+    ['abc13', true],
+    ['abc123!', false],
+]);
