@@ -261,28 +261,34 @@ abstract class ResolveHandlers extends CollectHandlers
         array $groups,
         array $currentMiddlewares = [],
         array $currentScopes = [],
-        array $currentTags = []
+        array $currentTags = [],
+        array $currentConstraints = [],
     ) {
         foreach ($groups as $group) {
             $middlewares = [...$group->getMiddlewares(), ...$currentMiddlewares,];
             $scopes = [...$currentScopes, ...$group->getScopes()];
             $tags = [...$currentTags, ...$group->getTags()];
+            $constraints = [...$currentConstraints, ...$group->getConstraints()];
             $this->groupHandlers = [];
             ($group->groupCallable)($this);
 
             // apply the middleware stack to the current registered group handlers
-            array_walk_recursive($this->groupHandlers, function ($leaf) use ($tags, $middlewares, $scopes, $group) {
-                if ($leaf instanceof Handler) {
-                    foreach ($middlewares as $middleware) {
-                        $leaf->middleware($middleware);
+            array_walk_recursive(
+                $this->groupHandlers,
+                function ($leaf) use ($constraints, $tags, $middlewares, $scopes, $group) {
+                    if ($leaf instanceof Handler) {
+                        foreach ($middlewares as $middleware) {
+                            $leaf->middleware($middleware);
+                        }
+                        if ($leaf instanceof Command && !empty($scopes)) {
+                            $leaf->scope($scopes);
+                        }
+                        $leaf->tags([...$leaf->getTags(), ...$tags]);
+                        $leaf->unless($group->isDisabled());
+                        $leaf->where($constraints);
                     }
-                    if ($leaf instanceof Command && !empty($scopes)) {
-                        $leaf->scope($scopes);
-                    }
-                    $leaf->tags([...$leaf->getTags(), ...$tags]);
-                    $leaf->unless($group->isDisabled());
                 }
-            });
+            );
 
             $this->handlers = array_merge_recursive($this->handlers, $this->groupHandlers);
 
