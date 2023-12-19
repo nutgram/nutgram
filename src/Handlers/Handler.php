@@ -31,7 +31,7 @@ class Handler extends MiddlewareChain
      * - {1,2} (reserved for quantifiers)
      * - {1name} (must start with a letter)
      */
-    protected const PARAM_NAME_REGEX = '/{((?:[a-zA-Z](?:(?!\d+,?\d?+\w)\w)*)+)}/';
+    protected const PARAM_NAME_REGEX = '/{([a-zA-Z][a-zA-Z\d]*)}/';
 
     /**
      * @var string|null
