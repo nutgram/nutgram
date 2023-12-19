@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.13.0 - 2023-12-19
+
+### What's Changed
+
+* Fix regex for named parameters by @Lukasss93 in https://github.com/nutgram/nutgram/pull/628
+* Add new where constraints by @Lukasss93 in https://github.com/nutgram/nutgram/pull/629
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.12.1...4.13.0
+
 ## 4.12.1 - 2023-12-01
 
 ### What's Changed
