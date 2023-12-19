@@ -286,3 +286,41 @@ it('calls handler with optional named parameters', function (string $hear, bool 
     'valid' => ['/start luke 4316', true],
     'invalid' => ['/start 4316 luke', false],
 ]);
+
+it('calls handler on callback query data', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCallbackQueryData('{id1}-{yn}-{id2}', function (Nutgram $bot, $id1, $yn, $id2) {
+        $bot->sendMessage('called');
+    });
+
+    $bot
+        ->hearCallbackQueryData('2098495358-y-1707982893')
+        ->reply()
+        ->assertReplyText('called');
+});
+
+it('uses valid named parameters', function ($hearParameter, $expected) {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand(sprintf("start {%s}", $hearParameter), function (Nutgram $bot, $value) {
+        $bot->sendMessage('called');
+    });
+
+    $bot->hearText("/start 123")->reply();
+
+    if ($expected) {
+        $bot->assertCalled('sendMessage');
+    } else {
+        $bot->assertNoReply();
+    }
+})->with([
+    ['name', true],
+    ['name1', true],
+    ['n1255', true],
+    ['1name', false],
+    ['123e', false],
+    ['1', false],
+    ['1,', false],
+    ['1,1', false],
+]);

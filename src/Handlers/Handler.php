@@ -17,10 +17,21 @@ class Handler extends MiddlewareChain
     use Taggable, Macroable, Disable;
 
     /**
-     * regular expression to capture named parameters but not quantifiers
-     * captures {name}, but not {1}, {1,}, or {1,2}.
+     * Regex to capture named parameters.
+     *
+     * Valid:
+     * - {name}
+     * - {name1}
+     * - {firstName}
+     * - {n123}
+     *
+     * Invalid:
+     * - {1} (reserved for quantifiers)
+     * - {1,} (reserved for quantifiers)
+     * - {1,2} (reserved for quantifiers)
+     * - {1name} (must start with a letter)
      */
-    protected const PARAM_NAME_REGEX = '/{((?:(?!\d+,?\d?+)\w)+?)}/';
+    protected const PARAM_NAME_REGEX = '/{([a-zA-Z][a-zA-Z\d]*)}/';
 
     /**
      * @var string|null
