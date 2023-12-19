@@ -273,20 +273,22 @@ abstract class ResolveHandlers extends CollectHandlers
             ($group->groupCallable)($this);
 
             // apply the middleware stack to the current registered group handlers
-            array_walk_recursive($this->groupHandlers,
+            array_walk_recursive(
+                $this->groupHandlers,
                 function ($leaf) use ($constraints, $tags, $middlewares, $scopes, $group) {
-                if ($leaf instanceof Handler) {
-                    foreach ($middlewares as $middleware) {
-                        $leaf->middleware($middleware);
+                    if ($leaf instanceof Handler) {
+                        foreach ($middlewares as $middleware) {
+                            $leaf->middleware($middleware);
+                        }
+                        if ($leaf instanceof Command && !empty($scopes)) {
+                            $leaf->scope($scopes);
+                        }
+                        $leaf->tags([...$leaf->getTags(), ...$tags]);
+                        $leaf->unless($group->isDisabled());
+                        $leaf->where($constraints);
                     }
-                    if ($leaf instanceof Command && !empty($scopes)) {
-                        $leaf->scope($scopes);
-                    }
-                    $leaf->tags([...$leaf->getTags(), ...$tags]);
-                    $leaf->unless($group->isDisabled());
-                    $leaf->where($constraints);
                 }
-            });
+            );
 
             $this->handlers = array_merge_recursive($this->handlers, $this->groupHandlers);
 
