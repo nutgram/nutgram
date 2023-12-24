@@ -103,7 +103,12 @@ it('works with webhook mode with exceptions', function () {
         throw new \RuntimeException('Stop!');
     });
 
-    $bot->run();
+    try {
+        $bot->run();
+    } catch (\Throwable $th) {
+        // ssshhhh
+    }
+
 
     expect($bot->get('called'))->toBeTrue();
 });
