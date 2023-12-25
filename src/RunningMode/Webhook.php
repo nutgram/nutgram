@@ -44,6 +44,7 @@ class Webhook implements RunningMode
             return;
         }
 
+        $update = null;
         try {
             /** @var Update $update */
             $update = $bot->getContainer()
@@ -54,11 +55,12 @@ class Webhook implements RunningMode
 
             $bot->getContainer()
                 ->get(LoggerInterface::class)
-                ->debug(sprintf('Update processed: %s%s%s', $update->getType()?->value, PHP_EOL, $input));
+                ->debug(sprintf('Update processed: %s%s%s', $update?->getType()?->value, PHP_EOL, $input));
         } catch (Throwable $e) {
             $bot->getContainer()
                 ->get(LoggerInterface::class)
-                ->error(sprintf('Update failed: %s%s%s', $update->getType()?->value, PHP_EOL, $input), ['exception' => $e]);
+                ->error(sprintf('Update failed: %s%s%s', $update?->getType()?->value, PHP_EOL, $input), ['exception' => $e]);
+            throw $e;
         }
     }
 
