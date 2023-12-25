@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.13.1 - 2023-12-25
+
+### What's Changed
+
+* fix update is null when falling the in catch case by @sergix44 in https://github.com/nutgram/nutgram/pull/632
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.13.0...4.13.1
+
 ## 4.13.0 - 2023-12-19
 
 ### What's Changed
