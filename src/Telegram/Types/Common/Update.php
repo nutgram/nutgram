@@ -5,6 +5,8 @@ namespace SergiX44\Nutgram\Telegram\Types\Common;
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostRemoved;
+use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
@@ -140,6 +142,20 @@ class Update extends BaseType
      * The bot must have the can_invite_users administrator right in the chat to receive these updates.
      */
     public ?ChatJoinRequest $chat_join_request = null;
+
+    /**
+     * Optional.
+     * A chat boost was added or changed.
+     * The bot must be an administrator in the chat to receive these updates.
+     */
+    public ?ChatBoostUpdated $chat_boost = null;
+
+    /**
+     * Optional.
+     * A boost was removed from a chat.
+     * The bot must be an administrator in the chat to receive these updates.
+     */
+    public ?ChatBoostRemoved $removed_chat_boost = null;
 
     /**
      * Return the current update type

@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Properties\DiceEmoji;
 use SergiX44\Nutgram\Telegram\Properties\ForumIconColor;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Properties\PollType;
+use SergiX44\Nutgram\Telegram\Types\Boost\UserChatBoosts;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -1932,6 +1933,20 @@ trait AvailableMethods
         );
 
         return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to get the list of boosts added to a chat by a user.
+     * Requires administrator rights in the chat.
+     * Returns a UserChatBoosts object.
+     * @see https://core.telegram.org/bots/api#getuserchatboosts
+     * @param int|string|null $chat_id Unique identifier for the chat or username of the channel (in the format &#64;channelusername)
+     * @param int|null $user_id Unique identifier of the target user
+     * @return UserChatBoosts|null
+     */
+    public function getUserChatBoosts(int|string $chat_id = null, int $user_id = null): ?UserChatBoosts
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), UserChatBoosts::class);
     }
 
     /**
