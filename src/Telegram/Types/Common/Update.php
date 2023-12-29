@@ -2,7 +2,6 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
-use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
@@ -16,6 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingQuery;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollAnswer;
+use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
@@ -56,6 +56,13 @@ class Update extends BaseType
      */
     public ?Message $edited_channel_post = null;
 
+    /**
+     * Optional.
+     * A reaction to a message was changed by a user.
+     * The bot must be an administrator in the chat and must explicitly specify "message_reaction" in the list of allowed_updates to receive these updates.
+     * The update isn't received for reactions set by bots.
+     */
+    public ?MessageReactionUpdated $message_reaction = null;
     /**
      * Optional.
      * New incoming {@see https://core.telegram.org/bots/api#inline-mode inline} query
