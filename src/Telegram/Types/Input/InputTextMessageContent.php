@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -34,8 +35,15 @@ class InputTextMessageContent extends InputMessageContent
     /**
      * Optional.
      * Disables link previews for links in the sent message
+     * @deprecated Use $link_preview_options instead
      */
     public ?bool $disable_web_page_preview = null;
+
+    /**
+     * Optional. Link preview generation options for the message
+     * @var LinkPreviewOptions|null
+     */
+    public ?LinkPreviewOptions $link_preview_options = null;
 
     public function __construct(
         string $message_text,
