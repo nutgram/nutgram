@@ -82,6 +82,37 @@ class Chat extends BaseType
 
     /**
      * Optional.
+     * Identifier of the accent color for the chat name and backgrounds of the chat photo, reply header, and link preview.
+     * See {@see https://core.telegram.org/bots/api#accent-colors accent colors} for more details.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * Always returned in getChat.
+     */
+    public ?int $accent_color_id = null;
+
+    /**
+     * Optional.
+     * Custom emoji identifier of emoji chosen by the chat for the reply header and link preview background.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?string $background_custom_emoji_id = null;
+
+    /**
+     * Optional.
+     * Identifier of the accent color for the chat's profile background.
+     * See {@see https://core.telegram.org/bots/api#profile-accent-colors profile accent colors} for more details.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?int $profile_accent_color_id = null;
+
+    /**
+     * Optional.
+     * Custom emoji identifier of the emoji chosen by the chat for its profile background.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?string $profile_background_custom_emoji_id = null;
+
+    /**
+     * Optional.
      * Custom emoji identifier of emoji status of the other party in a private chat.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
@@ -194,6 +225,12 @@ class Chat extends BaseType
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?bool $has_protected_content = null;
+
+    /**
+     * Optional. True, if new chat members will have access to old messages; available only to chat administrators.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?bool $has_visible_history = null;
 
     /**
      * Optional.

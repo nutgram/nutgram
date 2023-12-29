@@ -5,7 +5,6 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicClosed;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicCreated;
@@ -56,7 +55,7 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppData;
  * This object represents a message.
  * @see https://core.telegram.org/bots/api#message
  */
-class Message extends BaseType
+class Message extends MaybeInaccessibleMessage
 {
     /** Unique message identifier inside this chat */
     public int $message_id;
@@ -91,38 +90,49 @@ class Message extends BaseType
     public Chat $chat;
 
     /**
+     * Optional. Information about the original message for forwarded messages
+     */
+    public ?MessageOrigin $forward_origin = null;
+
+    /**
      * Optional.
      * For forwarded messages, sender of the original message
+     * @deprecated Use the $forward_origin field instead
      */
     public ?User $forward_from = null;
 
     /**
      * Optional.
      * For messages forwarded from channels or from anonymous administrators, information about the original sender chat
+     * @deprecated Use the $forward_origin field instead
      */
     public ?Chat $forward_from_chat = null;
 
     /**
      * Optional.
      * For messages forwarded from channels, identifier of the original message in the channel
+     * @deprecated Use the $forward_origin field instead
      */
     public ?int $forward_from_message_id = null;
 
     /**
      * Optional.
      * For forwarded messages that were originally sent in channels or by an anonymous chat administrator, signature of the message sender if present
+     * @deprecated Use the $forward_origin field instead
      */
     public ?string $forward_signature = null;
 
     /**
      * Optional.
      * Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages
+     * @deprecated Use the $forward_origin field instead
      */
     public ?string $forward_sender_name = null;
 
     /**
      * Optional.
      * For forwarded messages, date the original message was sent in Unix time
+     * @deprecated Use the $forward_origin field instead
      */
     public ?int $forward_date = null;
 
@@ -406,7 +416,7 @@ class Message extends BaseType
      * Specified message was pinned.
      * Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
      */
-    public ?Message $pinned_message = null;
+    public ?MaybeInaccessibleMessage $pinned_message = null;
 
     /**
      * Optional.
