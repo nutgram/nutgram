@@ -2,9 +2,11 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 
 /**
  * This object represents a chat.
@@ -67,6 +69,16 @@ class Chat extends BaseType
      * @var string[] $active_usernames
      */
     public ?array $active_usernames = null;
+
+    /**
+     * Optional.
+     * List of available reactions allowed in the chat.
+     * If omitted, then all {@see https://core.telegram.org/bots/api#reactiontypeemoji emoji reactions} are allowed.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * @var ReactionType[] $available_reactions
+     */
+    #[ArrayType(ReactionType::class)]
+    public ?array $available_reactions = null;
 
     /**
      * Optional.
