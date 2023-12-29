@@ -39,6 +39,7 @@ use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UserShared;
+use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatEnded;
@@ -420,8 +421,14 @@ class Message extends BaseType
     /**
      * Optional.
      * Service message: a user was shared with the bot
+     * @deprecated Use the $users_shared field instead
      */
     public ?UserShared $user_shared = null;
+
+    /**
+     * Optional. Service message: users were shared with the bot
+     */
+    public ?UsersShared $users_shared = null;
 
     /**
      * Optional.

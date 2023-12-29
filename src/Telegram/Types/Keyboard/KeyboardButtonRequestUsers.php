@@ -9,12 +9,11 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * The identifier of the selected user will be shared with the bot when the corresponding button is pressed.
  * {@see https://core.telegram.org/bots/features#chat-and-user-selection More about requesting users »}
  * @see https://core.telegram.org/bots/api#keyboardbuttonrequestusers
- * @deprecated Use {@see KeyboardButtonRequestUsers} instead
  */
-class KeyboardButtonRequestUser extends BaseType
+class KeyboardButtonRequestUsers extends BaseType
 {
     /**
-     * Signed 32-bit identifier of the request, which will be received back in the {@see https://core.telegram.org/bots/api#usershared UserShared} object.
+     * Signed 32-bit identifier of the request, which will be received back in the {@see https://core.telegram.org/bots/api#usersshared UsersShared} object.
      * Must be unique within the message
      */
     public int $request_id;
@@ -32,4 +31,9 @@ class KeyboardButtonRequestUser extends BaseType
      * If not specified, no additional restrictions are applied.
      */
     public ?bool $user_is_premium = null;
+
+    /**
+     * Optional. The maximum number of users to be selected; 1-10. Defaults to 1.
+     */
+    public ?int $max_quantity = null;
 }

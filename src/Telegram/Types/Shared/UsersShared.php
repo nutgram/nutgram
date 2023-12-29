@@ -5,11 +5,11 @@ namespace SergiX44\Nutgram\Telegram\Types\Shared;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
- * This object contains information about the user whose identifier was shared with the bot using a {@see https://core.telegram.org/bots/api#keyboardbuttonrequestuser KeyboardButtonRequestUser} button.
+ * This object contains information about the user whose identifier was shared
+ * with the bot using a {@see https://core.telegram.org/bots/api#keyboardbuttonrequestuser KeyboardButtonRequestUser} button.
  * @see https://core.telegram.org/bots/api#usersshared
- * @deprecated Use {@see UsersShared} instead
  */
-class UserShared extends BaseType
+class UsersShared extends BaseType
 {
     /** Identifier of the request */
     public int $request_id;
