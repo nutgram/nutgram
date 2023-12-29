@@ -147,6 +147,11 @@ class Message extends BaseType
     public ?ExternalReplyInfo $external_reply = null;
 
     /**
+     * Optional. For replies that quote part of the original message, the quoted part of the message
+     */
+    public ?TextQuote $quote = null;
+
+    /**
      * Optional.
      * Bot through which the message was sent
      */
