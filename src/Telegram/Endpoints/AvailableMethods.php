@@ -172,6 +172,39 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to forward multiple messages of any kind.
+     * If some of the specified messages can't be found or forwarded, they are skipped.
+     * Service messages and messages with protected content can't be forwarded.
+     * Album grouping is kept for forwarded messages.
+     * On success, an array of {@see https://core.telegram.org/bots/api#messageid MessageId} of the sent messages is returned.
+     * @see https://core.telegram.org/bots/api#forwardmessages
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param int|string $from_chat_id Unique identifier for the chat where the original messages were sent (or channel username in the format &#64;channelusername)
+     * @param array $message_ids Identifiers of 1-100 messages in the chat from_chat_id to forward. The identifiers must be specified in a strictly increasing order.
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param bool|null $disable_notification Sends the messages {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the forwarded messages from forwarding and saving
+     * @return MessageId[]|null
+     */
+    public function forwardMessages(
+        int|string $chat_id,
+        int|string $from_chat_id,
+        array $message_ids,
+        ?int $message_thread_id = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+    ): ?array {
+        return $this->requestJson(__FUNCTION__, compact(
+            'chat_id',
+            'from_chat_id',
+            'message_ids',
+            'message_thread_id',
+            'disable_notification',
+            'protect_content'
+        ), MessageId::class);
+    }
+
+    /**
      * Use this method to copy messages of any kind.
      * Service messages and invoice messages can't be copied.
      * A quiz {@see https://core.telegram.org/bots/api#poll poll} can be copied only if the value of the field correct_option_id is known to the bot.
@@ -221,6 +254,43 @@ trait AvailableMethods
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_markup'
+        ), MessageId::class);
+    }
+
+    /**
+     * Use this method to copy messages of any kind.
+     * If some of the specified messages can't be found or copied, they are skipped.
+     * Service messages, giveaway messages, giveaway winners messages, and invoice messages can't be copied.
+     * A quiz {@see https://core.telegram.org/bots/api#poll poll} can be copied only if the value of the field correct_option_id is known to the bot.
+     * The method is analogous to the method {@see https://core.telegram.org/bots/api#forwardmessages forwardMessages}, but the copied messages don't have a link to the original message.
+     * Album grouping is kept for copied messages.
+     * On success, an array of {@see https://core.telegram.org/bots/api#messageid MessageId} of the sent messages is returned.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param int|string $from_chat_id Unique identifier for the chat where the original messages were sent (or channel username in the format &#64;channelusername)
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param array|null $message_ids Identifiers of 1-100 messages in the chat from_chat_id to copy. The identifiers must be specified in a strictly increasing order.
+     * @param bool|null $disable_notification Sends the messages silently. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the sent messages from forwarding and saving
+     * @param bool|null $remove_caption Pass True to copy the messages without their captions
+     * @return MessageId[]|null
+     */
+    public function copyMessages(
+        int|string $chat_id,
+        int|string $from_chat_id,
+        ?int $message_thread_id = null,
+        ?array $message_ids = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?bool $remove_caption = null,
+    ): ?array {
+        return $this->requestJson(__FUNCTION__, compact(
+            'chat_id',
+            'from_chat_id',
+            'message_thread_id',
+            'message_ids',
+            'disable_notification',
+            'protect_content',
+            'remove_caption'
         ), MessageId::class);
     }
 

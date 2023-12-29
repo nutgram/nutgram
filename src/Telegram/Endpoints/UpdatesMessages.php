@@ -184,4 +184,17 @@ trait UpdatesMessages
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id'));
     }
+
+    /**
+     * Use this method to delete multiple messages simultaneously.
+     * If some of the specified messages can't be found, they are skipped. Returns True on success.
+     * @see https://core.telegram.org/bots/api#deletemessages
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param int[] $message_ids Identifiers of 1-100 messages to delete. See {@see https://core.telegram.org/bots/api#deletemessage deleteMessage} for limitations on which messages can be deleted
+     * @return bool|null
+     */
+    public function deleteMessages(int|string $chat_id, array $message_ids): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_ids'));
+    }
 }
