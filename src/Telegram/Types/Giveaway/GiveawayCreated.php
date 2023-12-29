@@ -10,5 +10,4 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class GiveawayCreated extends BaseType
 {
-
 }
