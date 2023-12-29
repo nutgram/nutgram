@@ -45,14 +45,14 @@ class MessageReactionUpdated extends BaseType
 
     /**
      * Previous list of reaction types that were set by the user
-     * @var array
+     * @var ReactionType[]
      */
     #[ArrayType(ReactionType::class)]
     public array $old_reaction;
 
     /**
      * New list of reaction types that have been set by the user
-     * @var array
+     * @var ReactionType[]
      */
     #[ArrayType(ReactionType::class)]
     public array $new_reaction;
