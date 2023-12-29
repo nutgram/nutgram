@@ -15,6 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Forum\GeneralForumTopicHidden;
 use SergiX44\Nutgram\Telegram\Types\Forum\GeneralForumTopicUnhidden;
 use SergiX44\Nutgram\Telegram\Types\Forum\WriteAccessAllowed;
 use SergiX44\Nutgram\Telegram\Types\Game\Game;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\ExternalReplyInfo;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
@@ -138,6 +139,12 @@ class Message extends BaseType
      * Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
      */
     public ?Message $reply_to_message = null;
+
+    /**
+     * Optional.
+     * Information about the message that is being replied to, which may come from another chat or forum topic
+     */
+    public ?ExternalReplyInfo $external_reply = null;
 
     /**
      * Optional.
