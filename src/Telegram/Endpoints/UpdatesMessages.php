@@ -6,6 +6,7 @@ use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
@@ -28,6 +29,7 @@ trait UpdatesMessages
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message text. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
      * @param bool|null $disable_web_page_preview Disables link previews for links in this message
+     * @param LinkPreviewOptions|null $link_preview_options Link preview generation options for the message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @return Message|bool|null
      */
@@ -39,6 +41,7 @@ trait UpdatesMessages
         ParseMode|string|null $parse_mode = null,
         ?array $entities = null,
         ?bool $disable_web_page_preview = null,
+        ?LinkPreviewOptions $link_preview_options = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): Message|bool|null {
         $parameters = compact(

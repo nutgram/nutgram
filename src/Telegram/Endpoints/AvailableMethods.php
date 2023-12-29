@@ -31,6 +31,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
+use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageId;
@@ -97,6 +98,7 @@ trait AvailableMethods
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message text. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
      * @param bool|null $disable_web_page_preview Disables link previews for links in this message
+     * @param LinkPreviewOptions|null $link_preview_options Link preview generation options for the message
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
@@ -112,6 +114,7 @@ trait AvailableMethods
         ParseMode|string|null $parse_mode = null,
         ?array $entities = null,
         ?bool $disable_web_page_preview = null,
+        ?LinkPreviewOptions $link_preview_options = null,
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
