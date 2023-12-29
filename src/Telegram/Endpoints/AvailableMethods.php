@@ -34,6 +34,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageId;
+use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\User\UserProfilePhotos;
@@ -1020,6 +1021,36 @@ trait AvailableMethods
             'chat_id',
             'message_thread_id',
             'action'
+        ));
+    }
+
+    /**
+     * Use this method to change the chosen reactions on a message.
+     * Service messages can't be reacted to.
+     * Automatically forwarded messages from a channel to its discussion group have the same available reactions as messages in the channel.
+     * In albums, bots must react to the first message.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#setmessagereaction
+     * @param ReactionType[]|null $reaction Optional. New list of reaction types to set on the message. Currently, as non-premium users, bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already present on the message or explicitly allowed by chat administrators.
+     * @param bool|null $is_big Optional. Pass True to set the reaction with a big animation
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format [at]channelusername)
+     * @param int|null $message_id Identifier of the target message
+     * @return bool|null
+     */
+    public function setMessageReaction(
+        ?array $reaction = null,
+        ?bool $is_big = null,
+        int|string|null $chat_id = null,
+        ?int $message_id = null
+    ): ?bool {
+        $chat_id ??= $this->chat->id;
+        $message_id ??= $this->message_id;
+
+        return $this->requestJson(__FUNCTION__, compact(
+            'chat_id',
+            'message_id',
+            'reaction',
+            'is_big'
         ));
     }
 
