@@ -15,6 +15,9 @@ use SergiX44\Nutgram\Telegram\Types\Forum\GeneralForumTopicHidden;
 use SergiX44\Nutgram\Telegram\Types\Forum\GeneralForumTopicUnhidden;
 use SergiX44\Nutgram\Telegram\Types\Forum\WriteAccessAllowed;
 use SergiX44\Nutgram\Telegram\Types\Game\Game;
+use SergiX44\Nutgram\Telegram\Types\Giveaway\Giveaway;
+use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCreated;
+use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayWinners;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ExternalReplyInfo;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -497,6 +500,26 @@ class Message extends BaseType
      * Service message: the 'General' forum topic unhidden
      */
     public ?GeneralForumTopicUnhidden $general_forum_topic_unhidden = null;
+
+    /**
+     * Optional. Service message: a scheduled giveaway was created
+     */
+    public ?GiveawayCreated $giveaway_created = null;
+
+    /**
+     * Optional. The message is a scheduled giveaway message
+     */
+    public ?Giveaway $giveaway = null;
+
+    /**
+     * Optional. A giveaway with public winners was completed
+     */
+    public ?GiveawayWinners $giveaway_winners = null;
+
+    /**
+     * Optional. Service message: a giveaway without public winners was completed
+     */
+    public ?GiveawayCompleted $giveaway_completed = null;
 
     /**
      * Optional.
