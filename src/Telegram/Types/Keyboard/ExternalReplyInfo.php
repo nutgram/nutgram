@@ -32,7 +32,6 @@ use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
  */
 class ExternalReplyInfo extends BaseType
 {
-
     /**
      * Origin of the message replied to by the given message
      * @var MessageOrigin
