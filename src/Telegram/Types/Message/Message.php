@@ -16,6 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Forum\GeneralForumTopicUnhidden;
 use SergiX44\Nutgram\Telegram\Types\Forum\WriteAccessAllowed;
 use SergiX44\Nutgram\Telegram\Types\Game\Game;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\Giveaway;
+use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCompleted;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCreated;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayWinners;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ExternalReplyInfo;
