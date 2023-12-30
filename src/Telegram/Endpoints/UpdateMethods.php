@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
@@ -59,7 +60,7 @@ trait UpdateMethods
         ?InputFile $certificate = null,
         ?string $ip_address = null,
         ?int $max_connections = null,
-        ?array $allowed_updates = null,
+        ?array $allowed_updates = Configuration::DEFAULT_ALLOWED_UPDATES,
         ?bool $drop_pending_updates = null,
         ?string $secret_token = null
     ): ?bool {

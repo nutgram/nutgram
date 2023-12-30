@@ -36,6 +36,8 @@ final readonly class Configuration
         'my_chat_member',
         'chat_member',
         'chat_join_request',
+        'message_reaction',
+        'message_reaction_count',
     ];
     public const DEFAULT_ENABLE_HTTP2 = true;
 
