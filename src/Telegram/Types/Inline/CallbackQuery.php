@@ -3,7 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
-use SergiX44\Nutgram\Telegram\Types\Message\MaybeInaccessibleMessage;
+use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
@@ -22,9 +22,11 @@ class CallbackQuery extends BaseType
     public User $from;
 
     /**
-     * Optional. Message sent by the bot with the callback button that originated the query
+     * Optional.
+     * Message with the callback button that originated the query.
+     * Note that message content and message date will not be available if the message is too old
      */
-    public ?MaybeInaccessibleMessage $message = null;
+    public ?Message $message = null;
 
     /**
      * Optional.
