@@ -8,7 +8,8 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * This object defines the criteria used to request a suitable user.
  * The identifier of the selected user will be shared with the bot when the corresponding button is pressed.
  * {@see https://core.telegram.org/bots/features#chat-and-user-selection More about requesting users »}
- * @see https://core.telegram.org/bots/api#keyboardbuttonrequestuser
+ * @see https://core.telegram.org/bots/api#keyboardbuttonrequestusers
+ * @deprecated Use {@see KeyboardButtonRequestUsers} instead
  */
 class KeyboardButtonRequestUser extends BaseType
 {

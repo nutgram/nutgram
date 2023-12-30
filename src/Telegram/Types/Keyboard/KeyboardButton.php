@@ -26,8 +26,16 @@ class KeyboardButton extends BaseType implements JsonSerializable
      * If specified, pressing the button will open a list of suitable users.
      * Tapping on any user will send their identifier to the bot in a “user_shared” service message.
      * Available in private chats only.
+     * @deprecated Use $request_users instead
      */
     public ?KeyboardButtonRequestUser $request_user = null;
+
+    /**
+     * Optional. If specified, pressing the button will open a list of suitable users.
+     * Identifiers of selected users will be sent to the bot in a “users_shared” service message.
+     * Available in private chats only.
+     */
+    public ?KeyboardButtonRequestUsers $request_users = null;
 
     /**
      * Optional.

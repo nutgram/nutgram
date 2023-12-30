@@ -11,7 +11,7 @@ use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 /**
  * @mixin CollectHandlers
  */
-trait SpecialHandlers
+trait SpecialListeners
 {
     protected const FALLBACK = 'FALLBACK';
     protected const EXCEPTION = 'EXCEPTION';

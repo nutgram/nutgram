@@ -15,6 +15,11 @@ use SergiX44\Nutgram\Telegram\Types\Forum\GeneralForumTopicHidden;
 use SergiX44\Nutgram\Telegram\Types\Forum\GeneralForumTopicUnhidden;
 use SergiX44\Nutgram\Telegram\Types\Forum\WriteAccessAllowed;
 use SergiX44\Nutgram\Telegram\Types\Game\Game;
+use SergiX44\Nutgram\Telegram\Types\Giveaway\Giveaway;
+use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCompleted;
+use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCreated;
+use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayWinners;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\ExternalReplyInfo;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
@@ -38,6 +43,7 @@ use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UserShared;
+use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatEnded;
@@ -141,6 +147,17 @@ class Message extends BaseType
 
     /**
      * Optional.
+     * Information about the message that is being replied to, which may come from another chat or forum topic
+     */
+    public ?ExternalReplyInfo $external_reply = null;
+
+    /**
+     * Optional. For replies that quote part of the original message, the quoted part of the message
+     */
+    public ?TextQuote $quote = null;
+
+    /**
+     * Optional.
      * Bot through which the message was sent
      */
     public ?User $via_bot = null;
@@ -183,6 +200,12 @@ class Message extends BaseType
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $entities = null;
+
+    /**
+     * Optional. Options used for link preview generation for the message,
+     * if it is a text message and link preview options were changed
+     */
+    public ?LinkPreviewOptions $link_preview_options = null;
 
     /**
      * Optional.
@@ -402,8 +425,14 @@ class Message extends BaseType
     /**
      * Optional.
      * Service message: a user was shared with the bot
+     * @deprecated Use the $users_shared field instead
      */
     public ?UserShared $user_shared = null;
+
+    /**
+     * Optional. Service message: users were shared with the bot
+     */
+    public ?UsersShared $users_shared = null;
 
     /**
      * Optional.
@@ -472,6 +501,26 @@ class Message extends BaseType
      * Service message: the 'General' forum topic unhidden
      */
     public ?GeneralForumTopicUnhidden $general_forum_topic_unhidden = null;
+
+    /**
+     * Optional. Service message: a scheduled giveaway was created
+     */
+    public ?GiveawayCreated $giveaway_created = null;
+
+    /**
+     * Optional. The message is a scheduled giveaway message
+     */
+    public ?Giveaway $giveaway = null;
+
+    /**
+     * Optional. A giveaway with public winners was completed
+     */
+    public ?GiveawayWinners $giveaway_winners = null;
+
+    /**
+     * Optional. Service message: a giveaway without public winners was completed
+     */
+    public ?GiveawayCompleted $giveaway_completed = null;
 
     /**
      * Optional.
@@ -574,6 +623,8 @@ class Message extends BaseType
             $this->pinned_message !== null => MessageType::PINNED_MESSAGE,
             $this->invoice !== null => MessageType::INVOICE,
             $this->successful_payment !== null => MessageType::SUCCESSFUL_PAYMENT,
+            $this->users_shared !== null => MessageType::USERS_SHARED,
+            $this->chat_shared !== null => MessageType::CHAT_SHARED,
             $this->message_auto_delete_timer_changed !== null => MessageType::MESSAGE_AUTO_DELETE_TIMER_CHANGED,
             $this->connected_website !== null => MessageType::CONNECTED_WEBSITE,
             $this->passport_data !== null => MessageType::PASSPORT_DATA,
@@ -582,6 +633,10 @@ class Message extends BaseType
             $this->forum_topic_edited !== null => MessageType::FORUM_TOPIC_EDITED,
             $this->forum_topic_closed !== null => MessageType::FORUM_TOPIC_CLOSED,
             $this->forum_topic_reopened !== null => MessageType::FORUM_TOPIC_REOPENED,
+            $this->giveaway_created !== null => MessageType::GIVEAWAY_CREATED,
+            $this->giveaway !== null => MessageType::GIVEAWAY,
+            $this->giveaway_winners !== null => MessageType::GIVEAWAY_WINNERS,
+            $this->giveaway_completed !== null => MessageType::GIVEAWAY_COMPLETED,
             $this->video_chat_scheduled !== null => MessageType::VIDEO_CHAT_SCHEDULED,
             $this->video_chat_started !== null => MessageType::VIDEO_CHAT_STARTED,
             $this->video_chat_ended !== null => MessageType::VIDEO_CHAT_ENDED,
@@ -749,5 +804,14 @@ class Message extends BaseType
             disable_notification: $disable_notification,
             protect_content: $protect_content,
         );
+    }
+
+    /**
+     * Check if this message is deleted or is inaccessible to the bot.
+     * @return bool
+     */
+    public function isInaccessible(): bool
+    {
+        return $this->date === 0;
     }
 }

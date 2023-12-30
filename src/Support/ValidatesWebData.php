@@ -24,7 +24,7 @@ trait ValidatesWebData
             throw new InvalidDataException('Invalid webapp data');
         }
 
-        return $this->hydrator->hydrate($this->queryStringToArray($queryString, true), WebAppData::class);
+        return $this->hydrator->hydrate($this->queryStringToArray($queryString), WebAppData::class);
     }
 
     /**
@@ -43,7 +43,7 @@ trait ValidatesWebData
             throw new InvalidDataException('Invalid login data');
         }
 
-        return $this->hydrator->hydrate($this->queryStringToArray($queryString, true), LoginData::class);
+        return $this->hydrator->hydrate($this->queryStringToArray($queryString), LoginData::class);
     }
 
     protected function createHashHmac(string $data, string $secretKey): string
@@ -56,20 +56,10 @@ trait ValidatesWebData
         return hash('sha256', $data, true);
     }
 
-    protected function queryStringToArray(string $queryString, bool $decodeSerialized = false): array
+    protected function queryStringToArray(string $queryString): array
     {
         $data = [];
         parse_str($queryString, $data);
-
-        if ($decodeSerialized) {
-            $keysToDecode = ['user', 'receiver', 'chat'];
-            foreach ($keysToDecode as $key) {
-                if (array_key_exists($key, $data)) {
-                    $data[$key] = json_decode($data[$key], true);
-                }
-            }
-        }
-
         return $data;
     }
 

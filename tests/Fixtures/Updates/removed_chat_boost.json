@@ -1,0 +1,22 @@
+{
+  "update_id": 1,
+  "removed_chat_boost": {
+    "chat": {
+      "id": 456,
+      "first_name": "Mario",
+      "username": "Bros",
+      "type": "private"
+    },
+    "boost_id": "qwerty",
+    "remove_date": 12345679,
+    "source": {
+      "source": "premium",
+      "user": {
+        "id": 123,
+        "is_bot": false,
+        "first_name": "Mario",
+        "username": "Bros"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "update_id": 1,
+  "chat_boost": {
+    "chat": {
+      "id": 456,
+      "first_name": "Mario",
+      "username": "Bros",
+      "type": "private"
+    },
+    "boost": {
+      "boost_id": "qwerty",
+      "add_date": 12345679,
+      "expiration_date": 23456789,
+      "source": {
+        "source": "premium",
+        "user": {
+          "id": 123,
+          "is_bot": false,
+          "first_name": "Mario",
+          "username": "Bros"
+        }
+      }
+    }
+  }
+}

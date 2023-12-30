@@ -34,6 +34,8 @@ enum MessageType: string
     case PINNED_MESSAGE = 'pinned_message';
     case INVOICE = 'invoice';
     case SUCCESSFUL_PAYMENT = 'successful_payment';
+    case USERS_SHARED = 'users_shared';
+    case CHAT_SHARED = 'chat_shared';
     case CONNECTED_WEBSITE = 'connected_website';
     case PASSPORT_DATA = 'passport_data';
     case PROXIMITY_ALERT_TRIGGERED = 'proximity_alert_triggered';
@@ -41,6 +43,10 @@ enum MessageType: string
     case FORUM_TOPIC_EDITED = 'forum_topic_edited';
     case FORUM_TOPIC_CLOSED = 'forum_topic_closed';
     case FORUM_TOPIC_REOPENED = 'forum_topic_reopened';
+    case GIVEAWAY_CREATED = 'giveaway_created';
+    case GIVEAWAY = 'giveaway';
+    case GIVEAWAY_WINNERS = 'giveaway_winners';
+    case GIVEAWAY_COMPLETED = 'giveaway_completed';
     case VIDEO_CHAT_SCHEDULED = 'video_chat_scheduled';
     case VIDEO_CHAT_STARTED = 'video_chat_started';
     case VIDEO_CHAT_ENDED = 'video_chat_ended';

@@ -6,6 +6,7 @@ use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Game\GameHighScore;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
 
 /**
  * Trait Games
@@ -25,6 +26,7 @@ trait Games
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game.
      * @return Message|null
      */
@@ -36,6 +38,7 @@ trait Games
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): ?Message {
         $chat_id ??= $this->chatId();

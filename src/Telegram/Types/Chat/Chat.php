@@ -2,9 +2,11 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 
 /**
  * This object represents a chat.
@@ -67,6 +69,47 @@ class Chat extends BaseType
      * @var string[] $active_usernames
      */
     public ?array $active_usernames = null;
+
+    /**
+     * Optional.
+     * List of available reactions allowed in the chat.
+     * If omitted, then all {@see https://core.telegram.org/bots/api#reactiontypeemoji emoji reactions} are allowed.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * @var ReactionType[] $available_reactions
+     */
+    #[ArrayType(ReactionType::class)]
+    public ?array $available_reactions = null;
+
+    /**
+     * Optional.
+     * Identifier of the accent color for the chat name and backgrounds of the chat photo, reply header, and link preview.
+     * See {@see https://core.telegram.org/bots/api#accent-colors accent colors} for more details.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * Always returned in getChat.
+     */
+    public ?int $accent_color_id = null;
+
+    /**
+     * Optional.
+     * Custom emoji identifier of emoji chosen by the chat for the reply header and link preview background.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?string $background_custom_emoji_id = null;
+
+    /**
+     * Optional.
+     * Identifier of the accent color for the chat's profile background.
+     * See {@see https://core.telegram.org/bots/api#profile-accent-colors profile accent colors} for more details.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?int $profile_accent_color_id = null;
+
+    /**
+     * Optional.
+     * Custom emoji identifier of the emoji chosen by the chat for its profile background.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?string $profile_background_custom_emoji_id = null;
 
     /**
      * Optional.
@@ -182,6 +225,12 @@ class Chat extends BaseType
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?bool $has_protected_content = null;
+
+    /**
+     * Optional. True, if new chat members will have access to old messages; available only to chat administrators.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?bool $has_visible_history = null;
 
     /**
      * Optional.

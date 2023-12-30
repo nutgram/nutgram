@@ -388,6 +388,26 @@ trait MessageListeners
      * @param $callable
      * @return Handler
      */
+    public function onUsersShared($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::USERS_SHARED->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onChatShared($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::CHAT_SHARED->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
     public function onConnectedWebsite($callable): Handler
     {
         $this->checkFinalized();
@@ -452,6 +472,46 @@ trait MessageListeners
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::FORUM_TOPIC_REOPENED->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onGiveawayCreated($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::GIVEAWAY_CREATED->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onGiveaway($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::GIVEAWAY->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onGiveawayWinners($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::GIVEAWAY_WINNERS->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
+    public function onGiveawayCompleted($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::GIVEAWAY_COMPLETED->value][] = new Handler($callable);
     }
 
     /**

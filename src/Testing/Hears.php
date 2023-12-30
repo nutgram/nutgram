@@ -110,7 +110,7 @@ trait Hears
     public function hearCallbackQueryData(string $value): self
     {
         return $this->hearUpdateType(UpdateType::CALLBACK_QUERY, [
-            'message' => ['from' => []],
+            'message' => ['from' => [], 'date' => 1703892479],
             'data' => $value,
         ]);
     }

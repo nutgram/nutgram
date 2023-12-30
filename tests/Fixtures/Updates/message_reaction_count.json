@@ -1,0 +1,22 @@
+{
+  "update_id": 1234567,
+  "message_reaction_count": {
+    "chat": {
+      "id": -100123456789,
+      "title": "Cadrega",
+      "username": "CadregaPosts",
+      "type": "channel"
+    },
+    "message_id": 4,
+    "date": 1703961409,
+    "reactions": [
+      {
+        "type": {
+          "type": "emoji",
+          "emoji": "❤️"
+        },
+        "total_count": 2
+      }
+    ]
+  }
+}

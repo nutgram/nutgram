@@ -5,6 +5,8 @@ namespace SergiX44\Nutgram\Telegram\Types\Common;
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostRemoved;
+use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
@@ -16,6 +18,8 @@ use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingQuery;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollAnswer;
+use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
+use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
@@ -55,6 +59,21 @@ class Update extends BaseType
      * New version of a channel post that is known to the bot and was edited
      */
     public ?Message $edited_channel_post = null;
+
+    /**
+     * Optional.
+     * A reaction to a message was changed by a user.
+     * The bot must be an administrator in the chat and must explicitly specify "message_reaction" in the list of allowed_updates to receive these updates.
+     * The update isn't received for reactions set by bots.
+     */
+    public ?MessageReactionUpdated $message_reaction = null;
+
+    /**
+     * Optional.
+     * Reactions to a message with anonymous reactions were changed.
+     * The bot must be an administrator in the chat and must explicitly specify "message_reaction_count" in the list of allowed_updates to receive these updates.
+     */
+    public ?MessageReactionCountUpdated $message_reaction_count = null;
 
     /**
      * Optional.
@@ -125,6 +144,20 @@ class Update extends BaseType
     public ?ChatJoinRequest $chat_join_request = null;
 
     /**
+     * Optional.
+     * A chat boost was added or changed.
+     * The bot must be an administrator in the chat to receive these updates.
+     */
+    public ?ChatBoostUpdated $chat_boost = null;
+
+    /**
+     * Optional.
+     * A boost was removed from a chat.
+     * The bot must be an administrator in the chat to receive these updates.
+     */
+    public ?ChatBoostRemoved $removed_chat_boost = null;
+
+    /**
      * Return the current update type
      * @return UpdateType|null
      */
@@ -135,6 +168,8 @@ class Update extends BaseType
             $this->edited_message !== null => UpdateType::EDITED_MESSAGE,
             $this->channel_post !== null => UpdateType::CHANNEL_POST,
             $this->edited_channel_post !== null => UpdateType::EDITED_CHANNEL_POST,
+            $this->message_reaction !== null => UpdateType::MESSAGE_REACTION,
+            $this->message_reaction_count !== null => UpdateType::MESSAGE_REACTION_COUNT,
             $this->inline_query !== null => UpdateType::INLINE_QUERY,
             $this->chosen_inline_result !== null => UpdateType::CHOSEN_INLINE_RESULT,
             $this->callback_query !== null => UpdateType::CALLBACK_QUERY,
@@ -145,6 +180,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => UpdateType::MY_CHAT_MEMBER,
             $this->chat_member !== null => UpdateType::CHAT_MEMBER,
             $this->chat_join_request !== null => UpdateType::CHAT_JOIN_REQUEST,
+            $this->chat_boost !== null => UpdateType::CHAT_BOOST,
+            $this->removed_chat_boost !== null => UpdateType::REMOVED_CHAT_BOOST,
             default => null
         };
     }
@@ -160,6 +197,8 @@ class Update extends BaseType
             $this->edited_message !== null => $this->edited_message->from,
             $this->channel_post !== null => $this->channel_post->from,
             $this->edited_channel_post !== null => $this->edited_channel_post->from,
+            $this->message_reaction !== null => $this->message_reaction->user,
+            // message_reaction_count doesn't have a user
             $this->inline_query !== null => $this->inline_query->from,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from,
             $this->callback_query !== null => $this->callback_query->from,
@@ -170,6 +209,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->from,
             $this->chat_member !== null => $this->chat_member->from,
             $this->chat_join_request !== null => $this->chat_join_request->from,
+            $this->chat_boost !== null => $this->chat_boost->boost->source->user,
+            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user,
             default => null,
         };
     }
@@ -181,6 +222,8 @@ class Update extends BaseType
             $this->edited_message !== null => $this->edited_message->from = $user,
             $this->channel_post !== null => $this->channel_post->from = $user,
             $this->edited_channel_post !== null => $this->edited_channel_post->from = $user,
+            $this->message_reaction !== null => $this->message_reaction->user = $user,
+            // message_reaction_count: nope
             $this->inline_query !== null => $this->inline_query->from = $user,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from = $user,
             $this->callback_query !== null => $this->callback_query->from = $user,
@@ -190,6 +233,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->from = $user,
             $this->chat_member !== null => $this->chat_member->from = $user,
             $this->chat_join_request !== null => $this->chat_join_request->from = $user,
+            $this->chat_boost !== null => $this->chat_boost->boost->source->user = $user,
+            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user = $user,
             default => null,
         };
     }
@@ -201,6 +246,8 @@ class Update extends BaseType
             $this->edited_message !== null => $this->edited_message->chat,
             $this->channel_post !== null => $this->channel_post->chat,
             $this->edited_channel_post !== null => $this->edited_channel_post->chat,
+            $this->message_reaction !== null => $this->message_reaction->chat,
+            $this->message_reaction_count !== null => $this->message_reaction_count->chat,
             // inline query doesn't have a chat
             // chosen inline result doesn't have a chat
             $this->callback_query !== null => $this->callback_query->message?->chat,
@@ -211,6 +258,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->chat,
             $this->chat_member !== null => $this->chat_member->chat,
             $this->chat_join_request !== null => $this->chat_join_request->chat,
+            $this->chat_boost !== null => $this->chat_boost->chat,
+            $this->removed_chat_boost !== null => $this->removed_chat_boost->chat,
             default => null
         };
     }
@@ -222,11 +271,15 @@ class Update extends BaseType
             $this->edited_message !== null => $this->edited_message->chat = $chat,
             $this->channel_post !== null => $this->channel_post->chat = $chat,
             $this->edited_channel_post !== null => $this->edited_channel_post->chat = $chat,
+            $this->message_reaction !== null => $this->message_reaction->chat = $chat,
+            $this->message_reaction_count !== null => $this->message_reaction_count->chat = $chat,
             $this->callback_query !== null => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
             $this->poll_answer !== null => $chat,
             $this->my_chat_member !== null => $this->my_chat_member->chat = $chat,
             $this->chat_member !== null => $this->chat_member->chat = $chat,
             $this->chat_join_request !== null => $this->chat_join_request->chat = $chat,
+            $this->chat_boost !== null => $this->chat_boost->chat = $chat,
+            $this->removed_chat_boost !== null => $this->removed_chat_boost->chat = $chat,
             default => null
         };
     }

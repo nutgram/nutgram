@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Properties\DiceEmoji;
 use SergiX44\Nutgram\Telegram\Properties\ForumIconColor;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Properties\PollType;
+use SergiX44\Nutgram\Telegram\Types\Boost\UserChatBoosts;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -31,9 +32,12 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
+use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageId;
+use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
+use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\User\UserProfilePhotos;
@@ -95,10 +99,12 @@ trait AvailableMethods
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message text. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
      * @param bool|null $disable_web_page_preview Disables link previews for links in this message
+     * @param LinkPreviewOptions|null $link_preview_options Link preview generation options for the message
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @return Message|null
      */
@@ -109,10 +115,12 @@ trait AvailableMethods
         ParseMode|string|null $parse_mode = null,
         ?array $entities = null,
         ?bool $disable_web_page_preview = null,
+        ?LinkPreviewOptions $link_preview_options = null,
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -165,6 +173,39 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to forward multiple messages of any kind.
+     * If some of the specified messages can't be found or forwarded, they are skipped.
+     * Service messages and messages with protected content can't be forwarded.
+     * Album grouping is kept for forwarded messages.
+     * On success, an array of {@see https://core.telegram.org/bots/api#messageid MessageId} of the sent messages is returned.
+     * @see https://core.telegram.org/bots/api#forwardmessages
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param int|string $from_chat_id Unique identifier for the chat where the original messages were sent (or channel username in the format &#64;channelusername)
+     * @param array $message_ids Identifiers of 1-100 messages in the chat from_chat_id to forward. The identifiers must be specified in a strictly increasing order.
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param bool|null $disable_notification Sends the messages {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the forwarded messages from forwarding and saving
+     * @return MessageId[]|null
+     */
+    public function forwardMessages(
+        int|string $chat_id,
+        int|string $from_chat_id,
+        array $message_ids,
+        ?int $message_thread_id = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+    ): ?array {
+        return $this->requestJson(__FUNCTION__, compact(
+            'chat_id',
+            'from_chat_id',
+            'message_ids',
+            'message_thread_id',
+            'disable_notification',
+            'protect_content'
+        ), MessageId::class);
+    }
+
+    /**
      * Use this method to copy messages of any kind.
      * Service messages and invoice messages can't be copied.
      * A quiz {@see https://core.telegram.org/bots/api#poll poll} can be copied only if the value of the field correct_option_id is known to the bot.
@@ -182,6 +223,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @return MessageId|null
      */
@@ -197,6 +239,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?MessageId {
         return $this->requestJson(__FUNCTION__, compact(
@@ -216,6 +259,43 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to copy messages of any kind.
+     * If some of the specified messages can't be found or copied, they are skipped.
+     * Service messages, giveaway messages, giveaway winners messages, and invoice messages can't be copied.
+     * A quiz {@see https://core.telegram.org/bots/api#poll poll} can be copied only if the value of the field correct_option_id is known to the bot.
+     * The method is analogous to the method {@see https://core.telegram.org/bots/api#forwardmessages forwardMessages}, but the copied messages don't have a link to the original message.
+     * Album grouping is kept for copied messages.
+     * On success, an array of {@see https://core.telegram.org/bots/api#messageid MessageId} of the sent messages is returned.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param int|string $from_chat_id Unique identifier for the chat where the original messages were sent (or channel username in the format &#64;channelusername)
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param array|null $message_ids Identifiers of 1-100 messages in the chat from_chat_id to copy. The identifiers must be specified in a strictly increasing order.
+     * @param bool|null $disable_notification Sends the messages silently. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the sent messages from forwarding and saving
+     * @param bool|null $remove_caption Pass True to copy the messages without their captions
+     * @return MessageId[]|null
+     */
+    public function copyMessages(
+        int|string $chat_id,
+        int|string $from_chat_id,
+        ?int $message_thread_id = null,
+        ?array $message_ids = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?bool $remove_caption = null,
+    ): ?array {
+        return $this->requestJson(__FUNCTION__, compact(
+            'chat_id',
+            'from_chat_id',
+            'message_thread_id',
+            'message_ids',
+            'disable_notification',
+            'protect_content',
+            'remove_caption'
+        ), MessageId::class);
+    }
+
+    /**
      * Use this method to send photos.
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#sendphoto
@@ -230,6 +310,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param array $clientOpt Client options
      * @return Message|null
@@ -246,6 +327,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
@@ -287,6 +369,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param array $clientOpt Client options
      * @return Message|null
@@ -306,6 +389,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
@@ -347,6 +431,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param array $clientOpt Client options
      * @return Message|null
@@ -364,6 +449,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
@@ -407,6 +493,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param array $clientOpt Client options
      * @return Message|null
@@ -428,6 +515,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
@@ -474,6 +562,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param array $clientOpt Client options
      * @return Message|null
@@ -494,6 +583,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
@@ -536,6 +626,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param array $clientOpt Client options
      * @return Message|null
@@ -552,6 +643,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
@@ -588,6 +680,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param array $clientOpt Client options
      * @return Message|null
@@ -603,6 +696,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
     ): ?Message {
@@ -635,6 +729,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent messages from forwarding and saving
      * @param int|null $reply_to_message_id If the messages are a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param array $clientOpt Client options
      * @return Message[]|null
      */
@@ -646,6 +741,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         array $clientOpt = [],
     ): ?array {
         $chat_id ??= $this->chatId();
@@ -679,6 +775,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @return Message|null
      */
@@ -695,6 +792,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -804,6 +902,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @return Message|null
      */
@@ -822,6 +921,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -858,6 +958,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @return Message|null
      */
@@ -872,6 +973,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -912,6 +1014,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @return Message|null
      */
@@ -934,6 +1037,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -974,6 +1078,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @return Message|null
      */
@@ -985,6 +1090,7 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
+        ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -1020,6 +1126,36 @@ trait AvailableMethods
             'chat_id',
             'message_thread_id',
             'action'
+        ));
+    }
+
+    /**
+     * Use this method to change the chosen reactions on a message.
+     * Service messages can't be reacted to.
+     * Automatically forwarded messages from a channel to its discussion group have the same available reactions as messages in the channel.
+     * In albums, bots must react to the first message.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#setmessagereaction
+     * @param ReactionType[]|null $reaction Optional. New list of reaction types to set on the message. Currently, as non-premium users, bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already present on the message or explicitly allowed by chat administrators.
+     * @param bool|null $is_big Optional. Pass True to set the reaction with a big animation
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format [at]channelusername)
+     * @param int|null $message_id Identifier of the target message
+     * @return bool|null
+     */
+    public function setMessageReaction(
+        ?array $reaction = null,
+        ?bool $is_big = null,
+        int|string|null $chat_id = null,
+        ?int $message_id = null
+    ): ?bool {
+        $chat_id ??= $this->chat->id;
+        $message_id ??= $this->message_id;
+
+        return $this->requestJson(__FUNCTION__, compact(
+            'chat_id',
+            'message_id',
+            'reaction',
+            'is_big'
         ));
     }
 
@@ -1797,6 +1933,20 @@ trait AvailableMethods
         );
 
         return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to get the list of boosts added to a chat by a user.
+     * Requires administrator rights in the chat.
+     * Returns a UserChatBoosts object.
+     * @see https://core.telegram.org/bots/api#getuserchatboosts
+     * @param int|string|null $chat_id Unique identifier for the chat or username of the channel (in the format &#64;channelusername)
+     * @param int|null $user_id Unique identifier of the target user
+     * @return UserChatBoosts|null
+     */
+    public function getUserChatBoosts(int|string $chat_id = null, int $user_id = null): ?UserChatBoosts
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), UserChatBoosts::class);
     }
 
     /**

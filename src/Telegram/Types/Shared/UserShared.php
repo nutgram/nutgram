@@ -6,7 +6,8 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object contains information about the user whose identifier was shared with the bot using a {@see https://core.telegram.org/bots/api#keyboardbuttonrequestuser KeyboardButtonRequestUser} button.
- * @see https://core.telegram.org/bots/api#usershared
+ * @see https://core.telegram.org/bots/api#usersshared
+ * @deprecated Use {@see UsersShared} instead
  */
 class UserShared extends BaseType
 {
