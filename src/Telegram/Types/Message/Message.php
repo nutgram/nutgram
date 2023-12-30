@@ -799,4 +799,13 @@ class Message extends BaseType
             protect_content: $protect_content,
         );
     }
+
+    /**
+     * Check if this message is deleted or is inaccessible to the bot.
+     * @return bool
+     */
+    public function isInaccessible(): bool
+    {
+        return $this->date === 0;
+    }
 }
