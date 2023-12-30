@@ -168,6 +168,8 @@ class Update extends BaseType
             $this->edited_message !== null => UpdateType::EDITED_MESSAGE,
             $this->channel_post !== null => UpdateType::CHANNEL_POST,
             $this->edited_channel_post !== null => UpdateType::EDITED_CHANNEL_POST,
+            $this->message_reaction !== null => UpdateType::MESSAGE_REACTION,
+            $this->message_reaction_count !== null => UpdateType::MESSAGE_REACTION_COUNT,
             $this->inline_query !== null => UpdateType::INLINE_QUERY,
             $this->chosen_inline_result !== null => UpdateType::CHOSEN_INLINE_RESULT,
             $this->callback_query !== null => UpdateType::CALLBACK_QUERY,
@@ -178,6 +180,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => UpdateType::MY_CHAT_MEMBER,
             $this->chat_member !== null => UpdateType::CHAT_MEMBER,
             $this->chat_join_request !== null => UpdateType::CHAT_JOIN_REQUEST,
+            $this->chat_boost !== null => UpdateType::CHAT_BOOST,
+            $this->removed_chat_boost !== null => UpdateType::REMOVED_CHAT_BOOST,
             default => null
         };
     }
@@ -193,6 +197,8 @@ class Update extends BaseType
             $this->edited_message !== null => $this->edited_message->from,
             $this->channel_post !== null => $this->channel_post->from,
             $this->edited_channel_post !== null => $this->edited_channel_post->from,
+            $this->message_reaction !== null => $this->message_reaction->user,
+            // message_reaction_count doesn't have a user
             $this->inline_query !== null => $this->inline_query->from,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from,
             $this->callback_query !== null => $this->callback_query->from,
@@ -203,6 +209,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->from,
             $this->chat_member !== null => $this->chat_member->from,
             $this->chat_join_request !== null => $this->chat_join_request->from,
+            $this->chat_boost !== null => $this->chat_boost->boost->source->user,
+            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user,
             default => null,
         };
     }
@@ -214,6 +222,8 @@ class Update extends BaseType
             $this->edited_message !== null => $this->edited_message->from = $user,
             $this->channel_post !== null => $this->channel_post->from = $user,
             $this->edited_channel_post !== null => $this->edited_channel_post->from = $user,
+            // message_reaction: nope
+            // message_reaction_count: nope
             $this->inline_query !== null => $this->inline_query->from = $user,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from = $user,
             $this->callback_query !== null => $this->callback_query->from = $user,
@@ -223,6 +233,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->from = $user,
             $this->chat_member !== null => $this->chat_member->from = $user,
             $this->chat_join_request !== null => $this->chat_join_request->from = $user,
+            // chat_boost: nope
+            // removed_chat_boost: nope
             default => null,
         };
     }
@@ -234,6 +246,8 @@ class Update extends BaseType
             $this->edited_message !== null => $this->edited_message->chat,
             $this->channel_post !== null => $this->channel_post->chat,
             $this->edited_channel_post !== null => $this->edited_channel_post->chat,
+            $this->message_reaction !== null => $this->message_reaction->chat,
+            $this->message_reaction_count !== null => $this->message_reaction_count->chat,
             // inline query doesn't have a chat
             // chosen inline result doesn't have a chat
             $this->callback_query !== null => $this->callback_query->message?->chat,
@@ -244,6 +258,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->chat,
             $this->chat_member !== null => $this->chat_member->chat,
             $this->chat_join_request !== null => $this->chat_join_request->chat,
+            $this->chat_boost !== null => $this->chat_boost->chat,
+            $this->removed_chat_boost !== null => $this->removed_chat_boost->chat,
             default => null
         };
     }
@@ -255,11 +271,15 @@ class Update extends BaseType
             $this->edited_message !== null => $this->edited_message->chat = $chat,
             $this->channel_post !== null => $this->channel_post->chat = $chat,
             $this->edited_channel_post !== null => $this->edited_channel_post->chat = $chat,
+            // message_reaction: nope
+            // message_reaction_count: nope
             $this->callback_query !== null => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
             $this->poll_answer !== null => $chat,
             $this->my_chat_member !== null => $this->my_chat_member->chat = $chat,
             $this->chat_member !== null => $this->chat_member->chat = $chat,
             $this->chat_join_request !== null => $this->chat_join_request->chat = $chat,
+            // chat_boost: nope
+            // removed_chat_boost: nope
             default => null
         };
     }

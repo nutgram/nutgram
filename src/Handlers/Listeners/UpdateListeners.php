@@ -63,6 +63,18 @@ trait UpdateListeners
         return $this->{$this->target}[UpdateType::EDITED_CHANNEL_POST->value][] = new Handler($callable);
     }
 
+    public function onMessageReaction($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE_REACTION->value][] = new Handler($callable);
+    }
+
+    public function onMessageReactionCount($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE_REACTION_COUNT->value][] = new Handler($callable);
+    }
+
     /**
      * @param $callable
      * @return Handler
@@ -211,5 +223,17 @@ trait UpdateListeners
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::CHAT_JOIN_REQUEST->value][] = new Handler($callable);
+    }
+
+    public function onChatBoost($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::CHAT_BOOST->value][] = new Handler($callable);
+    }
+
+    public function onRemovedChatBoost($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::REMOVED_CHAT_BOOST->value][] = new Handler($callable);
     }
 }

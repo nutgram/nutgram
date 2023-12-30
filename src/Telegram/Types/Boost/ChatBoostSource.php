@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Boost;
 
 use SergiX44\Nutgram\Telegram\Properties\ChatBoostSourceSource;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object describes the source of a chat boost. It can be one of
@@ -19,4 +20,11 @@ abstract class ChatBoostSource extends BaseType
      * Source of the boost
      */
     public ChatBoostSourceSource $source;
+
+    /**
+     * User that boosted the chat;
+     * User for which the gift code was created;
+     * Optional. User that won the prize in the giveaway if any;
+     */
+    public ?User $user = null;
 }
