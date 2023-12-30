@@ -5,13 +5,13 @@ namespace SergiX44\Nutgram\Handlers;
 
 use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\Listeners\MessageListeners;
-use SergiX44\Nutgram\Handlers\Listeners\SpecialHandlers;
+use SergiX44\Nutgram\Handlers\Listeners\SpecialListeners;
 use SergiX44\Nutgram\Handlers\Listeners\UpdateListeners;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 abstract class CollectHandlers
 {
-    use UpdateListeners, MessageListeners, SpecialHandlers;
+    use UpdateListeners, MessageListeners, SpecialListeners;
 
     /**
      * @var array
