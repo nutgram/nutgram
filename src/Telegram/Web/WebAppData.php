@@ -3,6 +3,8 @@
 namespace SergiX44\Nutgram\Telegram\Web;
 
 use DateTime;
+use SergiX44\Hydrator\Annotation\Mutate;
+use SergiX44\Hydrator\Mutations\JsonDecodeArray;
 
 class WebAppData extends Entity
 {
@@ -15,6 +17,7 @@ class WebAppData extends Entity
     /**
      * Optional. An object containing data about the current user.
      */
+    #[Mutate(JsonDecodeArray::class)]
     public ?WebAppUser $user = null;
 
     /**
@@ -22,12 +25,14 @@ class WebAppData extends Entity
      * current user in the chat where the bot was launched via the attachment menu.
      * Returned only for private chats and only for Web Apps launched via the attachment menu.
      */
+    #[Mutate(JsonDecodeArray::class)]
     public ?WebAppUser $receiver = null;
 
     /**
      * Optional. An object containing data about the chat where the bot was launched via the attachment menu.
      * Returned for supergroups, channels and group chats – only for Web Apps launched via the attachment menu.
      */
+    #[Mutate(JsonDecodeArray::class)]
     public ?WebAppChat $chat = null;
 
     /**

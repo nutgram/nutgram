@@ -2,6 +2,10 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
+use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostRemoved;
+use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
+use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
+use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
 
 it('calls onMessage() handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -63,6 +67,32 @@ it('calls onEditedChannelPost() handler', function ($update) {
     expect($bot->get('called'))->toBeTrue();
 })->with('edited_channel_post');
 
+it('calls onMessageReaction() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessageReaction(function (Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->messageReaction())->toBeInstanceOf(MessageReactionUpdated::class);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('message_reaction');
+
+it('calls onMessageReactionCount() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessageReactionCount(function (Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->messageReactionCount())->toBeInstanceOf(MessageReactionCountUpdated::class);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('message_reaction_count');
+
 it('calls onInlineQuery() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
@@ -116,6 +146,7 @@ it('calls onCallbackQuery() handler', function ($update) {
 
     $bot->onCallbackQuery(function (Nutgram $bot) {
         $bot->set('called', true);
+        expect($bot->message()->isInaccessible())->toBeFalse();
     });
 
     $bot->run();
@@ -134,6 +165,19 @@ it('calls onCallbackQueryData() handler', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('callback_query');
+
+it('calls onCallbackQuery() handler with inaccessible message', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onCallbackQuery(function (Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->message()->isInaccessible())->toBeTrue();
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('callback_query_inaccessible_message');
 
 it('calls onShippingQuery() handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -230,3 +274,29 @@ it('calls onChatJoinRequest() handler', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('chat_join_request');
+
+it('calls onChatBoost() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onChatBoost(function (Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->chatBoost())->toBeInstanceOf(ChatBoostUpdated::class);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('chat_boost');
+
+it('calls onRemovedChatBoost() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onRemovedChatBoost(function (Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->removedChatBoost())->toBeInstanceOf(ChatBoostRemoved::class);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('removed_chat_boost');

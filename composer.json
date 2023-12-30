@@ -31,7 +31,7 @@
       "illuminate/macroable": "^8.0|^9.0|^10.0",
       "laravel/serializable-closure": "^1.2",
       "sergix44/container": "^2.1",
-      "nutgram/hydrator": "^5.0",
+      "nutgram/hydrator": "^5.0.1",
       "psr/log": "^1.0|^2.0|^3.0",
       "psr/simple-cache": "^1.0|^2.0|^3.0"
     },

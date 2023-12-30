@@ -12,7 +12,7 @@ class ChatBoostSourceResolver extends ConcreteResolver
 {
     public function concreteFor(array $data): ?string
     {
-        $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
+        $type = $data['source'] ?? throw new InvalidArgumentException('Type must be defined');
 
         return match ($type) {
             ChatBoostSourceSource::PREMIUM->value => ChatBoostSourcePremium::class,

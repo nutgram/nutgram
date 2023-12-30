@@ -34,7 +34,7 @@ class ReactionTypeEmoji extends ReactionType
     public const WOOZY_FACE = '🥴';
     public const SMILING_FACE_WITH_HEART_EYES = '😍';
     public const WHALE = '🐳';
-    public const FIRING_HEART = "❤\u{200D}🔥";
+    public const FIRING_HEART = "❤‍🔥";
     public const NEW_MOON_FACE = '🌚';
     public const HOT_DOG = '🌭';
     public const HUNDRED_POINTS = '💯';
@@ -54,7 +54,7 @@ class ReactionTypeEmoji extends ReactionType
     public const LOUDLY_CRYING_FACE = '😭';
     public const NERD_FACE = '🤓';
     public const GHOST = '👻';
-    public const MAN_TECHNOLOGIST = "👨🏻\u{200D}💻";
+    public const MAN_TECHNOLOGIST = "👨‍💻";
     public const EYES = '👀';
     public const JACK_O_LANTERN = '🎃';
     public const SEE_NO_EVIL = '🙈';
@@ -79,9 +79,9 @@ class ReactionTypeEmoji extends ReactionType
     public const SPEAK_NO_EVIL = '🙊';
     public const SMILING_FACE_WITH_SUNGLASSES = '😎';
     public const ALIEN_MONSTER = '👾';
-    public const SHRUGGING_MAN = "🤷\u{200D}♂️";
+    public const SHRUGGING_MAN = "🤷‍♂";
     public const SHRUGGING_NEUTRAL = '🤷';
-    public const SHRUGGING_WOMAN = "🤷\u{200D}♀️";
+    public const SHRUGGING_WOMAN = "🤷‍♀";
     public const ENRAGED_FACE = '😡';
 
     /**

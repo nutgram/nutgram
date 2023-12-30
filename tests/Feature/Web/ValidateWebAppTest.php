@@ -3,6 +3,7 @@
 use SergiX44\Nutgram\Exception\InvalidDataException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Web\WebAppData;
+use SergiX44\Nutgram\Telegram\Web\WebAppUser;
 
 beforeEach(function () {
     $this->input = [
@@ -22,14 +23,15 @@ beforeEach(function () {
     ];
 });
 
-it('validates login data', function () {
+it('validates webapp data', function () {
     $bot = Nutgram::fake();
     $queryString = $bot->generateWebAppData($this->input);
     $data = $bot->validateWebAppData($queryString);
     expect($data)->toBeInstanceOf(WebAppData::class);
+    expect($data->user)->toBeInstanceOf(WebAppUser::class);
 });
 
-it('fails to validate login data', function () {
+it('fails to validate webapp data', function () {
     $bot = Nutgram::fake();
     $queryString = $bot->generateWebAppData($this->input);
     $queryString = str_replace('start_param=foo', 'start_param=bar', $queryString);

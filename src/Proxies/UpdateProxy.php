@@ -25,6 +25,7 @@ use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollAnswer;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
+use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -254,6 +255,14 @@ trait UpdateProxy
     public function usersShared(): ?UsersShared
     {
         return $this->update?->getMessage()?->users_shared;
+    }
+
+    /**
+     * @return ChatShared|null
+     */
+    public function chatShared(): ?ChatShared
+    {
+        return $this->update?->getMessage()?->chat_shared;
     }
 
     /**
