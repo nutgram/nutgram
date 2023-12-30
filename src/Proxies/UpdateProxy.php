@@ -287,5 +287,4 @@ trait UpdateProxy
     {
         return $this->update?->getMessage()?->giveaway_completed;
     }
-
 }
