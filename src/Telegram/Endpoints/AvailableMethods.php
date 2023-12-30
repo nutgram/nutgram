@@ -131,10 +131,12 @@ trait AvailableMethods
             'parse_mode',
             'entities',
             'disable_web_page_preview',
+            'link_preview_options',
             'disable_notification',
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup'
         );
 
@@ -254,6 +256,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup'
         ), MessageId::class);
     }
@@ -343,6 +346,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup',
         );
 
@@ -408,6 +412,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup',
         );
 
@@ -466,6 +471,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup',
         );
 
@@ -536,6 +542,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup',
         );
 
@@ -603,6 +610,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup',
         );
 
@@ -659,6 +667,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup',
         );
 
@@ -711,6 +720,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup',
         );
 
@@ -755,6 +765,7 @@ trait AvailableMethods
                 'protect_content',
                 'reply_to_message_id',
                 'allow_sending_without_reply',
+                'reply_parameters',
             ),
         ], Message::class, $clientOpt);
     }
@@ -810,6 +821,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup'
         ), Message::class);
     }
@@ -940,6 +952,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup'
         ), Message::class);
     }
@@ -988,6 +1001,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup'
         ), Message::class);
     }
@@ -1059,6 +1073,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup'
         );
         return $this->requestJson(__FUNCTION__, [
@@ -1102,6 +1117,7 @@ trait AvailableMethods
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup'
         ), Message::class);
     }

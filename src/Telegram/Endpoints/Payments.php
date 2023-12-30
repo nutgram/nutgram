@@ -111,6 +111,7 @@ trait Payments
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup'
         );
         $parameters['prices'] = json_encode($prices, JSON_THROW_ON_ERROR);

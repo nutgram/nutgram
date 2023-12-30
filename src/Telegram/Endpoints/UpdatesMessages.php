@@ -52,6 +52,7 @@ trait UpdatesMessages
             'parse_mode',
             'entities',
             'disable_web_page_preview',
+            'link_preview_options',
             'reply_markup'
         );
         $this->setChatMessageOrInlineMessageId($parameters);

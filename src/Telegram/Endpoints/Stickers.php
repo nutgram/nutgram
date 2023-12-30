@@ -65,6 +65,7 @@ trait Stickers
             'protect_content',
             'reply_to_message_id',
             'allow_sending_without_reply',
+            'reply_parameters',
             'reply_markup',
             'clientOpt'
         );
