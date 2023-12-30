@@ -222,7 +222,7 @@ class Update extends BaseType
             $this->edited_message !== null => $this->edited_message->from = $user,
             $this->channel_post !== null => $this->channel_post->from = $user,
             $this->edited_channel_post !== null => $this->edited_channel_post->from = $user,
-            // message_reaction: nope
+            $this->message_reaction !== null => $this->message_reaction->user = $user,
             // message_reaction_count: nope
             $this->inline_query !== null => $this->inline_query->from = $user,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from = $user,
@@ -233,8 +233,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->from = $user,
             $this->chat_member !== null => $this->chat_member->from = $user,
             $this->chat_join_request !== null => $this->chat_join_request->from = $user,
-            // chat_boost: nope
-            // removed_chat_boost: nope
+            $this->chat_boost !== null => $this->chat_boost->boost->source->user = $user,
+            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user = $user,
             default => null,
         };
     }
@@ -271,15 +271,15 @@ class Update extends BaseType
             $this->edited_message !== null => $this->edited_message->chat = $chat,
             $this->channel_post !== null => $this->channel_post->chat = $chat,
             $this->edited_channel_post !== null => $this->edited_channel_post->chat = $chat,
-            // message_reaction: nope
-            // message_reaction_count: nope
+            $this->message_reaction !== null => $this->message_reaction->chat = $chat,
+            $this->message_reaction_count !== null => $this->message_reaction_count->chat = $chat,
             $this->callback_query !== null => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
             $this->poll_answer !== null => $chat,
             $this->my_chat_member !== null => $this->my_chat_member->chat = $chat,
             $this->chat_member !== null => $this->chat_member->chat = $chat,
             $this->chat_join_request !== null => $this->chat_join_request->chat = $chat,
-            // chat_boost: nope
-            // removed_chat_boost: nope
+            $this->chat_boost !== null => $this->chat_boost->chat = $chat,
+            $this->removed_chat_boost !== null => $this->removed_chat_boost->chat = $chat,
             default => null
         };
     }
