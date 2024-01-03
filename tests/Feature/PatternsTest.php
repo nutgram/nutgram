@@ -317,8 +317,11 @@ it('uses valid named parameters', function ($hearParameter, $expected) {
 })->with([
     ['name', true],
     ['name1', true],
+    ['na_me1', true],
     ['n1255', true],
+    ['n', true],
     ['1name', false],
+    ['_1name', false],
     ['123e', false],
     ['1', false],
     ['1,', false],
