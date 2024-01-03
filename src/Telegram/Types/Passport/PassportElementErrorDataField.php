@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents an issue in one of the data fields that was provided by the user.
@@ -26,4 +27,42 @@ class PassportElementErrorDataField extends PassportElementError
 
     /** Error message */
     public string $message;
+
+    public function __construct(
+        PassportType $type,
+        string $field_name,
+        string $data_hash,
+        string $message
+    ) {
+        parent::__construct();
+        $this->type = $type;
+        $this->field_name = $field_name;
+        $this->data_hash = $data_hash;
+        $this->message = $message;
+    }
+
+    public static function make(
+        PassportType $type,
+        string $field_name,
+        string $data_hash,
+        string $message
+    ): self {
+        return new self(
+            type: $type,
+            field_name: $field_name,
+            data_hash: $data_hash,
+            message: $message
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter_null([
+            'source' => $this->source->value,
+            'type' => $this->type->value,
+            'field_name' => $this->field_name,
+            'data_hash' => $this->data_hash,
+            'message' => $this->message,
+        ]);
+    }
 }
