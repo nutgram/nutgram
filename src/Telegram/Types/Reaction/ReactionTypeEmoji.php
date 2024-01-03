@@ -2,13 +2,17 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Reaction;
 
+use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Properties\ReactionTypeType;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * The reaction is based on an emoji.
  * @see https://core.telegram.org/bots/api#reactiontypeemoji
  */
-class ReactionTypeEmoji extends ReactionType
+#[SkipConstructor]
+class ReactionTypeEmoji extends ReactionType implements JsonSerializable
 {
     public const THUMBS_UP = '👍';
     public const THUMBS_DOWN = '👎';
@@ -100,4 +104,23 @@ class ReactionTypeEmoji extends ReactionType
      * @var string
      */
     public string $emoji;
+
+    public function __construct(string $emoji)
+    {
+        parent::__construct();
+        $this->emoji = $emoji;
+    }
+
+    public static function make(string $emoji): self
+    {
+        return new self(emoji: $emoji);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter_null([
+            'type' => $this->type->value,
+            'emoji' => $this->emoji,
+        ]);
+    }
 }

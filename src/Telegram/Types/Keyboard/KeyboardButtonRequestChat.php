@@ -2,8 +2,10 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
+use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object defines the criteria used to request a suitable chat.
@@ -11,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
  * {@see https://core.telegram.org/bots/features#chat-and-user-selection More about requesting chats »}
  * @see https://core.telegram.org/bots/api#keyboardbuttonrequestchat
  */
-class KeyboardButtonRequestChat extends BaseType
+class KeyboardButtonRequestChat extends BaseType implements JsonSerializable
 {
     /**
      * Signed 32-bit identifier of the request, which will be received back in the {@see https://core.telegram.org/bots/api#chatshared ChatShared} object.
@@ -65,4 +67,61 @@ class KeyboardButtonRequestChat extends BaseType
      * Otherwise, no additional restrictions are applied.
      */
     public ?bool $bot_is_member = null;
+
+    public function __construct(
+        int $request_id,
+        bool $chat_is_channel,
+        ?bool $chat_is_forum = null,
+        ?bool $chat_has_username = null,
+        ?bool $chat_is_created = null,
+        ?ChatAdministratorRights $user_administrator_rights = null,
+        ?ChatAdministratorRights $bot_administrator_rights = null,
+        ?bool $bot_is_member = null
+    ) {
+        parent::__construct();
+        $this->request_id = $request_id;
+        $this->chat_is_channel = $chat_is_channel;
+        $this->chat_is_forum = $chat_is_forum;
+        $this->chat_has_username = $chat_has_username;
+        $this->chat_is_created = $chat_is_created;
+        $this->user_administrator_rights = $user_administrator_rights;
+        $this->bot_administrator_rights = $bot_administrator_rights;
+        $this->bot_is_member = $bot_is_member;
+    }
+
+    public static function make(
+        int $request_id,
+        bool $chat_is_channel,
+        ?bool $chat_is_forum = null,
+        ?bool $chat_has_username = null,
+        ?bool $chat_is_created = null,
+        ?ChatAdministratorRights $user_administrator_rights = null,
+        ?ChatAdministratorRights $bot_administrator_rights = null,
+        ?bool $bot_is_member = null
+    ): self {
+        return new self(
+            request_id: $request_id,
+            chat_is_channel: $chat_is_channel,
+            chat_is_forum: $chat_is_forum,
+            chat_has_username: $chat_has_username,
+            chat_is_created: $chat_is_created,
+            user_administrator_rights: $user_administrator_rights,
+            bot_administrator_rights: $bot_administrator_rights,
+            bot_is_member: $bot_is_member
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter_null([
+            'request_id' => $this->request_id,
+            'chat_is_channel' => $this->chat_is_channel,
+            'chat_is_forum' => $this->chat_is_forum,
+            'chat_has_username' => $this->chat_has_username,
+            'chat_is_created' => $this->chat_is_created,
+            'user_administrator_rights' => $this->user_administrator_rights,
+            'bot_administrator_rights' => $this->bot_administrator_rights,
+            'bot_is_member' => $this->bot_is_member,
+        ]);
+    }
 }

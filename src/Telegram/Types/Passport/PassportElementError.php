@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -18,7 +19,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * - {@see PassportElementErrorUnspecified PassportElementErrorUnspecified}
  * @see https://core.telegram.org/bots/api#passportelementerror
  */
-abstract class PassportElementError extends BaseType
+abstract class PassportElementError extends BaseType implements JsonSerializable
 {
     /** Error source */
     public PassportSource $source;
