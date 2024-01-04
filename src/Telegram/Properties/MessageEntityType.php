@@ -16,6 +16,7 @@ enum MessageEntityType: string
     case UNDERLINE = 'underline';
     case STRIKETHROUGH = 'strikethrough';
     case SPOILER = 'spoiler';
+    case BLOCKQUOTE = 'blockquote';
     case CODE = 'code';
     case PRE = 'pre';
     case TEXT_LINK = 'text_link';
