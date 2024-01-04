@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.14.1 - 2024-01-04
+
+### What's Changed
+
+* Fix missing underscore support to named parameters by @Lukasss93 in https://github.com/nutgram/nutgram/pull/638
+* Fix missing make methods by @Lukasss93 in https://github.com/nutgram/nutgram/pull/639
+* Fix missing enum case + Fix nullable message type by @Lukasss93 in https://github.com/nutgram/nutgram/pull/640
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.14.0...4.14.1
+
 ## 4.14.0 - 2023-12-30
 
 #### What's Changed
@@ -15,61 +25,80 @@ All notable changes to `nutgram` will be documented in this file.
 The signature of the following methods has changed, if you don't use named parameters, remember to change the method calls before releasing to production:
 
 - **copyMessage**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendMessage**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   - Added the `link_preview_options` parameter after the `disable_web_page_preview` and before the `disable_notification` parameter
   
 - **editMessageText**
+  
   - Added the `link_preview_options` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendPhoto**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendVideo**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendAnimation**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendAudio**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendDocument**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendSticker**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendVideoNote**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendVoice**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendLocation**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendVenue**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendContact**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendPoll**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendDice**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendInvoice**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendGame**
+  
   - Added the `reply_parameters parameter` after the `allow_sending_without_reply` and before the `reply_markup` parameter
   
 - **sendMediaGroup**
+  
   - Added the `reply_parameters` parameter after the `allow_sending_without_reply` and before the `clientOpt` parameter
   
 
