@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.14.2 - 2024-01-05
+
+### What's Changed
+
+* Fix wrong property name in ReactionTypeCustomEmoji class by @Lukasss93 in https://github.com/nutgram/nutgram/pull/641
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.14.1...4.14.2
+
 ## 4.14.1 - 2024-01-04
 
 ### What's Changed
