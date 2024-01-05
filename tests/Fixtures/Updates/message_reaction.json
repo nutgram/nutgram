@@ -30,6 +30,10 @@
       {
         "type": "emoji",
         "emoji": "🤡"
+      },
+      {
+        "type": "custom_emoji",
+        "custom_emoji_id": "1234567890123456789"
       }
     ]
   }

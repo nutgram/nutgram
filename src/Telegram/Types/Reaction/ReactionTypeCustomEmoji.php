@@ -24,12 +24,12 @@ class ReactionTypeCustomEmoji extends ReactionType implements JsonSerializable
      * Custom emoji identifier
      * @var string
      */
-    public string $custom_emoji;
+    public string $custom_emoji_id;
 
     public function __construct(string $custom_emoji)
     {
         parent::__construct();
-        $this->custom_emoji = $custom_emoji;
+        $this->custom_emoji_id = $custom_emoji;
     }
 
     public static function make(string $custom_emoji): self
@@ -41,7 +41,7 @@ class ReactionTypeCustomEmoji extends ReactionType implements JsonSerializable
     {
         return array_filter_null([
             'type' => $this->type->value,
-            'custom_emoji' => $this->custom_emoji,
+            'custom_emoji_id' => $this->custom_emoji_id,
         ]);
     }
 }
