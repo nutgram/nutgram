@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.14.3 - 2024-01-06
+
+### What's Changed
+
+* Refactor by @Lukasss93 in https://github.com/nutgram/nutgram/pull/642
+* Add missing "DEFAULT_ALLOWED_UPDATES" items by @Lukasss93 in https://github.com/nutgram/nutgram/pull/643
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.14.2...4.14.3
+
 ## 4.14.2 - 2024-01-05
 
 ### What's Changed
