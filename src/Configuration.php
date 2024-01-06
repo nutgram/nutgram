@@ -26,6 +26,8 @@ final readonly class Configuration
         'edited_message',
         'channel_post',
         'edited_channel_post',
+        'message_reaction',
+        'message_reaction_count',
         'inline_query',
         'chosen_inline_result',
         'callback_query',
@@ -36,8 +38,8 @@ final readonly class Configuration
         'my_chat_member',
         'chat_member',
         'chat_join_request',
-        'message_reaction',
-        'message_reaction_count',
+        'chat_boost',
+        'removed_chat_boost',
     ];
     public const DEFAULT_ENABLE_HTTP2 = true;
 
