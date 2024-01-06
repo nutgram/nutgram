@@ -7,17 +7,31 @@ use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
 
-it('calls onMessage() handler', function ($update) {
+it('calls onUpdate() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onMessage(function (Nutgram $bot) {
+    $bot->onUpdate(function (Nutgram $bot) {
         $bot->set('called', true);
+        expect($bot->updateId())->toBe(1);
     });
 
     $bot->run();
 
     expect($bot->get('called'))->toBeTrue();
-})->with('message');
+})->with('channel_post');
+
+it('calls onMessage() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->messageThreadId())->toBe(33);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('message_topic');
 
 it('calls onMessageType() handler', function ($update) {
     $bot = Nutgram::fake($update);
