@@ -195,16 +195,16 @@ class Update extends BaseType
         return match (true) {
             $this->message !== null => $this->message->from,
             $this->edited_message !== null => $this->edited_message->from,
-            $this->channel_post !== null => $this->channel_post->from,
-            $this->edited_channel_post !== null => $this->edited_channel_post->from,
+            // channel_post: doesn't have a user
+            // edited_channel_post: doesn't have a user
             $this->message_reaction !== null => $this->message_reaction->user,
-            // message_reaction_count doesn't have a user
+            // message_reaction_count: doesn't have a user
             $this->inline_query !== null => $this->inline_query->from,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from,
             $this->callback_query !== null => $this->callback_query->from,
             $this->shipping_query !== null => $this->shipping_query->from,
             $this->pre_checkout_query !== null => $this->pre_checkout_query->from,
-            // poll doesn't have a user
+            // poll: doesn't have a user
             $this->poll_answer !== null => $this->poll_answer->user,
             $this->my_chat_member !== null => $this->my_chat_member->from,
             $this->chat_member !== null => $this->chat_member->from,
@@ -220,15 +220,16 @@ class Update extends BaseType
         return match (true) {
             $this->message !== null => $this->message->from = $user,
             $this->edited_message !== null => $this->edited_message->from = $user,
-            $this->channel_post !== null => $this->channel_post->from = $user,
-            $this->edited_channel_post !== null => $this->edited_channel_post->from = $user,
+            // channel_post: doesn't have a user
+            // edited_channel_post: doesn't have a user
             $this->message_reaction !== null => $this->message_reaction->user = $user,
-            // message_reaction_count: nope
+            // message_reaction_count: doesn't have a user
             $this->inline_query !== null => $this->inline_query->from = $user,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from = $user,
             $this->callback_query !== null => $this->callback_query->from = $user,
             $this->shipping_query !== null => $this->shipping_query->from = $user,
             $this->pre_checkout_query !== null => $this->pre_checkout_query->from = $user,
+            // poll: doesn't have a user
             $this->poll_answer !== null => $this->poll_answer->user = $user,
             $this->my_chat_member !== null => $this->my_chat_member->from = $user,
             $this->chat_member !== null => $this->chat_member->from = $user,

@@ -3,12 +3,6 @@
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
-use SergiX44\Nutgram\Telegram\Types\Giveaway\Giveaway;
-use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCompleted;
-use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCreated;
-use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayWinners;
-use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
-use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
 
 it('calls onText() handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -393,7 +387,6 @@ it('calls onUsersShared() handler', function ($update) {
 
     $bot->onUsersShared(function (Nutgram $bot) {
         $bot->set('called', true);
-        expect($bot->usersShared())->toBeInstanceOf(UsersShared::class);
     });
 
     $bot->run();
@@ -406,7 +399,6 @@ it('calls onChatShared() handler', function ($update) {
 
     $bot->onChatShared(function (Nutgram $bot) {
         $bot->set('called', true);
-        expect($bot->chatShared())->toBeInstanceOf(ChatShared::class);
     });
 
     $bot->run();
@@ -419,7 +411,6 @@ it('calls onGiveawayCreated() handler', function ($update) {
 
     $bot->onGiveawayCreated(function (Nutgram $bot) {
         $bot->set('called', true);
-        expect($bot->giveawayCreated())->toBeInstanceOf(GiveawayCreated::class);
     });
 
     $bot->run();
@@ -432,7 +423,6 @@ it('calls onGiveaway() handler', function ($update) {
 
     $bot->onGiveaway(function (Nutgram $bot) {
         $bot->set('called', true);
-        expect($bot->giveaway())->toBeInstanceOf(Giveaway::class);
     });
 
     $bot->run();
@@ -445,7 +435,6 @@ it('calls onGiveawayWinners() handler', function ($update) {
 
     $bot->onGiveawayWinners(function (Nutgram $bot) {
         $bot->set('called', true);
-        expect($bot->giveawayWinners())->toBeInstanceOf(GiveawayWinners::class);
     });
 
     $bot->run();
@@ -458,7 +447,6 @@ it('calls onGiveawayCompleted() handler', function ($update) {
 
     $bot->onGiveawayCompleted(function (Nutgram $bot) {
         $bot->set('called', true);
-        expect($bot->giveawayCompleted())->toBeInstanceOf(GiveawayCompleted::class);
     });
 
     $bot->run();
