@@ -153,3 +153,48 @@ it('calls onUpdate() handler', function ($update) {
         ->get('onUpdate called', false)->toBeTrue()
         ->get('onSticker called', false)->toBeTrue();
 })->with('sticker');
+
+it('calls beforeApiRequest() method', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onText('foo', function (Nutgram $bot) {
+        $bot->sendMessage(
+            text: 'bar',
+            chat_id: 123,
+        );
+    });
+
+    $bot->beforeApiRequest(function (Nutgram $bot, $request, $endpoint) {
+        expect($request['json'])
+            ->text->toBe('bar')
+            ->chat_id->toBe(123)
+            ->and($endpoint)->toBe('sendMessage');
+        return $request;
+    });
+
+    $bot->hearText('foo')
+        ->reply()
+        ->assertReplyText('bar');
+})->with('text');
+
+it('calls afterApiRequest() method', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onText('foo', function ($bot) {
+        $bot->sendMessage(
+            text: 'bar',
+            chat_id: 123,
+        );
+    });
+
+    $bot->afterApiRequest(function (Nutgram $bot, $request) {
+        expect($request)
+            ->ok->toBeTrue()
+            ->result->toBeInstanceOf(stdClass::class);
+        return $request;
+    });
+
+    $bot->hearText('foo')
+        ->reply()
+        ->assertReplyText('bar');
+})->with('text');

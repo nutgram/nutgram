@@ -126,7 +126,7 @@ trait Client
         $request = ['sink' => $path, ...$clientOpt];
         $endpoint = $this->downloadUrl($file);
 
-        $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+        $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
         try {
             $response = $this->http->get($endpoint, $requestPost ?? $request);
         } catch (ConnectException $e) {
@@ -204,7 +204,7 @@ trait Client
         $request = ['multipart' => $parameters, ...$options];
 
         try {
-            $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+            $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
             $requestData = $requestPost ?? $request;
 
             $this->logRequest(
@@ -255,7 +255,7 @@ trait Client
         $request = ['json' => $json, ...$options];
 
         try {
-            $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request]);
+            $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
             $requestData = $requestPost ?? $request;
 
             if ($this->canHandleAsResponse()) {
