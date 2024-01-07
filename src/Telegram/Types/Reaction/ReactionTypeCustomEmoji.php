@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Reaction;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ReactionTypeType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -16,9 +17,10 @@ class ReactionTypeCustomEmoji extends ReactionType implements JsonSerializable
 {
     /**
      * Type of the reaction, always “custom_emoji”
-     * @var ReactionTypeType
+     * @var ReactionTypeType|string
      */
-    public ReactionTypeType $type = ReactionTypeType::CUSTOM_EMOJI;
+    #[EnumOrScalar]
+    public string|ReactionTypeType $type = ReactionTypeType::CUSTOM_EMOJI;
 
     /**
      * Custom emoji identifier
