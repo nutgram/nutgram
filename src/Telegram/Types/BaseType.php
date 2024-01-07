@@ -14,6 +14,9 @@ abstract class BaseType
     /** @internal */
     private ?Nutgram $_bot;
 
+    /** @internal */
+    private array $_extra = [];
+
     /**
      * @param  Nutgram|null  $bot
      */
@@ -34,6 +37,34 @@ abstract class BaseType
         }
 
         return $this->callMacro($method, $parameters);
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function __set(string $name, mixed $value): void
+    {
+        $this->_extra[$name] = $value;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function __get(string $name): mixed
+    {
+        return $this->_extra[$name] ?? null;
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function __isset(string $name): bool
+    {
+        return isset($this->_extra[$name]);
     }
 
     /**

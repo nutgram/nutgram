@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\StickerType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Downloadable;
@@ -29,7 +30,8 @@ class Sticker extends BaseType
      * Type of the sticker, currently one of “regular”, “mask”, “custom_emoji”.
      * The type of the sticker is independent from its format, which is determined by the fields is_animated and is_video.
      */
-    public StickerType $type;
+    #[EnumOrScalar]
+    public StickerType|string $type;
 
     /** Sticker width */
     public int $width;
