@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -21,7 +22,8 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 #[BotCommandScopeResolver]
 abstract class BotCommandScope extends BaseType implements JsonSerializable
 {
-    public BotCommandScopeType $type;
+    #[EnumOrScalar]
+    public BotCommandScopeType|string $type;
 
     public function getType(): BotCommandScopeType
     {

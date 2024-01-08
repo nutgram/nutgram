@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
 
 /**
@@ -11,7 +12,8 @@ use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
 class BotCommandScopeChatAdministrators extends BotCommandScope
 {
     /** Scope type, must be chat_administrators */
-    public BotCommandScopeType $type = BotCommandScopeType::CHAT_ADMINISTRATORS;
+    #[EnumOrScalar]
+    public BotCommandScopeType|string $type = BotCommandScopeType::CHAT_ADMINISTRATORS;
 
     /** Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername) */
     public int|string $chat_id;

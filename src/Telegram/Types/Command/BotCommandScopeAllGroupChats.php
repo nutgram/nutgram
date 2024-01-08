@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
 
 /**
@@ -11,7 +12,8 @@ use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
 class BotCommandScopeAllGroupChats extends BotCommandScope
 {
     /** Scope type, must be all_group_chats */
-    public BotCommandScopeType $type = BotCommandScopeType::ALL_GROUP_CHATS;
+    #[EnumOrScalar]
+    public BotCommandScopeType|string $type = BotCommandScopeType::ALL_GROUP_CHATS;
 
     public function make(): self
     {
