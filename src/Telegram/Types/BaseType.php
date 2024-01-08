@@ -2,10 +2,13 @@
 
 namespace SergiX44\Nutgram\Telegram\Types;
 
+use BackedEnum;
 use Illuminate\Support\Traits\Macroable;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Types\Internal\Arrayable;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
-abstract class BaseType
+abstract class BaseType implements Arrayable
 {
     use Macroable {
         __call as callMacro;
@@ -49,5 +52,20 @@ abstract class BaseType
     public function getBot(): ?Nutgram
     {
         return $this->_bot;
+    }
+
+    public function toArray(): array
+    {
+        $data = get_object_vars($this);
+
+        array_walk_recursive($data, function (&$value) {
+            match (true) {
+                $value instanceof Arrayable => $value = $value->toArray(),
+                $value instanceof BackedEnum => $value = $value->value,
+                default => null,
+            };
+        });
+
+        return array_filter_null($data);
     }
 }

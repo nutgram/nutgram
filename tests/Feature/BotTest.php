@@ -251,3 +251,18 @@ it('unescape unicode before sending payload', function (string $text) {
     '💁🏽🧜‍♀️💁🏽🧜‍♀️💁🏽🧜‍♀️',
     'Allahümme',
 ]);
+
+it('returns an array using toArray method', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onCommand('test', function (Nutgram $bot) {
+        $data = $bot->message()?->toArray();
+
+        expect($data)
+            ->toBeArray()
+            ->text->toBe('/test')
+            ->and($data['chat']['type'])->toBe('private');
+    });
+
+    $bot->run();
+})->with('command');
