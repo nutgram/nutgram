@@ -8,6 +8,9 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Internal\Arrayable;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
+/**
+ * @template-implements Arrayable<string, mixed>
+ */
 abstract class BaseType implements Arrayable
 {
     use Macroable {
@@ -32,7 +35,7 @@ abstract class BaseType implements Arrayable
      */
     public function __call($method, $parameters)
     {
-        if (method_exists($this->_bot, $method)) {
+        if ($this->_bot instanceof Nutgram && method_exists($this->_bot, $method)) {
             return $this->_bot->$method(...$parameters);
         }
 
@@ -58,7 +61,7 @@ abstract class BaseType implements Arrayable
     {
         $data = get_object_vars($this);
 
-        array_walk_recursive($data, function (&$value) {
+        array_walk_recursive($data, function (mixed &$value) {
             match (true) {
                 $value instanceof Arrayable => $value = $value->toArray(),
                 $value instanceof BackedEnum => $value = $value->value,
