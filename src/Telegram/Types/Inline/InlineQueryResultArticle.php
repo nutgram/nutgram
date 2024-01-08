@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -14,7 +15,8 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 class InlineQueryResultArticle extends InlineQueryResult
 {
     /** Type of the result, must be article */
-    public InlineQueryResultType $type = InlineQueryResultType::ARTICLE;
+    #[EnumOrScalar]
+    public InlineQueryResultType|string $type = InlineQueryResultType::ARTICLE;
 
     /** Unique identifier for this result, 1-64 Bytes */
     public string $id;
