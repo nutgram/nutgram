@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Boost;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ChatBoostSourceSource;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -14,7 +15,8 @@ class ChatBoostSourceGiveaway extends ChatBoostSource
     /**
      * Source of the boost, always “giveaway”
      */
-    public ChatBoostSourceSource $source = ChatBoostSourceSource::GIVEAWAY;
+    #[EnumOrScalar]
+    public ChatBoostSourceSource|string $source = ChatBoostSourceSource::GIVEAWAY;
 
     /**
      * Identifier of a message in the chat with the giveaway; the message could have been deleted already. May be 0 if the message isn't sent yet.
