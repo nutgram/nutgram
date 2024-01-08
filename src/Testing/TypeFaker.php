@@ -88,7 +88,9 @@ class TypeFaker
                 continue;
             }
 
-            $typeName = $property->getType()?->getName();
+            $typeName = $property->getType() instanceof \ReflectionUnionType
+                ? $property->getType()->getTypes()[0]->getName()
+                : $property->getType()?->getName();
 
             // if is a class, try to resolve it
             if ($this->shouldInstantiate($typeName, $isNullable)) {
