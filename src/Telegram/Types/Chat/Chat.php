@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
@@ -22,7 +23,8 @@ class Chat extends BaseType
     public int $id;
 
     /** Type of chat, can be either “private”, “group”, “supergroup” or “channel” */
-    public ChatType $type;
+    #[EnumOrScalar]
+    public ChatType|string $type;
 
     /**
      * Optional.
@@ -266,7 +268,7 @@ class Chat extends BaseType
 
     public static function make(
         int $id,
-        ChatType $type,
+        ChatType|string $type,
         ?string $title = null,
         ?string $username = null,
         ?string $first_name = null,
