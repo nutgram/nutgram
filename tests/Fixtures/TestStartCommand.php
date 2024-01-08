@@ -9,7 +9,7 @@ class TestStartCommand extends Command
 {
     protected string $command = 'start';
 
-    protected array|string|null $description = 'A lovely description';
+    protected ?string $description = 'A lovely description';
 
     public function handle(Nutgram $bot): void
     {

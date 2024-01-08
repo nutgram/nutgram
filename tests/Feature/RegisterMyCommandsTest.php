@@ -73,7 +73,7 @@ test('registerCommand with description', function () {
 
     $bot->registerCommand(new class extends Command {
         protected string $command = 'start';
-        protected array|string|null $description = 'Start command';
+        protected ?string $description = 'Start command';
 
         public function handle(Nutgram $bot): void
         {
@@ -115,7 +115,7 @@ test('registerCommand with description and scope', function () {
 
     $bot->registerCommand(new class extends Command {
         protected string $command = 'start';
-        protected array|string|null $description = 'Start command';
+        protected ?string $description = 'Start command';
 
         public function scopes(): array
         {
@@ -600,11 +600,11 @@ test('register command with languages', function () {
 
     expect($history)->sequence(
         fn ($x) => $x
+            ->commands->toBe('[{"command":"start","description":"Start the bot"}]')
+            ->scope->toBe('{"type":"default"}'),
+        fn ($x) => $x
             ->commands->toBe('[{"command":"start","description":"Avvia il bot"}]')
             ->scope->toBe('{"type":"default"}')
             ->language_code->toBe('it'),
-        fn ($x) => $x
-            ->commands->toBe('[{"command":"start","description":"Start the bot"}]')
-            ->scope->toBe('{"type":"default"}'),
     );
 });

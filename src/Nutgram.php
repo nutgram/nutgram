@@ -311,12 +311,7 @@ class Nutgram extends ResolveHandlers
                     $hashCode = crc32(serialize(get_object_vars($scope)));
 
                     // language_code
-                    $descriptions = $handler->getDescription();
-                    if (is_string($descriptions)) {
-                        $descriptions = ['*' => $descriptions];
-                    }
-
-                    foreach ($descriptions as $language => $description) {
+                    foreach ($handler->getAllDescriptions() as $language => $description) {
                         $myCommands[$hashCode]['scopes'][$language] = $scope;
                         $myCommands[$hashCode]['commands'][$language][] = $handler->toBotCommand($language);
                     }

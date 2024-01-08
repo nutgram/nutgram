@@ -9,7 +9,7 @@ class ComplexCommand extends Command
 {
     protected string $command = 'start {value}';
 
-    protected array|string|null $description = 'A lovely description';
+    protected ?string $description = 'A lovely description';
 
     public function handle(Nutgram $bot, string $value): void
     {

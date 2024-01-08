@@ -9,9 +9,10 @@ class CommandWithMultipleDescription extends Command
 {
     protected string $command = 'start';
 
-    protected array|string|null $description = [
+    protected ?string $description = 'Start the bot';
+
+    protected array $localizedDescriptions = [
         'it' => 'Avvia il bot',
-        '*' => 'Start the bot',
     ];
 
     public function handle(Nutgram $bot): void
