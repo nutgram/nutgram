@@ -11,7 +11,7 @@ class CommandWithNamedParameter extends Command
 
     protected array $constraints = ['value' => '[a-z]+'];
 
-    protected ?string $description = 'A lovely description';
+    protected array|string|null $description = 'A lovely description';
 
     public function handle(Nutgram $bot, string $value): void
     {

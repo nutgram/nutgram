@@ -12,7 +12,7 @@ class Command extends Handler
 {
     protected string $command = '#';
 
-    protected ?string $description = null;
+    protected array|string|null $description = null;
 
     protected array $scopes = [];
 
@@ -46,9 +46,9 @@ class Command extends Handler
     }
 
     /**
-     * @return string|null
+     * @return array<string, string>|string|null
      */
-    public function getDescription(): ?string
+    public function getDescription(): array|string|null
     {
         return $this->description;
     }
@@ -62,10 +62,10 @@ class Command extends Handler
     }
 
     /**
-     * @param  string  $description
+     * @param array<string, string>|string $description
      * @return Command
      */
-    public function description(string $description): Command
+    public function description(array|string $description): Command
     {
         $this->description = $description;
         return $this;
@@ -94,10 +94,20 @@ class Command extends Handler
     }
 
     /**
+     * @param string|null $languageCode
      * @return BotCommand
      */
-    public function toBotCommand(): BotCommand
+    public function toBotCommand(?string $languageCode = null): BotCommand
     {
-        return new BotCommand($this->getName(), $this->getDescription());
+        $description = $this->getDescription();
+
+        if (is_array($description)) {
+            return new BotCommand(
+                command: $this->getName(),
+                description: $description[$languageCode] ?? array_shift($description)
+            );
+        }
+
+        return new BotCommand($this->getName(), $description);
     }
 }
