@@ -19,6 +19,7 @@ class MenuButtonResolver extends ConcreteResolver
     public function concreteFor(array $data): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
-        return $this->concretes[$type] ??  (new class extends MenuButton {})::class;
+        return $this->concretes[$type] ??  (new class extends MenuButton {
+        })::class;
     }
 }

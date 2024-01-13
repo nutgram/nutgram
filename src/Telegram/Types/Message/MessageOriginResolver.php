@@ -19,7 +19,8 @@ class MessageOriginResolver extends ConcreteResolver
             MessageOriginType::HIDDEN_USER->value => MessageOriginHiddenUser::class,
             MessageOriginType::CHAT->value => MessageOriginChat::class,
             MessageOriginType::CHANNEL->value => MessageOriginChannel::class,
-            default => (new class extends MessageOrigin {})::class,
+            default => (new class extends MessageOrigin {
+            })::class,
         };
     }
 }
