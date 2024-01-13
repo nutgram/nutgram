@@ -3,7 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use JsonSerializable;
-use SergiX44\Nutgram\Nutgram;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MaskPositionPoint;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -17,7 +17,8 @@ class MaskPosition extends BaseType implements JsonSerializable
      * The part of the face relative to which the mask should be placed.
      * One of “forehead”, “eyes”, “mouth”, or “chin”.
      */
-    public MaskPositionPoint $point;
+    #[EnumOrScalar]
+    public MaskPositionPoint|string $point;
 
     /**
      * Shift by X-axis measured in widths of the mask scaled to the face size, from left to right.
@@ -38,7 +39,7 @@ class MaskPosition extends BaseType implements JsonSerializable
     public float $scale;
 
     public function __construct(
-        MaskPositionPoint $point,
+        MaskPositionPoint|string $point,
         float $x_shift,
         float $y_shift,
         float $scale,
@@ -51,7 +52,7 @@ class MaskPosition extends BaseType implements JsonSerializable
     }
 
     public static function make(
-        MaskPositionPoint $point,
+        MaskPositionPoint|string $point,
         float $x_shift,
         float $y_shift,
         float $scale,
