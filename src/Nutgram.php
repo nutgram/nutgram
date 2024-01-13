@@ -30,7 +30,6 @@ use SergiX44\Nutgram\Support\BulkMessenger;
 use SergiX44\Nutgram\Support\HandleLogging;
 use SergiX44\Nutgram\Support\ValidatesWebData;
 use SergiX44\Nutgram\Telegram\Client;
-use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 use Throwable;
@@ -304,26 +303,32 @@ class Nutgram extends ResolveHandlers
     {
         $this->preflight();
 
-        /** @var BotCommandScope[] $commands */
-        $scopes = [];
-        /** @var Command[] $commands */
-        $commands = [];
-        array_walk_recursive($this->handlers, static function ($handler) use (&$commands, &$scopes) {
+        $myCommands = [];
+        array_walk_recursive($this->handlers, static function ($handler) use (&$myCommands) {
             if ($handler instanceof Command && !$handler->isHidden()) {
+                // scopes
                 foreach ($handler->scopes() as $scope) {
                     $hashCode = crc32(serialize(get_object_vars($scope)));
-                    $scopes[$hashCode] = $scope;
-                    $commands[$hashCode][] = $handler->toBotCommand();
+
+                    // language_code
+                    foreach ($handler->getAllDescriptions() as $language => $description) {
+                        $myCommands[$hashCode]['scopes'][$language] = $scope;
+                        $myCommands[$hashCode]['commands'][$language][] = $handler->toBotCommand($language);
+                    }
                 }
             }
         });
 
         // set commands for each scope
-        foreach ($scopes as $hashCode => $scope) {
-            $this->setMyCommands(
-                commands: array_values(array_unique($commands[$hashCode], SORT_REGULAR)),
-                scope: $scope,
-            );
+        foreach ($myCommands as $myCommand) {
+            // set commands for each language
+            foreach ($myCommand['scopes'] as $language => $scope) {
+                $this->setMyCommands(
+                    commands: array_values(array_unique($myCommand['commands'][$language], SORT_REGULAR)),
+                    scope: $scope,
+                    language_code: $language === '*' ? null : $language
+                );
+            }
         }
     }
 

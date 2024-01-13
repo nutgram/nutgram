@@ -14,11 +14,13 @@ class Command extends Handler
 
     protected ?string $description = null;
 
+    protected array $localizedDescriptions = [];
+
     protected array $scopes = [];
 
     /**
-     * @param  callable|callable-string  $callable
-     * @param  string|null  $command
+     * @param callable|callable-string $callable
+     * @param string|null $command
      */
     public function __construct($callable = null, ?string $command = null)
     {
@@ -45,12 +47,28 @@ class Command extends Handler
         return str_replace('/', '', $cmd);
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    public function getLocalizedDescriptions(): array
+    {
+        return $this->localizedDescriptions;
+    }
+
+    public function getAllDescriptions(): array
+    {
+        $descriptions = [];
+
+        if ($this->getDescription() !== null) {
+            $descriptions['*'] = $this->getDescription();
+        }
+
+        return [
+            ...$descriptions,
+            ...$this->getLocalizedDescriptions()
+        ];
     }
 
     /**
@@ -58,21 +76,26 @@ class Command extends Handler
      */
     public function isHidden(): bool
     {
-        return empty($this->getDescription());
+        return empty($this->getAllDescriptions());
     }
 
     /**
-     * @param  string  $description
+     * @param array<string, string>|string $description
      * @return Command
      */
-    public function description(string $description): Command
+    public function description(array|string $description): Command
     {
-        $this->description = $description;
+        if (is_string($description)) {
+            $this->description = $description;
+            return $this;
+        }
+
+        $this->localizedDescriptions = $description;
         return $this;
     }
 
     /**
-     * @param  BotCommandScope|BotCommandScope[]  $scope
+     * @param BotCommandScope|BotCommandScope[] $scope
      * @return $this
      */
     public function scope(BotCommandScope|array $scope): Command
@@ -94,10 +117,20 @@ class Command extends Handler
     }
 
     /**
+     * @param string|null $languageCode
      * @return BotCommand
      */
-    public function toBotCommand(): BotCommand
+    public function toBotCommand(?string $languageCode = null): BotCommand
     {
-        return new BotCommand($this->getName(), $this->getDescription());
+        $descriptions = $this->getAllDescriptions();
+
+        if ($languageCode !== null) {
+            return new BotCommand(
+                command: $this->getName(),
+                description: $descriptions[$languageCode] ?? array_shift($descriptions)
+            );
+        }
+
+        return new BotCommand($this->getName(), $descriptions['*']);
     }
 }
