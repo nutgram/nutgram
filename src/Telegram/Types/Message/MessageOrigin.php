@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MessageOriginType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -20,5 +21,6 @@ abstract class MessageOrigin extends BaseType
      * Type of the message origin
      * @var MessageOriginType
      */
-    public MessageOriginType $type;
+    #[EnumOrScalar]
+    public MessageOriginType|string $type;
 }

@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
 
 /**
@@ -11,7 +12,8 @@ use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
 class MenuButtonDefault extends MenuButton
 {
     /** Type of the button, must be default */
-    public MenuButtonType $type = MenuButtonType::DEFAULT;
+    #[EnumOrScalar]
+    public MenuButtonType|string $type = MenuButtonType::DEFAULT;
 
     public function make(): self
     {

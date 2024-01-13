@@ -18,7 +18,8 @@ class ChatBoostSourceResolver extends ConcreteResolver
             ChatBoostSourceSource::PREMIUM->value => ChatBoostSourcePremium::class,
             ChatBoostSourceSource::GIFT_CODE->value => ChatBoostSourceGiftCode::class,
             ChatBoostSourceSource::GIVEAWAY->value => ChatBoostSourceGiveaway::class,
-            default => throw new InvalidArgumentException("Unknown ChatBoostSource type: {$type}")
+            default => (new class extends ChatBoostSource {
+            })::class,
         };
     }
 }

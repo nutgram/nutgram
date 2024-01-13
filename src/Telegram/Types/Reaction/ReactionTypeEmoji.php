@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Reaction;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ReactionTypeType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -90,9 +91,10 @@ class ReactionTypeEmoji extends ReactionType implements JsonSerializable
 
     /**
      * Type of the reaction, always “emoji”
-     * @var ReactionTypeType
+     * @var string|ReactionTypeType
      */
-    public ReactionTypeType $type = ReactionTypeType::EMOJI;
+    #[EnumOrScalar]
+    public string|ReactionTypeType $type = ReactionTypeType::EMOJI;
 
     /**
      * Reaction emoji. Currently, it can be one of

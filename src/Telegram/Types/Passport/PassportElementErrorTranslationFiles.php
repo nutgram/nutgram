@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -14,10 +15,12 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 class PassportElementErrorTranslationFiles extends PassportElementError
 {
     /** Error source, must be translation_files */
-    public PassportSource $source = PassportSource::TRANSLATION_FILES;
+    #[EnumOrScalar]
+    public PassportSource|string $source = PassportSource::TRANSLATION_FILES;
 
     /** Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration” */
-    public PassportType $type;
+    #[EnumOrScalar]
+    public PassportType|string $type;
 
     /**
      * List of base64-encoded file hashes
@@ -34,7 +37,7 @@ class PassportElementErrorTranslationFiles extends PassportElementError
      * @param string $message
      */
     public function __construct(
-        PassportType $type,
+        PassportType|string $type,
         array $file_hashes,
         string $message,
     ) {

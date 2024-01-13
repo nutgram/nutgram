@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -19,7 +20,8 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 class InlineQueryResultVideo extends InlineQueryResult
 {
     /** Type of the result, must be video */
-    public InlineQueryResultType $type = InlineQueryResultType::VIDEO;
+    #[EnumOrScalar]
+    public InlineQueryResultType|string $type = InlineQueryResultType::VIDEO;
 
     /** Unique identifier for this result, 1-64 bytes */
     public string $id;
@@ -47,7 +49,8 @@ class InlineQueryResultVideo extends InlineQueryResult
      * Mode for parsing entities in the video caption.
      * See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      */
-    public ?ParseMode $parse_mode = null;
+    #[EnumOrScalar]
+    public ParseMode|string|null $parse_mode = null;
 
     /**
      * Optional.
@@ -101,7 +104,7 @@ class InlineQueryResultVideo extends InlineQueryResult
         string $thumbnail_url,
         string $title,
         ?string $caption = null,
-        ?ParseMode $parse_mode = null,
+        ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?int $video_width = null,
         ?int $video_height = null,

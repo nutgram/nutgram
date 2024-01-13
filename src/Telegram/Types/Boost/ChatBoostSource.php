@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Boost;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ChatBoostSourceSource;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -19,7 +20,8 @@ abstract class ChatBoostSource extends BaseType
     /**
      * Source of the boost
      */
-    public ChatBoostSourceSource $source;
+    #[EnumOrScalar]
+    public ChatBoostSourceSource|string $source;
 
     /**
      * User that boosted the chat;

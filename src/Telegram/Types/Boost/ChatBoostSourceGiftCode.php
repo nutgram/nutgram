@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Boost;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ChatBoostSourceSource;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -15,7 +16,8 @@ class ChatBoostSourceGiftCode extends ChatBoostSource
     /**
      * Source of the boost, always “gift_code”
      */
-    public ChatBoostSourceSource $source = ChatBoostSourceSource::GIFT_CODE;
+    #[EnumOrScalar]
+    public ChatBoostSourceSource|string $source = ChatBoostSourceSource::GIFT_CODE;
 
     /**
      * User for which the gift code was created

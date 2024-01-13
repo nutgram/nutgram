@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Reaction;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ReactionTypeType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -16,7 +17,8 @@ abstract class ReactionType extends BaseType
 {
     /**
      * Type of the reaction
-     * @var ReactionTypeType
+     * @var string|ReactionTypeType
      */
-    public ReactionTypeType $type;
+    #[EnumOrScalar]
+    public ReactionTypeType|string $type;
 }

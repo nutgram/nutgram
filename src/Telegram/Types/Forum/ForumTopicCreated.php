@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Forum;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ForumIconColor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -15,7 +16,8 @@ class ForumTopicCreated extends BaseType
     public string $name;
 
     /** Color of the topic icon in RGB format */
-    public ForumIconColor $icon_color;
+    #[EnumOrScalar]
+    public ForumIconColor|int $icon_color;
 
     /**
      * Optional.

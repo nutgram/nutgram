@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -14,10 +15,12 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 class PassportElementErrorUnspecified extends PassportElementError
 {
     /** Error source, must be unspecified */
-    public PassportSource $source = PassportSource::UNSPECIFIED;
+    #[EnumOrScalar]
+    public PassportSource|string $source = PassportSource::UNSPECIFIED;
 
     /** Type of element of the user's Telegram Passport which has the issue */
-    public PassportType $type;
+    #[EnumOrScalar]
+    public PassportType|string $type;
 
     /** Base64-encoded element hash */
     public string $element_hash;
@@ -26,7 +29,7 @@ class PassportElementErrorUnspecified extends PassportElementError
     public string $message;
 
     public function __construct(
-        PassportType $type,
+        PassportType|string $type,
         string $element_hash,
         string $message
     ) {

@@ -4,7 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Web;
 
 use DateTime;
 use SergiX44\Hydrator\Annotation\Mutate;
-use SergiX44\Hydrator\Mutations\JsonDecodeArray;
+use SergiX44\Hydrator\Mutation\JsonDecodeArray;
 
 class WebAppData extends Entity
 {

@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -14,10 +15,12 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 class PassportElementErrorSelfie extends PassportElementError
 {
     /** Error source, must be selfie */
-    public PassportSource $source = PassportSource::SELFIE;
+    #[EnumOrScalar]
+    public PassportSource|string $source = PassportSource::SELFIE;
 
     /** The section of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport” */
-    public PassportType $type;
+    #[EnumOrScalar]
+    public PassportType|string $type;
 
     /** Base64-encoded hash of the file with the selfie */
     public string $file_hash;
@@ -26,7 +29,7 @@ class PassportElementErrorSelfie extends PassportElementError
     public string $message;
 
     public function __construct(
-        PassportType $type,
+        PassportType|string $type,
         string $file_hash,
         string $message
     ) {

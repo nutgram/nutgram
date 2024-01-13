@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -37,5 +38,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 abstract class InlineQueryResult extends BaseType implements JsonSerializable
 {
     /** Type of the result */
-    public InlineQueryResultType $type;
+    #[EnumOrScalar]
+    public InlineQueryResultType|string $type;
 }

@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\StickerType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
@@ -20,7 +21,8 @@ class StickerSet extends BaseType
     public string $title;
 
     /** Type of stickers in the set, currently one of “regular”, “mask”, “custom_emoji” */
-    public StickerType $sticker_type;
+    #[EnumOrScalar]
+    public StickerType|string $sticker_type;
 
     /** True, if the sticker set contains {@see https://telegram.org/blog/animated-stickers animated stickers} */
     public bool $is_animated;

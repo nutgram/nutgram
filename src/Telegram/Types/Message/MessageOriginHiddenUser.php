@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MessageOriginType;
 
 /**
@@ -14,7 +15,8 @@ class MessageOriginHiddenUser extends MessageOrigin
      * Type of the message origin, always “hidden_user”
      * @var MessageOriginType
      */
-    public MessageOriginType $type = MessageOriginType::HIDDEN_USER;
+    #[EnumOrScalar]
+    public MessageOriginType|string $type = MessageOriginType::HIDDEN_USER;
 
     /**
      * Date the message was sent originally in Unix time

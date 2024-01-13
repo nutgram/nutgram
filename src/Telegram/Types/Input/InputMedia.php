@@ -3,6 +3,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
@@ -21,7 +22,8 @@ abstract class InputMedia extends BaseType implements Uploadable
     /**
      * Type of the result
      */
-    public InputMediaType $type;
+    #[EnumOrScalar]
+    public InputMediaType|string $type;
 
     /**
      * File to send.

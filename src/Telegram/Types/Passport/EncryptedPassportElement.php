@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -16,7 +17,8 @@ class EncryptedPassportElement extends BaseType
      * Element type.
      * One of “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport”, “address”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”, “phone_number”, “email”.
      */
-    public PassportType $type;
+    #[EnumOrScalar]
+    public PassportType|string $type;
 
     /**
      * Optional.

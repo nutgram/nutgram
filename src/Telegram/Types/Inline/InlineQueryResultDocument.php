@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -20,7 +21,8 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 class InlineQueryResultDocument extends InlineQueryResult
 {
     /** Type of the result, must be document */
-    public InlineQueryResultType $type = InlineQueryResultType::DOCUMENT;
+    #[EnumOrScalar]
+    public InlineQueryResultType|string $type = InlineQueryResultType::DOCUMENT;
 
     /** Unique identifier for this result, 1-64 bytes */
     public string $id;
@@ -39,7 +41,8 @@ class InlineQueryResultDocument extends InlineQueryResult
      * Mode for parsing entities in the document caption.
      * See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      */
-    public ?ParseMode $parse_mode = null;
+    #[EnumOrScalar]
+    public ParseMode|string|null $parse_mode = null;
 
     /**
      * Optional.
@@ -97,7 +100,7 @@ class InlineQueryResultDocument extends InlineQueryResult
         string $document_url,
         string $mime_type,
         ?string $caption = null,
-        ?ParseMode $parse_mode = null,
+        ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?string $description = null,
         ?InlineKeyboardMarkup $reply_markup = null,

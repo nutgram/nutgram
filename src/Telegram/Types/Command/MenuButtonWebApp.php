@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use SergiX44\Nutgram\Nutgram;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
@@ -13,7 +13,8 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 class MenuButtonWebApp extends MenuButton
 {
     /** Type of the button, must be web_app */
-    public MenuButtonType $type = MenuButtonType::WEB_APP;
+    #[EnumOrScalar]
+    public MenuButtonType|string $type = MenuButtonType::WEB_APP;
 
     /** Text on the button */
     public string $text;

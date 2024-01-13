@@ -17,7 +17,8 @@ class ReactionTypeResolver extends ConcreteResolver
         return match ($type) {
             ReactionTypeType::EMOJI->value => ReactionTypeEmoji::class,
             ReactionTypeType::CUSTOM_EMOJI->value => ReactionTypeCustomEmoji::class,
-            default => throw new InvalidArgumentException("Unknown ReactionType type: {$type}")
+            default => (new class extends ReactionType {
+            })::class,
         };
     }
 }

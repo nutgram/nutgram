@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MessageEntityType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -21,7 +22,8 @@ class MessageEntity extends BaseType implements JsonSerializable
      * Type of the entity.
      * Currently, can be “mention” (&#64;username), “hashtag” (#hashtag), “cashtag” ($USD), “bot_command” (/start&#64;jobs_bot), “url” (https://telegram.org), “email” (do-not-reply&#64;telegram.org), “phone_number” (+1-212-555-0123), “bold” (bold text), “italic” (italic text), “underline” (underlined text), “strikethrough” (strikethrough text), “spoiler” (spoiler message), “code” (monowidth string), “pre” (monowidth block), “text_link” (for clickable text URLs), “text_mention” (for users {@see https://telegram.org/blog/edit#new-mentions without usernames}), “custom_emoji” (for inline custom emoji stickers)
      */
-    public MessageEntityType $type;
+    #[EnumOrScalar]
+    public MessageEntityType|string $type;
 
     /** Offset in {@see https://core.telegram.org/api/entities#entity-length UTF-16 code units} to the start of the entity */
     public int $offset;
@@ -55,7 +57,7 @@ class MessageEntity extends BaseType implements JsonSerializable
     public ?string $custom_emoji_id = null;
 
     public function __construct(
-        MessageEntityType $type,
+        MessageEntityType|string $type,
         int $offset,
         int $length,
         ?string $url = null,
@@ -74,7 +76,7 @@ class MessageEntity extends BaseType implements JsonSerializable
     }
 
     public static function make(
-        MessageEntityType $type,
+        MessageEntityType|string $type,
         int $offset,
         int $length,
         ?string $url = null,

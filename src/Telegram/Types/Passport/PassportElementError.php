@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -22,5 +23,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 abstract class PassportElementError extends BaseType implements JsonSerializable
 {
     /** Error source */
-    public PassportSource $source;
+    #[EnumOrScalar]
+    public PassportSource|string $source;
 }

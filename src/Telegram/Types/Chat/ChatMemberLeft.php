@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ChatMemberStatus;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -12,7 +13,8 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 class ChatMemberLeft extends ChatMember
 {
     /** The member's status in the chat, always “left” */
-    public ChatMemberStatus $status = ChatMemberStatus::LEFT;
+    #[EnumOrScalar]
+    public ChatMemberStatus|string $status = ChatMemberStatus::LEFT;
 
     /** Information about the user */
     public User $user;

@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MessageOriginType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 
@@ -15,7 +16,8 @@ class MessageOriginChat extends MessageOrigin
      * Type of the message origin, always “chat”
      * @var MessageOriginType
      */
-    public MessageOriginType $type = MessageOriginType::CHAT;
+    #[EnumOrScalar]
+    public MessageOriginType|string $type = MessageOriginType::CHAT;
 
     /**
      * Date the message was sent originally in Unix time
