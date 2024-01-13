@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
 
 /**
@@ -11,7 +12,8 @@ use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
 class MenuButtonCommands extends MenuButton
 {
     /** Type of the button, must be commands */
-    public MenuButtonType $type = MenuButtonType::COMMANDS;
+    #[EnumOrScalar]
+    public MenuButtonType|string $type = MenuButtonType::COMMANDS;
 
     public function make(): self
     {
