@@ -49,7 +49,8 @@ class InlineQueryResultCachedDocument extends InlineQueryResult
      * Mode for parsing entities in the document caption.
      * See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      */
-    public ?ParseMode $parse_mode = null;
+    #[EnumOrScalar]
+    public ParseMode|string|null $parse_mode = null;
 
     /**
      * Optional.
@@ -77,7 +78,7 @@ class InlineQueryResultCachedDocument extends InlineQueryResult
         string $document_file_id,
         ?string $description = null,
         ?string $caption = null,
-        ?ParseMode $parse_mode = null,
+        ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,

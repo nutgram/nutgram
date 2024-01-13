@@ -77,7 +77,8 @@ class InlineQueryResultMpeg4Gif extends InlineQueryResult
      * Mode for parsing entities in the caption.
      * See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      */
-    public ?ParseMode $parse_mode = null;
+    #[EnumOrScalar]
+    public ParseMode|string|null $parse_mode = null;
 
     /**
      * Optional.

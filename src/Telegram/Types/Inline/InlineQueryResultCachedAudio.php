@@ -40,7 +40,8 @@ class InlineQueryResultCachedAudio extends InlineQueryResult
      * Mode for parsing entities in the audio caption.
      * See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      */
-    public ?ParseMode $parse_mode = null;
+    #[EnumOrScalar]
+    public ParseMode|string|null $parse_mode = null;
 
     /**
      * Optional.
@@ -66,7 +67,7 @@ class InlineQueryResultCachedAudio extends InlineQueryResult
         string $id,
         string $audio_file_id,
         ?string $caption = null,
-        ?ParseMode $parse_mode = null,
+        ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
