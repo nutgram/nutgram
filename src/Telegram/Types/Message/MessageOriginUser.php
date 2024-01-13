@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MessageOriginType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -15,7 +16,8 @@ class MessageOriginUser extends MessageOrigin
      * Type of the message origin, always “user”
      * @var MessageOriginType
      */
-    public MessageOriginType $type = MessageOriginType::USER;
+    #[EnumOrScalar]
+    public MessageOriginType|string $type = MessageOriginType::USER;
 
     /**
      * Date the message was sent originally in Unix time
