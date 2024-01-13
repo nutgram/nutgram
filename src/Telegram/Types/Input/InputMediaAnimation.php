@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
@@ -17,7 +18,8 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 class InputMediaAnimation extends InputMedia implements JsonSerializable
 {
     /** Type of the result, must be animation */
-    public InputMediaType $type = InputMediaType::ANIMATION;
+    #[EnumOrScalar]
+    public InputMediaType|string $type = InputMediaType::ANIMATION;
 
     /**
      * Optional.
@@ -42,7 +44,8 @@ class InputMediaAnimation extends InputMedia implements JsonSerializable
      * Mode for parsing entities in the animation caption.
      * See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      */
-    public ?ParseMode $parse_mode = null;
+    #[EnumOrScalar]
+    public ParseMode|string|null $parse_mode = null;
 
     /**
      * Optional.
@@ -80,7 +83,7 @@ class InputMediaAnimation extends InputMedia implements JsonSerializable
         InputFile|string $media,
         InputFile|string|null $thumbnail,
         ?string $caption,
-        ?ParseMode $parse_mode,
+        ParseMode|string|null $parse_mode,
         ?array $caption_entities,
         ?int $width,
         ?int $height,
