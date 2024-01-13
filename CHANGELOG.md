@@ -2,6 +2,17 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.15.0 - 2024-01-13
+
+### What's Changed
+
+* Add endpoint name to beforeApiRequest listener callback by @Lukasss93 in https://github.com/nutgram/nutgram/pull/644
+* Add toArray() method to BaseType object by @Lukasss93 in https://github.com/nutgram/nutgram/pull/647
+* Add language_code support for commands description by @Lukasss93 in https://github.com/nutgram/nutgram/pull/648
+* Futureproof v4 by @sergix44 in https://github.com/nutgram/nutgram/pull/645
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.14.3...4.15.0
+
 ## 4.14.3 - 2024-01-06
 
 ### What's Changed
