@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -17,10 +18,12 @@ class PassportElementErrorFiles extends PassportElementError
     public string $file_hash;
 
     /** Error source, must be files */
-    public PassportSource $source = PassportSource::FILES;
+    #[EnumOrScalar]
+    public PassportSource|string $source = PassportSource::FILES;
 
     /** The section of the user's Telegram Passport which has the issue, one of “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration” */
-    public PassportType $type;
+    #[EnumOrScalar]
+    public PassportType|string $type;
 
     /**
      * List of base64-encoded file hashes
@@ -37,7 +40,7 @@ class PassportElementErrorFiles extends PassportElementError
      * @param string $message
      */
     public function __construct(
-        PassportType $type,
+        PassportType|string $type,
         array $file_hashes,
         string $message,
     ) {

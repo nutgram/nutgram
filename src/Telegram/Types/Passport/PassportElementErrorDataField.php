@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -14,10 +15,12 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 class PassportElementErrorDataField extends PassportElementError
 {
     /** Error source, must be data */
-    public PassportSource $source = PassportSource::DATA;
+    #[EnumOrScalar]
+    public PassportSource|string $source = PassportSource::DATA;
 
     /** The section of the user's Telegram Passport which has the error, one of “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport”, “address” */
-    public PassportType $type;
+    #[EnumOrScalar]
+    public PassportType|string $type;
 
     /** Name of the data field which has the error */
     public string $field_name;
@@ -29,7 +32,7 @@ class PassportElementErrorDataField extends PassportElementError
     public string $message;
 
     public function __construct(
-        PassportType $type,
+        PassportType|string $type,
         string $field_name,
         string $data_hash,
         string $message
