@@ -105,6 +105,7 @@ Official Documentation on [https://nutgram.dev/](https://nutgram.dev)
 - [Mermaid Generator](https://github.com/Lukasss93/telegram-mermaid) ([@newmermaidbot](https://t.me/newmermaidbot)) - Generate mermaid diagrams from text
 - Voice Transcriber ([@voicetranscriberobot](https://t.me/voicetranscriberobot)) - Transcribe audio messages to text
 - Effin Birds ([@effinbirdsbot](https://t.me/effinbirdsbot)) - Search and send in inline mode images made by https://twitter.com/EffinBirds
+- Resizer Image ([@ResizerTool_bot](https://t.me/ResizerTool_bot))] - Resize an image easily
 
 ## ⚗️ Testing
 
