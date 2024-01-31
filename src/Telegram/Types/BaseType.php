@@ -24,7 +24,7 @@ abstract class BaseType implements Arrayable
     private array $_extra = [];
 
     /**
-     * @param  Nutgram|null  $bot
+     * @param Nutgram|null $bot
      */
     public function __construct(?Nutgram $bot = null)
     {
@@ -32,8 +32,8 @@ abstract class BaseType implements Arrayable
     }
 
     /**
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array $parameters
      * @return mixed
      */
     public function __call($method, $parameters)
@@ -74,7 +74,7 @@ abstract class BaseType implements Arrayable
     }
 
     /**
-     * @param  Nutgram|null  $bot
+     * @param Nutgram|null $bot
      * @return BaseType
      */
     public function bindToInstance(?Nutgram $bot): self
@@ -91,11 +91,10 @@ abstract class BaseType implements Arrayable
     public function toArray(): array
     {
         $data = get_object_vars($this);
-        unset($data['_bot'], $data['_extra']);
-        $data = [...$data, ...$this->_extra];
 
-        array_walk_recursive($data, function (mixed &$value) {
+        array_walk_recursive($data, static function (mixed &$value, string $key) {
             match (true) {
+                str_starts_with($key, '_') => $value = null, // remove internal properties
                 $value instanceof Arrayable => $value = $value->toArray(),
                 $value instanceof BackedEnum => $value = $value->value,
                 default => null,
