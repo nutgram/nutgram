@@ -395,3 +395,17 @@ it('sends a media group', function () {
         ),
     ]);
 });
+
+it('serializes extra properties to array', function () {
+    $chat = new \SergiX44\Nutgram\Telegram\Types\Chat\Chat(Nutgram::fake());
+    $chat->bio = 'test';
+    $chat->type = \SergiX44\Nutgram\Telegram\Properties\ChatType::SUPERGROUP;
+    $chat->notExists = 123;
+
+    $array = $chat->toArray();
+    expect($array)->toBe([
+        'type' => 'supergroup',
+        'bio' => 'test',
+        'notExists' => 123,
+    ]);
+});
