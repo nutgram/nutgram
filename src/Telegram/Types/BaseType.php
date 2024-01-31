@@ -91,6 +91,8 @@ abstract class BaseType implements Arrayable
     public function toArray(): array
     {
         $data = get_object_vars($this);
+        unset($data['_bot'], $data['_extra']);
+        $data = [...$data, ...$this->_extra];
 
         array_walk_recursive($data, function (mixed &$value) {
             match (true) {
