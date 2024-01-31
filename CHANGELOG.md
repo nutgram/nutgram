@@ -2,6 +2,20 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.15.1 - 2024-01-31
+
+### What's Changed
+
+* Update README.md by @superXdev in https://github.com/nutgram/nutgram/pull/653
+* Fix WebAppInfo exception by @Lukasss93 in https://github.com/nutgram/nutgram/pull/657
+* Ignore "_bot" property + merge "_extra" property to current data by @Lukasss93 in https://github.com/nutgram/nutgram/pull/658
+
+### New Contributors
+
+* @superXdev made their first contribution in https://github.com/nutgram/nutgram/pull/653
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.15.0...4.15.1
+
 ## 4.15.0 - 2024-01-13
 
 ### What's Changed
