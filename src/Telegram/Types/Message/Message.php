@@ -92,37 +92,49 @@ class Message extends BaseType
 
     /**
      * Optional.
+     * Information about the original message for forwarded messages
+     */
+    public ?MessageOrigin $forward_origin = null;
+
+    /**
+     * Optional.
      * For forwarded messages, sender of the original message
+     * @deprecated Use the $forward_origin field instead
      */
     public ?User $forward_from = null;
 
     /**
      * Optional.
      * For messages forwarded from channels or from anonymous administrators, information about the original sender chat
+     * @deprecated Use the $forward_origin field instead
      */
     public ?Chat $forward_from_chat = null;
 
     /**
      * Optional.
      * For messages forwarded from channels, identifier of the original message in the channel
+     * @deprecated Use the $forward_origin field instead
      */
     public ?int $forward_from_message_id = null;
 
     /**
      * Optional.
      * For forwarded messages that were originally sent in channels or by an anonymous chat administrator, signature of the message sender if present
+     * @deprecated Use the $forward_origin field instead
      */
     public ?string $forward_signature = null;
 
     /**
      * Optional.
      * Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages
+     * @deprecated Use the $forward_origin field instead
      */
     public ?string $forward_sender_name = null;
 
     /**
      * Optional.
      * For forwarded messages, date the original message was sent in Unix time
+     * @deprecated Use the $forward_origin field instead
      */
     public ?int $forward_date = null;
 

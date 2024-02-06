@@ -4,6 +4,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostRemoved;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageOriginUser;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
 
@@ -32,6 +33,22 @@ it('calls onMessage() handler', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('message_topic');
+
+it('calls onMessage() handler with forward', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->message()->forward_origin)
+            ->toBeInstanceOf(MessageOriginUser::class)
+            ->and($bot->message()->forward_origin->sender_user->id)
+            ->toBe(429000);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('message_forward_origin');
 
 it('calls onMessageType() handler', function ($update) {
     $bot = Nutgram::fake($update);
