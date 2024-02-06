@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.15.2 - 2024-02-06
+
+### What's Changed
+
+* add forward_origin to the Message Object by @sergix44 in https://github.com/nutgram/nutgram/pull/659
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.15.1...4.15.2
+
 ## 4.15.1 - 2024-01-31
 
 ### What's Changed
