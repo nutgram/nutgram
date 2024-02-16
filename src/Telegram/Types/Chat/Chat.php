@@ -200,6 +200,14 @@ class Chat extends BaseType
 
     /**
      * Optional.
+     * For supergroups, the minimum number of boosts that a non-administrator user
+     * needs to add in order to ignore slow mode and chat permissions.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?int $unrestrict_boost_count = null;
+
+    /**
+     * Optional.
      * The time after which all messages sent to the chat will be automatically deleted;
      * in seconds.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
@@ -247,6 +255,13 @@ class Chat extends BaseType
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?bool $can_set_sticker_set = null;
+
+    /**
+     * Optional. For supergroups, the name of the group's custom emoji sticker set.
+     * Custom emoji from this set can be used by all users and bots in the group.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?string $custom_emoji_sticker_set_name = null;
 
     /**
      * Optional.

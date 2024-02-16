@@ -490,6 +490,18 @@ it('calls onProximityAlertTriggered() handler', function ($update) {
     expect($bot->get('called'))->toBeTrue();
 })->with('proximity_alert_triggered');
 
+it('calls onBoostAdded() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onBoostAdded(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('message_boost_added');
+
 it('calls onForumTopicCreated handler', function ($update) {
     $bot = Nutgram::fake($update);
 

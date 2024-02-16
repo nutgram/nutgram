@@ -1306,9 +1306,9 @@ trait AvailableMethods
      * @param bool|null $can_post_messages Pass True if the administrator can create channel posts, channels only
      * @param bool|null $can_edit_messages Pass True if the administrator can edit messages of other users and can pin messages, channels only
      * @param bool|null $can_delete_messages Pass True if the administrator can delete messages of other users
-     * @param bool|null $can_post_stories Pass True if the administrator can post stories in the channel; channels only
-     * @param bool|null $can_edit_stories Pass True if the administrator can edit stories posted by other users; channels only
-     * @param bool|null $can_delete_stories Pass True if the administrator can delete stories posted by other users; channels only
+     * @param bool|null $can_post_stories Pass True if the administrator can post stories in the channel
+     * @param bool|null $can_edit_stories Pass True if the administrator can edit stories posted by other users
+     * @param bool|null $can_delete_stories Pass True if the administrator can delete stories posted by other users
      * @param bool|null $can_manage_video_chats Pass True if the administrator can manage video chats
      * @param bool|null $can_restrict_members Pass True if the administrator can restrict, ban or unban chat members
      * @param bool|null $can_promote_members Pass True if the administrator can add new administrators with a subset of their own privileges or demote administrators that they have promoted, directly or indirectly (promoted by administrators that were appointed by him)
