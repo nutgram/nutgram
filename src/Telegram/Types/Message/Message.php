@@ -6,6 +6,7 @@ use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostAdded;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicClosed;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicCreated;
@@ -83,6 +84,11 @@ class Message extends BaseType
      * For backward compatibility, the field from contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat.
      */
     public ?Chat $sender_chat = null;
+
+    /**
+     * Optional. If the sender of the message boosted the chat, the number of boosts added by the user
+     */
+    public ?int $sender_boost_count = null;
 
     /** Date the message was sent in Unix time */
     public int $date;
@@ -167,6 +173,11 @@ class Message extends BaseType
      * Optional. For replies that quote part of the original message, the quoted part of the message
      */
     public ?TextQuote $quote = null;
+
+    /**
+     * Optional. For replies to a story, the original story
+     */
+    public ?Story $reply_to_story = null;
 
     /**
      * Optional.
@@ -480,6 +491,12 @@ class Message extends BaseType
 
     /**
      * Optional.
+     * Service message: user boosted the chat
+     */
+    public ?ChatBoostAdded $boost_added = null;
+
+    /**
+     * Optional.
      * Service message: forum topic created
      */
     public ?ForumTopicCreated $forum_topic_created = null;
@@ -596,7 +613,7 @@ class Message extends BaseType
      */
     public function isForwarded(): bool
     {
-        return $this->forward_from !== null || $this->forward_from_chat !== null;
+        return $this->forward_origin !== null;
     }
 
     /**
@@ -641,6 +658,7 @@ class Message extends BaseType
             $this->connected_website !== null => MessageType::CONNECTED_WEBSITE,
             $this->passport_data !== null => MessageType::PASSPORT_DATA,
             $this->proximity_alert_triggered !== null => MessageType::PROXIMITY_ALERT_TRIGGERED,
+            $this->boost_added !== null => MessageType::BOOST_ADDED,
             $this->forum_topic_created !== null => MessageType::FORUM_TOPIC_CREATED,
             $this->forum_topic_edited !== null => MessageType::FORUM_TOPIC_EDITED,
             $this->forum_topic_closed !== null => MessageType::FORUM_TOPIC_CLOSED,

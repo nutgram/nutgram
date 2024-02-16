@@ -19,6 +19,15 @@
       "type": "private"
     },
     "date": 1668633998,
-    "story": {}
+    "story": {
+      "chat": {
+        "id": 12345,
+        "first_name": "Mario",
+        "last_name": "Bros",
+        "username": "MarioBros",
+        "type": "private"
+      },
+      "id": 123456789
+    }
   }
 }
