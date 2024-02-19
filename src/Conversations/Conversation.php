@@ -181,4 +181,14 @@ abstract class Conversation
     {
         return [];
     }
+
+    public function getChatId(): int
+    {
+        return $this->chatId;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->userId;
+    }
 }
