@@ -3,6 +3,7 @@
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\BulkMessenger;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\ServerConversation;
 
 it('does not run when not in cli mode', function () {
     $bot = Nutgram::fake();
@@ -102,4 +103,25 @@ it('bulk messenger skips if no chats are provided', function () {
         ->startSync();
 
     $bot->assertNoReply();
+});
+
+it('starts a conversation from server', function () {
+    $bot = Nutgram::fake();
+
+    $bot->getBulkMessenger()
+        ->setInterval(0)
+        ->setChats([123456789])
+        ->using(function (Nutgram $bot, int|string $chatId): void {
+            ServerConversation::begin(
+                bot: $bot,
+                userId: $chatId,
+                chatId: $chatId
+            );
+        })
+        ->startSync();
+
+    $bot->assertReply('sendMessage', [
+        'text' => 'First step',
+        'chat_id' => 123456789
+    ]);
 });
