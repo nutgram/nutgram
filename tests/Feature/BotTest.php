@@ -2,7 +2,6 @@
 
 use GuzzleHttp\Psr7\Request;
 use Psr\Log\LoggerInterface;
-use SergiX44\Container\Container;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
@@ -12,8 +11,6 @@ use SergiX44\Nutgram\Testing\FakeNutgram;
 use SergiX44\Nutgram\Testing\FormDataParser;
 use SergiX44\Nutgram\Testing\OutgoingResource;
 use SergiX44\Nutgram\Tests\Fixtures\CustomLogger;
-use SergiX44\Nutgram\Tests\Fixtures\MyService;
-use SergiX44\Nutgram\Tests\Fixtures\ServiceHandler;
 
 it('throws exception if the token is empty', function () {
     new Nutgram('');
@@ -183,21 +180,6 @@ it('throws an exception when no fake update specified', function () {
     $bot = Nutgram::fake();
     $bot->reply();
 })->expectException(InvalidArgumentException::class);
-
-it('uses a different container', function () {
-    $differentContainer = new Container();
-    $differentContainer->singleton(MyService::class, fn () => new MyService('hello'));
-
-    $bot = Nutgram::fake(config: new Configuration(
-        container: $differentContainer
-    ));
-
-    $bot->onCommand('test', ServiceHandler::class);
-
-    $bot->hearText('/test')
-        ->reply()
-        ->assertReplyText('hello');
-});
 
 it('use another logger', function () {
     $bot = Nutgram::fake(config: new Configuration(

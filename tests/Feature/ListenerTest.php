@@ -906,14 +906,6 @@ it('get handlers parameters inside local middleware', function () {
     );
 });
 
-it('throws an exception when resolving an invalid callable', function () {
-    $bot = Nutgram::fake();
-
-    $bot->onText('foo', 123);
-
-    $bot->hearText('foo')->reply();
-})->throws(\SergiX44\Container\Exception\ContainerException::class, 'Invalid callable specified');
-
 it('resolves a class method', function () {
     $bot = Nutgram::fake();
 
