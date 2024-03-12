@@ -1,7 +1,6 @@
 <?php
 
 use SergiX44\Nutgram\Hydrator\Hydrator;
-use SergiX44\Nutgram\Hydrator\LegacyHydrator;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
