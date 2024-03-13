@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.17.0 - 2024-03-13
+
+### What's Changed
+
+* Add ability to get chat id from a conversation by @Lukasss93 in https://github.com/nutgram/nutgram/pull/669
+* Add DI tests by @Lukasss93 in https://github.com/nutgram/nutgram/pull/674
+* Fix library conflict by @Lukasss93 in https://github.com/nutgram/nutgram/pull/677
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.16.0...4.17.0
+
 ## 4.16.0 - 2024-02-16
 
 ### What's Changed
