@@ -28,7 +28,7 @@
       "php": "^8.2",
       "ext-json": "*",
       "guzzlehttp/guzzle": "^7.2",
-      "illuminate/macroable": "^8.0|^9.0|^10.0",
+      "illuminate/macroable": ">=9.0",
       "laravel/serializable-closure": "^1.2",
       "sergix44/container": "^2.1",
       "nutgram/hydrator": "^6.0",
