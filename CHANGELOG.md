@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.17.1 - 2024-03-15
+
+### What's Changed
+
+- Fix `getChatId` and `getUserId` return type in https://github.com/nutgram/nutgram/commit/d25f5655364678187066a33a1c8e09d3189afaad
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.17.0...4.17.1
+
 ## 4.17.0 - 2024-03-13
 
 ### What's Changed
