@@ -26,6 +26,7 @@ final readonly class Configuration
         'edited_message',
         'channel_post',
         'edited_channel_post',
+        'business_connection',
         'message_reaction',
         'message_reaction_count',
         'inline_query',

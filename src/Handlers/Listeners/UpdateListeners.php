@@ -63,6 +63,12 @@ trait UpdateListeners
         return $this->{$this->target}[UpdateType::EDITED_CHANNEL_POST->value][] = new Handler($callable);
     }
 
+    public function onBusinessConnection($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::BUSINESS_CONNECTION->value][] = new Handler($callable);
+    }
+
     public function onMessageReaction($callable): Handler
     {
         $this->checkFinalized();

@@ -10,6 +10,7 @@ enum UpdateType: string
     case EDITED_MESSAGE = 'edited_message';
     case CHANNEL_POST = 'channel_post';
     case EDITED_CHANNEL_POST = 'edited_channel_post';
+    case BUSINESS_CONNECTION = 'business_connection';
     case MESSAGE_REACTION = 'message_reaction';
     case MESSAGE_REACTION_COUNT = 'message_reaction_count';
     case INLINE_QUERY = 'inline_query';

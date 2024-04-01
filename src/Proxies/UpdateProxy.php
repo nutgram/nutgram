@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Proxies;
 use SergiX44\Nutgram\Telegram\Properties\MessageEntityType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostRemoved;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
+use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
@@ -141,6 +142,11 @@ trait UpdateProxy
     public function messageReactionCount(): ?MessageReactionCountUpdated
     {
         return $this->update?->message_reaction_count;
+    }
+
+    public function businessConnection(): ?BusinessConnection
+    {
+        return $this->update?->business_connection;
     }
 
     public function inlineQuery(): ?InlineQuery
