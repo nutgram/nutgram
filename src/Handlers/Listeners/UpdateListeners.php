@@ -75,6 +75,12 @@ trait UpdateListeners
         return $this->{$this->target}[UpdateType::BUSINESS_MESSAGE->value][] = new Handler($callable);
     }
 
+    public function onEditedBusinessMessage($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::EDITED_BUSINESS_MESSAGE->value][] = new Handler($callable);
+    }
+
     public function onMessageReaction($callable): Handler
     {
         $this->checkFinalized();

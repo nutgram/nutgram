@@ -75,6 +75,12 @@ class Update extends BaseType
 
     /**
      * Optional.
+     * New version of a message from a connected business account
+     */
+    public ?Message $edited_business_message = null;
+
+    /**
+     * Optional.
      * A reaction to a message was changed by a user.
      * The bot must be an administrator in the chat and must explicitly specify "message_reaction" in the list of allowed_updates to receive these updates.
      * The update isn't received for reactions set by bots.
@@ -183,6 +189,7 @@ class Update extends BaseType
             $this->edited_channel_post !== null => UpdateType::EDITED_CHANNEL_POST,
             $this->business_connection !== null => UpdateType::BUSINESS_CONNECTION,
             $this->business_message !== null => UpdateType::BUSINESS_MESSAGE,
+            $this->edited_business_message !== null => UpdateType::EDITED_BUSINESS_MESSAGE,
             $this->message_reaction !== null => UpdateType::MESSAGE_REACTION,
             $this->message_reaction_count !== null => UpdateType::MESSAGE_REACTION_COUNT,
             $this->inline_query !== null => UpdateType::INLINE_QUERY,
@@ -214,6 +221,7 @@ class Update extends BaseType
             // edited_channel_post: doesn't have a user
             $this->business_connection !== null => $this->business_connection->user,
             $this->business_message !== null => $this->business_message->from,
+            $this->edited_business_message !== null => $this->edited_business_message->from,
             $this->message_reaction !== null => $this->message_reaction->user,
             // message_reaction_count: doesn't have a user
             $this->inline_query !== null => $this->inline_query->from,
@@ -241,6 +249,7 @@ class Update extends BaseType
             // edited_channel_post: doesn't have a user
             $this->business_connection !== null => $this->business_connection->user = $user,
             $this->business_message !== null => $this->business_message->from = $user,
+            $this->edited_business_message !== null => $this->edited_business_message->from = $user,
             $this->message_reaction !== null => $this->message_reaction->user = $user,
             // message_reaction_count: doesn't have a user
             $this->inline_query !== null => $this->inline_query->from = $user,
@@ -268,6 +277,7 @@ class Update extends BaseType
             $this->edited_channel_post !== null => $this->edited_channel_post->chat,
             // business_connection doesn't have a chat
             $this->business_message !== null => $this->business_message->chat,
+            $this->edited_business_message !== null => $this->edited_business_message->chat,
             $this->message_reaction !== null => $this->message_reaction->chat,
             $this->message_reaction_count !== null => $this->message_reaction_count->chat,
             // inline_query doesn't have a chat
@@ -295,6 +305,7 @@ class Update extends BaseType
             $this->edited_channel_post !== null => $this->edited_channel_post->chat = $chat,
             // business_connection doesn't have a chat
             $this->business_message !== null => $this->business_message->chat = $chat,
+            $this->edited_business_message !== null => $this->edited_business_message->chat = $chat,
             $this->message_reaction !== null => $this->message_reaction->chat = $chat,
             $this->message_reaction_count !== null => $this->message_reaction_count->chat = $chat,
             // inline_query doesn't have a chat
@@ -321,6 +332,7 @@ class Update extends BaseType
             $this->channel_post !== null => $this->channel_post,
             $this->edited_channel_post !== null => $this->edited_channel_post,
             $this->business_message !== null => $this->business_message,
+            $this->edited_business_message !== null => $this->edited_business_message,
             $this->callback_query !== null => $this->callback_query->message,
             default => null
         };

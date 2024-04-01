@@ -124,6 +124,18 @@ it('calls onBusinessMessage() handler', function ($update) {
     expect($bot->get('called'))->toBeTrue();
 })->with('business_message');
 
+it('calls onEditedBusinessMessage() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onEditedBusinessMessage(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('edited_business_message');
+
 it('calls onMessageReaction() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
