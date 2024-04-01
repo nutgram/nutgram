@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Properties\ForumIconColor;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Properties\PollType;
 use SergiX44\Nutgram\Telegram\Types\Boost\UserChatBoosts;
+use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -1963,6 +1964,18 @@ trait AvailableMethods
     public function getUserChatBoosts(int|string $chat_id = null, int $user_id = null): ?UserChatBoosts
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), UserChatBoosts::class);
+    }
+
+    /**
+     * Use this method to get information about the connection of the bot with a business account.
+     * Returns a {@see BusinessConnection https://core.telegram.org/bots/api#businessconnection} object on success.
+     * @see https://core.telegram.org/bots/api#getbusinessconnection
+     * @param string $business_connection_id Unique identifier of the business connection
+     * @return BusinessConnection|null
+     */
+    public function getBusinessConnection(string $business_connection_id): ?BusinessConnection
+    {
+        return $this->requestJson(__FUNCTION__, compact('business_connection_id'), BusinessConnection::class);
     }
 
     /**
