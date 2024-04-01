@@ -81,6 +81,12 @@ trait UpdateListeners
         return $this->{$this->target}[UpdateType::EDITED_BUSINESS_MESSAGE->value][] = new Handler($callable);
     }
 
+    public function onDeletedBusinessMessages($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::DELETED_BUSINESS_MESSAGES->value][] = new Handler($callable);
+    }
+
     public function onMessageReaction($callable): Handler
     {
         $this->checkFinalized();

@@ -13,6 +13,7 @@ enum UpdateType: string
     case BUSINESS_CONNECTION = 'business_connection';
     case BUSINESS_MESSAGE = 'business_message';
     case EDITED_BUSINESS_MESSAGE = 'edited_business_message';
+    case DELETED_BUSINESS_MESSAGES = 'deleted_business_messages';
     case MESSAGE_REACTION = 'message_reaction';
     case MESSAGE_REACTION_COUNT = 'message_reaction_count';
     case INLINE_QUERY = 'inline_query';

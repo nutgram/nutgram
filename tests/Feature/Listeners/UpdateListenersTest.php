@@ -5,6 +5,7 @@ use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostRemoved;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
+use SergiX44\Nutgram\Telegram\Types\Business\BusinessMessagesDeleted;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageOriginUser;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
@@ -135,6 +136,19 @@ it('calls onEditedBusinessMessage() handler', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('edited_business_message');
+
+it('calls onDeletedBusinessMessages() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onDeletedBusinessMessages(function (Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->deletedBusinessMessages())->toBeInstanceOf(BusinessMessagesDeleted::class);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('deleted_business_messages');
 
 it('calls onMessageReaction() handler', function ($update) {
     $bot = Nutgram::fake($update);

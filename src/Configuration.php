@@ -29,6 +29,7 @@ final readonly class Configuration
         'business_connection',
         'business_message',
         'edited_business_message',
+        'deleted_business_messages',
         'message_reaction',
         'message_reaction_count',
         'inline_query',

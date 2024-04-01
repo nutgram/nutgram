@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostRemoved;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
+use SergiX44\Nutgram\Telegram\Types\Business\BusinessMessagesDeleted;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
@@ -78,6 +79,12 @@ class Update extends BaseType
      * New version of a message from a connected business account
      */
     public ?Message $edited_business_message = null;
+
+    /**
+     * Optional.
+     * Messages were deleted from a connected business account
+     */
+    public ?BusinessMessagesDeleted $deleted_business_messages = null;
 
     /**
      * Optional.
@@ -190,6 +197,7 @@ class Update extends BaseType
             $this->business_connection !== null => UpdateType::BUSINESS_CONNECTION,
             $this->business_message !== null => UpdateType::BUSINESS_MESSAGE,
             $this->edited_business_message !== null => UpdateType::EDITED_BUSINESS_MESSAGE,
+            $this->deleted_business_messages !== null => UpdateType::DELETED_BUSINESS_MESSAGES,
             $this->message_reaction !== null => UpdateType::MESSAGE_REACTION,
             $this->message_reaction_count !== null => UpdateType::MESSAGE_REACTION_COUNT,
             $this->inline_query !== null => UpdateType::INLINE_QUERY,
@@ -222,6 +230,7 @@ class Update extends BaseType
             $this->business_connection !== null => $this->business_connection->user,
             $this->business_message !== null => $this->business_message->from,
             $this->edited_business_message !== null => $this->edited_business_message->from,
+            // deleted_business_messages: doesn't have a user
             $this->message_reaction !== null => $this->message_reaction->user,
             // message_reaction_count: doesn't have a user
             $this->inline_query !== null => $this->inline_query->from,
@@ -250,6 +259,7 @@ class Update extends BaseType
             $this->business_connection !== null => $this->business_connection->user = $user,
             $this->business_message !== null => $this->business_message->from = $user,
             $this->edited_business_message !== null => $this->edited_business_message->from = $user,
+            // deleted_business_messages: doesn't have a user
             $this->message_reaction !== null => $this->message_reaction->user = $user,
             // message_reaction_count: doesn't have a user
             $this->inline_query !== null => $this->inline_query->from = $user,
@@ -278,6 +288,7 @@ class Update extends BaseType
             // business_connection doesn't have a chat
             $this->business_message !== null => $this->business_message->chat,
             $this->edited_business_message !== null => $this->edited_business_message->chat,
+            $this->deleted_business_messages !== null => $this->deleted_business_messages->chat,
             $this->message_reaction !== null => $this->message_reaction->chat,
             $this->message_reaction_count !== null => $this->message_reaction_count->chat,
             // inline_query doesn't have a chat
@@ -306,6 +317,7 @@ class Update extends BaseType
             // business_connection doesn't have a chat
             $this->business_message !== null => $this->business_message->chat = $chat,
             $this->edited_business_message !== null => $this->edited_business_message->chat = $chat,
+            $this->deleted_business_messages !== null => $this->deleted_business_messages->chat = $chat,
             $this->message_reaction !== null => $this->message_reaction->chat = $chat,
             $this->message_reaction_count !== null => $this->message_reaction_count->chat = $chat,
             // inline_query doesn't have a chat
