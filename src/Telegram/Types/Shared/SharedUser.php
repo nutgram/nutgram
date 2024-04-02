@@ -13,7 +13,6 @@ use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
  */
 class SharedUser extends BaseType
 {
-
     /**
      * Identifier of the shared user.
      * This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it.
