@@ -6,6 +6,7 @@ use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Business\BusinessIntro;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
@@ -79,6 +80,12 @@ class Chat extends BaseType
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?Birthdate $birthdate = null;
+
+    /**
+     * Optional. For private chats with business accounts, the intro of the business.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?BusinessIntro $business_intro = null;
 
     /**
      * Optional.
