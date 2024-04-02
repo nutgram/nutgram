@@ -5,6 +5,10 @@ namespace SergiX44\Nutgram\Telegram\Types\Business;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
+/**
+ * Describes the connection of the bot with a business account.
+ * @see https://core.telegram.org/bots/api#businessconnection
+ */
 class BusinessConnection extends BaseType
 {
     /**
