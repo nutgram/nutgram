@@ -22,10 +22,20 @@
       "request_id": 42
     },
     "users_shared": {
+      "request_id": 42,
       "user_ids": [
         123456
       ],
-      "request_id": 42
+      "users": [
+        {
+          "user_id": 123,
+          "first_name": "Luigi"
+        },
+        {
+          "user_id": 456,
+          "first_name": "Peach"
+        }
+      ]
     }
   }
 }
