@@ -199,6 +199,12 @@ class Message extends BaseType
 
     /**
      * Optional.
+     * True, if the message was sent by an implicit action, for example, as an away or a greeting business message, or as a scheduled message
+     */
+    public ?bool $is_from_offline = null;
+
+    /**
+     * Optional.
      * The unique identifier of a media message group this message belongs to
      */
     public ?string $media_group_id = null;
