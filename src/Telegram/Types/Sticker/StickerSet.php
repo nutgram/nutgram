@@ -14,21 +14,31 @@ use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
  */
 class StickerSet extends BaseType
 {
-    /** Sticker set name */
+    /**
+     * Sticker set name
+     */
     public string $name;
 
     /** Sticker set title */
     public string $title;
 
-    /** Type of stickers in the set, currently one of “regular”, “mask”, “custom_emoji” */
+    /**
+     * Type of stickers in the set, currently one of “regular”, “mask”, “custom_emoji”
+     */
     #[EnumOrScalar]
     public StickerType|string $sticker_type;
 
-    /** True, if the sticker set contains {@see https://telegram.org/blog/animated-stickers animated stickers} */
-    public bool $is_animated;
+    /**
+     * True, if the sticker set contains {@see https://telegram.org/blog/animated-stickers animated stickers}
+     * @deprecated Use {@see Sticker::$is_animated} in the `stickers` field instead
+     */
+    public ?bool $is_animated = null;
 
-    /** True, if the sticker set contains {@see https://telegram.org/blog/video-stickers-better-reactions video stickers} */
-    public bool $is_video;
+    /**
+     * True, if the sticker set contains {@see https://telegram.org/blog/video-stickers-better-reactions video stickers}
+     * @deprecated Use {@see Sticker::$is_video} in the `stickers` field instead
+     */
+    public ?bool $is_video = null;
 
     /**
      * List of all set stickers
