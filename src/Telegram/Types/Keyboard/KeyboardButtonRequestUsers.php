@@ -39,30 +39,58 @@ class KeyboardButtonRequestUsers extends BaseType implements JsonSerializable
      */
     public ?int $max_quantity = null;
 
+    /**
+     * Optional. Pass True to request the users' first and last name
+     */
+    public ?bool $request_name = null;
+
+    /**
+     * Optional. Pass True to request the users' username
+     */
+    public ?bool $request_username = null;
+
+    /**
+     * Optional. Pass True to request the users' photo
+     */
+    public ?bool $request_photo = null;
+
+
     public function __construct(
         int $request_id,
         ?bool $user_is_bot = null,
         ?bool $user_is_premium = null,
-        ?int $max_quantity = null
+        ?int $max_quantity = null,
+        ?bool $request_name = null,
+        ?bool $request_username = null,
+        ?bool $request_photo = null,
     ) {
         parent::__construct();
         $this->request_id = $request_id;
         $this->user_is_bot = $user_is_bot;
         $this->user_is_premium = $user_is_premium;
         $this->max_quantity = $max_quantity;
+        $this->request_name = $request_name;
+        $this->request_username = $request_username;
+        $this->request_photo = $request_photo;
     }
 
     public static function make(
         int $request_id,
         ?bool $user_is_bot = null,
         ?bool $user_is_premium = null,
-        ?int $max_quantity = null
+        ?int $max_quantity = null,
+        ?bool $request_name = null,
+        ?bool $request_username = null,
+        ?bool $request_photo = null,
     ): self {
         return new self(
             request_id: $request_id,
             user_is_bot: $user_is_bot,
             user_is_premium: $user_is_premium,
-            max_quantity: $max_quantity
+            max_quantity: $max_quantity,
+            request_name: $request_name,
+            request_username: $request_username,
+            request_photo: $request_photo,
         );
     }
 
@@ -73,6 +101,9 @@ class KeyboardButtonRequestUsers extends BaseType implements JsonSerializable
             'user_is_bot' => $this->user_is_bot,
             'user_is_premium' => $this->user_is_premium,
             'max_quantity' => $this->max_quantity,
+            'request_name' => $this->request_name,
+            'request_username' => $this->request_username,
+            'request_photo' => $this->request_photo,
         ]);
     }
 }
