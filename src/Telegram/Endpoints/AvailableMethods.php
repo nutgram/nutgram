@@ -1131,18 +1131,21 @@ trait AvailableMethods
      * @param ChatAction|string $action Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for {@see https://core.telegram.org/bots/api#sendmessage text messages}, upload_photo for {@see https://core.telegram.org/bots/api#sendphoto photos}, record_video or upload_video for {@see https://core.telegram.org/bots/api#sendvideo videos}, record_voice or upload_voice for {@see https://core.telegram.org/bots/api#sendvoice voice notes}, upload_document for {@see https://core.telegram.org/bots/api#senddocument general files}, choose_sticker for {@see https://core.telegram.org/bots/api#sendsticker stickers}, find_location for {@see https://core.telegram.org/bots/api#sendlocation location data}, record_video_note or upload_video_note for {@see https://core.telegram.org/bots/api#sendvideonote video notes}.
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_thread_id Unique identifier for the target message thread; supergroups only
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the action will be sent
      * @return bool|null
      */
     public function sendChatAction(
         ChatAction|string $action,
         int|string|null $chat_id = null,
         ?int $message_thread_id = null,
+        ?string $business_connection_id = null,
     ): ?bool {
         $chat_id ??= $this->chatId();
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
-            'action'
+            'action',
+            'business_connection_id',
         ));
     }
 
