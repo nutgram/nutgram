@@ -219,6 +219,33 @@ trait Stickers
     }
 
     /**
+     * Use this method to replace an existing sticker in a sticker set with a new one.
+     * The method is equivalent to calling {@see https://core.telegram.org/bots/api#deletestickerfromset deleteStickerFromSet},
+     * then {@see https://core.telegram.org/bots/api#addstickertoset addStickerToSet},
+     * then {@see https://core.telegram.org/bots/api#setstickerpositioninset setStickerPositionInSet}.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#replacestickerinset
+     * @param string $name Sticker set name
+     * @param string $old_sticker File identifier of the replaced sticker
+     * @param InputSticker $sticker A JSON-serialized object with information about the added sticker. If exactly the same sticker had already been added to the set, then the set remains unchanged.
+     * @param int|null $user_id User identifier of the sticker set owner
+     * @param array $clientOpt Client options
+     * @return bool|null
+     */
+    public function replaceStickerInSet(string $name, string $old_sticker, InputSticker $sticker, ?int $user_id = null, array $clientOpt = []): ?bool
+    {
+        $user_id ??= $this->userId();
+        $parameters = compact(
+            'user_id',
+            'name',
+            'old_sticker',
+            'sticker',
+        );
+
+        return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
+    }
+
+    /**
      * Use this method to change the list of emoji assigned to a regular or custom emoji sticker.
      * The sticker must belong to a sticker set created by the bot.
      * Returns True on success.
