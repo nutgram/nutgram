@@ -90,6 +90,12 @@ class Message extends BaseType
      */
     public ?int $sender_boost_count = null;
 
+    /**
+     * Optional. The bot that actually sent the message on behalf of the business account.
+     * Available only for outgoing messages sent on behalf of the connected business account.
+     */
+    public ?User $sender_business_bot = null;
+
     /** Date the message was sent in Unix time */
     public int $date;
 
