@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessIntro;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessLocation;
+use SergiX44\Nutgram\Telegram\Types\Business\BusinessOpeningHours;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
@@ -93,6 +94,12 @@ class Chat extends BaseType
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?BusinessLocation $business_location = null;
+
+    /**
+     * Optional. For private chats with business accounts, the opening hours of the business.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?BusinessOpeningHours $business_opening_hours = null;
 
     /**
      * Optional.
