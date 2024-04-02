@@ -40,6 +40,7 @@ trait Stickers
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -54,6 +55,7 @@ trait Stickers
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -67,7 +69,7 @@ trait Stickers
             'allow_sending_without_reply',
             'reply_parameters',
             'reply_markup',
-            'clientOpt'
+            'business_connection_id',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'sticker', $sticker, $opt, $clientOpt);
