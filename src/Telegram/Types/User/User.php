@@ -77,7 +77,7 @@ class User extends BaseType
     /**
      * Optional.
      * True, if the bot can be connected to a Telegram Business account to receive its messages.
-     * Returned only in {@see getMe https://core.telegram.org/bots/api#getme}.
+     * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
      */
     public ?bool $can_connect_to_business = null;
 

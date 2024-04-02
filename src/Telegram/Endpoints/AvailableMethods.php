@@ -1968,7 +1968,7 @@ trait AvailableMethods
 
     /**
      * Use this method to get information about the connection of the bot with a business account.
-     * Returns a {@see BusinessConnection https://core.telegram.org/bots/api#businessconnection} object on success.
+     * Returns a {@see https://core.telegram.org/bots/api#businessconnection BusinessConnection} object on success.
      * @see https://core.telegram.org/bots/api#getbusinessconnection
      * @param string $business_connection_id Unique identifier of the business connection
      * @return BusinessConnection|null

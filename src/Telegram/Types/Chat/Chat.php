@@ -76,14 +76,14 @@ class Chat extends BaseType
     /**
      * Optional.
      * For private chats, the date of birth of the user.
-     * Returned only in {@see getChat https://core.telegram.org/bots/api#getchat}.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?Birthdate $birthdate = null;
 
     /**
      * Optional.
      * For private chats, the personal channel of the user.
-     * Returned only in {@see getChat https://core.telegram.org/bots/api#getchat}.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?Chat $personal_chat = null;
 
