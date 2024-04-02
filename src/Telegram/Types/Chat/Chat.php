@@ -74,6 +74,13 @@ class Chat extends BaseType
 
     /**
      * Optional.
+     * For private chats, the personal channel of the user.
+     * Returned only in {@see getChat https://core.telegram.org/bots/api#getchat}.
+     */
+    public ?Chat $personal_chat = null;
+
+    /**
+     * Optional.
      * List of available reactions allowed in the chat.
      * If omitted, then all {@see https://core.telegram.org/bots/api#reactiontypeemoji emoji reactions} are allowed.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
