@@ -200,7 +200,6 @@ it('creates a new sticker set using InputFile', function () {
             stickers: [
                 $sticker
             ],
-            sticker_format: 'static',
             sticker_type: 'regular',
         );
     });
@@ -216,9 +215,6 @@ it('creates a new sticker set using InputFile', function () {
             fn ($x) => $x
                 ->name->toBe('title')
                 ->contents->toBe('MyPack By Nutgram'),
-            fn ($x) => $x
-                ->name->toBe('sticker_format')
-                ->contents->toBe('static'),
             fn ($x) => $x
                 ->name->toBe('sticker_type')
                 ->contents->toBe('regular'),
@@ -253,7 +249,6 @@ it('creates a new sticker set using Url', function () {
             stickers: [
                 $sticker
             ],
-            sticker_format: 'static',
             sticker_type: 'regular',
         );
     });
@@ -269,9 +264,6 @@ it('creates a new sticker set using Url', function () {
             fn ($x) => $x
                 ->name->toBe('title')
                 ->contents->toBe('MyPack By Nutgram'),
-            fn ($x) => $x
-                ->name->toBe('sticker_format')
-                ->contents->toBe('static'),
             fn ($x) => $x
                 ->name->toBe('sticker_type')
                 ->contents->toBe('regular'),
