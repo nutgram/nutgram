@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
+use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
 
 /**
  * This object represents a chat.
@@ -71,6 +72,13 @@ class Chat extends BaseType
      * @var string[] $active_usernames
      */
     public ?array $active_usernames = null;
+
+    /**
+     * Optional.
+     * For private chats, the date of birth of the user.
+     * Returned only in {@see getChat https://core.telegram.org/bots/api#getchat}.
+     */
+    public ?Birthdate $birthdate = null;
 
     /**
      * Optional.
