@@ -25,7 +25,7 @@ class Birthdate extends BaseType
 
     public function toDateTime(?DateTimeZone $timezone = null): ?DateTime
     {
-        if($this->year === null) {
+        if ($this->year === null) {
             return null;
         }
 
