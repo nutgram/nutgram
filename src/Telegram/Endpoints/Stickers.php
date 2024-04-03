@@ -145,6 +145,7 @@ trait Stickers
             'user_id',
             'name',
             'title',
+            'sticker_format',
             'sticker_type',
             'needs_repainting',
         );
