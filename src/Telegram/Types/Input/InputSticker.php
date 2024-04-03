@@ -28,7 +28,7 @@ class InputSticker extends BaseType implements JsonSerializable, Uploadable
      * Format of the added sticker, must be one of “static” for a .WEBP or .PNG image,
      * “animated” for a .TGS animation, “video” for a WEBM video
      */
-    public StickerFormat|string $format;
+    public StickerFormat|string|null $format = null;
 
     /**
      * List of 1-20 emoji associated with the sticker
@@ -53,10 +53,10 @@ class InputSticker extends BaseType implements JsonSerializable, Uploadable
 
     public function __construct(
         InputFile|string $sticker,
-        StickerFormat|string $format,
         array $emoji_list,
         ?MaskPosition $mask_position = null,
         ?array $keywords = null,
+        StickerFormat|string|null $format = null,
     ) {
         parent::__construct();
         $this->sticker = $sticker;
@@ -68,17 +68,17 @@ class InputSticker extends BaseType implements JsonSerializable, Uploadable
 
     public static function make(
         InputFile|string $sticker,
-        StickerFormat|string $format,
         array $emoji_list,
         ?MaskPosition $mask_position = null,
         ?array $keywords = null,
+        StickerFormat|string|null $format = null,
     ): self {
         return new self(
             sticker: $sticker,
-            format: $format,
             emoji_list: $emoji_list,
             mask_position: $mask_position,
-            keywords: $keywords
+            keywords: $keywords,
+            format: $format,
         );
     }
 
