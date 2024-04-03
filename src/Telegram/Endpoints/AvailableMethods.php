@@ -128,6 +128,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $parameters = compact(
             'chat_id',
             'message_thread_id',
@@ -343,6 +344,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -410,6 +412,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -475,6 +478,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -546,6 +550,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -619,6 +624,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -684,6 +690,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -742,6 +749,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -791,6 +799,7 @@ trait AvailableMethods
     ): ?array {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
 
         return $this->requestMultipart(__FUNCTION__, [
             'media' => new UploadableArray($media),
@@ -847,6 +856,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
 
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -981,6 +991,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
 
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -1039,6 +1050,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
 
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -1109,6 +1121,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $parameters = compact(
             'chat_id',
             'message_thread_id',
@@ -1167,6 +1180,7 @@ trait AvailableMethods
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
@@ -1200,6 +1214,7 @@ trait AvailableMethods
     ): ?bool {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',

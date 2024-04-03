@@ -424,5 +424,24 @@ it('calls sendMessage with the right message_thread_id', function () {
             'text' => 'Hello thread!',
             'message_thread_id' => 66,
         ]);
-
 });
+
+it('calls sendMessage with the right business_connection_id', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->sendMessage('Hello thread!');
+    });
+
+    $bot
+        ->hearMessage([
+            'text' => 'Hello',
+            'business_connection_id' => 'biz007',
+        ])
+        ->reply()
+        ->assertReplyMessage([
+            'text' => 'Hello thread!',
+            'business_connection_id' => 'biz007',
+        ]);
+});
+

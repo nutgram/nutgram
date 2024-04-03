@@ -62,6 +62,11 @@ trait UpdateProxy
         return $this->message()?->message_thread_id;
     }
 
+    public function businessConnectionId(): ?string
+    {
+        return $this->message()?->business_connection_id ?? $this->businessConnection()?->id;
+    }
+
     public function inlineMessageId(): ?string
     {
         return $this->chosenInlineResult()?->inline_message_id ?? $this->callbackQuery()?->inline_message_id;
