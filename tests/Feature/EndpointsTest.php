@@ -444,4 +444,3 @@ it('calls sendMessage with the right business_connection_id', function () {
             'business_connection_id' => 'biz007',
         ]);
 });
-
