@@ -59,6 +59,7 @@ trait Stickers
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
         $opt = compact(
             'chat_id',
             'message_thread_id',

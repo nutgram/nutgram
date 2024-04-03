@@ -406,3 +406,23 @@ it('serializes extra properties to array', function () {
         'notExists' => 123,
     ]);
 });
+
+it('calls sendMessage with the right message_thread_id', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->sendMessage('Hello thread!');
+    });
+
+    $bot
+        ->hearMessage([
+            'text' => 'Hello',
+            'message_thread_id' => 66,
+        ])
+        ->reply()
+        ->assertReplyMessage([
+            'text' => 'Hello thread!',
+            'message_thread_id' => 66,
+        ]);
+
+});

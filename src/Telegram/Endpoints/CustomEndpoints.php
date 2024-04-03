@@ -51,6 +51,7 @@ trait CustomEndpoints
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): ?array {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
         $parameters = compact(
             'chat_id',
             'message_thread_id',
@@ -126,6 +127,7 @@ trait CustomEndpoints
         array $clientOpt = [],
     ): ?array {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -194,6 +196,7 @@ trait CustomEndpoints
         array $clientOpt = [],
     ): ?array {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -259,6 +262,7 @@ trait CustomEndpoints
         array $clientOpt = [],
     ): ?array {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -331,6 +335,7 @@ trait CustomEndpoints
         array $clientOpt = [],
     ): ?array {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -404,6 +409,7 @@ trait CustomEndpoints
         array $clientOpt = [],
     ): ?array {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -471,6 +477,7 @@ trait CustomEndpoints
         array $clientOpt = [],
     ): ?array {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
         $opt = compact(
             'chat_id',
             'message_thread_id',

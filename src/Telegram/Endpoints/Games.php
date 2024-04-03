@@ -44,6 +44,7 @@ trait Games
         ?string $business_connection_id = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
         $parameters = compact(
             'chat_id',
             'message_thread_id',
