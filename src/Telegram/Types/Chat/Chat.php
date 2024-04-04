@@ -6,8 +6,12 @@ use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Business\BusinessIntro;
+use SergiX44\Nutgram\Telegram\Types\Business\BusinessLocation;
+use SergiX44\Nutgram\Telegram\Types\Business\BusinessOpeningHours;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
+use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
 
 /**
  * This object represents a chat.
@@ -71,6 +75,38 @@ class Chat extends BaseType
      * @var string[] $active_usernames
      */
     public ?array $active_usernames = null;
+
+    /**
+     * Optional.
+     * For private chats, the date of birth of the user.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?Birthdate $birthdate = null;
+
+    /**
+     * Optional. For private chats with business accounts, the intro of the business.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?BusinessIntro $business_intro = null;
+
+    /**
+     * Optional. For private chats with business accounts, the location of the business.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?BusinessLocation $business_location = null;
+
+    /**
+     * Optional. For private chats with business accounts, the opening hours of the business.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?BusinessOpeningHours $business_opening_hours = null;
+
+    /**
+     * Optional.
+     * For private chats, the personal channel of the user.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     */
+    public ?Chat $personal_chat = null;
 
     /**
      * Optional.

@@ -6,6 +6,8 @@ namespace SergiX44\Nutgram\Proxies;
 use SergiX44\Nutgram\Telegram\Properties\MessageEntityType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostRemoved;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
+use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
+use SergiX44\Nutgram\Telegram\Types\Business\BusinessMessagesDeleted;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
@@ -58,6 +60,11 @@ trait UpdateProxy
     public function messageThreadId(): ?int
     {
         return $this->message()?->message_thread_id;
+    }
+
+    public function businessConnectionId(): ?string
+    {
+        return $this->message()?->business_connection_id ?? $this->businessConnection()?->id;
     }
 
     public function inlineMessageId(): ?string
@@ -141,6 +148,16 @@ trait UpdateProxy
     public function messageReactionCount(): ?MessageReactionCountUpdated
     {
         return $this->update?->message_reaction_count;
+    }
+
+    public function businessConnection(): ?BusinessConnection
+    {
+        return $this->update?->business_connection;
+    }
+
+    public function deletedBusinessMessages(): ?BusinessMessagesDeleted
+    {
+        return $this->update?->deleted_business_messages;
     }
 
     public function inlineQuery(): ?InlineQuery

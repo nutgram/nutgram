@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Properties\ForumIconColor;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Properties\PollType;
 use SergiX44\Nutgram\Telegram\Types\Boost\UserChatBoosts;
+use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -106,6 +107,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @return Message|null
      */
     public function sendMessage(
@@ -122,8 +124,11 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $parameters = compact(
             'chat_id',
             'message_thread_id',
@@ -137,7 +142,8 @@ trait AvailableMethods
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_parameters',
-            'reply_markup'
+            'reply_markup',
+            'business_connection_id',
         );
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
@@ -315,6 +321,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -332,9 +339,12 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -348,6 +358,7 @@ trait AvailableMethods
             'allow_sending_without_reply',
             'reply_parameters',
             'reply_markup',
+            'business_connection_id',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $opt, $clientOpt);
@@ -375,6 +386,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -395,9 +407,12 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -414,6 +429,7 @@ trait AvailableMethods
             'allow_sending_without_reply',
             'reply_parameters',
             'reply_markup',
+            'business_connection_id',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $opt, $clientOpt);
@@ -438,6 +454,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -456,9 +473,12 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -473,6 +493,7 @@ trait AvailableMethods
             'allow_sending_without_reply',
             'reply_parameters',
             'reply_markup',
+            'business_connection_id',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'document', $document, $opt, $clientOpt);
@@ -501,6 +522,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -523,9 +545,12 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -544,6 +569,7 @@ trait AvailableMethods
             'allow_sending_without_reply',
             'reply_parameters',
             'reply_markup',
+            'business_connection_id',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'video', $video, $opt, $clientOpt);
@@ -571,6 +597,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -592,9 +619,12 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -612,6 +642,7 @@ trait AvailableMethods
             'allow_sending_without_reply',
             'reply_parameters',
             'reply_markup',
+            'business_connection_id',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $opt, $clientOpt);
@@ -636,6 +667,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -653,9 +685,12 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -669,6 +704,7 @@ trait AvailableMethods
             'allow_sending_without_reply',
             'reply_parameters',
             'reply_markup',
+            'business_connection_id',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $opt, $clientOpt);
@@ -691,6 +727,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -707,9 +744,12 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -722,6 +762,7 @@ trait AvailableMethods
             'allow_sending_without_reply',
             'reply_parameters',
             'reply_markup',
+            'business_connection_id',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $opt, $clientOpt);
@@ -740,6 +781,7 @@ trait AvailableMethods
      * @param int|null $reply_to_message_id If the messages are a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param array $clientOpt Client options
      * @return Message[]|null
      */
@@ -752,9 +794,12 @@ trait AvailableMethods
         ?int $reply_to_message_id = null,
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
+        ?string $business_connection_id = null,
         array $clientOpt = [],
     ): ?array {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
 
         return $this->requestMultipart(__FUNCTION__, [
             'media' => new UploadableArray($media),
@@ -766,6 +811,7 @@ trait AvailableMethods
                 'reply_to_message_id',
                 'allow_sending_without_reply',
                 'reply_parameters',
+                'business_connection_id',
             ),
         ], Message::class, $clientOpt);
     }
@@ -788,6 +834,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @return Message|null
      */
     public function sendLocation(
@@ -805,8 +852,11 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
 
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -822,7 +872,8 @@ trait AvailableMethods
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_parameters',
-            'reply_markup'
+            'reply_markup',
+            'business_connection_id',
         ), Message::class);
     }
 
@@ -916,6 +967,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @return Message|null
      */
     public function sendVenue(
@@ -935,8 +987,12 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
+
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
@@ -953,7 +1009,8 @@ trait AvailableMethods
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_parameters',
-            'reply_markup'
+            'reply_markup',
+            'business_connection_id',
         ), Message::class);
     }
 
@@ -973,6 +1030,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @return Message|null
      */
     public function sendContact(
@@ -988,8 +1046,12 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
+
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
@@ -1002,7 +1064,8 @@ trait AvailableMethods
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_parameters',
-            'reply_markup'
+            'reply_markup',
+            'business_connection_id',
         ), Message::class);
     }
 
@@ -1030,6 +1093,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @return Message|null
      */
     public function sendPoll(
@@ -1053,8 +1117,11 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $parameters = compact(
             'chat_id',
             'message_thread_id',
@@ -1074,7 +1141,8 @@ trait AvailableMethods
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_parameters',
-            'reply_markup'
+            'reply_markup',
+            'business_connection_id',
         );
         return $this->requestJson(__FUNCTION__, [
             'options' => json_encode($options, JSON_THROW_ON_ERROR),
@@ -1095,6 +1163,7 @@ trait AvailableMethods
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @return Message|null
      */
     public function sendDice(
@@ -1107,8 +1176,11 @@ trait AvailableMethods
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
@@ -1118,7 +1190,8 @@ trait AvailableMethods
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_parameters',
-            'reply_markup'
+            'reply_markup',
+            'business_connection_id',
         ), Message::class);
     }
 
@@ -1130,18 +1203,23 @@ trait AvailableMethods
      * @param ChatAction|string $action Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for {@see https://core.telegram.org/bots/api#sendmessage text messages}, upload_photo for {@see https://core.telegram.org/bots/api#sendphoto photos}, record_video or upload_video for {@see https://core.telegram.org/bots/api#sendvideo videos}, record_voice or upload_voice for {@see https://core.telegram.org/bots/api#sendvoice voice notes}, upload_document for {@see https://core.telegram.org/bots/api#senddocument general files}, choose_sticker for {@see https://core.telegram.org/bots/api#sendsticker stickers}, find_location for {@see https://core.telegram.org/bots/api#sendlocation location data}, record_video_note or upload_video_note for {@see https://core.telegram.org/bots/api#sendvideonote video notes}.
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_thread_id Unique identifier for the target message thread; supergroups only
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the action will be sent
      * @return bool|null
      */
     public function sendChatAction(
         ChatAction|string $action,
         int|string|null $chat_id = null,
         ?int $message_thread_id = null,
+        ?string $business_connection_id = null,
     ): ?bool {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
-            'action'
+            'action',
+            'business_connection_id',
         ));
     }
 
@@ -1963,6 +2041,18 @@ trait AvailableMethods
     public function getUserChatBoosts(int|string $chat_id = null, int $user_id = null): ?UserChatBoosts
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), UserChatBoosts::class);
+    }
+
+    /**
+     * Use this method to get information about the connection of the bot with a business account.
+     * Returns a {@see https://core.telegram.org/bots/api#businessconnection BusinessConnection} object on success.
+     * @see https://core.telegram.org/bots/api#getbusinessconnection
+     * @param string $business_connection_id Unique identifier of the business connection
+     * @return BusinessConnection|null
+     */
+    public function getBusinessConnection(string $business_connection_id): ?BusinessConnection
+    {
+        return $this->requestJson(__FUNCTION__, compact('business_connection_id'), BusinessConnection::class);
     }
 
     /**

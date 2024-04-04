@@ -90,8 +90,20 @@ class Message extends BaseType
      */
     public ?int $sender_boost_count = null;
 
+    /**
+     * Optional. The bot that actually sent the message on behalf of the business account.
+     * Available only for outgoing messages sent on behalf of the connected business account.
+     */
+    public ?User $sender_business_bot = null;
+
     /** Date the message was sent in Unix time */
     public int $date;
+
+    /**
+     * Optional. Unique identifier of the business connection from which the message was received.
+     * If non-empty, the message belongs to a chat of the corresponding business account that is independent from any potential bot chat which might share the same identifier.
+     */
+    public ?string $business_connection_id = null;
 
     /** Conversation the message belongs to */
     public Chat $chat;
@@ -196,6 +208,12 @@ class Message extends BaseType
      * True, if the message can't be forwarded
      */
     public ?bool $has_protected_content = null;
+
+    /**
+     * Optional.
+     * True, if the message was sent by an implicit action, for example, as an away or a greeting business message, or as a scheduled message
+     */
+    public ?bool $is_from_offline = null;
 
     /**
      * Optional.

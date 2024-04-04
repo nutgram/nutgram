@@ -131,6 +131,6 @@ class Command extends Handler
             );
         }
 
-        return new BotCommand($this->getName(), $descriptions['*']);
+        return new BotCommand($this->getName(), $descriptions['*'] ?? null);
     }
 }

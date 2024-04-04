@@ -83,6 +83,7 @@ trait Payments
         ?InlineKeyboardMarkup $reply_markup = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
         $parameters = compact(
             'chat_id',
             'message_thread_id',

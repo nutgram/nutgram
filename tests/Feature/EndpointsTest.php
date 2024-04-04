@@ -6,6 +6,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
+use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
@@ -189,6 +190,7 @@ it('creates a new sticker set using InputFile', function () {
 
         $sticker = InputSticker::make(
             sticker: $file,
+            format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
         );
 
@@ -198,7 +200,6 @@ it('creates a new sticker set using InputFile', function () {
             stickers: [
                 $sticker
             ],
-            sticker_format: 'static',
             sticker_type: 'regular',
         );
     });
@@ -215,9 +216,6 @@ it('creates a new sticker set using InputFile', function () {
                 ->name->toBe('title')
                 ->contents->toBe('MyPack By Nutgram'),
             fn ($x) => $x
-                ->name->toBe('sticker_format')
-                ->contents->toBe('static'),
-            fn ($x) => $x
                 ->name->toBe('sticker_type')
                 ->contents->toBe('regular'),
             fn ($x) => $x
@@ -225,7 +223,7 @@ it('creates a new sticker set using InputFile', function () {
                 ->filename->toBe('sticker.png'),
             fn ($x) => $x
                 ->name->toBe('stickers')
-                ->contents->toBe('[{"sticker":"attach:\/\/sticker.png","emoji_list":["\ud83e\udd14"]}]'),
+                ->contents->toBe('[{"sticker":"attach:\/\/sticker.png","format":"static","emoji_list":["\ud83e\udd14"]}]'),
         );
     });
 
@@ -241,6 +239,7 @@ it('creates a new sticker set using Url', function () {
     $bot->onCommand('start', function (Nutgram $bot) {
         $sticker = InputSticker::make(
             sticker: 'https://example.com/sticker.png',
+            format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
         );
 
@@ -250,7 +249,6 @@ it('creates a new sticker set using Url', function () {
             stickers: [
                 $sticker
             ],
-            sticker_format: 'static',
             sticker_type: 'regular',
         );
     });
@@ -267,14 +265,11 @@ it('creates a new sticker set using Url', function () {
                 ->name->toBe('title')
                 ->contents->toBe('MyPack By Nutgram'),
             fn ($x) => $x
-                ->name->toBe('sticker_format')
-                ->contents->toBe('static'),
-            fn ($x) => $x
                 ->name->toBe('sticker_type')
                 ->contents->toBe('regular'),
             fn ($x) => $x
                 ->name->toBe('stickers')
-                ->contents->toBe('[{"sticker":"https:\/\/example.com\/sticker.png","emoji_list":["\ud83e\udd14"]}]'),
+                ->contents->toBe('[{"sticker":"https:\/\/example.com\/sticker.png","format":"static","emoji_list":["\ud83e\udd14"]}]'),
         );
     });
 
@@ -295,6 +290,7 @@ it('add sticker to set using InputFile', function () {
 
         $sticker = InputSticker::make(
             sticker: $file,
+            format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
         );
 
@@ -318,7 +314,7 @@ it('add sticker to set using InputFile', function () {
                     ->filename->toBe('sticker.png'),
                 fn ($x) => $x
                     ->name->toBe('sticker')
-                    ->contents->toBe('{"sticker":"attach:\/\/sticker.png","emoji_list":["\ud83e\udd14"]}'),
+                    ->contents->toBe('{"sticker":"attach:\/\/sticker.png","format":"static","emoji_list":["\ud83e\udd14"]}'),
             );
     });
 
@@ -334,6 +330,7 @@ it('add sticker to set using Url', function () {
     $bot->onCommand('start', function (Nutgram $bot) {
         $sticker = InputSticker::make(
             sticker: 'https://example.com/sticker.png',
+            format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
         );
 
@@ -354,7 +351,7 @@ it('add sticker to set using Url', function () {
                     ->contents->toBe('MyPack_by_NutgramBot'),
                 fn ($x) => $x
                     ->name->toBe('sticker')
-                    ->contents->toBe('{"sticker":"https:\/\/example.com\/sticker.png","emoji_list":["\ud83e\udd14"]}'),
+                    ->contents->toBe('{"sticker":"https:\/\/example.com\/sticker.png","format":"static","emoji_list":["\ud83e\udd14"]}'),
             );
     });
 
@@ -408,4 +405,42 @@ it('serializes extra properties to array', function () {
         'bio' => 'test',
         'notExists' => 123,
     ]);
+});
+
+it('calls sendMessage with the right message_thread_id', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->sendMessage('Hello thread!');
+    });
+
+    $bot
+        ->hearMessage([
+            'text' => 'Hello',
+            'message_thread_id' => 66,
+        ])
+        ->reply()
+        ->assertReplyMessage([
+            'text' => 'Hello thread!',
+            'message_thread_id' => 66,
+        ]);
+});
+
+it('calls sendMessage with the right business_connection_id', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->sendMessage('Hello thread!');
+    });
+
+    $bot
+        ->hearMessage([
+            'text' => 'Hello',
+            'business_connection_id' => 'biz007',
+        ])
+        ->reply()
+        ->assertReplyMessage([
+            'text' => 'Hello thread!',
+            'business_connection_id' => 'biz007',
+        ]);
 });

@@ -1,0 +1,13 @@
+{
+  "update_id": 1,
+  "deleted_business_messages": {
+    "business_connection_id": "123",
+    "chat": {
+      "id": 456,
+      "first_name": "Mario",
+      "username": "Bros",
+      "type": "private"
+    },
+    "message_ids": [123,321]
+  }
+}

@@ -28,6 +28,7 @@ trait Games
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @return Message|null
      */
     public function sendGame(
@@ -40,8 +41,11 @@ trait Games
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         ?InlineKeyboardMarkup $reply_markup = null,
+        ?string $business_connection_id = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
+        $business_connection_id ??= $this->businessConnectionId();
         $parameters = compact(
             'chat_id',
             'message_thread_id',
@@ -51,7 +55,8 @@ trait Games
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_parameters',
-            'reply_markup'
+            'reply_markup',
+            'business_connection_id',
         );
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
