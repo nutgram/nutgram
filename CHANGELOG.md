@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.18.0 - 2024-04-05
+
+### What's Changed
+
+* Update to Bot API 7.2 - March 31, 2024 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/680
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.17.1...4.18.0
+
 ## 4.17.1 - 2024-03-15
 
 ### What's Changed
