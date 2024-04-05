@@ -870,12 +870,16 @@ class Message extends BaseType
      * Automatically forwarded messages from a channel to its discussion group have the same available reactions as messages in the channel.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setmessagereaction
-     * @param ReactionType[]|null $reaction Optional. New list of reaction types to set on the message. Currently, as non-premium users, bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already present on the message or explicitly allowed by chat administrators.
-     * @param bool|null $is_big Optional. Pass True to set the reaction with a big animation
+     * @param ReactionType|ReactionType[]|null $reaction Optional. New list of reaction types to set on the message. Currently, as non-premium users, bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already present on the message or explicitly allowed by chat administrators.
+     * @param bool $is_big Optional. Pass True to set the reaction with a big animation
      * @return bool|null
      */
-    public function react(?array $reaction = null, ?bool $is_big = null): ?bool
+    public function react(ReactionType|array|null $reaction = null, bool $is_big = false): ?bool
     {
+        if ($reaction instanceof ReactionType) {
+            $reaction = [$reaction];
+        }
+
         return $this->getBot()->setMessageReaction(
             reaction: $reaction,
             is_big: $is_big,
