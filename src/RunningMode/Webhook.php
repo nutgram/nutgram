@@ -18,15 +18,18 @@ class Webhook implements RunningMode
 
     protected Closure $resolveSecretToken;
     protected ?string $secretToken = null;
+    protected Closure $getInput;
 
     /**
      * @param Closure|null $getToken
      * @param string|null $secretToken
+     * @param ?Closure(Nutgram): ?string $getInput
      */
-    public function __construct(?Closure $getToken = null, ?string $secretToken = null)
+    public function __construct(?Closure $getToken = null, ?string $secretToken = null, ?Closure $getInput = null)
     {
         $this->resolveSecretToken = $getToken ?? static fn (): string => $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'];
         $this->secretToken = $secretToken;
+        $this->getInput = $getInput ?? static fn (Nutgram $bot): ?string => file_get_contents('php://input') ?: null;
     }
 
 
@@ -38,7 +41,7 @@ class Webhook implements RunningMode
      */
     public function processUpdates(Nutgram $bot): void
     {
-        $input = $this->input();
+        $input = ($this->getInput)($bot);
 
         if ($input === null || ($this->safeMode && ($this->resolveSecretToken)() !== $this->secretToken)) {
             return;
@@ -80,13 +83,5 @@ class Webhook implements RunningMode
     {
         $this->safeMode = $safeMode;
         return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    protected function input(): ?string
-    {
-        return file_get_contents('php://input') ?: null;
     }
 }
