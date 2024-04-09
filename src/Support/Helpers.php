@@ -76,3 +76,10 @@ if (!function_exists(__NAMESPACE__.'\word_wrap')) {
         return $result;
     }
 }
+
+if (!function_exists(__NAMESPACE__.'\deepLink')) {
+    function deepLink(?string $baseUrl = null): DeepLink
+    {
+        return new DeepLink($baseUrl);
+    }
+}
