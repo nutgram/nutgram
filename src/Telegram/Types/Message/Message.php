@@ -42,6 +42,7 @@ use SergiX44\Nutgram\Telegram\Types\Passport\PassportData;
 use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
+use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UserShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
@@ -861,5 +862,29 @@ class Message extends BaseType
     public function isInaccessible(): bool
     {
         return $this->date === 0;
+    }
+
+    /**
+     * Use this method to change the chosen reactions on a message.
+     * Service messages can't be reacted to.
+     * Automatically forwarded messages from a channel to its discussion group have the same available reactions as messages in the channel.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#setmessagereaction
+     * @param ReactionType|ReactionType[]|null $reaction Optional. New list of reaction types to set on the message. Currently, as non-premium users, bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already present on the message or explicitly allowed by chat administrators.
+     * @param bool $is_big Optional. Pass True to set the reaction with a big animation
+     * @return bool|null
+     */
+    public function react(ReactionType|array|null $reaction = null, bool $is_big = false): ?bool
+    {
+        if ($reaction instanceof ReactionType) {
+            $reaction = [$reaction];
+        }
+
+        return $this->getBot()->setMessageReaction(
+            reaction: $reaction,
+            is_big: $is_big,
+            chat_id: $this->chat->id,
+            message_id: $this->message_id
+        );
     }
 }
