@@ -3,6 +3,8 @@
 composer.lock
 .php_cs.cache
 .phpunit.result.cache
+.phpunit.cache
 phpunit.xml
 /vendor/
 coverage.xml
+composer.phar
