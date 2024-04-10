@@ -85,7 +85,7 @@ Official Documentation on [https://nutgram.dev/](https://nutgram.dev)
 - Customizable error handling
 - Web Validation
 - Testing system
-- Nutgram Generator to quickly update the framework to the latest Telegram Bot API version (WIP)
+- Deep Link helper class
 
 ## 🔰 Supported versions
 
