@@ -2,6 +2,17 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.19.0 - 2024-04-10
+
+### What's Changed
+
+* Fix missing business_connection_id parameters to custom endpoints by @Lukasss93 in https://github.com/nutgram/nutgram/pull/687
+* Add react method to Message class by @Lukasss93 in https://github.com/nutgram/nutgram/pull/686
+* Add DeepLink Support Class by @Lukasss93 in https://github.com/nutgram/nutgram/pull/690
+* Optimize archive size + refactor by @Lukasss93 in https://github.com/nutgram/nutgram/pull/691
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.18.0...4.19.0
+
 ## 4.18.0 - 2024-04-05
 
 ### What's Changed
