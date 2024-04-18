@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 use SergiX44\Container\Container;
 use SergiX44\Container\Exception\ContainerException;
 use SergiX44\Nutgram\Configuration;
@@ -11,6 +11,7 @@ use SergiX44\Nutgram\Tests\Fixtures\DI\MiddlewareCallable;
 use SergiX44\Nutgram\Tests\Fixtures\DI\StartCommandCallable;
 use SergiX44\Nutgram\Tests\Fixtures\DI\StartCommandClass;
 use SergiX44\Nutgram\Tests\Fixtures\DI\TextHandlerCallable;
+use SergiX44\Nutgram\Tests\Fixtures\DI\WrapperData;
 use SergiX44\Nutgram\Tests\Fixtures\MyService;
 use SergiX44\Nutgram\Tests\Fixtures\ServiceHandler;
 
@@ -140,4 +141,20 @@ describe('DI in Conversation', function () {
 
         Conversation::refreshOnDeserialize(false);
     });
+});
+
+it('resolves a parameter with custom resolution logic', function () {
+    $bot = Nutgram::fake();
+    $bot->bindParameter('value', function(string $value){
+        return new WrapperData($value);
+    });
+
+    $bot->onCommand('start {value} (y|n) {cat}', function (Nutgram $bot, WrapperData $value) {
+        expect($value)
+            ->toBeInstanceOf(WrapperData::class)
+            ->getValue()
+            ->toBe('wrapped:123');
+    });
+
+    $bot->hearText('/start 123 y aaa')->reply();
 });

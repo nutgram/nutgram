@@ -97,11 +97,20 @@ class Handler extends MiddlewareChain
         $regex = '/^'.preg_replace_callback(self::PARAM_NAME_REGEX, $replaceRule, $pattern).'$/mu';
 
         // match + return only named parameters
-        $regexMatched = (bool)preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL);
+        $regexMatched = (bool)preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL|PREG_OFFSET_CAPTURE);
         if ($regexMatched) {
-            array_walk($matches, fn (&$x) => $x = ($x === '' ? null : $x));
             array_shift($matches);
-            $this->setParameters(...array_filter($matches, 'is_numeric', ARRAY_FILTER_USE_KEY));
+            $allowedKeys = array_keys(array_unique(array_map(fn ($value) => $value[0].'_'.$value[1], $matches)));
+            $validMatches = array_filter($matches, fn($key) => in_array($key, $allowedKeys, true), ARRAY_FILTER_USE_KEY);
+            $parameters = [];
+            foreach ($validMatches as $paramKey => $paramValue) {
+                if(is_int($paramKey)) {
+                    $paramKey = '__gp'.$paramKey;
+                }
+                $parameters[$paramKey] = ($paramValue[0] === '' ? null : $paramValue[0]);
+            }
+
+            $this->setParameters(...$parameters);
         }
 
         return $regexMatched;
@@ -119,7 +128,7 @@ class Handler extends MiddlewareChain
 
     public function getParameters(): array
     {
-        return $this->parameters;
+        return array_values($this->parameters);
     }
 
     /**
@@ -141,7 +150,8 @@ class Handler extends MiddlewareChain
     public function __invoke(Nutgram $bot): mixed
     {
         try {
-            return $bot->invoke($this->callable, ['bot' => $bot, ...$this->parameters]);
+            $parameters = array_values($bot->resolveParameters($this->parameters));
+            return $bot->invoke($this->callable, ['bot' => $bot, ...$parameters]);
         } finally {
             $this->parameters = [];
         }

@@ -19,6 +19,7 @@ use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\FireHandlers;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
+use SergiX44\Nutgram\Handlers\ResolveParameters;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Hydrator\Hydrator;
 use SergiX44\Nutgram\Proxies\GlobalCacheProxy;
@@ -36,7 +37,9 @@ use Throwable;
 
 class Nutgram extends ResolveHandlers
 {
-    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy, FireHandlers, ValidatesWebData, HandleLogging;
+    use Client, HandleLogging;
+    use UpdateDataProxy, GlobalCacheProxy, UserCacheProxy;
+    use FireHandlers, ValidatesWebData, ResolveParameters;
 
     /**
      * @var string
