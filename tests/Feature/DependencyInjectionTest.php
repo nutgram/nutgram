@@ -145,7 +145,7 @@ describe('DI in Conversation', function () {
 
 it('resolves a parameter with custom resolution logic', function () {
     $bot = Nutgram::fake();
-    $bot->bindParameter('value', function(string $value){
+    $bot->bindParameter('value', function (string $value) {
         return new WrapperData($value);
     });
 
