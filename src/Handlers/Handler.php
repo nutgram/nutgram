@@ -101,10 +101,10 @@ class Handler extends MiddlewareChain
         if ($regexMatched) {
             array_shift($matches);
             $allowedKeys = array_keys(array_unique(array_map(fn ($value) => $value[0].'_'.$value[1], $matches)));
-            $validMatches = array_filter($matches, fn($key) => in_array($key, $allowedKeys, true), ARRAY_FILTER_USE_KEY);
+            $validMatches = array_filter($matches, fn ($key) => in_array($key, $allowedKeys, true), ARRAY_FILTER_USE_KEY);
             $parameters = [];
             foreach ($validMatches as $paramKey => $paramValue) {
-                if(is_int($paramKey)) {
+                if (is_int($paramKey)) {
                     $paramKey = '__gp'.$paramKey;
                 }
                 $parameters[$paramKey] = ($paramValue[0] === '' ? null : $paramValue[0]);

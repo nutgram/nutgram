@@ -8,7 +8,6 @@ trait ResolveParameters
 
     public function bindParameter(string $name, callable $resolver): void
     {
-
         $this->parametersResolvers[$name] = $resolver;
     }
 
