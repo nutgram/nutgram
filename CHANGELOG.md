@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.19.1 - 2024-04-30
+
+### What's Changed
+
+* Fix hydration mask position for stickers by @sergix44 in https://github.com/nutgram/nutgram/pull/698
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.19.0...4.19.1
+
 ## 4.19.0 - 2024-04-10
 
 ### What's Changed
