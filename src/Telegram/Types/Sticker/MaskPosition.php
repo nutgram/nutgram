@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MaskPositionPoint;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -11,6 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * This object describes the position on faces where a mask should be placed by default.
  * @see https://core.telegram.org/bots/api#maskposition
  */
+#[SkipConstructor]
 class MaskPosition extends BaseType implements JsonSerializable
 {
     /**
