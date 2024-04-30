@@ -36,7 +36,13 @@
       },
       "file_id": "yhufjikjhgjkghjffghgf",
       "file_unique_id": "fghgfhfgthf",
-      "file_size": 38662
+      "file_size": 38662,
+      "mask_position": {
+        "point": "forehead",
+        "x_shift": 0.5,
+        "y_shift": 0.5,
+        "scale": 1.5
+      }
     }
   }
 }
