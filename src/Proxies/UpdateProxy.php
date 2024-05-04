@@ -59,7 +59,11 @@ trait UpdateProxy
 
     public function messageThreadId(): ?int
     {
-        return $this->message()?->message_thread_id;
+        if ($this->message()?->is_topic_message) {
+            return $this->message()?->message_thread_id;
+        }
+
+        return null;
     }
 
     public function businessConnectionId(): ?string
