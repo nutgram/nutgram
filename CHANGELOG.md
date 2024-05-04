@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.19.2 - 2024-05-04
+
+### What's Changed
+
+* Fix message_thread_id autofill in general topic by @Lukasss93 in https://github.com/nutgram/nutgram/pull/702
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.19.1...4.19.2
+
 ## 4.19.1 - 2024-04-30
 
 ### What's Changed
