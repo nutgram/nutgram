@@ -1,0 +1,46 @@
+{
+  "update_id": 963407599,
+  "message": {
+    "message_id": 68,
+    "from": {
+      "id": 123456,
+      "is_bot": false,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "language_code": "it",
+      "is_premium": true
+    },
+    "chat": {
+      "id": -1001234567489,
+      "title": "Testing",
+      "username": "testing",
+      "is_forum": true,
+      "type": "supergroup"
+    },
+    "date": 1714837880,
+    "message_thread_id": 66,
+    "reply_to_message": {
+      "message_id": 66,
+      "from": {
+        "id": 123456,
+        "is_bot": false,
+        "first_name": "Mario",
+        "last_name": "Bros",
+        "username": "MarioBros",
+        "language_code": "it",
+        "is_premium": true
+      },
+      "chat": {
+        "id": -1001234567489,
+        "title": "Testing",
+        "username": "testing",
+        "is_forum": true,
+        "type": "supergroup"
+      },
+      "date": 1714837875,
+      "text": "aaaaaa"
+    },
+    "text": "bbbb"
+  }
+}

@@ -18,11 +18,11 @@ trait Asserts
     private int $sequenceIndex = 0;
 
     /**
-     * @param callable $closure
+     * @param callable(Request):bool $closure
      * @param int|null $index
      * @return $this
      */
-    public function assertRaw(callable $closure, ?int $index = null): self
+    public function assertRaw(callable $closure, ?int $index = null, string $message = ''): self
     {
         $index = $index ?? $this->sequenceIndex;
         $reqRes = $this->testingHistory[$index];
@@ -30,7 +30,7 @@ trait Asserts
         /** @var Request $request */
         [$request,] = array_values($reqRes);
 
-        PHPUnit::assertTrue($closure($request));
+        PHPUnit::assertTrue($closure($request), $message);
 
         return $this;
     }
