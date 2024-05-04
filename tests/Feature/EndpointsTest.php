@@ -418,6 +418,7 @@ it('calls sendMessage with the right message_thread_id', function () {
         ->hearMessage([
             'text' => 'Hello',
             'message_thread_id' => 66,
+            'is_topic_message' => true,
         ])
         ->reply()
         ->assertReplyMessage([
