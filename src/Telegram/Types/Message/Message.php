@@ -515,6 +515,11 @@ class Message extends BaseType
     public ?ChatBoostAdded $boost_added = null;
 
     /**
+     * Optional. Service message: chat background set
+     */
+    public ?ChatBackground $chat_background_set = null;
+
+    /**
      * Optional.
      * Service message: forum topic created
      */
