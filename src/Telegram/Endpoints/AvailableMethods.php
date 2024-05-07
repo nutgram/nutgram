@@ -38,6 +38,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageId;
 use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
+use SergiX44\Nutgram\Telegram\Types\Poll\InputPollOption;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -650,7 +651,7 @@ trait AvailableMethods
 
     /**
      * Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message.
-     * For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as {@see https://core.telegram.org/bots/api#audio Audio} or {@see https://core.telegram.org/bots/api#document Document}).
+     * For this to work, your audio must be in an .OGG file encoded with OPUS, or in .MP3 format, or in .M4A format (other formats may be sent as {@see https://core.telegram.org/bots/api#audio Audio} or {@see https://core.telegram.org/bots/api#document Document}).
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
      * @see https://core.telegram.org/bots/api#sendvoice
@@ -825,7 +826,7 @@ trait AvailableMethods
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
      * @param float|null $horizontal_accuracy The radius of uncertainty for the location, measured in meters; 0-1500
-     * @param int|null $live_period Period in seconds for which the location will be updated (see {@see https://telegram.org/blog/live-locations Live Locations}, should be between 60 and 86400.
+     * @param int|null $live_period Period in seconds for which the location will be updated (see {@see https://telegram.org/blog/live-locations Live Locations}, should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely.
      * @param int|null $heading For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
      * @param int|null $proximity_alert_radius For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
@@ -891,6 +892,7 @@ trait AvailableMethods
      * @param int|null $heading Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
      * @param int|null $proximity_alert_radius The maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for a new {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
+     * @param int|null $live_period New period in seconds during which the location can be updated, starting from the message send date. If 0x7FFFFFFF is specified, then the location can be updated forever. Otherwise, the new value must not exceed the current live_period by more than a day, and the live location expiration date must remain within the next 90 days. If not specified, then live_period remains unchanged
      * @return Message|bool|null
      */
     public function editMessageLiveLocation(
@@ -903,6 +905,7 @@ trait AvailableMethods
         ?int $heading = null,
         ?int $proximity_alert_radius = null,
         ?InlineKeyboardMarkup $reply_markup = null,
+        ?int $live_period = null,
     ): Message|bool|null {
         $parameters = compact(
             'chat_id',
@@ -913,7 +916,8 @@ trait AvailableMethods
             'horizontal_accuracy',
             'heading',
             'proximity_alert_radius',
-            'reply_markup'
+            'reply_markup',
+            'live_period',
         );
 
         $this->setChatMessageOrInlineMessageId($parameters);
@@ -1074,7 +1078,7 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#sendpoll
      * @param string $question Poll question, 1-300 characters
-     * @param string[] $options A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
+     * @param InputPollOption[]|string[] $options A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
      * @param bool|null $is_anonymous True, if the poll needs to be anonymous, defaults to True
@@ -1094,6 +1098,8 @@ trait AvailableMethods
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
+     * @param ParseMode|string|null $question_parse_mode Mode for parsing entities in the question. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details. Currently, only custom emoji entities are allowed.
+     * @param MessageEntity[]|null $question_entities A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of question_parse_mode
      * @return Message|null
      */
     public function sendPoll(
@@ -1118,6 +1124,8 @@ trait AvailableMethods
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
+        ParseMode|string|null $question_parse_mode = null,
+        ?array $question_entities = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
@@ -1143,6 +1151,8 @@ trait AvailableMethods
             'reply_parameters',
             'reply_markup',
             'business_connection_id',
+            'question_parse_mode',
+            'question_entities',
         );
         return $this->requestJson(__FUNCTION__, [
             'options' => json_encode($options, JSON_THROW_ON_ERROR),

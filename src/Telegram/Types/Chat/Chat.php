@@ -26,7 +26,7 @@ class Chat extends BaseType
      */
     public int $id;
 
-    /** Type of chat, can be either “private”, “group”, “supergroup” or “channel” */
+    /** Type of the chat, can be either “private”, “group”, “supergroup” or “channel” */
     #[EnumOrScalar]
     public ChatType|string $type;
 
@@ -43,14 +43,12 @@ class Chat extends BaseType
     public ?string $username = null;
 
     /**
-     * Optional.
-     * First name of the other party in a private chat
+     * Optional. First name of the other party in a private chat
      */
     public ?string $first_name = null;
 
     /**
-     * Optional.
-     * Last name of the other party in a private chat
+     * Optional. Last name of the other party in a private chat
      */
     public ?string $last_name = null;
 
@@ -59,6 +57,36 @@ class Chat extends BaseType
      * True, if the supergroup chat is a forum (has {@see https://telegram.org/blog/topics-in-groups-collectible-usernames#topics-in-groups topics} enabled)
      */
     public ?bool $is_forum = null;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ChatFullInfo Properties
+    |--------------------------------------------------------------------------
+    |
+    | https://core.telegram.org/bots/api#chatfullinfo
+    |
+    | The following properties are only returned by getChat method.
+    | https://core.telegram.org/bots/api#getchat
+    |
+    | To not make breaking changes, we will split this class in the next major version.
+    | @deprecated <= Bookmark this line for Nutgram 5.0.0
+    |
+    */
+
+    /**
+     * Optional.
+     * Identifier of the accent color for the chat name and backgrounds of the chat photo, reply header, and link preview.
+     * See {@see https://core.telegram.org/bots/api#accent-colors accent colors} for more details.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * Always returned in getChat.
+     */
+    public ?int $accent_color_id = null;
+
+    /**
+     * The maximum number of reactions that can be set on a message in the chat
+     */
+    public ?int $max_reaction_count = null;
 
     /**
      * Optional.
@@ -117,15 +145,6 @@ class Chat extends BaseType
      */
     #[ArrayType(ReactionType::class)]
     public ?array $available_reactions = null;
-
-    /**
-     * Optional.
-     * Identifier of the accent color for the chat name and backgrounds of the chat photo, reply header, and link preview.
-     * See {@see https://core.telegram.org/bots/api#accent-colors accent colors} for more details.
-     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
-     * Always returned in getChat.
-     */
-    public ?int $accent_color_id = null;
 
     /**
      * Optional.

@@ -34,6 +34,11 @@ class ChatMemberUpdated extends BaseType
     public ?ChatInviteLink $invite_link = null;
 
     /**
+     * Optional. True, if the user joined the chat after sending a direct join request and being approved by an administrator
+     */
+    public ?bool $via_join_request = null;
+
+    /**
      * Optional.
      * True, if the user joined the chat via a chat folder invite link
      */
