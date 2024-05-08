@@ -175,7 +175,7 @@ abstract class InlineMenu extends Conversation
         bool $noHandlers = false,
         bool $noMiddlewares = false
     ): Message|null {
-        if($this->chatId === null) {
+        if ($this->chatId === null) {
             $this->chatId = $this->getChatId();
         }
 
