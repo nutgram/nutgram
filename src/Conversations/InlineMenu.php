@@ -175,6 +175,10 @@ abstract class InlineMenu extends Conversation
         bool $noHandlers = false,
         bool $noMiddlewares = false
     ): Message|null {
+        if($this->chatId === null) {
+            $this->chatId = $this->getChatId();
+        }
+
         if ($reopen || !$this->messageId || !$this->chatId) {
             if ($reopen) {
                 $this->closeMenu();
@@ -262,6 +266,7 @@ abstract class InlineMenu extends Conversation
         return $this->bot->sendMessage(...[
             'reply_markup' => $buttons,
             'text' => $text,
+            'chat_id' => $this->chatId,
             ...$opt,
         ]);
     }
