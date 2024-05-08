@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.20.0 - 2024-05-08
+
+### What's Changed
+
+* Update to Bot API 7.3 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/703
+* Better support for server-side inline menu by @Lukasss93 in https://github.com/nutgram/nutgram/pull/706
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.19.2...4.20.0
+
 ## 4.19.2 - 2024-05-04
 
 ### What's Changed
