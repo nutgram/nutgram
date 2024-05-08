@@ -196,11 +196,11 @@ abstract class InlineMenu extends Conversation
 
     protected function beforeStep(Nutgram $bot)
     {
+        parent::beforeStep($bot);
+
         if ($this->chatId === null) {
             $this->chatId = $this->getChatId();
         }
-
-        parent::beforeStep($bot);
     }
 
     /**
