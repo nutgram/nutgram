@@ -194,6 +194,15 @@ abstract class InlineMenu extends Conversation
         return $message;
     }
 
+    protected function beforeStep(Nutgram $bot)
+    {
+        parent::beforeStep($bot);
+
+        if ($this->chatId === null) {
+            $this->chatId = $this->getChatId();
+        }
+    }
+
     /**
      * @param string|null $finalText
      * @param array $opt
@@ -262,6 +271,7 @@ abstract class InlineMenu extends Conversation
         return $this->bot->sendMessage(...[
             'reply_markup' => $buttons,
             'text' => $text,
+            'chat_id' => $this->chatId,
             ...$opt,
         ]);
     }

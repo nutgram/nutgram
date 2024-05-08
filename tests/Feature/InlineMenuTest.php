@@ -212,3 +212,18 @@ test('works with same callback data but different callback method', function () 
             'text' => 'Alert!',
         ], 1);
 });
+
+it('starts an inline menu from server', function () {
+    $bot = Nutgram::fake();
+
+    ValidWithFallbackMenu::begin(
+        bot: $bot,
+        userId: 123456789,
+        chatId: 123456789
+    );
+
+    $bot->assertReply('sendMessage', [
+        'text' => 'Choose a color:',
+        'chat_id' => 123456789
+    ]);
+});

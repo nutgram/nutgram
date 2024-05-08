@@ -14,6 +14,7 @@ use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithSkipHandlersMu
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithSkipMiddlewareMultipleSteps;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\NonSerializableConversation;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\OneStepNotCompletedConversation;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\ServerConversation;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\SurveyConversation;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\TwoStepConversation;
 use SergiX44\Nutgram\Tests\Fixtures\CustomService;
@@ -277,4 +278,19 @@ it('starts manually with additional data', function () {
         ->assertNoConversation();
 
     expect($bot->get('test'))->toBe(66);
+});
+
+it('starts a conversation from server', function () {
+    $bot = Nutgram::fake();
+
+    ServerConversation::begin(
+        bot: $bot,
+        userId: 123456789,
+        chatId: 123456789
+    );
+
+    $bot->assertReply('sendMessage', [
+        'text' => 'First step',
+        'chat_id' => 123456789
+    ]);
 });
