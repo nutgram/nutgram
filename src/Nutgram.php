@@ -202,6 +202,16 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function once(): void
+    {
+        $this->preflight();
+        $this->container->get(RunningMode::class)->processUpdate($this);
+    }
+
+    /**
      * @param Update $update
      * @throws Throwable
      * @throws \Psr\SimpleCache\InvalidArgumentException

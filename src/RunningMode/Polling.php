@@ -13,6 +13,18 @@ class Polling implements RunningMode
     public static bool $FOREVER = true;
     public static mixed $STDERR = null;
 
+    private static int $offset = 1;
+
+    private function getOffset()
+    {
+        return self::$offset;
+    }
+
+    private function setOffset($offset)
+    {
+        return self::$offset = $offset;
+    }
+
     public function __construct()
     {
         if (!(\PHP_SAPI === 'cli' || \PHP_SAPI === 'phpdbg')) {
@@ -22,30 +34,24 @@ class Polling implements RunningMode
 
     public function processUpdates(Nutgram $bot): void
     {
-        $config = $bot->getConfig();
-        $offset = 1;
-
         $this->listenForSignals();
         print("Listening...\n");
         while (self::$FOREVER) {
-            $updates = $bot->getUpdates(
-                offset: $offset,
-                limit: $config->pollingLimit,
-                timeout: $config->pollingTimeout,
-                allowed_updates: $config->pollingAllowedUpdates
-            );
+             $this->processUpdate($bot);
+        }
+    }
 
-            if ($offset === 1) {
-                /** @var Update $last */
-                $last = end($updates);
-                if ($last) {
-                    $offset = $last->update_id;
-                }
+    public function processUpdate(Nutgram $bot): void
+    {
+        $updates = $bot->getUpdates(
+            offset: $this->getOffset(),
+            limit: $bot->getConfig()->pollingLimit,
+            timeout: $bot->getConfig()->pollingTimeout,
+            allowed_updates: $bot->getConfig()->pollingAllowedUpdates
+        );
 
-                continue;
-            }
-
-            $offset += count($updates);
+        if ($updates) {
+            $this->setOffset(end($updates)->update_id + 1);
 
             $this->fire($bot, $updates);
         }
