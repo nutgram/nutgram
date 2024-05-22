@@ -37,8 +37,7 @@ class Polling implements RunningMode
         $this->listenForSignals();
         print("Listening...\n");
         while (self::$FOREVER) {
-
-             $this->processUpdate($bot);
+            $this->processUpdate($bot);
         }
     }
 
