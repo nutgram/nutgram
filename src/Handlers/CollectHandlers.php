@@ -53,6 +53,20 @@ abstract class CollectHandlers
     }
 
     /**
+     * @return $this
+     */
+    public function reset(): static
+    {
+        $this->handlers = [];
+        $this->groups = [];
+        $this->globalMiddlewares = [];
+        $this->groupHandlers = [];
+        $this->target = 'handlers';
+
+        return $this;
+    }
+
+    /**
      * @param Array<callable|callable-string|array> $callable
      */
     public function middlewares($callable): void
