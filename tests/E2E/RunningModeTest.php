@@ -2,6 +2,7 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Polling;
+use SergiX44\Nutgram\RunningMode\SingleUpdate;
 use SergiX44\Nutgram\RunningMode\Webhook;
 
 it('works with webhook mode', function () {
@@ -184,4 +185,23 @@ it('works with send as response', function ($update) {
             'text' => 'Ciao',
         ],
     ])->reply();
+})->with('message');
+
+it('works with single update running mode', function ($update) {
+    $update->update_id = 100;
+
+    $bot = Nutgram::fake()
+        ->willReceive([$update])
+        ->willReceive([$update]);
+
+    $bot->setRunningMode(SingleUpdate::class);
+
+    $called = false;
+    $bot->onMessage(function (Nutgram $bot) use (&$called) {
+        $called = true;
+    });
+
+    $bot->run();
+
+    expect($called)->toBeTrue();
 })->with('message');
