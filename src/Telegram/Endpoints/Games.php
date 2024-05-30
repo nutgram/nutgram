@@ -29,6 +29,7 @@ trait Games
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
+     * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @return Message|null
      */
     public function sendGame(
@@ -42,6 +43,7 @@ trait Games
         ?ReplyParameters $reply_parameters = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?string $business_connection_id = null,
+        ?string $message_effect_id = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
@@ -57,6 +59,7 @@ trait Games
             'reply_parameters',
             'reply_markup',
             'business_connection_id',
+            'message_effect_id',
         );
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);

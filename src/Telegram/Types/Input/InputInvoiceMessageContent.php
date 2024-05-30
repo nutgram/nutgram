@@ -24,10 +24,17 @@ class InputInvoiceMessageContent extends InputMessageContent
      */
     public string $payload;
 
-    /** Payment provider token, obtained via {@see https://t.me/botfather @BotFather} */
-    public string $provider_token;
+    /**
+     * Optional.
+     * Payment provider token, obtained via {@see https://t.me/botfather @BotFather}.
+     * Pass an empty string for payments in {@see https://t.me/BotNews/90 Telegram Stars}.
+     */
+    public ?string $provider_token = null;
 
-    /** Three-letter ISO 4217 currency code, see {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies} */
+    /**
+     * Three-letter ISO 4217 currency code, see {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies}.
+     * Pass “XTR” for payments in {@see https://t.me/BotNews/90 Telegram Stars}.
+     */
     public string $currency;
 
     /**
@@ -227,7 +234,7 @@ class InputInvoiceMessageContent extends InputMessageContent
             'title' => $this->title,
             'description' => $this->description,
             'payload' => $this->payload,
-            'provider_token' => $this->provider_token,
+            'provider_token' => $this->provider_token ?: null,
             'currency' => $this->currency,
             'prices' => $this->prices,
             'max_tip_amount' => $this->max_tip_amount,

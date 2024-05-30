@@ -71,6 +71,7 @@ trait UpdatesMessages
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
+     * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
      * @return Message|bool|null
      */
     public function editMessageCaption(
@@ -81,6 +82,7 @@ trait UpdatesMessages
         ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
+        ?bool $show_caption_above_media = null,
     ): Message|bool|null {
         $parameters = compact(
             'chat_id',
@@ -89,7 +91,8 @@ trait UpdatesMessages
             'caption',
             'parse_mode',
             'caption_entities',
-            'reply_markup'
+            'reply_markup',
+            'show_caption_above_media',
         );
         $this->setChatMessageOrInlineMessageId($parameters);
 

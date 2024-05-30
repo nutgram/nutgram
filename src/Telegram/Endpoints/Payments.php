@@ -23,8 +23,8 @@ trait Payments
      * @param string $title Product name, 1-32 characters
      * @param string $description Product description, 1-255 characters
      * @param string $payload Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
-     * @param string $provider_token Payment provider token, obtained via {@see https://t.me/botfather @BotFather}
-     * @param string $currency Three-letter ISO 4217 currency code, see {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies}
+     * @param string $provider_token Payment provider token, obtained via {@see https://t.me/botfather @BotFather}. Pass an empty string for payments in {@see https://t.me/BotNews/90 Telegram Stars}.
+     * @param string $currency Three-letter ISO 4217 currency code, see {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies}. Pass “XTR” for payments in {@see https://t.me/BotNews/90 Telegram Stars}.
      * @param LabeledPrice[] $prices Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
@@ -49,6 +49,7 @@ trait Payments
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
+     * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @return Message|null
      */
     public function sendInvoice(
@@ -81,6 +82,7 @@ trait Payments
         ?bool $allow_sending_without_reply = null,
         ?ReplyParameters $reply_parameters = null,
         ?InlineKeyboardMarkup $reply_markup = null,
+        ?string $message_effect_id = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
@@ -113,7 +115,8 @@ trait Payments
             'reply_to_message_id',
             'allow_sending_without_reply',
             'reply_parameters',
-            'reply_markup'
+            'reply_markup',
+            'message_effect_id',
         );
         $parameters['prices'] = json_encode($prices, JSON_THROW_ON_ERROR);
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
@@ -126,8 +129,8 @@ trait Payments
      * @param string $title Product name, 1-32 characters
      * @param string $description Product description, 1-255 characters
      * @param string $payload Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
-     * @param string $provider_token Payment provider token, obtained via {@see https://t.me/botfather BotFather}
-     * @param string $currency Three-letter ISO 4217 currency code, see {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies}
+     * @param string $provider_token Payment provider token, obtained via {@see https://t.me/botfather BotFather}. Pass an empty string for payments in {@see https://t.me/BotNews/90 Telegram Stars}.
+     * @param string $currency Three-letter ISO 4217 currency code, see {@see https://core.telegram.org/bots/payments#supported-currencies more on currencies}. Pass “XTR” for payments in {@see https://t.me/BotNews/90 Telegram Stars}.
      * @param LabeledPrice[] $prices Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
      * @param int|null $max_tip_amount The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the exp parameter in {@see https://core.telegram.org/bots/payments/currencies.json currencies.json}, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
      * @param int[]|null $suggested_tip_amounts A JSON-serialized array of suggested amounts of tips in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
@@ -233,6 +236,24 @@ trait Payments
     ): ?bool {
         $pre_checkout_query_id ??= $this->preCheckoutQuery()?->id;
         $parameters = compact('pre_checkout_query_id', 'ok', 'error_message');
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Refunds a successful payment in {@see https://t.me/BotNews/90 Telegram Stars}.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#refundstarpayment
+     * @param int $user_id Identifier of the user whose payment will be refunded
+     * @param string $telegram_payment_charge_id Telegram payment identifier
+     * @return bool|null
+     */
+    public function refundStarPayment(
+        string $telegram_payment_charge_id,
+        ?int $user_id = null
+    ): ?bool {
+        $user_id ??= $this->userId();
+        $parameters = compact('user_id', 'telegram_payment_charge_id');
 
         return $this->requestJson(__FUNCTION__, $parameters);
     }

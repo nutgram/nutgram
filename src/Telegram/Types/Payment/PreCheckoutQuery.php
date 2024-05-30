@@ -17,7 +17,10 @@ class PreCheckoutQuery extends BaseType
     /** User who sent the query */
     public User $from;
 
-    /** Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code */
+    /**
+     * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code,
+     * or “XTR” for payments in {@see https://t.me/BotNews/90 Telegram Stars}.
+     */
     public string $currency;
 
     /**

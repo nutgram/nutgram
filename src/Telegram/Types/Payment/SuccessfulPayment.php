@@ -10,7 +10,10 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class SuccessfulPayment extends BaseType
 {
-    /** Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code */
+    /**
+     * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code,
+     * or “XTR” for payments in {@see https://t.me/BotNews/90 Telegram Stars}.
+     */
     public string $currency;
 
     /**

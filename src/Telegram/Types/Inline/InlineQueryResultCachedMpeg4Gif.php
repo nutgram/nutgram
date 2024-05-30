@@ -58,6 +58,11 @@ class InlineQueryResultCachedMpeg4Gif extends InlineQueryResult
     public ?array $caption_entities = null;
 
     /**
+     * Optional. True, if the caption must be shown above the message media
+     */
+    public ?bool $show_caption_above_media = null;
+
+    /**
      * Optional.
      * {@see https://core.telegram.org/bots/features#inline-keyboards Inline keyboard} attached to the message
      */
@@ -78,6 +83,7 @@ class InlineQueryResultCachedMpeg4Gif extends InlineQueryResult
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
+        ?bool $show_caption_above_media = null,
     ) {
         parent::__construct();
         $this->id = $id;
@@ -88,6 +94,7 @@ class InlineQueryResultCachedMpeg4Gif extends InlineQueryResult
         $this->caption_entities = $caption_entities;
         $this->reply_markup = $reply_markup;
         $this->input_message_content = $input_message_content;
+        $this->show_caption_above_media = $show_caption_above_media;
     }
 
     public static function make(
@@ -99,6 +106,7 @@ class InlineQueryResultCachedMpeg4Gif extends InlineQueryResult
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
+        ?bool $show_caption_above_media = null,
     ): self {
         return new self(
             id: $id,
@@ -109,6 +117,7 @@ class InlineQueryResultCachedMpeg4Gif extends InlineQueryResult
             caption_entities: $caption_entities,
             reply_markup: $reply_markup,
             input_message_content: $input_message_content,
+            show_caption_above_media: $show_caption_above_media,
         );
     }
 
@@ -124,6 +133,7 @@ class InlineQueryResultCachedMpeg4Gif extends InlineQueryResult
             'caption_entities' => $this->caption_entities,
             'reply_markup' => $this->reply_markup,
             'input_message_content' => $this->input_message_content,
+            'show_caption_above_media' => $this->show_caption_above_media,
         ]);
     }
 }
