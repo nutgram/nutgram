@@ -22,10 +22,11 @@ class Polling implements RunningMode
 
     public function processUpdates(Nutgram $bot): void
     {
+        $this->listenForSignals();
+
         $config = $bot->getConfig();
         $offset = 1;
 
-        $this->listenForSignals();
         print("Listening...\n");
         while (self::$FOREVER) {
             $updates = $bot->getUpdates(
@@ -51,7 +52,7 @@ class Polling implements RunningMode
         }
     }
 
-    private function listenForSignals(): void
+    protected function listenForSignals(): void
     {
         if (extension_loaded('pcntl')) {
             pcntl_async_signals(true);
