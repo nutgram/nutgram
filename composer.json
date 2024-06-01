@@ -30,7 +30,7 @@
       "guzzlehttp/guzzle": "^7.2",
       "illuminate/macroable": ">=9.0",
       "laravel/serializable-closure": "^1.2",
-      "sergix44/container": "dev-main",
+      "sergix44/container": "^3.0",
       "nutgram/hydrator": "^6.0",
       "psr/log": "^1.0|^2.0|^3.0",
       "psr/simple-cache": "^1.0|^2.0|^3.0"

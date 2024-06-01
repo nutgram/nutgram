@@ -111,7 +111,7 @@ class Handler extends MiddlewareChain
                 $v = $v === '' ? null : $v;
 
                 if (is_string($k) && $container->has("param.$k")) {
-                    $v = $container->get("param.$k", $v);
+                    $v = $container->make("param.$k", [$v]);
                 }
 
                 $params[] = $v;
