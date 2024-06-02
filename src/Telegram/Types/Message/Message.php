@@ -250,6 +250,10 @@ class Message extends BaseType
     public ?LinkPreviewOptions $link_preview_options = null;
 
     /**
+     * Optional. Unique identifier of the message effect added to the message
+     */
+    public ?string $effect_id = null;
+    /**
      * Optional.
      * Message is an animation, information about the animation.
      * For backward compatibility, when this field is set, the document field will also be set
@@ -320,6 +324,11 @@ class Message extends BaseType
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $caption_entities = null;
+
+    /**
+     * Optional. True, if the caption must be shown above the message media
+     */
+    public ?bool $show_caption_above_media = null;
 
     /**
      * Optional.

@@ -56,6 +56,11 @@ class InputMediaAnimation extends InputMedia implements JsonSerializable
     public ?array $caption_entities = null;
 
     /**
+     * Optional. True, if the caption must be shown above the message media
+     */
+    public ?bool $show_caption_above_media = null;
+
+    /**
      * Optional.
      * Animation width
      */
@@ -81,14 +86,15 @@ class InputMediaAnimation extends InputMedia implements JsonSerializable
 
     public function __construct(
         InputFile|string $media,
-        InputFile|string|null $thumbnail,
-        ?string $caption,
-        ParseMode|string|null $parse_mode,
-        ?array $caption_entities,
-        ?int $width,
-        ?int $height,
-        ?int $duration,
-        ?bool $has_spoiler
+        InputFile|string|null $thumbnail = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?int $width = null,
+        ?int $height = null,
+        ?int $duration = null,
+        ?bool $has_spoiler = null,
+        ?bool $show_caption_above_media = null,
     ) {
         parent::__construct();
         $this->media = $media;
@@ -100,6 +106,7 @@ class InputMediaAnimation extends InputMedia implements JsonSerializable
         $this->height = $height;
         $this->duration = $duration;
         $this->has_spoiler = $has_spoiler;
+        $this->show_caption_above_media = $show_caption_above_media;
     }
 
     public static function make(
@@ -111,7 +118,8 @@ class InputMediaAnimation extends InputMedia implements JsonSerializable
         ?int $width = null,
         ?int $height = null,
         ?int $duration = null,
-        ?bool $has_spoiler = null
+        ?bool $has_spoiler = null,
+        ?bool $show_caption_above_media = null,
     ): self {
         return new self(
             media: $media,
@@ -122,7 +130,8 @@ class InputMediaAnimation extends InputMedia implements JsonSerializable
             width: $width,
             height: $height,
             duration: $duration,
-            has_spoiler: $has_spoiler
+            has_spoiler: $has_spoiler,
+            show_caption_above_media: $show_caption_above_media,
         );
     }
 
@@ -139,6 +148,7 @@ class InputMediaAnimation extends InputMedia implements JsonSerializable
             'height' => $this->height,
             'duration' => $this->duration,
             'has_spoiler' => $this->has_spoiler,
+            'show_caption_above_media' => $this->show_caption_above_media,
         ]);
     }
 }

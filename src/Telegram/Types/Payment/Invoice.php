@@ -19,7 +19,10 @@ class Invoice extends BaseType
     /** Unique bot deep-linking parameter that can be used to generate this invoice */
     public string $start_parameter;
 
-    /** Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code */
+    /**
+     * Three-letter ISO 4217 {@see https://core.telegram.org/bots/payments#supported-currencies currency} code,
+     * or “XTR” for payments in {@see https://t.me/BotNews/90 Telegram Stars}.
+     */
     public string $currency;
 
     /**

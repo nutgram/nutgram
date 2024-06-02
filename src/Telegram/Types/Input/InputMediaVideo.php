@@ -56,6 +56,11 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
     public ?array $caption_entities = null;
 
     /**
+     * Optional. True, if the caption must be shown above the message media
+     */
+    public ?bool $show_caption_above_media = null;
+
+    /**
      * Optional.
      * Video width
      */
@@ -87,15 +92,16 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
 
     public function __construct(
         InputFile|string $media,
-        InputFile|string|null $thumbnail,
-        ?string $caption,
-        ParseMode|string|null $parse_mode,
-        ?array $caption_entities,
-        ?int $width,
-        ?int $height,
-        ?int $duration,
-        ?bool $supports_streaming,
-        ?bool $has_spoiler
+        InputFile|string|null $thumbnail = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?int $width = null,
+        ?int $height = null,
+        ?int $duration = null,
+        ?bool $supports_streaming = null,
+        ?bool $has_spoiler = null,
+        ?bool $show_caption_above_media = null,
     ) {
         parent::__construct();
         $this->media = $media;
@@ -108,6 +114,7 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
         $this->duration = $duration;
         $this->supports_streaming = $supports_streaming;
         $this->has_spoiler = $has_spoiler;
+        $this->show_caption_above_media = $show_caption_above_media;
     }
 
     public static function make(
@@ -120,19 +127,21 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
         ?int $height = null,
         ?int $duration = null,
         ?bool $supports_streaming = null,
-        ?bool $has_spoiler = null
+        ?bool $has_spoiler = null,
+        ?bool $show_caption_above_media = null,
     ): self {
         return new self(
-            $media,
-            $thumbnail,
-            $caption,
-            $parse_mode,
-            $caption_entities,
-            $width,
-            $height,
-            $duration,
-            $supports_streaming,
-            $has_spoiler
+            media: $media,
+            thumbnail: $thumbnail,
+            caption: $caption,
+            parse_mode: $parse_mode,
+            caption_entities: $caption_entities,
+            width: $width,
+            height: $height,
+            duration: $duration,
+            supports_streaming: $supports_streaming,
+            has_spoiler: $has_spoiler,
+            show_caption_above_media: $show_caption_above_media,
         );
     }
 
@@ -149,6 +158,7 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
             'duration' => $this->duration,
             'supports_streaming' => $this->supports_streaming,
             'has_spoiler' => $this->has_spoiler,
+            'show_caption_above_media' => $this->show_caption_above_media,
         ]);
     }
 }

@@ -85,6 +85,11 @@ class InlineQueryResultVideo extends InlineQueryResult
     public ?string $description = null;
 
     /**
+     * Optional. True, if the caption must be shown above the message media
+     */
+    public ?bool $show_caption_above_media = null;
+
+    /**
      * Optional.
      * {@see https://core.telegram.org/bots/features#inline-keyboards Inline keyboard} attached to the message
      */
@@ -112,6 +117,7 @@ class InlineQueryResultVideo extends InlineQueryResult
         ?string $description = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
+        ?bool $show_caption_above_media = null,
     ) {
         parent::__construct();
         $this->id = $id;
@@ -128,6 +134,7 @@ class InlineQueryResultVideo extends InlineQueryResult
         $this->description = $description;
         $this->reply_markup = $reply_markup;
         $this->input_message_content = $input_message_content;
+        $this->show_caption_above_media = $show_caption_above_media;
     }
 
     public static function make(
@@ -145,6 +152,7 @@ class InlineQueryResultVideo extends InlineQueryResult
         ?string $description = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
+        ?bool $show_caption_above_media = null,
     ): self {
         return new self(
             id: $id,
@@ -161,6 +169,7 @@ class InlineQueryResultVideo extends InlineQueryResult
             description: $description,
             reply_markup: $reply_markup,
             input_message_content: $input_message_content,
+            show_caption_above_media: $show_caption_above_media,
         );
     }
 
@@ -182,6 +191,7 @@ class InlineQueryResultVideo extends InlineQueryResult
             'description' => $this->description,
             'reply_markup' => $this->reply_markup,
             'input_message_content' => $this->input_message_content,
+            'show_caption_above_media' => $this->show_caption_above_media,
         ]);
     }
 }
