@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.21.0 - 2024-06-02
+
+### What's Changed
+
+* Provide a running mode that handles only one update by @sergix44 in https://github.com/nutgram/nutgram/pull/714
+* Update to Bot API 7.4 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/716
+* Add support for explicit binding of pattern parameters by @sergix44 in https://github.com/nutgram/nutgram/pull/718
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.20.0...4.21.0
+
 ## 4.20.0 - 2024-05-08
 
 ### What's Changed
