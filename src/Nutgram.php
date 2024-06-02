@@ -273,9 +273,14 @@ class Nutgram extends ResolveHandlers
         return $this;
     }
 
-    public function getContainer(): ContainerInterface
+    public function getContainer(): Container
     {
         return $this->container;
+    }
+
+    public function bindParameter(string $name, callable $resolver): \SergiX44\Container\Definition
+    {
+        return $this->container->bind("param.$name", $resolver);
     }
 
     /**

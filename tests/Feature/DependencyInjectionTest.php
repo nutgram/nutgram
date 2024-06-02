@@ -141,3 +141,19 @@ describe('DI in Conversation', function () {
         Conversation::refreshOnDeserialize(false);
     });
 });
+
+it('resolves a parameter with custom resolution logic', function () {
+    $bot = Nutgram::fake();
+    $bot->bindParameter('value', function (Container $container, string $value) {
+        return new MyService('wrapped:'.$value);
+    });
+
+    $bot->onCommand('start {value} (y|n) {cat}', function (Nutgram $bot, MyService $value) {
+        expect($value)
+            ->toBeInstanceOf(MyService::class)
+            ->getValue()
+            ->toBe('wrapped:123');
+    });
+
+    $bot->hearText('/start 123 y aaa')->reply();
+});

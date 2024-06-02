@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Handlers;
 
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use SergiX44\Container\Container;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
@@ -45,6 +46,8 @@ abstract class ResolveHandlers extends CollectHandlers
     protected ?Update $update = null;
 
     abstract public function getConfig(): Configuration;
+
+    abstract public function getContainer(): Container;
 
     /**
      * @param int|null $userId
@@ -142,7 +145,7 @@ abstract class ResolveHandlers extends CollectHandlers
             if (
                 ($subType !== null && $handler->getPattern() === $subType) ||
                 ($value === null && $handler->getPattern() === null) ||
-                ($value !== null && $handler->matching($value))
+                ($value !== null && $handler->matching($value, $this->getContainer()))
             ) {
                 $handlers[] = $handler;
             }

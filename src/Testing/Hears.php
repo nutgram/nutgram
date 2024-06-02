@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Testing;
 
 use ReflectionObject;
+use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
@@ -53,7 +54,11 @@ trait Hears
         }
 
 
-        $this->getContainer()->get(RunningMode::class)->setUpdate($update);
+        $mode = $this->getContainer()->get(RunningMode::class);
+
+        if ($mode instanceof Fake) {
+            $mode->setUpdate($update);
+        }
 
         return $this;
     }

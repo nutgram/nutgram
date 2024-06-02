@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Handlers;
 use Illuminate\Support\Traits\Macroable;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use SergiX44\Container\Container;
 use SergiX44\Nutgram\Middleware\Link;
 use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Nutgram;
@@ -77,9 +78,10 @@ class Handler extends MiddlewareChain
 
     /**
      * @param string $value
+     * @param Container $container
      * @return bool
      */
-    public function matching(string $value): bool
+    public function matching(string $value, Container $container): bool
     {
         if ($this->pattern === null) {
             return false;
@@ -99,9 +101,23 @@ class Handler extends MiddlewareChain
         // match + return only named parameters
         $regexMatched = (bool)preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL);
         if ($regexMatched) {
-            array_walk($matches, fn (&$x) => $x = ($x === '' ? null : $x));
             array_shift($matches);
-            $this->setParameters(...array_filter($matches, 'is_numeric', ARRAY_FILTER_USE_KEY));
+
+            $params = [];
+            foreach ($matches as $k => $v) {
+                if (is_numeric($k) && is_string(array_search($v, $matches, true))) {
+                    continue;
+                }
+                $v = $v === '' ? null : $v;
+
+                if (is_string($k) && $container->has("param.$k")) {
+                    $v = $container->make("param.$k", [$v]);
+                }
+
+                $params[] = $v;
+            }
+
+            $this->setParameters(...$params);
         }
 
         return $regexMatched;
