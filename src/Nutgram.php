@@ -310,7 +310,7 @@ class Nutgram extends ResolveHandlers
 
         $myCommands = [];
         array_walk_recursive($this->handlers, static function ($handler) use (&$myCommands) {
-            if ($handler instanceof Command && !$handler->isHidden()) {
+            if ($handler instanceof Command && !$handler->isHidden() && !$handler->isDisabled()) {
                 // scopes
                 foreach ($handler->scopes() as $scope) {
                     $hashCode = crc32(serialize(get_object_vars($scope)));
