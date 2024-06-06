@@ -39,3 +39,23 @@ it('does not run disabled handler inside group', function () {
         ->reply()
         ->assertNoReply();
 });
+
+it('does not register disabled handlers', function () {
+    $history = [];
+
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendMessage('hello');
+    })->description('start command')->unless(true);
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
+        $history[] = $request['json'];
+
+        return $request;
+    });
+
+    $bot->registerMyCommands();
+
+    expect($history)->toBeEmpty();
+});
