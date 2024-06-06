@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.21.1 - 2024-06-06
+
+### What's Changed
+
+* Fix wrong command registration when disabled by @Lukasss93 in https://github.com/nutgram/nutgram/pull/719
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.21.0...4.21.1
+
 ## 4.21.0 - 2024-06-02
 
 ### What's Changed
