@@ -128,6 +128,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?array $options = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
@@ -150,7 +151,7 @@ trait AvailableMethods
             'message_effect_id',
         );
 
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class, $options);
     }
 
     /**
