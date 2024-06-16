@@ -188,12 +188,11 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param array $result
+     * @param array|int|true $result
      * @param bool $ok
      * @return $this
-     * @throws \JsonException
      */
-    public function willReceive(array $result, bool $ok = true): self
+    public function willReceive(array|int|true $result, bool $ok = true): self
     {
         $body = json_encode(compact('ok', 'result'), JSON_THROW_ON_ERROR);
         $this->mockHandler->append(new Response($ok ? 200 : 400, [], $body));
@@ -202,10 +201,11 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param array $result
+     * @param array|int|true $result
+     * @param bool $ok
      * @return $this
      */
-    public function willReceivePartial(array $result, bool $ok = true): self
+    public function willReceivePartial(array|int|true $result, bool $ok = true): self
     {
         array_unshift($this->partialReceives, [$result, $ok]);
 
