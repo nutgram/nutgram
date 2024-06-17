@@ -445,3 +445,19 @@ it('calls sendMessage with the right business_connection_id', function () {
             'business_connection_id' => 'biz007',
         ]);
 });
+
+it('calls pinChatMessage method', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $result = $bot->pinChatMessage(123, 321);
+
+        expect($result)->toBeTrue();
+    });
+
+    $bot
+        ->hearText('/start')
+        ->willReceive(true)
+        ->reply()
+        ->assertReply('pinChatMessage');
+});
