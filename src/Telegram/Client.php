@@ -27,11 +27,11 @@ use SergiX44\Nutgram\Telegram\Endpoints\UpdateMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\UnknownType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
 use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
-use stdClass;
 use function SergiX44\Nutgram\Support\array_filter_null;
 use function SergiX44\Nutgram\Support\word_wrap;
 
@@ -65,7 +65,11 @@ trait Client
      */
     public function sendRequest(string $endpoint, array $parameters = [], array $options = []): mixed
     {
-        return $this->requestMultipart($endpoint, $parameters, options: $options);
+        if (!empty($parameters)) {
+            return $this->requestMultipart($endpoint, $parameters, options: $options);
+        }
+
+        return $this->requestJson($endpoint, options: $options);
     }
 
     /**
@@ -166,7 +170,7 @@ trait Client
     protected function requestMultipart(
         string $endpoint,
         array $multipart = [],
-        string $mapTo = stdClass::class,
+        string $mapTo = UnknownType::class,
         array $options = []
     ): mixed {
         $parameters = [];
@@ -244,7 +248,7 @@ trait Client
     protected function requestJson(
         string $endpoint,
         array $json = [],
-        string $mapTo = stdClass::class,
+        string $mapTo = UnknownType::class,
         array $options = []
     ): mixed {
         $json = array_map(fn ($item) => match (true) {
