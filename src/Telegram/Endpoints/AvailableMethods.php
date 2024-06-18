@@ -921,52 +921,6 @@ trait AvailableMethods
     }
 
     /**
-     * Use this method to edit live location messages.
-     * A location can be edited until its live_period expires or editing is explicitly disabled by a call to {@see https://core.telegram.org/bots/api#stopmessagelivelocation stopMessageLiveLocation}telegram.org/bots/api#message Message}LiveLocation.
-     * On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
-     * @see https://core.telegram.org/bots/api#editmessagelivelocation
-     * @param float $latitude Latitude of new location
-     * @param float $longitude Longitude of new location
-     * @param int|string|null $chat_id Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_id Required if inline_message_id is not specified. Identifier of the message to edit
-     * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message
-     * @param float|null $horizontal_accuracy The radius of uncertainty for the location, measured in meters; 0-1500
-     * @param int|null $heading Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
-     * @param int|null $proximity_alert_radius The maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
-     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for a new {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
-     * @param int|null $live_period New period in seconds during which the location can be updated, starting from the message send date. If 0x7FFFFFFF is specified, then the location can be updated forever. Otherwise, the new value must not exceed the current live_period by more than a day, and the live location expiration date must remain within the next 90 days. If not specified, then live_period remains unchanged
-     * @return Message|bool|null
-     */
-    public function editMessageLiveLocation(
-        float $latitude,
-        float $longitude,
-        int|string|null $chat_id = null,
-        ?int $message_id = null,
-        ?string $inline_message_id = null,
-        ?float $horizontal_accuracy = null,
-        ?int $heading = null,
-        ?int $proximity_alert_radius = null,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?int $live_period = null,
-    ): Message|bool|null {
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'inline_message_id',
-            'latitude',
-            'longitude',
-            'horizontal_accuracy',
-            'heading',
-            'proximity_alert_radius',
-            'reply_markup',
-            'live_period',
-        );
-
-        $this->setChatMessageOrInlineMessageId($parameters);
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
-    }
-
-    /**
      * Use this method to stop updating a live location message before live_period expires.
      * On success, if the message is not an inline message, the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#stopmessagelivelocation
@@ -974,6 +928,7 @@ trait AvailableMethods
      * @param int|null $message_id Required if inline_message_id is not specified. Identifier of the message with live location to stop
      * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for a new {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
      * @return Message|bool|null
      */
     public function stopMessageLiveLocation(
@@ -981,12 +936,14 @@ trait AvailableMethods
         ?int $message_id = null,
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
+        ?string $business_connection_id = null,
     ): Message|bool|null {
         $parameters = compact(
             'chat_id',
             'message_id',
             'inline_message_id',
-            'reply_markup'
+            'reply_markup',
+            'business_connection_id',
         );
 
         $this->setChatMessageOrInlineMessageId($parameters);
