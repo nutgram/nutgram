@@ -10,7 +10,6 @@ use SergiX44\Nutgram\Telegram\Properties\RevenueWithdrawalStateType;
 #[Attribute(Attribute::TARGET_CLASS)]
 class RevenueWithdrawalStateResolver extends ConcreteResolver
 {
-
     public function concreteFor(array $data): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');

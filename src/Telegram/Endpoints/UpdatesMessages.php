@@ -237,8 +237,7 @@ trait UpdatesMessages
         int $message_id,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?string $business_connection_id = null,
-    ): ?Poll
-    {
+    ): ?Poll {
         $parameters = compact(
             'chat_id',
             'message_id',
