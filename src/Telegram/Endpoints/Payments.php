@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
 use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingOption;
+use SergiX44\Nutgram\Telegram\Types\Payment\StarTransactions;
 
 /**
  * Trait Payments
@@ -238,6 +239,20 @@ trait Payments
         $parameters = compact('pre_checkout_query_id', 'ok', 'error_message');
 
         return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Returns the bot's Telegram Star transactions in chronological order.
+     * On success, returns a {@see https://core.telegram.org/bots/api#startransactions StarTransactions} object.
+     * @param int|null $offset Number of transactions to skip in the response
+     * @param int|null $limit The maximum number of transactions to be retrieved. Values between 1-100 are accepted. Defaults to 100.
+     * @return StarTransactions[]|null
+     */
+    public function getStarTransactions(?int $offset = null, ?int $limit = null): ?array
+    {
+        $parameters = compact('offset', 'limit');
+
+        return $this->requestJson(__FUNCTION__, $parameters, StarTransactions::class);
     }
 
     /**

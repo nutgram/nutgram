@@ -31,6 +31,7 @@ trait UpdatesMessages
      * @param bool|null $disable_web_page_preview Disables link previews for links in this message
      * @param LinkPreviewOptions|null $link_preview_options Link preview generation options for the message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
      * @return Message|bool|null
      */
     public function editMessageText(
@@ -43,6 +44,7 @@ trait UpdatesMessages
         ?bool $disable_web_page_preview = null,
         ?LinkPreviewOptions $link_preview_options = null,
         ?InlineKeyboardMarkup $reply_markup = null,
+        ?string $business_connection_id = null,
     ): Message|bool|null {
         $parameters = compact(
             'chat_id',
@@ -53,7 +55,8 @@ trait UpdatesMessages
             'entities',
             'disable_web_page_preview',
             'link_preview_options',
-            'reply_markup'
+            'reply_markup',
+            'business_connection_id',
         );
         $this->setChatMessageOrInlineMessageId($parameters);
 
@@ -72,6 +75,7 @@ trait UpdatesMessages
      * @param MessageEntity[]|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
      * @return Message|bool|null
      */
     public function editMessageCaption(
@@ -83,6 +87,7 @@ trait UpdatesMessages
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?bool $show_caption_above_media = null,
+        ?string $business_connection_id = null,
     ): Message|bool|null {
         $parameters = compact(
             'chat_id',
@@ -93,6 +98,7 @@ trait UpdatesMessages
             'caption_entities',
             'reply_markup',
             'show_caption_above_media',
+            'business_connection_id',
         );
         $this->setChatMessageOrInlineMessageId($parameters);
 
@@ -112,6 +118,7 @@ trait UpdatesMessages
      * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for a new {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @param array $clientOpt Client options
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
      * @return Message|bool|null
      */
     public function editMessageMedia(
@@ -120,6 +127,7 @@ trait UpdatesMessages
         ?int $message_id = null,
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
+        ?string $business_connection_id = null,
         array $clientOpt = [],
     ): Message|bool|null {
         $parameters = compact(
@@ -128,11 +136,60 @@ trait UpdatesMessages
             'inline_message_id',
             'media',
             'reply_markup',
-            'clientOpt'
+            'business_connection_id',
         );
         $this->setChatMessageOrInlineMessageId($parameters);
 
         return $this->requestMultipart(__FUNCTION__, $parameters, Message::class, $clientOpt);
+    }
+
+    /**
+     * Use this method to edit live location messages.
+     * A location can be edited until its live_period expires or editing is explicitly disabled by a call to {@see https://core.telegram.org/bots/api#stopmessagelivelocation stopMessageLiveLocation}telegram.org/bots/api#message Message}LiveLocation.
+     * On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
+     * @see https://core.telegram.org/bots/api#editmessagelivelocation
+     * @param float $latitude Latitude of new location
+     * @param float $longitude Longitude of new location
+     * @param int|string|null $chat_id Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param int|null $message_id Required if inline_message_id is not specified. Identifier of the message to edit
+     * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message
+     * @param float|null $horizontal_accuracy The radius of uncertainty for the location, measured in meters; 0-1500
+     * @param int|null $heading Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+     * @param int|null $proximity_alert_radius The maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for a new {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
+     * @param int|null $live_period New period in seconds during which the location can be updated, starting from the message send date. If 0x7FFFFFFF is specified, then the location can be updated forever. Otherwise, the new value must not exceed the current live_period by more than a day, and the live location expiration date must remain within the next 90 days. If not specified, then live_period remains unchanged
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
+     * @return Message|bool|null
+     */
+    public function editMessageLiveLocation(
+        float $latitude,
+        float $longitude,
+        int|string|null $chat_id = null,
+        ?int $message_id = null,
+        ?string $inline_message_id = null,
+        ?float $horizontal_accuracy = null,
+        ?int $heading = null,
+        ?int $proximity_alert_radius = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?int $live_period = null,
+        ?string $business_connection_id = null,
+    ): Message|bool|null {
+        $parameters = compact(
+            'chat_id',
+            'message_id',
+            'inline_message_id',
+            'latitude',
+            'longitude',
+            'horizontal_accuracy',
+            'heading',
+            'proximity_alert_radius',
+            'reply_markup',
+            'live_period',
+            'business_connection_id',
+        );
+
+        $this->setChatMessageOrInlineMessageId($parameters);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -143,6 +200,7 @@ trait UpdatesMessages
      * @param int|null $message_id Required if inline_message_id is not specified. Identifier of the message to edit
      * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
      * @return Message|bool|null
      */
     public function editMessageReplyMarkup(
@@ -150,12 +208,14 @@ trait UpdatesMessages
         ?int $message_id = null,
         ?string $inline_message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
+        ?string $business_connection_id = null,
     ): Message|bool|null {
         $parameters = compact(
             'chat_id',
             'message_id',
             'inline_message_id',
-            'reply_markup'
+            'reply_markup',
+            'business_connection_id',
         );
         $this->setChatMessageOrInlineMessageId($parameters);
 
@@ -169,11 +229,23 @@ trait UpdatesMessages
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int $message_id Identifier of the original message with the poll
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for a new message {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
      * @return Poll|null
      */
-    public function stopPoll(int|string $chat_id, int $message_id, ?InlineKeyboardMarkup $reply_markup = null): ?Poll
+    public function stopPoll(
+        int|string $chat_id,
+        int $message_id,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?string $business_connection_id = null,
+    ): ?Poll
     {
-        $parameters = compact('chat_id', 'message_id', 'reply_markup');
+        $parameters = compact(
+            'chat_id',
+            'message_id',
+            'reply_markup',
+            'business_connection_id',
+        );
+
         return $this->requestJson(__FUNCTION__, $parameters, Poll::class);
     }
 
