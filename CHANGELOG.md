@@ -2,6 +2,24 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.22.0 - 2024-06-18
+
+#### What's Changed
+
+* Add support for scalar values in the FakeNugram::willReceive() method by @Lukasss93 in https://github.com/nutgram/nutgram/pull/729
+* Fix broken sendRequest method by @sergix44 in https://github.com/nutgram/nutgram/pull/731
+* Update Bot API to 7.5 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/730
+
+### ⚠️ Warning
+
+The signature of the following methods has changed, if you don't use named parameters, remember to change the method calls before releasing to production:
+
+- **editMessageMedia**
+  - Added the `business_connection_id` parameter before the `clientOpt` parameter
+  
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.21.1...4.22.0
+
 ## 4.21.1 - 2024-06-06
 
 ### What's Changed
