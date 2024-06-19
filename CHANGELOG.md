@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.22.1 - 2024-06-19
+
+### What's Changed
+
+* Fix return type in https://github.com/nutgram/nutgram/pull/736
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.22.0...4.22.1
+
 ## 4.22.0 - 2024-06-18
 
 #### What's Changed
