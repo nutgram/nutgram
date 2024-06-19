@@ -174,7 +174,7 @@ trait Client
         array $options = []
     ): mixed {
         $parameters = [];
-        foreach (array_filter($multipart) as $name => $contents) {
+        foreach (array_filter_null($multipart) as $name => $contents) {
             if ($contents instanceof UploadableArray || $contents instanceof Uploadable) {
                 $files = $contents instanceof UploadableArray ? $contents->files : [$contents];
                 foreach ($files as $file) {
