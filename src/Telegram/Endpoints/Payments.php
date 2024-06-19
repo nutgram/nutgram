@@ -246,9 +246,9 @@ trait Payments
      * On success, returns a {@see https://core.telegram.org/bots/api#startransactions StarTransactions} object.
      * @param int|null $offset Number of transactions to skip in the response
      * @param int|null $limit The maximum number of transactions to be retrieved. Values between 1-100 are accepted. Defaults to 100.
-     * @return StarTransactions[]|null
+     * @return StarTransactions|null
      */
-    public function getStarTransactions(?int $offset = null, ?int $limit = null): ?array
+    public function getStarTransactions(?int $offset = null, ?int $limit = null): ?StarTransactions
     {
         $parameters = compact('offset', 'limit');
 
