@@ -9,12 +9,11 @@ use Laravel\SerializableClosure\Exceptions\PhpVersionNotSupportedException;
 use Laravel\SerializableClosure\SerializableClosure;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 
 class ConversationCache extends BotCache
 {
-    protected const CONVERSATION_TTL = 43200;
-
     protected const CONVERSATION_PREFIX = 'CONVERSATION';
 
     /**
@@ -23,7 +22,7 @@ class ConversationCache extends BotCache
      * @param  int|null  $botId
      * @param  DateInterval|int|null  $ttl
      */
-    public function __construct(CacheInterface $cache, ?int $botId, DateInterval|int|null $ttl = self::CONVERSATION_TTL)
+    public function __construct(CacheInterface $cache, ?int $botId, DateInterval|int|null $ttl = null)
     {
         parent::__construct($cache, self::CONVERSATION_PREFIX, $botId, $ttl);
     }

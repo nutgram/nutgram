@@ -47,6 +47,8 @@ final readonly class Configuration
     ];
     public const DEFAULT_ENABLE_HTTP2 = true;
 
+    public const DEFAULT_CONVERSATION_TTL = 43200;
+
     public function __construct(
         public string $apiUrl = self::DEFAULT_API_URL,
         public ?int $botId = null,
@@ -64,6 +66,7 @@ final readonly class Configuration
         public array $pollingAllowedUpdates = self::DEFAULT_ALLOWED_UPDATES,
         public int $pollingLimit = self::DEFAULT_POLLING_LIMIT,
         public bool $enableHttp2 = self::DEFAULT_ENABLE_HTTP2,
+        public int $conversationTtl = self::DEFAULT_CONVERSATION_TTL,
         public array $extra = [],
     ) {
     }
@@ -88,6 +91,7 @@ final readonly class Configuration
             pollingAllowedUpdates: $config['polling']['allowed_updates'] ?? self::DEFAULT_ALLOWED_UPDATES,
             pollingLimit: $config['polling']['limit'] ?? self::DEFAULT_POLLING_LIMIT,
             enableHttp2: $config['enable_http2'] ?? self::DEFAULT_ENABLE_HTTP2,
+            conversationTtl: $config['conversation_ttl'] ?? self::DEFAULT_CONVERSATION_TTL,
             extra: $config['extra'] ?? [],
         );
     }
@@ -113,6 +117,7 @@ final readonly class Configuration
                 'limit' => $this->pollingLimit,
                 'allowed_updates' => $this->pollingAllowedUpdates,
             ],
+            'conversation_ttl' => $this->conversationTtl,
             'extra' => $this->extra,
         ];
     }
