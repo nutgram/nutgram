@@ -122,15 +122,15 @@ class Nutgram extends ResolveHandlers
         $this->container->singleton(ConversationCache::class, fn (ContainerInterface $c) => new ConversationCache(
             cache: $c->get(CacheInterface::class),
             botId: $botId,
-            ttl: $config->conversationTtl
+            ttl: $config->conversationTtl,
         ));
         $this->container->singleton(GlobalCache::class, fn (ContainerInterface $c) => new GlobalCache(
             cache: $c->get(CacheInterface::class),
-            botId: $botId
+            botId: $botId,
         ));
         $this->container->singleton(UserCache::class, fn (ContainerInterface $c) => new UserCache(
             cache: $c->get(CacheInterface::class),
-            botId: $botId
+            botId: $botId,
         ));
 
         $this->hydrator = $this->container->get(Hydrator::class);

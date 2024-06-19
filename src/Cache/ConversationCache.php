@@ -22,7 +22,7 @@ class ConversationCache extends BotCache
      * @param  int|null  $botId
      * @param  DateInterval|int|null  $ttl
      */
-    public function __construct(CacheInterface $cache, ?int $botId, DateInterval|int|null $ttl = Configuration::DEFAULT_CONVERSATION_TTL)
+    public function __construct(CacheInterface $cache, ?int $botId, DateInterval|int|null $ttl = null)
     {
         parent::__construct($cache, self::CONVERSATION_PREFIX, $botId, $ttl);
     }
