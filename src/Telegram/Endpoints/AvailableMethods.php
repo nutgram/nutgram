@@ -839,7 +839,7 @@ trait AvailableMethods
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
-        $opt = compact(
+        $params = compact(
             'star_count',
             'chat_id',
             'caption',
@@ -852,7 +852,10 @@ trait AvailableMethods
             'reply_markup',
         );
 
-        return $this->sendAttachment(__FUNCTION__, 'media', $media, $opt, $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, [
+            'media' => new UploadableArray($media),
+            ...$params,
+        ], Message::class, $clientOpt);
     }
 
     /**
