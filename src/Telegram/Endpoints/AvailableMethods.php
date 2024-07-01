@@ -26,6 +26,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaAudio;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaDocument;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
+use SergiX44\Nutgram\Telegram\Types\Input\InputPaidMedia;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
@@ -219,7 +220,7 @@ trait AvailableMethods
 
     /**
      * Use this method to copy messages of any kind.
-     * Service messages and invoice messages can't be copied.
+     * Service messages, paid media messages, giveaway messages, giveaway winners messages, and invoice messages can't be copied.
      * A quiz {@see https://core.telegram.org/bots/api#poll poll} can be copied only if the value of the field correct_option_id is known to the bot.
      * The method is analogous to the method {@see https://core.telegram.org/bots/api#forwardmessage forwardMessage}, but the copied message doesn't have a link to the original message.
      * Returns the {@see https://core.telegram.org/bots/api#messageid MessageId} of the sent message on success.
@@ -277,7 +278,7 @@ trait AvailableMethods
     /**
      * Use this method to copy messages of any kind.
      * If some of the specified messages can't be found or copied, they are skipped.
-     * Service messages, giveaway messages, giveaway winners messages, and invoice messages can't be copied.
+     * Service messages, paid media messages, giveaway messages, giveaway winners messages, and invoice messages can't be copied.
      * A quiz {@see https://core.telegram.org/bots/api#poll poll} can be copied only if the value of the field correct_option_id is known to the bot.
      * The method is analogous to the method {@see https://core.telegram.org/bots/api#forwardmessages forwardMessages}, but the copied messages don't have a link to the original message.
      * Album grouping is kept for copied messages.
@@ -803,6 +804,58 @@ trait AvailableMethods
         );
 
         return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $opt, $clientOpt);
+    }
+
+    /**
+     * Use this method to send paid media to channel chats.
+     * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
+     * @see https://core.telegram.org/bots/api#sendpaidmedia
+     * @param int $star_count The number of Telegram Stars that must be paid to buy access to the media
+     * @param InputPaidMedia[] $media A JSON-serialized array describing the media to be sent; up to 10 items
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param string|null $caption Media caption, 0-1024 characters after entities parsing
+     * @param ParseMode|string|null $parse_mode Mode for parsing entities in the voice message caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param array|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
+     * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
+     * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param array $clientOpt Client options
+     * @return Message|null
+     */
+    public function sendPaidMedia(
+        int $star_count,
+        array $media,
+        int|string|null $chat_id = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $show_caption_above_media = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?ReplyParameters $reply_parameters = null,
+        InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        array $clientOpt = [],
+    ): ?Message {
+        $chat_id ??= $this->chatId();
+        $params = compact(
+            'star_count',
+            'chat_id',
+            'caption',
+            'parse_mode',
+            'caption_entities',
+            'show_caption_above_media',
+            'disable_notification',
+            'protect_content',
+            'reply_parameters',
+            'reply_markup',
+        );
+
+        return $this->requestMultipart(__FUNCTION__, [
+            'media' => new UploadableArray($media),
+            ...$params,
+        ], Message::class, $clientOpt);
     }
 
     /**

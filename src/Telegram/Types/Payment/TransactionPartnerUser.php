@@ -22,4 +22,9 @@ class TransactionPartnerUser extends TransactionPartner
      * Information about the user
      */
     public User $user;
+
+    /**
+     * Optional. Bot-specified invoice payload
+     */
+    public ?string $invoice_payload = null;
 }

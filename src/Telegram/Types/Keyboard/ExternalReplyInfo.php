@@ -23,6 +23,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Voice;
 use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageOrigin;
 use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
+use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaInfo;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 
@@ -73,6 +74,11 @@ class ExternalReplyInfo extends BaseType
      * @var Document|null
      */
     public ?Document $document = null;
+
+    /**
+     * Optional. Message contains paid media; information about the paid media
+     */
+    public ?PaidMediaInfo $paid_media = null;
 
     /**
      * Optional. Message is a photo, available sizes of the photo
