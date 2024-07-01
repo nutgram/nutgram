@@ -101,7 +101,7 @@ class BulkMessenger
     /**
      * @return void
      */
-    protected function handleAlarm(): void
+    public function handleAlarm(): void
     {
         $this();
         pcntl_alarm($this->seconds);
