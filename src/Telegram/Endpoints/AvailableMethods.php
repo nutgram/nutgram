@@ -837,8 +837,7 @@ trait AvailableMethods
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         $chat_id ??= $this->chatId();
         $opt = compact(
             'star_count',
