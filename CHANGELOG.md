@@ -2,6 +2,20 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.23.0 - 2024-07-01
+
+### What's Changed
+
+* Add ability to configure the conversation ttl by @Lukasss93 in https://github.com/nutgram/nutgram/pull/738
+* Update BulkMessenger.php by @Jobians in https://github.com/nutgram/nutgram/pull/743
+* Update to Bot API 7.6 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/744
+
+### New Contributors
+
+* @Jobians made their first contribution in https://github.com/nutgram/nutgram/pull/743
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.22.1...4.23.0
+
 ## 4.22.1 - 2024-06-19
 
 ### What's Changed
