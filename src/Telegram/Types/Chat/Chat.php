@@ -247,6 +247,13 @@ class Chat extends BaseType
 
     /**
      * Optional.
+     * True, if paid media messages can be sent or forwarded to the channel chat.
+     * The field is available only for channel chats.
+     */
+    public ?bool $can_send_paid_media = null;
+
+    /**
+     * Optional.
      * For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user;
      * in seconds.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
@@ -365,6 +372,7 @@ class Chat extends BaseType
         ?bool $can_set_sticker_set = null,
         ?int $linked_chat_id = null,
         ?ChatLocation $location = null,
+        ?bool $can_send_paid_media = null,
     ): Chat {
         $chat = new self();
         $chat->id = $id;
@@ -395,6 +403,7 @@ class Chat extends BaseType
         $chat->can_set_sticker_set = $can_set_sticker_set;
         $chat->linked_chat_id = $linked_chat_id;
         $chat->location = $location;
+        $chat->can_send_paid_media = $can_send_paid_media;
         return $chat;
     }
 

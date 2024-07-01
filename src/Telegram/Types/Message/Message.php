@@ -40,6 +40,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\VideoNote;
 use SergiX44\Nutgram\Telegram\Types\Media\Voice;
 use SergiX44\Nutgram\Telegram\Types\Passport\PassportData;
 use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
+use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaInfo;
 use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
@@ -271,6 +272,11 @@ class Message extends BaseType
      * Message is a general file, information about the file
      */
     public ?Document $document = null;
+
+    /**
+     * Optional. Message contains paid media; information about the paid media
+     */
+    public ?PaidMediaInfo $paid_media = null;
 
     /**
      * Optional.

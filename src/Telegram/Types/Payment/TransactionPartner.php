@@ -11,6 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * Currently, it can be one of:
  * - {@see TransactionPartnerFragment}
  * - {@see TransactionPartnerUser}
+ * - {@see TransactionPartnerTelegramAds}
  * - {@see TransactionPartnerOther}
  * @see https://core.telegram.org/bots/api#transactionpartner
  */
@@ -18,7 +19,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 abstract class TransactionPartner extends BaseType
 {
     /**
-     * Type of the transaction partner, can be “fragment”, “user” or “other”.
+     * Type of the transaction partner, can be “fragment”, “user”, “telegram_ads” or “other”.
      */
     #[EnumOrScalar]
     public TransactionPartnerType|string $type;
