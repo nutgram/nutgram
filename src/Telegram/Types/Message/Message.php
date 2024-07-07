@@ -694,6 +694,7 @@ class Message extends BaseType
             $this->pinned_message !== null => MessageType::PINNED_MESSAGE,
             $this->invoice !== null => MessageType::INVOICE,
             $this->successful_payment !== null => MessageType::SUCCESSFUL_PAYMENT,
+            $this->refunded_payment !== null => MessageType::REFUNDED_PAYMENT,
             $this->users_shared !== null => MessageType::USERS_SHARED,
             $this->chat_shared !== null => MessageType::CHAT_SHARED,
             $this->message_auto_delete_timer_changed !== null => MessageType::MESSAGE_AUTO_DELETE_TIMER_CHANGED,
