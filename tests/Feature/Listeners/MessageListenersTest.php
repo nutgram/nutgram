@@ -382,6 +382,30 @@ it('calls onSuccessfulPaymentPayload() handler', function ($update) {
     expect($bot->get('called'))->toBeTrue();
 })->with('successful_payment');
 
+it('calls onRefundedPayment() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onRefundedPayment(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('refunded_payment');
+
+it('calls onRefundedPaymentPayload() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onRefundedPaymentPayload('thedata', function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('refunded_payment');
+
 it('calls onUsersShared() handler', function ($update) {
     $bot = Nutgram::fake($update);
 

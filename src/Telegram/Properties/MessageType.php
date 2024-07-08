@@ -34,6 +34,7 @@ enum MessageType: string
     case PINNED_MESSAGE = 'pinned_message';
     case INVOICE = 'invoice';
     case SUCCESSFUL_PAYMENT = 'successful_payment';
+    case REFUNDED_PAYMENT = 'refunded_payment';
     case USERS_SHARED = 'users_shared';
     case CHAT_SHARED = 'chat_shared';
     case CONNECTED_WEBSITE = 'connected_website';

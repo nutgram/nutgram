@@ -41,6 +41,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Voice;
 use SergiX44\Nutgram\Telegram\Types\Passport\PassportData;
 use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaInfo;
+use SergiX44\Nutgram\Telegram\Types\Payment\RefundedPayment;
 use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
@@ -479,6 +480,8 @@ class Message extends BaseType
      */
     public ?SuccessfulPayment $successful_payment = null;
 
+    public ?RefundedPayment $refunded_payment = null;
+
     /**
      * Optional.
      * Service message: a user was shared with the bot
@@ -691,6 +694,7 @@ class Message extends BaseType
             $this->pinned_message !== null => MessageType::PINNED_MESSAGE,
             $this->invoice !== null => MessageType::INVOICE,
             $this->successful_payment !== null => MessageType::SUCCESSFUL_PAYMENT,
+            $this->refunded_payment !== null => MessageType::REFUNDED_PAYMENT,
             $this->users_shared !== null => MessageType::USERS_SHARED,
             $this->chat_shared !== null => MessageType::CHAT_SHARED,
             $this->message_auto_delete_timer_changed !== null => MessageType::MESSAGE_AUTO_DELETE_TIMER_CHANGED,
