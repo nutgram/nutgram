@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.24.0 - 2024-07-08
+
+### What's Changed
+
+* Update bot api to 7.7 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/746
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.23.0...4.24.0
+
 ## 4.23.0 - 2024-07-01
 
 ### What's Changed
