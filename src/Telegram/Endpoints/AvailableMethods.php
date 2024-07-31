@@ -1769,11 +1769,18 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int $message_id Identifier of a message to pin
      * @param bool|null $disable_notification Pass True if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels and private chats.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be pinned
      * @return bool|null
      */
-    public function pinChatMessage(int|string $chat_id, int $message_id, ?bool $disable_notification = null): ?bool
+    public function pinChatMessage(
+        int|string $chat_id,
+        int $message_id,
+        ?bool $disable_notification = null,
+        ?string $business_connection_id = null,
+    ): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id', 'disable_notification'));
+        $business_connection_id ??= $this->businessConnectionId();
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id', 'disable_notification', 'business_connection_id'));
     }
 
     /**
@@ -1783,11 +1790,17 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#unpinchatmessage
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_id Identifier of a message to unpin. If not specified, the most recent pinned message (by sending date) will be unpinned.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be pinned
      * @return bool|null
      */
-    public function unpinChatMessage(int|string $chat_id, ?int $message_id = null): ?bool
+    public function unpinChatMessage(
+        int|string $chat_id,
+        ?int $message_id = null,
+        ?string $business_connection_id = null,
+    ): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id'));
+        $business_connection_id ??= $this->businessConnectionId();
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id', 'business_connection_id'));
     }
 
     /**

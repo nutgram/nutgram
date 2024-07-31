@@ -81,6 +81,13 @@ class User extends BaseType
      */
     public ?bool $can_connect_to_business = null;
 
+    /**
+     * Optional.
+     * True, if the bot has a main Web App.
+     * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     */
+    public ?bool $has_main_web_app = null;
+
     public static function make(
         int $id,
         bool $is_bot,
