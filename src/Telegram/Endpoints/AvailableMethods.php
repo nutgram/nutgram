@@ -1777,8 +1777,7 @@ trait AvailableMethods
         int $message_id,
         ?bool $disable_notification = null,
         ?string $business_connection_id = null,
-    ): ?bool
-    {
+    ): ?bool {
         $business_connection_id ??= $this->businessConnectionId();
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id', 'disable_notification', 'business_connection_id'));
     }
@@ -1797,8 +1796,7 @@ trait AvailableMethods
         int|string $chat_id,
         ?int $message_id = null,
         ?string $business_connection_id = null,
-    ): ?bool
-    {
+    ): ?bool {
         $business_connection_id ??= $this->businessConnectionId();
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id', 'business_connection_id'));
     }
