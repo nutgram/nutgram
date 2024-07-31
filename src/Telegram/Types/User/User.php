@@ -101,6 +101,7 @@ class User extends BaseType
         ?bool $can_read_all_group_messages = null,
         ?bool $supports_inline_queries = null,
         ?bool $can_connect_to_business = null,
+        ?bool $has_main_web_app = null,
     ): User {
         $user = new self();
         $user->id = $id;
@@ -115,6 +116,7 @@ class User extends BaseType
         $user->can_read_all_group_messages = $can_read_all_group_messages;
         $user->supports_inline_queries = $supports_inline_queries;
         $user->can_connect_to_business = $can_connect_to_business;
+        $user->has_main_web_app = $has_main_web_app;
         return $user;
     }
 }
