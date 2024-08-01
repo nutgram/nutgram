@@ -37,5 +37,5 @@ class RefundedPayment extends BaseType
     /**
      * Optional. Provider payment identifier
      */
-    public string $provider_payment_charge_id;
+    public ?string $provider_payment_charge_id = null;
 }
