@@ -2,6 +2,19 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.25.0 - 2024-08-02
+
+### What's Changed
+
+* Update to Bot API 7.8 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/750
+* Fix optional parameter in RefundedPayment by @deadsandro in https://github.com/nutgram/nutgram/pull/752
+
+### New Contributors
+
+* @deadsandro made their first contribution in https://github.com/nutgram/nutgram/pull/752
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.24.0...4.25.0
+
 ## 4.24.0 - 2024-07-08
 
 ### What's Changed
