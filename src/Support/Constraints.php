@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Support;
 
+use BackedEnum;
+
 trait Constraints
 {
     protected array $constraints = [];
@@ -21,6 +23,14 @@ trait Constraints
 
     public function whereIn(string $parameter, array $values): self
     {
+        $values = array_map(function (mixed $item) {
+            if ($item instanceof BackedEnum) {
+                $item = $item->value;
+            }
+
+            return (string)$item;
+        }, $values);
+
         $this->constraints[$parameter] = implode('|', $values);
 
         return $this;

@@ -2,6 +2,7 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Tests\Fixtures\CommandWithNamedParameter;
+use SergiX44\Nutgram\Tests\Fixtures\DummyEnum;
 
 it('calls the command handler with valid regex', function ($update) {
     $bot = Nutgram::fake($update);
@@ -370,6 +371,25 @@ it('uses whereIn constraints', function ($hearValue, $expected) {
     ['yn', false],
 ]);
 
+it('uses whereIn with backed enum', function ($hearValue, $expected) {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start {value}', function (Nutgram $bot, $value) {
+        $bot->sendMessage('called');
+    })->whereIn('value', DummyEnum::cases());
+
+    $bot->hearText("/start $hearValue")->reply();
+
+    if ($expected) {
+        $bot->assertCalled('sendMessage');
+    } else {
+        $bot->assertNoReply();
+    }
+})->with([
+    ['foo', true],
+    ['bar', true],
+    ['baz', false],
+]);
 it('uses whereAlpha constraint', function ($hearValue, $expected) {
     $bot = Nutgram::fake();
 
