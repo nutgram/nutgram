@@ -12,11 +12,12 @@ use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
+use SergiX44\Nutgram\Support\Invoker;
 use SergiX44\Nutgram\Support\Taggable;
 
 class Handler extends MiddlewareChain
 {
-    use Taggable, Macroable, Disable, Constraints;
+    use Taggable, Macroable, Disable, Constraints, Invoker;
 
     /**
      * Regex to capture named parameters.
@@ -157,6 +158,10 @@ class Handler extends MiddlewareChain
     public function __invoke(Nutgram $bot): mixed
     {
         try {
+            if (is_string($this->callable) && $this->getInvoker() !== null) {
+                $this->callable = [$this->getInvoker(), $this->callable];
+            }
+
             return $bot->invoke($this->callable, ['bot' => $bot, ...$this->parameters]);
         } finally {
             $this->parameters = [];
