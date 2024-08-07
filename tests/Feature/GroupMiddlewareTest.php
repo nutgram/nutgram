@@ -383,7 +383,7 @@ it('groups handlers with invoker (class string)', function () {
         $bot->onText('call bar', 'bar');
         $bot->onText('call baz', 'baz');
         $bot->onText('call getValue', 'getValue');
-    })->invoker(HandlersClass::class);
+    })->handler(HandlersClass::class);
 
     $bot->hearText('call foo')
         ->reply()
@@ -407,7 +407,7 @@ it('groups handlers with invoker (class instance)', function () {
         $bot->onText('call bar', 'bar');
         $bot->onText('call baz', 'baz');
         $bot->onText('call getValue', 'getValue');
-    })->invoker(new HandlersClass('custom'));
+    })->handler(new HandlersClass('custom'));
 
     $bot->hearText('call foo')
         ->reply()

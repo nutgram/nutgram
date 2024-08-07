@@ -6,17 +6,18 @@ use Closure;
 use Illuminate\Support\Traits\Macroable;
 use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
-use SergiX44\Nutgram\Support\Invoker;
 use SergiX44\Nutgram\Support\Taggable;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 
 class HandlerGroup
 {
-    use Taggable, Macroable, Disable, Constraints, Invoker;
+    use Taggable, Macroable, Disable, Constraints;
 
     protected array $middlewares = [];
 
     protected array $scopes = [];
+
+    protected mixed $handler = null;
 
     public function __construct(public Closure $groupCallable)
     {
@@ -38,6 +39,12 @@ class HandlerGroup
         return $this;
     }
 
+    public function handler(mixed $classStringOrInstance): self
+    {
+        $this->handler = $classStringOrInstance;
+        return $this;
+    }
+
     public function getMiddlewares(): array
     {
         return $this->middlewares;
@@ -46,5 +53,10 @@ class HandlerGroup
     public function getScopes(): array
     {
         return $this->scopes;
+    }
+
+    public function getHandler(): mixed
+    {
+        return $this->handler;
     }
 }

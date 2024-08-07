@@ -12,12 +12,11 @@ use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
-use SergiX44\Nutgram\Support\Invoker;
 use SergiX44\Nutgram\Support\Taggable;
 
 class Handler extends MiddlewareChain
 {
-    use Taggable, Macroable, Disable, Constraints, Invoker;
+    use Taggable, Macroable, Disable, Constraints;
 
     /**
      * Regex to capture named parameters.
@@ -39,38 +38,22 @@ class Handler extends MiddlewareChain
      */
     protected const PARAM_NAME_REGEX = '/{([a-zA-Z][_a-zA-Z\d]*)}/';
 
-    /**
-     * @var string|null
-     */
     protected ?string $pattern;
 
-
-    /**
-     * @var array
-     */
     protected array $parameters = [];
 
-    /**
-     * @var callable $callable
-     */
-    protected $callable;
+    protected mixed $callable;
 
-    /**
-     * @var bool
-     */
     protected bool $skipGlobalMiddlewares = false;
 
-    /**
-     * @var array
-     */
     protected array $skippedGlobalMiddlewares = [];
 
     /**
      * Handler constructor.
-     * @param $callable
+     * @param mixed $callable
      * @param string|null $pattern
      */
-    public function __construct($callable, ?string $pattern = null)
+    public function __construct(mixed $callable, ?string $pattern = null)
     {
         $this->pattern = $pattern;
         $this->callable = $callable;
@@ -158,10 +141,6 @@ class Handler extends MiddlewareChain
     public function __invoke(Nutgram $bot): mixed
     {
         try {
-            if (is_string($this->callable) && $this->getInvoker() !== null) {
-                $this->callable = [$this->getInvoker(), $this->callable];
-            }
-
             return $bot->invoke($this->callable, ['bot' => $bot, ...$this->parameters]);
         } finally {
             $this->parameters = [];
@@ -205,5 +184,15 @@ class Handler extends MiddlewareChain
     public function getPattern(): ?string
     {
         return $this->pattern;
+    }
+
+    public function getCallable(): mixed
+    {
+        return $this->callable;
+    }
+
+    public function setCallable(mixed $callable): void
+    {
+        $this->callable = $callable;
     }
 }
