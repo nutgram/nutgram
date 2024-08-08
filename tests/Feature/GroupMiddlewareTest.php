@@ -2,6 +2,7 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Tests\Fixtures\DumbCommand;
+use SergiX44\Nutgram\Tests\Fixtures\HandlerClass;
 use SergiX44\Nutgram\Tests\Fixtures\HandlersClass;
 
 // NESTING
@@ -383,6 +384,7 @@ it('groups handlers with invoker (class string)', function () {
         $bot->onText('call bar', 'bar');
         $bot->onText('call baz', 'baz');
         $bot->onText('call getValue', 'getValue');
+        $bot->onText('call another', HandlerClass::class);
     })->handler(HandlersClass::class);
 
     $bot->hearText('call foo')
@@ -396,7 +398,10 @@ it('groups handlers with invoker (class string)', function () {
         ->assertReplyText('baz reply')
         ->hearText('call getValue')
         ->reply()
-        ->assertReplyText('default');
+        ->assertReplyText('default')
+        ->hearText('call another')
+        ->reply()
+        ->assertReplyText('invoke');
 });
 
 it('groups handlers with invoker (class instance)', function () {
