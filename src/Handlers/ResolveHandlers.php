@@ -292,6 +292,10 @@ abstract class ResolveHandlers extends CollectHandlers
                         $leaf->tags([...$leaf->getTags(), ...$tags]);
                         $leaf->unless($group->isDisabled());
                         $leaf->where($constraints);
+
+                        if (is_string($leaf->getCallable()) && !class_exists($leaf->getCallable()) && $group->getHandler() !== null) {
+                            $leaf->setCallable([$group->getHandler(), $leaf->getCallable()]);
+                        }
                     }
                 }
             );

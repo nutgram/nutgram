@@ -17,6 +17,8 @@ class HandlerGroup
 
     protected array $scopes = [];
 
+    protected mixed $handler = null;
+
     public function __construct(public Closure $groupCallable)
     {
     }
@@ -37,6 +39,12 @@ class HandlerGroup
         return $this;
     }
 
+    public function handler(mixed $classStringOrInstance): self
+    {
+        $this->handler = $classStringOrInstance;
+        return $this;
+    }
+
     public function getMiddlewares(): array
     {
         return $this->middlewares;
@@ -45,5 +53,10 @@ class HandlerGroup
     public function getScopes(): array
     {
         return $this->scopes;
+    }
+
+    public function getHandler(): mixed
+    {
+        return $this->handler;
     }
 }

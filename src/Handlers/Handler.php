@@ -38,38 +38,22 @@ class Handler extends MiddlewareChain
      */
     protected const PARAM_NAME_REGEX = '/{([a-zA-Z][_a-zA-Z\d]*)}/';
 
-    /**
-     * @var string|null
-     */
     protected ?string $pattern;
 
-
-    /**
-     * @var array
-     */
     protected array $parameters = [];
 
-    /**
-     * @var callable $callable
-     */
-    protected $callable;
+    protected mixed $callable;
 
-    /**
-     * @var bool
-     */
     protected bool $skipGlobalMiddlewares = false;
 
-    /**
-     * @var array
-     */
     protected array $skippedGlobalMiddlewares = [];
 
     /**
      * Handler constructor.
-     * @param $callable
+     * @param mixed $callable
      * @param string|null $pattern
      */
-    public function __construct($callable, ?string $pattern = null)
+    public function __construct(mixed $callable, ?string $pattern = null)
     {
         $this->pattern = $pattern;
         $this->callable = $callable;
@@ -200,5 +184,15 @@ class Handler extends MiddlewareChain
     public function getPattern(): ?string
     {
         return $this->pattern;
+    }
+
+    public function getCallable(): mixed
+    {
+        return $this->callable;
+    }
+
+    public function setCallable(mixed $callable): void
+    {
+        $this->callable = $callable;
     }
 }
