@@ -821,6 +821,7 @@ trait AvailableMethods
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -836,9 +837,11 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?string $business_connection_id = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $business_connection_id ??= $this->businessConnectionId();
         $params = compact(
             'star_count',
             'chat_id',
@@ -850,6 +853,7 @@ trait AvailableMethods
             'protect_content',
             'reply_parameters',
             'reply_markup',
+            'business_connection_id',
         );
 
         return $this->requestMultipart(__FUNCTION__, [
@@ -1656,6 +1660,58 @@ trait AvailableMethods
             'expire_date',
             'member_limit',
             'creates_join_request'
+        ), ChatInviteLink::class);
+    }
+
+    /**
+     * Use this method to create a
+     * {@see https://telegram.org/blog/superchannels-star-reactions-subscriptions#star-subscriptions subscription invite link}
+     * for a channel chat.
+     * The bot must have the can_invite_users administrator rights.
+     * The link can be edited using the method
+     * {@see https://core.telegram.org/bots/api#editchatsubscriptioninvitelink editChatSubscriptionInviteLink}
+     * or revoked using the method {@see https://core.telegram.org/bots/api#revokechatinvitelink revokeChatInviteLink}.
+     * Returns the new invite link as a {@see https://core.telegram.org/bots/api#chatinvitelink ChatInviteLink} object.
+     * @see https://core.telegram.org/bots/api#createchatsubscriptioninvitelink
+     * @param string|int $chat_id Unique identifier for the target channel chat or username of the target channel (in the format &#64;channelusername)
+     * @param int $subscription_period The number of seconds the subscription will be active for before the next payment. Currently, it must always be 2592000 (30 days).
+     * @param int $subscription_price The amount of Telegram Stars a user must pay initially and after each subsequent subscription period to be a member of the chat; 1-2500
+     * @param string|null $name Invite link name; 0-32 characters
+     * @return ChatInviteLink|null
+     */
+    public function createChatSubscriptionInviteLink(
+        string|int $chat_id,
+        int $subscription_period,
+        int $subscription_price,
+        ?string $name = null,
+    ): ?ChatInviteLink {
+        return $this->requestJson(__FUNCTION__, compact(
+            'chat_id',
+            'subscription_period',
+            'subscription_price',
+            'name',
+        ), ChatInviteLink::class);
+    }
+
+    /**
+     * Use this method to edit a subscription invite link created by the bot.
+     * The bot must have the can_invite_users administrator rights.
+     * Returns the edited invite link as a {@see https://core.telegram.org/bots/api#chatinvitelink ChatInviteLink} object.
+     * @see https://core.telegram.org/bots/api#editchatsubscriptioninvitelink
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param string $invite_link The invite link to edit
+     * @param string|null $name Invite link name; 0-32 characters
+     * @return ChatInviteLink|null
+     */
+    public function editChatSubscriptionInviteLink(
+        int|string $chat_id,
+        string $invite_link,
+        ?string $name = null,
+    ): ?ChatInviteLink {
+        return $this->requestJson(__FUNCTION__, compact(
+            'chat_id',
+            'invite_link',
+            'name',
         ), ChatInviteLink::class);
     }
 
