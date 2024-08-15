@@ -18,7 +18,7 @@ class ReactionTypePaid extends ReactionType implements JsonSerializable
      * @var ReactionTypeType|string
      */
     #[EnumOrScalar]
-    public string|ReactionTypeType $type = ReactionTypeType::PAID;
+    public ReactionTypeType|string $type = ReactionTypeType::PAID;
 
     public function jsonSerialize(): array
     {
