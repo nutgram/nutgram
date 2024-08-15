@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.26.0 - 2024-08-15
+
+### What's Changed
+
+* Add enum support in whereIn constraint by @Lukasss93 in https://github.com/nutgram/nutgram/pull/753
+* Update bot api to 7.9 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/755
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.25.0...4.26.0
+
 ## 4.25.0 - 2024-08-02
 
 ### What's Changed
