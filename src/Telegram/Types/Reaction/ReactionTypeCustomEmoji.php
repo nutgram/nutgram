@@ -20,7 +20,7 @@ class ReactionTypeCustomEmoji extends ReactionType implements JsonSerializable
      * @var ReactionTypeType|string
      */
     #[EnumOrScalar]
-    public string|ReactionTypeType $type = ReactionTypeType::CUSTOM_EMOJI;
+    public ReactionTypeType|string $type = ReactionTypeType::CUSTOM_EMOJI;
 
     /**
      * Custom emoji identifier

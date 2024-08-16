@@ -91,10 +91,10 @@ class ReactionTypeEmoji extends ReactionType implements JsonSerializable
 
     /**
      * Type of the reaction, always “emoji”
-     * @var string|ReactionTypeType
+     * @var ReactionTypeType|string
      */
     #[EnumOrScalar]
-    public string|ReactionTypeType $type = ReactionTypeType::EMOJI;
+    public ReactionTypeType|string $type = ReactionTypeType::EMOJI;
 
     /**
      * Reaction emoji. Currently, it can be one of
