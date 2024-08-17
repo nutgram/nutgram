@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.26.1 - 2024-08-17
+
+### What's Changed
+
+* Fix enums type by @Lukasss93 in https://github.com/nutgram/nutgram/pull/756
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.26.0...4.26.1
+
 ## 4.26.0 - 2024-08-15
 
 ### What's Changed
