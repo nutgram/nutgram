@@ -18,7 +18,7 @@ abstract class ReactionType extends BaseType
 {
     /**
      * Type of the reaction
-     * @var string|ReactionTypeType
+     * @var ReactionTypeType|string
      */
     #[EnumOrScalar]
     public ReactionTypeType|string $type;
