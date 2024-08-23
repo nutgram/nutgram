@@ -164,7 +164,14 @@ abstract class ResolveHandlers extends CollectHandlers
     {
         $resolvedHandlers = [];
 
-        if (!$conversation instanceof Conversation || !$conversation->skipHandlers()) {
+        /** @var bool|UpdateType[] $skipHandlers */
+        $skipHandlers = $conversation instanceof Conversation ? $conversation->skipHandlers() : false;
+        if (is_array($skipHandlers)) {
+            $updateType = $this->update?->getType();
+            $skipHandlers = in_array($updateType, $skipHandlers, true);
+        }
+
+        if (!$conversation instanceof Conversation || $skipHandlers === false) {
             $handlers = $this->resolveHandlers();
 
             /** @var Handler $handler */
