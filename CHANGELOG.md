@@ -2,6 +2,22 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.27.0 - 2024-09-06
+
+#### What's Changed
+
+* Update to Bot API 7.10 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/762
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.26.1...4.27.0
+
+### ⚠️ Warning
+
+The signature of the following methods has changed, if you don't use named parameters, remember to change the method calls before releasing to production:
+
+- **sendPaidMedia**
+  - Added the `payload` parameter before the `clientOpt` parameter
+  
+
 ## 4.26.1 - 2024-08-17
 
 ### What's Changed
