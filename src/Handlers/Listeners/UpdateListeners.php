@@ -203,6 +203,30 @@ trait UpdateListeners
      * @param $callable
      * @return Handler
      */
+    public function onPaidMediaPurchased($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::PURCHASED_PAID_MEDIA->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param string $pattern
+     * @param $callable
+     * @return Handler
+     */
+    public function onPaidMediaPurchasedPayload(string $pattern, $callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::PURCHASED_PAID_MEDIA->value][$pattern] = new Handler(
+            $callable,
+            $pattern
+        );
+    }
+
+    /**
+     * @param $callable
+     * @return Handler
+     */
     public function onUpdatePoll($callable): Handler
     {
         $this->checkFinalized();

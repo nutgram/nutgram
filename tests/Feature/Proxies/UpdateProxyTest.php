@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPurchased;
 use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingQuery;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
@@ -128,6 +129,15 @@ test('preCheckoutQuery() returns PreCheckoutQuery object', function ($update) {
     expect($bot->preCheckoutQuery()->getBot())->toBeInstanceOf(Nutgram::class);
     expect($bot->preCheckoutQuery()->from->getBot())->toBeInstanceOf(Nutgram::class);
 })->with('pre_checkout_query');
+
+test('purchasedPaidMedia() returns PaidMediaPurchased object', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->run();
+
+    expect($bot->purchasedPaidMedia())->toBeInstanceOf(PaidMediaPurchased::class);
+    expect($bot->purchasedPaidMedia()->getBot())->toBeInstanceOf(Nutgram::class);
+})->with('paid_media_purchased');
 
 test('poll() returns Poll object', function ($update) {
     $bot = Nutgram::fake($update);
