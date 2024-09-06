@@ -1,0 +1,15 @@
+{
+  "update_id": 123456789,
+  "purchased_paid_media": {
+    "from": {
+      "id": 12345,
+      "is_bot": false,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "language_code": "it",
+      "is_premium": false
+    },
+    "paid_media_payload": "wow"
+  }
+}

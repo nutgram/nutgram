@@ -35,4 +35,9 @@ class TransactionPartnerUser extends TransactionPartner
      */
     #[ArrayType(PaidMedia::class)]
     public ?array $paid_media = null;
+
+    /**
+     * Optional. Bot-specified paid media payload
+     */
+    public ?string $paid_media_payload = null;
 }

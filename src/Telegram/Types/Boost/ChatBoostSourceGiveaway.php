@@ -29,6 +29,11 @@ class ChatBoostSourceGiveaway extends ChatBoostSource
     public ?User $user = null;
 
     /**
+     * Optional. The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only
+     */
+    public ?int $prize_star_count = null;
+
+    /**
      * Optional. True, if the giveaway was completed, but there was no user to win the prize
      */
     public ?bool $is_unclaimed = null;

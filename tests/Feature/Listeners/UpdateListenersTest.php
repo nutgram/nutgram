@@ -298,6 +298,30 @@ it('calls onPreCheckoutQueryPayload() handler', function ($update) {
     expect($bot->get('called'))->toBeTrue();
 })->with('pre_checkout_query');
 
+it('calls onPaidMediaPurchased() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onPaidMediaPurchased(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called', false))->toBeTrue();
+})->with('paid_media_purchased');
+
+it('calls onPaidMediaPurchasedPayload() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onPaidMediaPurchasedPayload('wow', function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called', false))->toBeTrue();
+})->with('paid_media_purchased');
+
 it('calls onUpdatePoll() handler', function ($update) {
     $bot = Nutgram::fake($update);
 

@@ -16,6 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPurchased;
 use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingQuery;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
@@ -136,6 +137,12 @@ class Update extends BaseType
 
     /**
      * Optional.
+     * A user purchased paid media with a non-empty payload sent by the bot in a non-channel chat
+     */
+    public ?PaidMediaPurchased $purchased_paid_media = null;
+
+    /**
+     * Optional.
      * New poll state.
      * Bots receive only updates about stopped polls and polls, which are sent by the bot
      */
@@ -205,6 +212,7 @@ class Update extends BaseType
             $this->callback_query !== null => UpdateType::CALLBACK_QUERY,
             $this->shipping_query !== null => UpdateType::SHIPPING_QUERY,
             $this->pre_checkout_query !== null => UpdateType::PRE_CHECKOUT_QUERY,
+            $this->purchased_paid_media !== null => UpdateType::PURCHASED_PAID_MEDIA,
             $this->poll !== null => UpdateType::POLL,
             $this->poll_answer !== null => UpdateType::POLL_ANSWER,
             $this->my_chat_member !== null => UpdateType::MY_CHAT_MEMBER,
@@ -238,6 +246,7 @@ class Update extends BaseType
             $this->callback_query !== null => $this->callback_query->from,
             $this->shipping_query !== null => $this->shipping_query->from,
             $this->pre_checkout_query !== null => $this->pre_checkout_query->from,
+            $this->purchased_paid_media !== null => $this->purchased_paid_media->from,
             // poll: doesn't have a user
             $this->poll_answer !== null => $this->poll_answer->user,
             $this->my_chat_member !== null => $this->my_chat_member->from,
@@ -267,6 +276,7 @@ class Update extends BaseType
             $this->callback_query !== null => $this->callback_query->from = $user,
             $this->shipping_query !== null => $this->shipping_query->from = $user,
             $this->pre_checkout_query !== null => $this->pre_checkout_query->from = $user,
+            $this->purchased_paid_media !== null => $this->purchased_paid_media->from = $user,
             // poll: doesn't have a user
             $this->poll_answer !== null => $this->poll_answer->user = $user,
             $this->my_chat_member !== null => $this->my_chat_member->from = $user,
@@ -296,6 +306,7 @@ class Update extends BaseType
             $this->callback_query !== null => $this->callback_query->message?->chat,
             // shipping_query doesn't have a chat
             // pre_checkout_query doesn't have a chat
+            // purchased_paid_media doesn't have a chat
             // poll doesn't have a chat
             $this->poll_answer !== null => Chat::make($this->poll_answer->user->id, ChatType::PRIVATE),
             $this->my_chat_member !== null => $this->my_chat_member->chat,
@@ -325,6 +336,7 @@ class Update extends BaseType
             $this->callback_query !== null => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
             // shipping_query doesn't have a chat
             // pre_checkout_query doesn't have a chat
+            // purchased_paid_media doesn't have a chat
             // poll doesn't have a chat
             $this->poll_answer !== null => $chat,
             $this->my_chat_member !== null => $this->my_chat_member->chat = $chat,
