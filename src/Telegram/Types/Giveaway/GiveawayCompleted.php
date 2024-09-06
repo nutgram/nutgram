@@ -25,4 +25,10 @@ class GiveawayCompleted extends BaseType
      * Optional. Message with the giveaway that was completed, if it wasn't deleted
      */
     public ?Message $giveaway_message = null;
+
+    /**
+     * Optional. True, if the giveaway is a Telegram Star giveaway.
+     * Otherwise, currently, the giveaway is a Telegram Premium giveaway.
+     */
+    public ?bool $is_star_giveaway = null;
 }

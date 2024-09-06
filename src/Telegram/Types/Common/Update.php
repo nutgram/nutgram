@@ -16,6 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPurchased;
 use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingQuery;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
@@ -133,6 +134,12 @@ class Update extends BaseType
      * Contains full information about checkout
      */
     public ?PreCheckoutQuery $pre_checkout_query = null;
+
+    /**
+     * Optional.
+     * A user purchased paid media with a non-empty payload sent by the bot in a non-channel chat
+     */
+    public ?PaidMediaPurchased $purchased_paid_media = null;
 
     /**
      * Optional.
