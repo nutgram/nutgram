@@ -593,7 +593,7 @@ trait CustomEndpoints
                 return $this->sendAttachment($endpoint, $param, $media, $opt, $clientOpt);
             }
 
-            return $this->sendMessage($chunk, $opt);
+            return $this->sendMessage($chunk, $opt['chat_id']);
         }, $chunks, array_keys($chunks));
     }
 }
