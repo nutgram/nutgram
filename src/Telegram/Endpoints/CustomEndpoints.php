@@ -560,7 +560,15 @@ trait CustomEndpoints
         $caption = $opt['caption'] ?? null;
 
         if ($caption === null) {
-            return [$this->sendAttachment($endpoint, $param, $media, array_filter_null($opt), $clientOpt)];
+            return [
+                $this->sendAttachment(
+                    endpoint: $endpoint,
+                    param: $param,
+                    value: $media,
+                    opt: array_filter_null($opt),
+                    clientOpt: $clientOpt
+                ),
+            ];
         }
 
         $opt = array_filter_null($opt);
@@ -590,10 +598,21 @@ trait CustomEndpoints
 
             if ($index === 0) {
                 $opt['caption'] = $chunk;
-                return $this->sendAttachment($endpoint, $param, $media, $opt, $clientOpt);
+                return $this->sendAttachment(
+                    endpoint: $endpoint,
+                    param: $param,
+                    value: $media,
+                    opt: $opt,
+                    clientOpt: $clientOpt
+                );
             }
 
-            return $this->sendMessage($chunk, $opt);
+            $parameters = [
+                'text' => $chunk,
+                ...$opt,
+            ];
+
+            return $this->sendMessage(...$parameters);
         }, $chunks, array_keys($chunks));
     }
 }
