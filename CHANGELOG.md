@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.27.1 - 2024-10-04
+
+### What's Changed
+
+* Fix incorrect parameter passed to sendMessage method by @Lukasss93 in https://github.com/nutgram/nutgram/pull/769
+* Fix ArraySubset when PhpUnit 11 is installed by @Lukasss93 in https://github.com/nutgram/nutgram/pull/770
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.27.0...4.27.1
+
 ## 4.27.0 - 2024-09-06
 
 #### What's Changed
