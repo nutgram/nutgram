@@ -293,8 +293,7 @@ abstract class InlineMenu extends Conversation
         ?int $messageId,
         InlineKeyboardMarkup $buttons,
         array $opt
-    ): Message|null
-    {
+    ): Message|null {
         $message = $this->bot->editMessageText(...[
             'reply_markup' => $buttons,
             'chat_id' => $chatId,
