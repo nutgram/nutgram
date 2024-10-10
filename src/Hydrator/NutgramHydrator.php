@@ -16,7 +16,7 @@ class NutgramHydrator implements Hydrator
     /**
      * @inheritDoc
      */
-    public function hydrate(object|array $data, object|string $instance): object|string
+    public function hydrate(object|array $data, object|string $instance): mixed
     {
         return $this->mapper->hydrate($instance, $data);
     }
@@ -26,14 +26,13 @@ class NutgramHydrator implements Hydrator
      */
     public function hydrateArray(array $data, object|string $instance): array
     {
-        return array_map(
-            fn ($obj) => $this->mapper->hydrate(is_string($instance) ? $instance : clone $instance, $obj),
-            $data
-        );
+        return array_map(function ($obj) use ($instance): mixed {
+            return $this->mapper->hydrate(is_object($instance) ? clone $instance : $instance, $obj);
+        }, $data);
     }
 
     /**
-     * @throws \ReflectionException
+     * @inheritDoc
      */
     public function getConcreteFor(string $class): ?object
     {

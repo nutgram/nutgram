@@ -8,6 +8,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
+use ReflectionUnionType;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Hydrator\Hydrator;
@@ -25,10 +26,10 @@ class TypeFaker
     }
 
     /**
-     * @template T
-     * @param class-string $type
+     * @template T of object
+     * @param class-string<T>|string $type
      * @param array $partial
-     * @return T|string|int|bool|array|null|float
+     * @return T|object|scalar|array|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
@@ -88,7 +89,7 @@ class TypeFaker
                 continue;
             }
 
-            $typeName = $property->getType() instanceof \ReflectionUnionType
+            $typeName = $property->getType() instanceof ReflectionUnionType
                 ? $property->getType()->getTypes()[0]->getName()
                 : $property->getType()?->getName();
 
@@ -183,7 +184,7 @@ class TypeFaker
      */
     public static function randomInt(int $min = 0, ?int $max = null): int
     {
-        return mt_rand($min, $max ?? getrandmax());
+        return mt_rand($min, $max ?? mt_getrandmax());
     }
 
     /**
@@ -196,6 +197,7 @@ class TypeFaker
 
     /**
      * @param string $class
+     * @param array $context
      * @return ReflectionClass
      * @throws ReflectionException
      */
@@ -219,7 +221,7 @@ class TypeFaker
         return $reflectionClass;
     }
 
-    private function fakeArray(ArrayType $arrayType, array $userDefined = [], $depth = 1): array
+    private function fakeArray(ArrayType $arrayType, array $userDefined = [], int $depth = 1): array
     {
         $wrapped = [];
         foreach ($userDefined as $layer) {
