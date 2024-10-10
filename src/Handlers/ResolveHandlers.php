@@ -25,24 +25,10 @@ abstract class ResolveHandlers extends CollectHandlers
 {
     use UpdateProxy;
 
-    /**
-     * @var ConversationCache
-     */
     protected ConversationCache $conversationCache;
-
-    /**
-     * @var GlobalCache
-     */
     protected GlobalCache $globalCache;
-
-    /**
-     * @var UserCache
-     */
     protected UserCache $userCache;
-
-    /**
-     * @var Update|null
-     */
+    protected Container $container;
     protected ?Update $update = null;
 
     abstract public function getConfig(): Configuration;

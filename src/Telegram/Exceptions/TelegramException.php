@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Exceptions;
 
 use Exception;
+use Throwable;
 
 class TelegramException extends Exception
 {
@@ -12,8 +13,8 @@ class TelegramException extends Exception
      * TelegramException constructor.
      * @param $message
      * @param int $code
-     * @param  array  $parameters
-     * @param  null  $previous
+     * @param array $parameters
+     * @param Throwable|null $previous
      */
     public function __construct($message = '', int $code = 0, $previous = null, array $parameters = [])
     {

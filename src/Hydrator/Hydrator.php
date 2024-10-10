@@ -5,21 +5,23 @@ namespace SergiX44\Nutgram\Hydrator;
 interface Hydrator
 {
     /**
-     * @param  array|object  $data
-     * @param  object|string  $instance
-     * @return object
+     * @template T of object
+     * @param array|object $data
+     * @param T|class-string<T> $instance
+     * @return T
      */
     public function hydrate(array|object $data, object|string $instance): mixed;
 
     /**
-     * @param  array  $data
-     * @param  object|string  $instance
-     * @return array
+     * @template T of object
+     * @param array $data
+     * @param T|class-string<T> $instance
+     * @return array<array-key,T>
      */
     public function hydrateArray(array $data, object|string $instance): array;
 
     /**
-     * @param  string  $class
+     * @param class-string $class
      * @return object|null
      */
     public function getConcreteFor(string $class): ?object;
