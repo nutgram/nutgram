@@ -19,11 +19,9 @@ class ArrayCache implements CacheInterface
     private array $expires = [];
 
     /**
-     * @param  string  $key
-     * @param  mixed  $default
-     * @return mixed
+     * @inheritDoc
      */
-    public function get($key, $default = null): mixed
+    public function get(string $key, mixed $default = null): mixed
     {
         $this->checkExpire($key);
 
@@ -31,12 +29,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  string  $key
-     * @param  mixed  $value
-     * @param  DateInterval|int|null  $ttl
-     * @return bool
+     * @inheritDoc
      */
-    public function set($key, $value, $ttl = null): bool
+    public function set(string $key, mixed $value, null|int|DateInterval $ttl = null): bool
     {
         $this->delete($key);
 
@@ -49,10 +44,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  string  $key
-     * @return bool
+     * @inheritDoc
      */
-    public function delete($key): bool
+    public function delete(string $key): bool
     {
         unset($this->cache[$key], $this->expires[$key]);
 
@@ -60,7 +54,7 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @return bool
+     * @inheritDoc
      */
     public function clear(): bool
     {
@@ -71,11 +65,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param iterable $keys
-     * @param mixed $default
-     * @return array
+     * @inheritDoc
      */
-    public function getMultiple($keys, mixed $default = null): array
+    public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
         $values = [];
 
@@ -87,11 +79,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  iterable  $values
-     * @param  DateInterval|int|null  $ttl
-     * @return bool
+     * @inheritDoc
      */
-    public function setMultiple($values, $ttl = null): bool
+    public function setMultiple(iterable $values, null|int|DateInterval $ttl = null): bool
     {
         foreach ($values as $key => $value) {
             $this->set($key, $value, $ttl);
@@ -101,10 +91,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  iterable  $keys
-     * @return bool
+     * @inheritDoc
      */
-    public function deleteMultiple($keys): bool
+    public function deleteMultiple(iterable $keys): bool
     {
         foreach ($keys as $key) {
             unset($this->cache[$key], $this->expires[$key]);
@@ -114,20 +103,16 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  string  $key
-     * @return bool
+     * @inheritDoc
      */
-    public function has($key): bool
+    public function has(string $key): bool
     {
         $this->checkExpire($key);
 
         return array_key_exists($key, $this->cache);
     }
 
-    /**
-     * @param $key
-     */
-    private function checkExpire(string $key): void
+    protected function checkExpire(string $key): void
     {
         $expiration = $this->expires[$key] ?? null;
         if ($expiration !== null && $this->hasExpired($expiration)) {
