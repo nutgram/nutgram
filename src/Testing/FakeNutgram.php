@@ -268,10 +268,7 @@ class FakeNutgram extends Nutgram
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function dd(): self
+    public function dd(): never
     {
         $this->dump();
         die();

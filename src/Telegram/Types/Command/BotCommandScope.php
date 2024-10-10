@@ -25,7 +25,7 @@ abstract class BotCommandScope extends BaseType implements JsonSerializable
     #[EnumOrScalar]
     public BotCommandScopeType|string $type;
 
-    public function getType(): BotCommandScopeType
+    public function getType(): BotCommandScopeType|string
     {
         return $this->type;
     }

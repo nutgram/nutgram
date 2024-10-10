@@ -1323,8 +1323,8 @@ trait AvailableMethods
         int|string|null $chat_id = null,
         ?int $message_id = null
     ): ?bool {
-        $chat_id ??= $this->chat->id;
-        $message_id ??= $this->message_id;
+        $chat_id ??= $this->chatId();
+        $message_id ??= $this->messageId();
 
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
