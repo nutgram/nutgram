@@ -668,7 +668,6 @@ class Message extends BaseType
             $this->text !== null => MessageType::TEXT,
             $this->audio !== null => MessageType::AUDIO,
             $this->animation !== null => MessageType::ANIMATION,
-            $this->document !== null => MessageType::DOCUMENT,
             $this->game !== null => MessageType::GAME,
             $this->photo !== null => MessageType::PHOTO,
             $this->sticker !== null => MessageType::STICKER,
@@ -715,6 +714,7 @@ class Message extends BaseType
             $this->video_chat_ended !== null => MessageType::VIDEO_CHAT_ENDED,
             $this->video_chat_participants_invited !== null => MessageType::VIDEO_CHAT_PARTICIPANTS_INVITED,
             $this->web_app_data !== null => MessageType::WEB_APP_DATA,
+            $this->document !== null => MessageType::DOCUMENT,
             default => null
         };
     }
