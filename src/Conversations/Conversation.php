@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Conversations;
 use Psr\SimpleCache\InvalidArgumentException;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
 /**
  * Class Conversation
@@ -13,7 +14,8 @@ use SergiX44\Nutgram\Nutgram;
  */
 abstract class Conversation
 {
-    protected bool $skipHandlers = false;
+    /** @var bool|UpdateType[] */
+    protected mixed $skipHandlers = false;
     protected bool $skipMiddlewares = false;
     protected ?string $step = 'start';
     protected Nutgram $bot;
@@ -123,10 +125,10 @@ abstract class Conversation
     }
 
     /**
-     * @param  bool  $skipHandlers
+     * @param  bool|UpdateType[]  $skipHandlers
      * @return Conversation
      */
-    protected function setSkipHandlers(bool $skipHandlers): self
+    protected function setSkipHandlers(mixed $skipHandlers): self
     {
         $this->skipHandlers = $skipHandlers;
 
@@ -145,9 +147,9 @@ abstract class Conversation
     }
 
     /**
-     * @return bool
+     * @return bool|UpdateType[]
      */
-    public function skipHandlers(): bool
+    public function skipHandlers(): mixed
     {
         return $this->skipHandlers;
     }
