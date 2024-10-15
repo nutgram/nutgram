@@ -18,6 +18,11 @@ trait ProvidesHttpResponse
         return !$this->responseSent && $this->enableAsResponse && function_exists('fastcgi_finish_request');
     }
 
+    /**
+     * @param string $methodName
+     * @param array{json:array} $payload
+     * @return null
+     */
     protected function sendResponse(string $methodName, array $payload): null
     {
         header('Content-Type: application/json', response_code: 200);
