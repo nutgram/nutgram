@@ -6,13 +6,17 @@ use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Tests\Fixtures\CustomService;
 
-class StartCommandClass extends Command
+class StartCommandClassConstructor extends Command
 {
     protected string $command = 'start {value}';
 
-    public function handle(Nutgram $bot, string $value, CustomService $service): void
+    public function __construct(protected CustomService $service)
+    {
+    }
+
+    public function handle(Nutgram $bot, string $value): void
     {
         expect($value)->toBe('foo');
-        expect($service)->toBeInstanceOf(CustomService::class);
+        expect($this->service)->toBeInstanceOf(CustomService::class);
     }
 }
