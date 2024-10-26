@@ -2,40 +2,24 @@
 
 namespace SergiX44\Nutgram\Handlers\Type;
 
-use RuntimeException;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
 
-class Command extends Handler
+final class Command extends Handler
 {
-    protected string $command = '#';
-
-    protected ?string $description = null;
-
-    protected array $localizedDescriptions = [];
+    protected array $description = [];
 
     protected array $scopes = [];
 
     /**
      * @param callable|callable-string $callable
-     * @param string|null $command
+     * @param string $command
      */
-    public function __construct($callable = null, ?string $command = null)
+    public function __construct($callable, string $command)
     {
-        $command = $command ?? $this->command;
-
-        if ($callable !== null) {
-            parent::__construct($callable, "/{$command}");
-            return;
-        }
-
-        if (!method_exists($this, 'handle')) {
-            throw new RuntimeException('The handle method must be implemented!');
-        }
-
-        parent::__construct([$this, 'handle'], "/{$command}");
+        parent::__construct($callable, "/{$command}");
     }
 
     /**
@@ -47,28 +31,9 @@ class Command extends Handler
         return str_replace('/', '', $cmd);
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): array
     {
         return $this->description;
-    }
-
-    public function getLocalizedDescriptions(): array
-    {
-        return $this->localizedDescriptions;
-    }
-
-    public function getAllDescriptions(): array
-    {
-        $descriptions = [];
-
-        if ($this->getDescription() !== null) {
-            $descriptions['*'] = $this->getDescription();
-        }
-
-        return [
-            ...$descriptions,
-            ...$this->getLocalizedDescriptions()
-        ];
     }
 
     /**
@@ -76,7 +41,7 @@ class Command extends Handler
      */
     public function isHidden(): bool
     {
-        return empty($this->getAllDescriptions());
+        return empty($this->getDescription());
     }
 
     /**
@@ -86,11 +51,11 @@ class Command extends Handler
     public function description(array|string $description): Command
     {
         if (is_string($description)) {
-            $this->description = $description;
+            $this->description['*'] = $description;
             return $this;
         }
 
-        $this->localizedDescriptions = $description;
+        $this->description = $description;
         return $this;
     }
 
@@ -122,7 +87,7 @@ class Command extends Handler
      */
     public function toBotCommand(?string $languageCode = null): BotCommand
     {
-        $descriptions = $this->getAllDescriptions();
+        $descriptions = $this->getDescription();
 
         if ($languageCode !== null) {
             return new BotCommand(
