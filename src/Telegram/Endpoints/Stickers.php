@@ -42,6 +42,7 @@ trait Stickers
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -58,6 +59,7 @@ trait Stickers
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -75,6 +77,7 @@ trait Stickers
             'reply_markup',
             'business_connection_id',
             'message_effect_id',
+            'allow_paid_broadcast',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'sticker', $sticker, $opt, $clientOpt);

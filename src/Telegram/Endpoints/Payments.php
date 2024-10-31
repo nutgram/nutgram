@@ -51,6 +51,7 @@ trait Payments
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @return Message|null
      */
     public function sendInvoice(
@@ -84,6 +85,7 @@ trait Payments
         ?ReplyParameters $reply_parameters = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
@@ -118,6 +120,7 @@ trait Payments
             'reply_parameters',
             'reply_markup',
             'message_effect_id',
+            'allow_paid_broadcast',
         );
         $parameters['prices'] = json_encode($prices, JSON_THROW_ON_ERROR);
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
