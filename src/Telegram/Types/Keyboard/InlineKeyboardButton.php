@@ -72,6 +72,12 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
 
     /**
      * Optional.
+     * Description of the button that copies the specified text to the clipboard.
+     */
+    public ?CopyTextButton $copy_text = null;
+
+    /**
+     * Optional.
      * Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
      */
     public ?CallbackGame $callback_game = null;
@@ -95,6 +101,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?bool $pay = null,
         ?WebAppInfo $web_app = null,
         ?SwitchInlineQueryChosenChat $switch_inline_query_chosen_chat = null,
+        ?CopyTextButton $copy_text = null,
     ) {
         parent::__construct();
         $this->text = $text;
@@ -107,6 +114,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         $this->pay = $pay;
         $this->web_app = $web_app;
         $this->switch_inline_query_chosen_chat = $switch_inline_query_chosen_chat;
+        $this->copy_text = $copy_text;
     }
 
     public static function make(
@@ -120,6 +128,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?bool $pay = null,
         ?WebAppInfo $web_app = null,
         ?SwitchInlineQueryChosenChat $switch_inline_query_chosen_chat = null,
+        ?CopyTextButton $copy_text = null,
     ): InlineKeyboardButton {
         return new self(
             $text,
@@ -132,6 +141,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
             $pay,
             $web_app,
             $switch_inline_query_chosen_chat,
+            $copy_text,
         );
     }
 
@@ -148,6 +158,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
             'callback_game' => $this->callback_game,
             'pay' => $this->pay,
             'web_app' => $this->web_app,
+            'copy_text' => $this->copy_text,
         ]);
     }
 }

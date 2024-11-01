@@ -111,6 +111,7 @@ trait AvailableMethods
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @return Message|null
      */
     public function sendMessage(
@@ -129,6 +130,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
@@ -149,6 +151,7 @@ trait AvailableMethods
             'reply_markup',
             'business_connection_id',
             'message_effect_id',
+            'allow_paid_broadcast',
         );
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
@@ -239,6 +242,7 @@ trait AvailableMethods
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @return MessageId|null
      */
     public function copyMessage(
@@ -256,6 +260,7 @@ trait AvailableMethods
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?bool $show_caption_above_media = null,
+        ?bool $allow_paid_broadcast = null,
     ): ?MessageId {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -272,6 +277,7 @@ trait AvailableMethods
             'reply_parameters',
             'reply_markup',
             'show_caption_above_media',
+            'allow_paid_broadcast',
         ), MessageId::class);
     }
 
@@ -332,6 +338,7 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -352,6 +359,7 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?bool $show_caption_above_media = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -373,6 +381,7 @@ trait AvailableMethods
             'business_connection_id',
             'show_caption_above_media',
             'message_effect_id',
+            'allow_paid_broadcast',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $opt, $clientOpt);
@@ -402,6 +411,7 @@ trait AvailableMethods
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -424,6 +434,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -447,6 +458,7 @@ trait AvailableMethods
             'reply_markup',
             'business_connection_id',
             'message_effect_id',
+            'allow_paid_broadcast',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $opt, $clientOpt);
@@ -473,6 +485,7 @@ trait AvailableMethods
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -493,6 +506,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -514,6 +528,7 @@ trait AvailableMethods
             'reply_markup',
             'business_connection_id',
             'message_effect_id',
+            'allow_paid_broadcast',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'document', $document, $opt, $clientOpt);
@@ -545,6 +560,7 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -570,6 +586,7 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?bool $show_caption_above_media = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -596,6 +613,7 @@ trait AvailableMethods
             'business_connection_id',
             'show_caption_above_media',
             'message_effect_id',
+            'allow_paid_broadcast',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'video', $video, $opt, $clientOpt);
@@ -626,6 +644,7 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -650,6 +669,7 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?bool $show_caption_above_media = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -675,6 +695,7 @@ trait AvailableMethods
             'business_connection_id',
             'show_caption_above_media',
             'message_effect_id',
+            'allow_paid_broadcast',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $opt, $clientOpt);
@@ -701,6 +722,7 @@ trait AvailableMethods
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -720,6 +742,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -740,6 +763,7 @@ trait AvailableMethods
             'reply_markup',
             'business_connection_id',
             'message_effect_id',
+            'allow_paid_broadcast',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $opt, $clientOpt);
@@ -764,6 +788,7 @@ trait AvailableMethods
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -782,6 +807,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -801,6 +827,7 @@ trait AvailableMethods
             'reply_markup',
             'business_connection_id',
             'message_effect_id',
+            'allow_paid_broadcast',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $opt, $clientOpt);
@@ -823,6 +850,7 @@ trait AvailableMethods
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $payload Bot-defined paid media payload, 0-128 bytes. This will not be displayed to the user, use it for your internal processes.
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -840,6 +868,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $payload = null,
+        ?bool $allow_paid_broadcast = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -857,6 +886,7 @@ trait AvailableMethods
             'reply_markup',
             'business_connection_id',
             'payload',
+            'allow_paid_broadcast',
         );
 
         return $this->requestMultipart(__FUNCTION__, [
@@ -880,6 +910,7 @@ trait AvailableMethods
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param array $clientOpt Client options
      * @return Message[]|null
      */
@@ -894,6 +925,7 @@ trait AvailableMethods
         ?ReplyParameters $reply_parameters = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
         array $clientOpt = [],
     ): ?array {
         $chat_id ??= $this->chatId();
@@ -912,6 +944,7 @@ trait AvailableMethods
                 'reply_parameters',
                 'business_connection_id',
                 'message_effect_id',
+                'allow_paid_broadcast',
             ),
         ], Message::class, $clientOpt);
     }
@@ -936,6 +969,7 @@ trait AvailableMethods
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @return Message|null
      */
     public function sendLocation(
@@ -955,6 +989,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
@@ -977,6 +1012,7 @@ trait AvailableMethods
             'reply_markup',
             'business_connection_id',
             'message_effect_id',
+            'allow_paid_broadcast',
         ), Message::class);
     }
 
@@ -1032,6 +1068,7 @@ trait AvailableMethods
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @return Message|null
      */
     public function sendVenue(
@@ -1053,6 +1090,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
@@ -1077,6 +1115,7 @@ trait AvailableMethods
             'reply_markup',
             'business_connection_id',
             'message_effect_id',
+            'allow_paid_broadcast',
         ), Message::class);
     }
 
@@ -1098,6 +1137,7 @@ trait AvailableMethods
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @return Message|null
      */
     public function sendContact(
@@ -1115,6 +1155,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
@@ -1135,6 +1176,7 @@ trait AvailableMethods
             'reply_markup',
             'business_connection_id',
             'message_effect_id',
+            'allow_paid_broadcast',
         ), Message::class);
     }
 
@@ -1166,6 +1208,7 @@ trait AvailableMethods
      * @param ParseMode|string|null $question_parse_mode Mode for parsing entities in the question. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details. Currently, only custom emoji entities are allowed.
      * @param MessageEntity[]|null $question_entities A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of question_parse_mode
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @return Message|null
      */
     public function sendPoll(
@@ -1193,6 +1236,7 @@ trait AvailableMethods
         ParseMode|string|null $question_parse_mode = null,
         ?array $question_entities = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
@@ -1221,6 +1265,7 @@ trait AvailableMethods
             'question_parse_mode',
             'question_entities',
             'message_effect_id',
+            'allow_paid_broadcast',
         );
         return $this->requestJson(__FUNCTION__, [
             'options' => json_encode($options, JSON_THROW_ON_ERROR),
@@ -1243,6 +1288,7 @@ trait AvailableMethods
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @return Message|null
      */
     public function sendDice(
@@ -1257,6 +1303,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
@@ -1273,6 +1320,7 @@ trait AvailableMethods
             'reply_markup',
             'business_connection_id',
             'message_effect_id',
+            'allow_paid_broadcast',
         ), Message::class);
     }
 
