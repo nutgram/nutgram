@@ -55,6 +55,26 @@ trait Client
         ProvidesHttpResponse;
 
     /**
+     * @var null|callable(Progress $progress):static
+     */
+    protected $progressHandler = null;
+
+    /**
+     * @param callable(Progress $progress):static $callable
+     * @return $this
+     */
+    public function withProgress(callable $callable): static
+    {
+        $this->progressHandler = $callable;
+        return $this;
+    }
+
+    protected function resetWithProgress(): void
+    {
+        $this->progressHandler = null;
+    }
+
+    /**
      * @param string $endpoint
      * @param array $parameters
      * @param array $options
@@ -127,12 +147,27 @@ trait Client
             return copy($this->downloadUrl($file), $path);
         }
 
+        if($this->progressHandler !== null) {
+            $clientOpt = [
+                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
+                    ($this->progressHandler)(new Progress(
+                        totalDownloadBytes: $totalDownloadBytes,
+                        downloadedBytes: $downloadedBytes,
+                        totalUploadBytes: $totalUploadBytes,
+                        uploadedBytes: $uploadedBytes,
+                    ));
+                },
+                ...$clientOpt,
+            ];
+        }
+
         $request = ['sink' => $path, ...$clientOpt];
         $endpoint = $this->downloadUrl($file);
 
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
         try {
             $response = $this->http->get($endpoint, $requestPost ?? $request);
+            $this->resetWithProgress();
         } catch (ConnectException $e) {
             $this->redactTokenFromConnectException($e);
         }
@@ -205,6 +240,20 @@ trait Client
             };
         }
 
+        if($this->progressHandler !== null) {
+            $options = [
+                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
+                    ($this->progressHandler)(new Progress(
+                        totalDownloadBytes: $totalDownloadBytes,
+                        downloadedBytes: $downloadedBytes,
+                        totalUploadBytes: $totalUploadBytes,
+                        uploadedBytes: $uploadedBytes,
+                    ));
+                },
+                ...$options,
+            ];
+        }
+
         $request = ['multipart' => $parameters, ...$options];
 
         try {
@@ -219,6 +268,7 @@ trait Client
 
             try {
                 $response = $this->http->post($endpoint, $requestData);
+                $this->resetWithProgress();
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
@@ -256,6 +306,20 @@ trait Client
             default => $item,
         }, array_filter_null($json));
 
+        if($this->progressHandler !== null) {
+            $options = [
+                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
+                    ($this->progressHandler)(new Progress(
+                        totalDownloadBytes: $totalDownloadBytes,
+                        downloadedBytes: $downloadedBytes,
+                        totalUploadBytes: $totalUploadBytes,
+                        uploadedBytes: $uploadedBytes,
+                    ));
+                },
+                ...$options,
+            ];
+        }
+
         $request = ['json' => $json, ...$options];
 
         try {
@@ -277,6 +341,7 @@ trait Client
                     'headers' => ['Content-Type' => 'application/json'],
                     ...$requestData,
                 ]);
+                $this->resetWithProgress();
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
