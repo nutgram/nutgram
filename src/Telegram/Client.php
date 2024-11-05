@@ -147,7 +147,7 @@ trait Client
             return copy($this->downloadUrl($file), $path);
         }
 
-        if($this->progressHandler !== null) {
+        if ($this->progressHandler !== null) {
             $clientOpt = [
                 'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
                     ($this->progressHandler)(new Progress(
@@ -240,7 +240,7 @@ trait Client
             };
         }
 
-        if($this->progressHandler !== null) {
+        if ($this->progressHandler !== null) {
             $options = [
                 'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
                     ($this->progressHandler)(new Progress(
@@ -306,7 +306,7 @@ trait Client
             default => $item,
         }, array_filter_null($json));
 
-        if($this->progressHandler !== null) {
+        if ($this->progressHandler !== null) {
             $options = [
                 'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
                     ($this->progressHandler)(new Progress(
