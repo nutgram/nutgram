@@ -2,37 +2,17 @@
 
 namespace SergiX44\Nutgram\Telegram;
 
-class Progress
+final readonly class Progress
 {
     public function __construct(
-        protected int $totalDownloadBytes,
-        protected int $downloadedBytes,
-        protected int $totalUploadBytes,
-        protected int $uploadedBytes,
+        public int $totalDownloadBytes,
+        public int $downloadedBytes,
+        public int $totalUploadBytes,
+        public int $uploadedBytes,
     ) {
     }
 
-    public function totalDownloadBytes(): int
-    {
-        return $this->totalDownloadBytes;
-    }
-
-    public function downloadedBytes(): int
-    {
-        return $this->downloadedBytes;
-    }
-
-    public function totalUploadBytes(): int
-    {
-        return $this->totalUploadBytes;
-    }
-
-    public function uploadedBytes(): int
-    {
-        return $this->uploadedBytes;
-    }
-
-    public function getDownloadProgress(int $precision = 0): float
+    public function downloadPercentage(int $precision = 0): float
     {
         return $this->mapRange(
             current: $this->downloadedBytes,
@@ -42,7 +22,7 @@ class Progress
         );
     }
 
-    public function getUploadProgress(int $precision = 0): float
+    public function uploadPercentage(int $precision = 0): float
     {
         return $this->mapRange(
             current: $this->uploadedBytes,

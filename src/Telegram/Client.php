@@ -54,24 +54,12 @@ trait Client
         UpdateMethods,
         ProvidesHttpResponse;
 
-    /**
-     * @var null|callable(Progress $progress):static
-     */
     protected $progressHandler = null;
 
-    /**
-     * @param callable(Progress $progress):static $callable
-     * @return $this
-     */
-    public function withProgress(callable $callable): static
+    public function withProgress(string|array|callable|object $callable): static
     {
         $this->progressHandler = $callable;
         return $this;
-    }
-
-    protected function resetWithProgress(): void
-    {
-        $this->progressHandler = null;
     }
 
     /**
@@ -136,10 +124,10 @@ trait Client
     public function downloadFile(File $file, string $path, array $clientOpt = []): ?bool
     {
         if (!is_dir(dirname($path)) && !mkdir(
-            $concurrentDirectory = dirname($path),
-            0775,
-            true
-        ) && !is_dir($concurrentDirectory)) {
+                $concurrentDirectory = dirname($path),
+                0775,
+                true
+            ) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
@@ -150,12 +138,14 @@ trait Client
         if ($this->progressHandler !== null) {
             $clientOpt = [
                 'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    ($this->progressHandler)(new Progress(
-                        totalDownloadBytes: $totalDownloadBytes,
-                        downloadedBytes: $downloadedBytes,
-                        totalUploadBytes: $totalUploadBytes,
-                        uploadedBytes: $uploadedBytes,
-                    ));
+                    $this->invoke($this->progressHandler, [
+                        new Progress(
+                            totalDownloadBytes: $totalDownloadBytes,
+                            downloadedBytes: $downloadedBytes,
+                            totalUploadBytes: $totalUploadBytes,
+                            uploadedBytes: $uploadedBytes,
+                        ),
+                    ]);
                 },
                 ...$clientOpt,
             ];
@@ -167,7 +157,7 @@ trait Client
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
         try {
             $response = $this->http->get($endpoint, $requestPost ?? $request);
-            $this->resetWithProgress();
+            $this->progressHandler = null;
         } catch (ConnectException $e) {
             $this->redactTokenFromConnectException($e);
         }
@@ -268,7 +258,7 @@ trait Client
 
             try {
                 $response = $this->http->post($endpoint, $requestData);
-                $this->resetWithProgress();
+                $this->progressHandler = null;
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
@@ -341,7 +331,7 @@ trait Client
                     'headers' => ['Content-Type' => 'application/json'],
                     ...$requestData,
                 ]);
-                $this->resetWithProgress();
+                $this->progressHandler = null;
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
