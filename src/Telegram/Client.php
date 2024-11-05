@@ -233,12 +233,14 @@ trait Client
         if ($this->progressHandler !== null) {
             $options = [
                 'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    ($this->progressHandler)(new Progress(
-                        totalDownloadBytes: $totalDownloadBytes,
-                        downloadedBytes: $downloadedBytes,
-                        totalUploadBytes: $totalUploadBytes,
-                        uploadedBytes: $uploadedBytes,
-                    ));
+                    $this->invoke($this->progressHandler, [
+                        new Progress(
+                            totalDownloadBytes: $totalDownloadBytes,
+                            downloadedBytes: $downloadedBytes,
+                            totalUploadBytes: $totalUploadBytes,
+                            uploadedBytes: $uploadedBytes,
+                        ),
+                    ]);
                 },
                 ...$options,
             ];
@@ -299,12 +301,14 @@ trait Client
         if ($this->progressHandler !== null) {
             $options = [
                 'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    ($this->progressHandler)(new Progress(
-                        totalDownloadBytes: $totalDownloadBytes,
-                        downloadedBytes: $downloadedBytes,
-                        totalUploadBytes: $totalUploadBytes,
-                        uploadedBytes: $uploadedBytes,
-                    ));
+                    $this->invoke($this->progressHandler, [
+                        new Progress(
+                            totalDownloadBytes: $totalDownloadBytes,
+                            downloadedBytes: $downloadedBytes,
+                            totalUploadBytes: $totalUploadBytes,
+                            uploadedBytes: $uploadedBytes,
+                        ),
+                    ]);
                 },
                 ...$options,
             ];
