@@ -5,6 +5,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\MissingMethodMenu;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\ValidButtonNoCallbackMenu;
+//use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\ValidPhotoMenu;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\ValidButtonNoDataMenu;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\ValidNoEndMenu;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu\ValidReopenMenu;
@@ -57,6 +58,27 @@ test('valid inline menu + no end + no data', function () {
         ->assertReplyText('Choosen: Red!')
         ->assertReply('answerCallbackQuery', index: 1);
 });
+//TODO: поправить тест
+//it('valid inline menu with photo', function () {
+//    $bot = Nutgram::fake();
+//    $bot->onMessage(ValidPhotoMenu::class);
+//
+//    $bot
+//        ->willStartConversation()
+//        ->hearText('start')
+//        ->reply()
+//        ->assertReplyMessage([
+//            'caption' => 'Choose a color:',
+//            'reply_markup' => InlineKeyboardMarkup::make()
+//                ->addRow(InlineKeyboardButton::make('Red', callback_data: 'Red')),
+//            'photo' => 'SergiX44\\Nutgram\\Testing\\OutgoingResource{temp}'
+//        ])
+//        ->hearCallbackQueryData('Red')
+//        ->reply()
+//        ->assertReplyText('Choosen: Red!')
+//        ->assertReply('answerCallbackQuery', index: 1);
+//});
+
 
 test('valid inline menu + no end + no callback data', function () {
     $bot = Nutgram::fake();

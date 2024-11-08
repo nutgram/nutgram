@@ -6,6 +6,8 @@ use InvalidArgumentException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile as InputFileInternal;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
@@ -26,6 +28,11 @@ abstract class InlineMenu extends Conversation
      * @var string
      */
     private string $text;
+
+    /**
+     * @var \SergiX44\Nutgram\Telegram\Types\Internal\InputFile
+     */
+    private ?InputFile $photo = null;
 
     /**
      * @var InlineKeyboardMarkup
@@ -76,6 +83,17 @@ abstract class InlineMenu extends Conversation
     {
         $this->text = $text;
         $this->opt = $opt;
+        return $this;
+    }
+
+    /**
+     * @param mixed $resource
+     *
+     * @return $this
+     */
+    protected function setPhoto(mixed $resource): self
+    {
+        $this->photo = InputFileInternal::make($resource);
         return $this;
     }
 
@@ -268,10 +286,20 @@ abstract class InlineMenu extends Conversation
      */
     protected function doOpen(string $text, InlineKeyboardMarkup $buttons, array $opt): Message|null
     {
-        return $this->bot->sendMessage(...[
+        if (!$this->photo) {
+            return $this->bot->sendMessage(...[
+                'reply_markup' => $buttons,
+                'text'         => $text,
+                'chat_id'      => $this->chatId,
+                ...$opt,
+            ]);
+        }
+
+        return $this->bot->sendPhoto(...[
             'reply_markup' => $buttons,
-            'text' => $text,
-            'chat_id' => $this->chatId,
+            'photo'        => $this->photo,
+            'caption'      => $text,
+            'chat_id'      => $this->chatId,
             ...$opt,
         ]);
     }
@@ -294,11 +322,21 @@ abstract class InlineMenu extends Conversation
         InlineKeyboardMarkup $buttons,
         array $opt
     ): bool|Message|null {
-        return $this->bot->editMessageText(...[
+        if (!$this->photo) {
+            return $this->bot->editMessageText(...[
+                'reply_markup' => $buttons,
+                'chat_id' => $chatId,
+                'message_id' => $messageId,
+                'text' => $text,
+                ...$opt,
+            ]);
+        }
+
+        return $this->bot->editMessageCaption(...[
             'reply_markup' => $buttons,
             'chat_id' => $chatId,
             'message_id' => $messageId,
-            'text' => $text,
+            'caption' => $text,
             ...$opt,
         ]);
     }
