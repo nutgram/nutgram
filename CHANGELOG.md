@@ -2,6 +2,20 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.28.0 - 2024-11-04
+
+### What's Changed
+
+* Fix invalid types by @Lukasss93 in https://github.com/nutgram/nutgram/pull/773
+* Reorder document type check in getType function by @imsafary in https://github.com/nutgram/nutgram/pull/778
+* Update to Bot API 7.11 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/784
+
+### New Contributors
+
+* @imsafary made their first contribution in https://github.com/nutgram/nutgram/pull/778
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.27.1...4.28.0
+
 ## 4.27.1 - 2024-10-04
 
 ### What's Changed
