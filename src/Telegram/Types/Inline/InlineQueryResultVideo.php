@@ -144,7 +144,7 @@ class InlineQueryResultVideo extends InlineQueryResult
         string $thumbnail_url,
         string $title,
         ?string $caption = null,
-        ?ParseMode $parse_mode = null,
+        ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?int $video_width = null,
         ?int $video_height = null,
@@ -176,14 +176,14 @@ class InlineQueryResultVideo extends InlineQueryResult
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'id' => $this->id,
             'video_url' => $this->video_url,
             'mime_type' => $this->mime_type,
             'thumbnail_url' => $this->thumbnail_url,
             'title' => $this->title,
             'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode?->value,
+            'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
             'video_width' => $this->video_width,
             'video_height' => $this->video_height,

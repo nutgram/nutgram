@@ -68,7 +68,7 @@ class InlineQueryResultCachedSticker extends InlineQueryResult
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'id' => $this->id,
             'sticker_file_id' => $this->sticker_file_id,
             'reply_markup' => $this->reply_markup,

@@ -123,7 +123,7 @@ class InlineQueryResultArticle extends InlineQueryResult
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'id' => $this->id,
             'title' => $this->title,
             'input_message_content' => $this->input_message_content,
