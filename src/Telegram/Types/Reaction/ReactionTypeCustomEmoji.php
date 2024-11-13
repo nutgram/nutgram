@@ -42,7 +42,7 @@ class ReactionTypeCustomEmoji extends ReactionType implements JsonSerializable
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'custom_emoji_id' => $this->custom_emoji_id,
         ]);
     }

@@ -55,7 +55,7 @@ class InlineQueryResultGame extends InlineQueryResult
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'id' => $this->id,
             'game_short_name' => $this->game_short_name,
             'reply_markup' => $this->reply_markup,

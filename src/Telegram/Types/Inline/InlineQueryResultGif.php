@@ -148,7 +148,7 @@ class InlineQueryResultGif extends InlineQueryResult
         ?string $thumbnail_mime_type = null,
         ?string $title = null,
         ?string $caption = null,
-        ?ParseMode $parse_mode = null,
+        ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
@@ -175,7 +175,7 @@ class InlineQueryResultGif extends InlineQueryResult
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'id' => $this->id,
             'gif_url' => $this->gif_url,
             'gif_width' => $this->gif_width,
@@ -185,7 +185,7 @@ class InlineQueryResultGif extends InlineQueryResult
             'thumb_mime_type' => $this->thumbnail_mime_type,
             'title' => $this->title,
             'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode?->value,
+            'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
             'reply_markup' => $this->reply_markup,
             'input_message_content' => $this->input_message_content,
