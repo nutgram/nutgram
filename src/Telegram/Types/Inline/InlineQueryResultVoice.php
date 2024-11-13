@@ -100,7 +100,7 @@ class InlineQueryResultVoice extends InlineQueryResult
         string $voice_url,
         string $title,
         ?string $caption = null,
-        ?ParseMode $parse_mode = null,
+        ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?int $voice_duration = null,
         ?InlineKeyboardMarkup $reply_markup = null,
@@ -122,12 +122,12 @@ class InlineQueryResultVoice extends InlineQueryResult
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'id' => $this->id,
             'voice_url' => $this->voice_url,
             'title' => $this->title,
             'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode?->value,
+            'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
             'voice_duration' => $this->voice_duration,
             'reply_markup' => $this->reply_markup,

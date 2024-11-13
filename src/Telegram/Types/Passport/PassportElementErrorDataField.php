@@ -45,7 +45,7 @@ class PassportElementErrorDataField extends PassportElementError
     }
 
     public static function make(
-        PassportType $type,
+        PassportType|string $type,
         string $field_name,
         string $data_hash,
         string $message
@@ -61,8 +61,8 @@ class PassportElementErrorDataField extends PassportElementError
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'source' => $this->source->value,
-            'type' => $this->type->value,
+            'source' => $this->source,
+            'type' => $this->type,
             'field_name' => $this->field_name,
             'data_hash' => $this->data_hash,
             'message' => $this->message,

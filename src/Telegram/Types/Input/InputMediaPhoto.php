@@ -74,7 +74,7 @@ class InputMediaPhoto extends InputMedia implements JsonSerializable
     public static function make(
         InputFile|string $media,
         ?string $caption = null,
-        ?ParseMode $parse_mode = null,
+        ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?bool $has_spoiler = null,
         ?bool $show_caption_above_media = null,
@@ -93,10 +93,10 @@ class InputMediaPhoto extends InputMedia implements JsonSerializable
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'media' => $this->media,
             'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode?->value,
+            'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
             'has_spoiler' => $this->has_spoiler,
             'show_caption_above_media' => $this->show_caption_above_media,

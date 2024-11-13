@@ -27,7 +27,7 @@ class TransactionPartnerFragment extends TransactionPartner implements JsonSeria
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'withdrawal_state' => $this->withdrawal_state,
         ]);
     }

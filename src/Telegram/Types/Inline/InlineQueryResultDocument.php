@@ -131,7 +131,7 @@ class InlineQueryResultDocument extends InlineQueryResult
         string $document_url,
         string $mime_type,
         ?string $caption = null,
-        ?ParseMode $parse_mode = null,
+        ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?string $description = null,
         ?InlineKeyboardMarkup $reply_markup = null,
@@ -160,11 +160,11 @@ class InlineQueryResultDocument extends InlineQueryResult
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'id' => $this->id,
             'title' => $this->title,
             'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode?->value,
+            'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
             'document_url' => $this->document_url,
             'mime_type' => $this->mime_type,

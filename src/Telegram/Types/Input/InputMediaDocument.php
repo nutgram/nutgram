@@ -83,7 +83,7 @@ class InputMediaDocument extends InputMedia implements JsonSerializable
         InputFile|string $media,
         InputFile|string|null $thumbnail = null,
         ?string $caption = null,
-        ?ParseMode $parse_mode = null,
+        ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?bool $disable_content_type_detection = null
     ): self {
@@ -104,7 +104,7 @@ class InputMediaDocument extends InputMedia implements JsonSerializable
             'media' => $this->media,
             'thumb' => $this->thumbnail,
             'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode?->value,
+            'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
             'disable_content_type_detection' => $this->disable_content_type_detection,
         ]);
