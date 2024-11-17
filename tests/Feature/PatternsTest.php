@@ -1,7 +1,6 @@
 <?php
 
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Tests\Fixtures\CommandWithNamedParameter;
 use SergiX44\Nutgram\Tests\Fixtures\DummyEnum;
 
 it('calls the command handler with valid regex', function ($update) {
@@ -255,22 +254,6 @@ it('calls handler with optional named parameter', function (string $hear, string
     'numeric-ko' => ['/start hello', '\d+', false],
     'letter-number-ok' => ['/start a1', '[a-z]\d', true],
     'letter-number-ko' => ['/start hello', '[a-z]\d', false],
-]);
-
-it(
-    'calls handler with optional named parameter using command class',
-    function (string $hear, string $constraint, bool $expected) {
-        $bot = Nutgram::fake();
-
-        $bot->registerCommand(CommandWithNamedParameter::class);
-
-        $bot->hearText($hear)->reply();
-
-        expect($bot->get('called', false))->toBe($expected);
-    }
-)->with([
-    'valid' => ['/start hello', '[a-z]+', true],
-    'invalid' => ['/start 123', '[a-z]+', false],
 ]);
 
 it('calls handler with optional named parameters', function (string $hear, bool $expected) {

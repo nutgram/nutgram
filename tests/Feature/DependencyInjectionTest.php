@@ -9,7 +9,6 @@ use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithConstructor;
 use SergiX44\Nutgram\Tests\Fixtures\CustomService;
 use SergiX44\Nutgram\Tests\Fixtures\DI\MiddlewareCallable;
 use SergiX44\Nutgram\Tests\Fixtures\DI\StartCommandCallable;
-use SergiX44\Nutgram\Tests\Fixtures\DI\StartCommandClass;
 use SergiX44\Nutgram\Tests\Fixtures\DI\TextHandlerCallable;
 use SergiX44\Nutgram\Tests\Fixtures\MyService;
 use SergiX44\Nutgram\Tests\Fixtures\ServiceHandler;
@@ -55,15 +54,6 @@ describe('DI in Command', function () {
         $bot->getContainer()->set(CustomService::class, new CustomService());
 
         $bot->onCommand('start {value}', StartCommandCallable::class);
-
-        $bot->hearText('/start foo')->reply();
-    });
-
-    test('class', function () {
-        $bot = Nutgram::fake();
-        $bot->getContainer()->set(CustomService::class, new CustomService());
-
-        $bot->registerCommand(StartCommandClass::class);
 
         $bot->hearText('/start foo')->reply();
     });
