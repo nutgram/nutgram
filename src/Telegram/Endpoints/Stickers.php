@@ -15,6 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
+use SergiX44\Nutgram\Telegram\Types\Sticker\Gifts;
 use SergiX44\Nutgram\Telegram\Types\Sticker\MaskPosition;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\Sticker\StickerSet;
@@ -357,5 +358,39 @@ trait Stickers
     public function deleteStickerSet(string $name): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('name'));
+    }
+
+    /**
+     * Returns the list of gifts that can be sent by the bot to users. Requires no parameters. Returns a Gifts object.
+     * @return Gifts|null
+     * @see https://core.telegram.org/bots/api#getavailablegifts
+     */
+    public function getAvailableGifts(): ?Gifts
+    {
+        return $this->requestJson(__FUNCTION__, mapTo: Gifts::class);
+    }
+
+    /**
+     * Sends a gift to the given user.
+     * The gift can't be converted to Telegram Stars by the user.
+     * Returns True on success.
+     * @param string $gift_id Identifier of the gift
+     * @param int|null $user_id Unique identifier of the target user that will receive the gift
+     * @param string|null $text Text that will be shown along with the gift; 0-255 characters
+     * @param string|null $text_parse_mode Mode for parsing entities in the text. See {@see formatting options https://core.telegram.org/bots/api#formatting-options} for more details. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom_emoji” are ignored.
+     * @param array|null $text_entities A JSON-serialized list of special entities that appear in the gift text. It can be specified instead of text_parse_mode. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom_emoji” are ignored.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#sendgift
+     */
+    public function sendGift(
+        string $gift_id,
+        ?int $user_id = null,
+        ?string $text = null,
+        ?string $text_parse_mode = null,
+        ?array $text_entities = null,
+    ): ?bool {
+        $user_id ??= $this->userId();
+        $parameters = compact('gift_id', 'user_id', 'text', 'text_parse_mode', 'text_entities');
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 }

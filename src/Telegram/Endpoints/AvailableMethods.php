@@ -1405,6 +1405,25 @@ trait AvailableMethods
     }
 
     /**
+     * Changes the emoji status for a given user that previously allowed the bot to manage their emoji status via the Mini App method requestEmojiStatusAccess.
+     * Returns True on success.
+     * @param string|null $emoji_status_custom_emoji_id Custom emoji identifier of the emoji status to set. Pass an empty string to remove the status.
+     * @param int|null $emoji_status_expiration_date Expiration date of the emoji status, if any
+     * @param int|null $user_id Unique identifier of the target user
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#setuseremojistatus
+     */
+    public function setUserEmojiStatus(
+        ?string $emoji_status_custom_emoji_id = null,
+        ?int $emoji_status_expiration_date = null,
+        ?int $user_id = null,
+    ): ?bool {
+        $user_id ??= $this->userId();
+        $parameters = compact('user_id', 'emoji_status_custom_emoji_id', 'emoji_status_expiration_date');
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
      * Use this method to get basic information about a file and prepare it for downloading.
      * For the moment, bots can download files of up to 20MB in size.
      * On success, a {@see https://core.telegram.org/bots/api#file File} object is returned.
