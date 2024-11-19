@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQueryResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQueryResultsButton;
+use SergiX44\Nutgram\Telegram\Types\Inline\PreparedInlineMessage;
 use SergiX44\Nutgram\Telegram\Types\WebApp\SentWebAppMessage;
 
 /**
@@ -62,5 +63,37 @@ trait InlineMode
         $parameters['result'] = json_encode($result, JSON_THROW_ON_ERROR);
 
         return $this->requestJson(__FUNCTION__, $parameters, SentWebAppMessage::class);
+    }
+
+    /**
+     * Stores a message that can be sent by a user of a Mini App.
+     * Returns a {@see https://core.telegram.org/bots/api#preparedinlinemessage PreparedInlineMessage} object.
+     * @param InlineQueryResult $result A JSON-serialized object describing the message to be sent
+     * @param int|null $user_id Unique identifier of the target user that can use the prepared message
+     * @param bool|null $allow_user_chats Pass True if the message can be sent to private chats with users
+     * @param bool|null $allow_bot_chats Pass True if the message can be sent to private chats with bots
+     * @param bool|null $allow_group_chats Pass True if the message can be sent to group and supergroup chats
+     * @param bool|null $allow_channel_chats Pass True if the message can be sent to channel chats
+     * @return PreparedInlineMessage|null
+     * @see https://core.telegram.org/bots/api#savepreparedinlinemessage
+     */
+    public function savePreparedInlineMessage(
+        InlineQueryResult $result,
+        ?int $user_id = null,
+        ?bool $allow_user_chats = null,
+        ?bool $allow_bot_chats = null,
+        ?bool $allow_group_chats = null,
+        ?bool $allow_channel_chats = null,
+    ): ?PreparedInlineMessage {
+        $user_id ??= $this->userId();
+        $parameters = compact(
+            'result',
+            'user_id',
+            'allow_user_chats',
+            'allow_bot_chats',
+            'allow_group_chats',
+            'allow_channel_chats'
+        );
+        return $this->requestJson(__FUNCTION__, $parameters, PreparedInlineMessage::class);
     }
 }

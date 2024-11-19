@@ -30,6 +30,11 @@ class TransactionPartnerUser extends TransactionPartner
     public ?string $invoice_payload = null;
 
     /**
+     * Optional. The duration of the paid subscription
+     */
+    public ?int $subscription_period = null;
+
+    /**
      * Optional. Information about the paid media bought by the user
      * @var PaidMedia[]|null
      */
@@ -40,4 +45,9 @@ class TransactionPartnerUser extends TransactionPartner
      * Optional. Bot-specified paid media payload
      */
     public ?string $paid_media_payload = null;
+
+    /**
+     * Optional. The gift sent to the user by the bot
+     */
+    public ?string $gift = null;
 }
