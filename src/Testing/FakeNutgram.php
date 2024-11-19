@@ -436,13 +436,11 @@ class FakeNutgram extends Nutgram
      * @return array
      * @internal For testing purposes only.
      */
-    public static function generateWebAppDataForThirdParty(int $botId, array $data): array
+    public function generateWebAppDataForThirdParty(int $botId, array $data): array
     {
         if (!extension_loaded('sodium')) {
             throw new RuntimeException('Sodium extension is required for this method');
         }
-
-        $bot = self::fake();
 
         // generate keypair
         $keyPair = sodium_crypto_sign_keypair();
@@ -455,7 +453,7 @@ class FakeNutgram extends Nutgram
 
         // generate signature
         $queryString = http_build_query(array_filter($data));
-        [$sortedData] = $bot->parseQueryString($queryString, ['hash', 'signature']);
+        [$sortedData] = $this->parseQueryString($queryString, ['hash', 'signature']);
         $dataCheckString = sprintf("%s:WebAppData\n%s", $botId, $sortedData);
         $signature = sodium_crypto_sign_detached($dataCheckString, $secretKey);
         $signature = sodium_bin2base64($signature, SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING);

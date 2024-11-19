@@ -44,8 +44,7 @@ trait ValidatesWebData
      * @throws InvalidDataException If the webapp data is invalid.
      * @see https://core.telegram.org/bots/webapps#validating-data-for-third-party-use
      */
-    public static function validateWebAppDataForThirdParty(
-        int $botId,
+    public function validateWebAppDataForThirdParty(
         string $queryString,
         string $publicKey = self::PUBLICKEY_PROD
     ): WebAppData {
@@ -53,16 +52,14 @@ trait ValidatesWebData
             throw new RuntimeException('Sodium extension is required for this method');
         }
 
-        $bot = self::fake();
+        [$sortedData, , $signature] = $this->parseQueryString($queryString, ['hash', 'signature']);
+        $dataCheckString = sprintf("%s:WebAppData\n%s", $this->getBotId(), $sortedData);
 
-        [$sortedData, , $signature] = $bot->parseQueryString($queryString, ['hash', 'signature']);
-        $dataCheckString = sprintf("%s:WebAppData\n%s", $botId, $sortedData);
-
-        if (!$bot->ed25519Verify($publicKey, $dataCheckString, $signature)) {
+        if (!$this->ed25519Verify($publicKey, $dataCheckString, $signature)) {
             throw new InvalidDataException('Invalid webapp data');
         }
 
-        return $bot->hydrator->hydrate($bot->queryStringToArray($queryString), WebAppData::class);
+        return $this->hydrator->hydrate($this->queryStringToArray($queryString), WebAppData::class);
     }
 
     /**
