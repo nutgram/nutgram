@@ -15,12 +15,14 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionUnionType;
+use RuntimeException;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\User\User;
+use function sodium_bin2base64;
 
 class FakeNutgram extends Nutgram
 {
@@ -420,11 +422,44 @@ class FakeNutgram extends Nutgram
     {
         $queryString = http_build_query(array_filter($data));
 
-        [, $sortedData] = $this->parseQueryString($queryString);
+        [$sortedData] = $this->parseQueryString($queryString, ['hash']);
         $secretKey = $this->createHashHmac(self::TOKEN, 'WebAppData');
         $hash = bin2hex($this->createHashHmac($sortedData, $secretKey));
 
         return $queryString.'&hash='.$hash;
+    }
+
+    /**
+     * Generates webapp data for third party + signature.
+     * @param int $botId The bot id.
+     * @param array $data The generated webapp data as query string.
+     * @return array
+     * @internal For testing purposes only.
+     */
+    public function generateWebAppDataForThirdParty(int $botId, array $data): array
+    {
+        if (!extension_loaded('sodium')) {
+            throw new RuntimeException('Sodium extension is required for this method');
+        }
+
+        // generate keypair
+        $keyPair = sodium_crypto_sign_keypair();
+
+        // generate secret key
+        $secretKey = sodium_crypto_sign_secretkey($keyPair);
+
+        // generate public key (hex)
+        $publicKey = sodium_bin2hex(sodium_crypto_sign_publickey($keyPair));
+
+        // generate signature
+        $queryString = http_build_query(array_filter($data));
+        [$sortedData] = $this->parseQueryString($queryString, ['hash', 'signature']);
+        $dataCheckString = sprintf("%s:WebAppData\n%s", $botId, $sortedData);
+        $signature = sodium_crypto_sign_detached($dataCheckString, $secretKey);
+        $signature = sodium_bin2base64($signature, SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING);
+        $initData = $queryString.'&signature='.$signature.'&hash=test';
+
+        return [$initData, $publicKey];
     }
 
     /**
@@ -437,7 +472,7 @@ class FakeNutgram extends Nutgram
     {
         $queryString = http_build_query(array_filter($data));
 
-        [, $sortedData] = $this->parseQueryString($queryString);
+        [$sortedData] = $this->parseQueryString($queryString, ['hash']);
         $secretKey = $this->createHash(self::TOKEN);
         $hash = bin2hex($this->createHashHmac($sortedData, $secretKey));
 
