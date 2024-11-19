@@ -1,10 +1,10 @@
 <?php
 
-use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Exception\InvalidDataException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Web\WebAppData;
 use SergiX44\Nutgram\Telegram\Web\WebAppUser;
+use SergiX44\Nutgram\Testing\FakeNutgram;
 
 beforeEach(function () {
     $this->input = [
@@ -23,22 +23,30 @@ beforeEach(function () {
 })->skip(!extension_loaded('sodium'), 'Sodium extension is required');
 
 it('validates webapp data for third-party use', function () {
-    $botId = 134679134;
-    $bot = Nutgram::fake(config: new Configuration(botId: $botId));
-    [$initData, $publicKey] = $bot->generateWebAppDataForThirdParty($botId, $this->input);
+    [$initData, $publicKey] = FakeNutgram::generateWebAppDataForThirdParty(
+        botId: 134679134,
+        data: $this->input,
+    );
 
-    $data = $bot->validateWebAppDataForThirdParty($initData, $publicKey);
+    $data = Nutgram::validateWebAppDataForThirdParty(
+        botId: 134679134,
+        queryString: $initData,
+        publicKey: $publicKey,
+    );
 
     expect($data)->toBeInstanceOf(WebAppData::class);
     expect($data->user)->toBeInstanceOf(WebAppUser::class);
 });
 
 it('fails to validate webapp data for third-party use', function () {
-    $botId = 134679134;
-    $bot = Nutgram::fake(config: new Configuration(botId: $botId));
-    [$initData, $publicKey] = $bot->generateWebAppDataForThirdParty($botId, $this->input);
+    [$initData, $publicKey] = FakeNutgram::generateWebAppDataForThirdParty(
+        botId: 134679134,
+        data: $this->input,
+    );
 
-    $publicKey = '0000000000000000000000000000000000000000000000000000000000000000';
-
-    $bot->validateWebAppDataForThirdParty($initData, $publicKey);
+    Nutgram::validateWebAppDataForThirdParty(
+        botId: 999999999,
+        queryString: $initData,
+        publicKey: $publicKey
+    );
 })->throws(InvalidDataException::class, 'Invalid webapp data');
