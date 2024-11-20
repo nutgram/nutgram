@@ -422,7 +422,7 @@ class FakeNutgram extends Nutgram
     {
         $queryString = http_build_query(array_filter($data));
 
-        [$sortedData] = $this->parseQueryString($queryString, ['hash']);
+        [$sortedData] = self::parseQueryString($queryString, ['hash']);
         $secretKey = $this->createHashHmac(self::TOKEN, 'WebAppData');
         $hash = bin2hex($this->createHashHmac($sortedData, $secretKey));
 
@@ -436,7 +436,7 @@ class FakeNutgram extends Nutgram
      * @return array
      * @internal For testing purposes only.
      */
-    public function generateWebAppDataForThirdParty(int $botId, array $data): array
+    public static function generateWebAppDataForThirdParty(int $botId, array $data): array
     {
         if (!extension_loaded('sodium')) {
             throw new RuntimeException('Sodium extension is required for this method');
@@ -453,7 +453,7 @@ class FakeNutgram extends Nutgram
 
         // generate signature
         $queryString = http_build_query(array_filter($data));
-        [$sortedData] = $this->parseQueryString($queryString, ['hash', 'signature']);
+        [$sortedData] = self::parseQueryString($queryString, ['hash', 'signature']);
         $dataCheckString = sprintf("%s:WebAppData\n%s", $botId, $sortedData);
         $signature = sodium_crypto_sign_detached($dataCheckString, $secretKey);
         $signature = sodium_bin2base64($signature, SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING);
@@ -472,7 +472,7 @@ class FakeNutgram extends Nutgram
     {
         $queryString = http_build_query(array_filter($data));
 
-        [$sortedData] = $this->parseQueryString($queryString, ['hash']);
+        [$sortedData] = self::parseQueryString($queryString, ['hash']);
         $secretKey = $this->createHash(self::TOKEN);
         $hash = bin2hex($this->createHashHmac($sortedData, $secretKey));
 
