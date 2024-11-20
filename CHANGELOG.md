@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.30.1 - 2024-11-20
+
+### What's Changed
+
+* Make validateWebAppDataForThirdParty static 😅 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/797
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.30.0...4.30.1
+
 ## 4.30.0 - 2024-11-19
 
 ### What's Changed
