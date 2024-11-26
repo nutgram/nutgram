@@ -25,7 +25,7 @@ class Webhook implements RunningMode
      */
     public function __construct(?Closure $getToken = null, ?string $secretToken = null)
     {
-        $this->resolveSecretToken = $getToken ?? static fn (): string => $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'];
+        $this->resolveSecretToken = $getToken ?? static fn (): string => $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ?? '';
         $this->secretToken = $secretToken;
     }
 
