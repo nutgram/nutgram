@@ -177,10 +177,10 @@ class DeepLink
      * Example: https:\/\/t.me/\<username\>\/<topic_id\>
      * @see https://core.telegram.org/api/links#forum-topic-links
      * @param string $username
-     * @param string $topicId
+     * @param int $topicId
      * @return string
      */
-    public function publicForumTopic(string $username, string $topicId): string
+    public function publicForumTopic(string $username, int $topicId): string
     {
         return $this->publicMessage($username, $topicId);
     }
@@ -194,10 +194,10 @@ class DeepLink
      * Example: https:\/\/t.me/c/\<chat_id\>/\<topic_id\>
      * @see https://core.telegram.org/api/links#forum-topic-links
      * @param int $chatId
-     * @param string $topicId
+     * @param int $topicId
      * @return string
      */
-    public function privateForumTopic(int $chatId, string $topicId): string
+    public function privateForumTopic(int $chatId, int $topicId): string
     {
         return $this->privateMessage($chatId, $topicId);
     }
@@ -390,7 +390,7 @@ class DeepLink
      * Example: https:\/\/t.me/bg/\<slug\>?mode=\<mode?\>
      * @see https://core.telegram.org/api/links#image-wallpapers
      * @param string $slug
-     * @param string|null $mode A combination of blur and motion (joined by +) to enable blurring and/or parallax motion
+     * @param array<int, string> $mode A combination of blur and motion (joined by +) to enable blurring and/or parallax motion
      * @return string
      */
     public function wallpaperImage(string $slug, array $mode = []): string
@@ -468,7 +468,7 @@ class DeepLink
      * @param string $slug
      * @param int $intensity
      * @param string $bgColor
-     * @param string|null $mode
+     * @param array $mode
      * @return string
      */
     public function wallpaperSolidPattern(string $slug, int $intensity, string $bgColor, array $mode = []): string
@@ -491,7 +491,7 @@ class DeepLink
      * @param string $topColor
      * @param string $bottomColor
      * @param int $rotation
-     * @param string|null $mode
+     * @param array $mode
      * @return string
      */
     public function wallpaperGradientPattern(
@@ -523,7 +523,7 @@ class DeepLink
      * @param string $hexColor2
      * @param string $hexColor3
      * @param string|null $hexColor4
-     * @param string|null $mode
+     * @param array $mode
      * @return string
      */
     public function wallpaperFreeformGradientPattern(

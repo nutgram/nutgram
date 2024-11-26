@@ -155,10 +155,7 @@ class FakeNutgram extends Nutgram
                             );
                         } elseif ($return instanceof ReflectionUnionType) {
                             foreach ($return->getTypes() as $type) {
-                                $instance = $this->typeFaker->fakeInstanceOf(
-                                    $type,
-                                    $partialResult
-                                );
+                                $instance = $this->typeFaker->fakeInstanceOf($type->getName(), $partialResult);
                                 if (is_object($instance)) {
                                     break;
                                 }
