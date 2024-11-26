@@ -2,6 +2,31 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.30.1 - 2024-11-20
+
+### What's Changed
+
+* Make validateWebAppDataForThirdParty static 😅 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/797
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.30.0...4.30.1
+
+## 4.30.0 - 2024-11-19
+
+### What's Changed
+
+* Update to Bot API 8.0 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/795
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.29.0...4.30.0
+
+## 4.29.0 - 2024-11-13
+
+### What's Changed
+
+* Add withProgress handler by @Lukasss93 in https://github.com/nutgram/nutgram/pull/787
+* Fix "enum->value" potential exception (when enum is primitive) by @Lukasss93 in https://github.com/nutgram/nutgram/pull/792
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.28.0...4.29.0
+
 ## 4.28.0 - 2024-11-04
 
 ### What's Changed

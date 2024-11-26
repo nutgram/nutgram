@@ -114,23 +114,22 @@ class Nutgram extends ResolveHandlers
             'version' => $config->enableHttp2 ? '2.0' : '1.1',
             ...$config->clientOptions,
         ]);
-        $botId = $config->botId ?? (int)explode(':', $this->token)[0];
         $this->container->set(ClientInterface::class, $this->http);
         $this->container->singleton(Hydrator::class, $config->hydrator);
         $this->container->singleton(CacheInterface::class, $config->cache);
         $this->container->singleton(LoggerInterface::class, $config->logger);
         $this->container->singleton(ConversationCache::class, fn (ContainerInterface $c) => new ConversationCache(
             cache: $c->get(CacheInterface::class),
-            botId: $botId,
+            botId: $this->getBotId(),
             ttl: $config->conversationTtl,
         ));
         $this->container->singleton(GlobalCache::class, fn (ContainerInterface $c) => new GlobalCache(
             cache: $c->get(CacheInterface::class),
-            botId: $botId,
+            botId: $this->getBotId(),
         ));
         $this->container->singleton(UserCache::class, fn (ContainerInterface $c) => new UserCache(
             cache: $c->get(CacheInterface::class),
-            botId: $botId,
+            botId: $this->getBotId(),
         ));
 
         $this->hydrator = $this->container->get(Hydrator::class);
@@ -141,6 +140,11 @@ class Nutgram extends ResolveHandlers
 
         $this->container->singleton(RunningMode::class, Polling::class);
         $this->container->set(__CLASS__, $this);
+    }
+
+    protected function getBotId(): int
+    {
+        return $this->config->botId ?? (int)explode(':', $this->token)[0];
     }
 
     /**

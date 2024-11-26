@@ -125,7 +125,7 @@ class InlineQueryResultContact extends InlineQueryResult
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'id' => $this->id,
             'phone_number' => $this->phone_number,
             'first_name' => $this->first_name,

@@ -150,6 +150,8 @@ trait Payments
      * @param bool|null $send_phone_number_to_provider Pass True if the user's phone number should be sent to the provider
      * @param bool|null $send_email_to_provider Pass True if the user's email address should be sent to the provider
      * @param bool|null $is_flexible Pass True if the final price depends on the shipping method
+     * @param int|null $subscription_period The number of seconds the subscription will be active for before the next payment. The currency must be set to “XTR” (Telegram Stars) if the parameter is used. Currently, it must always be 2592000 (30 days) if specified.
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the link will be created
      * @return string|null
      */
     public function createInvoiceLink(
@@ -173,6 +175,8 @@ trait Payments
         ?bool $send_phone_number_to_provider = null,
         ?bool $send_email_to_provider = null,
         ?bool $is_flexible = null,
+        ?int $subscription_period = null,
+        ?string $business_connection_id = null,
     ): ?string {
         $parameters = compact(
             'title',
@@ -194,7 +198,9 @@ trait Payments
             'need_shipping_address',
             'send_phone_number_to_provider',
             'send_email_to_provider',
-            'is_flexible'
+            'is_flexible',
+            'subscription_period',
+            'business_connection_id',
         );
         return $this->requestJson(__FUNCTION__, $parameters);
     }
@@ -250,6 +256,7 @@ trait Payments
      * @param int|null $offset Number of transactions to skip in the response
      * @param int|null $limit The maximum number of transactions to be retrieved. Values between 1-100 are accepted. Defaults to 100.
      * @return StarTransactions|null
+     * @see https://core.telegram.org/bots/api#getstartransactions
      */
     public function getStarTransactions(?int $offset = null, ?int $limit = null): ?StarTransactions
     {
@@ -259,10 +266,30 @@ trait Payments
     }
 
     /**
+     * Allows the bot to cancel or re-enable extension of a subscription paid in Telegram Stars.
+     * Returns True on success.
+     * @param string $telegram_payment_charge_id Telegram payment identifier for the subscription
+     * @param bool $is_canceled Pass True to cancel extension of the user subscription; the subscription must be active up to the end of the current subscription period. Pass False to allow the user to re-enable a subscription that was previously canceled by the bot.
+     * @param int|null $user_id Identifier of the user whose subscription will be edited
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#edituserstarsubscription
+     */
+    public function editUserStarSubscription(
+        string $telegram_payment_charge_id,
+        bool $is_canceled,
+        ?int $user_id = null,
+    ): ?bool {
+        $user_id ??= $this->userId();
+        $parameters = compact('user_id', 'telegram_payment_charge_id', 'is_canceled');
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
      * Refunds a successful payment in {@see https://t.me/BotNews/90 Telegram Stars}.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#refundstarpayment
-     * @param int $user_id Identifier of the user whose payment will be refunded
+     * @param int|null $user_id Identifier of the user whose payment will be refunded
      * @param string $telegram_payment_charge_id Telegram payment identifier
      * @return bool|null
      */

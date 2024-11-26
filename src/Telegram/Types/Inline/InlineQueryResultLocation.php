@@ -154,7 +154,7 @@ class InlineQueryResultLocation extends InlineQueryResult
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'id' => $this->id,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
