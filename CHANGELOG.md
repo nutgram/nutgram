@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.31.0 - 2024-12-04
+
+### What's Changed
+
+* Fix missing $_SERVER key check by @Lukasss93 in https://github.com/nutgram/nutgram/pull/798
+* Fix the inability to reuse the same InputFile multiple times by @Lukasss93 in https://github.com/nutgram/nutgram/pull/800
+* Update to Bot API 8.1 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/801
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.30.1...4.31.0
+
 ## 4.30.1 - 2024-11-20
 
 ### What's Changed
