@@ -96,6 +96,6 @@ final class Command extends Handler
             );
         }
 
-        return new BotCommand($this->getName(), $descriptions['*'] ?? null);
+        return new BotCommand($this->getName(), $descriptions['*']);
     }
 }

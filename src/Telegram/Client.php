@@ -131,8 +131,14 @@ trait Client
             throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
         }
 
+        $endpoint = $this->downloadUrl($file);
+
+        if($endpoint === null) {
+            throw new RuntimeException('Error getting download URL');
+        }
+
         if ($this->config->isLocal) {
-            return copy($this->downloadUrl($file), $path);
+            return copy($endpoint, $path);
         }
 
         if ($this->progressHandler !== null) {
@@ -152,7 +158,6 @@ trait Client
         }
 
         $request = ['sink' => $path, ...$clientOpt];
-        $endpoint = $this->downloadUrl($file);
 
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
         try {

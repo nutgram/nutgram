@@ -8,6 +8,9 @@ use SergiX44\Nutgram\Nutgram;
 class BulkMessenger
 {
     public Nutgram $bot;
+    /**
+     * @var int<0, max>
+     */
     private int $seconds = 2;
     private array $chats = [];
     private string $text = 'Hello!';
@@ -54,7 +57,7 @@ class BulkMessenger
     }
 
     /**
-     * @param  int  $seconds
+     * @param  int<0, max>  $seconds
      * @return $this
      */
     public function setInterval(int $seconds): static

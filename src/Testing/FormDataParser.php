@@ -105,7 +105,7 @@ class FormDataParser
                 if (!str_contains($part, '=')) {
                     $headers[$headerName][] = $part;
                 } else {
-                    [$name, $value] = explode('=', $part, 2);
+                    [$name, $value] = array_pad(explode('=', $part, 2), 2, '');
                     $name = strtolower(trim($name));
                     $value = trim(trim($value), '"');
                     $headers[$headerName][$name] = $value;

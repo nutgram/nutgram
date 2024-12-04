@@ -15,7 +15,7 @@ abstract class Conversation
 {
     protected bool $skipHandlers = false;
     protected bool $skipMiddlewares = false;
-    protected ?string $step = 'start';
+    protected string $step = 'start';
     protected Nutgram $bot;
     private static bool $refreshInstance = false;
     private ?int $userId = null;

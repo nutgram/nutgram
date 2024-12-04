@@ -12,6 +12,7 @@ use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
@@ -20,6 +21,7 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 /**
  * Trait ResolveHandlers
  * @package SergiX44\Nutgram\Handlers
+ * @mixin Nutgram
  */
 abstract class ResolveHandlers extends CollectHandlers
 {
@@ -79,10 +81,10 @@ abstract class ResolveHandlers extends CollectHandlers
                     $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $text);
                 }
             } elseif ($messageType === MessageType::SUCCESSFUL_PAYMENT) {
-                $data = $this->update->getMessage()->successful_payment?->invoice_payload;
+                $data = $this->update->getMessage()?->successful_payment?->invoice_payload;
                 $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $data);
             } elseif ($messageType === MessageType::REFUNDED_PAYMENT) {
-                $data = $this->update->getMessage()->refunded_payment?->invoice_payload;
+                $data = $this->update->getMessage()?->refunded_payment?->invoice_payload;
                 $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $data);
             }
 

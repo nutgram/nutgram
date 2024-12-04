@@ -196,7 +196,7 @@ class TypeFaker
     }
 
     /**
-     * @param string $class
+     * @param class-string $class
      * @param array $context
      * @return ReflectionClass
      * @throws ReflectionException
