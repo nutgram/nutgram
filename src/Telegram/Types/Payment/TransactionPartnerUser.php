@@ -25,6 +25,11 @@ class TransactionPartnerUser extends TransactionPartner
     public User $user;
 
     /**
+     * Optional. Information about the affiliate that received a commission via this transaction
+     */
+    public ?AffiliateInfo $affiliate = null;
+
+    /**
      * Optional. Bot-specified invoice payload
      */
     public ?string $invoice_payload = null;

@@ -14,7 +14,7 @@ class StarTransaction extends BaseType implements JsonSerializable
 {
     /**
      * Unique identifier of the transaction.
-     * Coincides with the identifer of the original transaction for refund transactions.
+     * Coincides with the identifier of the original transaction for refund transactions.
      * Coincides with SuccessfulPayment.telegram_payment_charge_id for successful incoming payments from users.
      */
     public string $id;
@@ -23,6 +23,13 @@ class StarTransaction extends BaseType implements JsonSerializable
      * Number of Telegram Stars transferred by the transaction
      */
     public int $amount;
+
+    /**
+     * Optional.
+     * The number of 1/1000000000 shares of Telegram Stars transferred by the transaction;
+     * from 0 to 999999999
+     */
+    public ?int $nanostar_amount = null;
 
     /**
      * Date the transaction was created in Unix time
@@ -48,6 +55,7 @@ class StarTransaction extends BaseType implements JsonSerializable
         return array_filter_null([
             'id' => $this->id,
             'amount' => $this->amount,
+            'nanostar_amount' => $this->nanostar_amount,
             'date' => $this->date,
             'source' => $this->source,
             'receiver' => $this->receiver,
