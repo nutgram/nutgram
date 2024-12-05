@@ -2,7 +2,6 @@
 
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\HandlerGroup;
-use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
 
 test('setTag + getTag + hasTag', function () {
@@ -67,24 +66,14 @@ test('getTags', function () {
 
     $bot->middleware(function (Nutgram $bot, $next) {
         expect($bot->currentHandler())
-            ->hasTag('foo')->toBeTrue();
+            ->getTags()->toBe(['foo' => 'bar']);
 
         $next($bot);
     });
 
-    $bot->registerCommand(new class extends Command {
-        protected string $command = 'start';
-
-        public function getTags(): array
-        {
-            return ['foo' => 'bar'];
-        }
-
-        public function handle(Nutgram $bot): void
-        {
-            $bot->sendMessage('Hello');
-        }
-    });
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendMessage('Hello');
+    })->tag('foo', 'bar');
 
     $bot->hearText('/start')->reply();
 });
@@ -112,7 +101,6 @@ test('use tag + macroable', function () {
 
     $bot->hearText('/start')->reply();
 });
-
 
 test('set tags using group', function () {
     $bot = Nutgram::fake();
