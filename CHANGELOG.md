@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.31.1 - 2024-12-25
+
+### What's Changed
+
+* Fix missing field in "costructor", "make" and "jsonSerialize" methods by @Lukasss93 in https://github.com/nutgram/nutgram/pull/804
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.31.0...4.31.1
+
 ## 4.31.0 - 2024-12-04
 
 ### What's Changed
