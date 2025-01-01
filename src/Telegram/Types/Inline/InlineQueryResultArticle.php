@@ -42,7 +42,7 @@ class InlineQueryResultArticle extends InlineQueryResult
     /**
      * Optional.
      * Pass True if you don't want the URL to be shown in the message
-     * @deprecated since version Telegram Bot API 8.2. Pass an empty string as "url" instead.
+     * @deprecated Pass an empty string as "url" instead.
      */
     public ?bool $hide_url = null;
 
@@ -76,7 +76,7 @@ class InlineQueryResultArticle extends InlineQueryResult
      * @param InputMessageContent $input_message_content Content of the message to be sent
      * @param InlineKeyboardMarkup|null $reply_markup Optional. {@see https://core.telegram.org/bots/features#inline-keyboards Inline keyboard} attached to the message
      * @param string|null $url Optional. URL of the result
-     * @param bool|null $hide_url [DEPRECATED] since version Telegram Bot API 8.2. Pass an empty string as "url" instead.
+     * @param bool|null $hide_url [DEPRECATED] Pass an empty string as "url" instead.
      * @param string|null $description Optional. Short description of the result
      * @param string|null $thumbnail_url Optional. Url of the thumbnail for the result
      * @param int|null $thumbnail_width Optional. Thumbnail width
@@ -113,7 +113,7 @@ class InlineQueryResultArticle extends InlineQueryResult
      * @param InputMessageContent $input_message_content Content of the message to be sent
      * @param InlineKeyboardMarkup|null $reply_markup Optional. {@see https://core.telegram.org/bots/features#inline-keyboards Inline keyboard} attached to the message
      * @param string|null $url Optional. URL of the result
-     * @param bool|null $hide_url [DEPRECATED] since version Telegram Bot API 8.2. Pass an empty string as "url" instead.
+     * @param bool|null $hide_url [DEPRECATED] Pass an empty string as "url" instead.
      * @param string|null $description Optional. Short description of the result
      * @param string|null $thumbnail_url Optional. Url of the thumbnail for the result
      * @param int|null $thumbnail_width Optional. Thumbnail width
