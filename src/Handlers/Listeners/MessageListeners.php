@@ -2,7 +2,6 @@
 
 namespace SergiX44\Nutgram\Handlers\Listeners;
 
-use InvalidArgumentException;
 use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\Type\Command;
@@ -27,24 +26,6 @@ trait MessageListeners
             $callable,
             $command
         );
-    }
-
-    /**
-     * @param  string|Command  $command
-     * @return Command
-     */
-    public function registerCommand(string|Command $command, UpdateType $target = UpdateType::MESSAGE): Command
-    {
-        $this->checkFinalized();
-        $target->validateMessageType();
-        if (is_string($command)) {
-            if (!is_subclass_of($command, Command::class)) {
-                throw new InvalidArgumentException(sprintf('You must provide subclass of the %s class or an instance.', Command::class));
-            }
-            $command = new $command();
-        }
-
-        return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command->getPattern()] = $command;
     }
 
     /**
