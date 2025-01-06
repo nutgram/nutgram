@@ -312,10 +312,10 @@ it('restarts the conversation with an expired cache', function ($update) {
     expect($bot->get('test'))->toBe(1);
 })->with('message');
 
-it('works with ttl = 0', function ($update) {
+it('works with ttl = null', function ($update) {
     $bot = Nutgram::fake($update, config: new Configuration(
         cache: new TestCache(),
-        conversationTtl: 0,
+        conversationTtl: null,
     ));
     $bot->onMessage(TwoStepConversation::class);
 
@@ -323,6 +323,22 @@ it('works with ttl = 0', function ($update) {
     expect($bot->get('test'))->toBe(1);
 
     TestCache::setTestNow(new DateTimeImmutable('+100 hours'));
+
+    $bot->run();
+    expect($bot->get('test'))->toBe(2);
+})->with('message');
+
+it('works with ttl as DateInterval', function ($update) {
+    $bot = Nutgram::fake($update, config: new Configuration(
+        cache: new TestCache(),
+        conversationTtl: new DateInterval('PT5H'),
+    ));
+    $bot->onMessage(TwoStepConversation::class);
+
+    $bot->run();
+    expect($bot->get('test'))->toBe(1);
+
+    TestCache::setTestNow(new DateTimeImmutable('+2 hours'));
 
     $bot->run();
     expect($bot->get('test'))->toBe(2);
