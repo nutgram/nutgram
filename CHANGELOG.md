@@ -2,6 +2,20 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.32.0 - 2025-01-06
+
+### What's Changed
+
+* Update to Bot API 8.2 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/806
+* Bump laravel/serializable-closure by @iwex in https://github.com/nutgram/nutgram/pull/807
+* Disable conversation cache expiration by @Lukasss93 in https://github.com/nutgram/nutgram/pull/808
+
+### New Contributors
+
+* @iwex made their first contribution in https://github.com/nutgram/nutgram/pull/807
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.31.1...4.31.2
+
 ## 4.31.1 - 2024-12-25
 
 ### What's Changed
