@@ -93,8 +93,10 @@ final readonly class Configuration
             pollingAllowedUpdates: $config['polling']['allowed_updates'] ?? self::DEFAULT_ALLOWED_UPDATES,
             pollingLimit: $config['polling']['limit'] ?? self::DEFAULT_POLLING_LIMIT,
             enableHttp2: $config['enable_http2'] ?? self::DEFAULT_ENABLE_HTTP2,
-            conversationTtl: array_key_exists('conversation_ttl',
-                $config) ? $config['conversation_ttl'] : self::DEFAULT_CONVERSATION_TTL,
+            conversationTtl: array_key_exists(
+                'conversation_ttl',
+                $config
+            ) ? $config['conversation_ttl'] : self::DEFAULT_CONVERSATION_TTL,
             extra: $config['extra'] ?? [],
         );
     }
