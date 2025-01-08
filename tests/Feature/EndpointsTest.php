@@ -2,6 +2,7 @@
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\StreamInterface;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
@@ -370,11 +371,11 @@ it('sends a media group', function () {
                 fn ($x) => $x
                     ->name->toBe('photoA.jpg')
                     ->filename->toBe('photoA.jpg')
-                    ->contents->toBeResource(),
+                    ->contents->toBeInstanceOf(StreamInterface::class),
                 fn ($x) => $x
                     ->name->toBe('photoB.jpg')
                     ->filename->toBe('photoB.jpg')
-                    ->contents->toBeResource(),
+                    ->contents->toBeInstanceOf(StreamInterface::class),
                 fn ($x) => $x
                     ->name->toBe('media')
                     ->contents->toBe('[{"type":"photo","media":"attach:\/\/photoA.jpg","caption":"150"},{"type":"photo","media":"attach:\/\/photoB.jpg","caption":"200"}]'),

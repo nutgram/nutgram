@@ -379,6 +379,7 @@ trait Stickers
      * @param string|null $text Text that will be shown along with the gift; 0-255 characters
      * @param string|null $text_parse_mode Mode for parsing entities in the text. See {@see formatting options https://core.telegram.org/bots/api#formatting-options} for more details. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom_emoji” are ignored.
      * @param array|null $text_entities A JSON-serialized list of special entities that appear in the gift text. It can be specified instead of text_parse_mode. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom_emoji” are ignored.
+     * @param bool|null $pay_for_upgrade Pass True to pay for the gift upgrade from the bot's balance, thereby making the upgrade free for the receiver
      * @return bool|null
      * @see https://core.telegram.org/bots/api#sendgift
      */
@@ -388,9 +389,56 @@ trait Stickers
         ?string $text = null,
         ?string $text_parse_mode = null,
         ?array $text_entities = null,
+        ?bool $pay_for_upgrade = null,
     ): ?bool {
         $user_id ??= $this->userId();
-        $parameters = compact('gift_id', 'user_id', 'text', 'text_parse_mode', 'text_entities');
+        $parameters = compact('gift_id', 'user_id', 'text', 'text_parse_mode', 'text_entities', 'pay_for_upgrade');
         return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Verifies a user on behalf of the organization which is represented by the bot. Returns True on success.
+     * @param int $user_id Unique identifier of the target user
+     * @param string|null $custom_description Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#verifyuser
+     */
+    public function verifyUser(int $user_id, ?string $custom_description = null): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('user_id', 'custom_description'));
+    }
+
+    /**
+     * Verifies a chat on behalf of the organization which is represented by the bot. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param string|null $custom_description Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#verifychat
+     */
+    public function verifyChat(int|string $chat_id, ?string $custom_description = null): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'custom_description'));
+    }
+
+    /**
+     * Removes verification from a user who is currently verified on behalf of the organization represented by the bot. Returns True on success.
+     * @param int $user_id Unique identifier of the target user
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#removeuserverification
+     */
+    public function removeUserVerification(int $user_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('user_id'));
+    }
+
+    /**
+     * Removes verification from a chat that is currently verified on behalf of the organization represented by the bot. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#removechatverification
+     */
+    public function removeChatVerification(int|string $chat_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 }
