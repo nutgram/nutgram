@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Psr7\Request;
 use Psr\Log\LoggerInterface;
 use SergiX44\Nutgram\Configuration;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Psr7\Utils;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 
