@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Tests\Fixtures\Conversations\InlineMenu;
 
 use SergiX44\Nutgram\Conversations\InlineMenu;

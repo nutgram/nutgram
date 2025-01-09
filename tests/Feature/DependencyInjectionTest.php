@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use SergiX44\Container\Container;
 use SergiX44\Container\Exception\ContainerException;
 use SergiX44\Nutgram\Configuration;
@@ -31,7 +33,7 @@ it('uses a different container', function () {
 it('throws an exception when resolving an invalid callable', function () {
     $bot = Nutgram::fake();
 
-    $bot->onText('foo', 123);
+    $bot->onText('foo', 'invalid_callable');
 
     $bot->hearText('foo')->reply();
 })->throws(ContainerException::class, 'Invalid callable specified');

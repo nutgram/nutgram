@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Support;
 
 /**
@@ -177,10 +179,10 @@ class DeepLink
      * Example: https:\/\/t.me/\<username\>\/<topic_id\>
      * @see https://core.telegram.org/api/links#forum-topic-links
      * @param string $username
-     * @param string $topicId
+     * @param int $topicId
      * @return string
      */
-    public function publicForumTopic(string $username, string $topicId): string
+    public function publicForumTopic(string $username, int $topicId): string
     {
         return $this->publicMessage($username, $topicId);
     }
@@ -194,10 +196,10 @@ class DeepLink
      * Example: https:\/\/t.me/c/\<chat_id\>/\<topic_id\>
      * @see https://core.telegram.org/api/links#forum-topic-links
      * @param int $chatId
-     * @param string $topicId
+     * @param int $topicId
      * @return string
      */
-    public function privateForumTopic(int $chatId, string $topicId): string
+    public function privateForumTopic(int $chatId, int $topicId): string
     {
         return $this->privateMessage($chatId, $topicId);
     }

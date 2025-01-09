@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use SergiX44\Nutgram\Configuration;
 
 it('allows extra parameters', function () {

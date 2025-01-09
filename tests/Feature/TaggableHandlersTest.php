@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\HandlerGroup;
 use SergiX44\Nutgram\Nutgram;
