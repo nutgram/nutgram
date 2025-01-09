@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Internal;
 
+use GuzzleHttp\Psr7\Utils;
 use InvalidArgumentException;
 use JsonSerializable;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * This object represents the contents of a file to be uploaded. Must be posted using
@@ -12,7 +16,7 @@ use JsonSerializable;
 class InputFile implements JsonSerializable
 {
     /**
-     * @var resource
+     * @var StreamInterface
      */
     protected $resource;
 
@@ -29,14 +33,14 @@ class InputFile implements JsonSerializable
     {
         $this->filename = $filename;
         if (is_resource($resource)) {
-            $this->resource = $resource;
+            $this->resource = Utils::streamFor($resource);
         } elseif (is_string($resource) && file_exists($resource)) {
             $res = fopen($resource, 'rb+');
             if ($res === false) {
                 throw new InvalidArgumentException('Cannot open the specified resource.');
             }
 
-            $this->resource = $res;
+            $this->resource = Utils::streamFor($res);
         } else {
             throw new InvalidArgumentException('Invalid resource specified.');
         }
@@ -63,7 +67,7 @@ class InputFile implements JsonSerializable
     }
 
     /**
-     * @return resource
+     * @return StreamInterface
      */
     public function getResource()
     {
@@ -75,10 +79,10 @@ class InputFile implements JsonSerializable
      */
     public function getFilename(): string
     {
-        $metadata = stream_get_meta_data($this->resource);
+        $uri = $this->resource->getMetadata('uri');
 
-        if ($this->filename === null && isset($metadata['uri'])) {
-            return basename($metadata['uri']);
+        if ($this->filename === null && !empty($uri)) {
+            return basename($uri);
         }
 
         return basename($this->filename ?? uniqid(more_entropy: true));

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
@@ -23,6 +25,11 @@ class TransactionPartnerUser extends TransactionPartner
      * Information about the user
      */
     public User $user;
+
+    /**
+     * Optional. Information about the affiliate that received a commission via this transaction
+     */
+    public ?AffiliateInfo $affiliate = null;
 
     /**
      * Optional. Bot-specified invoice payload

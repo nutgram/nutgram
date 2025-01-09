@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
@@ -11,6 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * Currently, it can be one of:
  * - {@see TransactionPartnerFragment}
  * - {@see TransactionPartnerUser}
+ * - {@see TransactionPartnerAffiliateProgram}
  * - {@see TransactionPartnerTelegramAds}
  * - {@see TransactionPartnerTelegramApi}
  * - {@see TransactionPartnerOther}
@@ -20,7 +23,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 abstract class TransactionPartner extends BaseType
 {
     /**
-     * Type of the transaction partner, can be “fragment”, “user”, “telegram_ads” or “other”.
+     * Type of the transaction partner.
      */
     #[EnumOrScalar]
     public TransactionPartnerType|string $type;

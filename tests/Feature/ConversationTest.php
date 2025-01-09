@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
+use SergiX44\Nutgram\Tests\Fixtures\Cache\TestCache;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationEmpty;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithBeforeStep;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithClosing;
@@ -294,3 +298,50 @@ it('starts a conversation from server', function () {
         'chat_id' => 123456789
     ]);
 });
+
+it('restarts the conversation with an expired cache', function ($update) {
+    $bot = Nutgram::fake($update, config: new Configuration(
+        cache: new TestCache(),
+    ));
+    $bot->onMessage(TwoStepConversation::class);
+
+    $bot->run();
+    expect($bot->get('test'))->toBe(1);
+
+    TestCache::setTestNow(new DateTimeImmutable('+13 hours'));
+
+    $bot->run();
+    expect($bot->get('test'))->toBe(1);
+})->with('message');
+
+it('works with ttl = null', function ($update) {
+    $bot = Nutgram::fake($update, config: new Configuration(
+        cache: new TestCache(),
+        conversationTtl: null,
+    ));
+    $bot->onMessage(TwoStepConversation::class);
+
+    $bot->run();
+    expect($bot->get('test'))->toBe(1);
+
+    TestCache::setTestNow(new DateTimeImmutable('+100 hours'));
+
+    $bot->run();
+    expect($bot->get('test'))->toBe(2);
+})->with('message');
+
+it('works with ttl as DateInterval', function ($update) {
+    $bot = Nutgram::fake($update, config: new Configuration(
+        cache: new TestCache(),
+        conversationTtl: new DateInterval('PT5H'),
+    ));
+    $bot->onMessage(TwoStepConversation::class);
+
+    $bot->run();
+    expect($bot->get('test'))->toBe(1);
+
+    TestCache::setTestNow(new DateTimeImmutable('+2 hours'));
+
+    $bot->run();
+    expect($bot->get('test'))->toBe(2);
+})->with('message');

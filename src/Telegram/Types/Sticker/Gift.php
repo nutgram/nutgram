@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -24,6 +26,12 @@ class Gift extends BaseType
      * The number of Telegram Stars that must be paid to send the sticker
      */
     public int $star_count;
+
+    /**
+     * Optional.
+     * The number of Telegram Stars that must be paid to upgrade the gift to a unique one
+     */
+    public ?int $upgrade_star_count = null;
 
     /**
      * Optional.

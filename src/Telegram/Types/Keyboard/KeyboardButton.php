@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
@@ -81,6 +83,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
         ?KeyboardButtonPollType $request_poll = null,
         ?WebAppInfo $web_app = null,
         ?KeyboardButtonRequestUser $request_user = null,
+        ?KeyboardButtonRequestUsers $request_users = null,
         ?KeyboardButtonRequestChat $request_chat = null,
     ) {
         parent::__construct();
@@ -90,6 +93,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
         $this->request_poll = $request_poll;
         $this->web_app = $web_app;
         $this->request_user = $request_user;
+        $this->request_users = $request_users;
         $this->request_chat = $request_chat;
     }
 
@@ -100,16 +104,18 @@ class KeyboardButton extends BaseType implements JsonSerializable
         ?KeyboardButtonPollType $request_poll = null,
         ?WebAppInfo $web_app = null,
         ?KeyboardButtonRequestUser $request_user = null,
+        ?KeyboardButtonRequestUsers $request_users = null,
         ?KeyboardButtonRequestChat $request_chat = null,
     ): self {
         return new self(
-            $text,
-            $request_contact,
-            $request_location,
-            $request_poll,
-            $web_app,
-            $request_user,
-            $request_chat,
+            text: $text,
+            request_contact: $request_contact,
+            request_location: $request_location,
+            request_poll: $request_poll,
+            web_app: $web_app,
+            request_user: $request_user,
+            request_users: $request_users,
+            request_chat: $request_chat,
         );
     }
 
@@ -118,6 +124,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
         return array_filter_null([
             'text' => $this->text,
             'request_user' => $this->request_user,
+            'request_users' => $this->request_users,
             'request_chat' => $this->request_chat,
             'request_contact' => $this->request_contact,
             'request_location' => $this->request_location,
