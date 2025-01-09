@@ -134,7 +134,7 @@ trait Client
 
         $endpoint = $this->downloadUrl($file);
 
-        if($endpoint === null) {
+        if ($endpoint === null) {
             throw new RuntimeException('Error getting download URL');
         }
 
