@@ -398,12 +398,12 @@ trait Client
     {
         $inlineMessageId = $this->inlineMessageId();
         if ($inlineMessageId !== null && empty($params['chat_id']) && empty($params['message_id'])) {
-            $params['inline_message_id'] = $params['inline_message_id'] ?? $inlineMessageId;
+            $params['inline_message_id'] ??= $inlineMessageId;
             return;
         }
 
-        $params['chat_id'] = $params['chat_id'] ?? $this->chatId();
-        $params['message_id'] = $params['message_id'] ?? $this->messageId();
+        $params['chat_id'] ??= $this->chatId();
+        $params['message_id'] ??= $this->messageId();
     }
 
     /**

@@ -141,39 +141,37 @@ class FakeNutgram extends Nutgram
             }
 
             $handlerStack->push(Middleware::history($this->testingHistory));
-            $handlerStack->push(function (callable $handler) {
-                return function (RequestInterface $request, array $options) use ($handler) {
-                    if ($this->mockHandler->count() === 0) {
-                        [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
-                        $return = (new ReflectionClass(self::class))
-                            ->getMethod((string)$request->getUri())
-                            ->getReturnType();
+            $handlerStack->push(fn(callable $handler) => function (RequestInterface $request, array $options) use ($handler) {
+                if ($this->mockHandler->count() === 0) {
+                    [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
+                    $return = (new ReflectionClass(self::class))
+                        ->getMethod((string)$request->getUri())
+                        ->getReturnType();
 
-                        $instance = null;
-                        if ($return instanceof ReflectionNamedType) {
+                    $instance = null;
+                    if ($return instanceof ReflectionNamedType) {
+                        $instance = $this->typeFaker->fakeInstanceOf(
+                            $return->getName(),
+                            $partialResult
+                        );
+                    } elseif ($return instanceof ReflectionUnionType) {
+                        foreach ($return->getTypes() as $type) {
                             $instance = $this->typeFaker->fakeInstanceOf(
-                                $return->getName(),
+                                $type->getName(),
                                 $partialResult
                             );
-                        } elseif ($return instanceof ReflectionUnionType) {
-                            foreach ($return->getTypes() as $type) {
-                                $instance = $this->typeFaker->fakeInstanceOf(
-                                    $type->getName(),
-                                    $partialResult
-                                );
-                                if (is_object($instance)) {
-                                    break;
-                                }
+                            if (is_object($instance)) {
+                                break;
                             }
                         }
-
-                        $this->mockHandler->append(new Response(body: json_encode([
-                            'ok' => $ok,
-                            'result' => $instance,
-                        ], JSON_THROW_ON_ERROR)));
                     }
-                    return $handler($request, $options);
-                };
+
+                    $this->mockHandler->append(new Response(body: json_encode([
+                        'ok' => $ok,
+                        'result' => $instance,
+                    ], JSON_THROW_ON_ERROR)));
+                }
+                return $handler($request, $options);
             }, 'handles_empty_queue');
         })->call($bot);
     }
@@ -318,9 +316,7 @@ class FakeNutgram extends Nutgram
     public function withoutMiddleware(string|array $middleware): self
     {
         $middleware = !is_array($middleware) ? [$middleware] : $middleware;
-        $this->globalMiddlewares = array_filter($this->globalMiddlewares, function ($item) use ($middleware) {
-            return !in_array($item, $middleware, true);
-        });
+        $this->globalMiddlewares = array_filter($this->globalMiddlewares, fn($item) => !in_array($item, $middleware, true));
 
         return $this;
     }

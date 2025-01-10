@@ -81,11 +81,10 @@ test('getTags', function () {
 });
 
 test('use tag + macroable', function () {
-    Handler::macro('emotions', function (int $happiness, int $sadness) {
-        return $this
-            ->tag('happiness', $happiness)
-            ->tag('sadness', $sadness);
-    });
+    Handler::macro('emotions', fn(int $happiness, int $sadness) => $this
+        ->tag('happiness', $happiness)
+        ->tag('sadness', $sadness)
+    );
 
     $bot = Nutgram::fake();
 
@@ -125,9 +124,7 @@ test('set tags using group', function () {
 });
 
 test('set tags + macroable using group', function () {
-    HandlerGroup::macro('emotions', function (int $happiness, int $sadness) {
-        return $this->tag('happiness', $happiness)->tag('sadness', $sadness);
-    });
+    HandlerGroup::macro('emotions', fn(int $happiness, int $sadness) => $this->tag('happiness', $happiness)->tag('sadness', $sadness));
 
     $bot = Nutgram::fake();
 

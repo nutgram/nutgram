@@ -42,7 +42,7 @@ abstract class InlineMenu extends Conversation
     /**
      * @var string|null
      */
-    private ?string $orNext;
+    private ?string $orNext = null;
 
     /**
      * @var array

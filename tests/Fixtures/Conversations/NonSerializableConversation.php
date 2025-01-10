@@ -9,7 +9,7 @@ use SergiX44\Nutgram\Nutgram;
 
 class NonSerializableConversation extends Conversation
 {
-    protected ?\Closure $c;
+    protected ?\Closure $c = null;
 
     protected function getSerializableAttributes(): array
     {

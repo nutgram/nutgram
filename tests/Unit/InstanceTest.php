@@ -19,9 +19,7 @@ test('the instance can be serialized', function () {
 });
 
 test('it can serialize with local path transformer as closure', function () {
-    $closure = function ($path) {
-        return 'blah';
-    };
+    $closure = (fn($path) => 'blah');
 
     $bot = new Nutgram('fake', new Configuration(localPathTransformer: $closure));
 

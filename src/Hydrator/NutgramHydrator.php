@@ -28,9 +28,10 @@ class NutgramHydrator implements Hydrator
      */
     public function hydrateArray(array $data, object|string $instance): array
     {
-        return array_map(function ($obj) use ($instance): mixed {
-            return $this->mapper->hydrate(is_object($instance) ? clone $instance : $instance, $obj);
-        }, $data);
+        return array_map(
+            callback: fn($obj): mixed => $this->mapper->hydrate(is_object($instance) ? clone $instance : $instance, $obj),
+            array: $data,
+        );
     }
 
     /**

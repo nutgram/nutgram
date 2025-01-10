@@ -247,8 +247,8 @@ class Nutgram extends ResolveHandlers
         ?int $userId = null,
         ?int $chatId = null
     ): self {
-        $userId = $userId ?? $this->userId();
-        $chatId = $chatId ?? $this->chatId();
+        $userId ??= $this->userId();
+        $chatId ??= $this->chatId();
 
         if ($this->update === null && ($userId === null || $chatId === null)) {
             throw new InvalidArgumentException('You cannot step a conversation without userId and chatId.');
@@ -267,8 +267,8 @@ class Nutgram extends ResolveHandlers
      */
     public function endConversation(?int $userId = null, ?int $chatId = null): self
     {
-        $userId = $userId ?? $this->userId();
-        $chatId = $chatId ?? $this->chatId();
+        $userId ??= $this->userId();
+        $chatId ??= $this->chatId();
 
         if ($this->update === null && ($userId === null || $chatId === null)) {
             throw new InvalidArgumentException('You cannot end a conversation without userId and chatId.');
