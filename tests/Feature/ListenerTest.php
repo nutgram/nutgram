@@ -515,10 +515,29 @@ it('skips all global middleware', function ($update) {
 test('toBotCommand() returns BotCommand object', function () {
     $bot = Nutgram::fake();
 
-    $cmd = $bot->onCommand('start', static function ($bot) {
-    })->description('start');
+    $startCommand = $bot->onCommand('start', static function ($bot) {
+    })->description('The start command');
 
-    expect($cmd->toBotCommand())->toBeInstanceOf(BotCommand::class);
+    $helpCommand = $bot->onCommand('help', static function ($bot) {
+    })->description([
+        '*' => 'The help command',
+        'it' => 'Il comando di aiuto',
+    ]);
+
+    expect($startCommand->toBotCommand())
+        ->toBeInstanceOf(BotCommand::class)
+        ->command->toBe('start')
+        ->description->toBe('The start command');
+
+    expect($helpCommand->toBotCommand())
+        ->toBeInstanceOf(BotCommand::class)
+        ->command->toBe('help')
+        ->description->toBe('The help command');
+
+    expect($helpCommand->toBotCommand('it'))
+        ->toBeInstanceOf(BotCommand::class)
+        ->command->toBe('help')
+        ->description->toBe('Il comando di aiuto');
 });
 
 test('toBotCommand() throws exception if the description is not set', function () {
@@ -528,7 +547,16 @@ test('toBotCommand() throws exception if the description is not set', function (
     });
 
     $cmd->toBotCommand();
-})->throws(TypeError::class);
+})->throws(RuntimeException::class, 'Description not found.');
+
+test('toBotCommand() throws exception if the description for a language is not set', function () {
+    $bot = Nutgram::fake();
+
+    $cmd = $bot->onCommand('start', static function ($bot) {
+    });
+
+    $cmd->toBotCommand('es');
+})->throws(RuntimeException::class, "Description for language code 'es' not found.");
 
 it('dumps requests call', function () {
     $bot = Nutgram::fake();

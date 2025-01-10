@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Handlers\Type;
 
+use RuntimeException;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
@@ -90,14 +91,13 @@ final class Command extends Handler
     public function toBotCommand(?string $languageCode = null): BotCommand
     {
         $descriptions = $this->getDescription();
+        $description = $languageCode !== null
+            ? $descriptions[$languageCode] ?? throw new RuntimeException("Description for language code '$languageCode' not found.")
+            : $descriptions['*'] ?? throw new RuntimeException('Description not found.');
 
-        if ($languageCode !== null) {
-            return new BotCommand(
-                command: $this->getName(),
-                description: $descriptions[$languageCode] ?? array_shift($descriptions)
-            );
-        }
-
-        return new BotCommand($this->getName(), $descriptions['*']);
+        return new BotCommand(
+            command: $this->getName(),
+            description: $description,
+        );
     }
 }
