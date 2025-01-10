@@ -31,6 +31,8 @@ it('validates webapp data', function () {
     $data = $bot->validateWebAppData($queryString);
     expect($data)->toBeInstanceOf(WebAppData::class);
     expect($data->user)->toBeInstanceOf(WebAppUser::class);
+    expect($data->toArray())->toBeArray();
+    expect($data->toArray()['user']['username'] ?? null)->toBe('john_doe');
 });
 
 it('fails to validate webapp data', function () {
