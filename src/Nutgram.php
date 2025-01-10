@@ -140,7 +140,7 @@ class Nutgram extends ResolveHandlers
         $this->logger = $this->container->get(LoggerInterface::class);
 
         $this->container->singleton(RunningMode::class, Polling::class);
-        $this->container->set(__CLASS__, $this);
+        $this->container->set(self::class, $this);
     }
 
     protected function getBotId(): int

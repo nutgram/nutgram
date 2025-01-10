@@ -10,7 +10,7 @@ abstract class Entity
     {
         $data = get_object_vars($this);
         foreach ($data as $key => $value) {
-            if (is_subclass_of($value, __CLASS__)) {
+            if (is_subclass_of($value, self::class)) {
                 $data[$key] = $value->toArray();
             }
         }
