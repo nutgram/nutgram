@@ -141,7 +141,7 @@ class FakeNutgram extends Nutgram
             }
 
             $handlerStack->push(Middleware::history($this->testingHistory));
-            $handlerStack->push(fn(callable $handler) => function (RequestInterface $request, array $options) use ($handler) {
+            $handlerStack->push(fn (callable $handler) => function (RequestInterface $request, array $options) use ($handler) {
                 if ($this->mockHandler->count() === 0) {
                     [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
                     $return = (new ReflectionClass(self::class))
@@ -316,7 +316,7 @@ class FakeNutgram extends Nutgram
     public function withoutMiddleware(string|array $middleware): self
     {
         $middleware = !is_array($middleware) ? [$middleware] : $middleware;
-        $this->globalMiddlewares = array_filter($this->globalMiddlewares, fn($item) => !in_array($item, $middleware, true));
+        $this->globalMiddlewares = array_filter($this->globalMiddlewares, fn ($item) => !in_array($item, $middleware, true));
 
         return $this;
     }

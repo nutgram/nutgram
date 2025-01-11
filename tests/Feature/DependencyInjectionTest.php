@@ -136,7 +136,7 @@ describe('DI in Conversation', function () {
 
 it('resolves a parameter with custom resolution logic', function () {
     $bot = Nutgram::fake();
-    $bot->bindParameter('value', fn(Container $container, string $value) => new MyService('wrapped:'.$value));
+    $bot->bindParameter('value', fn (Container $container, string $value) => new MyService('wrapped:'.$value));
 
     $bot->onCommand('start {value} (y|n) {cat}', function (Nutgram $bot, MyService $value) {
         expect($value)
