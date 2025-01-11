@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-dataset('updates_user', fn() => [
+dataset('updates_user', fn () => [
     'message' => [getUpdateType('message'), 'onMessage', true],
     'edited_message' => [getUpdateType('edited_message'), 'onEditedMessage', true],
     'channel_post' => [getUpdateType('channel_post'), 'onChannelPost', false],
