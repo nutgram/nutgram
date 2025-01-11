@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use Psr\Http\Message\StreamInterface;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -38,9 +39,9 @@ abstract class InputMedia extends BaseType implements Uploadable
         return $this->media instanceof InputFile;
     }
 
-    public function getResource()
+    public function getStream(): StreamInterface
     {
-        return $this->media->getResource();
+        return $this->media->getStream();
     }
 
     public function getFilename(): string

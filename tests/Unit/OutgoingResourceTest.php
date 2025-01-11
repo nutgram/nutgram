@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use GuzzleHttp\Psr7\Utils;
+use Psr\Http\Message\StreamInterface;
 use SergiX44\Nutgram\Testing\OutgoingResource;
 
 beforeEach(function () {
@@ -13,7 +15,7 @@ beforeEach(function () {
         type: 'text/plain',
         size: 3,
         error: 0,
-        tmp_resource: $resource
+        stream: Utils::streamFor($resource),
     );
 });
 
@@ -26,7 +28,7 @@ it('returns serialized json', function ($name, $output) {
         type: 'text/plain',
         size: 3,
         error: 0,
-        tmp_resource: $resource
+        stream: Utils::streamFor($resource),
     );
 
     expect(json_encode($outgoingResource))->toContain($output);
@@ -51,6 +53,6 @@ it('returns error', function () {
     expect($this->outgoingResource->getError())->toBe(0);
 });
 
-it('returns tmp resource', function () {
-    expect($this->outgoingResource->getTmpResource())->toBeResource();
+it('returns stream', function () {
+    expect($this->outgoingResource->getStream())->toBeInstanceOf(StreamInterface::class);
 });

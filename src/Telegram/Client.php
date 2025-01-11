@@ -207,7 +207,7 @@ trait Client
                     if ($file->isLocal()) {
                         $parameters[] = [
                             'name' => $file->getFilename(),
-                            'contents' => $file->getResource(),
+                            'contents' => $file->getStream(),
                             'filename' => $file->getFilename(),
                         ];
                     }
@@ -217,7 +217,7 @@ trait Client
             $parameters[] = match (true) {
                 $contents instanceof InputFile => [
                     'name' => $name,
-                    'contents' => $contents->getResource(),
+                    'contents' => $contents->getStream(),
                     'filename' => $contents->getFilename(),
                 ],
                 $contents instanceof JsonSerializable, is_array($contents) => [

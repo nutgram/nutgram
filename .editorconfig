@@ -29,3 +29,6 @@ max_line_length = off
 
 [{*.json,*.yml}]
 indent_size = 2
+
+[tests/Fixtures/**.txt]
+insert_final_newline = false
