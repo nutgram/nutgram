@@ -9,7 +9,6 @@ use SergiX44\Nutgram\Nutgram;
 
 class BulkMessenger
 {
-    public Nutgram $bot;
     /**
      * @var int<0, max>
      */
@@ -26,15 +25,13 @@ class BulkMessenger
     /**
      * @param  Nutgram  $bot
      */
-    public function __construct(Nutgram $bot)
+    public function __construct(public Nutgram $bot)
     {
         if (!$this->isCli()) {
             throw new RuntimeException('You can use the bulk messenger only via CLI.');
         }
-
-        $this->bot = $bot;
         $this->callable = function (Nutgram $bot, int|string $chatId): void {
-            $bot->sendMessage(...[...$this->opt, 'chat_id' => $chatId, 'text' => $this->text]);
+            $this->bot->sendMessage(...[...$this->opt, 'chat_id' => $chatId, 'text' => $this->text]);
         };
     }
 

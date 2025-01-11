@@ -8,17 +8,6 @@ use JsonSerializable;
 
 class OutgoingResource implements JsonSerializable
 {
-    protected ?string $name;
-
-    protected ?string $type;
-
-    protected int $size;
-
-    protected int $error;
-
-    /** @var resource|null $tmp_resource */
-    protected $tmp_resource;
-
     /**
      * OutgoingResource constructor.
      * @param  string|null  $name
@@ -28,17 +17,12 @@ class OutgoingResource implements JsonSerializable
      * @param  resource|null  $tmp_resource
      */
     public function __construct(
-        ?string $name,
-        ?string $type,
-        int $size,
-        int $error,
-        $tmp_resource
+        protected ?string $name,
+        protected ?string $type,
+        protected int $size,
+        protected int $error,
+        protected mixed $tmp_resource
     ) {
-        $this->name = $name;
-        $this->type = $type;
-        $this->size = $size;
-        $this->error = $error;
-        $this->tmp_resource = $tmp_resource;
     }
 
     public function jsonSerialize(): mixed

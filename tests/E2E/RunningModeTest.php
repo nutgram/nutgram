@@ -108,7 +108,7 @@ it('works with webhook mode with exceptions', function () {
 
     try {
         $bot->run();
-    } catch (\Throwable $th) {
+    } catch (Throwable) {
         // ssshhhh
     }
 

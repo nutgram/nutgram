@@ -14,10 +14,6 @@ use Traversable;
 
 final class ArraySubset extends Constraint
 {
-    private iterable $subset;
-
-    private bool $strict;
-
     /**
      * Create a new array subset constraint instance.
      *
@@ -25,10 +21,8 @@ final class ArraySubset extends Constraint
      * @param  bool  $strict
      * @return void
      */
-    public function __construct(iterable $subset, bool $strict = false)
+    public function __construct(private iterable $subset, private bool $strict = false)
     {
-        $this->strict = $strict;
-        $this->subset = $subset;
     }
 
     /**

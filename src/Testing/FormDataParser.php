@@ -9,16 +9,13 @@ use Throwable;
 
 class FormDataParser
 {
-    protected Request $request;
-
     public string $method;
     public array $headers = [];
     public array $params = [];
     public array $files = [];
 
-    protected function __construct(Request $request)
+    protected function __construct(protected Request $request)
     {
-        $this->request = $request;
     }
 
     public static function parse(Request $request): self
@@ -80,7 +77,7 @@ class FormDataParser
 
     /**
      * Parses body param headers
-     * @param  string  $headerContent
+     * @param string $headerContent
      * @return array
      */
     protected function parseHeaders(string $headerContent): array
