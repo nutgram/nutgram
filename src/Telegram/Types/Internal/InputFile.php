@@ -46,7 +46,7 @@ class InputFile implements JsonSerializable
 
     protected function buildStream(mixed $value): StreamInterface
     {
-        if($value instanceof StreamInterface) {
+        if ($value instanceof StreamInterface) {
             return $value;
         }
 
