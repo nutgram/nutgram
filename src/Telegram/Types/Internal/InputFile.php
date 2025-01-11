@@ -8,7 +8,6 @@ use GuzzleHttp\Psr7\Utils;
 use InvalidArgumentException;
 use JsonSerializable;
 use Psr\Http\Message\StreamInterface;
-use Throwable;
 
 /**
  * This object represents the contents of a file to be uploaded. Must be posted using
