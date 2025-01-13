@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
@@ -174,7 +175,7 @@ it('sends file works as mocked instance', function () {
             /** @var OutgoingResource $document */
             $document = FormDataParser::parse($request)->files['document'];
 
-            return is_resource($document->getTmpResource());
+            return $document->getStream() instanceof StreamInterface;
         });
 });
 
