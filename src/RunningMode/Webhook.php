@@ -36,7 +36,7 @@ class Webhook implements RunningMode
      * @throws InvalidArgumentException
      * @throws Throwable
      */
-    public function processUpdates(Nutgram $bot): void
+    public function processUpdates(Nutgram $bot, ...$args): void
     {
         $input = $this->input();
 

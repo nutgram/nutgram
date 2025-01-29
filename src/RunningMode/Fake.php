@@ -26,7 +26,7 @@ class Fake implements RunningMode
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \Throwable
      */
-    public function processUpdates(Nutgram $bot): void
+    public function processUpdates(Nutgram $bot, ...$args): void
     {
         $update = match (true) {
             $this->update instanceof Update => $this->update,

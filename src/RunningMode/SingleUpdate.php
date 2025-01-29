@@ -9,7 +9,7 @@ class SingleUpdate extends Polling
 {
     private static int $offset = 1;
 
-    public function processUpdates(Nutgram $bot): void
+    public function processUpdates(Nutgram $bot, ...$args): void
     {
         $this->listenForSignals();
         $config = $bot->getConfig();

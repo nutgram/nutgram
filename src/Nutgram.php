@@ -199,11 +199,12 @@ class Nutgram extends ResolveHandlers
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @param mixed ...$args for RunningMode processUpdates
      */
-    public function run(): void
+    public function run(...$args): void
     {
         $this->preflight();
-        $this->container->get(RunningMode::class)->processUpdates($this);
+        $this->container->get(RunningMode::class)->processUpdates($this, ...$args);
     }
 
     /**

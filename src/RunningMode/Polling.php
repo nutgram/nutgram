@@ -20,7 +20,7 @@ class Polling implements RunningMode
         }
     }
 
-    public function processUpdates(Nutgram $bot): void
+    public function processUpdates(Nutgram $bot, ...$args): void
     {
         $this->listenForSignals();
 
