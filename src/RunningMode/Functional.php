@@ -8,7 +8,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use Throwable;
 
-class YandexFunc implements RunningMode
+class Functional implements RunningMode
 {
     /**
      *
