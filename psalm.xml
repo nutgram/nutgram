@@ -4,6 +4,7 @@
     resolveFromConfigFile="true"
     findUnusedBaselineEntry="true"
     findUnusedCode="false"
+    findUnusedIssueHandlerSuppression="false"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
@@ -30,7 +31,7 @@
                 <directory name="src"/>
             </errorLevel>
         </PossiblyNullPropertyAssignmentValue>
-        <UndefinedConstant>
+        <UndefinedConstant errorLevel="suppress">
             <errorLevel type="suppress">
                 <file name="src/RunningMode/Polling.php"/>
                 <file name="src/Support/BulkMessenger.php"/>
