@@ -40,7 +40,7 @@ class InputPaidMediaPhoto extends InputPaidMedia implements JsonSerializable
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'media' => $this->media,
         ]);
     }

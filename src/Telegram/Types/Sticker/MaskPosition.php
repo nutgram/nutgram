@@ -70,7 +70,7 @@ class MaskPosition extends BaseType implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'point' => $this->point->value,
+            'point' => $this->point,
             'x_shift' => $this->x_shift,
             'y_shift' => $this->y_shift,
             'scale' => $this->scale,

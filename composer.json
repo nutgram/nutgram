@@ -25,15 +25,15 @@
         }
     ],
     "require": {
-      "php": "^8.2",
-      "ext-json": "*",
-      "guzzlehttp/guzzle": "^7.2",
-      "illuminate/macroable": ">=9.0",
-      "laravel/serializable-closure": "^1.2",
-      "sergix44/container": "^3.0",
-      "nutgram/hydrator": "^6.0",
-      "psr/log": "^1.0|^2.0|^3.0",
-      "psr/simple-cache": "^1.0|^2.0|^3.0"
+        "php": "^8.2",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.2",
+        "illuminate/macroable": ">=9.0",
+        "laravel/serializable-closure": "^1.0|^2.0",
+        "nutgram/hydrator": "^6.0",
+        "psr/log": "^1.0|^2.0|^3.0",
+        "psr/simple-cache": "^1.0|^2.0|^3.0",
+        "sergix44/container": "^3.0"
     },
     "require-dev": {
         "ext-reflection": "*",
@@ -42,7 +42,10 @@
         "roave/security-advisories": "dev-latest",
         "vimeo/psalm": "^5.7.7"
     },
-    "autoload": {
+  "suggest": {
+    "ext-sodium": "To validate WebApp data for Third-Party Use"
+  },
+  "autoload": {
       "psr-4": {
         "SergiX44\\Nutgram\\": "src/"
       },

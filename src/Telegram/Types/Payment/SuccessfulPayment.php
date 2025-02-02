@@ -28,6 +28,25 @@ class SuccessfulPayment extends BaseType
 
     /**
      * Optional.
+     * Expiration date of the subscription, in Unix time;
+     * for recurring payments only
+     */
+    public ?int $subscription_expiration_date = null;
+
+    /**
+     * Optional.
+     * True, if the payment is a recurring payment for a subscription
+     */
+    public ?bool $is_recurring = null;
+
+    /**
+     * Optional.
+     * True, if the payment is the first payment for a subscription
+     */
+    public ?bool $is_first_recurring = null;
+
+    /**
+     * Optional.
      * Identifier of the shipping option chosen by the user
      */
     public ?string $shipping_option_id = null;

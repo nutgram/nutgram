@@ -2,6 +2,77 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.32.0 - 2025-01-06
+
+### What's Changed
+
+* Update to Bot API 8.2 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/806
+* Bump laravel/serializable-closure by @iwex in https://github.com/nutgram/nutgram/pull/807
+* Disable conversation cache expiration by @Lukasss93 in https://github.com/nutgram/nutgram/pull/808
+
+### New Contributors
+
+* @iwex made their first contribution in https://github.com/nutgram/nutgram/pull/807
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.31.1...4.31.2
+
+## 4.31.1 - 2024-12-25
+
+### What's Changed
+
+* Fix missing field in "costructor", "make" and "jsonSerialize" methods by @Lukasss93 in https://github.com/nutgram/nutgram/pull/804
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.31.0...4.31.1
+
+## 4.31.0 - 2024-12-04
+
+### What's Changed
+
+* Fix missing $_SERVER key check by @Lukasss93 in https://github.com/nutgram/nutgram/pull/798
+* Fix the inability to reuse the same InputFile multiple times by @Lukasss93 in https://github.com/nutgram/nutgram/pull/800
+* Update to Bot API 8.1 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/801
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.30.1...4.31.0
+
+## 4.30.1 - 2024-11-20
+
+### What's Changed
+
+* Make validateWebAppDataForThirdParty static 😅 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/797
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.30.0...4.30.1
+
+## 4.30.0 - 2024-11-19
+
+### What's Changed
+
+* Update to Bot API 8.0 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/795
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.29.0...4.30.0
+
+## 4.29.0 - 2024-11-13
+
+### What's Changed
+
+* Add withProgress handler by @Lukasss93 in https://github.com/nutgram/nutgram/pull/787
+* Fix "enum->value" potential exception (when enum is primitive) by @Lukasss93 in https://github.com/nutgram/nutgram/pull/792
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.28.0...4.29.0
+
+## 4.28.0 - 2024-11-04
+
+### What's Changed
+
+* Fix invalid types by @Lukasss93 in https://github.com/nutgram/nutgram/pull/773
+* Reorder document type check in getType function by @imsafary in https://github.com/nutgram/nutgram/pull/778
+* Update to Bot API 7.11 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/784
+
+### New Contributors
+
+* @imsafary made their first contribution in https://github.com/nutgram/nutgram/pull/778
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.27.1...4.28.0
+
 ## 4.27.1 - 2024-10-04
 
 ### What's Changed

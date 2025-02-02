@@ -25,9 +25,19 @@ class TransactionPartnerUser extends TransactionPartner
     public User $user;
 
     /**
+     * Optional. Information about the affiliate that received a commission via this transaction
+     */
+    public ?AffiliateInfo $affiliate = null;
+
+    /**
      * Optional. Bot-specified invoice payload
      */
     public ?string $invoice_payload = null;
+
+    /**
+     * Optional. The duration of the paid subscription
+     */
+    public ?int $subscription_period = null;
 
     /**
      * Optional. Information about the paid media bought by the user
@@ -40,4 +50,9 @@ class TransactionPartnerUser extends TransactionPartner
      * Optional. Bot-specified paid media payload
      */
     public ?string $paid_media_payload = null;
+
+    /**
+     * Optional. The gift sent to the user by the bot
+     */
+    public ?string $gift = null;
 }

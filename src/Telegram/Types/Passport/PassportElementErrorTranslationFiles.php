@@ -32,7 +32,7 @@ class PassportElementErrorTranslationFiles extends PassportElementError
     public string $message;
 
     /**
-     * @param PassportType $type
+     * @param PassportType|string $type
      * @param string[] $file_hashes
      * @param string $message
      */
@@ -48,13 +48,13 @@ class PassportElementErrorTranslationFiles extends PassportElementError
     }
 
     /**
-     * @param PassportType $type
+     * @param PassportType|string $type
      * @param string[] $file_hashes
      * @param string $message
      * @return self
      */
     public static function make(
-        PassportType $type,
+        PassportType|string $type,
         array $file_hashes,
         string $message,
     ): self {
@@ -68,8 +68,8 @@ class PassportElementErrorTranslationFiles extends PassportElementError
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'source' => $this->source->value,
-            'type' => $this->type->value,
+            'source' => $this->source,
+            'type' => $this->type,
             'file_hashes' => $this->file_hashes,
             'message' => $this->message,
         ]);

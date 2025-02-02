@@ -15,6 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
+use SergiX44\Nutgram\Telegram\Types\Sticker\Gifts;
 use SergiX44\Nutgram\Telegram\Types\Sticker\MaskPosition;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\Sticker\StickerSet;
@@ -42,6 +43,7 @@ trait Stickers
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -58,6 +60,7 @@ trait Stickers
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
+        ?bool $allow_paid_broadcast = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -75,6 +78,7 @@ trait Stickers
             'reply_markup',
             'business_connection_id',
             'message_effect_id',
+            'allow_paid_broadcast',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'sticker', $sticker, $opt, $clientOpt);
@@ -354,5 +358,87 @@ trait Stickers
     public function deleteStickerSet(string $name): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('name'));
+    }
+
+    /**
+     * Returns the list of gifts that can be sent by the bot to users. Requires no parameters. Returns a Gifts object.
+     * @return Gifts|null
+     * @see https://core.telegram.org/bots/api#getavailablegifts
+     */
+    public function getAvailableGifts(): ?Gifts
+    {
+        return $this->requestJson(__FUNCTION__, mapTo: Gifts::class);
+    }
+
+    /**
+     * Sends a gift to the given user.
+     * The gift can't be converted to Telegram Stars by the user.
+     * Returns True on success.
+     * @param string $gift_id Identifier of the gift
+     * @param int|null $user_id Unique identifier of the target user that will receive the gift
+     * @param string|null $text Text that will be shown along with the gift; 0-255 characters
+     * @param string|null $text_parse_mode Mode for parsing entities in the text. See {@see formatting options https://core.telegram.org/bots/api#formatting-options} for more details. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom_emoji” are ignored.
+     * @param array|null $text_entities A JSON-serialized list of special entities that appear in the gift text. It can be specified instead of text_parse_mode. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom_emoji” are ignored.
+     * @param bool|null $pay_for_upgrade Pass True to pay for the gift upgrade from the bot's balance, thereby making the upgrade free for the receiver
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#sendgift
+     */
+    public function sendGift(
+        string $gift_id,
+        ?int $user_id = null,
+        ?string $text = null,
+        ?string $text_parse_mode = null,
+        ?array $text_entities = null,
+        ?bool $pay_for_upgrade = null,
+    ): ?bool {
+        $user_id ??= $this->userId();
+        $parameters = compact('gift_id', 'user_id', 'text', 'text_parse_mode', 'text_entities', 'pay_for_upgrade');
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Verifies a user on behalf of the organization which is represented by the bot. Returns True on success.
+     * @param int $user_id Unique identifier of the target user
+     * @param string|null $custom_description Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#verifyuser
+     */
+    public function verifyUser(int $user_id, ?string $custom_description = null): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('user_id', 'custom_description'));
+    }
+
+    /**
+     * Verifies a chat on behalf of the organization which is represented by the bot. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param string|null $custom_description Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#verifychat
+     */
+    public function verifyChat(int|string $chat_id, ?string $custom_description = null): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'custom_description'));
+    }
+
+    /**
+     * Removes verification from a user who is currently verified on behalf of the organization represented by the bot. Returns True on success.
+     * @param int $user_id Unique identifier of the target user
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#removeuserverification
+     */
+    public function removeUserVerification(int $user_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('user_id'));
+    }
+
+    /**
+     * Removes verification from a chat that is currently verified on behalf of the organization represented by the bot. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#removechatverification
+     */
+    public function removeChatVerification(int|string $chat_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 }

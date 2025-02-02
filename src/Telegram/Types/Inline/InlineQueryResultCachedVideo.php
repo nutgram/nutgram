@@ -108,7 +108,7 @@ class InlineQueryResultCachedVideo extends InlineQueryResult
         string $title,
         ?string $description = null,
         ?string $caption = null,
-        ?ParseMode $parse_mode = null,
+        ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
@@ -131,13 +131,13 @@ class InlineQueryResultCachedVideo extends InlineQueryResult
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'type' => $this->type->value,
+            'type' => $this->type,
             'id' => $this->id,
             'video_file_id' => $this->video_file_id,
             'title' => $this->title,
             'description' => $this->description,
             'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode?->value,
+            'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
             'reply_markup' => $this->reply_markup,
             'input_message_content' => $this->input_message_content,
