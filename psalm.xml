@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="8"
+    errorLevel="7"
     resolveFromConfigFile="true"
     findUnusedBaselineEntry="true"
     findUnusedCode="false"
@@ -41,6 +41,12 @@
                 <referencedMethod name="Psr\Http\Client\ClientInterface::post"/>
             </errorLevel>
         </UndefinedInterfaceMethod>
+        <UndefinedConstant>
+            <errorLevel type="suppress">
+                <file name="src/RunningMode/Polling.php"/>
+                <file name="src/Support/BulkMessenger.php"/>
+            </errorLevel>
+        </UndefinedConstant>
         <InvalidScope>
             <errorLevel type="suppress">
                 <directory name="tests/"/>
