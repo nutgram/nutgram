@@ -20,11 +20,6 @@
                 <directory name="src"/>
             </errorLevel>
         </PropertyNotSetInConstructor>
-        <InvalidThrow>
-            <errorLevel type="suppress">
-                <referencedClass name="Psr\SimpleCache\InvalidArgumentException"/>
-            </errorLevel>
-        </InvalidThrow>
         <UndefinedMethod>
             <errorLevel type="suppress">
                 <referencedMethod name="ReflectionType::getName"/>
@@ -35,16 +30,13 @@
                 <directory name="src"/>
             </errorLevel>
         </PossiblyNullPropertyAssignmentValue>
-        <UndefinedInterfaceMethod>
+        <UndefinedConstant>
             <errorLevel type="suppress">
-                <referencedMethod name="Psr\Http\Client\ClientInterface::get"/>
-                <referencedMethod name="Psr\Http\Client\ClientInterface::post"/>
+                <file name="src/RunningMode/Polling.php"/>
+                <file name="src/Support/BulkMessenger.php"/>
+                <file name="src/Support/ValidatesWebData.php"/>
+                <file name="src/Testing/FakeNutgram.php"/>
             </errorLevel>
-        </UndefinedInterfaceMethod>
-        <InvalidScope>
-            <errorLevel type="suppress">
-                <directory name="tests/"/>
-            </errorLevel>
-        </InvalidScope>
+        </UndefinedConstant>
     </issueHandlers>
 </psalm>
