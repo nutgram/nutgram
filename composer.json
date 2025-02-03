@@ -40,7 +40,7 @@
         "pestphp/pest": "^2.5",
         "pestphp/pest-plugin-mock": "^2.0",
         "roave/security-advisories": "dev-latest",
-        "vimeo/psalm": "^5.7.7"
+        "vimeo/psalm": "^6.1.0"
     },
   "suggest": {
     "ext-sodium": "To validate WebApp data for Third-Party Use"
