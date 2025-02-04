@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 
 /**
  * This object represents a bot command.
  * @see https://core.telegram.org/bots/api#botcommand
  */
+#[SkipConstructor]
 class BotCommand implements JsonSerializable
 {
     /**

@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.32.1 - 2025-02-04
+
+### What's Changed
+
+* Fix tests via PHP 8.4 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/779
+* Fix unable to run getMyCommands and setMyCommands methods by @Lukasss93 in https://github.com/nutgram/nutgram/pull/823
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.32.0...4.32.1
+
 ## 4.32.0 - 2025-01-06
 
 ### What's Changed
