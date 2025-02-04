@@ -2280,11 +2280,9 @@ trait AvailableMethods
     {
         $parameters = compact('commands', 'scope', 'language_code');
 
-        if (array_key_exists('commands', $parameters)) {
-            $parameters['commands'] = json_encode($parameters['commands']);
-        }
+        $parameters['commands'] = json_encode($parameters['commands']);
 
-        if (array_key_exists('scope', $parameters)) {
+        if ($parameters['scope'] !== null) {
             $parameters['scope'] = json_encode($parameters['scope']);
         }
 
