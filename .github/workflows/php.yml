@@ -16,7 +16,7 @@ jobs:
 
         name: PHP ${{ matrix.php }}
         steps:
-            -   uses: actions/checkout@v2
+            -   uses: actions/checkout@v4
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -29,7 +29,7 @@ jobs:
 
             -   name: Cache Composer packages
                 id: composer-cache
-                uses: actions/cache@v2
+                uses: actions/cache@v4
                 with:
                     path: vendor
                     key: ${{ runner.os }}-php-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
@@ -48,7 +48,7 @@ jobs:
         needs: [ tests ]
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
@@ -60,7 +60,7 @@ jobs:
 
             -   name: Cache Composer packages
                 id: composer-cache
-                uses: actions/cache@v2
+                uses: actions/cache@v4
                 with:
                     path: vendor
                     key: ${{ runner.os }}-php-8.2-${{ hashFiles('**/composer.json') }}
@@ -72,7 +72,7 @@ jobs:
                 run: composer install --prefer-dist --no-interaction --no-suggest
 
             -   name: Run test suite
-                uses: paambaati/codeclimate-action@v3.2.0
+                uses: paambaati/codeclimate-action@v9
                 env:
                     CC_TEST_REPORTER_ID: ${{ secrets.CC_REPORTER_ID }}
                 with:
@@ -82,7 +82,7 @@ jobs:
         runs-on: ubuntu-latest
         name: Psalm
         steps:
-            -   uses: actions/checkout@v2
+            -   uses: actions/checkout@v4
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -95,7 +95,7 @@ jobs:
 
             -   name: Cache Composer packages
                 id: composer-cache
-                uses: actions/cache@v2
+                uses: actions/cache@v4
                 with:
                     path: vendor
                     key: ${{ runner.os }}-php-8.2-${{ hashFiles('**/composer.json') }}
