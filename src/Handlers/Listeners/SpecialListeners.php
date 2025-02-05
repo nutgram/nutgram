@@ -64,14 +64,14 @@ trait SpecialListeners
     }
 
     /**
-     * @param string $exceptionClass
+     * @param class-string<ApiException>|ApiException $exceptionClass
      * @return Handler
      */
-    public function registerApiException(string $exceptionClass): Handler
+    public function registerApiException(string|ApiException $exceptionClass): Handler
     {
         $this->checkFinalized();
 
-        if (!is_subclass_of($exceptionClass, ApiException::class)) {
+        if (is_string($exceptionClass) && !is_subclass_of($exceptionClass, ApiException::class)) {
             throw new InvalidArgumentException(
                 sprintf('The provided exception must be a subclass of %s.', ApiException::class)
             );
