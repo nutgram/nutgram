@@ -42,7 +42,7 @@ abstract class InlineMenu extends Conversation
     /**
      * @var string|null
      */
-    private ?string $orNext;
+    private ?string $orNext = null;
 
     /**
      * @var array
@@ -285,7 +285,7 @@ abstract class InlineMenu extends Conversation
      * @param InlineKeyboardMarkup $buttons
      * @param array $opt
      *
-     * @return Message|bool|null
+     * @return ?Message
      *
      * @internal Override only to change the Telegram method.
      */
@@ -295,14 +295,20 @@ abstract class InlineMenu extends Conversation
         ?int $messageId,
         InlineKeyboardMarkup $buttons,
         array $opt
-    ): bool|Message|null {
-        return $this->bot->editMessageText(...[
+    ): Message|null {
+        $message = $this->bot->editMessageText(...[
             'reply_markup' => $buttons,
             'chat_id' => $chatId,
             'message_id' => $messageId,
             'text' => $text,
             ...$opt,
         ]);
+
+        if (is_bool($message)) {
+            throw new InvalidArgumentException('Only inline messages can be updated.');
+        }
+
+        return $message;
     }
 
     /**
