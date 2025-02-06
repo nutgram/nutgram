@@ -170,14 +170,14 @@ abstract class InlineMenu extends Conversation
      * @param bool $reopen
      * @param bool $noHandlers
      * @param bool $noMiddlewares
-     * @return Message|null
+     * @return Message|bool|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function showMenu(
         bool $reopen = false,
         bool $noHandlers = false,
         bool $noMiddlewares = false
-    ): Message|null {
+    ): Message|bool|null {
         if ($reopen || !$this->messageId || !$this->chatId) {
             if ($reopen) {
                 $this->closeMenu();
@@ -185,10 +185,6 @@ abstract class InlineMenu extends Conversation
             $message = $this->doOpen($this->text, $this->buttons, $this->opt);
         } else {
             $message = $this->doUpdate($this->text, $this->chatId, $this->messageId, $this->buttons, $this->opt);
-
-            if (is_bool($message)) {
-                throw new RuntimeException('Unable to update the inline menu message');
-            }
         }
 
         $this->messageId = $message?->message_id ?? $this->messageId;
