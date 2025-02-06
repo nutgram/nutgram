@@ -186,7 +186,7 @@ abstract class InlineMenu extends Conversation
         } else {
             $message = $this->doUpdate($this->text, $this->chatId, $this->messageId, $this->buttons, $this->opt);
 
-            if(is_bool($message)){
+            if (is_bool($message)) {
                 throw new RuntimeException('Unable to update the inline menu message');
             }
         }
