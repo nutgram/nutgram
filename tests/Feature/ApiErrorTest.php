@@ -111,7 +111,7 @@ it('redacts bot token when there is a connectexception', function () {
             new ConnectException(
                 'cURL error 6: Could not resolve host: api.telegram.org (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/getUpdates',
                 new Request('GET', 'https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/sendMessage')
-            )
+            ),
         ],
     );
 
@@ -122,15 +122,33 @@ it('redacts bot token when there is a connectexception', function () {
     }
 });
 
-it('calls the specific api error handler using a custom api exception', function ($responseBody) {
+it('calls the specific api error handler using a custom api exception', function ($responseBody, $class) {
     $bot = Nutgram::fake(responses: [
         new Response(403, body: $responseBody),
     ]);
 
-    $bot->registerApiException(UserDeactivatedException::class);
+    $bot->registerApiException($class);
 
     $bot->sendMessage('hi');
-})->with('response_user_deactivated')->throws(UserDeactivatedException::class);
+})
+    ->with('response_user_deactivated')
+    ->with([
+        'class-string' => UserDeactivatedException::class,
+        'class-instance' => new UserDeactivatedException(),
+    ])
+    ->throws(UserDeactivatedException::class);
+
+it('mutes the specific api error handler using a custom api exception', function ($responseBody) {
+    $bot = Nutgram::fake(responses: [
+        new Response(403, body: $responseBody),
+    ]);
+
+    $bot->registerApiException(new UserDeactivatedException(mute: true));
+
+    $message = $bot->sendMessage('hi');
+
+    expect($message)->toBeNull();
+})->with('response_user_deactivated');
 
 it('throws an error with a wrong custom api exception class', function ($responseBody) {
     $bot = Nutgram::fake(responses: [
