@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Conversations;
 
 use InvalidArgumentException;
+use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
@@ -184,6 +185,10 @@ abstract class InlineMenu extends Conversation
             $message = $this->doOpen($this->text, $this->buttons, $this->opt);
         } else {
             $message = $this->doUpdate($this->text, $this->chatId, $this->messageId, $this->buttons, $this->opt);
+
+            if(is_bool($message)){
+                throw new RuntimeException('Unable to update the inline menu message');
+            }
         }
 
         $this->messageId = $message?->message_id ?? $this->messageId;
@@ -285,7 +290,7 @@ abstract class InlineMenu extends Conversation
      * @param InlineKeyboardMarkup $buttons
      * @param array $opt
      *
-     * @return ?Message
+     * @return Message|bool|null
      *
      * @internal Override only to change the Telegram method.
      */
@@ -295,20 +300,14 @@ abstract class InlineMenu extends Conversation
         ?int $messageId,
         InlineKeyboardMarkup $buttons,
         array $opt
-    ): Message|null {
-        $message = $this->bot->editMessageText(...[
+    ): bool|Message|null {
+        return $this->bot->editMessageText(...[
             'reply_markup' => $buttons,
             'chat_id' => $chatId,
             'message_id' => $messageId,
             'text' => $text,
             ...$opt,
         ]);
-
-        if (is_bool($message)) {
-            throw new InvalidArgumentException('Only inline messages can be updated.');
-        }
-
-        return $message;
     }
 
     /**
