@@ -24,10 +24,12 @@ trait MessageListeners
     {
         $this->checkFinalized();
         $target->validateMessageType();
-        return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command] = new Command(
-            $callable,
-            $command
-        );
+
+        $registeringCommand = new Command($callable, $command);
+
+        //TODO: set description from static property
+
+        return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command] = $registeringCommand;
     }
 
     /**

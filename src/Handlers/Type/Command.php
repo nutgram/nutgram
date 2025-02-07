@@ -21,14 +21,6 @@ final class Command extends Handler
      */
     public function __construct($callable, string $command)
     {
-        if (is_array($callable) && is_subclass_of($callable[0] ?? '', WithDescription::class)) {
-            $this->description($callable[0]::description());
-        }
-
-        if (is_subclass_of($callable, WithDescription::class)) {
-            $this->description($callable::description());
-        }
-
         parent::__construct($callable, "/{$command}");
     }
 
