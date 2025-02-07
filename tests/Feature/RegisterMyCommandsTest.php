@@ -10,6 +10,7 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChat;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChatAdministrators;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChatMember;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
+use SergiX44\Nutgram\Tests\Fixtures\Commands\HelpStringDescriptionCommand;
 
 test('onCommand without description', function () {
     $bot = Nutgram::fake();
@@ -46,6 +47,21 @@ test('onCommand with description', function () {
     $bot->registerMyCommands();
 });
 
+test('onCommand with WithDescription interface', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', HelpStringDescriptionCommand::class);
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request['json'])
+            ->scope->toBe('{"type":"default"}')
+            ->commands->toBe('[{"command":"start","description":"Global description"}]');
+
+        return $request;
+    });
+
+    $bot->registerMyCommands();
+});
 
 test('onCommand with description and scope', function () {
     $bot = Nutgram::fake();
