@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Tests\Fixtures\Commands;
 
-use SergiX44\Nutgram\Handlers\Type\HasDescription;
+use SergiX44\Nutgram\Handlers\Type\TelegramCommand;
 use SergiX44\Nutgram\Nutgram;
 
-class HelpArrayDescriptionCommand
+class HelpArrayDescriptionCommand implements TelegramCommand
 {
-    use HasDescription;
-
     public static string|array $description = [
         '*' => 'Global description',
         'es' => 'Español descripción',
