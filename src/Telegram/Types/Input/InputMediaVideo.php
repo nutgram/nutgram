@@ -35,6 +35,22 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
 
     /**
      * Optional.
+     * Cover for the video in the message.
+     * Pass a file_id to send a file that exists on the Telegram servers (recommended),
+     * pass an HTTP URL for Telegram to get a file from the Internet,
+     * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
+     * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
+     */
+    public InputFile|string|null $cover = null;
+
+    /**
+     * Optional.
+     * Start timestamp for the video in the message
+     */
+    public ?int $start_timestamp = null;
+
+    /**
+     * Optional.
      * Caption of the video to be sent, 0-1024 characters after entities parsing
      */
     public ?string $caption = null;
@@ -102,6 +118,8 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
         ?bool $supports_streaming = null,
         ?bool $has_spoiler = null,
         ?bool $show_caption_above_media = null,
+        InputFile|string|null $cover = null,
+        ?int $start_timestamp = null,
     ) {
         parent::__construct();
         $this->media = $media;
@@ -115,6 +133,8 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
         $this->supports_streaming = $supports_streaming;
         $this->has_spoiler = $has_spoiler;
         $this->show_caption_above_media = $show_caption_above_media;
+        $this->cover = $cover;
+        $this->start_timestamp = $start_timestamp;
     }
 
     public static function make(
@@ -129,6 +149,8 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
         ?bool $supports_streaming = null,
         ?bool $has_spoiler = null,
         ?bool $show_caption_above_media = null,
+        InputFile|string|null $cover = null,
+        ?int $start_timestamp = null,
     ): self {
         return new self(
             media: $media,
@@ -142,6 +164,8 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
             supports_streaming: $supports_streaming,
             has_spoiler: $has_spoiler,
             show_caption_above_media: $show_caption_above_media,
+            cover: $cover,
+            start_timestamp: $start_timestamp,
         );
     }
 
@@ -150,15 +174,18 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
         return array_filter_null([
             'type' => $this->type,
             'media' => $this->media,
+            'thumbnail' => $this->thumbnail,
+            'cover' => $this->cover,
+            'start_timestamp' => $this->start_timestamp,
             'caption' => $this->caption,
             'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
+            'show_caption_above_media' => $this->show_caption_above_media,
             'width' => $this->width,
             'height' => $this->height,
             'duration' => $this->duration,
             'supports_streaming' => $this->supports_streaming,
             'has_spoiler' => $this->has_spoiler,
-            'show_caption_above_media' => $this->show_caption_above_media,
         ]);
     }
 }

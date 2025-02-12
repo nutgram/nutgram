@@ -181,15 +181,15 @@ class InlineQueryResultMpeg4Gif extends InlineQueryResult
             'mpeg4_width' => $this->mpeg4_width,
             'mpeg4_height' => $this->mpeg4_height,
             'mpeg4_duration' => $this->mpeg4_duration,
-            'thumb_url' => $this->thumbnail_url,
-            'thumb_mime_type' => $this->thumbnail_mime_type,
+            'thumbnail_url' => $this->thumbnail_url,
+            'thumbnail_mime_type' => $this->thumbnail_mime_type,
             'title' => $this->title,
             'caption' => $this->caption,
             'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
+            'show_caption_above_media' => $this->show_caption_above_media,
             'reply_markup' => $this->reply_markup,
             'input_message_content' => $this->input_message_content,
-            'show_caption_above_media' => $this->show_caption_above_media,
         ]);
     }
 }

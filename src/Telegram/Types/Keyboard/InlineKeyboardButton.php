@@ -150,15 +150,15 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         return array_filter_null([
             'text' => $this->text,
             'url' => $this->url,
-            'login_url' => $this->login_url,
             'callback_data' => $this->callback_data,
+            'web_app' => $this->web_app,
+            'login_url' => $this->login_url,
             'switch_inline_query' => $this->switch_inline_query,
             'switch_inline_query_current_chat' => $this->switch_inline_query_current_chat,
             'switch_inline_query_chosen_chat' => $this->switch_inline_query_chosen_chat,
+            'copy_text' => $this->copy_text,
             'callback_game' => $this->callback_game,
             'pay' => $this->pay,
-            'web_app' => $this->web_app,
-            'copy_text' => $this->copy_text,
         ]);
     }
 }

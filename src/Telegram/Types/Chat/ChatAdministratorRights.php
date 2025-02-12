@@ -155,6 +155,9 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
             'can_post_messages' => $this->can_post_messages,
             'can_edit_messages' => $this->can_edit_messages,
             'can_pin_messages' => $this->can_pin_messages,
+            'can_post_stories' => $this->can_post_stories,
+            'can_edit_stories' => $this->can_edit_stories,
+            'can_delete_stories' => $this->can_delete_stories,
             'can_manage_topics' => $this->can_manage_topics,
         ]);
     }

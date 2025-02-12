@@ -168,7 +168,7 @@ class InlineQueryResultPhoto extends InlineQueryResult
             'type' => $this->type,
             'id' => $this->id,
             'photo_url' => $this->photo_url,
-            'thumb_url' => $this->thumbnail_url,
+            'thumbnail_url' => $this->thumbnail_url,
             'photo_width' => $this->photo_width,
             'photo_height' => $this->photo_height,
             'title' => $this->title,
@@ -176,9 +176,9 @@ class InlineQueryResultPhoto extends InlineQueryResult
             'caption' => $this->caption,
             'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
+            'show_caption_above_media' => $this->show_caption_above_media,
             'reply_markup' => $this->reply_markup,
             'input_message_content' => $this->input_message_content,
-            'show_caption_above_media' => $this->show_caption_above_media,
         ]);
     }
 }
