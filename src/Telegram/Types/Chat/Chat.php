@@ -379,6 +379,7 @@ class Chat extends BaseType
         ?int $linked_chat_id = null,
         ?ChatLocation $location = null,
         ?bool $can_send_paid_media = null,
+        ?bool $can_send_gift = null,
     ): Chat {
         $chat = new self();
         $chat->id = $id;
@@ -410,6 +411,7 @@ class Chat extends BaseType
         $chat->linked_chat_id = $linked_chat_id;
         $chat->location = $location;
         $chat->can_send_paid_media = $can_send_paid_media;
+        $chat->can_send_gift = $can_send_gift;
         return $chat;
     }
 
