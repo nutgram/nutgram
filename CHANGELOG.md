@@ -2,6 +2,19 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.33.0 - 2025-02-12
+
+### What's Changed
+
+* Fix PHP 8.4 deprecation warnings by @koraga in https://github.com/nutgram/nutgram/pull/831
+* Update to Bot API 8.3 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/832
+
+### New Contributors
+
+* @koraga made their first contribution in https://github.com/nutgram/nutgram/pull/831
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.32.1...4.33.0
+
 ## 4.32.1 - 2025-02-04
 
 ### What's Changed
