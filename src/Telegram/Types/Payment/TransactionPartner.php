@@ -15,6 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * - {@see TransactionPartnerTelegramAds}
  * - {@see TransactionPartnerTelegramApi}
  * - {@see TransactionPartnerOther}
+ * - {@see TransactionPartnerChat}
  * @see https://core.telegram.org/bots/api#transactionpartner
  */
 #[TransactionPartnerResolver]

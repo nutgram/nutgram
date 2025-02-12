@@ -98,8 +98,8 @@ class InputMediaPhoto extends InputMedia implements JsonSerializable
             'caption' => $this->caption,
             'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
-            'has_spoiler' => $this->has_spoiler,
             'show_caption_above_media' => $this->show_caption_above_media,
+            'has_spoiler' => $this->has_spoiler,
         ]);
     }
 }

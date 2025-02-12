@@ -247,6 +247,12 @@ class Chat extends BaseType
 
     /**
      * Optional.
+     * True, if gifts can be sent to the chat
+     */
+    public ?bool $can_send_gift = null;
+
+    /**
+     * Optional.
      * True, if paid media messages can be sent or forwarded to the channel chat.
      * The field is available only for channel chats.
      */
