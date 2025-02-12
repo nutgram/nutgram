@@ -191,6 +191,12 @@ class ChatFullInfo extends Chat
 
     /**
      * Optional.
+     * True, if gifts can be sent to the chat
+     */
+    public ?bool $can_send_gift = null;
+
+    /**
+     * Optional.
      * True, if paid media messages can be sent or forwarded to the channel chat.
      * The field is available only for channel chats.
      */
@@ -317,6 +323,7 @@ class ChatFullInfo extends Chat
         ?int $linked_chat_id = null,
         ?ChatLocation $location = null,
         ?bool $can_send_paid_media = null,
+        ?bool $can_send_gift = null,
     ): Chat {
         $chat = new self();
         $chat->id = $id;
@@ -348,6 +355,7 @@ class ChatFullInfo extends Chat
         $chat->linked_chat_id = $linked_chat_id;
         $chat->location = $location;
         $chat->can_send_paid_media = $can_send_paid_media;
+        $chat->can_send_gift = $can_send_gift;
         return $chat;
     }
 }
