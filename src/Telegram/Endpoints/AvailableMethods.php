@@ -171,6 +171,7 @@ trait AvailableMethods
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the forwarded message from forwarding and saving
+     * @param int|null $video_start_timestamp New start timestamp for the forwarded video in the message
      * @return Message|null
      */
     public function forwardMessage(
@@ -180,6 +181,7 @@ trait AvailableMethods
         ?int $message_thread_id = null,
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
+        ?int $video_start_timestamp = null,
     ): ?Message {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -187,7 +189,8 @@ trait AvailableMethods
             'from_chat_id',
             'disable_notification',
             'protect_content',
-            'message_id'
+            'message_id',
+            'video_start_timestamp',
         ), Message::class);
     }
 
@@ -246,6 +249,7 @@ trait AvailableMethods
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
      * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $video_start_timestamp New start timestamp for the forwarded video in the message
      * @return MessageId|null
      */
     public function copyMessage(
@@ -264,6 +268,7 @@ trait AvailableMethods
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         ?bool $show_caption_above_media = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $video_start_timestamp = null,
     ): ?MessageId {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -281,6 +286,7 @@ trait AvailableMethods
             'reply_markup',
             'show_caption_above_media',
             'allow_paid_broadcast',
+            'video_start_timestamp',
         ), MessageId::class);
     }
 
@@ -564,6 +570,8 @@ trait AvailableMethods
      * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param InputFile|string|null $cover Cover for the video in the message. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
+     * @param int|null $start_timestamp Start timestamp for the video in the message
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -590,6 +598,8 @@ trait AvailableMethods
         ?bool $show_caption_above_media = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        InputFile|string|null $cover = null,
+        ?int $start_timestamp = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -617,6 +627,8 @@ trait AvailableMethods
             'show_caption_above_media',
             'message_effect_id',
             'allow_paid_broadcast',
+            'cover',
+            'start_timestamp',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'video', $video, $opt, $clientOpt);
@@ -2252,7 +2264,7 @@ trait AvailableMethods
      * @param int|null $user_id Unique identifier of the target user
      * @return UserChatBoosts|null
      */
-    public function getUserChatBoosts(int|string $chat_id = null, int $user_id = null): ?UserChatBoosts
+    public function getUserChatBoosts(null|int|string $chat_id = null, ?int $user_id = null): ?UserChatBoosts
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), UserChatBoosts::class);
     }

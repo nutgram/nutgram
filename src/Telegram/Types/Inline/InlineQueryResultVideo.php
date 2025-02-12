@@ -191,9 +191,9 @@ class InlineQueryResultVideo extends InlineQueryResult
             'video_height' => $this->video_height,
             'video_duration' => $this->video_duration,
             'description' => $this->description,
+            'show_caption_above_media' => $this->show_caption_above_media,
             'reply_markup' => $this->reply_markup,
             'input_message_content' => $this->input_message_content,
-            'show_caption_above_media' => $this->show_caption_above_media,
         ]);
     }
 }

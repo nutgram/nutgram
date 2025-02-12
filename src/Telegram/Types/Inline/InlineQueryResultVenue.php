@@ -175,9 +175,9 @@ class InlineQueryResultVenue extends InlineQueryResult
             'google_place_type' => $this->google_place_type,
             'reply_markup' => $this->reply_markup,
             'input_message_content' => $this->input_message_content,
-            'thumb_url' => $this->thumbnail_url,
-            'thumb_width' => $this->thumbnail_width,
-            'thumb_height' => $this->thumbnail_height,
+            'thumbnail_url' => $this->thumbnail_url,
+            'thumbnail_width' => $this->thumbnail_width,
+            'thumbnail_height' => $this->thumbnail_height,
         ]);
     }
 }

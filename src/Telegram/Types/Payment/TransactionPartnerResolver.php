@@ -19,7 +19,10 @@ class TransactionPartnerResolver extends ConcreteResolver
         return match ($type) {
             TransactionPartnerType::FRAGMENT->value => TransactionPartnerFragment::class,
             TransactionPartnerType::USER->value => TransactionPartnerUser::class,
+            TransactionPartnerType::CHAT->value => TransactionPartnerChat::class,
+            TransactionPartnerType::AFFILIATE_PROGRAM->value => TransactionPartnerAffiliateProgram::class,
             TransactionPartnerType::TELEGRAM_ADS->value => TransactionPartnerTelegramAds::class,
+            TransactionPartnerType::TELEGRAM_API->value => TransactionPartnerTelegramApi::class,
             TransactionPartnerType::OTHER->value => TransactionPartnerOther::class,
             default => (new class extends TransactionPartner {
             })::class,

@@ -142,15 +142,15 @@ class InputMediaAnimation extends InputMedia implements JsonSerializable
         return array_filter_null([
             'type' => $this->type,
             'media' => $this->media,
-            'thumb' => $this->thumbnail,
+            'thumbnail' => $this->thumbnail,
             'caption' => $this->caption,
             'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
+            'show_caption_above_media' => $this->show_caption_above_media,
             'width' => $this->width,
             'height' => $this->height,
             'duration' => $this->duration,
             'has_spoiler' => $this->has_spoiler,
-            'show_caption_above_media' => $this->show_caption_above_media,
         ]);
     }
 }

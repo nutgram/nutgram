@@ -361,7 +361,7 @@ trait Client
      * @throws JsonException
      * @throws TelegramException
      */
-    protected function mapResponse(ResponseInterface $response, string $mapTo, Exception $clientException = null): mixed
+    protected function mapResponse(ResponseInterface $response, string $mapTo, ?Exception $clientException = null): mixed
     {
         $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
         $json = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$json]) ?? $json;

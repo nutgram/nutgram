@@ -373,7 +373,7 @@ trait Stickers
     }
 
     /**
-     * Sends a gift to the given user.
+     * Sends a gift to the given user or channel chat.
      * The gift can't be converted to Telegram Stars by the user.
      * Returns True on success.
      * @param string $gift_id Identifier of the gift
@@ -382,6 +382,7 @@ trait Stickers
      * @param string|null $text_parse_mode Mode for parsing entities in the text. See {@see formatting options https://core.telegram.org/bots/api#formatting-options} for more details. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom_emoji” are ignored.
      * @param array|null $text_entities A JSON-serialized list of special entities that appear in the gift text. It can be specified instead of text_parse_mode. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom_emoji” are ignored.
      * @param bool|null $pay_for_upgrade Pass True to pay for the gift upgrade from the bot's balance, thereby making the upgrade free for the receiver
+     * @param int|string|null $chat_id Required if user_id is not specified. Unique identifier for the chat or username of the channel (in the format &#64;channelusername) that will receive the gift.
      * @return bool|null
      * @see https://core.telegram.org/bots/api#sendgift
      */
@@ -392,9 +393,11 @@ trait Stickers
         ?string $text_parse_mode = null,
         ?array $text_entities = null,
         ?bool $pay_for_upgrade = null,
+        int|string|null $chat_id = null,
     ): ?bool {
         $user_id ??= $this->userId();
-        $parameters = compact('gift_id', 'user_id', 'text', 'text_parse_mode', 'text_entities', 'pay_for_upgrade');
+        $chat_id ??= $this->chatId();
+        $parameters = compact('gift_id', 'user_id', 'text', 'text_parse_mode', 'text_entities', 'pay_for_upgrade', 'chat_id');
         return $this->requestJson(__FUNCTION__, $parameters);
     }
 

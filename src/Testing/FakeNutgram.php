@@ -93,9 +93,9 @@ class FakeNutgram extends Nutgram
      * @return FakeNutgram
      */
     public static function instance(
-        array|object $update = null,
+        null|array|object $update = null,
         array $responses = [],
-        Configuration $config = null
+        ?Configuration $config = null
     ): self {
         $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);

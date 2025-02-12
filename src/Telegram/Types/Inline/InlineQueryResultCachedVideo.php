@@ -141,9 +141,9 @@ class InlineQueryResultCachedVideo extends InlineQueryResult
             'caption' => $this->caption,
             'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
+            'show_caption_above_media' => $this->show_caption_above_media,
             'reply_markup' => $this->reply_markup,
             'input_message_content' => $this->input_message_content,
-            'show_caption_above_media' => $this->show_caption_above_media,
         ]);
     }
 }

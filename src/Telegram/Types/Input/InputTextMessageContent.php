@@ -43,7 +43,6 @@ class InputTextMessageContent extends InputMessageContent
 
     /**
      * Optional. Link preview generation options for the message
-     * @var LinkPreviewOptions|null
      */
     public ?LinkPreviewOptions $link_preview_options = null;
 
@@ -81,6 +80,7 @@ class InputTextMessageContent extends InputMessageContent
             'parse_mode' => $this->parse_mode,
             'entities' => $this->entities,
             'disable_web_page_preview' => $this->disable_web_page_preview,
+            'link_preview_options' => $this->link_preview_options,
         ]);
     }
 }

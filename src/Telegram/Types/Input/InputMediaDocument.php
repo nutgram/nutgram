@@ -104,7 +104,7 @@ class InputMediaDocument extends InputMedia implements JsonSerializable
         return array_filter_null([
             'type' => $this->type,
             'media' => $this->media,
-            'thumb' => $this->thumbnail,
+            'thumbnail' => $this->thumbnail,
             'caption' => $this->caption,
             'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
