@@ -2249,7 +2249,7 @@ trait AvailableMethods
      * @param int|null $user_id Unique identifier of the target user
      * @return UserChatBoosts|null
      */
-    public function getUserChatBoosts(int|string $chat_id = null, int $user_id = null): ?UserChatBoosts
+    public function getUserChatBoosts(null|int|string $chat_id = null, ?int $user_id = null): ?UserChatBoosts
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), UserChatBoosts::class);
     }
