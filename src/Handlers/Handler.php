@@ -96,7 +96,7 @@ class Handler extends MiddlewareChain
             $constraint = $this->constraints[$parameterName] ?? '.*';
             return sprintf("(?<%s>%s?)", $parameterName, $constraint);
         };
-        $regex = '/^'.preg_replace_callback(self::PARAM_NAME_REGEX, $replaceRule, $pattern).'$/muUi';
+        $regex = '/^'.preg_replace_callback(self::PARAM_NAME_REGEX, $replaceRule, $pattern).'$/mui';
 
         // match + return only named parameters
         $regexMatched = (bool)preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL);
