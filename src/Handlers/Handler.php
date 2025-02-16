@@ -209,13 +209,7 @@ class Handler extends MiddlewareChain
 
     protected function getPatternFlags(): string
     {
-        $flags = 'mu';
-
-        if ($this->insensitive) {
-            $flags .= 'i';
-        }
-
-        return $flags;
+        return $this->insensitive ? 'mui' : 'mu';
     }
 
     public function insensitive(bool $value = true): self
