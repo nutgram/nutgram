@@ -7,6 +7,7 @@ namespace SergiX44\Nutgram\Handlers\Listeners;
 use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Handlers\Type\TelegramCommand;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
@@ -16,7 +17,7 @@ use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 trait MessageListeners
 {
     /**
-     * @param  string  $command
+     * @param string $command
      * @param $callable
      * @return Command
      */
@@ -24,14 +25,25 @@ trait MessageListeners
     {
         $this->checkFinalized();
         $target->validateMessageType();
-        return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command] = new Command(
-            $callable,
-            $command
-        );
+
+        $registeringCommand = new Command($callable, $command);
+
+        if (is_array($callable)) {
+            $callable = $callable[0];
+        }
+
+        if (is_subclass_of($callable, TelegramCommand::class) &&
+            property_exists($callable, 'description') &&
+            (is_array($callable::$description) || is_string($callable::$description))
+        ) {
+            $registeringCommand->description($callable::$description);
+        }
+
+        return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command] = $registeringCommand;
     }
 
     /**
-     * @param  string  $pattern
+     * @param string $pattern
      * @param $callable
      * @return Handler
      */
@@ -354,7 +366,7 @@ trait MessageListeners
     }
 
     /**
-     * @param  string  $pattern
+     * @param string $pattern
      * @param $callable
      * @return Handler
      */

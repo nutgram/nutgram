@@ -16,7 +16,7 @@ final class Command extends Handler
     protected array $scopes = [];
 
     /**
-     * @param callable|callable-string $callable
+     * @param callable|callable-string|class-string|array $callable
      * @param string $command
      */
     public function __construct($callable, string $command)

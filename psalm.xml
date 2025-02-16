@@ -39,5 +39,10 @@
                 <file name="src/Testing/FakeNutgram.php"/>
             </errorLevel>
         </UndefinedConstant>
+        <UndefinedPropertyFetch>
+            <errorLevel type="suppress">
+                <file name="src/Handlers/Listeners/MessageListeners.php"/>
+            </errorLevel>
+        </UndefinedPropertyFetch>
     </issueHandlers>
 </psalm>

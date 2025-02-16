@@ -14,6 +14,8 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use SergiX44\Nutgram\Tests\Fixtures\Commands\HelpArrayDescriptionCommand;
+use SergiX44\Nutgram\Tests\Fixtures\Commands\HelpStringDescriptionCommand;
 use SergiX44\Nutgram\Tests\Fixtures\HelloHandler;
 
 it('calls the message handler', function ($update) {
@@ -432,6 +434,34 @@ test('commands can have descriptions', function ($update) {
     expect($cmd3->isHidden())->toBeTrue();
 })->with('command_message');
 
+test('command can have description via interface', function ($update, $command, $description) {
+    $bot = Nutgram::fake($update);
+
+    $cmd = $bot->onCommand('help', $command);
+
+    expect($cmd->getDescription())->toBe($description);
+})->with('command_message')->with([
+    'string' => [
+        HelpStringDescriptionCommand::class,
+        [
+            '*' => 'Global description',
+        ],
+    ],
+    'string + array callable' => [
+        [HelpStringDescriptionCommand::class, '__invoke'],
+        [
+            '*' => 'Global description',
+        ],
+    ],
+    'array' => [
+        HelpArrayDescriptionCommand::class,
+        [
+            '*' => 'Global description',
+            'es' => 'Español descripción',
+            'it' => 'Descrizione italiana',
+        ],
+    ],
+]);
 
 it('skips global middleware except one', function ($update) {
     $bot = Nutgram::fake($update);
