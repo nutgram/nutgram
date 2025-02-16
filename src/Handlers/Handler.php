@@ -43,6 +43,7 @@ class Handler extends MiddlewareChain
      */
     protected ?string $pattern;
 
+    protected bool $insensitive = false;
 
     /**
      * @var array
@@ -96,7 +97,11 @@ class Handler extends MiddlewareChain
             $constraint = $this->constraints[$parameterName] ?? '.*';
             return sprintf("(?<%s>%s?)", $parameterName, $constraint);
         };
-        $regex = '/^'.preg_replace_callback(self::PARAM_NAME_REGEX, $replaceRule, $pattern).'$/mu';
+        $regex = sprintf(
+            '/^%s$/%s',
+            preg_replace_callback(self::PARAM_NAME_REGEX, $replaceRule, $pattern) ?? '',
+            $this->getPatternFlags(),
+        );
 
         // match + return only named parameters
         $regexMatched = (bool)preg_match($regex, $value, $matches, PREG_UNMATCHED_AS_NULL);
@@ -200,5 +205,17 @@ class Handler extends MiddlewareChain
     public function getPattern(): ?string
     {
         return $this->pattern;
+    }
+
+    protected function getPatternFlags(): string
+    {
+        return $this->insensitive ? 'mui' : 'mu';
+    }
+
+    public function insensitive(bool $value = true): self
+    {
+        $this->insensitive = $value;
+
+        return $this;
     }
 }
