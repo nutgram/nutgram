@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Testing;
 
 use BackedEnum;
@@ -25,10 +27,10 @@ class TypeFaker
     }
 
     /**
-     * @template T
-     * @param class-string $type
+     * @template T of object
+     * @param class-string<T>|string $type
      * @param array $partial
-     * @return T|string|int|bool|array|null|float
+     * @return T|object|scalar|array|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException

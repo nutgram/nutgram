@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\StreamInterface;
@@ -185,7 +187,7 @@ it('creates a new sticker set using InputFile', function () {
 
     $bot->onCommand('start', function (Nutgram $bot) {
         $file = InputFile::make(
-            resource: fopen('php://temp', 'rb'),
+            stream: fopen('php://temp', 'rb'),
             filename: 'sticker.png',
         );
 
@@ -285,7 +287,7 @@ it('add sticker to set using InputFile', function () {
 
     $bot->onCommand('start', function (Nutgram $bot) {
         $file = InputFile::make(
-            resource: fopen('php://temp', 'rb'),
+            stream: fopen('php://temp', 'rb'),
             filename: 'sticker.png',
         );
 

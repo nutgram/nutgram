@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Handlers;
 
@@ -242,7 +243,7 @@ abstract class ResolveHandlers extends CollectHandlers
             }
         };
 
-        $freshConversation = $this->container->get($conversation::class);
+        $freshConversation = $this->getContainer()->get($conversation::class);
         $freshAttributes = $getAttributes->call($freshConversation);
         $currentAttributes = $getAttributes->call($conversation);
         $attributes = array_diff_key($freshAttributes, $currentAttributes);
