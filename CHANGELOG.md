@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.34.0 - 2025-02-19
+
+### What's Changed
+
+* Add insensitive constraint by @Lukasss93 in https://github.com/nutgram/nutgram/pull/835
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.33.0...4.34.0
+
 ## 4.33.0 - 2025-02-12
 
 ### What's Changed
