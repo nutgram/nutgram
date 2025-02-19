@@ -96,4 +96,6 @@ jobs:
                 run: composer install --no-progress --no-ansi
 
             -   name: Run Psalm
-                run: composer run-script psalm
+                run: |
+                        echo Psalm Level: $(grep -oP '(?<=errorLevel=")[0-9]+' psalm.xml)
+                        composer run-script psalm
