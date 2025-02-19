@@ -73,7 +73,7 @@ abstract class ResolveHandlers extends CollectHandlers
         $resolvedHandlers = [];
         $updateType = $this->update?->getType();
 
-        if($updateType === null) {
+        if ($updateType === null) {
             $this->addHandlersBy($resolvedHandlers, Update::class);
 
             return $resolvedHandlers;
