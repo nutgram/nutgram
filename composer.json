@@ -65,7 +65,7 @@
     "scripts": {
       "test": "@php vendor/bin/pest --fail-on-warning",
       "test-coverage": "@php vendor/bin/pest --coverage --coverage-clover=coverage.xml --fail-on-warning",
-      "psalm": "@php vendor/bin/psalm"
+      "psalm": "@php vendor/bin/psalm --no-cache"
     },
     "config": {
         "sort-packages": true,
