@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="5"
+    errorLevel="4"
     resolveFromConfigFile="true"
     findUnusedBaselineEntry="true"
     findUnusedCode="false"
@@ -21,6 +21,11 @@
                 <directory name="src"/>
             </errorLevel>
         </PropertyNotSetInConstructor>
+        <NoInterfaceProperties>
+            <errorLevel type="suppress">
+                <file name="src/Handlers/Listeners/MessageListeners.php"/>
+            </errorLevel>
+        </NoInterfaceProperties>
         <UndefinedMethod>
             <errorLevel type="suppress">
                 <referencedMethod name="ReflectionType::getName"/>

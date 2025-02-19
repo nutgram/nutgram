@@ -68,6 +68,7 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
         ?bool $is_persistent = null,
     ) {
         parent::__construct();
+        $this->keyboard = [];
         $this->resize_keyboard = $resize_keyboard;
         $this->one_time_keyboard = $one_time_keyboard;
         $this->input_field_placeholder = $input_field_placeholder;
@@ -104,7 +105,7 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
     public function jsonSerialize(): array
     {
         return array_filter_null([
-            'keyboard' => $this->keyboard ?? [],
+            'keyboard' => $this->keyboard,
             'is_persistent' => $this->is_persistent,
             'resize_keyboard' => $this->resize_keyboard,
             'one_time_keyboard' => $this->one_time_keyboard,

@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use JsonException;
 use PHPUnit\Framework\Assert as PHPUnit;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
-use SergiX44\Nutgram\Testing\Constraints\ArraySubset;
+use DMS\PHPUnitExtensions\ArraySubset\Assert;
 
 /**
  * @mixin FakeNutgram
@@ -178,8 +178,7 @@ trait Asserts
         bool $checkForIdentity = false,
         string $msg = ''
     ): void {
-        $constraint = new ArraySubset($subset, $checkForIdentity);
-        PHPUnit::assertThat($array, $constraint, $msg);
+        Assert::assertArraySubset($subset, $array, $checkForIdentity, $msg);
     }
 
     /**

@@ -37,6 +37,7 @@
     },
     "require-dev": {
         "ext-reflection": "*",
+        "dms/phpunit-arraysubset-asserts": "^0.5.0",
         "pestphp/pest": "^2.5",
         "pestphp/pest-plugin-mock": "^2.0",
         "roave/security-advisories": "dev-latest",

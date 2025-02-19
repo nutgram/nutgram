@@ -109,7 +109,7 @@ class Nutgram extends ResolveHandlers
                 '%s/bot%s/%s',
                 $config->apiUrl,
                 $this->token,
-                $config->testEnv ?? false ? 'test/' : ''
+                $config->testEnv ? 'test/' : ''
             ),
             'timeout' => $config->clientTimeout,
             'version' => $config->enableHttp2 ? '2.0' : '1.1',
