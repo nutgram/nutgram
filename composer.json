@@ -37,6 +37,7 @@
     },
     "require-dev": {
         "ext-reflection": "*",
+        "dms/phpunit-arraysubset-asserts": "^0.5.0",
         "pestphp/pest": "^2.5",
         "pestphp/pest-plugin-mock": "^2.0",
         "roave/security-advisories": "dev-latest",
@@ -64,7 +65,7 @@
     "scripts": {
       "test": "@php vendor/bin/pest --fail-on-warning",
       "test-coverage": "@php vendor/bin/pest --coverage --coverage-clover=coverage.xml --fail-on-warning",
-      "psalm": "@php vendor/bin/psalm"
+      "psalm": "@php vendor/bin/psalm --no-cache --config=psalm.xml"
     },
     "config": {
         "sort-packages": true,

@@ -55,7 +55,8 @@ final readonly class Progress
             return $targetEnd;
         }
 
-        $result = ($targetStart + (($targetEnd - $targetStart) / ($sourceEnd - $sourceStart)) * ($current - $sourceStart));
+        $map = ((float)$targetEnd - (float)$targetStart) / ((float)$sourceEnd - (float)$sourceStart);
+        $result = ((float)$targetStart + $map * ((float)$current - (float)$sourceStart));
 
         return round($result, $precision);
     }

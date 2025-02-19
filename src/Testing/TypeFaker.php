@@ -193,7 +193,7 @@ class TypeFaker
      */
     public static function randomFloat(): float
     {
-        return abs(1 - self::randomInt() / self::randomInt());
+        return abs(1.0 - ((float)self::randomInt() / (float)self::randomInt()));
     }
 
     /**

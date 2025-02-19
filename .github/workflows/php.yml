@@ -86,24 +86,16 @@ jobs:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: '8.2'
+                    php-version: '8.4'
                     coverage: none
 
             -   name: Validate composer.json and composer.lock
                 run: composer validate
 
-            -   name: Cache Composer packages
-                id: composer-cache
-                uses: actions/cache@v4
-                with:
-                    path: vendor
-                    key: ${{ runner.os }}-php-8.2-${{ hashFiles('**/composer.json') }}
-                    restore-keys: |
-                        ${{ runner.os }}-php-8.2
-
             -   name: Install dependencies
-                if: steps.composer-cache.outputs.cache-hit != 'true'
                 run: composer install --no-progress --no-ansi
 
             -   name: Run Psalm
-                run: composer run-script psalm
+                run: |
+                        echo Psalm Level: $(grep -oP '(?<=errorLevel=")[0-9]+' psalm.xml)
+                        composer run-script psalm

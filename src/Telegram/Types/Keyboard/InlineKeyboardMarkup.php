@@ -24,12 +24,13 @@ class InlineKeyboardMarkup extends BaseType implements JsonSerializable
     public function __construct()
     {
         parent::__construct();
+        $this->inline_keyboard = [];
     }
 
     /**
      * @return InlineKeyboardMarkup
      */
-    public static function make()
+    public static function make(): self
     {
         return new self;
     }
@@ -48,6 +49,6 @@ class InlineKeyboardMarkup extends BaseType implements JsonSerializable
      */
     public function jsonSerialize(): array
     {
-        return ['inline_keyboard' => $this->inline_keyboard ?? []];
+        return ['inline_keyboard' => $this->inline_keyboard];
     }
 }
