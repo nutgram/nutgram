@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Internal;
 
 use GuzzleHttp\Psr7\Utils;
@@ -13,71 +15,66 @@ use Psr\Http\Message\StreamInterface;
  */
 class InputFile implements JsonSerializable
 {
-    /**
-     * @var StreamInterface
-     */
-    protected $resource;
-
-    /**
-     * @var string|null
-     */
+    protected StreamInterface $stream;
     protected ?string $filename;
 
     /**
-     * @param resource|string $resource Resource or path to file
-     * @param string|null $filename Filename
+     * @param StreamInterface|resource|string $stream StreamInterface, resource, filepath or URI
+     * @param string|null $filename Custom filename
      */
-    public function __construct(mixed $resource, ?string $filename = null)
+    public function __construct(mixed $stream, ?string $filename = null)
     {
+        $this->stream = $this->buildStream($stream);
         $this->filename = $filename;
-        if (is_resource($resource)) {
-            $this->resource = Utils::streamFor($resource);
-        } elseif (is_string($resource) && file_exists($resource)) {
-            $res = fopen($resource, 'rb+');
-            if ($res === false) {
-                throw new InvalidArgumentException('Cannot open the specified resource.');
-            }
-
-            $this->resource = Utils::streamFor($res);
-        } else {
-            throw new InvalidArgumentException('Invalid resource specified.');
-        }
     }
 
     /**
-     * @param resource|string $resource Resource or path to file
-     * @param string|null $filename Filename
+     * @param StreamInterface|resource|string $stream StreamInterface, resource, filepath or URI
+     * @param string|null $filename Custom filename
      * @return InputFile
      */
-    public static function make(mixed $resource, ?string $filename = null): InputFile
+    public static function make(mixed $stream, ?string $filename = null): InputFile
     {
-        return new self($resource, $filename);
+        return new self($stream, $filename);
     }
 
-    /**
-     * @param string|null $filename
-     * @return InputFile
-     */
+    public static function makeFromString(string $content, ?string $filename = null): InputFile
+    {
+        return new self(Utils::streamFor($content), $filename);
+    }
+
+    protected function buildStream(mixed $value): StreamInterface
+    {
+        if ($value instanceof StreamInterface) {
+            return $value;
+        }
+
+        if (is_resource($value)) {
+            return Utils::streamFor($value);
+        }
+
+        if (is_string($value)) {
+            $resource = Utils::tryFopen($value, 'rb');
+            return Utils::streamFor($resource);
+        }
+
+        throw new InvalidArgumentException('Invalid stream specified.');
+    }
+
     public function filename(?string $filename): InputFile
     {
         $this->filename = $filename;
         return $this;
     }
 
-    /**
-     * @return StreamInterface
-     */
-    public function getResource()
+    public function getStream(): StreamInterface
     {
-        return $this->resource;
+        return $this->stream;
     }
 
-    /**
-     * @return string
-     */
     public function getFilename(): string
     {
-        $uri = $this->resource->getMetadata('uri');
+        $uri = $this->stream->getMetadata('uri');
 
         if ($this->filename === null && !empty($uri)) {
             return basename($uri);

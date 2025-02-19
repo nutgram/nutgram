@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
+use Psr\Http\Message\StreamInterface;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
@@ -103,8 +106,8 @@ class InputSticker extends BaseType implements JsonSerializable, Uploadable
         return $this->sticker->getFilename();
     }
 
-    public function getResource()
+    public function getStream(): StreamInterface
     {
-        return $this->sticker->getResource();
+        return $this->sticker->getStream();
     }
 }

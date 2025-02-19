@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Testing;
 
 use GuzzleHttp\Handler\MockHandler;
@@ -156,7 +158,7 @@ class FakeNutgram extends Nutgram
                         } elseif ($return instanceof ReflectionUnionType) {
                             foreach ($return->getTypes() as $type) {
                                 $instance = $this->typeFaker->fakeInstanceOf(
-                                    $type,
+                                    $type->getName(),
                                     $partialResult
                                 );
                                 if (is_object($instance)) {
