@@ -123,9 +123,9 @@ class DeepLink
         ?string $mediaTimestamp = null,
     ): string {
         if ($threadId === null) {
-            $endpoint = $username.'/'.$messageId;
+            $endpoint = sprintf("%s/%d", $username, (string)$messageId);
         } else {
-            $endpoint = $username.'/'.$threadId.'/'.$messageId;
+            $endpoint = sprintf("%s/%d/%d", $username, (string)$threadId, (string)$messageId);
         }
 
         return $this->buildUrl($endpoint, [

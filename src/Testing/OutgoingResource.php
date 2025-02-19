@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Testing;
 
 use JsonSerializable;
+use Override;
 use Psr\Http\Message\StreamInterface;
 
 class OutgoingResource implements JsonSerializable
