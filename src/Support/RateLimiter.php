@@ -71,9 +71,7 @@ class RateLimiter
 
     public function remaining(): int
     {
-        $attempts = $this->attempts();
-
-        return $this->maxAttempts - $attempts;
+        return $this->maxAttempts - $this->attempts();
     }
 
     public function availableIn(): int
