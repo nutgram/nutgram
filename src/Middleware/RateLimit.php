@@ -56,7 +56,7 @@ class RateLimit
 
     public function runWarningCallback(Nutgram $bot): void
     {
-        if(is_callable(static::$warningCallback)) {
+        if (is_callable(static::$warningCallback)) {
             (static::$warningCallback)($bot);
             return;
         }
