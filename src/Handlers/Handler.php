@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\Handlers;
 
 use Illuminate\Support\Traits\Macroable;
+use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Container\Container;
@@ -12,11 +13,12 @@ use SergiX44\Nutgram\Middleware\MiddlewareChain;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
+use SergiX44\Nutgram\Support\InteractWithRateLimit;
 use SergiX44\Nutgram\Support\Taggable;
 
 class Handler extends MiddlewareChain
 {
-    use Taggable, Macroable, Disable, Constraints;
+    use Taggable, Macroable, Disable, Constraints, InteractWithRateLimit;
 
     /**
      * Regex to capture named parameters.
@@ -217,5 +219,21 @@ class Handler extends MiddlewareChain
         $this->insensitive = $value;
 
         return $this;
+    }
+
+    public function getHash(): string
+    {
+        $data = [
+            'pattern' => $this->pattern,
+            'callable' => new SerializableClosure($this->callable),
+            'disabled' => $this->disabled,
+            'constraints' => $this->constraints,
+            'tags' => $this->tags,
+            'insensitive' => $this->insensitive,
+            'parameters' => $this->parameters,
+            'skippedGlobalMiddlewares' => $this->skippedGlobalMiddlewares,
+        ];
+
+        return (string)crc32(serialize($data));
     }
 }

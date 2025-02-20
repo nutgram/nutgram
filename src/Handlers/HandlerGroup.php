@@ -6,12 +6,13 @@ use Closure;
 use Illuminate\Support\Traits\Macroable;
 use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
+use SergiX44\Nutgram\Support\InteractWithRateLimit;
 use SergiX44\Nutgram\Support\Taggable;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 
 class HandlerGroup
 {
-    use Taggable, Macroable, Disable, Constraints;
+    use Taggable, Macroable, Disable, Constraints, InteractWithRateLimit;
 
     protected array $middlewares = [];
 
