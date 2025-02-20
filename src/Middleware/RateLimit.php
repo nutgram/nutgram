@@ -9,9 +9,9 @@ use SergiX44\Nutgram\Support\RateLimiter;
 class RateLimit
 {
     /**
-     * @var callable(Nutgram $bot, int $remaining, int $availableIn): void
+     * @var null|callable(Nutgram $bot, int $availableIn): void
      */
-    protected static $warningCallback;
+    public static $warningCallback;
 
     public function __construct(
         protected int $maxAttempts,
@@ -60,7 +60,7 @@ class RateLimit
     public function runWarningCallback(RateLimiter $rateLimiter, Nutgram $bot): void
     {
         if (is_callable(static::$warningCallback)) {
-            (static::$warningCallback)($bot, $rateLimiter->remaining(), $rateLimiter->availableIn());
+            (static::$warningCallback)($bot, $rateLimiter->availableIn());
             return;
         }
 

@@ -1,18 +1,17 @@
 <?php
 
-use SergiX44\Nutgram\Configuration;
+use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
+use SergiX44\Nutgram\Middleware\RateLimit;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Support\RateLimiter;
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\User\User;
-use SergiX44\Nutgram\Tests\Fixtures\Cache\TestCache;
 
-it('throttles a handler', function () {
-    $bot = Nutgram::fake(config: new Configuration(
-        cache: new TestCache(),
-    ));
+beforeEach(function () {
+    $this->bot = Nutgram::fake();
 
-    $bot->setCommonUser(User::make(
+    $this->bot->setCommonUser(User::make(
         id: 123456789,
         is_bot: false,
         first_name: 'Tony',
@@ -21,30 +20,53 @@ it('throttles a handler', function () {
         language_code: 'en',
     ));
 
-    $bot->setCommonChat(Chat::make(
+    $this->bot->setCommonChat(Chat::make(
         id: 123456789,
         type: ChatType::PRIVATE,
         username: 'IronMan',
         first_name: 'Tony',
         last_name: 'Stark',
     ));
+});
 
-    //TODO: $bot->throttle(10);
-
-    $bot->onText('hi', function (Nutgram $bot) {
+it('throttles a handler', function () {
+    $this->bot->onText('hi', function (Nutgram $bot) {
         $bot->sendMessage('Hello!');
     })->throttle(2);
 
-    TestCache::setTestNow(new DateTimeImmutable('+1 seconds'));
+    ArrayCache::setTestNow(new DateTimeImmutable('2025-01-01 00:00:00'));
+    RateLimiter::setTestNow(new DateTimeImmutable('2025-01-01 00:00:00'));
 
-    $bot->hearText('hi')->reply()->assertReplyText('Hello!');
-    $bot->hearText('hi')->reply()->assertReplyText('Hello!');
-    $bot->hearText('hi')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
-    $bot->hearText('hi')->reply()->assertNoReply();
+    $this->bot->hearText('hi')->reply()->assertReplyText('Hello!');
+    $this->bot->hearText('hi')->reply()->assertReplyText('Hello!');
+    $this->bot->hearText('hi')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
+    $this->bot->hearText('hi')->reply()->assertNoReply();
 
-    TestCache::setTestNow(new DateTimeImmutable('+61 seconds'));
+    ArrayCache::setTestNow(new DateTimeImmutable('2025-01-01 00:02:00'));
+    RateLimiter::setTestNow(new DateTimeImmutable('2025-01-01 00:02:00'));
 
-    $bot->hearText('hi')->reply()->assertReplyText('Hello!');
+    $this->bot->hearText('hi')->reply()->assertReplyText('Hello!');
+});
+
+it('throttles with a custom warning message', function () {
+    RateLimit::$warningCallback = function (Nutgram $bot, int $availableIn) {
+        $bot->sendMessage("You're sending too many messages. Please wait $availableIn seconds.");
+    };
+
+    $this->bot->onText('hi', function (Nutgram $bot) {
+        $bot->sendMessage('Hello!');
+    })->throttle(2);
+
+    ArrayCache::setTestNow(new DateTimeImmutable('2025-01-01 00:00:00'));
+    RateLimiter::setTestNow(new DateTimeImmutable('2025-01-01 00:00:00'));
+
+    $this->bot->hearText('hi')->reply()->assertReplyText('Hello!');
+    $this->bot->hearText('hi')->reply()->assertReplyText('Hello!');
+
+    ArrayCache::setTestNow(new DateTimeImmutable('2025-01-01 00:00:10'));
+    RateLimiter::setTestNow(new DateTimeImmutable('2025-01-01 00:00:10'));
+
+    $this->bot->hearText('hi')->reply()->assertReplyText("You're sending too many messages. Please wait 50 seconds.");
 });
 
 todo('throttles a group');

@@ -69,11 +69,6 @@ class RateLimiter
         $this->cache->delete($this->key);
     }
 
-    public function remaining(): int
-    {
-        return $this->maxAttempts - $this->attempts();
-    }
-
     public function availableIn(): int
     {
         return max(0, $this->cache->get($this->key.':timer') - $this->getNow()->getTimestamp());

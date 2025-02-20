@@ -8,6 +8,28 @@ use DateTimeInterface;
 
 trait InteractsWithTime
 {
+    protected static DateTimeImmutable|null $testNow = null;
+
+    public static function hasTestNow(): bool
+    {
+        return self::$testNow !== null;
+    }
+
+    public static function setTestNow(DateTimeImmutable $now): void
+    {
+        self::$testNow = $now;
+    }
+
+    public static function getTestNow(): DateTimeImmutable|null
+    {
+        return self::$testNow;
+    }
+
+    protected function getNow(): DateTimeImmutable
+    {
+        return self::getTestNow() ?? new DateTimeImmutable();
+    }
+
     protected function expiringAt(DateInterval|int $ttl): DateTimeImmutable
     {
         $now = $this->getNow();
@@ -22,11 +44,6 @@ trait InteractsWithTime
     protected function hasExpired(DateTimeImmutable $expiration): bool
     {
         return $this->getNow()->getTimestamp() >= $expiration->getTimestamp();
-    }
-
-    protected function getNow(): DateTimeImmutable
-    {
-        return new DateTimeImmutable();
     }
 
     protected function parseDateInterval(DateTimeInterface|DateInterval|int $delay): DateTimeInterface|int
