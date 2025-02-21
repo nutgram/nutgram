@@ -10,15 +10,15 @@ use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Container\Container;
 use SergiX44\Nutgram\Middleware\Link;
 use SergiX44\Nutgram\Middleware\MiddlewareChain;
+use SergiX44\Nutgram\Middleware\RateLimit;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
-use SergiX44\Nutgram\Support\InteractWithRateLimit;
 use SergiX44\Nutgram\Support\Taggable;
 
 class Handler extends MiddlewareChain
 {
-    use Taggable, Macroable, Disable, Constraints, InteractWithRateLimit;
+    use Taggable, Macroable, Disable, Constraints;
 
     /**
      * Regex to capture named parameters.
@@ -66,6 +66,11 @@ class Handler extends MiddlewareChain
      * @var array
      */
     protected array $skippedGlobalMiddlewares = [];
+
+    protected ?RateLimit $rateLimit = null;
+
+    /** @var RateLimit[] */
+    public array $groupRateLimiters = [];
 
     /**
      * Handler constructor.
@@ -235,5 +240,21 @@ class Handler extends MiddlewareChain
         ];
 
         return (string)crc32(serialize($data));
+    }
+
+    public function throttle(int $maxAttempts, int $decaySeconds = 60, ?string $key = null): self
+    {
+        $this->rateLimit = new RateLimit(
+            maxAttempts: $maxAttempts,
+            decaySeconds: $decaySeconds,
+            key: $key,
+        );
+
+        return $this;
+    }
+
+    public function getRateLimit(): ?RateLimit
+    {
+        return $this->rateLimit;
     }
 }

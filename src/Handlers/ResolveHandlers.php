@@ -12,6 +12,7 @@ use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Middleware\RateLimit;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
@@ -44,6 +45,8 @@ abstract class ResolveHandlers extends CollectHandlers
      * @var Update|null
      */
     protected ?Update $update = null;
+
+    protected ?RateLimit $rateLimit = null;
 
     abstract public function getConfig(): Configuration;
 
@@ -218,11 +221,30 @@ abstract class ResolveHandlers extends CollectHandlers
         }
     }
 
+    protected function applyRateLimitersTo(Handler $handler): void
+    {
+        // load handler rate limiter
+        if($handler->getRateLimit() !== null) {
+            $handler->middleware($handler->getRateLimit());
+        }
+
+        // load group rate limiters
+        foreach ($handler->groupRateLimiters as $rateLimiter) {
+            $handler->middleware($rateLimiter);
+        }
+
+        // load global rate limiter
+        if($this->rateLimit !== null) {
+            $handler->middleware($this->rateLimit);
+        }
+    }
+
     protected function applyGlobalMiddleware(): void
     {
         array_walk_recursive($this->handlers, function ($leaf) {
             if ($leaf instanceof Handler) {
                 $this->applyGlobalMiddlewareTo($leaf);
+                $this->applyRateLimitersTo($leaf);
             }
         });
     }
@@ -272,20 +294,23 @@ abstract class ResolveHandlers extends CollectHandlers
         array $currentScopes = [],
         array $currentTags = [],
         array $currentConstraints = [],
+        array $currentRateLimiters = [],
     ) {
         foreach ($groups as $group) {
             $middlewares = [...$group->getMiddlewares(), ...$currentMiddlewares,];
             $scopes = [...$currentScopes, ...$group->getScopes()];
             $tags = [...$currentTags, ...$group->getTags()];
             $constraints = [...$currentConstraints, ...$group->getConstraints()];
+            $rateLimiters = [...$currentRateLimiters, $group->getRateLimit()];
             $this->groupHandlers = [];
             ($group->groupCallable)($this);
 
             // apply the middleware stack to the current registered group handlers
             array_walk_recursive(
                 $this->groupHandlers,
-                function ($leaf) use ($constraints, $tags, $middlewares, $scopes, $group) {
+                function ($leaf) use ($rateLimiters, $constraints, $tags, $middlewares, $scopes, $group) {
                     if ($leaf instanceof Handler) {
+                        $leaf->groupRateLimiters = $rateLimiters;
                         foreach ($middlewares as $middleware) {
                             $leaf->middleware($middleware);
                         }
@@ -307,5 +332,16 @@ abstract class ResolveHandlers extends CollectHandlers
                 $this->resolveNestedGroups($groups, $middlewares, $scopes, $tags);
             }
         }
+    }
+
+    public function throttle(int $maxAttempts, int $decaySeconds = 60): self
+    {
+        $this->rateLimit = new RateLimit(
+            maxAttempts: $maxAttempts,
+            decaySeconds: $decaySeconds,
+            key: 'global',
+        );
+
+        return $this;
     }
 }
