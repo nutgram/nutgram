@@ -301,7 +301,10 @@ abstract class ResolveHandlers extends CollectHandlers
             $scopes = [...$currentScopes, ...$group->getScopes()];
             $tags = [...$currentTags, ...$group->getTags()];
             $constraints = [...$currentConstraints, ...$group->getConstraints()];
-            $rateLimiters = [...$currentRateLimiters, $group->getRateLimit()];
+            $rateLimiters = [
+                ...$currentRateLimiters,
+                ...($group->getRateLimit() !== null ? [$group->getRateLimit()] : []),
+            ];
             $this->groupHandlers = [];
             ($group->groupCallable)($this);
 
