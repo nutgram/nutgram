@@ -71,8 +71,8 @@ it('throttles with a custom warning message', function () {
     $this->bot->hearText('hi')->reply()->assertReplyText("You're sending too many messages. Please wait 50 seconds.");
 });
 
-it('throttles a group', function(){
-    $this->bot->group(function(Nutgram $bot){
+it('throttles a group', function () {
+    $this->bot->group(function (Nutgram $bot) {
         $bot->onText('hello', function (Nutgram $bot) {
             $bot->sendMessage('world');
         });
@@ -93,7 +93,7 @@ it('throttles a group', function(){
     RateLimiter::setTestNow(new DateTimeImmutable('2025-01-01 00:02:00'));
 });
 
-it('throttles globally', function(){
+it('throttles globally', function () {
     $this->bot->throttle(2);
 
     $this->bot->onText('hello', function (Nutgram $bot) {
@@ -113,17 +113,16 @@ it('throttles globally', function(){
 
     ArrayCache::setTestNow(new DateTimeImmutable('2025-01-01 00:02:00'));
     RateLimiter::setTestNow(new DateTimeImmutable('2025-01-01 00:02:00'));
-
 });
 
-it('throttles hard', function(){
+it('throttles hard', function () {
     $this->bot->throttle(4);
 
     $this->bot->onText('start', function (Nutgram $bot) {
         $bot->sendMessage('yep');
     });
 
-    $this->bot->group(function(Nutgram $bot){
+    $this->bot->group(function (Nutgram $bot) {
         $bot->onText('hello', function (Nutgram $bot) {
             $bot->sendMessage('world');
         })->throttle(2);

@@ -224,7 +224,7 @@ abstract class ResolveHandlers extends CollectHandlers
     protected function applyRateLimitersTo(Handler $handler): void
     {
         // load handler rate limiter
-        if($handler->getRateLimit() !== null) {
+        if ($handler->getRateLimit() !== null) {
             $handler->middleware($handler->getRateLimit());
         }
 
@@ -234,7 +234,7 @@ abstract class ResolveHandlers extends CollectHandlers
         }
 
         // load global rate limiter
-        if($this->rateLimit !== null) {
+        if ($this->rateLimit !== null) {
             $handler->middleware($this->rateLimit);
         }
     }
