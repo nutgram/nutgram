@@ -303,7 +303,7 @@ abstract class ResolveHandlers extends CollectHandlers
             $constraints = [...$currentConstraints, ...$group->getConstraints()];
             $rateLimiters = [
                 ...$currentRateLimiters,
-                ...($group->getRateLimit() !== null ? [$group->getRateLimit()] : []),
+                ...($group->getRateLimit() !== null ? [$group->getRateLimit()->setKey($group->getHash())] : []),
             ];
             $this->groupHandlers = [];
             ($group->groupCallable)($this);

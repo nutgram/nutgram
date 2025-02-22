@@ -89,8 +89,8 @@ it('throttles a group', function () {
     $this->bot->hearText('foo')->reply()->assertReplyText('bar');
     $this->bot->hearText('hello')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
 
-    ArrayCache::setTestNow(new DateTimeImmutable('2025-01-01 00:02:00'));
-    RateLimiter::setTestNow(new DateTimeImmutable('2025-01-01 00:02:00'));
+    ArrayCache::setTestNow(new DateTimeImmutable('2025-01-02 00:00:00'));
+    RateLimiter::setTestNow(new DateTimeImmutable('2025-01-02 00:00:00'));
 });
 
 it('throttles globally', function () {

@@ -66,7 +66,7 @@ class HandlerGroup
         $this->rateLimit = new RateLimit(
             maxAttempts: $maxAttempts,
             decaySeconds: $decaySeconds,
-            key: $key ?? $this->getHash(),
+            key: $key,
         );
 
         return $this;

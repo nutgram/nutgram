@@ -66,4 +66,11 @@ class RateLimit
 
         $bot->sendMessage('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
     }
+
+    public function setKey(string $key): self
+    {
+        $this->key = $key;
+
+        return $this;
+    }
 }
