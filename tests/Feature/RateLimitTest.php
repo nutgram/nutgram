@@ -179,3 +179,18 @@ it('throttles hard', function () {
     $this->bot->hearText('foo')->reply()->assertReplyText('bar');
     $this->bot->hearText('foo')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
 });
+
+it('does not throttle if the user or chat is not set', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->throttle(1);
+
+    $bot->onDeletedBusinessMessages(function (Nutgram $bot) {
+        $bot->sendMessage('Hello!');
+    });
+
+    $bot->run();
+    $bot->assertReplyText('Hello!');
+
+    $bot->run();
+    $bot->assertReplyText('Hello!');
+})->with('deleted_business_messages');
