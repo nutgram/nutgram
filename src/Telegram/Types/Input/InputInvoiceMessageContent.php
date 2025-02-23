@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -10,6 +11,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of an invoice message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputinvoicemessagecontent
  */
+#[SkipConstructor]
 class InputInvoiceMessageContent extends InputMessageContent
 {
     /** Product name, 1-32 characters */

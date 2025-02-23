@@ -2,12 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a contact message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputcontactmessagecontent
  */
+#[SkipConstructor]
 class InputContactMessageContent extends InputMessageContent
 {
     /** Contact's phone number */

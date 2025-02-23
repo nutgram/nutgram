@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -15,6 +16,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Represents a video to be sent.
  * @see https://core.telegram.org/bots/api#inputmediavideo
  */
+#[SkipConstructor]
 class InputMediaVideo extends InputMedia implements JsonSerializable
 {
     /** Type of the result, must be video */

@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -13,6 +14,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * The optional fields web_app, request_user, request_chat, request_contact, request_location, and request_poll are mutually exclusive.
  * @see https://core.telegram.org/bots/api#keyboardbutton
  */
+#[SkipConstructor]
 class KeyboardButton extends BaseType implements JsonSerializable
 {
     /**
