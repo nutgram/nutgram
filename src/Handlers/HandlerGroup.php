@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Handlers;
 
 use Closure;
 use Illuminate\Support\Traits\Macroable;
+use SergiX44\Nutgram\Middleware\RateLimit;
 use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
 use SergiX44\Nutgram\Support\Taggable;
@@ -16,6 +17,8 @@ class HandlerGroup
     protected array $middlewares = [];
 
     protected array $scopes = [];
+
+    protected ?RateLimit $rateLimit = null;
 
     public function __construct(public Closure $groupCallable)
     {
@@ -45,5 +48,32 @@ class HandlerGroup
     public function getScopes(): array
     {
         return $this->scopes;
+    }
+
+    public function getHash(): string
+    {
+        $data = [
+            'disabled' => $this->disabled,
+            'constraints' => $this->constraints,
+            'tags' => $this->tags,
+        ];
+
+        return (string)crc32(serialize($data));
+    }
+
+    public function throttle(int $maxAttempts, int $decaySeconds = 60, ?string $key = null): self
+    {
+        $this->rateLimit = new RateLimit(
+            maxAttempts: $maxAttempts,
+            decaySeconds: $decaySeconds,
+            key: $key,
+        );
+
+        return $this;
+    }
+
+    public function getRateLimit(): ?RateLimit
+    {
+        return $this->rateLimit;
     }
 }

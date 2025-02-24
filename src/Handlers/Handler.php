@@ -4,11 +4,13 @@
 namespace SergiX44\Nutgram\Handlers;
 
 use Illuminate\Support\Traits\Macroable;
+use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Container\Container;
 use SergiX44\Nutgram\Middleware\Link;
 use SergiX44\Nutgram\Middleware\MiddlewareChain;
+use SergiX44\Nutgram\Middleware\RateLimit;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
@@ -64,6 +66,11 @@ class Handler extends MiddlewareChain
      * @var array
      */
     protected array $skippedGlobalMiddlewares = [];
+
+    protected ?RateLimit $rateLimit = null;
+
+    /** @var RateLimit[] */
+    public array $groupRateLimiters = [];
 
     /**
      * Handler constructor.
@@ -217,5 +224,37 @@ class Handler extends MiddlewareChain
         $this->insensitive = $value;
 
         return $this;
+    }
+
+    public function getHash(): string
+    {
+        $data = [
+            'pattern' => $this->pattern,
+            'callable' => new SerializableClosure($this->callable),
+            'disabled' => $this->disabled,
+            'constraints' => $this->constraints,
+            'tags' => $this->tags,
+            'insensitive' => $this->insensitive,
+            'parameters' => $this->parameters,
+            'skippedGlobalMiddlewares' => $this->skippedGlobalMiddlewares,
+        ];
+
+        return (string)crc32(serialize($data));
+    }
+
+    public function throttle(int $maxAttempts, int $decaySeconds = 60, ?string $key = null): self
+    {
+        $this->rateLimit = new RateLimit(
+            maxAttempts: $maxAttempts,
+            decaySeconds: $decaySeconds,
+            key: $key,
+        );
+
+        return $this;
+    }
+
+    public function getRateLimit(): ?RateLimit
+    {
+        return $this->rateLimit;
     }
 }
