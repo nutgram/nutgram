@@ -73,7 +73,7 @@ class RateLimit
 
     public function setKey(string $key): self
     {
-        if($this->key !== null) {
+        if ($this->key !== null) {
             return $this;
         }
 
