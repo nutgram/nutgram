@@ -65,11 +65,15 @@ class RateLimit
         }
 
         $bot->sendMessage('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
+
+        if ($bot->isCallbackQuery()) {
+            $bot->answerCallbackQuery();
+        }
     }
 
     public function setKey(string $key): self
     {
-        if ($this->key !== null) {
+        if($this->key !== null) {
             return $this;
         }
 
