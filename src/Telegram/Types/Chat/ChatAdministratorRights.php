@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -10,6 +11,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Represents the rights of an administrator in a chat.
  * @see https://core.telegram.org/bots/api#chatadministratorrights
  */
+#[SkipConstructor]
 class ChatAdministratorRights extends BaseType implements JsonSerializable
 {
     /** True, if the user's presence in the chat is hidden */

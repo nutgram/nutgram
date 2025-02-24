@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
@@ -462,3 +463,17 @@ it('calls pinChatMessage method', function () {
         ->reply()
         ->assertReply('pinChatMessage');
 });
+
+it('calls getMyDefaultAdministratorRights', function ($responseBody) {
+    $bot = Nutgram::fake(responses: [
+        new Response(200, body: $responseBody),
+    ]);
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $rights = $bot->getMyDefaultAdministratorRights();
+
+        expect($rights)->toBeInstanceOf(ChatAdministratorRights::class);
+    });
+
+    $bot->hearText('/start')->reply();
+})->with('response_ChatAdministratorRights');

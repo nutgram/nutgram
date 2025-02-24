@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
 
@@ -9,6 +10,7 @@ use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
  * Represents the {@see https://core.telegram.org/bots/api#botcommandscope scope} of bot commands, covering a specific member of a group or supergroup chat.
  * @see https://core.telegram.org/bots/api#botcommandscopechatmember
  */
+#[SkipConstructor]
 class BotCommandScopeChatMember extends BotCommandScope
 {
     /** Scope type, must be chat_member */

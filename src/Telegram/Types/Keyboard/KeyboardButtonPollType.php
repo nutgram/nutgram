@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -10,6 +11,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
  * @see https://core.telegram.org/bots/api#keyboardbuttonpolltype
  */
+#[SkipConstructor]
 class KeyboardButtonPollType extends BaseType implements JsonSerializable
 {
     /**

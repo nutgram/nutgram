@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -14,6 +15,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the venue.
  * @see https://core.telegram.org/bots/api#inlinequeryresultvenue
  */
+#[SkipConstructor]
 class InlineQueryResultVenue extends InlineQueryResult
 {
     /** Type of the result, must be venue */

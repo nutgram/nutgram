@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -10,6 +11,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Describes the options used for link preview generation.
  * @see https://core.telegram.org/bots/api#linkpreviewoptions
  */
+#[SkipConstructor]
 class LinkPreviewOptions extends BaseType implements JsonSerializable
 {
     /**

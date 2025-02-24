@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -11,6 +12,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Represents a {@see https://core.telegram.org/bots/api#games Game}.
  * @see https://core.telegram.org/bots/api#inlinequeryresultgame
  */
+#[SkipConstructor]
 class InlineQueryResultGame extends InlineQueryResult
 {
     /** Type of the result, must be game */

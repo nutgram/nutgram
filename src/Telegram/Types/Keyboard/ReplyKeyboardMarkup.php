@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -11,6 +12,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * This object represents a {@see https://core.telegram.org/bots/features#keyboards custom keyboard} with reply options (see {@see https://core.telegram.org/bots/features#keyboards Introduction to bots} for details and examples).
  * @see https://core.telegram.org/bots/api#replykeyboardmarkup
  */
+#[SkipConstructor]
 class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
 {
     /**
