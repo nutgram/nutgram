@@ -11,13 +11,21 @@ class RateLimit
     /**
      * @var null|callable(Nutgram $bot, int $availableIn): void
      */
-    public static $warningCallback;
+    protected $warningCallback;
 
     public function __construct(
         protected int $maxAttempts,
         protected int $decaySeconds = 60,
         protected ?string $key = null,
+        $warningCallback = null,
     ) {
+        $this->warningCallback = $warningCallback ?? function (Nutgram $bot, int $availableIn) {
+            $bot->sendMessage('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
+
+            if ($bot->isCallbackQuery()) {
+                $bot->answerCallbackQuery();
+            }
+        };
     }
 
     public function __invoke(Nutgram $bot, $next): void
@@ -43,7 +51,10 @@ class RateLimit
 
         if ($rateLimiter->tooManyAttempts()) {
             if (!$cache->has($rateLimiter->getKey().':warning')) {
-                $this->runWarningCallback($rateLimiter, $bot);
+                $bot->invoke($this->warningCallback, [
+                    'bot' => $bot,
+                    'availableIn' => $rateLimiter->availableIn(),
+                ]);
                 $cache->set($rateLimiter->getKey().':warning', true);
             }
 
@@ -55,20 +66,6 @@ class RateLimit
         $rateLimiter->increment();
 
         $next($bot);
-    }
-
-    public function runWarningCallback(RateLimiter $rateLimiter, Nutgram $bot): void
-    {
-        if (is_callable(static::$warningCallback)) {
-            (static::$warningCallback)($bot, $rateLimiter->availableIn());
-            return;
-        }
-
-        $bot->sendMessage('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
-
-        if ($bot->isCallbackQuery()) {
-            $bot->answerCallbackQuery();
-        }
     }
 
     public function setKey(string $key): self

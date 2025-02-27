@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Support;
 
 use SergiX44\Nutgram\Middleware\RateLimit;
+use SergiX44\Nutgram\Nutgram;
 
 trait InteractsWithRateLimit
 {
@@ -11,12 +12,25 @@ trait InteractsWithRateLimit
 
     protected bool $withoutRateLimit = false;
 
-    public function throttle(int $maxAttempts, int $decaySeconds = 60, ?string $key = null): self
+    /**
+     * @param int $maxAttempts
+     * @param int $decaySeconds
+     * @param string|null $key
+     * @param null|callable(Nutgram $bot, int $availableIn): void $warningCallback
+     * @return self
+     */
+    public function throttle(
+        int $maxAttempts,
+        int $decaySeconds = 60,
+        ?string $key = null,
+        $warningCallback = null
+    ): self
     {
         $this->rateLimiters[] = new RateLimit(
             maxAttempts: $maxAttempts,
             decaySeconds: $decaySeconds,
             key: $key,
+            warningCallback: $warningCallback,
         );
 
         return $this;

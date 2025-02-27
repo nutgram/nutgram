@@ -1,7 +1,6 @@
 <?php
 
 use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
-use SergiX44\Nutgram\Middleware\RateLimit;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\RateLimiter;
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
@@ -9,8 +8,6 @@ use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 beforeEach(function () {
-    RateLimit::$warningCallback = null;
-
     $this->bot = Nutgram::fake();
 
     $this->bot->setCommonUser(User::make(
@@ -51,13 +48,13 @@ it('throttles a handler', function () {
 });
 
 it('throttles with a custom warning message', function () {
-    RateLimit::$warningCallback = function (Nutgram $bot, int $availableIn) {
+    $warningCallback = function (Nutgram $bot, int $availableIn) {
         $bot->sendMessage("You're sending too many messages. Please wait $availableIn seconds.");
     };
 
     $this->bot->onText('hi', function (Nutgram $bot) {
         $bot->sendMessage('Hello!');
-    })->throttle(2);
+    })->throttle(2, warningCallback: $warningCallback);
 
     ArrayCache::setTestNow(new DateTimeImmutable('2025-01-02 01:00:00'));
     RateLimiter::setTestNow(new DateTimeImmutable('2025-01-02 01:00:00'));
