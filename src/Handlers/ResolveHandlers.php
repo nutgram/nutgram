@@ -12,7 +12,6 @@ use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\Type\Command;
-use SergiX44\Nutgram\Middleware\RateLimit;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
@@ -45,8 +44,6 @@ abstract class ResolveHandlers extends CollectHandlers
      * @var Update|null
      */
     protected ?Update $update = null;
-
-    protected ?RateLimit $rateLimit = null;
 
     abstract public function getConfig(): Configuration;
 
@@ -338,16 +335,5 @@ abstract class ResolveHandlers extends CollectHandlers
                 $this->resolveNestedGroups($groups, $middlewares, $scopes, $tags);
             }
         }
-    }
-
-    public function throttle(int $maxAttempts, int $decaySeconds = 60): self
-    {
-        $this->rateLimit = new RateLimit(
-            maxAttempts: $maxAttempts,
-            decaySeconds: $decaySeconds,
-            key: 'global',
-        );
-
-        return $this;
     }
 }
