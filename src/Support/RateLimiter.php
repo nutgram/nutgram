@@ -8,7 +8,7 @@ class RateLimiter
 {
     use InteractsWithTime;
 
-    protected const CACHE_KEY = 'rate_limiter';
+    protected const CACHE_KEY = 'RATE_LIMITER';
 
     protected CacheInterface $cache;
     protected string $key;
