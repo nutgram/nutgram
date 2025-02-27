@@ -7,12 +7,12 @@ use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\Listeners\MessageListeners;
 use SergiX44\Nutgram\Handlers\Listeners\SpecialListeners;
 use SergiX44\Nutgram\Handlers\Listeners\UpdateListeners;
-use SergiX44\Nutgram\Middleware\RateLimit;
+use SergiX44\Nutgram\Support\InteractsWithRateLimit;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 abstract class CollectHandlers
 {
-    use UpdateListeners, MessageListeners, SpecialListeners;
+    use UpdateListeners, MessageListeners, SpecialListeners, InteractsWithRateLimit;
 
     /**
      * @var array
@@ -43,19 +43,6 @@ abstract class CollectHandlers
      * @var bool
      */
     protected bool $finalized = false;
-
-    protected ?RateLimit $rateLimit = null;
-
-    public function throttle(int $maxAttempts, int $decaySeconds = 60): self
-    {
-        $this->rateLimit = new RateLimit(
-            maxAttempts: $maxAttempts,
-            decaySeconds: $decaySeconds,
-            key: 'global',
-        );
-
-        return $this;
-    }
 
     /**
      * @param callable|callable-string|array $callable
