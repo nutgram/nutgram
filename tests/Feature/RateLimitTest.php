@@ -118,66 +118,105 @@ it('throttles globally', function () {
 it('throttles hard', function () {
     $this->bot->throttle(4);
 
-    $this->bot->onText('start', function (Nutgram $bot) {
-        $bot->sendMessage('yep');
+    $this->bot->onText('root_no', function (Nutgram $bot) {
+        $bot->sendMessage('This is the root_no command');
     });
 
+    $this->bot->onText('root_yes', function (Nutgram $bot) {
+        $bot->sendMessage('This is the root_yes command');
+    })->throttle(2);
+
     $this->bot->group(function (Nutgram $bot) {
-        $bot->onText('hello', function (Nutgram $bot) {
-            $bot->sendMessage('world');
-        })->throttle(2);
-
-        $bot->onText('foo', function (Nutgram $bot) {
-            $bot->sendMessage('bar');
-        })->throttle(1);
-
-        $bot->onText('group', function (Nutgram $bot) {
-            $bot->sendMessage('nope');
+        $bot->onText('group_no', function (Nutgram $bot) {
+            $bot->sendMessage('This is the group_no command');
         });
 
-        $bot->onText('illogic', function (Nutgram $bot) {
-            $bot->sendMessage('crazy');
-        })->throttle(10);
+        $bot->onText('group_yes_lower', function (Nutgram $bot) {
+            $bot->sendMessage('This is the group_yes_lower command');
+        })->throttle(2);
+
+        $bot->onText('group_yes_higher', function (Nutgram $bot) {
+            $bot->sendMessage('This is the group_yes_higher command');
+        })->throttle(5);
+
+        $bot->group(function (Nutgram $bot) {
+            $bot->onText('nested_group_no', function (Nutgram $bot) {
+                $bot->sendMessage('This is the nested_group_no command');
+            });
+
+            $bot->onText('nested_group_yes_lower', function (Nutgram $bot) {
+                $bot->sendMessage('This is the nested_group_yes_lower command');
+            })->throttle(1);
+
+            $bot->onText('nested_group_yes_higher', function (Nutgram $bot) {
+                $bot->sendMessage('This is the nested_group_yes_higher command');
+            })->throttle(3);
+
+        })->throttle(2);
+
     })->throttle(3);
 
     ArrayCache::setTestNow(new DateTimeImmutable('2025-01-01 00:00:00'));
     RateLimiter::setTestNow(new DateTimeImmutable('2025-01-01 00:00:00'));
 
-    $this->bot->hearText('start')->reply()->assertReplyText('yep');
-    $this->bot->hearText('start')->reply()->assertReplyText('yep');
-    $this->bot->hearText('start')->reply()->assertReplyText('yep');
-    $this->bot->hearText('start')->reply()->assertReplyText('yep');
-    $this->bot->hearText('start')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
+    $this->bot->hearText('root_no')->reply()->assertReplyText('This is the root_no command');
+    $this->bot->hearText('root_no')->reply()->assertReplyText('This is the root_no command');
+    $this->bot->hearText('root_no')->reply()->assertReplyText('This is the root_no command');
+    $this->bot->hearText('root_no')->reply()->assertReplyText('This is the root_no command');
+    $this->bot->hearText('root_no')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
 
     ArrayCache::setTestNow(new DateTimeImmutable('2025-01-02 00:00:00'));
     RateLimiter::setTestNow(new DateTimeImmutable('2025-01-02 00:00:00'));
 
-    $this->bot->hearText('group')->reply()->assertReplyText('nope');
-    $this->bot->hearText('group')->reply()->assertReplyText('nope');
-    $this->bot->hearText('group')->reply()->assertReplyText('nope');
-    $this->bot->hearText('group')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
+    $this->bot->hearText('root_yes')->reply()->assertReplyText('This is the root_yes command');
+    $this->bot->hearText('root_yes')->reply()->assertReplyText('This is the root_yes command');
+    $this->bot->hearText('root_yes')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
 
     ArrayCache::setTestNow(new DateTimeImmutable('2025-01-03 00:00:00'));
     RateLimiter::setTestNow(new DateTimeImmutable('2025-01-03 00:00:00'));
 
-    $this->bot->hearText('illogic')->reply()->assertReplyText('crazy');
-    $this->bot->hearText('illogic')->reply()->assertReplyText('crazy');
-    $this->bot->hearText('illogic')->reply()->assertReplyText('crazy');
-    $this->bot->hearText('illogic')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
+    $this->bot->hearText('group_no')->reply()->assertReplyText('This is the group_no command');
+    $this->bot->hearText('group_no')->reply()->assertReplyText('This is the group_no command');
+    $this->bot->hearText('group_no')->reply()->assertReplyText('This is the group_no command');
+    $this->bot->hearText('group_no')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
 
     ArrayCache::setTestNow(new DateTimeImmutable('2025-01-04 00:00:00'));
     RateLimiter::setTestNow(new DateTimeImmutable('2025-01-04 00:00:00'));
 
-    $this->bot->hearText('hello')->reply()->assertReplyText('world');
-    $this->bot->hearText('hello')->reply()->assertReplyText('world');
-    $this->bot->hearText('hello')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
-
+    $this->bot->hearText('group_yes_lower')->reply()->assertReplyText('This is the group_yes_lower command');
+    $this->bot->hearText('group_yes_lower')->reply()->assertReplyText('This is the group_yes_lower command');
+    $this->bot->hearText('group_yes_lower')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
 
     ArrayCache::setTestNow(new DateTimeImmutable('2025-01-05 00:00:00'));
     RateLimiter::setTestNow(new DateTimeImmutable('2025-01-05 00:00:00'));
 
-    $this->bot->hearText('foo')->reply()->assertReplyText('bar');
-    $this->bot->hearText('foo')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
+    $this->bot->hearText('group_yes_higher')->reply()->assertReplyText('This is the group_yes_higher command');
+    $this->bot->hearText('group_yes_higher')->reply()->assertReplyText('This is the group_yes_higher command');
+    $this->bot->hearText('group_yes_higher')->reply()->assertReplyText('This is the group_yes_higher command');
+    $this->bot->hearText('group_yes_higher')->reply()->assertReplyText('This is the group_yes_higher command');
+    $this->bot->hearText('group_yes_higher')->reply()->assertReplyText('This is the group_yes_higher command');
+    $this->bot->hearText('group_yes_higher')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
+
+    ArrayCache::setTestNow(new DateTimeImmutable('2025-01-06 00:00:00'));
+    RateLimiter::setTestNow(new DateTimeImmutable('2025-01-06 00:00:00'));
+
+    $this->bot->hearText('nested_group_no')->reply()->assertReplyText('This is the nested_group_no command');
+    $this->bot->hearText('nested_group_no')->reply()->assertReplyText('This is the nested_group_no command');
+    $this->bot->hearText('nested_group_no')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
+
+    ArrayCache::setTestNow(new DateTimeImmutable('2025-01-07 00:00:00'));
+    RateLimiter::setTestNow(new DateTimeImmutable('2025-01-07 00:00:00'));
+
+    $this->bot->hearText('nested_group_yes_lower')->reply()->assertReplyText('This is the nested_group_yes_lower command');
+    $this->bot->hearText('nested_group_yes_lower')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
+
+    ArrayCache::setTestNow(new DateTimeImmutable('2025-01-08 00:00:00'));
+    RateLimiter::setTestNow(new DateTimeImmutable('2025-01-08 00:00:00'));
+
+    $this->bot->hearText('nested_group_yes_higher')->reply()->assertReplyText('This is the nested_group_yes_higher command');
+    $this->bot->hearText('nested_group_yes_higher')->reply()->assertReplyText('This is the nested_group_yes_higher command');
+    $this->bot->hearText('nested_group_yes_higher')->reply()->assertReplyText('This is the nested_group_yes_higher command');
+    $this->bot->hearText('nested_group_yes_higher')->reply()->assertReplyText('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
 });
 
 it('does not throttle if the user or chat is not set', function ($update) {

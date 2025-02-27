@@ -226,11 +226,14 @@ abstract class ResolveHandlers extends CollectHandlers
         // load handler rate limiter
         if ($handler->getRateLimit() !== null) {
             $handler->middleware($handler->getRateLimit());
+            return;
         }
 
-        // load group rate limiters
-        foreach ($handler->groupRateLimiters as $rateLimiter) {
-            $handler->middleware($rateLimiter);
+        // load group rate limiter
+        $groupRateLimiter = $handler->groupRateLimiters[array_key_last($handler->groupRateLimiters)] ?? null;
+        if ($groupRateLimiter !== null) {
+            $handler->middleware($groupRateLimiter);
+            return;
         }
 
         // load global rate limiter
