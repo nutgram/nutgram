@@ -23,27 +23,13 @@ class RateLimiter
         $this->decaySeconds = $decaySeconds;
     }
 
-    public function increment(): int
+    public function increment(): void
     {
         if (!$this->cache->has($this->key.':timer')) {
             $this->cache->set($this->key.':timer', $this->availableAt($this->decaySeconds), $this->decaySeconds);
         }
 
-        if (!$this->cache->has($this->key)) {
-            $this->cache->set($this->key, 0, $this->decaySeconds);
-            $added = true;
-        } else {
-            $added = false;
-        }
-
-        $hits = $this->attempts() + 1;
-        $this->cache->set($this->key, $hits);
-
-        if (!$added && $hits === 1) {
-            $this->cache->set($this->key, 1, $this->decaySeconds);
-        }
-
-        return $hits;
+        $this->cache->set($this->key, $this->attempts() + 1, $this->decaySeconds);
     }
 
     public function tooManyAttempts(): bool
