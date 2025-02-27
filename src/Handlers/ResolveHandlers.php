@@ -220,6 +220,10 @@ abstract class ResolveHandlers extends CollectHandlers
 
     protected function applyRateLimitersTo(Handler $handler): void
     {
+        if ($handler->isWithoutRateLimit()) {
+            return;
+        }
+
         // load handler rate limiter or group rate limiter
         if ($handler->getRateLimit() !== null) {
             $handler->middleware($handler->getRateLimit());
@@ -307,6 +311,7 @@ abstract class ResolveHandlers extends CollectHandlers
                 function ($leaf) use ($rateLimiters, $constraints, $tags, $middlewares, $scopes, $group) {
                     if ($leaf instanceof Handler) {
                         $leaf->appendRateLimiters(array_reverse($rateLimiters));
+                        $leaf->withoutThrottle($group->isWithoutRateLimit());
                         foreach ($middlewares as $middleware) {
                             $leaf->middleware($middleware);
                         }
