@@ -24,8 +24,7 @@ trait InteractsWithRateLimit
         int $decaySeconds = 60,
         ?string $key = null,
         $warningCallback = null
-    ): self
-    {
+    ): self {
         $this->rateLimiters[] = new RateLimit(
             maxAttempts: $maxAttempts,
             decaySeconds: $decaySeconds,

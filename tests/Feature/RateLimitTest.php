@@ -148,9 +148,7 @@ it('throttles hard', function () {
             $bot->onText('nested_group_yes_higher', function (Nutgram $bot) {
                 $bot->sendMessage('This is the nested_group_yes_higher command');
             })->throttle(3, key: 'nested_group_yes_higher');
-
         })->throttle(2, key: 'nested_group');
-
     })->throttle(3, key: 'group');
 
     ArrayCache::setTestNow(new DateTimeImmutable('2025-01-05 00:00:00'));
