@@ -121,7 +121,7 @@ it('throttles hard', function () {
 
     $this->bot->onText('root_yes', function (Nutgram $bot) {
         $bot->sendMessage('This is the root_yes command');
-    })->throttle(2, key: 'root_yes');
+    })->throttle(2);
 
     $this->bot->group(function (Nutgram $bot) {
         $bot->onText('group_no', function (Nutgram $bot) {
@@ -130,11 +130,11 @@ it('throttles hard', function () {
 
         $bot->onText('group_yes_lower', function (Nutgram $bot) {
             $bot->sendMessage('This is the group_yes_lower command');
-        })->throttle(2, key: 'group_yes_lower');
+        })->throttle(2);
 
         $bot->onText('group_yes_higher', function (Nutgram $bot) {
             $bot->sendMessage('This is the group_yes_higher command');
-        })->throttle(5, key: 'group_yes_higher');
+        })->throttle(5);
 
         $bot->group(function (Nutgram $bot) {
             $bot->onText('nested_group_no', function (Nutgram $bot) {
@@ -143,13 +143,13 @@ it('throttles hard', function () {
 
             $bot->onText('nested_group_yes_lower', function (Nutgram $bot) {
                 $bot->sendMessage('This is the nested_group_yes_lower command');
-            })->throttle(1, key: 'nested_group_yes_lower');
+            })->throttle(1);
 
             $bot->onText('nested_group_yes_higher', function (Nutgram $bot) {
                 $bot->sendMessage('This is the nested_group_yes_higher command');
-            })->throttle(3, key: 'nested_group_yes_higher');
-        })->throttle(2, key: 'nested_group');
-    })->throttle(3, key: 'group');
+            })->throttle(3);
+        })->throttle(2);
+    })->throttle(3);
 
     ArrayCache::setTestNow(new DateTimeImmutable('2025-01-05 00:00:00'));
     RateLimiter::setTestNow(new DateTimeImmutable('2025-01-05 00:00:00'));
@@ -269,11 +269,11 @@ it('does not throttle with withoutThrottle method', function () {
     $this->bot->hearText('maybe')->reply()->assertReplyText('maybe');
     $this->bot->hearText('maybe')->reply()->assertReplyText('maybe');
     $this->bot->hearText('maybe')->reply()->assertReplyText('maybe');
-    /*
-        ArrayCache::setTestNow(new DateTimeImmutable('2025-01-06 04:00:00'));
-        RateLimiter::setTestNow(new DateTimeImmutable('2025-01-06 04:00:00'));
 
-        $this->bot->hearText('lol')->reply()->assertReplyText('lol');
-        $this->bot->hearText('lol')->reply()->assertReplyText('lol');
-        $this->bot->hearText('lol')->reply()->assertReplyText('lol');*/
+    ArrayCache::setTestNow(new DateTimeImmutable('2025-01-06 04:00:00'));
+    RateLimiter::setTestNow(new DateTimeImmutable('2025-01-06 04:00:00'));
+
+    $this->bot->hearText('lol')->reply()->assertReplyText('lol');
+    $this->bot->hearText('lol')->reply()->assertReplyText('lol');
+    $this->bot->hearText('lol')->reply()->assertReplyText('lol');
 });
