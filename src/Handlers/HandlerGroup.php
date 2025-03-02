@@ -6,12 +6,13 @@ use Closure;
 use Illuminate\Support\Traits\Macroable;
 use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
+use SergiX44\Nutgram\Support\InteractsWithRateLimit;
 use SergiX44\Nutgram\Support\Taggable;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 
 class HandlerGroup
 {
-    use Taggable, Macroable, Disable, Constraints;
+    use Taggable, Macroable, Disable, Constraints, InteractsWithRateLimit;
 
     protected array $middlewares = [];
 
@@ -45,5 +46,16 @@ class HandlerGroup
     public function getScopes(): array
     {
         return $this->scopes;
+    }
+
+    public function getHash(): string
+    {
+        $data = [
+            'disabled' => $this->disabled,
+            'constraints' => $this->constraints,
+            'tags' => $this->tags,
+        ];
+
+        return (string)crc32(serialize($data));
     }
 }

@@ -7,11 +7,12 @@ use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\Listeners\MessageListeners;
 use SergiX44\Nutgram\Handlers\Listeners\SpecialListeners;
 use SergiX44\Nutgram\Handlers\Listeners\UpdateListeners;
+use SergiX44\Nutgram\Support\InteractsWithRateLimit;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 abstract class CollectHandlers
 {
-    use UpdateListeners, MessageListeners, SpecialListeners;
+    use UpdateListeners, MessageListeners, SpecialListeners, InteractsWithRateLimit;
 
     /**
      * @var array
