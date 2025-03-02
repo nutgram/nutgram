@@ -201,16 +201,7 @@ it('calls handler with different pattern cases', function ($pattern, $input, $pa
     expect($bot)
         ->when($pass, fn ($bot) => $bot->assertCalled('sendMessage'))
         ->unless($pass, fn ($bot) => $bot->assertNoReply());
-})->with([
-    'latin-lower-lower' => ['foo', 'foo', true],
-    'latin-lower-upper' => ['foo', 'FOO', false],
-    'latin-upper-lower' => ['FOO', 'foo', false],
-    'latin-upper-upper' => ['FOO', 'FOO', true],
-    'cyrillic-lower-lower' => ['пример', 'пример', true],
-    'cyrillic-lower-upper' => ['пример', 'ПРИМЕР', false],
-    'cyrillic-upper-lower' => ['ПРИМЕР', 'пример', false],
-    'cyrillic-upper-upper' => ['ПРИМЕР', 'ПРИМЕР', true],
-]);
+})->with('patterns_sensitive');
 
 it('calls handler with insensitive patterns', function ($pattern, $input, $pass) {
     $bot = Nutgram::fake();
@@ -224,16 +215,23 @@ it('calls handler with insensitive patterns', function ($pattern, $input, $pass)
     expect($bot)
         ->when($pass, fn ($bot) => $bot->assertCalled('sendMessage'))
         ->unless($pass, fn ($bot) => $bot->assertNoReply());
-})->with([
-    'latin-lower-lower' => ['foo', 'foo', true],
-    'latin-lower-upper' => ['foo', 'FOO', true],
-    'latin-upper-lower' => ['FOO', 'foo', true],
-    'latin-upper-upper' => ['FOO', 'FOO', true],
-    'cyrillic-lower-lower' => ['пример', 'пример', true],
-    'cyrillic-lower-upper' => ['пример', 'ПРИМЕР', true],
-    'cyrillic-upper-lower' => ['ПРИМЕР', 'пример', true],
-    'cyrillic-upper-upper' => ['ПРИМЕР', 'ПРИМЕР', true],
-]);
+})->with('patterns_insensitive');
+
+it('calls handler with insensitive patterns via group', function ($pattern, $input, $pass) {
+    $bot = Nutgram::fake();
+
+    $bot->group(function (Nutgram $bot) use ($pattern) {
+        $bot->onText($pattern, function (Nutgram $bot) {
+            $bot->sendMessage('called');
+        });
+    })->insensitive();
+
+    $bot->hearText($input)->reply();
+
+    expect($bot)
+        ->when($pass, fn ($bot) => $bot->assertCalled('sendMessage'))
+        ->unless($pass, fn ($bot) => $bot->assertNoReply());
+})->with('patterns_insensitive');
 
 
 it('calls handler with optional regex group', function (string $hear, ?string $expected) {

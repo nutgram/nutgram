@@ -8,6 +8,8 @@ trait Constraints
 {
     protected array $constraints = [];
 
+    protected bool $insensitive = false;
+
     public function where(array|string $parameter, ?string $constraint = null): self
     {
         if (!is_array($parameter)) {
@@ -60,5 +62,17 @@ trait Constraints
     public function getConstraints(): array
     {
         return $this->constraints;
+    }
+
+    public function insensitive(bool $value = true): self
+    {
+        $this->insensitive = $value;
+
+        return $this;
+    }
+
+    public function isInsensitive(): bool
+    {
+        return $this->insensitive;
     }
 }

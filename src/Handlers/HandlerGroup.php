@@ -53,6 +53,7 @@ class HandlerGroup
         $data = [
             'disabled' => $this->disabled,
             'constraints' => $this->constraints,
+            'insensitive' => $this->insensitive,
             'tags' => $this->tags,
         ];
 

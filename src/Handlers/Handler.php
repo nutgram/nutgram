@@ -45,8 +45,6 @@ class Handler extends MiddlewareChain
      */
     protected ?string $pattern;
 
-    protected bool $insensitive = false;
-
     /**
      * @var array
      */
@@ -212,13 +210,6 @@ class Handler extends MiddlewareChain
     protected function getPatternFlags(): string
     {
         return $this->insensitive ? 'mui' : 'mu';
-    }
-
-    public function insensitive(bool $value = true): self
-    {
-        $this->insensitive = $value;
-
-        return $this;
     }
 
     public function getHash(): string
