@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.35.0 - 2025-03-03
+
+### What's Changed
+
+* Add Rate Limiter System by @Lukasss93 in https://github.com/nutgram/nutgram/pull/840
+* Fix missing insensitive method to groups by @Lukasss93 in https://github.com/nutgram/nutgram/pull/854
+* Fix unable to resolve Telegram types with custom constructor by @Lukasss93 in https://github.com/nutgram/nutgram/pull/843
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.34.0...4.35.0
+
 ## 4.34.0 - 2025-02-19
 
 ### What's Changed
