@@ -179,7 +179,7 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @return array
+     * @return array{request: Request, response: Response, error: ?string, options: array}
      */
     public function getRequestHistory(): array
     {

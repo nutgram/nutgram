@@ -12,7 +12,7 @@ class UserCache extends BotCache
 {
     protected const USERDATA_PREFIX = 'USER';
 
-    public function __construct(CacheInterface $cache, ?int $botId)
+    public function __construct(CacheInterface $cache, int $botId)
     {
         parent::__construct($cache, self::USERDATA_PREFIX, $botId);
     }

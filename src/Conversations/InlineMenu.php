@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Conversations;
 
 use InvalidArgumentException;
-use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
@@ -100,11 +99,11 @@ abstract class InlineMenu extends Conversation
     protected function addButtonRow(...$buttons): self
     {
         foreach ($buttons as $button) {
-            if ($button->callback_data === null || !str_contains($button->callback_data, '@')) {
+            if (!str_contains($button->callback_data ?? '', '@')) {
                 continue;
             }
 
-            if (str_starts_with($button->callback_data, '@')) {
+            if (str_starts_with($button->callback_data ?? '', '@')) {
                 $button->callback_data = substr($button->text, 0, Limits::CALLBACK_DATA_LENGTH).$button->callback_data;
             }
 

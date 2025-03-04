@@ -90,6 +90,7 @@ class TypeFaker
                 continue;
             }
 
+            /** @var class-string $typeName */
             $typeName = $property->getType() instanceof \ReflectionUnionType
                 ? $property->getType()->getTypes()[0]->getName()
                 : $property->getType()?->getName();
@@ -123,7 +124,7 @@ class TypeFaker
 
 
     /**
-     * @param string $class
+     * @param class-string $class
      * @param bool $isNullable
      * @return bool
      */
@@ -197,7 +198,7 @@ class TypeFaker
     }
 
     /**
-     * @param string $class
+     * @param class-string $class
      * @return ReflectionClass
      * @throws ReflectionException
      */
