@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use function SergiX44\Nutgram\Support\word_wrap;
 
 test('validate word_wrap logic', function (int $width, string $text, array $expected) {

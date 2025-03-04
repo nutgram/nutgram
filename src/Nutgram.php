@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram;
 
@@ -108,7 +109,7 @@ class Nutgram extends ResolveHandlers
                 '%s/bot%s/%s',
                 $config->apiUrl,
                 $this->token,
-                $config->testEnv ?? false ? 'test/' : ''
+                $config->testEnv ? 'test/' : ''
             ),
             'timeout' => $config->clientTimeout,
             'version' => $config->enableHttp2 ? '2.0' : '1.1',
@@ -321,7 +322,7 @@ class Nutgram extends ResolveHandlers
                     $hashCode = crc32(serialize(get_object_vars($scope)));
 
                     // language_code
-                    foreach ($handler->getAllDescriptions() as $language => $description) {
+                    foreach ($handler->getDescription() as $language => $description) {
                         $myCommands[$hashCode]['scopes'][$language] = $scope;
                         $myCommands[$hashCode]['commands'][$language][] = $handler->toBotCommand($language);
                     }
