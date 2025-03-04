@@ -90,6 +90,7 @@ Official Documentation on [https://nutgram.dev/](https://nutgram.dev)
 - Web Validation
 - Testing system
 - Deep Link helper class
+- Rate Limiting System
 
 ## 🔰 Supported versions
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -14,6 +15,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see {@see https://core.telegram.org/bots/api#replykeyboardmarkup ReplyKeyboardMarkup}).
  * @see https://core.telegram.org/bots/api#replykeyboardremove
  */
+#[SkipConstructor]
 class ReplyKeyboardRemove extends BaseType implements JsonSerializable
 {
     /**

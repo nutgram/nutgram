@@ -6,12 +6,14 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard} that appears right next to the message it belongs to.
  * @see https://core.telegram.org/bots/api#inlinekeyboardmarkup
  */
+#[SkipConstructor]
 class InlineKeyboardMarkup extends BaseType implements JsonSerializable
 {
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use Psr\Http\Message\StreamInterface;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -17,6 +18,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * This object describes a sticker to be added to a sticker set.
  * @see https://core.telegram.org/bots/api#inputsticker
  */
+#[SkipConstructor]
 class InputSticker extends BaseType implements JsonSerializable, Uploadable
 {
     /**

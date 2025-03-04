@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -12,6 +13,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * This object represents an inline button that switches the current user to inline mode in a chosen chat, with an optional default inline query.
  * @see https://core.telegram.org/bots/api#switchinlinequerychosenchat
  */
+#[SkipConstructor]
 class SwitchInlineQueryChosenChat extends BaseType implements JsonSerializable
 {
     /**

@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -13,6 +14,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Describes reply parameters for the message that is being sent.
  * @see https://core.telegram.org/bots/api#replyparameters
  */
+#[SkipConstructor]
 class ReplyParameters extends BaseType implements JsonSerializable
 {
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -14,6 +15,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Represents a link to an article or web page.
  * @see https://core.telegram.org/bots/api#inlinequeryresultarticle
  */
+#[SkipConstructor]
 class InlineQueryResultArticle extends InlineQueryResult
 {
     /** Type of the result, must be article */

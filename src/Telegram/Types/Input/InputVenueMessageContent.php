@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a venue message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputvenuemessagecontent
  */
+#[SkipConstructor]
 class InputVenueMessageContent extends InputMessageContent
 {
     /** Latitude of the venue in degrees */

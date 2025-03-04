@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -15,6 +16,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * {@see https://core.telegram.org/bots/features#chat-and-user-selection More about requesting chats »}
  * @see https://core.telegram.org/bots/api#keyboardbuttonrequestchat
  */
+#[SkipConstructor]
 class KeyboardButtonRequestChat extends BaseType implements JsonSerializable
 {
     /**

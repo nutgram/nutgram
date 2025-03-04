@@ -6,12 +6,14 @@ namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents one shipping option.
  * @see https://core.telegram.org/bots/api#shippingoption
  */
+#[SkipConstructor]
 class ShippingOption extends BaseType implements JsonSerializable
 {
     /** Shipping option identifier */

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
@@ -14,6 +15,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * The error is considered resolved when the file with the document scan changes.
  * @see https://core.telegram.org/bots/api#passportelementerrorfile
  */
+#[SkipConstructor]
 class PassportElementErrorFile extends PassportElementError
 {
     /** Error source, must be file */

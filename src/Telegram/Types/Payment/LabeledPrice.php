@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -12,6 +13,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * This object represents a portion of the price for goods or services.
  * @see https://core.telegram.org/bots/api#labeledprice
  */
+#[SkipConstructor]
 class LabeledPrice extends BaseType implements JsonSerializable
 {
     /** Portion label */
