@@ -103,6 +103,7 @@ class FakeNutgram extends Nutgram
         $c = [
             'client' => ['handler' => $handlerStack, 'base_uri' => ''],
             'api_url' => '',
+            'clock' => TestClock::class,
         ];
 
         if ($config !== null) {

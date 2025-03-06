@@ -7,6 +7,7 @@ namespace SergiX44\Nutgram;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use Laravel\SerializableClosure\SerializableClosure;
+use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -116,6 +117,7 @@ class Nutgram extends ResolveHandlers
             ...$config->clientOptions,
         ]);
         $this->container->set(ClientInterface::class, $this->http);
+        $this->container->singleton(ClockInterface::class, $config->clock);
         $this->container->singleton(Hydrator::class, $config->hydrator);
         $this->container->singleton(CacheInterface::class, $config->cache);
         $this->container->singleton(LoggerInterface::class, $config->logger);

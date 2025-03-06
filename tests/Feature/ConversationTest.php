@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
+use SergiX44\Nutgram\Testing\TestClock;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationEmpty;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithBeforeStep;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithClosing;
@@ -306,7 +306,7 @@ it('restarts the conversation with an expired cache', function ($update) {
     $bot->run();
     expect($bot->get('test'))->toBe(1);
 
-    ArrayCache::setTestNow(new DateTimeImmutable('+13 hours'));
+    TestClock::freeze('+13 hours');
 
     $bot->run();
     expect($bot->get('test'))->toBe(1);
@@ -321,7 +321,7 @@ it('works with ttl = null', function ($update) {
     $bot->run();
     expect($bot->get('test'))->toBe(1);
 
-    ArrayCache::setTestNow(new DateTimeImmutable('+100 hours'));
+    TestClock::freeze('+100 hours');
 
     $bot->run();
     expect($bot->get('test'))->toBe(2);
@@ -336,7 +336,7 @@ it('works with ttl as DateInterval', function ($update) {
     $bot->run();
     expect($bot->get('test'))->toBe(1);
 
-    ArrayCache::setTestNow(new DateTimeImmutable('+2 hours'));
+    TestClock::freeze('+2 hours');
 
     $bot->run();
     expect($bot->get('test'))->toBe(2);
