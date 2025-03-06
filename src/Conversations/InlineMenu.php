@@ -107,7 +107,9 @@ abstract class InlineMenu extends Conversation
                 $button->callback_data = substr($button->text, 0, Limits::CALLBACK_DATA_LENGTH).$button->callback_data;
             }
 
-            @[$callbackData, $method] = explode('@', $button->callback_data);
+            /** @var string $callbackData */
+            /** @var string $method */
+            [$callbackData, $method] = array_pad(explode('@', $button->callback_data ?? ''), 2, '');
 
             if (!method_exists($this, $method)) {
                 throw new InvalidArgumentException("The method $method does not exists.");
@@ -142,7 +144,7 @@ abstract class InlineMenu extends Conversation
     public function handleStep(): mixed
     {
         if ($this->bot->isCallbackQuery()) {
-            $data = $this->bot->callbackQuery()?->data;
+            $data = $this->bot->callbackQuery()?->data ?? '';
 
             $result = null;
             if (isset($this->callbacks[$data])) {
@@ -186,8 +188,10 @@ abstract class InlineMenu extends Conversation
             $message = $this->doUpdate($this->text, $this->chatId, $this->messageId, $this->buttons, $this->opt);
         }
 
-        $this->messageId = $message?->message_id ?? $this->messageId;
-        $this->chatId = $message?->chat?->id ?? $this->chatId;
+        if (!is_bool($message)) {
+            $this->messageId = $message?->message_id ?? $this->messageId;
+            $this->chatId = $message?->chat?->id ?? $this->chatId;
+        }
 
         $this->setSkipHandlers($noHandlers)
             ->setSkipMiddlewares($noMiddlewares)

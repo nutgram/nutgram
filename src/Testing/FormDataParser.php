@@ -65,8 +65,6 @@ class FormDataParser
             }
             if (isset($headers['content-disposition']['filename'])) {
                 try {
-                    $tmpResource = fopen('php://memory', 'rwb+');
-                    fwrite($tmpResource, $value);
                     $tmpResource = Utils::streamFor($value);
                     $error = UPLOAD_ERR_OK;
                 } catch (Throwable) {

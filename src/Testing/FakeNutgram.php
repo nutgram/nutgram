@@ -14,6 +14,7 @@ use JsonException;
 use Psr\Http\Message\RequestInterface;
 use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
+use ReflectionIntersectionType;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionUnionType;
@@ -151,16 +152,14 @@ class FakeNutgram extends Nutgram
 
                         $instance = null;
                         if ($return instanceof ReflectionNamedType) {
-                            $instance = $this->typeFaker->fakeInstanceOf(
-                                $return->getName(),
-                                $partialResult
-                            );
+                            $instance = $this->typeFaker->fakeInstanceOf($return->getName(), $partialResult);
                         } elseif ($return instanceof ReflectionUnionType) {
                             foreach ($return->getTypes() as $type) {
-                                $instance = $this->typeFaker->fakeInstanceOf(
-                                    $type->getName(),
-                                    $partialResult
-                                );
+                                if ($type instanceof ReflectionIntersectionType) {
+                                    throw new RuntimeException('Intersection types are not supported');
+                                }
+
+                                $instance = $this->typeFaker->fakeInstanceOf($type->getName(), $partialResult);
                                 if (is_object($instance)) {
                                     break;
                                 }
@@ -179,7 +178,7 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @return array{request: Request, response: Response, error: ?string, options: array}
+     * @return array<array-key, array{request: Request, response: Response, error: ?string, options: array}>
      */
     public function getRequestHistory(): array
     {
@@ -265,7 +264,7 @@ class FakeNutgram extends Nutgram
         print(str_repeat('-', 25).PHP_EOL);
         $this->printHistory();
         print(sprintf("\n%s\n\n", str_repeat('-', 80)));
-        $this->dumpHistory[] = preg_replace("/\033\[[^m]*m/", '', ob_get_contents());
+        $this->dumpHistory[] = preg_replace("/\033\[[^m]*m/", '', (ob_get_contents() ?: ''));
         flush();
         ob_flush();
 

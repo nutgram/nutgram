@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Testing;
 
 use BackedEnum;
+use InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionIntersectionType;
 use ReflectionProperty;
+use ReflectionUnionType;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Hydrator\Hydrator;
@@ -90,13 +93,11 @@ class TypeFaker
                 continue;
             }
 
-            /** @var class-string $typeName */
-            $typeName = $property->getType() instanceof \ReflectionUnionType
-                ? $property->getType()->getTypes()[0]->getName()
-                : $property->getType()?->getName();
+            $typeName = $this->getPropertyType($property);
 
             // if is a class, try to resolve it
             if ($this->shouldInstantiate($typeName, $isNullable)) {
+                /** @var class-string $typeName */
                 $data[$property->name] = $this->fakeDataFor($typeName, $userDefined);
                 continue;
             }
@@ -124,7 +125,7 @@ class TypeFaker
 
 
     /**
-     * @param class-string $class
+     * @param class-string|string $class
      * @param bool $isNullable
      * @return bool
      */
@@ -211,7 +212,13 @@ class TypeFaker
             $resolver = $this->hydrator->getConcreteFor($reflectionClass->getName());
 
             try {
-                return new ReflectionClass($resolver?->concreteFor($context));
+                $concrete = $resolver?->concreteFor($context);
+
+                if ($concrete === null) {
+                    throw new InvalidArgumentException('Concrete resolver returned null');
+                }
+
+                return new ReflectionClass($concrete);
             } catch (Throwable) {
                 $concretes = $resolver?->getConcretes();
                 if (!empty($concretes)) {
@@ -241,5 +248,30 @@ class TypeFaker
         }
 
         return $wrapped;
+    }
+
+    /**
+     * @param ReflectionProperty $property
+     * @return class-string|string
+     */
+    protected function getPropertyType(ReflectionProperty $property): string
+    {
+        $type = $property->getType();
+
+        if ($type === null) {
+            throw new InvalidArgumentException("Property {$property->name} has no type");
+        }
+
+        if ($type instanceof ReflectionUnionType) {
+            $firstUnionType = $type->getTypes()[0];
+
+            if ($firstUnionType instanceof ReflectionIntersectionType) {
+                throw new InvalidArgumentException("Property {$property->name} has an intersection type");
+            }
+
+            return $firstUnionType->getName();
+        }
+
+        return $type->getName();
     }
 }
