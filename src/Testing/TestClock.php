@@ -72,5 +72,4 @@ class TestClock implements ClockInterface
             throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
         }
     }
-
 }

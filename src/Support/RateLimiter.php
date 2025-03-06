@@ -22,8 +22,7 @@ class RateLimiter
         string $key,
         int $maxAttempts,
         int $decaySeconds = 60
-    )
-    {
+    ) {
         $this->cache = $cache;
         $this->clock = $clock;
         $this->key = sprintf("%s:%s", self::CACHE_KEY, $key);
