@@ -4,7 +4,7 @@ namespace SergiX44\Nutgram\Tests\Fixtures\Conversations;
 
 use SergiX44\Nutgram\Nutgram;
 
-class ConversationWithClosingMultipleSteps extends ConversationWithClosing
+class ConversationWithClosingMultipleSteps extends ConversationWithHooks
 {
     public function start(Nutgram $bot)
     {
