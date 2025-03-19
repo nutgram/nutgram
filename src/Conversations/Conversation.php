@@ -72,7 +72,6 @@ abstract class Conversation
     {
         $this->closing($this->bot);
         $this->bot->endConversation($this->userId, $this->chatId);
-        $this->closed($this->bot);
     }
 
     /**
@@ -85,20 +84,11 @@ abstract class Conversation
     }
 
     /**
-     * Developer defined function called when the conversation is shutting down.
+     * Developer defined function called when the conversation is shut down.
      * @param  Nutgram  $bot
      * @return void
      */
     protected function closing(Nutgram $bot)
-    {
-    }
-
-    /**
-     * Developer defined function called when the conversation is shut down.
-     * @param Nutgram $bot
-     * @return void
-     */
-    protected function closed(Nutgram $bot)
     {
     }
 
@@ -130,7 +120,6 @@ abstract class Conversation
         $this->bot = $bot;
         $this->closing($this->bot);
         $this->bot->endConversation($userId, $chatId);
-        $this->closed($this->bot);
     }
 
     /**

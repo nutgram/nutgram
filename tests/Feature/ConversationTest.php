@@ -7,10 +7,10 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationEmpty;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithBeforeStep;
+use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithClosing;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithClosingMultipleSteps;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithConstructor;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithDefault;
-use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithHooks;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithMissingStep;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithSkipHandlersMultipleSteps;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithSkipMiddlewareMultipleSteps;
@@ -52,14 +52,12 @@ it('starts from an handler', function ($update) {
     expect($bot->get('test'))->toBe(1);
 })->with('message');
 
-it('calls the closing and closed hooks', function ($update) {
+it('calls the closing handler', function ($update) {
     $bot = Nutgram::fake($update);
-    $bot->onMessage(ConversationWithHooks::class);
+    $bot->onMessage(ConversationWithClosing::class);
     $bot->run();
 
-    expect($bot->get('start_called', false))->toBe(true);
-    expect($bot->get('closing_called', false))->toBe(true);
-    expect($bot->get('closed_called', false))->toBe(true);
+    expect($bot->get('test'))->toBe(2);
 })->with('message');
 
 it('calls the before step handler', function ($update) {
