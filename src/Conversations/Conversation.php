@@ -70,8 +70,8 @@ abstract class Conversation
      */
     protected function end(): void
     {
-        $this->closing($this->bot);
         $this->bot->endConversation($this->userId, $this->chatId);
+        $this->closing($this->bot);
     }
 
     /**
@@ -118,8 +118,8 @@ abstract class Conversation
     public function terminate(Nutgram $bot, ?int $userId = null, ?int $chatId = null): void
     {
         $this->bot = $bot;
-        $this->closing($this->bot);
         $this->bot->endConversation($userId, $chatId);
+        $this->closing($this->bot);
     }
 
     /**
