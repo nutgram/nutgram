@@ -14,11 +14,11 @@ trait GlobalCacheProxy
 {
     /**
      * @param  $key
-     * @param  null  $default
+     * @param  mixed  $default
      * @return mixed
      * @throws InvalidArgumentException
      */
-    public function getGlobalData($key, $default = null): mixed
+    public function getGlobalData($key, mixed $default = null): mixed
     {
         return $this->globalCache->get($key, $default);
     }

@@ -19,11 +19,11 @@ class UserCache extends BotCache
     /**
      * @param  int  $userId
      * @param  string  $key
-     * @param  null  $default
+     * @param  mixed  $default
      * @return mixed
      * @throws InvalidArgumentException
      */
-    public function get(int $userId, string $key, $default = null): mixed
+    public function get(int $userId, string $key, mixed $default = null): mixed
     {
         return $this->cache->get($this->makeKey($userId, $key), $default);
     }

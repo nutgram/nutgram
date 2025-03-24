@@ -72,10 +72,10 @@ class ArrayCache implements CacheInterface
 
     /**
      * @param  iterable  $keys
-     * @param  null  $default
+     * @param  mixed  $default
      * @return array
      */
-    public function getMultiple($keys, $default = null): array
+    public function getMultiple($keys, mixed $default = null): array
     {
         $values = [];
 
