@@ -15,7 +15,7 @@ trait UserCacheProxy
     /**
      * @param  $key
      * @param  int|null  $userId
-     * @param  null  $default
+     * @param  mixed  $default
      * @return mixed
      * @throws InvalidArgumentException
      */

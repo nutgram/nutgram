@@ -14,7 +14,7 @@ trait GlobalCacheProxy
 {
     /**
      * @param  $key
-     * @param  null  $default
+     * @param  mixed  $default
      * @return mixed
      * @throws InvalidArgumentException
      */
