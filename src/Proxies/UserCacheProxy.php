@@ -19,7 +19,7 @@ trait UserCacheProxy
      * @return mixed
      * @throws InvalidArgumentException
      */
-    public function getUserData($key, ?int $userId = null, mixed $default = null): mixed
+    public function getUserData($key, ?int $userId = null, $default = null): mixed
     {
         $userId = $userId ?? $this->userId();
         return $this->userCache->get($userId, $key, $default);
