@@ -20,7 +20,7 @@ class UserCache extends BotCache
     /**
      * @param  int  $userId
      * @param  string  $key
-     * @param  null  $default
+     * @param  mixed  $default
      * @return mixed
      * @throws InvalidArgumentException
      */
