@@ -38,12 +38,17 @@
     },
     "require-dev": {
         "ext-reflection": "*",
-        "dms/phpunit-arraysubset-asserts": "^0.5.0",
-        "pestphp/pest": "^2.5",
-        "pestphp/pest-plugin-mock": "^2.0",
+        "dms/phpunit-arraysubset-asserts": "dev-add-phpunit-11-support",
+        "pestphp/pest": "^3.0",
         "roave/security-advisories": "dev-latest",
         "vimeo/psalm": "^6.1.0"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/pieterocp/phpunit-arraysubset-asserts"
+        }
+    ],
     "suggest": {
         "ext-sodium": "To validate WebApp data for Third-Party Use"
     },

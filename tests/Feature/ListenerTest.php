@@ -42,7 +42,7 @@ it('throws exception after finalization', function ($update) {
 
     $bot->onMessage(function ($bot) use (&$test) {
     });
-})->expectException(StatusFinalizedException::class)->with('message');
+})->throws(StatusFinalizedException::class)->with('message');
 
 it('calls the message handler with a middleware', function ($update) {
     $bot = Nutgram::fake($update);
@@ -270,7 +270,7 @@ it('doesnt call the exception handler when cleared', function ($update) {
     $bot->clearErrorHandlers(exception: true);
 
     $bot->reply();
-})->with('callback_query')->expectException(RuntimeException::class);
+})->with('callback_query')->throws(RuntimeException::class);
 
 it('calls the specific exception handler', function ($update) {
     $bot = Nutgram::fake($update);
