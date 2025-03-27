@@ -27,7 +27,8 @@ class MenuButtonWebApp extends MenuButton
      */
     public WebAppInfo $web_app;
 
-    public function make(string $text, WebAppInfo $web_app): self {
+    public function make(string $text, WebAppInfo $web_app): self
+    {
         $instance = new self;
         $instance->text = $text;
         $instance->web_app = $web_app;
