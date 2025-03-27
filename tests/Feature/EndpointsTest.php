@@ -479,3 +479,14 @@ it('calls getMyDefaultAdministratorRights', function ($responseBody) {
 
     $bot->hearText('/start')->reply();
 })->with('response_ChatAdministratorRights');
+
+it('returns a list of my commands', function ($responseBody) {
+    $bot = Nutgram::fake(responses: [
+        new Response(200, body: $responseBody),
+    ]);
+
+    $commands = $bot->getMyCommands();
+
+    expect($commands)->toBeArray()->toHaveCount(2);
+    expect($commands[0]->getBot())->toBeInstanceOf(Nutgram::class);
+})->with('response_my_commands');
