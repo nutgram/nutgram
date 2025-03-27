@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a location message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputlocationmessagecontent
  */
-#[SkipConstructor]
 class InputLocationMessageContent extends InputMessageContent
 {
     /** Latitude of the location in degrees */
@@ -46,23 +44,6 @@ class InputLocationMessageContent extends InputMessageContent
      */
     public ?int $proximity_alert_radius = null;
 
-    public function __construct(
-        float $latitude,
-        float $longitude,
-        ?float $horizontal_accuracy = null,
-        ?int $live_period = null,
-        ?int $heading = null,
-        ?int $proximity_alert_radius = null,
-    ) {
-        parent::__construct();
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
-        $this->horizontal_accuracy = $horizontal_accuracy;
-        $this->live_period = $live_period;
-        $this->heading = $heading;
-        $this->proximity_alert_radius = $proximity_alert_radius;
-    }
-
     public static function make(
         float $latitude,
         float $longitude,
@@ -71,14 +52,15 @@ class InputLocationMessageContent extends InputMessageContent
         ?int $heading = null,
         ?int $proximity_alert_radius = null,
     ): self {
-        return new self(
-            latitude: $latitude,
-            longitude: $longitude,
-            horizontal_accuracy: $horizontal_accuracy,
-            live_period: $live_period,
-            heading: $heading,
-            proximity_alert_radius: $proximity_alert_radius,
-        );
+        $instance = new self;
+        $instance->latitude = $latitude;
+        $instance->longitude = $longitude;
+        $instance->horizontal_accuracy = $horizontal_accuracy;
+        $instance->live_period = $live_period;
+        $instance->heading = $heading;
+        $instance->proximity_alert_radius = $proximity_alert_radius;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a contact message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputcontactmessagecontent
  */
-#[SkipConstructor]
 class InputContactMessageContent extends InputMessageContent
 {
     /** Contact's phone number */
@@ -32,31 +30,19 @@ class InputContactMessageContent extends InputMessageContent
      */
     public ?string $vcard = null;
 
-    public function __construct(
-        string $phone_number,
-        string $first_name,
-        ?string $last_name = null,
-        ?string $vcard = null,
-    ) {
-        parent::__construct();
-        $this->phone_number = $phone_number;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
-        $this->vcard = $vcard;
-    }
-
     public static function make(
         string $phone_number,
         string $first_name,
         ?string $last_name = null,
         ?string $vcard = null,
     ): self {
-        return new self(
-            phone_number: $phone_number,
-            first_name: $first_name,
-            last_name: $last_name,
-            vcard: $vcard
-        );
+        $instance = new self;
+        $instance->phone_number = $phone_number;
+        $instance->first_name = $first_name;
+        $instance->last_name = $last_name;
+        $instance->vcard = $vcard;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

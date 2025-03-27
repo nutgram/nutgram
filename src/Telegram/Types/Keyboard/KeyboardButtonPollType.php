@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -13,7 +12,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
  * @see https://core.telegram.org/bots/api#keyboardbuttonpolltype
  */
-#[SkipConstructor]
 class KeyboardButtonPollType extends BaseType implements JsonSerializable
 {
     /**
@@ -24,15 +22,12 @@ class KeyboardButtonPollType extends BaseType implements JsonSerializable
      */
     public ?string $type = null;
 
-    public function __construct(?string $type = null)
-    {
-        parent::__construct();
-        $this->type = $type;
-    }
-
     public static function make(?string $type = null): self
     {
-        return new self(type: $type);
+        $instance = new self;
+        $instance->type = $type;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

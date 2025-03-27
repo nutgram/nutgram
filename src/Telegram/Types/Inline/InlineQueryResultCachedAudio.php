@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -20,7 +19,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
  * @see https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
  */
-#[SkipConstructor]
 class InlineQueryResultCachedAudio extends InlineQueryResult
 {
     /** Type of the result, must be audio */
@@ -67,25 +65,6 @@ class InlineQueryResultCachedAudio extends InlineQueryResult
      */
     public ?InputMessageContent $input_message_content = null;
 
-    public function __construct(
-        string $id,
-        string $audio_file_id,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?InputMessageContent $input_message_content = null,
-    ) {
-        parent::__construct();
-        $this->id = $id;
-        $this->audio_file_id = $audio_file_id;
-        $this->caption = $caption;
-        $this->parse_mode = $parse_mode;
-        $this->caption_entities = $caption_entities;
-        $this->reply_markup = $reply_markup;
-        $this->input_message_content = $input_message_content;
-    }
-
     public static function make(
         string $id,
         string $audio_file_id,
@@ -95,15 +74,16 @@ class InlineQueryResultCachedAudio extends InlineQueryResult
         ?InlineKeyboardMarkup $reply_markup = null,
         ?InputMessageContent $input_message_content = null,
     ): self {
-        return new self(
-            id: $id,
-            audio_file_id: $audio_file_id,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            reply_markup: $reply_markup,
-            input_message_content: $input_message_content,
-        );
+        $instance = new self;
+        $instance->id = $id;
+        $instance->audio_file_id = $audio_file_id;
+        $instance->caption = $caption;
+        $instance->parse_mode = $parse_mode;
+        $instance->caption_entities = $caption_entities;
+        $instance->reply_markup = $reply_markup;
+        $instance->input_message_content = $input_message_content;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

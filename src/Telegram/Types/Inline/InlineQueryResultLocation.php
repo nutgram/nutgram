@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -17,7 +16,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the location.
  * @see https://core.telegram.org/bots/api#inlinequeryresultlocation
  */
-#[SkipConstructor]
 class InlineQueryResultLocation extends InlineQueryResult
 {
     /** Type of the result, must be location */
@@ -92,37 +90,6 @@ class InlineQueryResultLocation extends InlineQueryResult
      */
     public ?int $thumbnail_height = null;
 
-    public function __construct(
-        string $id,
-        float $latitude,
-        float $longitude,
-        string $title,
-        ?float $horizontal_accuracy = null,
-        ?int $live_period = null,
-        ?int $heading = null,
-        ?int $proximity_alert_radius = null,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?InputMessageContent $input_message_content = null,
-        ?string $thumbnail_url = null,
-        ?int $thumbnail_width = null,
-        ?int $thumbnail_height = null,
-    ) {
-        parent::__construct();
-        $this->id = $id;
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
-        $this->title = $title;
-        $this->horizontal_accuracy = $horizontal_accuracy;
-        $this->live_period = $live_period;
-        $this->heading = $heading;
-        $this->proximity_alert_radius = $proximity_alert_radius;
-        $this->reply_markup = $reply_markup;
-        $this->input_message_content = $input_message_content;
-        $this->thumbnail_url = $thumbnail_url;
-        $this->thumbnail_width = $thumbnail_width;
-        $this->thumbnail_height = $thumbnail_height;
-    }
-
     public static function make(
         string $id,
         float $latitude,
@@ -138,21 +105,22 @@ class InlineQueryResultLocation extends InlineQueryResult
         ?int $thumbnail_width = null,
         ?int $thumbnail_height = null,
     ): self {
-        return new self(
-            id: $id,
-            latitude: $latitude,
-            longitude: $longitude,
-            title: $title,
-            horizontal_accuracy: $horizontal_accuracy,
-            live_period: $live_period,
-            heading: $heading,
-            proximity_alert_radius: $proximity_alert_radius,
-            reply_markup: $reply_markup,
-            input_message_content: $input_message_content,
-            thumbnail_url: $thumbnail_url,
-            thumbnail_width: $thumbnail_width,
-            thumbnail_height: $thumbnail_height,
-        );
+        $instance = new self;
+        $instance->id = $id;
+        $instance->latitude = $latitude;
+        $instance->longitude = $longitude;
+        $instance->title = $title;
+        $instance->horizontal_accuracy = $horizontal_accuracy;
+        $instance->live_period = $live_period;
+        $instance->heading = $heading;
+        $instance->proximity_alert_radius = $proximity_alert_radius;
+        $instance->reply_markup = $reply_markup;
+        $instance->input_message_content = $input_message_content;
+        $instance->thumbnail_url = $thumbnail_url;
+        $instance->thumbnail_width = $thumbnail_width;
+        $instance->thumbnail_height = $thumbnail_height;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

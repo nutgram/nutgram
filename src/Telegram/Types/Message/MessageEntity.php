@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MessageEntityType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -17,7 +16,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * For example, hashtags, usernames, URLs, etc.
  * @see https://core.telegram.org/bots/api#messageentity
  */
-#[SkipConstructor]
 class MessageEntity extends BaseType implements JsonSerializable
 {
     /**
@@ -58,25 +56,6 @@ class MessageEntity extends BaseType implements JsonSerializable
      */
     public ?string $custom_emoji_id = null;
 
-    public function __construct(
-        MessageEntityType|string $type,
-        int $offset,
-        int $length,
-        ?string $url = null,
-        ?User $user = null,
-        ?string $language = null,
-        ?string $custom_emoji_id = null,
-    ) {
-        parent::__construct();
-        $this->type = $type;
-        $this->offset = $offset;
-        $this->length = $length;
-        $this->url = $url;
-        $this->user = $user;
-        $this->language = $language;
-        $this->custom_emoji_id = $custom_emoji_id;
-    }
-
     public static function make(
         MessageEntityType|string $type,
         int $offset,
@@ -86,15 +65,16 @@ class MessageEntity extends BaseType implements JsonSerializable
         ?string $language = null,
         ?string $custom_emoji_id = null,
     ): self {
-        return new self(
-            type: $type,
-            offset: $offset,
-            length: $length,
-            url: $url,
-            user: $user,
-            language: $language,
-            custom_emoji_id: $custom_emoji_id
-        );
+        $instance = new self;
+        $instance->type = $type;
+        $instance->offset = $offset;
+        $instance->length = $length;
+        $instance->url = $url;
+        $instance->user = $user;
+        $instance->language = $language;
+        $instance->custom_emoji_id = $custom_emoji_id;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

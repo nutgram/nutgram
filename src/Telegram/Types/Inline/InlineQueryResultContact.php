@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -17,7 +16,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the contact.
  * @see https://core.telegram.org/bots/api#inlinequeryresultcontact
  */
-#[SkipConstructor]
 class InlineQueryResultContact extends InlineQueryResult
 {
     /** Type of the result, must be contact */
@@ -75,31 +73,6 @@ class InlineQueryResultContact extends InlineQueryResult
      */
     public ?int $thumbnail_height = null;
 
-    public function __construct(
-        string $id,
-        string $phone_number,
-        string $first_name,
-        ?string $last_name = null,
-        ?string $vcard = null,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?InputMessageContent $input_message_content = null,
-        ?string $thumbnail_url = null,
-        ?int $thumbnail_width = null,
-        ?int $thumbnail_height = null,
-    ) {
-        parent::__construct();
-        $this->id = $id;
-        $this->phone_number = $phone_number;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
-        $this->vcard = $vcard;
-        $this->reply_markup = $reply_markup;
-        $this->input_message_content = $input_message_content;
-        $this->thumbnail_url = $thumbnail_url;
-        $this->thumbnail_width = $thumbnail_width;
-        $this->thumbnail_height = $thumbnail_height;
-    }
-
     public static function make(
         string $id,
         string $phone_number,
@@ -112,18 +85,19 @@ class InlineQueryResultContact extends InlineQueryResult
         ?int $thumbnail_width = null,
         ?int $thumbnail_height = null,
     ): self {
-        return new self(
-            id: $id,
-            phone_number: $phone_number,
-            first_name: $first_name,
-            last_name: $last_name,
-            vcard: $vcard,
-            reply_markup: $reply_markup,
-            input_message_content: $input_message_content,
-            thumbnail_url: $thumbnail_url,
-            thumbnail_width: $thumbnail_width,
-            thumbnail_height: $thumbnail_height,
-        );
+        $instance = new self;
+        $instance->id = $id;
+        $instance->phone_number = $phone_number;
+        $instance->first_name = $first_name;
+        $instance->last_name = $last_name;
+        $instance->vcard = $vcard;
+        $instance->reply_markup = $reply_markup;
+        $instance->input_message_content = $input_message_content;
+        $instance->thumbnail_url = $thumbnail_url;
+        $instance->thumbnail_width = $thumbnail_width;
+        $instance->thumbnail_height = $thumbnail_height;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

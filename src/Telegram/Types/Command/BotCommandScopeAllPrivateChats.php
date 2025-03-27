@@ -17,7 +17,7 @@ class BotCommandScopeAllPrivateChats extends BotCommandScope
     #[EnumOrScalar]
     public BotCommandScopeType|string $type = BotCommandScopeType::ALL_PRIVATE_CHATS;
 
-    public function make(): self
+    public static function make(): self
     {
         return new self();
     }

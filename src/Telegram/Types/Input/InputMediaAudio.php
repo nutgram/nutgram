@@ -6,7 +6,6 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -18,7 +17,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Represents an audio file to be treated as music to be sent.
  * @see https://core.telegram.org/bots/api#inputmediaaudio
  */
-#[SkipConstructor]
 class InputMediaAudio extends InputMedia implements JsonSerializable
 {
     /** Type of the result, must be audio */
@@ -77,27 +75,6 @@ class InputMediaAudio extends InputMedia implements JsonSerializable
      */
     public ?string $title = null;
 
-    public function __construct(
-        InputFile|string $media,
-        InputFile|string|null $thumbnail,
-        ?string $caption,
-        ParseMode|string|null $parse_mode,
-        ?array $caption_entities,
-        ?int $duration,
-        ?string $performer,
-        ?string $title
-    ) {
-        parent::__construct();
-        $this->media = $media;
-        $this->thumbnail = $thumbnail;
-        $this->caption = $caption;
-        $this->parse_mode = $parse_mode;
-        $this->caption_entities = $caption_entities;
-        $this->duration = $duration;
-        $this->performer = $performer;
-        $this->title = $title;
-    }
-
     public static function make(
         InputFile|string $media,
         InputFile|string|null $thumbnail = null,
@@ -108,16 +85,17 @@ class InputMediaAudio extends InputMedia implements JsonSerializable
         ?string $performer = null,
         ?string $title = null
     ): self {
-        return new self(
-            media: $media,
-            thumbnail: $thumbnail,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            duration: $duration,
-            performer: $performer,
-            title: $title
-        );
+        $instance = new self;
+        $instance->media = $media;
+        $instance->thumbnail = $thumbnail;
+        $instance->caption = $caption;
+        $instance->parse_mode = $parse_mode;
+        $instance->caption_entities = $caption_entities;
+        $instance->duration = $duration;
+        $instance->performer = $performer;
+        $instance->title = $title;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

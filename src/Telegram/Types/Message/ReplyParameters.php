@@ -6,7 +6,6 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -14,7 +13,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Describes reply parameters for the message that is being sent.
  * @see https://core.telegram.org/bots/api#replyparameters
  */
-#[SkipConstructor]
 class ReplyParameters extends BaseType implements JsonSerializable
 {
     /**
@@ -65,44 +63,6 @@ class ReplyParameters extends BaseType implements JsonSerializable
      */
     public ?int $quote_position = null;
 
-    /**
-     * @param int $message_id
-     * @param int|string|null $chat_id
-     * @param bool|null $allow_sending_without_reply
-     * @param string|null $quote
-     * @param string|null $quote_parse_mode
-     * @param MessageEntity[]|null $quote_entities
-     * @param int|null $quote_position
-     */
-    public function __construct(
-        int $message_id,
-        int|string|null $chat_id = null,
-        ?bool $allow_sending_without_reply = null,
-        ?string $quote = null,
-        ?string $quote_parse_mode = null,
-        ?array $quote_entities = null,
-        ?int $quote_position = null
-    ) {
-        parent::__construct();
-        $this->message_id = $message_id;
-        $this->chat_id = $chat_id;
-        $this->allow_sending_without_reply = $allow_sending_without_reply;
-        $this->quote = $quote;
-        $this->quote_parse_mode = $quote_parse_mode;
-        $this->quote_entities = $quote_entities;
-        $this->quote_position = $quote_position;
-    }
-
-    /**
-     * @param int $message_id
-     * @param int|string|null $chat_id
-     * @param bool|null $allow_sending_without_reply
-     * @param string|null $quote
-     * @param string|null $quote_parse_mode
-     * @param MessageEntity[]|null $quote_entities
-     * @param int|null $quote_position
-     * @return self
-     */
     public static function make(
         int $message_id,
         int|string|null $chat_id = null,
@@ -112,15 +72,16 @@ class ReplyParameters extends BaseType implements JsonSerializable
         ?array $quote_entities = null,
         ?int $quote_position = null
     ): self {
-        return new self(
-            message_id: $message_id,
-            chat_id: $chat_id,
-            allow_sending_without_reply: $allow_sending_without_reply,
-            quote: $quote,
-            quote_parse_mode: $quote_parse_mode,
-            quote_entities: $quote_entities,
-            quote_position: $quote_position
-        );
+        $instance = new self;
+        $instance->message_id = $message_id;
+        $instance->chat_id = $chat_id;
+        $instance->allow_sending_without_reply = $allow_sending_without_reply;
+        $instance->quote = $quote;
+        $instance->quote_parse_mode = $quote_parse_mode;
+        $instance->quote_entities = $quote_entities;
+        $instance->quote_position = $quote_position;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

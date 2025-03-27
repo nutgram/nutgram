@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
@@ -15,7 +14,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * The error is considered resolved when the file with the document scan changes.
  * @see https://core.telegram.org/bots/api#passportelementerrorfile
  */
-#[SkipConstructor]
 class PassportElementErrorFile extends PassportElementError
 {
     /** Error source, must be file */
@@ -32,27 +30,17 @@ class PassportElementErrorFile extends PassportElementError
     /** Error message */
     public string $message;
 
-    public function __construct(
-        PassportType|string $type,
-        string $file_hash,
-        string $message
-    ) {
-        parent::__construct();
-        $this->type = $type;
-        $this->file_hash = $file_hash;
-        $this->message = $message;
-    }
-
     public static function make(
         PassportType|string $type,
         string $file_hash,
         string $message
     ): self {
-        return new self(
-            type: $type,
-            file_hash: $file_hash,
-            message: $message
-        );
+        $instance = new self;
+        $instance->type = $type;
+        $instance->file_hash = $file_hash;
+        $instance->message = $message;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

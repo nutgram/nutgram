@@ -257,50 +257,50 @@ test('all scopes', function () {
         $bot->sendMessage('Private command!');
     })
         ->description('Private command')
-        ->scope(new BotCommandScopeAllPrivateChats);
+        ->scope(BotCommandScopeAllPrivateChats::make());
 
     $bot->onCommand('chat_a', function (Nutgram $bot) {
         $bot->sendMessage('ChatA command!');
     })
         ->description('ChatA command')
-        ->scope(new BotCommandScopeChat(123));
+        ->scope(BotCommandScopeChat::make(123));
 
     $bot->onCommand('chat_b', function (Nutgram $bot) {
         $bot->sendMessage('ChatB command!');
     })
         ->description('ChatB command')
-        ->scope(new BotCommandScopeChat(456));
+        ->scope(BotCommandScopeChat::make(456));
 
     $bot->onCommand('chat_admin_a', function (Nutgram $bot) {
         $bot->sendMessage('ChatAdminA command!');
     })
         ->description('ChatAdminA command')
-        ->scope(new BotCommandScopeChatAdministrators(123));
+        ->scope(BotCommandScopeChatAdministrators::make(123));
 
     $bot->onCommand('chat_admin_b', function (Nutgram $bot) {
         $bot->sendMessage('ChatAdminB command!');
     })
         ->description('ChatAdminB command')
-        ->scope(new BotCommandScopeChatAdministrators(456));
+        ->scope(BotCommandScopeChatAdministrators::make(456));
 
     $bot->onCommand('chat_member_a', function (Nutgram $bot) {
         $bot->sendMessage('ChatMemberA command!');
     })
         ->description('ChatMemberA command')
-        ->scope(new BotCommandScopeChatMember(123, 987));
+        ->scope(BotCommandScopeChatMember::make(123, 987));
 
     $bot->onCommand('chat_member_b', function (Nutgram $bot) {
         $bot->sendMessage('ChatMemberB command!');
     })
         ->description('ChatMemberB command')
-        ->scope(new BotCommandScopeChatMember(123, 654));
+        ->scope(BotCommandScopeChatMember::make(123, 654));
 
     $bot->onCommand('chat_member_c', function (Nutgram $bot) {
         $bot->sendMessage('ChatMemberC command!');
     })
         ->description('ChatMemberC command')
-        ->scope(new BotCommandScopeChatMember(456, 321))
-        ->scope(new BotCommandScopeChatMember(123, 654));
+        ->scope(BotCommandScopeChatMember::make(456, 321))
+        ->scope(BotCommandScopeChatMember::make(123, 654));
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
         $history[] = $request['json'];

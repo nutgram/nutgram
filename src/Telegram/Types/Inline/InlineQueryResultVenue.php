@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -17,7 +16,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the venue.
  * @see https://core.telegram.org/bots/api#inlinequeryresultvenue
  */
-#[SkipConstructor]
 class InlineQueryResultVenue extends InlineQueryResult
 {
     /** Type of the result, must be venue */
@@ -95,39 +93,6 @@ class InlineQueryResultVenue extends InlineQueryResult
      */
     public ?int $thumbnail_height = null;
 
-    public function __construct(
-        string $id,
-        float $latitude,
-        float $longitude,
-        string $title,
-        string $address,
-        ?string $foursquare_id = null,
-        ?string $foursquare_type = null,
-        ?string $google_place_id = null,
-        ?string $google_place_type = null,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?InputMessageContent $input_message_content = null,
-        ?string $thumbnail_url = null,
-        ?int $thumbnail_width = null,
-        ?int $thumbnail_height = null,
-    ) {
-        parent::__construct();
-        $this->id = $id;
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
-        $this->title = $title;
-        $this->address = $address;
-        $this->foursquare_id = $foursquare_id;
-        $this->foursquare_type = $foursquare_type;
-        $this->google_place_id = $google_place_id;
-        $this->google_place_type = $google_place_type;
-        $this->reply_markup = $reply_markup;
-        $this->input_message_content = $input_message_content;
-        $this->thumbnail_url = $thumbnail_url;
-        $this->thumbnail_width = $thumbnail_width;
-        $this->thumbnail_height = $thumbnail_height;
-    }
-
     public static function make(
         string $id,
         float $latitude,
@@ -144,22 +109,23 @@ class InlineQueryResultVenue extends InlineQueryResult
         ?int $thumbnail_width = null,
         ?int $thumbnail_height = null,
     ): self {
-        return new self(
-            id: $id,
-            latitude: $latitude,
-            longitude: $longitude,
-            title: $title,
-            address: $address,
-            foursquare_id: $foursquare_id,
-            foursquare_type: $foursquare_type,
-            google_place_id: $google_place_id,
-            google_place_type: $google_place_type,
-            reply_markup: $reply_markup,
-            input_message_content: $input_message_content,
-            thumbnail_url: $thumbnail_url,
-            thumbnail_width: $thumbnail_width,
-            thumbnail_height: $thumbnail_height,
-        );
+        $instance = new self;
+        $instance->id = $id;
+        $instance->latitude = $latitude;
+        $instance->longitude = $longitude;
+        $instance->title = $title;
+        $instance->address = $address;
+        $instance->foursquare_id = $foursquare_id;
+        $instance->foursquare_type = $foursquare_type;
+        $instance->google_place_id = $google_place_id;
+        $instance->google_place_type = $google_place_type;
+        $instance->reply_markup = $reply_markup;
+        $instance->input_message_content = $input_message_content;
+        $instance->thumbnail_url = $thumbnail_url;
+        $instance->thumbnail_width = $thumbnail_width;
+        $instance->thumbnail_height = $thumbnail_height;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

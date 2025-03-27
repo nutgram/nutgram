@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use Psr\Http\Message\StreamInterface;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -18,7 +17,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * This object describes a sticker to be added to a sticker set.
  * @see https://core.telegram.org/bots/api#inputsticker
  */
-#[SkipConstructor]
 class InputSticker extends BaseType implements JsonSerializable, Uploadable
 {
     /**
@@ -56,21 +54,6 @@ class InputSticker extends BaseType implements JsonSerializable, Uploadable
      */
     public ?array $keywords = null;
 
-    public function __construct(
-        InputFile|string $sticker,
-        array $emoji_list,
-        ?MaskPosition $mask_position = null,
-        ?array $keywords = null,
-        StickerFormat|string|null $format = null,
-    ) {
-        parent::__construct();
-        $this->sticker = $sticker;
-        $this->format = $format;
-        $this->emoji_list = $emoji_list;
-        $this->mask_position = $mask_position;
-        $this->keywords = $keywords;
-    }
-
     public static function make(
         InputFile|string $sticker,
         array $emoji_list,
@@ -78,13 +61,14 @@ class InputSticker extends BaseType implements JsonSerializable, Uploadable
         ?array $keywords = null,
         StickerFormat|string|null $format = null,
     ): self {
-        return new self(
-            sticker: $sticker,
-            emoji_list: $emoji_list,
-            mask_position: $mask_position,
-            keywords: $keywords,
-            format: $format,
-        );
+        $instance = new self;
+        $instance->sticker = $sticker;
+        $instance->format = $format;
+        $instance->emoji_list = $emoji_list;
+        $instance->mask_position = $mask_position;
+        $instance->keywords = $keywords;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

@@ -6,7 +6,6 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -18,7 +17,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Represents a general file to be sent.
  * @see https://core.telegram.org/bots/api#inputmediadocument
  */
-#[SkipConstructor]
 class InputMediaDocument extends InputMedia implements JsonSerializable
 {
     /** Type of the result, must be document */
@@ -66,23 +64,6 @@ class InputMediaDocument extends InputMedia implements JsonSerializable
      */
     public ?bool $disable_content_type_detection = null;
 
-    public function __construct(
-        InputFile|string $media,
-        InputFile|string|null $thumbnail,
-        ?string $caption,
-        ParseMode|string|null $parse_mode,
-        ?array $caption_entities,
-        ?bool $disable_content_type_detection
-    ) {
-        parent::__construct();
-        $this->media = $media;
-        $this->thumbnail = $thumbnail;
-        $this->caption = $caption;
-        $this->parse_mode = $parse_mode;
-        $this->caption_entities = $caption_entities;
-        $this->disable_content_type_detection = $disable_content_type_detection;
-    }
-
     public static function make(
         InputFile|string $media,
         InputFile|string|null $thumbnail = null,
@@ -91,14 +72,15 @@ class InputMediaDocument extends InputMedia implements JsonSerializable
         ?array $caption_entities = null,
         ?bool $disable_content_type_detection = null
     ): self {
-        return new self(
-            media: $media,
-            thumbnail: $thumbnail,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            disable_content_type_detection: $disable_content_type_detection
-        );
+        $instance = new self;
+        $instance->media = $media;
+        $instance->thumbnail = $thumbnail;
+        $instance->caption = $caption;
+        $instance->parse_mode = $parse_mode;
+        $instance->caption_entities = $caption_entities;
+        $instance->disable_content_type_detection = $disable_content_type_detection;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

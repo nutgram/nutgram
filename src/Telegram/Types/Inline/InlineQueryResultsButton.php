@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -15,7 +14,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * You must use exactly one of the optional fields.
  * @see https://core.telegram.org/bots/api#inlinequeryresultsbutton
  */
-#[SkipConstructor]
 class InlineQueryResultsButton extends BaseType implements JsonSerializable
 {
     /** Label text on the button */
@@ -38,27 +36,17 @@ class InlineQueryResultsButton extends BaseType implements JsonSerializable
      */
     public ?string $start_parameter = null;
 
-    public function __construct(
-        string $text,
-        ?WebAppInfo $web_app = null,
-        ?string $start_parameter = null,
-    ) {
-        parent::__construct();
-        $this->text = $text;
-        $this->web_app = $web_app;
-        $this->start_parameter = $start_parameter;
-    }
-
     public static function make(
         string $text,
         ?WebAppInfo $web_app = null,
         ?string $start_parameter = null,
     ): self {
-        return new self(
-            text: $text,
-            web_app: $web_app,
-            start_parameter: $start_parameter
-        );
+        $instance = new self;
+        $instance->text = $text;
+        $instance->web_app = $web_app;
+        $instance->start_parameter = $start_parameter;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Common\LoginUrl;
 use SergiX44\Nutgram\Telegram\Types\Game\CallbackGame;
@@ -17,7 +16,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * You must use exactly one of the optional fields.
  * @see https://core.telegram.org/bots/api#inlinekeyboardbutton
  */
-#[SkipConstructor]
 class InlineKeyboardButton extends BaseType implements JsonSerializable
 {
     /** Label text on the button */
@@ -92,7 +90,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
      */
     public ?bool $pay = null;
 
-    public function __construct(
+    public static function make(
         string $text,
         ?string $url = null,
         ?LoginUrl $login_url = null,
@@ -104,47 +102,21 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?WebAppInfo $web_app = null,
         ?SwitchInlineQueryChosenChat $switch_inline_query_chosen_chat = null,
         ?CopyTextButton $copy_text = null,
-    ) {
-        parent::__construct();
-        $this->text = $text;
-        $this->url = $url;
-        $this->login_url = $login_url;
-        $this->callback_data = $callback_data;
-        $this->switch_inline_query = $switch_inline_query;
-        $this->switch_inline_query_current_chat = $switch_inline_query_current_chat;
-        $this->callback_game = $callback_game;
-        $this->pay = $pay;
-        $this->web_app = $web_app;
-        $this->switch_inline_query_chosen_chat = $switch_inline_query_chosen_chat;
-        $this->copy_text = $copy_text;
-    }
-
-    public static function make(
-        string $text = '',
-        ?string $url = null,
-        ?LoginUrl $login_url = null,
-        ?string $callback_data = null,
-        ?string $switch_inline_query = null,
-        ?string $switch_inline_query_current_chat = null,
-        ?CallbackGame $callback_game = null,
-        ?bool $pay = null,
-        ?WebAppInfo $web_app = null,
-        ?SwitchInlineQueryChosenChat $switch_inline_query_chosen_chat = null,
-        ?CopyTextButton $copy_text = null,
     ): InlineKeyboardButton {
-        return new self(
-            $text,
-            $url,
-            $login_url,
-            $callback_data,
-            $switch_inline_query,
-            $switch_inline_query_current_chat,
-            $callback_game,
-            $pay,
-            $web_app,
-            $switch_inline_query_chosen_chat,
-            $copy_text,
-        );
+        $instance = new self();
+        $instance->text = $text;
+        $instance->url = $url;
+        $instance->login_url = $login_url;
+        $instance->callback_data = $callback_data;
+        $instance->switch_inline_query = $switch_inline_query;
+        $instance->switch_inline_query_current_chat = $switch_inline_query_current_chat;
+        $instance->callback_game = $callback_game;
+        $instance->pay = $pay;
+        $instance->web_app = $web_app;
+        $instance->switch_inline_query_chosen_chat = $switch_inline_query_chosen_chat;
+        $instance->copy_text = $copy_text;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

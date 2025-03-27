@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a venue message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputvenuemessagecontent
  */
-#[SkipConstructor]
 class InputVenueMessageContent extends InputMessageContent
 {
     /** Latitude of the venue in degrees */
@@ -52,26 +50,6 @@ class InputVenueMessageContent extends InputMessageContent
      */
     public ?string $google_place_type = null;
 
-    public function __construct(
-        float $latitude,
-        float $longitude,
-        string $title,
-        string $address,
-        ?string $foursquare_id = null,
-        ?string $foursquare_type = null,
-        ?string $google_place_id = null,
-        ?string $google_place_type = null,
-    ) {
-        parent::__construct();
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
-        $this->title = $title;
-        $this->address = $address;
-        $this->foursquare_id = $foursquare_id;
-        $this->foursquare_type = $foursquare_type;
-        $this->google_place_id = $google_place_id;
-        $this->google_place_type = $google_place_type;
-    }
 
     public static function make(
         float $latitude,
@@ -83,16 +61,17 @@ class InputVenueMessageContent extends InputMessageContent
         ?string $google_place_id = null,
         ?string $google_place_type = null,
     ): self {
-        return new self(
-            latitude: $latitude,
-            longitude: $longitude,
-            title: $title,
-            address: $address,
-            foursquare_id: $foursquare_id,
-            foursquare_type: $foursquare_type,
-            google_place_id: $google_place_id,
-            google_place_type: $google_place_type,
-        );
+        $instance = new self;
+        $instance->latitude = $latitude;
+        $instance->longitude = $longitude;
+        $instance->title = $title;
+        $instance->address = $address;
+        $instance->foursquare_id = $foursquare_id;
+        $instance->foursquare_type = $foursquare_type;
+        $instance->google_place_id = $google_place_id;
+        $instance->google_place_type = $google_place_type;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

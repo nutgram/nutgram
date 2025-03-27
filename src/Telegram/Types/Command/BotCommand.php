@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents a bot command.
  * @see https://core.telegram.org/bots/api#botcommand
  */
-#[SkipConstructor]
 class BotCommand extends BaseType implements JsonSerializable
 {
     /**
@@ -28,15 +26,13 @@ class BotCommand extends BaseType implements JsonSerializable
      */
     public string $description;
 
-    public function __construct(string $command, string $description)
-    {
-        $this->command = $command;
-        $this->description = $description;
-    }
-
     public static function make(string $command, string $description): self
     {
-        return new self($command, $description);
+        $instance = new self;
+        $instance->command = $command;
+        $instance->description = $description;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

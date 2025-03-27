@@ -92,12 +92,12 @@ final class Command extends Handler
         $descriptions = $this->getDescription();
 
         if ($languageCode !== null) {
-            return new BotCommand(
+            return BotCommand::make(
                 command: $this->getName(),
                 description: $descriptions[$languageCode] ?? array_shift($descriptions)
             );
         }
 
-        return new BotCommand($this->getName(), $descriptions['*'] ?? null);
+        return BotCommand::make($this->getName(), $descriptions['*'] ?? null);
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -13,7 +12,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of an invoice message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputinvoicemessagecontent
  */
-#[SkipConstructor]
 class InputInvoiceMessageContent extends InputMessageContent
 {
     /** Product name, 1-32 characters */
@@ -141,51 +139,6 @@ class InputInvoiceMessageContent extends InputMessageContent
      */
     public ?bool $is_flexible = null;
 
-    public function __construct(
-        string $title,
-        string $description,
-        string $payload,
-        string $provider_token,
-        string $currency,
-        array $prices,
-        ?int $max_tip_amount = null,
-        ?array $suggested_tip_amounts = null,
-        ?string $provider_data = null,
-        ?string $photo_url = null,
-        ?int $photo_size = null,
-        ?int $photo_width = null,
-        ?int $photo_height = null,
-        ?bool $need_name = null,
-        ?bool $need_phone_number = null,
-        ?bool $need_email = null,
-        ?bool $need_shipping_address = null,
-        ?bool $send_phone_number_to_provider = null,
-        ?bool $send_email_to_provider = null,
-        ?bool $is_flexible = null,
-    ) {
-        parent::__construct();
-        $this->title = $title;
-        $this->description = $description;
-        $this->payload = $payload;
-        $this->provider_token = $provider_token;
-        $this->currency = $currency;
-        $this->prices = $prices;
-        $this->max_tip_amount = $max_tip_amount;
-        $this->suggested_tip_amounts = $suggested_tip_amounts;
-        $this->provider_data = $provider_data;
-        $this->photo_url = $photo_url;
-        $this->photo_size = $photo_size;
-        $this->photo_width = $photo_width;
-        $this->photo_height = $photo_height;
-        $this->need_name = $need_name;
-        $this->need_phone_number = $need_phone_number;
-        $this->need_email = $need_email;
-        $this->need_shipping_address = $need_shipping_address;
-        $this->send_phone_number_to_provider = $send_phone_number_to_provider;
-        $this->send_email_to_provider = $send_email_to_provider;
-        $this->is_flexible = $is_flexible;
-    }
-
     public static function make(
         string $title,
         string $description,
@@ -208,28 +161,29 @@ class InputInvoiceMessageContent extends InputMessageContent
         ?bool $send_email_to_provider = null,
         ?bool $is_flexible = null,
     ): self {
-        return new self(
-            title: $title,
-            description: $description,
-            payload: $payload,
-            provider_token: $provider_token,
-            currency: $currency,
-            prices: $prices,
-            max_tip_amount: $max_tip_amount,
-            suggested_tip_amounts: $suggested_tip_amounts,
-            provider_data: $provider_data,
-            photo_url: $photo_url,
-            photo_size: $photo_size,
-            photo_width: $photo_width,
-            photo_height: $photo_height,
-            need_name: $need_name,
-            need_phone_number: $need_phone_number,
-            need_email: $need_email,
-            need_shipping_address: $need_shipping_address,
-            send_phone_number_to_provider: $send_phone_number_to_provider,
-            send_email_to_provider: $send_email_to_provider,
-            is_flexible: $is_flexible,
-        );
+        $instance = new self;
+        $instance->title = $title;
+        $instance->description = $description;
+        $instance->payload = $payload;
+        $instance->provider_token = $provider_token;
+        $instance->currency = $currency;
+        $instance->prices = $prices;
+        $instance->max_tip_amount = $max_tip_amount;
+        $instance->suggested_tip_amounts = $suggested_tip_amounts;
+        $instance->provider_data = $provider_data;
+        $instance->photo_url = $photo_url;
+        $instance->photo_size = $photo_size;
+        $instance->photo_width = $photo_width;
+        $instance->photo_height = $photo_height;
+        $instance->need_name = $need_name;
+        $instance->need_phone_number = $need_phone_number;
+        $instance->need_email = $need_email;
+        $instance->need_shipping_address = $need_shipping_address;
+        $instance->send_phone_number_to_provider = $send_phone_number_to_provider;
+        $instance->send_email_to_provider = $send_email_to_provider;
+        $instance->is_flexible = $is_flexible;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

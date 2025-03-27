@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -21,7 +20,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Currently, only .PDF and .ZIP files can be sent using this method.
  * @see https://core.telegram.org/bots/api#inlinequeryresultdocument
  */
-#[SkipConstructor]
 class InlineQueryResultDocument extends InlineQueryResult
 {
     /** Type of the result, must be document */
@@ -98,37 +96,6 @@ class InlineQueryResultDocument extends InlineQueryResult
      */
     public ?int $thumbnail_height = null;
 
-    public function __construct(
-        string $id,
-        string $title,
-        string $document_url,
-        string $mime_type,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?string $description = null,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?InputMessageContent $input_message_content = null,
-        ?string $thumbnail_url = null,
-        ?int $thumbnail_width = null,
-        ?int $thumbnail_height = null,
-    ) {
-        parent::__construct();
-        $this->id = $id;
-        $this->title = $title;
-        $this->document_url = $document_url;
-        $this->mime_type = $mime_type;
-        $this->caption = $caption;
-        $this->parse_mode = $parse_mode;
-        $this->caption_entities = $caption_entities;
-        $this->description = $description;
-        $this->reply_markup = $reply_markup;
-        $this->input_message_content = $input_message_content;
-        $this->thumbnail_url = $thumbnail_url;
-        $this->thumbnail_width = $thumbnail_width;
-        $this->thumbnail_height = $thumbnail_height;
-    }
-
     public static function make(
         string $id,
         string $title,
@@ -144,21 +111,22 @@ class InlineQueryResultDocument extends InlineQueryResult
         ?int $thumbnail_width = null,
         ?int $thumbnail_height = null,
     ): self {
-        return new self(
-            id: $id,
-            title: $title,
-            document_url: $document_url,
-            mime_type: $mime_type,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            description: $description,
-            reply_markup: $reply_markup,
-            input_message_content: $input_message_content,
-            thumbnail_url: $thumbnail_url,
-            thumbnail_width: $thumbnail_width,
-            thumbnail_height: $thumbnail_height,
-        );
+        $instance = new self;
+        $instance->id = $id;
+        $instance->title = $title;
+        $instance->document_url = $document_url;
+        $instance->mime_type = $mime_type;
+        $instance->caption = $caption;
+        $instance->parse_mode = $parse_mode;
+        $instance->caption_entities = $caption_entities;
+        $instance->description = $description;
+        $instance->reply_markup = $reply_markup;
+        $instance->input_message_content = $input_message_content;
+        $instance->thumbnail_url = $thumbnail_url;
+        $instance->thumbnail_width = $thumbnail_width;
+        $instance->thumbnail_height = $thumbnail_height;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

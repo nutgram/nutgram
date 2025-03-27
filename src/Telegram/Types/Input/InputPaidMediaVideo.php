@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputPaidMediaType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
@@ -15,7 +14,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * The paid media to send is a video.
  * @see https://core.telegram.org/bots/api#inputpaidmediavideo
  */
-#[SkipConstructor]
 class InputPaidMediaVideo extends InputPaidMedia implements JsonSerializable
 {
     /**
@@ -76,27 +74,6 @@ class InputPaidMediaVideo extends InputPaidMedia implements JsonSerializable
      */
     public ?bool $supports_streaming = null;
 
-    public function __construct(
-        InputFile|string $media,
-        InputFile|string|null $thumbnail = null,
-        ?int $width = null,
-        ?int $height = null,
-        ?int $duration = null,
-        ?bool $supports_streaming = null,
-        InputFile|string|null $cover = null,
-        ?int $start_timestamp = null,
-    ) {
-        parent::__construct();
-        $this->media = $media;
-        $this->thumbnail = $thumbnail;
-        $this->width = $width;
-        $this->height = $height;
-        $this->duration = $duration;
-        $this->supports_streaming = $supports_streaming;
-        $this->cover = $cover;
-        $this->start_timestamp = $start_timestamp;
-    }
-
     public static function make(
         InputFile|string $media,
         InputFile|string|null $thumbnail = null,
@@ -107,16 +84,17 @@ class InputPaidMediaVideo extends InputPaidMedia implements JsonSerializable
         InputFile|string|null $cover = null,
         ?int $start_timestamp = null,
     ): self {
-        return new self(
-            media: $media,
-            thumbnail: $thumbnail,
-            width: $width,
-            height: $height,
-            duration: $duration,
-            supports_streaming: $supports_streaming,
-            cover: $cover,
-            start_timestamp: $start_timestamp,
-        );
+        $instance = new self;
+        $instance->media = $media;
+        $instance->thumbnail = $thumbnail;
+        $instance->width = $width;
+        $instance->height = $height;
+        $instance->duration = $duration;
+        $instance->supports_streaming = $supports_streaming;
+        $instance->cover = $cover;
+        $instance->start_timestamp = $start_timestamp;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array

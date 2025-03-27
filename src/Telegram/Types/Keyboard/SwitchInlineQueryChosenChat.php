@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -13,7 +12,6 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * This object represents an inline button that switches the current user to inline mode in a chosen chat, with an optional default inline query.
  * @see https://core.telegram.org/bots/api#switchinlinequerychosenchat
  */
-#[SkipConstructor]
 class SwitchInlineQueryChosenChat extends BaseType implements JsonSerializable
 {
     /**
@@ -47,21 +45,6 @@ class SwitchInlineQueryChosenChat extends BaseType implements JsonSerializable
      */
     public ?bool $allow_channel_chats = null;
 
-    public function __construct(
-        ?string $query = null,
-        ?bool $allow_user_chats = null,
-        ?bool $allow_bot_chats = null,
-        ?bool $allow_group_chats = null,
-        ?bool $allow_channel_chats = null,
-    ) {
-        parent::__construct();
-        $this->query = $query;
-        $this->allow_user_chats = $allow_user_chats;
-        $this->allow_bot_chats = $allow_bot_chats;
-        $this->allow_group_chats = $allow_group_chats;
-        $this->allow_channel_chats = $allow_channel_chats;
-    }
-
     public static function make(
         ?string $query = null,
         ?bool $allow_user_chats = null,
@@ -69,13 +52,14 @@ class SwitchInlineQueryChosenChat extends BaseType implements JsonSerializable
         ?bool $allow_group_chats = null,
         ?bool $allow_channel_chats = null,
     ): self {
-        return new self(
-            query: $query,
-            allow_user_chats: $allow_user_chats,
-            allow_bot_chats: $allow_bot_chats,
-            allow_group_chats: $allow_group_chats,
-            allow_channel_chats: $allow_channel_chats,
-        );
+        $instance = new self;
+        $instance->query = $query;
+        $instance->allow_user_chats = $allow_user_chats;
+        $instance->allow_bot_chats = $allow_bot_chats;
+        $instance->allow_group_chats = $allow_group_chats;
+        $instance->allow_channel_chats = $allow_channel_chats;
+
+        return $instance;
     }
 
     public function jsonSerialize(): array
