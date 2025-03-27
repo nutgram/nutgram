@@ -39,6 +39,7 @@
     "require-dev": {
         "ext-reflection": "*",
         "dms/phpunit-arraysubset-asserts": "dev-add-phpunit-11-support",
+        "mockery/mockery": "^1.6",
         "pestphp/pest": "^3.0",
         "roave/security-advisories": "dev-latest",
         "vimeo/psalm": "^6.1.0"
