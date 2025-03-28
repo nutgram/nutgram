@@ -80,20 +80,20 @@ abstract class ResolveHandlers extends CollectHandlers
         }
 
         if ($updateType->isMessageType()) {
-            $messageType = $this->update->getMessage()?->getType();
+            $messageType = $this->message()?->getType();
 
             if ($messageType === MessageType::TEXT) {
                 $username = $this->getConfig()->botName;
-                $text = $this->update->getMessage()?->getParsedCommand($username) ?? $this->update->getMessage()?->text;
+                $text = $this->message()?->getParsedCommand($username) ?? $this->message()?->text;
 
                 if ($text !== null) {
                     $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $text);
                 }
             } elseif ($messageType === MessageType::SUCCESSFUL_PAYMENT) {
-                $data = $this->update->getMessage()->successful_payment?->invoice_payload;
+                $data = $this->message()?->successful_payment?->invoice_payload;
                 $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $data);
             } elseif ($messageType === MessageType::REFUNDED_PAYMENT) {
-                $data = $this->update->getMessage()->refunded_payment?->invoice_payload;
+                $data = $this->message()?->refunded_payment?->invoice_payload;
                 $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $data);
             }
 
