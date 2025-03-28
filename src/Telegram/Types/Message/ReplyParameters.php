@@ -93,17 +93,6 @@ class ReplyParameters extends BaseType implements JsonSerializable
         $this->quote_position = $quote_position;
     }
 
-    /**
-     * @param int $message_id
-     * @param int|string|null $chat_id
-     * @param bool|null $allow_sending_without_reply
-     * @param string|null $quote
-     * @param string|null $quote_parse_mode
-     * @param MessageEntity[]|null $quote_entities
-     * @param int|null $quote_position
-     * @return self
-     */
-
     public function jsonSerialize(): array
     {
         return array_filter_null([

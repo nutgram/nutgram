@@ -50,5 +50,15 @@
                 <file name="src/Handlers/Listeners/MessageListeners.php"/>
             </errorLevel>
         </UndefinedPropertyFetch>
+        <InternalClass>
+            <errorLevel type="suppress">
+                <file name="src/Testing/Asserts.php"/>
+            </errorLevel>
+        </InternalClass>
+        <InternalMethod>
+            <errorLevel type="suppress">
+                <file name="src/Testing/Asserts.php"/>
+            </errorLevel>
+        </InternalMethod>
     </issueHandlers>
 </psalm>

@@ -54,13 +54,6 @@ class PassportElementErrorFiles extends PassportElementError
         $this->message = $message;
     }
 
-    /**
-     * @param PassportType|string $type
-     * @param string[] $file_hashes
-     * @param string $message
-     * @return self
-     */
-
     public function jsonSerialize(): array
     {
         return array_filter_null([
