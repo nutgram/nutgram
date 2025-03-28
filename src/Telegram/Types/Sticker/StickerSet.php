@@ -31,18 +31,6 @@ class StickerSet extends BaseType
     public StickerType|string $sticker_type;
 
     /**
-     * True, if the sticker set contains {@see https://telegram.org/blog/animated-stickers animated stickers}
-     * @deprecated Use {@see Sticker::$is_animated} in the `stickers` field instead
-     */
-    public ?bool $is_animated = null;
-
-    /**
-     * True, if the sticker set contains {@see https://telegram.org/blog/video-stickers-better-reactions video stickers}
-     * @deprecated Use {@see Sticker::$is_video} in the `stickers` field instead
-     */
-    public ?bool $is_video = null;
-
-    /**
      * List of all set stickers
      * @var Sticker[] $stickers
      */

@@ -26,15 +26,6 @@ class KeyboardButton extends BaseType implements JsonSerializable
     public string $text;
 
     /**
-     * Optional.
-     * If specified, pressing the button will open a list of suitable users.
-     * Tapping on any user will send their identifier to the bot in a “user_shared” service message.
-     * Available in private chats only.
-     * @deprecated Use $request_users instead
-     */
-    public ?KeyboardButtonRequestUser $request_user = null;
-
-    /**
      * Optional. If specified, pressing the button will open a list of suitable users.
      * Identifiers of selected users will be sent to the bot in a “users_shared” service message.
      * Available in private chats only.
@@ -84,7 +75,6 @@ class KeyboardButton extends BaseType implements JsonSerializable
         ?bool $request_location = null,
         ?KeyboardButtonPollType $request_poll = null,
         ?WebAppInfo $web_app = null,
-        ?KeyboardButtonRequestUser $request_user = null,
         ?KeyboardButtonRequestUsers $request_users = null,
         ?KeyboardButtonRequestChat $request_chat = null,
     ) {
@@ -94,7 +84,6 @@ class KeyboardButton extends BaseType implements JsonSerializable
         $this->request_location = $request_location;
         $this->request_poll = $request_poll;
         $this->web_app = $web_app;
-        $this->request_user = $request_user;
         $this->request_users = $request_users;
         $this->request_chat = $request_chat;
     }
@@ -104,7 +93,6 @@ class KeyboardButton extends BaseType implements JsonSerializable
     {
         return array_filter_null([
             'text' => $this->text,
-            'request_user' => $this->request_user,
             'request_users' => $this->request_users,
             'request_chat' => $this->request_chat,
             'request_contact' => $this->request_contact,

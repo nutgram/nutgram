@@ -37,13 +37,6 @@ class InputTextMessageContent extends InputMessageContent
     public ?array $entities = null;
 
     /**
-     * Optional.
-     * Disables link previews for links in the sent message
-     * @deprecated Use $link_preview_options instead
-     */
-    public ?bool $disable_web_page_preview = null;
-
-    /**
      * Optional. Link preview generation options for the message
      */
     public ?LinkPreviewOptions $link_preview_options = null;
@@ -52,13 +45,11 @@ class InputTextMessageContent extends InputMessageContent
         string $message_text,
         ParseMode|string|null $parse_mode = null,
         ?array $entities = null,
-        ?bool $disable_web_page_preview = null,
     ) {
         parent::__construct();
         $this->message_text = $message_text;
         $this->parse_mode = $parse_mode;
         $this->entities = $entities;
-        $this->disable_web_page_preview = $disable_web_page_preview;
     }
 
 
@@ -68,7 +59,6 @@ class InputTextMessageContent extends InputMessageContent
             'message_text' => $this->message_text,
             'parse_mode' => $this->parse_mode,
             'entities' => $this->entities,
-            'disable_web_page_preview' => $this->disable_web_page_preview,
             'link_preview_options' => $this->link_preview_options,
         ]);
     }
