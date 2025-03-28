@@ -292,5 +292,4 @@ class ChatFullInfo extends Chat
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?ChatLocation $location = null;
-
 }
