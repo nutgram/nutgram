@@ -24,5 +24,4 @@ class CopyTextButton extends BaseType
         parent::__construct();
         $this->text = $text;
     }
-
 }

@@ -36,4 +36,3 @@ arch('check that Telegram types extends BaseType')
         TransactionPartnerResolver::class,
         ReactionTypeResolver::class,
     ]);
-
