@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -20,7 +20,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
  * @see https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InlineQueryResultCachedAudio extends InlineQueryResult
 {
     /** Type of the result, must be audio */
@@ -86,25 +86,6 @@ class InlineQueryResultCachedAudio extends InlineQueryResult
         $this->input_message_content = $input_message_content;
     }
 
-    public static function make(
-        string $id,
-        string $audio_file_id,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?InputMessageContent $input_message_content = null,
-    ): self {
-        return new self(
-            id: $id,
-            audio_file_id: $audio_file_id,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            reply_markup: $reply_markup,
-            input_message_content: $input_message_content,
-        );
-    }
 
     public function jsonSerialize(): array
     {

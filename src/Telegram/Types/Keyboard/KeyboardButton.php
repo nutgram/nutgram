@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -16,7 +16,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * The optional fields web_app, request_user, request_chat, request_contact, request_location, and request_poll are mutually exclusive.
  * @see https://core.telegram.org/bots/api#keyboardbutton
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class KeyboardButton extends BaseType implements JsonSerializable
 {
     /**
@@ -99,27 +99,6 @@ class KeyboardButton extends BaseType implements JsonSerializable
         $this->request_chat = $request_chat;
     }
 
-    public static function make(
-        string $text,
-        ?bool $request_contact = null,
-        ?bool $request_location = null,
-        ?KeyboardButtonPollType $request_poll = null,
-        ?WebAppInfo $web_app = null,
-        ?KeyboardButtonRequestUser $request_user = null,
-        ?KeyboardButtonRequestUsers $request_users = null,
-        ?KeyboardButtonRequestChat $request_chat = null,
-    ): self {
-        return new self(
-            text: $text,
-            request_contact: $request_contact,
-            request_location: $request_location,
-            request_poll: $request_poll,
-            web_app: $web_app,
-            request_user: $request_user,
-            request_users: $request_users,
-            request_chat: $request_chat,
-        );
-    }
 
     public function jsonSerialize(): array
     {

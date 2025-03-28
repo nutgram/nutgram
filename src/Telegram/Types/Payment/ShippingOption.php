@@ -6,14 +6,14 @@ namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents one shipping option.
  * @see https://core.telegram.org/bots/api#shippingoption
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class ShippingOption extends BaseType implements JsonSerializable
 {
     /** Shipping option identifier */
@@ -37,10 +37,6 @@ class ShippingOption extends BaseType implements JsonSerializable
         $this->prices = $prices;
     }
 
-    public static function make(string $id, string $title, array $prices): self
-    {
-        return new self($id, $title, $prices);
-    }
 
     public function jsonSerialize(): array
     {

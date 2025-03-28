@@ -39,7 +39,7 @@ it('doesnt call the api error handler when cleared', function ($responseBody) {
     $bot->clearErrorHandlers(apiError: true);
 
     $bot->sendMessage('hi');
-})->with('response_user_deactivated')->expectException(TelegramException::class);
+})->with('response_user_deactivated')->throws(TelegramException::class);
 
 it('calls the specific api error handler', function ($responseBody) {
     $bot = Nutgram::fake(responses: [
@@ -85,7 +85,7 @@ it('throws exception if no handler specified', function ($responseBody) {
     ]);
 
     $bot->sendMessage('hi');
-})->with('response_wrong_file_id')->expectException(TelegramException::class);
+})->with('response_wrong_file_id')->throws(TelegramException::class);
 
 it('throws exception if too many requests', function ($responseBody) {
     $bot = Nutgram::fake(responses: [

@@ -11,7 +11,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [ 8.2, 8.3, 8.4 ]
+                php: [ 8.4 ]
 
         name: PHP ${{ matrix.php }}
         steps:
@@ -51,7 +51,7 @@ jobs:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: 8.2
+                    php-version: 8.4
                     coverage: xdebug
 
             -   name: Validate composer.json and composer.lock
@@ -62,9 +62,9 @@ jobs:
                 uses: actions/cache@v4
                 with:
                     path: vendor
-                    key: ${{ runner.os }}-php-8.2-${{ hashFiles('**/composer.json') }}
+                    key: ${{ runner.os }}-php-8.4-${{ hashFiles('**/composer.json') }}
                     restore-keys: |
-                        ${{ runner.os }}-php-8.2
+                        ${{ runner.os }}-php-8.4
 
             -   name: Install dependencies
                 if: steps.composer-cache.outputs.cache-hit != 'true'

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
 
@@ -12,7 +12,7 @@ use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
  * Represents the {@see https://core.telegram.org/bots/api#botcommandscope scope} of bot commands, covering a specific chat.
  * @see https://core.telegram.org/bots/api#botcommandscopechat
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class BotCommandScopeChat extends BotCommandScope
 {
     /** Scope type, must be chat */
@@ -28,10 +28,6 @@ class BotCommandScopeChat extends BotCommandScope
         $this->chat_id = $chat_id;
     }
 
-    public static function make(int|string $chat_id): self
-    {
-        return new self($chat_id);
-    }
 
     public function jsonSerialize(): array
     {

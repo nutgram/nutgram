@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -16,7 +16,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * {@see https://core.telegram.org/bots/features#chat-and-user-selection More about requesting chats »}
  * @see https://core.telegram.org/bots/api#keyboardbuttonrequestchat
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class KeyboardButtonRequestChat extends BaseType implements JsonSerializable
 {
     /**
@@ -114,33 +114,6 @@ class KeyboardButtonRequestChat extends BaseType implements JsonSerializable
         $this->request_photo = $request_photo;
     }
 
-    public static function make(
-        int $request_id,
-        bool $chat_is_channel,
-        ?bool $chat_is_forum = null,
-        ?bool $chat_has_username = null,
-        ?bool $chat_is_created = null,
-        ?ChatAdministratorRights $user_administrator_rights = null,
-        ?ChatAdministratorRights $bot_administrator_rights = null,
-        ?bool $bot_is_member = null,
-        ?bool $request_title = null,
-        ?bool $request_username = null,
-        ?bool $request_photo = null,
-    ): self {
-        return new self(
-            request_id: $request_id,
-            chat_is_channel: $chat_is_channel,
-            chat_is_forum: $chat_is_forum,
-            chat_has_username: $chat_has_username,
-            chat_is_created: $chat_is_created,
-            user_administrator_rights: $user_administrator_rights,
-            bot_administrator_rights: $bot_administrator_rights,
-            bot_is_member: $bot_is_member,
-            request_title: $request_title,
-            request_username: $request_username,
-            request_photo: $request_photo,
-        );
-    }
 
     public function jsonSerialize(): array
     {

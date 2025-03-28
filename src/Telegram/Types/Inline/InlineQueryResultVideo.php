@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -20,7 +20,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
  * @see https://core.telegram.org/bots/api#inlinequeryresultvideo
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InlineQueryResultVideo extends InlineQueryResult
 {
     /** Type of the result, must be video */
@@ -141,41 +141,6 @@ class InlineQueryResultVideo extends InlineQueryResult
         $this->show_caption_above_media = $show_caption_above_media;
     }
 
-    public static function make(
-        string $id,
-        string $video_url,
-        string $mime_type,
-        string $thumbnail_url,
-        string $title,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?int $video_width = null,
-        ?int $video_height = null,
-        ?int $video_duration = null,
-        ?string $description = null,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?InputMessageContent $input_message_content = null,
-        ?bool $show_caption_above_media = null,
-    ): self {
-        return new self(
-            id: $id,
-            video_url: $video_url,
-            mime_type: $mime_type,
-            thumbnail_url: $thumbnail_url,
-            title: $title,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            video_width: $video_width,
-            video_height: $video_height,
-            video_duration: $video_duration,
-            description: $description,
-            reply_markup: $reply_markup,
-            input_message_content: $input_message_content,
-            show_caption_above_media: $show_caption_above_media,
-        );
-    }
 
     public function jsonSerialize(): array
     {
