@@ -22,5 +22,4 @@ class WebAppInfo extends BaseType
         parent::__construct();
         $this->url = $url;
     }
-
 }
