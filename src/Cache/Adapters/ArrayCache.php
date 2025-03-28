@@ -38,7 +38,7 @@ class ArrayCache implements CacheInterface
     /**
      * @inheritDoc
      */
-    public function set(string $key, mixed $value, DateInterval|int $ttl = null): bool
+    public function set(string $key, mixed $value, DateInterval|int|null $ttl = null): bool
     {
         $this->delete($key);
 
@@ -88,7 +88,7 @@ class ArrayCache implements CacheInterface
     /**
      * @inheritDoc
      */
-    public function setMultiple(iterable $values, DateInterval|int $ttl = null): bool
+    public function setMultiple(iterable $values, DateInterval|int|null $ttl = null): bool
     {
         foreach ($values as $key => $value) {
             $this->set($key, $value, $ttl);
