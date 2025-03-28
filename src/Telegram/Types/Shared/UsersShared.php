@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Shared;
 
 use SergiX44\Hydrator\Annotation\ArrayType;

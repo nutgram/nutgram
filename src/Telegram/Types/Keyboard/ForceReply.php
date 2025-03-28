@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -12,7 +14,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice {@see https://core.telegram.org/bots/features#privacy-mode privacy mode}.
  * @see https://core.telegram.org/bots/api#forcereply
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class ForceReply extends BaseType implements JsonSerializable
 {
     /** Shows reply interface to the user, as if they manually selected the bot's message and tapped 'Reply' */
@@ -41,17 +43,6 @@ class ForceReply extends BaseType implements JsonSerializable
         $this->selective = $selective;
     }
 
-    public static function make(
-        bool $force_reply,
-        ?string $input_field_placeholder = null,
-        ?bool $selective = null,
-    ): ForceReply {
-        return new self(
-            $force_reply,
-            $input_field_placeholder,
-            $selective
-        );
-    }
 
     public function jsonSerialize(): array
     {

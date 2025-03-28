@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\File;
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 
 /*
@@ -14,7 +15,8 @@ use PHPUnit\Framework\TestCase;
 |
 */
 
-uses(TestCase::class)
+pest()
+    ->extend(TestCase::class)
     ->in('Feature', 'Unit', 'E2E');
 
 /*
@@ -28,7 +30,9 @@ uses(TestCase::class)
 |
 */
 
-expect()->extend('getFileContent', fn () => $this->and(File::get($this->value)));
+expect()->extend('toBeOne', function () {
+    return $this->toBe(1);
+});
 
 /*
 |--------------------------------------------------------------------------
