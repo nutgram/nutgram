@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Reaction;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ReactionTypeType;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -14,7 +14,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * The reaction is based on a custom emoji.
  * @see https://core.telegram.org/bots/api#reactiontypecustomemoji
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class ReactionTypeCustomEmoji extends ReactionType implements JsonSerializable
 {
     /**
@@ -36,10 +36,6 @@ class ReactionTypeCustomEmoji extends ReactionType implements JsonSerializable
         $this->custom_emoji_id = $custom_emoji_id;
     }
 
-    public static function make(string $custom_emoji_id): self
-    {
-        return new self(custom_emoji_id: $custom_emoji_id);
-    }
 
     public function jsonSerialize(): array
     {

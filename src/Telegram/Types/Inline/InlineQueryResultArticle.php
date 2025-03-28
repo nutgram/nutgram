@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -15,7 +15,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Represents a link to an article or web page.
  * @see https://core.telegram.org/bots/api#inlinequeryresultarticle
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InlineQueryResultArticle extends InlineQueryResult
 {
     /** Type of the result, must be article */
@@ -123,31 +123,6 @@ class InlineQueryResultArticle extends InlineQueryResult
      * @param int|null $thumbnail_width Optional. Thumbnail width
      * @param int|null $thumbnail_height Optional. Thumbnail height
      */
-    public static function make(
-        string $id,
-        string $title,
-        InputMessageContent $input_message_content,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?string $url = null,
-        ?bool $hide_url = null,
-        ?string $description = null,
-        ?string $thumbnail_url = null,
-        ?int $thumbnail_width = null,
-        ?int $thumbnail_height = null,
-    ): self {
-        return new self(
-            id: $id,
-            title: $title,
-            input_message_content: $input_message_content,
-            reply_markup: $reply_markup,
-            url: $url,
-            hide_url: $hide_url,
-            description: $description,
-            thumbnail_url: $thumbnail_url,
-            thumbnail_width: $thumbnail_width,
-            thumbnail_height: $thumbnail_height,
-        );
-    }
 
     public function jsonSerialize(): array
     {

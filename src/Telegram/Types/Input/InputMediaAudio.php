@@ -6,7 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -18,7 +18,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Represents an audio file to be treated as music to be sent.
  * @see https://core.telegram.org/bots/api#inputmediaaudio
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputMediaAudio extends InputMedia implements JsonSerializable
 {
     /** Type of the result, must be audio */
@@ -98,27 +98,6 @@ class InputMediaAudio extends InputMedia implements JsonSerializable
         $this->title = $title;
     }
 
-    public static function make(
-        InputFile|string $media,
-        InputFile|string|null $thumbnail = null,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?int $duration = null,
-        ?string $performer = null,
-        ?string $title = null
-    ): self {
-        return new self(
-            media: $media,
-            thumbnail: $thumbnail,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            duration: $duration,
-            performer: $performer,
-            title: $title
-        );
-    }
 
     public function jsonSerialize(): array
     {

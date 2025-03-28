@@ -13,9 +13,9 @@ class ValidReopenMenu extends InlineMenu
     public function start(Nutgram $bot)
     {
         $this->menuText('Choose a color:')
-            ->addButtonRow(InlineKeyboardButton::make('Red', callback_data: 'red@handleColor'))
-            ->addButtonRow(InlineKeyboardButton::make('Green', callback_data: 'green@handleColor'))
-            ->addButtonRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow@handleColor'))
+            ->addButtonRow(new InlineKeyboardButton('Red', callback_data: 'red@handleColor'))
+            ->addButtonRow(new InlineKeyboardButton('Green', callback_data: 'green@handleColor'))
+            ->addButtonRow(new InlineKeyboardButton('Yellow', callback_data: 'yellow@handleColor'))
             ->showMenu();
     }
 

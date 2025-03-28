@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
@@ -15,7 +15,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * The error is considered resolved when the field's value changes.
  * @see https://core.telegram.org/bots/api#passportelementerrordatafield
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class PassportElementErrorDataField extends PassportElementError
 {
     /** Error source, must be data */
@@ -48,19 +48,6 @@ class PassportElementErrorDataField extends PassportElementError
         $this->message = $message;
     }
 
-    public static function make(
-        PassportType|string $type,
-        string $field_name,
-        string $data_hash,
-        string $message
-    ): self {
-        return new self(
-            type: $type,
-            field_name: $field_name,
-            data_hash: $data_hash,
-            message: $message
-        );
-    }
 
     public function jsonSerialize(): array
     {

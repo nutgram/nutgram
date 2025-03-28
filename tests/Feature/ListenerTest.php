@@ -898,7 +898,7 @@ it('sends boolean parameters via jsonSerialize', function () {
     $bot->onCommand('start', function (Nutgram $bot) {
         $bot->sendMessage(
             text: 'Removing your keyboard...',
-            reply_markup: ReplyKeyboardRemove::make(true, false),
+            reply_markup: new ReplyKeyboardRemove(true, false),
         );
     });
 

@@ -6,7 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -14,7 +14,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * This object represents a {@see https://core.telegram.org/bots/features#keyboards custom keyboard} with reply options (see {@see https://core.telegram.org/bots/features#keyboards Introduction to bots} for details and examples).
  * @see https://core.telegram.org/bots/api#replykeyboardmarkup
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
 {
     /**
@@ -78,21 +78,6 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
         $this->is_persistent = $is_persistent;
     }
 
-    public static function make(
-        ?bool $resize_keyboard = null,
-        ?bool $one_time_keyboard = null,
-        ?string $input_field_placeholder = null,
-        ?bool $selective = null,
-        ?bool $is_persistent = null,
-    ): self {
-        return new self(
-            $resize_keyboard,
-            $one_time_keyboard,
-            $input_field_placeholder,
-            $selective,
-            $is_persistent,
-        );
-    }
 
     /**
      * @param  KeyboardButton  ...$buttons

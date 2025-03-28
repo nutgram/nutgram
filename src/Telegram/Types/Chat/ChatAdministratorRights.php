@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -13,7 +13,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Represents the rights of an administrator in a chat.
  * @see https://core.telegram.org/bots/api#chatadministratorrights
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class ChatAdministratorRights extends BaseType implements JsonSerializable
 {
     /** True, if the user's presence in the chat is hidden */
@@ -115,35 +115,6 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
         $this->can_manage_topics = $can_manage_topics;
     }
 
-    public static function make(
-        bool $is_anonymous,
-        bool $can_manage_chat,
-        bool $can_delete_messages,
-        bool $can_manage_video_chats,
-        bool $can_restrict_members,
-        bool $can_promote_members,
-        bool $can_change_info,
-        bool $can_invite_users,
-        ?bool $can_post_messages = null,
-        ?bool $can_edit_messages = null,
-        ?bool $can_pin_messages = null,
-        ?bool $can_manage_topics = null,
-    ):self {
-        return new self(
-            is_anonymous: $is_anonymous,
-            can_manage_chat: $can_manage_chat,
-            can_delete_messages: $can_delete_messages,
-            can_manage_video_chats: $can_manage_video_chats,
-            can_restrict_members: $can_restrict_members,
-            can_promote_members: $can_promote_members,
-            can_change_info: $can_change_info,
-            can_invite_users: $can_invite_users,
-            can_post_messages: $can_post_messages,
-            can_edit_messages: $can_edit_messages,
-            can_pin_messages: $can_pin_messages,
-            can_manage_topics: $can_manage_topics,
-        );
-    }
 
     public function jsonSerialize(): array
     {

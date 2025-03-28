@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use Psr\Http\Message\StreamInterface;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -18,7 +18,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * This object describes a sticker to be added to a sticker set.
  * @see https://core.telegram.org/bots/api#inputsticker
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputSticker extends BaseType implements JsonSerializable, Uploadable
 {
     /**
@@ -71,21 +71,6 @@ class InputSticker extends BaseType implements JsonSerializable, Uploadable
         $this->keywords = $keywords;
     }
 
-    public static function make(
-        InputFile|string $sticker,
-        array $emoji_list,
-        ?MaskPosition $mask_position = null,
-        ?array $keywords = null,
-        StickerFormat|string|null $format = null,
-    ): self {
-        return new self(
-            sticker: $sticker,
-            emoji_list: $emoji_list,
-            mask_position: $mask_position,
-            keywords: $keywords,
-            format: $format,
-        );
-    }
 
     public function jsonSerialize(): array
     {

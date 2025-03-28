@@ -13,8 +13,4 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class CallbackGame extends BaseType
 {
-    public static function make(): self
-    {
-        return new self();
-    }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputPaidMediaType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
@@ -15,7 +15,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * The paid media to send is a video.
  * @see https://core.telegram.org/bots/api#inputpaidmediavideo
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputPaidMediaVideo extends InputPaidMedia implements JsonSerializable
 {
     /**
@@ -97,27 +97,6 @@ class InputPaidMediaVideo extends InputPaidMedia implements JsonSerializable
         $this->start_timestamp = $start_timestamp;
     }
 
-    public static function make(
-        InputFile|string $media,
-        InputFile|string|null $thumbnail = null,
-        ?int $width = null,
-        ?int $height = null,
-        ?int $duration = null,
-        ?bool $supports_streaming = null,
-        InputFile|string|null $cover = null,
-        ?int $start_timestamp = null,
-    ): self {
-        return new self(
-            media: $media,
-            thumbnail: $thumbnail,
-            width: $width,
-            height: $height,
-            duration: $duration,
-            supports_streaming: $supports_streaming,
-            cover: $cover,
-            start_timestamp: $start_timestamp,
-        );
-    }
 
     public function jsonSerialize(): array
     {

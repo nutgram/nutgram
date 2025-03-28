@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -20,7 +20,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the file.
  * @see https://core.telegram.org/bots/api#inlinequeryresultcacheddocument
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InlineQueryResultCachedDocument extends InlineQueryResult
 {
     /** Type of the result, must be document */
@@ -99,29 +99,6 @@ class InlineQueryResultCachedDocument extends InlineQueryResult
         $this->input_message_content = $input_message_content;
     }
 
-    public static function make(
-        string $id,
-        string $title,
-        string $document_file_id,
-        ?string $description = null,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?InputMessageContent $input_message_content = null,
-    ): self {
-        return new self(
-            id: $id,
-            title: $title,
-            document_file_id: $document_file_id,
-            description: $description,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            reply_markup: $reply_markup,
-            input_message_content: $input_message_content,
-        );
-    }
 
     public function jsonSerialize(): array
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
@@ -15,7 +15,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * The error is considered resolved when a file with the document translation change.
  * @see https://core.telegram.org/bots/api#passportelementerrortranslationfiles
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class PassportElementErrorTranslationFiles extends PassportElementError
 {
     /** Error source, must be translation_files */
@@ -57,17 +57,6 @@ class PassportElementErrorTranslationFiles extends PassportElementError
      * @param string $message
      * @return self
      */
-    public static function make(
-        PassportType|string $type,
-        array $file_hashes,
-        string $message,
-    ): self {
-        return new self(
-            type: $type,
-            file_hashes: $file_hashes,
-            message: $message
-        );
-    }
 
     public function jsonSerialize(): array
     {

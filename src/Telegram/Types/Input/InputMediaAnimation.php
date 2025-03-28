@@ -6,7 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -18,7 +18,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
  * @see https://core.telegram.org/bots/api#inputmediaanimation
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputMediaAnimation extends InputMedia implements JsonSerializable
 {
     /** Type of the result, must be animation */
@@ -113,31 +113,6 @@ class InputMediaAnimation extends InputMedia implements JsonSerializable
         $this->show_caption_above_media = $show_caption_above_media;
     }
 
-    public static function make(
-        InputFile|string $media,
-        InputFile|string|null $thumbnail = null,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?int $width = null,
-        ?int $height = null,
-        ?int $duration = null,
-        ?bool $has_spoiler = null,
-        ?bool $show_caption_above_media = null,
-    ): self {
-        return new self(
-            media: $media,
-            thumbnail: $thumbnail,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            width: $width,
-            height: $height,
-            duration: $duration,
-            has_spoiler: $has_spoiler,
-            show_caption_above_media: $show_caption_above_media,
-        );
-    }
 
     public function jsonSerialize(): array
     {
