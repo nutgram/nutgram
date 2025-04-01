@@ -7,6 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Boost;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ChatBoostSourceSource;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\ChatBoostSourceResolver;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**

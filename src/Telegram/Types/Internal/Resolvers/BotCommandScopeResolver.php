@@ -2,12 +2,20 @@
 
 declare(strict_types=1);
 
-namespace SergiX44\Nutgram\Telegram\Types\Command;
+namespace SergiX44\Nutgram\Telegram\Types\Internal\Resolvers;
 
 use Attribute;
 use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeAllChatAdministrators;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeAllGroupChats;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeAllPrivateChats;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChat;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChatAdministrators;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChatMember;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class BotCommandScopeResolver extends ConcreteResolver
