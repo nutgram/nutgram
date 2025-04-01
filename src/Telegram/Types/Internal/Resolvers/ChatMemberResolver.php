@@ -2,12 +2,19 @@
 
 declare(strict_types=1);
 
-namespace SergiX44\Nutgram\Telegram\Types\Chat;
+namespace SergiX44\Nutgram\Telegram\Types\Internal\Resolvers;
 
 use Attribute;
 use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Telegram\Properties\ChatMemberStatus;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMember;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberAdministrator;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberBanned;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberLeft;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberMember;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberRestricted;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class ChatMemberResolver extends ConcreteResolver
