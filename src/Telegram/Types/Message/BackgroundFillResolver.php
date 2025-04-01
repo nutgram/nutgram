@@ -4,10 +4,11 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use Attribute;
 use InvalidArgumentException;
+use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Telegram\Properties\BackgroundFillType;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-class BackgroundFillResolver
+class BackgroundFillResolver extends ConcreteResolver
 {
     public function concreteFor(array $data): ?string
     {
