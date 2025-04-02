@@ -65,7 +65,7 @@ class Handler extends MiddlewareChain
      */
     protected array $skippedGlobalMiddlewares = [];
 
-    protected bool $skipConversation = false;
+    protected bool $stopConversation = false;
 
     /**
      * Handler constructor.
@@ -230,14 +230,14 @@ class Handler extends MiddlewareChain
         return (string)crc32(serialize($data));
     }
 
-    public function skipConversation(bool $skip = true): Handler
+    public function willStopConversations(bool $stop = true): Handler
     {
-        $this->skipConversation = $skip;
+        $this->stopConversation = $stop;
         return $this;
     }
 
-    public function isSkippingConversation(): bool
+    public function shouldStopConversation(): bool
     {
-        return $this->skipConversation;
+        return $this->stopConversation;
     }
 }

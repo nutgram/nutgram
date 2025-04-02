@@ -346,7 +346,7 @@ it('skips conversation by a handler', function () {
 
     $bot->onMyChatMember(function (Nutgram $bot) {
         $bot->set('test', 0);
-    })->skipConversation();
+    })->willStopConversations();
 
     $bot->onCommand('start', TwoStepConversation::class);
 
