@@ -15,6 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * - {@see BackgroundFillFreeformGradient}
  * @see https://core.telegram.org/bots/api#backgroundfill
  */
+#[BackgroundFillResolver]
 abstract class BackgroundFill extends BaseType
 {
     /**

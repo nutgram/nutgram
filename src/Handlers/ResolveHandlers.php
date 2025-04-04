@@ -181,7 +181,7 @@ abstract class ResolveHandlers extends CollectHandlers
             foreach ($handlers as $handler) {
                 // if we found at least one specific handler,
                 // we should escape the conversation
-                if ($handler->getPattern() !== null) {
+                if ($handler->getPattern() !== null || $handler->shouldStopConversation()) {
                     if ($conversation instanceof Conversation) {
                         $conversation->terminate($this);
                     }

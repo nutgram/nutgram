@@ -2,6 +2,21 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.36.0 - 2025-04-02
+
+### What's Changed
+
+* Add `willStopConversations` functionality to Handler class by @Lukasss93 in https://github.com/nutgram/nutgram/pull/871
+* Fix incorrect @param type in docblock by @erfankaramidev in https://github.com/nutgram/nutgram/pull/860
+* Fix: ensure `closing` method is called after endConversation call by @Lukasss93 in https://github.com/nutgram/nutgram/pull/858
+* Fix: add missing resolver attribute and extend ConcreteResolver to BackgroundFill type by @Lukasss93 in https://github.com/nutgram/nutgram/commit/15d2f44647d16b9f8d502946ed4c460262f7fc0b
+
+### New Contributors
+
+* @erfankaramidev made their first contribution in https://github.com/nutgram/nutgram/pull/860
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.35.0...4.36.0
+
 ## 4.35.0 - 2025-03-03
 
 ### What's Changed
