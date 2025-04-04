@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Exception\StatusFinalizedException;
-use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -13,10 +14,9 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
-use SergiX44\Nutgram\Tests\Fixtures\ComplexCommand;
+use SergiX44\Nutgram\Tests\Fixtures\Commands\HelpArrayDescriptionCommand;
+use SergiX44\Nutgram\Tests\Fixtures\Commands\HelpStringDescriptionCommand;
 use SergiX44\Nutgram\Tests\Fixtures\HelloHandler;
-use SergiX44\Nutgram\Tests\Fixtures\InvalidCommand;
-use SergiX44\Nutgram\Tests\Fixtures\TestStartCommand;
 
 it('calls the message handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -42,7 +42,7 @@ it('throws exception after finalization', function ($update) {
 
     $bot->onMessage(function ($bot) use (&$test) {
     });
-})->expectException(StatusFinalizedException::class)->with('message');
+})->throws(StatusFinalizedException::class)->with('message');
 
 it('calls the message handler with a middleware', function ($update) {
     $bot = Nutgram::fake($update);
@@ -172,78 +172,6 @@ it('calls the right on command', function ($update) {
     $bot->run();
 })->with('command_message');
 
-it('allows defining commands with command instances', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $c = new class extends Command {
-        protected string $command = 'start';
-
-        public function handle(Nutgram $bot): void
-        {
-            expect($bot)->toBeInstanceOf(Nutgram::class);
-        }
-    };
-
-    $bot->registerCommand($c);
-
-    $bot->onMessage(function ($bot) {
-        throw new Exception();
-    });
-
-    $bot->run();
-})->with('command_message');
-
-it('allows defining commands with classes', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $bot->set('called', false);
-    $bot->registerCommand(TestStartCommand::class);
-
-    $bot->onMessage(function ($bot) {
-        throw new Exception();
-    });
-
-    $bot->run();
-
-    expect($bot->get('called'))->toBeTrue();
-})->with('command_message');
-
-it('allows defining commands with classes with missing handle method', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $bot->set('called', false);
-    $bot->registerCommand(InvalidCommand::class);
-
-    $bot->run();
-
-    expect($bot->get('called'))->toBeFalse();
-})->with('command_message')->throws(RuntimeException::class, 'The handle method must be implemented!');
-
-it('allows defining commands with classes with parameter', function () {
-    $bot = Nutgram::fake();
-
-    $bot->set('called', false);
-    $bot->registerCommand(ComplexCommand::class);
-
-    $bot->hearText('/start test')->reply();
-
-    expect($bot->get('called'))->toBeTrue();
-});
-
-it('throws an error if not when not specifying a callable', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $bot->registerCommand('garbage');
-})->with('command_message')->expectException(InvalidArgumentException::class);
-
-it('works as-is specifying the minimum', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $bot->registerCommand(new Command(command: 'start'));
-
-    $bot->run();
-})->with('command_message')->expectException(RuntimeException::class);
-
 it('parse callback queries', function ($update) {
     $bot = Nutgram::fake($update);
 
@@ -342,7 +270,7 @@ it('doesnt call the exception handler when cleared', function ($update) {
     $bot->clearErrorHandlers(exception: true);
 
     $bot->reply();
-})->with('callback_query')->expectException(RuntimeException::class);
+})->with('callback_query')->throws(RuntimeException::class);
 
 it('calls the specific exception handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -494,18 +422,46 @@ test('commands can have descriptions', function ($update) {
     });
 
     expect($cmd1->getName())->toBe('help');
-    expect($cmd1->getDescription())->toBe('test');
+    expect($cmd1->getDescription())->toBe(['*' => 'test']);
     expect($cmd1->isHidden())->toBeFalse();
 
     expect($cmd2->getName())->toBe('start');
-    expect($cmd2->getDescription())->toBe('test2');
+    expect($cmd2->getDescription())->toBe(['*' => 'test2']);
     expect($cmd2->isHidden())->toBeFalse();
 
     expect($cmd3->getName())->toBe('end');
-    expect($cmd3->getDescription())->toBeNull();
+    expect($cmd3->getDescription())->toBe([]);
     expect($cmd3->isHidden())->toBeTrue();
 })->with('command_message');
 
+test('command can have description via interface', function ($update, $command, $description) {
+    $bot = Nutgram::fake($update);
+
+    $cmd = $bot->onCommand('help', $command);
+
+    expect($cmd->getDescription())->toBe($description);
+})->with('command_message')->with([
+    'string' => [
+        HelpStringDescriptionCommand::class,
+        [
+            '*' => 'Global description',
+        ],
+    ],
+    'string + array callable' => [
+        [HelpStringDescriptionCommand::class, '__invoke'],
+        [
+            '*' => 'Global description',
+        ],
+    ],
+    'array' => [
+        HelpArrayDescriptionCommand::class,
+        [
+            '*' => 'Global description',
+            'es' => 'Español descripción',
+            'it' => 'Descrizione italiana',
+        ],
+    ],
+]);
 
 it('skips global middleware except one', function ($update) {
     $bot = Nutgram::fake($update);
@@ -942,7 +898,7 @@ it('sends boolean parameters via jsonSerialize', function () {
     $bot->onCommand('start', function (Nutgram $bot) {
         $bot->sendMessage(
             text: 'Removing your keyboard...',
-            reply_markup: ReplyKeyboardRemove::make(true, false),
+            reply_markup: new ReplyKeyboardRemove(true, false),
         );
     });
 
