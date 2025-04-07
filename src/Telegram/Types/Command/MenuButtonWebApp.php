@@ -29,20 +29,11 @@ class MenuButtonWebApp extends MenuButton
      */
     public WebAppInfo $web_app;
 
-    public function __construct(
-        string $text,
-        WebAppInfo $web_app
-    ) {
+    public function __construct(string $text, WebAppInfo $web_app)
+    {
         parent::__construct();
         $this->text = $text;
         $this->web_app = $web_app;
-    }
-
-    public function make(
-        string $text,
-        WebAppInfo $web_app,
-    ): self {
-        return new self($text, $web_app);
     }
 
     public function jsonSerialize(): array
