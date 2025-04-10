@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
@@ -26,6 +27,7 @@ class InputTextMessageContent extends InputMessageContent
      * Mode for parsing entities in the message text.
      * See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      */
+    #[EnumOrScalar]
     public ParseMode|string|null $parse_mode = null;
 
     /**

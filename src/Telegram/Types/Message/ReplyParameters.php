@@ -8,6 +8,7 @@ use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
@@ -28,6 +29,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
      * unique identifier for the chat or username of the channel (in the format [at]channelusername)
      * @var int|string|null
      */
+    #[BaseUnion]
     public int|string|null $chat_id = null;
 
     /**

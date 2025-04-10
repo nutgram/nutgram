@@ -8,6 +8,7 @@ use JsonSerializable;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputPaidMediaType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -34,6 +35,7 @@ class InputPaidMediaVideo extends InputPaidMedia implements JsonSerializable
      * Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string|null $thumbnail = null;
 
     /**
@@ -44,6 +46,7 @@ class InputPaidMediaVideo extends InputPaidMedia implements JsonSerializable
      * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string|null $cover = null;
 
     /**

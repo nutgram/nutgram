@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use Psr\Http\Message\StreamInterface;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
 use SergiX44\Nutgram\Telegram\Types\Sticker\MaskPosition;
@@ -27,12 +28,14 @@ class InputSticker extends BaseType implements JsonSerializable, Uploadable
      * Animated and video stickers can't be uploaded via HTTP URL.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string $sticker;
 
     /**
      * Format of the added sticker, must be one of “static” for a .WEBP or .PNG image,
      * “animated” for a .TGS animation, “video” for a WEBM video
      */
+    #[BaseUnion]
     public StickerFormat|string|null $format = null;
 
     /**
