@@ -11,6 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\Business\BusinessLocation;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessOpeningHours;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
+use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
 use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
 
 /**
@@ -246,8 +247,14 @@ class Chat extends BaseType
     public ?ChatPermissions $permissions = null;
 
     /**
+     * Information about types of gifts that are accepted by the chat or by the corresponding user for private chats
+     */
+    public AcceptedGiftTypes $accepted_gift_types;
+
+    /**
      * Optional.
      * True, if gifts can be sent to the chat
+     * @deprecated since Bot API v9.0 Please use the "accepted_gift_types" field instead.
      */
     public ?bool $can_send_gift = null;
 

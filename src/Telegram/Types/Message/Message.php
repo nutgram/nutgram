@@ -41,6 +41,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Voice;
 use SergiX44\Nutgram\Telegram\Types\Passport\PassportData;
 use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaInfo;
+use SergiX44\Nutgram\Telegram\Types\Payment\PaidMessagePriceChanged;
 use SergiX44\Nutgram\Telegram\Types\Payment\RefundedPayment;
 use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
@@ -48,7 +49,9 @@ use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UserShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
+use SergiX44\Nutgram\Telegram\Types\Sticker\GiftInfo;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
+use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGiftInfo;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatEnded;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatParticipantsInvited;
@@ -229,6 +232,11 @@ class Message extends BaseType
      * Signature of the post author for messages in channels, or the custom title of an anonymous group administrator
      */
     public ?string $author_signature = null;
+
+    /**
+     * Optional. The number of Telegram Stars that were paid by the sender of the message to send it
+     */
+    public ?int $paid_star_count = null;
 
     /**
      * Optional.
@@ -501,6 +509,16 @@ class Message extends BaseType
     public ?ChatShared $chat_shared = null;
 
     /**
+     * Optional. Service message: a regular gift was sent or received
+     */
+    public ?GiftInfo $gift = null;
+
+    /**
+     * Optional. Service message: a unique gift was sent or received
+     */
+    public ?UniqueGiftInfo $unique_gift = null;
+
+    /**
      * Optional.
      * The domain name of the website on which the user has logged in.
      * {@see https://core.telegram.org/widgets/login More about Telegram Login »}
@@ -594,6 +612,11 @@ class Message extends BaseType
     public ?GiveawayCompleted $giveaway_completed = null;
 
     /**
+     * Optional. Service message: the price for paid messages has changed in the chat
+     */
+    public ?PaidMessagePriceChanged $paid_message_price_changed = null;
+
+    /**
      * Optional.
      * Service message: video chat scheduled
      */
@@ -635,7 +658,7 @@ class Message extends BaseType
      * Example:
      * IN: /hello param1 param2 or /hello[at]MyDearBot param1 param2
      * OUT: /hello param1 param2
-     * @param  string|null  $username
+     * @param string|null $username
      * @return string|null
      */
     public function getParsedCommand(?string $username = null): ?string
