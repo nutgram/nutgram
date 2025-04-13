@@ -4,13 +4,12 @@ namespace SergiX44\Nutgram\Telegram\Types\Story;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\StoryAreaTypeType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * Describes a story area containing weather information. Currently, a story can have up to 3 weather areas.
  * @see https://core.telegram.org/bots/api#storyareatypeweather
  */
-class StoryAreaTypeWeather extends BaseType
+class StoryAreaTypeWeather extends StoryAreaType
 {
     /**
      * Type of the area, always “weather”
