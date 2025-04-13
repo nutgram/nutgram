@@ -21,4 +21,10 @@ class StoryAreaTypeUniqueGift extends StoryAreaType
      * Unique name of the gift
      */
     public string $name;
+
+    public function __construct(string $name)
+    {
+        parent::__construct();
+        $this->name = $name;
+    }
 }

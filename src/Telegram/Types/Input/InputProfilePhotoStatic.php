@@ -32,4 +32,10 @@ class InputProfilePhotoStatic extends InputProfilePhoto
     {
         return $this->photo->getResource();
     }
+
+    public function __construct(InputFile|string $photo)
+    {
+        parent::__construct();
+        $this->photo = $photo;
+    }
 }

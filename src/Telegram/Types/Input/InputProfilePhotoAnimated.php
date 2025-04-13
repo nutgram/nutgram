@@ -38,4 +38,11 @@ class InputProfilePhotoAnimated extends InputProfilePhoto
     {
         return $this->animation->getResource();
     }
+
+    public function __construct(InputFile|string $animation, ?float $main_frame_timestamp = null)
+    {
+        parent::__construct();
+        $this->animation = $animation;
+        $this->main_frame_timestamp = $main_frame_timestamp;
+    }
 }

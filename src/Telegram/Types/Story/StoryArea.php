@@ -19,4 +19,11 @@ class StoryArea extends BaseType
      * Type of the area
      */
     public StoryAreaType $type;
+
+    public function __construct(StoryAreaPosition $position, StoryAreaType $type)
+    {
+        parent::__construct();
+        $this->position = $position;
+        $this->type = $type;
+    }
 }

@@ -31,4 +31,15 @@ class StoryAreaTypeWeather extends StoryAreaType
      * A color of the area background in the ARGB format
      */
     public int $background_color;
+
+    public function __construct(
+        float $temperature,
+        string $emoji,
+        int $background_color
+    ) {
+        parent::__construct();
+        $this->temperature = $temperature;
+        $this->emoji = $emoji;
+        $this->background_color = $background_color;
+    }
 }

@@ -32,4 +32,12 @@ class StoryAreaTypeLocation extends StoryAreaType
      * Optional. Address of the location
      */
     public ?LocationAddress $address = null;
+
+    public function __construct(float $latitude, float $longitude, ?LocationAddress $address = null)
+    {
+        parent::__construct();
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+        $this->address = $address;
+    }
 }

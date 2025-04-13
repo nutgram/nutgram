@@ -26,4 +26,17 @@ class AcceptedGiftTypes extends BaseType
      * True, if a Telegram Premium subscription is accepted
      */
     public bool $premium_subscription;
+
+    public function __construct(
+        bool $unlimited_gifts,
+        bool $limited_gifts,
+        bool $unique_gifts,
+        bool $premium_subscription
+    ) {
+        parent::__construct();
+        $this->unlimited_gifts = $unlimited_gifts;
+        $this->limited_gifts = $limited_gifts;
+        $this->unique_gifts = $unique_gifts;
+        $this->premium_subscription = $premium_subscription;
+    }
 }

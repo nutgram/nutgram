@@ -32,4 +32,12 @@ class StoryAreaTypeSuggestedReaction extends StoryAreaType
      * Optional. Pass True if reaction area corner is flipped
      */
     public ?bool $is_flipped = null;
+
+    public function __construct(ReactionType $reaction_type, ?bool $is_dark = null, ?bool $is_flipped = null)
+    {
+        parent::__construct();
+        $this->reaction_type = $reaction_type;
+        $this->is_dark = $is_dark;
+        $this->is_flipped = $is_flipped;
+    }
 }

@@ -25,7 +25,7 @@ class InputStoryContentVideo extends InputStoryContent implements Uploadable
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
     public InputFile|string $video;
-    
+
     /**
      * Optional. Precise duration of the video in seconds; 0-60
      */
@@ -54,5 +54,14 @@ class InputStoryContentVideo extends InputStoryContent implements Uploadable
     public function getResource()
     {
         return $this->video->getResource();
+    }
+
+    public function __construct(InputFile|string $video, ?float $duration = null, ?float $cover_frame_timestamp = null, ?bool $is_animation = null)
+    {
+        parent::__construct();
+        $this->video = $video;
+        $this->duration = $duration;
+        $this->cover_frame_timestamp = $cover_frame_timestamp;
+        $this->is_animation = $is_animation;
     }
 }

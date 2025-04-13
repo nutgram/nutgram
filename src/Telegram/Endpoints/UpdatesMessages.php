@@ -12,6 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Story;
 use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use SergiX44\Nutgram\Telegram\Types\Payment\StarAmount;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
 use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
@@ -462,15 +463,15 @@ trait UpdatesMessages
      * Returns the amount of Telegram Stars owned by a managed business account. Requires the can_view_gifts_and_stars business bot right.
      * Returns {@see https://core.telegram.org/bots/api#staramount StarAmount} on success.
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return int|null
+     * @return StarAmount|null
      */
-    public function getBusinessAccountStarBalance(?string $business_connection_id = null): ?int
+    public function getBusinessAccountStarBalance(?string $business_connection_id = null): ?StarAmount
     {
         $business_connection_id ??= $this->businessConnectionId();
 
         return $this->requestJson(__FUNCTION__, compact(
             'business_connection_id',
-        ));
+        ), StarAmount::class);
     }
 
     /**

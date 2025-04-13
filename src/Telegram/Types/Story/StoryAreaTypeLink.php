@@ -21,4 +21,10 @@ class StoryAreaTypeLink extends StoryAreaType
      * HTTP or tg:// URL to be opened when the area is clicked
      */
     public string $url;
+
+    public function __construct(string $url)
+    {
+        parent::__construct();
+        $this->url = $url;
+    }
 }

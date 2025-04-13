@@ -40,4 +40,10 @@ class InputStoryContentPhoto extends InputStoryContent implements Uploadable
     {
         return $this->photo->getResource();
     }
+
+    public function __construct(InputFile|string $photo)
+    {
+        parent::__construct();
+        $this->photo = $photo;
+    }
 }

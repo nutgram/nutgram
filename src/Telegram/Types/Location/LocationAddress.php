@@ -29,4 +29,13 @@ class LocationAddress extends BaseType
      * Optional. Street address of the location
      */
     public ?string $street = null;
+
+    public function __construct(string $country_code, ?string $state = null, ?string $city = null, ?string $street = null)
+    {
+        parent::__construct();
+        $this->country_code = $country_code;
+        $this->state = $state;
+        $this->city = $city;
+        $this->street = $street;
+    }
 }
