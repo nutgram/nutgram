@@ -249,7 +249,7 @@ class Chat extends BaseType
     /**
      * Information about types of gifts that are accepted by the chat or by the corresponding user for private chats
      */
-    public AcceptedGiftTypes $accepted_gift_types;
+    public ?AcceptedGiftTypes $accepted_gift_types = null;
 
     /**
      * Optional.
