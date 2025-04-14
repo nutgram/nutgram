@@ -27,6 +27,7 @@
     "require": {
         "php": "^8.2",
         "ext-json": "*",
+        "ext-mbstring": "*",
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/macroable": ">=9.0",
         "laravel/serializable-closure": "^1.0|^2.0",

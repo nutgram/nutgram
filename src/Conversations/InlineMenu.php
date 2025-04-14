@@ -102,7 +102,7 @@ abstract class InlineMenu extends Conversation
             }
 
             if (str_starts_with($button->callback_data, '@')) {
-                $button->callback_data = substr($button->text, 0, Limits::CALLBACK_DATA_LENGTH).$button->callback_data;
+                $button->callback_data = mb_substr($button->text, 0, Limits::CALLBACK_DATA_LENGTH).$button->callback_data;
             }
 
             @[$callbackData, $method] = explode('@', $button->callback_data);
