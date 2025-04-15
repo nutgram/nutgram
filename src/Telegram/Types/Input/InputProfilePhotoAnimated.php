@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use Psr\Http\Message\StreamInterface;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 
 /**
@@ -33,9 +36,9 @@ class InputProfilePhotoAnimated extends InputProfilePhoto
         return $this->animation->getFilename();
     }
 
-    public function getResource()
+    public function getStream(): StreamInterface
     {
-        return $this->animation->getResource();
+        return $this->animation->getStream();
     }
 
     public function __construct(InputFile|string $animation, ?float $main_frame_timestamp = null)
@@ -44,4 +47,6 @@ class InputProfilePhotoAnimated extends InputProfilePhoto
         $this->animation = $animation;
         $this->main_frame_timestamp = $main_frame_timestamp;
     }
+
+
 }
