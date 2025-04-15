@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use Psr\Http\Message\StreamInterface;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputStoryContentType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
@@ -51,9 +54,9 @@ class InputStoryContentVideo extends InputStoryContent implements Uploadable
         return $this->video->getFilename();
     }
 
-    public function getResource()
+    public function getStream(): StreamInterface
     {
-        return $this->video->getResource();
+        return $this->video->getStream();
     }
 
     public function __construct(InputFile|string $video, ?float $duration = null, ?float $cover_frame_timestamp = null, ?bool $is_animation = null)

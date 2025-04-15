@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use SergiX44\Nutgram\Nutgram;
 
 it('calls onDice() handler with a non mapped value', function ($update) {

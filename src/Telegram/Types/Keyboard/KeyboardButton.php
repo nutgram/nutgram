@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -14,7 +16,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * The optional fields web_app, request_user, request_chat, request_contact, request_location, and request_poll are mutually exclusive.
  * @see https://core.telegram.org/bots/api#keyboardbutton
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class KeyboardButton extends BaseType implements JsonSerializable
 {
     /**
@@ -22,15 +24,6 @@ class KeyboardButton extends BaseType implements JsonSerializable
      * If none of the optional fields are used, it will be sent as a message when the button is pressed
      */
     public string $text;
-
-    /**
-     * Optional.
-     * If specified, pressing the button will open a list of suitable users.
-     * Tapping on any user will send their identifier to the bot in a “user_shared” service message.
-     * Available in private chats only.
-     * @deprecated Use $request_users instead
-     */
-    public ?KeyboardButtonRequestUser $request_user = null;
 
     /**
      * Optional. If specified, pressing the button will open a list of suitable users.
@@ -82,7 +75,6 @@ class KeyboardButton extends BaseType implements JsonSerializable
         ?bool $request_location = null,
         ?KeyboardButtonPollType $request_poll = null,
         ?WebAppInfo $web_app = null,
-        ?KeyboardButtonRequestUser $request_user = null,
         ?KeyboardButtonRequestUsers $request_users = null,
         ?KeyboardButtonRequestChat $request_chat = null,
     ) {
@@ -92,38 +84,15 @@ class KeyboardButton extends BaseType implements JsonSerializable
         $this->request_location = $request_location;
         $this->request_poll = $request_poll;
         $this->web_app = $web_app;
-        $this->request_user = $request_user;
         $this->request_users = $request_users;
         $this->request_chat = $request_chat;
     }
 
-    public static function make(
-        string $text,
-        ?bool $request_contact = null,
-        ?bool $request_location = null,
-        ?KeyboardButtonPollType $request_poll = null,
-        ?WebAppInfo $web_app = null,
-        ?KeyboardButtonRequestUser $request_user = null,
-        ?KeyboardButtonRequestUsers $request_users = null,
-        ?KeyboardButtonRequestChat $request_chat = null,
-    ): self {
-        return new self(
-            text: $text,
-            request_contact: $request_contact,
-            request_location: $request_location,
-            request_poll: $request_poll,
-            web_app: $web_app,
-            request_user: $request_user,
-            request_users: $request_users,
-            request_chat: $request_chat,
-        );
-    }
 
     public function jsonSerialize(): array
     {
         return array_filter_null([
             'text' => $this->text,
-            'request_user' => $this->request_user,
             'request_users' => $this->request_users,
             'request_chat' => $this->request_chat,
             'request_contact' => $this->request_contact,

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Support;
 
+use Psr\Clock\ClockInterface;
 use Psr\SimpleCache\CacheInterface;
 
 class RateLimiter
@@ -15,9 +18,15 @@ class RateLimiter
     protected int $maxAttempts;
     protected int $decaySeconds;
 
-    public function __construct(CacheInterface $cache, string $key, int $maxAttempts, int $decaySeconds = 60)
-    {
+    public function __construct(
+        CacheInterface $cache,
+        ClockInterface $clock,
+        string $key,
+        int $maxAttempts,
+        int $decaySeconds = 60
+    ) {
         $this->cache = $cache;
+        $this->clock = $clock;
         $this->key = sprintf("%s:%s", self::CACHE_KEY, $key);
         $this->maxAttempts = $maxAttempts;
         $this->decaySeconds = $decaySeconds;

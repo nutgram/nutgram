@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use Psr\Http\Message\StreamInterface;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputStoryContentType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
@@ -36,9 +39,9 @@ class InputStoryContentPhoto extends InputStoryContent implements Uploadable
         return $this->photo->getFilename();
     }
 
-    public function getResource()
+    public function getStream(): StreamInterface
     {
-        return $this->photo->getResource();
+        return $this->photo->getStream();
     }
 
     public function __construct(InputFile|string $photo)
