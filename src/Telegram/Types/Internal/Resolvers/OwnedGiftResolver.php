@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-namespace SergiX44\Nutgram\Telegram\Types\Sticker;
+namespace SergiX44\Nutgram\Telegram\Types\Internal\Resolvers;
 
 use Attribute;
 use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Telegram\Properties\OwnedGiftType;
+use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGift;
+use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGiftRegular;
+use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGiftUnique;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class OwnedGiftResolver extends ConcreteResolver
