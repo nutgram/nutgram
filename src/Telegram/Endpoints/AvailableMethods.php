@@ -852,7 +852,7 @@ trait AvailableMethods
      * Use this method to send paid media to channel chats.
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#sendpaidmedia
-     * @param int $star_count The number of Telegram Stars that must be paid to buy access to the media
+     * @param int $star_count The number of Telegram Stars that must be paid to buy access to the media; 1-10000
      * @param InputPaidMedia[] $media A JSON-serialized array describing the media to be sent; up to 10 items
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string|null $caption Media caption, 0-1024 characters after entities parsing
@@ -1760,7 +1760,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#createchatsubscriptioninvitelink
      * @param string|int $chat_id Unique identifier for the target channel chat or username of the target channel (in the format &#64;channelusername)
      * @param int $subscription_period The number of seconds the subscription will be active for before the next payment. Currently, it must always be 2592000 (30 days).
-     * @param int $subscription_price The amount of Telegram Stars a user must pay initially and after each subsequent subscription period to be a member of the chat; 1-2500
+     * @param int $subscription_price The amount of Telegram Stars a user must pay initially and after each subsequent subscription period to be a member of the chat; 1-10000
      * @param string|null $name Invite link name; 0-32 characters
      * @return ChatInviteLink|null
      */

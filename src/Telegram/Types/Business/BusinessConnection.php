@@ -37,8 +37,14 @@ class BusinessConnection extends BaseType
 
     /**
      * True, if the bot can act on behalf of the business account in chats that were active in the last 24 hours
+     * @deprecated since Bot API v9.0 Please use the "rights" field instead.
      */
     public bool $can_reply;
+
+    /**
+     * Optional. Rights of the business bot
+     */
+    public ?BusinessBotRights $rights = null;
 
     /**
      * True, if the connection is active
