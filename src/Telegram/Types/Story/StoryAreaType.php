@@ -8,6 +8,7 @@ use JsonSerializable;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\StoryAreaTypeType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\StoryAreaTypeResolver;
 
 /**
  * Describes the type of a clickable area on a story. Currently, it can be one of
@@ -17,7 +18,8 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * - {@see StoryAreaTypeWeather}
  * - {@see StoryAreaTypeUniqueGift}
  */
-abstract class StoryAreaType extends BaseType implements JsonSerializable
+#[StoryAreaTypeResolver]
+abstract class StoryAreaType extends BaseType
 {
     #[EnumOrScalar]
     public StoryAreaTypeType|string $type;
