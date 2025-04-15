@@ -26,7 +26,7 @@ class ChatBoostSourceGiveaway extends ChatBoostSource
     public int $giveaway_message_id;
 
     /**
-     * Optional. User that won the prize in the giveaway if any
+     * Optional. User that won the prize in the giveaway if any; for Telegram Premium giveaways only
      */
     public ?User $user = null;
 
