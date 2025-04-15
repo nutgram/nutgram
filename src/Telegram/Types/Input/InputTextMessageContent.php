@@ -10,7 +10,6 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a text message to be sent as the result of an inline query.
@@ -52,16 +51,5 @@ class InputTextMessageContent extends InputMessageContent
         $this->message_text = $message_text;
         $this->parse_mode = $parse_mode;
         $this->entities = $entities;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'message_text' => $this->message_text,
-            'parse_mode' => $this->parse_mode,
-            'entities' => $this->entities,
-            'link_preview_options' => $this->link_preview_options,
-        ]);
     }
 }

@@ -8,7 +8,6 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a {@see https://core.telegram.org/bots/api#games Game}.
@@ -42,16 +41,5 @@ class InlineQueryResultGame extends InlineQueryResult
         $this->id = $id;
         $this->game_short_name = $game_short_name;
         $this->reply_markup = $reply_markup;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'id' => $this->id,
-            'game_short_name' => $this->game_short_name,
-            'reply_markup' => $this->reply_markup,
-        ]);
     }
 }

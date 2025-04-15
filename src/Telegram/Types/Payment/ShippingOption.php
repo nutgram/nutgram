@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -14,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * @see https://core.telegram.org/bots/api#shippingoption
  */
 #[OverrideConstructor('bindToInstance')]
-class ShippingOption extends BaseType implements JsonSerializable
+class ShippingOption extends BaseType
 {
     /** Shipping option identifier */
     public string $id;
@@ -35,15 +34,5 @@ class ShippingOption extends BaseType implements JsonSerializable
         $this->id = $id;
         $this->title = $title;
         $this->prices = $prices;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'prices' => $this->prices
-        ];
     }
 }

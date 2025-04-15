@@ -35,13 +35,4 @@ class MenuButtonWebApp extends MenuButton
         $this->text = $text;
         $this->web_app = $web_app;
     }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'type' => $this->type,
-            'text' => $this->text,
-            'web_app' => $this->web_app,
-        ];
-    }
 }

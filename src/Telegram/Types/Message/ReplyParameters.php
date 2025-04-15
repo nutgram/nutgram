@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Describes reply parameters for the message that is being sent.
  * @see https://core.telegram.org/bots/api#replyparameters
  */
 #[OverrideConstructor('bindToInstance')]
-class ReplyParameters extends BaseType implements JsonSerializable
+class ReplyParameters extends BaseType
 {
     /**
      * Identifier of the message that will be replied to in the current chat, or in the chat chat_id if it is specified
@@ -93,18 +91,5 @@ class ReplyParameters extends BaseType implements JsonSerializable
         $this->quote_parse_mode = $quote_parse_mode;
         $this->quote_entities = $quote_entities;
         $this->quote_position = $quote_position;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'message_id' => $this->message_id,
-            'chat_id' => $this->chat_id,
-            'allow_sending_without_reply' => $this->allow_sending_without_reply,
-            'quote' => $this->quote,
-            'quote_parse_mode' => $this->quote_parse_mode,
-            'quote_entities' => $this->quote_entities,
-            'quote_position' => $this->quote_position,
-        ]);
     }
 }

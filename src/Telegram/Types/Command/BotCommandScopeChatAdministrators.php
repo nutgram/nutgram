@@ -29,13 +29,4 @@ class BotCommandScopeChatAdministrators extends BotCommandScope
         parent::__construct();
         $this->chat_id = $chat_id;
     }
-
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'type' => $this->type,
-            'chat_id' => $this->chat_id,
-        ];
-    }
 }

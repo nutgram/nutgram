@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Story;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\StoryAreaTypeType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -23,9 +22,4 @@ abstract class StoryAreaType extends BaseType
 {
     #[EnumOrScalar]
     public StoryAreaTypeType|string $type;
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
 }

@@ -12,7 +12,6 @@ use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a link to an animated GIF file.
@@ -140,27 +139,5 @@ class InlineQueryResultGif extends InlineQueryResult
         $this->reply_markup = $reply_markup;
         $this->input_message_content = $input_message_content;
         $this->show_caption_above_media = $show_caption_above_media;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'id' => $this->id,
-            'gif_url' => $this->gif_url,
-            'gif_width' => $this->gif_width,
-            'gif_height' => $this->gif_height,
-            'gif_duration' => $this->gif_duration,
-            'thumbnail_url' => $this->thumbnail_url,
-            'thumbnail_mime_type' => $this->thumbnail_mime_type,
-            'title' => $this->title,
-            'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode,
-            'caption_entities' => $this->caption_entities,
-            'show_caption_above_media' => $this->show_caption_above_media,
-            'reply_markup' => $this->reply_markup,
-            'input_message_content' => $this->input_message_content,
-        ]);
     }
 }

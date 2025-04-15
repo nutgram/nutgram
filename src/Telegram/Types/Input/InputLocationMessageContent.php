@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a location message to be sent as the result of an inline query.
@@ -61,18 +60,5 @@ class InputLocationMessageContent extends InputMessageContent
         $this->live_period = $live_period;
         $this->heading = $heading;
         $this->proximity_alert_radius = $proximity_alert_radius;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            'horizontal_accuracy' => $this->horizontal_accuracy,
-            'live_period' => $this->live_period,
-            'heading' => $this->heading,
-            'proximity_alert_radius' => $this->proximity_alert_radius,
-        ]);
     }
 }
