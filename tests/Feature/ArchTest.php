@@ -8,7 +8,10 @@ use SergiX44\Nutgram\Telegram\Types\Inline\InlineQueryResult;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputPaidMedia;
+use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhoto;
+use SergiX44\Nutgram\Telegram\Types\Input\InputStoryContent;
 use SergiX44\Nutgram\Telegram\Types\Passport\PassportElementError;
+use SergiX44\Nutgram\Telegram\Types\Story\StoryAreaType;
 use SergiX44\Nutgram\Testing\TypeFaker;
 use SergiX44\Nutgram\Tests\TelegramTypeContext;
 
@@ -34,6 +37,9 @@ test('check that abstract Telegram Input Types have a ConcreteResolver attribute
         InputMedia::class,
         InputMessageContent::class,
         InputPaidMedia::class,
+        InputProfilePhoto::class,
+        InputStoryContent::class,
+        StoryAreaType::class,
         PassportElementError::class,
     ];
 
