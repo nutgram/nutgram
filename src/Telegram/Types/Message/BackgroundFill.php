@@ -7,6 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\BackgroundFillType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\BackgroundFillResolver;
 
 /**
  * This object describes the way a background is filled based on the selected colors. Currently, it can be one of
