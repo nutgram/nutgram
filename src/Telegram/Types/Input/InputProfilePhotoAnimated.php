@@ -47,6 +47,4 @@ class InputProfilePhotoAnimated extends InputProfilePhoto
         $this->animation = $animation;
         $this->main_frame_timestamp = $main_frame_timestamp;
     }
-
-
 }
