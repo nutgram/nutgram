@@ -66,11 +66,9 @@ function getTelegramTypes(TelegramTypeContext $context = TelegramTypeContext::Al
 
     $types = array_map(function (string $classPath) {
         $classPath = realpath($classPath);
-        $classPath = str_replace(
-            search: ['/', realpath(__DIR__.'/../src/'), '.php'],
-            replace: ['\\', 'SergiX44\Nutgram', ''],
-            subject: $classPath,
-        );
+        $classPath = str_replace(realpath(__DIR__.'/../src/'), 'SergiX44\Nutgram', $classPath);
+        $classPath = str_replace('/', '\\', $classPath);
+        $classPath = str_replace('.php', '', $classPath);
 
         return new ReflectionClass($classPath);
     }, $classes);
