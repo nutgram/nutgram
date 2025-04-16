@@ -10,7 +10,9 @@ use Psr\Container\NotFoundExceptionInterface;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionNamedType;
 use ReflectionProperty;
+use ReflectionUnionType;
 use RuntimeException;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
@@ -93,7 +95,7 @@ class TypeFaker
                 continue;
             }
 
-            if ($property->getType() instanceof \ReflectionUnionType) {
+            if ($property->getType() instanceof ReflectionUnionType) {
                 $typeName = $this->resolveUnionType($property, $userDefined);
             } else {
                 $typeName = $property->getType()?->getName();
@@ -236,22 +238,26 @@ class TypeFaker
 
     private function resolveUnionType(ReflectionProperty $property, array $userDefined): string
     {
+        /** @var ReflectionUnionType $propertyType */
+        $propertyType = $property->getType();
+        $propertyTypes = $propertyType->getTypes();
+
         $attributes = $property->getAttributes(UnionResolver::class, ReflectionAttribute::IS_INSTANCEOF);
         /** @var ?UnionResolver $unionResolver */
         $unionResolver = array_shift($attributes)?->newInstance();
 
         if ($unionResolver === null) {
-            return $property->getType()->getTypes()[0]->getName();
+            return $propertyTypes[0]->getName();
         }
 
         try {
             return $unionResolver->resolve(
                 propertyName: $property->name,
-                propertyTypes: $property->getType()->getTypes(),
+                propertyTypes: array_filter($propertyTypes, fn ($type) => $type instanceof ReflectionNamedType),
                 data: $userDefined,
             )->getName();
         } catch (Throwable) {
-            return $property->getType()->getTypes()[0]->getName();
+            return $propertyTypes[0]->getName();
         }
     }
 
