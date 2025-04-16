@@ -12,7 +12,6 @@ use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a link to a voice message stored on the Telegram servers.
@@ -89,21 +88,5 @@ class InlineQueryResultCachedVoice extends InlineQueryResult
         $this->caption_entities = $caption_entities;
         $this->reply_markup = $reply_markup;
         $this->input_message_content = $input_message_content;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'id' => $this->id,
-            'voice_file_id' => $this->voice_file_id,
-            'title' => $this->title,
-            'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode,
-            'caption_entities' => $this->caption_entities,
-            'reply_markup' => $this->reply_markup,
-            'input_message_content' => $this->input_message_content,
-        ]);
     }
 }

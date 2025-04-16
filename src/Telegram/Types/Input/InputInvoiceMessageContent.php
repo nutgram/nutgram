@@ -7,7 +7,6 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of an invoice message to be sent as the result of an inline query.
@@ -184,32 +183,5 @@ class InputInvoiceMessageContent extends InputMessageContent
         $this->send_phone_number_to_provider = $send_phone_number_to_provider;
         $this->send_email_to_provider = $send_email_to_provider;
         $this->is_flexible = $is_flexible;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'title' => $this->title,
-            'description' => $this->description,
-            'payload' => $this->payload,
-            'provider_token' => $this->provider_token ?: null,
-            'currency' => $this->currency,
-            'prices' => $this->prices,
-            'max_tip_amount' => $this->max_tip_amount,
-            'suggested_tip_amounts' => $this->suggested_tip_amounts,
-            'provider_data' => $this->provider_data,
-            'photo_url' => $this->photo_url,
-            'photo_size' => $this->photo_size,
-            'photo_width' => $this->photo_width,
-            'photo_height' => $this->photo_height,
-            'need_name' => $this->need_name,
-            'need_phone_number' => $this->need_phone_number,
-            'need_email' => $this->need_email,
-            'need_shipping_address' => $this->need_shipping_address,
-            'send_phone_number_to_provider' => $this->send_phone_number_to_provider,
-            'send_email_to_provider' => $this->send_email_to_provider,
-            'is_flexible' => $this->is_flexible,
-        ]);
     }
 }

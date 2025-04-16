@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MessageEntityType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object represents one special entity in a text message.
@@ -18,7 +16,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * @see https://core.telegram.org/bots/api#messageentity
  */
 #[OverrideConstructor('bindToInstance')]
-class MessageEntity extends BaseType implements JsonSerializable
+class MessageEntity extends BaseType
 {
     /**
      * Type of the entity.
@@ -75,19 +73,5 @@ class MessageEntity extends BaseType implements JsonSerializable
         $this->user = $user;
         $this->language = $language;
         $this->custom_emoji_id = $custom_emoji_id;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'offset' => $this->offset,
-            'length' => $this->length,
-            'url' => $this->url,
-            'user' => $this->user,
-            'language' => $this->language,
-            'custom_emoji_id' => $this->custom_emoji_id,
-        ]);
     }
 }

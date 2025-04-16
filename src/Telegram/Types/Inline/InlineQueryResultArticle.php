@@ -9,7 +9,6 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a link to an article or web page.
@@ -99,21 +98,5 @@ class InlineQueryResultArticle extends InlineQueryResult
         $this->thumbnail_url = $thumbnail_url;
         $this->thumbnail_width = $thumbnail_width;
         $this->thumbnail_height = $thumbnail_height;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'id' => $this->id,
-            'title' => $this->title,
-            'input_message_content' => $this->input_message_content,
-            'reply_markup' => $this->reply_markup,
-            'url' => $this->url,
-            'description' => $this->description,
-            'thumbnail_url' => $this->thumbnail_url,
-            'thumbnail_width' => $this->thumbnail_width,
-            'thumbnail_height' => $this->thumbnail_height,
-        ]);
     }
 }

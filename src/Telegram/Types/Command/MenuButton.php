@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -21,7 +20,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\MenuButtonResolver;
  * @see https://core.telegram.org/bots/api#menubutton
  */
 #[MenuButtonResolver]
-abstract class MenuButton extends BaseType implements JsonSerializable
+abstract class MenuButton extends BaseType
 {
     #[EnumOrScalar]
     public MenuButtonType|string $type;
@@ -29,12 +28,5 @@ abstract class MenuButton extends BaseType implements JsonSerializable
     public function getType(): MenuButtonType|string
     {
         return $this->type;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'type' => $this->type,
-        ];
     }
 }

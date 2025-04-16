@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a general file to be sent.
  * @see https://core.telegram.org/bots/api#inputmediadocument
  */
 #[OverrideConstructor('bindToInstance')]
-class InputMediaDocument extends InputMedia implements JsonSerializable
+class InputMediaDocument extends InputMedia
 {
     /** Type of the result, must be document */
     #[EnumOrScalar]
@@ -35,6 +34,7 @@ class InputMediaDocument extends InputMedia implements JsonSerializable
      * Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string|null $thumbnail = null;
 
     /**
@@ -81,19 +81,5 @@ class InputMediaDocument extends InputMedia implements JsonSerializable
         $this->parse_mode = $parse_mode;
         $this->caption_entities = $caption_entities;
         $this->disable_content_type_detection = $disable_content_type_detection;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'media' => $this->media,
-            'thumbnail' => $this->thumbnail,
-            'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode,
-            'caption_entities' => $this->caption_entities,
-            'disable_content_type_detection' => $this->disable_content_type_detection,
-        ]);
     }
 }

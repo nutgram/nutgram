@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object represents a button to be shown above inline query results.
@@ -16,7 +14,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * @see https://core.telegram.org/bots/api#inlinequeryresultsbutton
  */
 #[OverrideConstructor('bindToInstance')]
-class InlineQueryResultsButton extends BaseType implements JsonSerializable
+class InlineQueryResultsButton extends BaseType
 {
     /** Label text on the button */
     public string $text;
@@ -47,15 +45,5 @@ class InlineQueryResultsButton extends BaseType implements JsonSerializable
         $this->text = $text;
         $this->web_app = $web_app;
         $this->start_parameter = $start_parameter;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'text' => $this->text,
-            'web_app' => $this->web_app,
-            'start_parameter' => $this->start_parameter,
-        ]);
     }
 }

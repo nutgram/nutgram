@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Describes the options used for link preview generation.
  * @see https://core.telegram.org/bots/api#linkpreviewoptions
  */
 #[OverrideConstructor('bindToInstance')]
-class LinkPreviewOptions extends BaseType implements JsonSerializable
+class LinkPreviewOptions extends BaseType
 {
     /**
      * Optional. True, if the link preview is disabled
@@ -59,17 +57,5 @@ class LinkPreviewOptions extends BaseType implements JsonSerializable
         $this->prefer_small_media = $prefer_small_media;
         $this->prefer_large_media = $prefer_large_media;
         $this->show_above_text = $show_above_text;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'is_disabled' => $this->is_disabled,
-            'url' => $this->url,
-            'prefer_small_media' => $this->prefer_small_media,
-            'prefer_large_media' => $this->prefer_large_media,
-            'show_above_text' => $this->show_above_text,
-        ]);
     }
 }

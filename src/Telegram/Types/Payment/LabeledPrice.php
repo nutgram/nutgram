@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object represents a portion of the price for goods or services.
  * @see https://core.telegram.org/bots/api#labeledprice
  */
 #[OverrideConstructor('bindToInstance')]
-class LabeledPrice extends BaseType implements JsonSerializable
+class LabeledPrice extends BaseType
 {
     /** Portion label */
     public string $label;
@@ -31,14 +29,5 @@ class LabeledPrice extends BaseType implements JsonSerializable
         parent::__construct();
         $this->label = $label;
         $this->amount = $amount;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'label' => $this->label,
-            'amount' => $this->amount,
-        ]);
     }
 }

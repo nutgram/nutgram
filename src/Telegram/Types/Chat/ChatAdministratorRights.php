@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the rights of an administrator in a chat.
  * @see https://core.telegram.org/bots/api#chatadministratorrights
  */
 #[OverrideConstructor('bindToInstance')]
-class ChatAdministratorRights extends BaseType implements JsonSerializable
+class ChatAdministratorRights extends BaseType
 {
     /** True, if the user's presence in the chat is hidden */
     public bool $is_anonymous;
@@ -113,27 +111,5 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
         $this->can_edit_messages = $can_edit_messages;
         $this->can_pin_messages = $can_pin_messages;
         $this->can_manage_topics = $can_manage_topics;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'is_anonymous' => $this->is_anonymous,
-            'can_manage_chat' => $this->can_manage_chat,
-            'can_delete_messages' => $this->can_delete_messages,
-            'can_manage_video_chats' => $this->can_manage_video_chats,
-            'can_restrict_members' => $this->can_restrict_members,
-            'can_promote_members' => $this->can_promote_members,
-            'can_change_info' => $this->can_change_info,
-            'can_invite_users' => $this->can_invite_users,
-            'can_post_messages' => $this->can_post_messages,
-            'can_edit_messages' => $this->can_edit_messages,
-            'can_pin_messages' => $this->can_pin_messages,
-            'can_post_stories' => $this->can_post_stories,
-            'can_edit_stories' => $this->can_edit_stories,
-            'can_delete_stories' => $this->can_delete_stories,
-            'can_manage_topics' => $this->can_manage_topics,
-        ]);
     }
 }

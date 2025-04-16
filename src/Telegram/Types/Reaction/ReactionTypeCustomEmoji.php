@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Reaction;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ReactionTypeType;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * The reaction is based on a custom emoji.
  * @see https://core.telegram.org/bots/api#reactiontypecustomemoji
  */
 #[OverrideConstructor('bindToInstance')]
-class ReactionTypeCustomEmoji extends ReactionType implements JsonSerializable
+class ReactionTypeCustomEmoji extends ReactionType
 {
     /**
      * Type of the reaction, always “custom_emoji”
@@ -34,14 +32,5 @@ class ReactionTypeCustomEmoji extends ReactionType implements JsonSerializable
     {
         parent::__construct();
         $this->custom_emoji_id = $custom_emoji_id;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'custom_emoji_id' => $this->custom_emoji_id,
-        ]);
     }
 }

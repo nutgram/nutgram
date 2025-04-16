@@ -16,9 +16,4 @@ class MenuButtonCommands extends MenuButton
     /** Type of the button, must be commands */
     #[EnumOrScalar]
     public MenuButtonType|string $type = MenuButtonType::COMMANDS;
-
-    public function make(): self
-    {
-        return new self();
-    }
 }

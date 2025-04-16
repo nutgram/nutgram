@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a venue message to be sent as the result of an inline query.
@@ -71,20 +70,5 @@ class InputVenueMessageContent extends InputMessageContent
         $this->foursquare_type = $foursquare_type;
         $this->google_place_id = $google_place_id;
         $this->google_place_type = $google_place_type;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            'title' => $this->title,
-            'address' => $this->address,
-            'foursquare_id' => $this->foursquare_id,
-            'foursquare_type' => $this->foursquare_type,
-            'google_place_id' => $this->google_place_id,
-            'google_place_type' => $this->google_place_type,
-        ]);
     }
 }

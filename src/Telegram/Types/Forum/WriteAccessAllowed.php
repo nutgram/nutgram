@@ -17,6 +17,7 @@ class WriteAccessAllowed extends BaseType
      * Web App sent by the method {@see https://core.telegram.org/bots/webapps#initializing-mini-apps requestWriteAccess}
      */
     public ?bool $from_request = null;
+
     /**
      * Optional.
      * Name of the Web App which was launched from a link

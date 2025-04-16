@@ -9,7 +9,6 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a contact with a phone number.
@@ -98,23 +97,5 @@ class InlineQueryResultContact extends InlineQueryResult
         $this->thumbnail_url = $thumbnail_url;
         $this->thumbnail_width = $thumbnail_width;
         $this->thumbnail_height = $thumbnail_height;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'id' => $this->id,
-            'phone_number' => $this->phone_number,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'vcard' => $this->vcard,
-            'reply_markup' => $this->reply_markup,
-            'input_message_content' => $this->input_message_content,
-            'thumbnail_url' => $this->thumbnail_url,
-            'thumbnail_width' => $this->thumbnail_width,
-            'thumbnail_height' => $this->thumbnail_height,
-        ]);
     }
 }

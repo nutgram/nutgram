@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use Psr\Http\Message\StreamInterface;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 
 /**
  * An animated profile photo in the MPEG4 format.
  * @see https://core.telegram.org/bots/api#inputprofilephotoanimated
  */
+#[OverrideConstructor('bindToInstance')]
 class InputProfilePhotoAnimated extends InputProfilePhoto
 {
     /**
@@ -18,6 +21,7 @@ class InputProfilePhotoAnimated extends InputProfilePhoto
      * so you can pass “attach://<file_attach_name>” if the photo was uploaded using multipart/form-data under <file_attach_name>.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string $animation;
 
     /**

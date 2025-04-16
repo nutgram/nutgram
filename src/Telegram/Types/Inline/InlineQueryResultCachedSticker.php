@@ -9,7 +9,6 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a link to a sticker stored on the Telegram servers.
@@ -53,17 +52,5 @@ class InlineQueryResultCachedSticker extends InlineQueryResult
         $this->sticker_file_id = $sticker_file_id;
         $this->reply_markup = $reply_markup;
         $this->input_message_content = $input_message_content;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'id' => $this->id,
-            'sticker_file_id' => $this->sticker_file_id,
-            'reply_markup' => $this->reply_markup,
-            'input_message_content' => $this->input_message_content,
-        ]);
     }
 }

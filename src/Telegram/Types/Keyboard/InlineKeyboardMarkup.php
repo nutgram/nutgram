@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -14,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * @see https://core.telegram.org/bots/api#inlinekeyboardmarkup
  */
 #[OverrideConstructor('bindToInstance')]
-class InlineKeyboardMarkup extends BaseType implements JsonSerializable
+class InlineKeyboardMarkup extends BaseType
 {
     /**
      * Array of button rows, each represented by an Array of {@see https://core.telegram.org/bots/api#inlinekeyboardbutton InlineKeyboardButton} objects
@@ -32,21 +31,12 @@ class InlineKeyboardMarkup extends BaseType implements JsonSerializable
     /**
      * @return InlineKeyboardMarkup
      */
-
     /**
-     * @param InlineKeyboardButton  ...$buttons
+     * @param InlineKeyboardButton ...$buttons
      */
     public function addRow(...$buttons): static
     {
         $this->inline_keyboard[] = $buttons;
         return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        return ['inline_keyboard' => $this->inline_keyboard];
     }
 }

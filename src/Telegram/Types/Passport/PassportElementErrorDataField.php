@@ -8,7 +8,6 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents an issue in one of the data fields that was provided by the user.
@@ -46,17 +45,5 @@ class PassportElementErrorDataField extends PassportElementError
         $this->field_name = $field_name;
         $this->data_hash = $data_hash;
         $this->message = $message;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'source' => $this->source,
-            'type' => $this->type,
-            'field_name' => $this->field_name,
-            'data_hash' => $this->data_hash,
-            'message' => $this->message,
-        ]);
     }
 }
