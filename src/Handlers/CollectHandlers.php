@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Handlers;
 
+use Closure;
 use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\Listeners\MessageListeners;
 use SergiX44\Nutgram\Handlers\Listeners\SpecialListeners;
@@ -70,7 +71,7 @@ abstract class CollectHandlers
     public function group(callable $closure): HandlerGroup
     {
         $this->checkFinalized();
-        return $this->groups[] = new HandlerGroup($closure);
+        return $this->groups[] = new HandlerGroup(Closure::fromCallable($closure));
     }
 
     /**

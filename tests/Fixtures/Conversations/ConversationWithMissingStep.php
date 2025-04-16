@@ -8,5 +8,5 @@ use SergiX44\Nutgram\Conversations\Conversation;
 
 class ConversationWithMissingStep extends Conversation
 {
-    protected ?string $step = 'missing';
+    protected string $step = 'missing';
 }
