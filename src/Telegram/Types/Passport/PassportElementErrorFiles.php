@@ -8,7 +8,6 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents an issue with a list of scans.
@@ -52,15 +51,5 @@ class PassportElementErrorFiles extends PassportElementError
         $this->type = $type;
         $this->file_hashes = $file_hashes;
         $this->message = $message;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'source' => $this->source,
-            'type' => $this->type,
-            'file_hashes' => $this->file_hashes,
-            'message' => $this->message,
-        ]);
     }
 }

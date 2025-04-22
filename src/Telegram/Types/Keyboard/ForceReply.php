@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply').
@@ -15,7 +13,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * @see https://core.telegram.org/bots/api#forcereply
  */
 #[OverrideConstructor('bindToInstance')]
-class ForceReply extends BaseType implements JsonSerializable
+class ForceReply extends BaseType
 {
     /** Shows reply interface to the user, as if they manually selected the bot's message and tapped 'Reply' */
     public bool $force_reply;
@@ -41,15 +39,5 @@ class ForceReply extends BaseType implements JsonSerializable
         $this->force_reply = $force_reply;
         $this->input_field_placeholder = $input_field_placeholder;
         $this->selective = $selective;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'force_reply' => $this->force_reply,
-            'input_field_placeholder' => $this->input_field_placeholder,
-            'selective' => $this->selective,
-        ]);
     }
 }

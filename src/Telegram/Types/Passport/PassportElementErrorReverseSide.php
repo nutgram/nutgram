@@ -8,7 +8,6 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents an issue with the reverse side of a document.
@@ -41,16 +40,5 @@ class PassportElementErrorReverseSide extends PassportElementError
         $this->type = $type;
         $this->file_hash = $file_hash;
         $this->message = $message;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'source' => $this->source,
-            'type' => $this->type,
-            'file_hash' => $this->file_hash,
-            'message' => $this->message,
-        ]);
     }
 }

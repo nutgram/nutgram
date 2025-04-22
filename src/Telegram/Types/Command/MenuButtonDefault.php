@@ -16,9 +16,4 @@ class MenuButtonDefault extends MenuButton
     /** Type of the button, must be default */
     #[EnumOrScalar]
     public MenuButtonType|string $type = MenuButtonType::DEFAULT;
-
-    public function make(): self
-    {
-        return new self();
-    }
 }

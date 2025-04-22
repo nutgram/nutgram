@@ -22,7 +22,6 @@ it('calls onChatBoost() handler with a non mapped type', function ($update) {
     $update->chat_boost->boost->source->source = 'god';
     $update->chat_boost->boost->source->name = 'jesus';
 
-
     $bot = Nutgram::fake($update);
 
     $bot->onChatBoost(function (Nutgram $bot) {
@@ -31,7 +30,6 @@ it('calls onChatBoost() handler with a non mapped type', function ($update) {
         expect($boost->boost->source->source)->toBe('god')
             ->and($boost->boost->source->name)->toBe('jesus')
             ->and((new ReflectionClass($boost->boost->source))->isAnonymous())->toBeTrue();
-        ;
     });
 
     $bot->run();

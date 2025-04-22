@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object represents a parameter of the inline keyboard button used to automatically authorize a user.
@@ -16,7 +14,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * @see https://core.telegram.org/bots/api#loginurl
  */
 #[OverrideConstructor('bindToInstance')]
-class LoginUrl extends BaseType implements JsonSerializable
+class LoginUrl extends BaseType
 {
     /**
      * An HTTPS URL to be opened with user authorization data added to the query string when the button is pressed.
@@ -58,16 +56,5 @@ class LoginUrl extends BaseType implements JsonSerializable
         $this->forward_text = $forward_text;
         $this->bot_username = $bot_username;
         $this->request_write_access = $request_write_access;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'url' => $this->url,
-            'forward_text' => $this->forward_text,
-            'bot_username' => $this->bot_username,
-            'request_write_access' => $this->request_write_access,
-        ]);
     }
 }

@@ -222,6 +222,7 @@ class Message extends BaseType
      * Optional. Unique identifier of the message effect added to the message
      */
     public ?string $effect_id = null;
+
     /**
      * Optional.
      * Message is an animation, information about the animation.
@@ -621,6 +622,7 @@ class Message extends BaseType
         if ($this->text !== null && preg_match($pattern, $this->text, $matches)) {
             return $matches['name'].($matches['args'] ?? '');
         }
+
         return null;
     }
 

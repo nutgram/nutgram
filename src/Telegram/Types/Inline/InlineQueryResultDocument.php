@@ -12,7 +12,6 @@ use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a link to a file.
@@ -127,26 +126,5 @@ class InlineQueryResultDocument extends InlineQueryResult
         $this->thumbnail_url = $thumbnail_url;
         $this->thumbnail_width = $thumbnail_width;
         $this->thumbnail_height = $thumbnail_height;
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'id' => $this->id,
-            'title' => $this->title,
-            'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode,
-            'caption_entities' => $this->caption_entities,
-            'document_url' => $this->document_url,
-            'mime_type' => $this->mime_type,
-            'description' => $this->description,
-            'reply_markup' => $this->reply_markup,
-            'input_message_content' => $this->input_message_content,
-            'thumbnail_url' => $this->thumbnail_url,
-            'thumbnail_width' => $this->thumbnail_width,
-            'thumbnail_height' => $this->thumbnail_height,
-        ]);
     }
 }
