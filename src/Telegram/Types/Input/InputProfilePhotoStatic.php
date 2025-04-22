@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
+use SergiX44\Nutgram\Telegram\Properties\InputProfilePhotoType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 
 /**
@@ -10,6 +12,11 @@ use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
  */
 class InputProfilePhotoStatic extends InputProfilePhoto
 {
+    /**
+     * Type of the profile photo, must be static
+     */
+    #[EnumOrScalar]
+    public InputProfilePhotoType|string $type = InputProfilePhotoType::STATIC;
     /**
      * The static profile photo.
      * Profile photos can't be reused and can only be uploaded as a new file,
