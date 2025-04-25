@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.37.1 - 2025-04-25
+
+### What's Changed
+
+* Fix missing field in InputProfilePhotoAnimated and InputProfilePhotoStatic by @Lukasss93 in https://github.com/nutgram/nutgram/pull/881
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.37.0...4.37.1
+
 ## 4.37.0 - 2025-04-15
 
 ### What's Changed
