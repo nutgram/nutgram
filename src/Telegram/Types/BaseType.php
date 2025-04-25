@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types;
 
 use BackedEnum;
 use Illuminate\Support\Traits\Macroable;
+use JsonSerializable;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Internal\Arrayable;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -13,7 +14,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 /**
  * @template-implements Arrayable<string, mixed>
  */
-abstract class BaseType implements Arrayable
+abstract class BaseType implements Arrayable, JsonSerializable
 {
     use Macroable {
         __call as callMacro;
@@ -104,5 +105,10 @@ abstract class BaseType implements Arrayable
         });
 
         return array_filter_null($data);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

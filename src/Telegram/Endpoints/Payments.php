@@ -152,7 +152,7 @@ trait Payments
      * @param bool|null $send_phone_number_to_provider Pass True if the user's phone number should be sent to the provider
      * @param bool|null $send_email_to_provider Pass True if the user's email address should be sent to the provider
      * @param bool|null $is_flexible Pass True if the final price depends on the shipping method
-     * @param int|null $subscription_period The number of seconds the subscription will be active for before the next payment. The currency must be set to “XTR” (Telegram Stars) if the parameter is used. Currently, it must always be 2592000 (30 days) if specified.
+     * @param int|null $subscription_period The number of seconds the subscription will be active for before the next payment. The currency must be set to “XTR” (Telegram Stars) if the parameter is used. Currently, it must always be 2592000 (30 days) if specified. Any number of subscriptions can be active for a given bot at the same time, including multiple concurrent subscriptions from the same user. Subscription price must no exceed 10000 Telegram Stars.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the link will be created
      * @return string|null
      */

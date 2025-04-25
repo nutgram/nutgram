@@ -16,9 +16,4 @@ class BotCommandScopeAllGroupChats extends BotCommandScope
     /** Scope type, must be all_group_chats */
     #[EnumOrScalar]
     public BotCommandScopeType|string $type = BotCommandScopeType::ALL_GROUP_CHATS;
-
-    public function make(): self
-    {
-        return new self();
-    }
 }

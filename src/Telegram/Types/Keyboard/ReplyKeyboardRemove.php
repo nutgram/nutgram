@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard.
@@ -15,8 +13,8 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see {@see https://core.telegram.org/bots/api#replykeyboardmarkup ReplyKeyboardMarkup}).
  * @see https://core.telegram.org/bots/api#replykeyboardremove
  */
-#[SkipConstructor]
-class ReplyKeyboardRemove extends BaseType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class ReplyKeyboardRemove extends BaseType
 {
     /**
      * Requests clients to remove the custom keyboard (user will not be able to summon this keyboard;
@@ -37,18 +35,5 @@ class ReplyKeyboardRemove extends BaseType implements JsonSerializable
         parent::__construct();
         $this->remove_keyboard = $remove_keyboard;
         $this->selective = $selective;
-    }
-
-    public static function make(bool $remove_keyboard, ?bool $selective = null): self
-    {
-        return new self($remove_keyboard, $selective);
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'remove_keyboard' => $this->remove_keyboard,
-            'selective' => $this->selective,
-        ]);
     }
 }

@@ -11,9 +11,9 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <directory name="src" />
+        <directory name="src"/>
         <ignoreFiles>
-            <directory name="vendor" />
+            <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
     <issueHandlers>
@@ -50,5 +50,15 @@
                 <file name="src/Handlers/Listeners/MessageListeners.php"/>
             </errorLevel>
         </UndefinedPropertyFetch>
+        <InternalClass>
+            <errorLevel type="suppress">
+                <file name="src/Testing/Asserts.php"/>
+            </errorLevel>
+        </InternalClass>
+        <InternalMethod>
+            <errorLevel type="suppress">
+                <file name="src/Testing/Asserts.php"/>
+            </errorLevel>
+        </InternalMethod>
     </issueHandlers>
 </psalm>

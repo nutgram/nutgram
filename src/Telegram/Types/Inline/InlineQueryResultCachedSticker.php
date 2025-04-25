@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a link to a sticker stored on the Telegram servers.
@@ -17,7 +16,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the sticker.
  * @see https://core.telegram.org/bots/api#inlinequeryresultcachedsticker
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InlineQueryResultCachedSticker extends InlineQueryResult
 {
     /** Type of the result, must be sticker */
@@ -53,30 +52,5 @@ class InlineQueryResultCachedSticker extends InlineQueryResult
         $this->sticker_file_id = $sticker_file_id;
         $this->reply_markup = $reply_markup;
         $this->input_message_content = $input_message_content;
-    }
-
-    public static function make(
-        string $id,
-        string $sticker_file_id,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?InputMessageContent $input_message_content = null,
-    ): self {
-        return new self(
-            id: $id,
-            sticker_file_id: $sticker_file_id,
-            reply_markup: $reply_markup,
-            input_message_content: $input_message_content
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'id' => $this->id,
-            'sticker_file_id' => $this->sticker_file_id,
-            'reply_markup' => $this->reply_markup,
-            'input_message_content' => $this->input_message_content,
-        ]);
     }
 }

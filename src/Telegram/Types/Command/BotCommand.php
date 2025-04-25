@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents a bot command.
  * @see https://core.telegram.org/bots/api#botcommand
  */
-#[SkipConstructor]
-class BotCommand implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class BotCommand extends BaseType
 {
     /**
      * Text of the command;
@@ -31,18 +31,5 @@ class BotCommand implements JsonSerializable
     {
         $this->command = $command;
         $this->description = $description;
-    }
-
-    public static function make(string $command, string $description): self
-    {
-        return new self($command, $description);
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'command' => $this->command,
-            'description' => $this->description,
-        ];
     }
 }

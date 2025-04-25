@@ -7,29 +7,15 @@ namespace SergiX44\Nutgram\Support;
 use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Psr\Clock\ClockInterface;
 
 trait InteractsWithTime
 {
-    protected static DateTimeImmutable|null $testNow = null;
-
-    public static function hasTestNow(): bool
-    {
-        return self::$testNow !== null;
-    }
-
-    public static function setTestNow(DateTimeImmutable $now): void
-    {
-        self::$testNow = $now;
-    }
-
-    public static function getTestNow(): DateTimeImmutable|null
-    {
-        return self::$testNow;
-    }
+    protected ClockInterface $clock;
 
     protected function getNow(): DateTimeImmutable
     {
-        return self::getTestNow() ?? new DateTimeImmutable();
+        return $this->clock->now();
     }
 
     protected function expiringAt(DateInterval|int $ttl): DateTimeImmutable

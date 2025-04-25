@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a link to a photo.
@@ -20,7 +19,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
  * @see https://core.telegram.org/bots/api#inlinequeryresultphoto
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InlineQueryResultPhoto extends InlineQueryResult
 {
     /** Type of the result, must be photo */
@@ -132,57 +131,5 @@ class InlineQueryResultPhoto extends InlineQueryResult
         $this->reply_markup = $reply_markup;
         $this->input_message_content = $input_message_content;
         $this->show_caption_above_media = $show_caption_above_media;
-    }
-
-    public static function make(
-        string $id,
-        string $photo_url,
-        string $thumbnail_url,
-        ?int $photo_width = null,
-        ?int $photo_height = null,
-        ?string $title = null,
-        ?string $description = null,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?InputMessageContent $input_message_content = null,
-        ?bool $show_caption_above_media = null,
-    ): self {
-        return new self(
-            id: $id,
-            photo_url: $photo_url,
-            thumbnail_url: $thumbnail_url,
-            photo_width: $photo_width,
-            photo_height: $photo_height,
-            title: $title,
-            description: $description,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            reply_markup: $reply_markup,
-            input_message_content: $input_message_content,
-            show_caption_above_media: $show_caption_above_media,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'id' => $this->id,
-            'photo_url' => $this->photo_url,
-            'thumbnail_url' => $this->thumbnail_url,
-            'photo_width' => $this->photo_width,
-            'photo_height' => $this->photo_height,
-            'title' => $this->title,
-            'description' => $this->description,
-            'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode,
-            'caption_entities' => $this->caption_entities,
-            'show_caption_above_media' => $this->show_caption_above_media,
-            'reply_markup' => $this->reply_markup,
-            'input_message_content' => $this->input_message_content,
-        ]);
     }
 }

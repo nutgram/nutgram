@@ -22,6 +22,16 @@ class TransactionPartnerUser extends TransactionPartner
     public TransactionPartnerType|string $type = TransactionPartnerType::USER;
 
     /**
+     * Type of the transaction, currently one of
+     * - “invoice_payment” for payments via invoices,
+     * - “paid_media_payment” for payments for paid media,
+     * - “gift_purchase” for gifts sent by the bot,
+     * - “premium_purchase” for Telegram Premium subscriptions gifted by the bot,
+     * - “business_account_transfer” for direct transfers from managed business accounts
+     */
+    public string $transaction_type;
+
+    /**
      * Information about the user
      */
     public User $user;
@@ -57,4 +67,11 @@ class TransactionPartnerUser extends TransactionPartner
      * Optional. The gift sent to the user by the bot
      */
     public ?string $gift = null;
+
+    /**
+     * Optional.
+     * Number of months the gifted Telegram Premium subscription will be active for;
+     * for “premium_purchase” transactions only
+     */
+    public ?int $premium_subscription_duration = null;
 }

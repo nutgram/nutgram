@@ -36,9 +36,9 @@ class BusinessConnection extends BaseType
     public int $date;
 
     /**
-     * True, if the bot can act on behalf of the business account in chats that were active in the last 24 hours
+     * Optional. Rights of the business bot
      */
-    public bool $can_reply;
+    public ?BusinessBotRights $rights = null;
 
     /**
      * True, if the connection is active

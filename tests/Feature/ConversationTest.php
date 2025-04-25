@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
+use SergiX44\Nutgram\Testing\TestClock;
+use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationEmpty;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithBeforeStep;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithClosing;
@@ -295,7 +296,7 @@ it('starts a conversation from server', function () {
 
     $bot->assertReply('sendMessage', [
         'text' => 'First step',
-        'chat_id' => 123456789
+        'chat_id' => 123456789,
     ]);
 });
 
@@ -306,7 +307,7 @@ it('restarts the conversation with an expired cache', function ($update) {
     $bot->run();
     expect($bot->get('test'))->toBe(1);
 
-    ArrayCache::setTestNow(new DateTimeImmutable('+13 hours'));
+    TestClock::freeze('+13 hours');
 
     $bot->run();
     expect($bot->get('test'))->toBe(1);
@@ -321,7 +322,7 @@ it('works with ttl = null', function ($update) {
     $bot->run();
     expect($bot->get('test'))->toBe(1);
 
-    ArrayCache::setTestNow(new DateTimeImmutable('+100 hours'));
+    TestClock::freeze('+100 hours');
 
     $bot->run();
     expect($bot->get('test'))->toBe(2);
@@ -336,8 +337,32 @@ it('works with ttl as DateInterval', function ($update) {
     $bot->run();
     expect($bot->get('test'))->toBe(1);
 
-    ArrayCache::setTestNow(new DateTimeImmutable('+2 hours'));
+    TestClock::freeze('+2 hours');
 
     $bot->run();
     expect($bot->get('test'))->toBe(2);
 })->with('message');
+
+it('skips conversation by a handler', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onMyChatMember(function (Nutgram $bot) {
+        $bot->set('test', 0);
+    })->willStopConversations();
+
+    $bot->onCommand('start', TwoStepConversation::class);
+
+    $bot
+        ->willStartConversation()
+        ->hearText('/start')
+        ->reply()
+        ->assertActiveConversation();
+
+    expect($bot->get('test'))->toBe(1);
+
+    $bot
+        ->hearUpdateType(UpdateType::MY_CHAT_MEMBER)
+        ->reply();
+
+    expect($bot->get('test'))->toBe(0);
+});

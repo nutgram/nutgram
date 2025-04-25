@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of an invoice message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputinvoicemessagecontent
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputInvoiceMessageContent extends InputMessageContent
 {
     /** Product name, 1-32 characters */
@@ -184,77 +183,5 @@ class InputInvoiceMessageContent extends InputMessageContent
         $this->send_phone_number_to_provider = $send_phone_number_to_provider;
         $this->send_email_to_provider = $send_email_to_provider;
         $this->is_flexible = $is_flexible;
-    }
-
-    public static function make(
-        string $title,
-        string $description,
-        string $payload,
-        string $provider_token,
-        string $currency,
-        array $prices,
-        ?int $max_tip_amount = null,
-        ?array $suggested_tip_amounts = null,
-        ?string $provider_data = null,
-        ?string $photo_url = null,
-        ?int $photo_size = null,
-        ?int $photo_width = null,
-        ?int $photo_height = null,
-        ?bool $need_name = null,
-        ?bool $need_phone_number = null,
-        ?bool $need_email = null,
-        ?bool $need_shipping_address = null,
-        ?bool $send_phone_number_to_provider = null,
-        ?bool $send_email_to_provider = null,
-        ?bool $is_flexible = null,
-    ): self {
-        return new self(
-            title: $title,
-            description: $description,
-            payload: $payload,
-            provider_token: $provider_token,
-            currency: $currency,
-            prices: $prices,
-            max_tip_amount: $max_tip_amount,
-            suggested_tip_amounts: $suggested_tip_amounts,
-            provider_data: $provider_data,
-            photo_url: $photo_url,
-            photo_size: $photo_size,
-            photo_width: $photo_width,
-            photo_height: $photo_height,
-            need_name: $need_name,
-            need_phone_number: $need_phone_number,
-            need_email: $need_email,
-            need_shipping_address: $need_shipping_address,
-            send_phone_number_to_provider: $send_phone_number_to_provider,
-            send_email_to_provider: $send_email_to_provider,
-            is_flexible: $is_flexible,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'title' => $this->title,
-            'description' => $this->description,
-            'payload' => $this->payload,
-            'provider_token' => $this->provider_token ?: null,
-            'currency' => $this->currency,
-            'prices' => $this->prices,
-            'max_tip_amount' => $this->max_tip_amount,
-            'suggested_tip_amounts' => $this->suggested_tip_amounts,
-            'provider_data' => $this->provider_data,
-            'photo_url' => $this->photo_url,
-            'photo_size' => $this->photo_size,
-            'photo_width' => $this->photo_width,
-            'photo_height' => $this->photo_height,
-            'need_name' => $this->need_name,
-            'need_phone_number' => $this->need_phone_number,
-            'need_email' => $this->need_email,
-            'need_shipping_address' => $this->need_shipping_address,
-            'send_phone_number_to_provider' => $this->send_phone_number_to_provider,
-            'send_email_to_provider' => $this->send_email_to_provider,
-            'is_flexible' => $this->is_flexible,
-        ]);
     }
 }

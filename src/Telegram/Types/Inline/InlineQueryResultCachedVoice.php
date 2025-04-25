@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a link to a voice message stored on the Telegram servers.
@@ -20,7 +19,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the voice message.
  * @see https://core.telegram.org/bots/api#inlinequeryresultcachedvoice
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InlineQueryResultCachedVoice extends InlineQueryResult
 {
     /** Type of the result, must be voice */
@@ -89,42 +88,5 @@ class InlineQueryResultCachedVoice extends InlineQueryResult
         $this->caption_entities = $caption_entities;
         $this->reply_markup = $reply_markup;
         $this->input_message_content = $input_message_content;
-    }
-
-    public static function make(
-        string $id,
-        string $voice_file_id,
-        string $title,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?InputMessageContent $input_message_content = null,
-    ): self {
-        return new self(
-            id: $id,
-            voice_file_id: $voice_file_id,
-            title: $title,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            reply_markup: $reply_markup,
-            input_message_content: $input_message_content,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'id' => $this->id,
-            'voice_file_id' => $this->voice_file_id,
-            'title' => $this->title,
-            'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode,
-            'caption_entities' => $this->caption_entities,
-            'reply_markup' => $this->reply_markup,
-            'input_message_content' => $this->input_message_content,
-        ]);
     }
 }

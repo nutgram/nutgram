@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a link to a file.
@@ -21,7 +20,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * Currently, only .PDF and .ZIP files can be sent using this method.
  * @see https://core.telegram.org/bots/api#inlinequeryresultdocument
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InlineQueryResultDocument extends InlineQueryResult
 {
     /** Type of the result, must be document */
@@ -127,57 +126,5 @@ class InlineQueryResultDocument extends InlineQueryResult
         $this->thumbnail_url = $thumbnail_url;
         $this->thumbnail_width = $thumbnail_width;
         $this->thumbnail_height = $thumbnail_height;
-    }
-
-    public static function make(
-        string $id,
-        string $title,
-        string $document_url,
-        string $mime_type,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?string $description = null,
-        ?InlineKeyboardMarkup $reply_markup = null,
-        ?InputMessageContent $input_message_content = null,
-        ?string $thumbnail_url = null,
-        ?int $thumbnail_width = null,
-        ?int $thumbnail_height = null,
-    ): self {
-        return new self(
-            id: $id,
-            title: $title,
-            document_url: $document_url,
-            mime_type: $mime_type,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            description: $description,
-            reply_markup: $reply_markup,
-            input_message_content: $input_message_content,
-            thumbnail_url: $thumbnail_url,
-            thumbnail_width: $thumbnail_width,
-            thumbnail_height: $thumbnail_height,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'id' => $this->id,
-            'title' => $this->title,
-            'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode,
-            'caption_entities' => $this->caption_entities,
-            'document_url' => $this->document_url,
-            'mime_type' => $this->mime_type,
-            'description' => $this->description,
-            'reply_markup' => $this->reply_markup,
-            'input_message_content' => $this->input_message_content,
-            'thumbnail_url' => $this->thumbnail_url,
-            'thumbnail_width' => $this->thumbnail_width,
-            'thumbnail_height' => $this->thumbnail_height,
-        ]);
     }
 }

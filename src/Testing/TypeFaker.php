@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Testing;
 
 use BackedEnum;
-use InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
-use ReflectionIntersectionType;
+use ReflectionNamedType;
 use ReflectionProperty;
 use ReflectionUnionType;
+use RuntimeException;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
+use SergiX44\Hydrator\Annotation\UnionResolver;
 use SergiX44\Nutgram\Hydrator\Hydrator;
 use Throwable;
 
@@ -93,12 +95,19 @@ class TypeFaker
                 continue;
             }
 
-            $typeName = $this->getPropertyType($property);
+            if ($property->getType() instanceof ReflectionUnionType) {
+                $typeName = $this->resolveUnionType($property, $userDefined);
+            } else {
+                $typeName = $property->getType()?->getName();
+            }
 
             // if is a class, try to resolve it
             if ($this->shouldInstantiate($typeName, $isNullable)) {
-                /** @var class-string $typeName */
-                $data[$property->name] = $this->fakeDataFor($typeName, $userDefined);
+                $reflectionClass = $this->getReflectionClass($typeName, $additional[$property->name] ?? []);
+                $data[$property->name] = $this->fakeDataFor(
+                    $reflectionClass->getName(),
+                    $additional[$property->name] ?? [],
+                );
                 continue;
             }
 
@@ -125,7 +134,7 @@ class TypeFaker
 
 
     /**
-     * @param class-string|string $class
+     * @param string $class
      * @param bool $isNullable
      * @return bool
      */
@@ -199,7 +208,7 @@ class TypeFaker
     }
 
     /**
-     * @param class-string $class
+     * @param string $class
      * @return ReflectionClass
      * @throws ReflectionException
      */
@@ -207,26 +216,49 @@ class TypeFaker
     {
         $reflectionClass = new ReflectionClass($class);
 
-        if ($reflectionClass->isAbstract()) {
-            /** @var ConcreteResolver $resolver */
-            $resolver = $this->hydrator->getConcreteFor($reflectionClass->getName());
+        if (!$reflectionClass->isAbstract()) {
+            return $reflectionClass;
+        }
 
+        /** @var ConcreteResolver $resolver */
+        $concreteResolver = $this->hydrator->getConcreteFor($reflectionClass->getName());
+        if ($concreteResolver !== null) {
             try {
-                $concrete = $resolver?->concreteFor($context);
-
-                if ($concrete === null) {
-                    throw new InvalidArgumentException('Concrete resolver returned null');
-                }
-
-                return new ReflectionClass($concrete);
+                return new ReflectionClass($concreteResolver->concreteFor($context, $reflectionClass));
             } catch (Throwable) {
-                $concretes = $resolver?->getConcretes();
+                $concretes = $concreteResolver->getConcretes();
                 if (!empty($concretes)) {
                     return new ReflectionClass(array_shift($concretes));
                 }
             }
         }
-        return $reflectionClass;
+
+        throw new RuntimeException('Unable to resolve abstract class '.$class);
+    }
+
+    private function resolveUnionType(ReflectionProperty $property, array $userDefined): string
+    {
+        /** @var ReflectionUnionType $propertyType */
+        $propertyType = $property->getType();
+        $propertyTypes = $propertyType->getTypes();
+
+        $attributes = $property->getAttributes(UnionResolver::class, ReflectionAttribute::IS_INSTANCEOF);
+        /** @var ?UnionResolver $unionResolver */
+        $unionResolver = array_shift($attributes)?->newInstance();
+
+        if ($unionResolver === null) {
+            return $propertyTypes[0]->getName();
+        }
+
+        try {
+            return $unionResolver->resolve(
+                propertyName: $property->name,
+                propertyTypes: array_filter($propertyTypes, fn ($type) => $type instanceof ReflectionNamedType),
+                data: $userDefined,
+            )->getName();
+        } catch (Throwable) {
+            return $propertyTypes[0]->getName();
+        }
     }
 
     private function fakeArray(ArrayType $arrayType, array $userDefined = [], $depth = 1): array
@@ -248,30 +280,5 @@ class TypeFaker
         }
 
         return $wrapped;
-    }
-
-    /**
-     * @param ReflectionProperty $property
-     * @return class-string|string
-     */
-    protected function getPropertyType(ReflectionProperty $property): string
-    {
-        $type = $property->getType();
-
-        if ($type === null) {
-            throw new InvalidArgumentException("Property {$property->name} has no type");
-        }
-
-        if ($type instanceof ReflectionUnionType) {
-            $firstUnionType = $type->getTypes()[0];
-
-            if ($firstUnionType instanceof ReflectionIntersectionType) {
-                throw new InvalidArgumentException("Property {$property->name} has an intersection type");
-            }
-
-            return $firstUnionType->getName();
-        }
-
-        return $type->getName();
     }
 }

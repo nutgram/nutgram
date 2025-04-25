@@ -7,6 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\BackgroundTypeType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\BackgroundTypeResolver;
 
 /**
  * This object describes the type of a background. Currently, it can be one of

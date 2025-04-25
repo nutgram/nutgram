@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MaskPositionPoint;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -14,8 +13,8 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * This object describes the position on faces where a mask should be placed by default.
  * @see https://core.telegram.org/bots/api#maskposition
  */
-#[SkipConstructor]
-class MaskPosition extends BaseType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class MaskPosition extends BaseType
 {
     /**
      * The part of the face relative to which the mask should be placed.
@@ -53,29 +52,5 @@ class MaskPosition extends BaseType implements JsonSerializable
         $this->x_shift = $x_shift;
         $this->y_shift = $y_shift;
         $this->scale = $scale;
-    }
-
-    public static function make(
-        MaskPositionPoint|string $point,
-        float $x_shift,
-        float $y_shift,
-        float $scale,
-    ): self {
-        return new self(
-            point: $point,
-            x_shift: $x_shift,
-            y_shift: $y_shift,
-            scale: $scale,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'point' => $this->point,
-            'x_shift' => $this->x_shift,
-            'y_shift' => $this->y_shift,
-            'scale' => $this->scale,
-        ];
     }
 }

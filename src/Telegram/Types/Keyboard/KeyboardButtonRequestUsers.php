@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object defines the criteria used to request a suitable user.
@@ -15,8 +13,8 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * {@see https://core.telegram.org/bots/features#chat-and-user-selection More about requesting users »}
  * @see https://core.telegram.org/bots/api#keyboardbuttonrequestusers
  */
-#[SkipConstructor]
-class KeyboardButtonRequestUsers extends BaseType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class KeyboardButtonRequestUsers extends BaseType
 {
     /**
      * Signed 32-bit identifier of the request, which will be received back in the {@see https://core.telegram.org/bots/api#usersshared UsersShared} object.
@@ -58,7 +56,6 @@ class KeyboardButtonRequestUsers extends BaseType implements JsonSerializable
      */
     public ?bool $request_photo = null;
 
-
     public function __construct(
         int $request_id,
         ?bool $user_is_bot = null,
@@ -76,38 +73,5 @@ class KeyboardButtonRequestUsers extends BaseType implements JsonSerializable
         $this->request_name = $request_name;
         $this->request_username = $request_username;
         $this->request_photo = $request_photo;
-    }
-
-    public static function make(
-        int $request_id,
-        ?bool $user_is_bot = null,
-        ?bool $user_is_premium = null,
-        ?int $max_quantity = null,
-        ?bool $request_name = null,
-        ?bool $request_username = null,
-        ?bool $request_photo = null,
-    ): self {
-        return new self(
-            request_id: $request_id,
-            user_is_bot: $user_is_bot,
-            user_is_premium: $user_is_premium,
-            max_quantity: $max_quantity,
-            request_name: $request_name,
-            request_username: $request_username,
-            request_photo: $request_photo,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'request_id' => $this->request_id,
-            'user_is_bot' => $this->user_is_bot,
-            'user_is_premium' => $this->user_is_premium,
-            'max_quantity' => $this->max_quantity,
-            'request_name' => $this->request_name,
-            'request_username' => $this->request_username,
-            'request_photo' => $this->request_photo,
-        ]);
     }
 }

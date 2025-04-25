@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Common\LoginUrl;
 use SergiX44\Nutgram\Telegram\Types\Game\CallbackGame;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object represents one button of an inline keyboard.
  * You must use exactly one of the optional fields.
  * @see https://core.telegram.org/bots/api#inlinekeyboardbutton
  */
-#[SkipConstructor]
-class InlineKeyboardButton extends BaseType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InlineKeyboardButton extends BaseType
 {
     /** Label text on the button */
     public string $text;
@@ -117,50 +115,5 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         $this->web_app = $web_app;
         $this->switch_inline_query_chosen_chat = $switch_inline_query_chosen_chat;
         $this->copy_text = $copy_text;
-    }
-
-    public static function make(
-        string $text = '',
-        ?string $url = null,
-        ?LoginUrl $login_url = null,
-        ?string $callback_data = null,
-        ?string $switch_inline_query = null,
-        ?string $switch_inline_query_current_chat = null,
-        ?CallbackGame $callback_game = null,
-        ?bool $pay = null,
-        ?WebAppInfo $web_app = null,
-        ?SwitchInlineQueryChosenChat $switch_inline_query_chosen_chat = null,
-        ?CopyTextButton $copy_text = null,
-    ): InlineKeyboardButton {
-        return new self(
-            $text,
-            $url,
-            $login_url,
-            $callback_data,
-            $switch_inline_query,
-            $switch_inline_query_current_chat,
-            $callback_game,
-            $pay,
-            $web_app,
-            $switch_inline_query_chosen_chat,
-            $copy_text,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'text' => $this->text,
-            'url' => $this->url,
-            'callback_data' => $this->callback_data,
-            'web_app' => $this->web_app,
-            'login_url' => $this->login_url,
-            'switch_inline_query' => $this->switch_inline_query,
-            'switch_inline_query_current_chat' => $this->switch_inline_query_current_chat,
-            'switch_inline_query_chosen_chat' => $this->switch_inline_query_chosen_chat,
-            'copy_text' => $this->copy_text,
-            'callback_game' => $this->callback_game,
-            'pay' => $this->pay,
-        ]);
     }
 }

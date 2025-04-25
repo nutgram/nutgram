@@ -104,6 +104,7 @@ class FakeNutgram extends Nutgram
         $c = [
             'client' => ['handler' => $handlerStack, 'base_uri' => ''],
             'api_url' => '',
+            'clock' => TestClock::class,
         ];
 
         if ($config !== null) {
@@ -124,7 +125,7 @@ class FakeNutgram extends Nutgram
         (function () use ($handlerStack, $mock) {
             /** @psalm-scope-this \SergiX44\Nutgram\Testing\FakeNutgram */
             $this->mockHandler = $mock;
-            $this->typeFaker = new TypeFaker($this->hydrator);
+            $this->typeFaker = $this->container->get(TypeFaker::class);
 
             $properties = (new ReflectionClass(Client::class))->getMethods(ReflectionMethod::IS_PUBLIC);
 

@@ -7,6 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MessageOriginType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\MessageOriginResolver;
 
 /**
  * This object describes the origin of a message. It can be one of

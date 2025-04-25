@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
-use function SergiX44\Nutgram\Support\array_filter_null;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a location message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputlocationmessagecontent
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputLocationMessageContent extends InputMessageContent
 {
     /** Latitude of the location in degrees */
@@ -61,35 +60,5 @@ class InputLocationMessageContent extends InputMessageContent
         $this->live_period = $live_period;
         $this->heading = $heading;
         $this->proximity_alert_radius = $proximity_alert_radius;
-    }
-
-    public static function make(
-        float $latitude,
-        float $longitude,
-        ?float $horizontal_accuracy = null,
-        ?int $live_period = null,
-        ?int $heading = null,
-        ?int $proximity_alert_radius = null,
-    ): self {
-        return new self(
-            latitude: $latitude,
-            longitude: $longitude,
-            horizontal_accuracy: $horizontal_accuracy,
-            live_period: $live_period,
-            heading: $heading,
-            proximity_alert_radius: $proximity_alert_radius,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            'horizontal_accuracy' => $this->horizontal_accuracy,
-            'live_period' => $this->live_period,
-            'heading' => $this->heading,
-            'proximity_alert_radius' => $this->proximity_alert_radius,
-        ]);
     }
 }

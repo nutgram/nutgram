@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a video to be sent.
  * @see https://core.telegram.org/bots/api#inputmediavideo
  */
-#[SkipConstructor]
-class InputMediaVideo extends InputMedia implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputMediaVideo extends InputMedia
 {
     /** Type of the result, must be video */
     #[EnumOrScalar]
@@ -35,6 +34,7 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
      * Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string|null $thumbnail = null;
 
     /**
@@ -45,6 +45,7 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
      * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string|null $cover = null;
 
     /**
@@ -139,57 +140,5 @@ class InputMediaVideo extends InputMedia implements JsonSerializable
         $this->show_caption_above_media = $show_caption_above_media;
         $this->cover = $cover;
         $this->start_timestamp = $start_timestamp;
-    }
-
-    public static function make(
-        InputFile|string $media,
-        InputFile|string|null $thumbnail = null,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?int $width = null,
-        ?int $height = null,
-        ?int $duration = null,
-        ?bool $supports_streaming = null,
-        ?bool $has_spoiler = null,
-        ?bool $show_caption_above_media = null,
-        InputFile|string|null $cover = null,
-        ?int $start_timestamp = null,
-    ): self {
-        return new self(
-            media: $media,
-            thumbnail: $thumbnail,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            width: $width,
-            height: $height,
-            duration: $duration,
-            supports_streaming: $supports_streaming,
-            has_spoiler: $has_spoiler,
-            show_caption_above_media: $show_caption_above_media,
-            cover: $cover,
-            start_timestamp: $start_timestamp,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'media' => $this->media,
-            'thumbnail' => $this->thumbnail,
-            'cover' => $this->cover,
-            'start_timestamp' => $this->start_timestamp,
-            'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode,
-            'caption_entities' => $this->caption_entities,
-            'show_caption_above_media' => $this->show_caption_above_media,
-            'width' => $this->width,
-            'height' => $this->height,
-            'duration' => $this->duration,
-            'supports_streaming' => $this->supports_streaming,
-            'has_spoiler' => $this->has_spoiler,
-        ]);
     }
 }

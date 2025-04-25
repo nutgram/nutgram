@@ -56,7 +56,7 @@ abstract class InlineMenu extends Conversation
 
     public function __construct()
     {
-        $this->buttons = InlineKeyboardMarkup::make();
+        $this->buttons = new InlineKeyboardMarkup();
     }
 
     /**
@@ -86,7 +86,7 @@ abstract class InlineMenu extends Conversation
      */
     protected function clearButtons(): self
     {
-        $this->buttons = InlineKeyboardMarkup::make();
+        $this->buttons = new InlineKeyboardMarkup();
         $this->callbacks = [];
         $this->orNext = null;
         return $this;

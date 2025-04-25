@@ -159,7 +159,7 @@ it('uploads a file with attach:// logic', function () {
         );
 
         $bot->editMessageMedia(
-            media: InputMediaPhoto::make(
+            media: new InputMediaPhoto(
                 media: InputFile::make(fopen('php://temp', 'rb'), 'photoB.jpg'),
                 caption: 'B',
             ),
@@ -192,7 +192,7 @@ it('creates a new sticker set using InputFile', function () {
             filename: 'sticker.png',
         );
 
-        $sticker = InputSticker::make(
+        $sticker = new InputSticker(
             sticker: $file,
             format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
@@ -241,7 +241,7 @@ it('creates a new sticker set using Url', function () {
     $bot = Nutgram::fake();
 
     $bot->onCommand('start', function (Nutgram $bot) {
-        $sticker = InputSticker::make(
+        $sticker = new InputSticker(
             sticker: 'https://example.com/sticker.png',
             format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
@@ -292,7 +292,7 @@ it('add sticker to set using InputFile', function () {
             filename: 'sticker.png',
         );
 
-        $sticker = InputSticker::make(
+        $sticker = new InputSticker(
             sticker: $file,
             format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
@@ -332,7 +332,7 @@ it('add sticker to set using Url', function () {
     $bot = Nutgram::fake();
 
     $bot->onCommand('start', function (Nutgram $bot) {
-        $sticker = InputSticker::make(
+        $sticker = new InputSticker(
             sticker: 'https://example.com/sticker.png',
             format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
@@ -386,11 +386,11 @@ it('sends a media group', function () {
     });
 
     $bot->sendMediaGroup([
-        InputMediaPhoto::make(
+        new InputMediaPhoto(
             media: InputFile::make(fopen('php://temp', 'rb'), 'photoA.jpg'),
             caption: '150',
         ),
-        InputMediaPhoto::make(
+        new InputMediaPhoto(
             media: InputFile::make(fopen('php://temp', 'rb'), 'photoB.jpg'),
             caption: '200',
         ),
@@ -479,3 +479,14 @@ it('calls getMyDefaultAdministratorRights', function ($responseBody) {
 
     $bot->hearText('/start')->reply();
 })->with('response_ChatAdministratorRights');
+
+it('returns a list of my commands', function ($responseBody) {
+    $bot = Nutgram::fake(responses: [
+        new Response(200, body: $responseBody),
+    ]);
+
+    $commands = $bot->getMyCommands();
+
+    expect($commands)->toBeArray()->toHaveCount(2);
+    expect($commands[0]->getBot())->toBeInstanceOf(Nutgram::class);
+})->with('response_my_commands');

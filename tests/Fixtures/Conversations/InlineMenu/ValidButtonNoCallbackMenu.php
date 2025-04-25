@@ -13,7 +13,7 @@ class ValidButtonNoCallbackMenu extends InlineMenu
     public function start(Nutgram $bot)
     {
         $this->menuText('Choose a color:')
-            ->addButtonRow(InlineKeyboardButton::make('Red'))
+            ->addButtonRow(new InlineKeyboardButton('Red'))
             ->showMenu();
     }
 
