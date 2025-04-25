@@ -7,6 +7,8 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 use Psr\Http\Message\StreamInterface;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
+use SergiX44\Nutgram\Telegram\Properties\InputProfilePhotoType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 
 /**
@@ -16,6 +18,12 @@ use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 #[OverrideConstructor('bindToInstance')]
 class InputProfilePhotoAnimated extends InputProfilePhoto
 {
+    /**
+     * Type of the profile photo, must be animated
+     */
+    #[EnumOrScalar]
+    public InputProfilePhotoType|string $type = InputProfilePhotoType::ANIMATED;
+
     /**
      * The animated profile photo. Profile photos can't be reused and can only be uploaded as a new file,
      * so you can pass “attach://<file_attach_name>” if the photo was uploaded using multipart/form-data under <file_attach_name>.
