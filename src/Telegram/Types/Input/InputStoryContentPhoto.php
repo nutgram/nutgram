@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputStoryContentType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
@@ -11,6 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
  * Describes a photo to post as a story.
  * @see https://core.telegram.org/bots/api#inputstorycontentphoto
  */
+#[SkipConstructor]
 class InputStoryContentPhoto extends InputStoryContent implements Uploadable
 {
     /**
