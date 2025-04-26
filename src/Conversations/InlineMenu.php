@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
+use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
@@ -144,13 +145,15 @@ abstract class InlineMenu extends Conversation
     public function handleStep(): mixed
     {
         if ($this->bot->isCallbackQuery()) {
-            $data = $this->bot->callbackQuery()?->data ?? '';
+            /** @var CallbackQuery $callbackQuery */
+            $callbackQuery = $this->bot->callbackQuery();
 
+            $data = $callbackQuery?->data ?? '';
             $result = null;
             if (isset($this->callbacks[$data])) {
                 $this->step = $this->callbacks[$data];
                 $data = trim($data, '@');
-                $this->bot->callbackQuery()->data = $data;
+                $callbackQuery->data = $data;
                 $result = $this($this->bot, $data);
             }
 

@@ -558,7 +558,7 @@ test('toBotCommand() throws exception if the description is not set', function (
     });
 
     $cmd->toBotCommand();
-})->throws(TypeError::class);
+})->throws(RuntimeException::class, 'No description found for this command.');
 
 it('dumps requests call', function () {
     $bot = Nutgram::fake();

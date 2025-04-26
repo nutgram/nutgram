@@ -56,7 +56,8 @@ class ConsoleLogger extends AbstractLogger
 
     protected function printDefault(string $time, string $level, string $message, array $context): void
     {
-        $stringContext = trim(json_encode($context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $stringContext = json_encode($context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $stringContext = trim($stringContext === false ? '' : $stringContext);
         printf("[%s] %s: %s\n%s\n", $time, strtoupper($level), $message, $stringContext);
     }
 }
