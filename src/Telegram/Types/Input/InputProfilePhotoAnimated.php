@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputProfilePhotoType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
@@ -10,6 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
  * An animated profile photo in the MPEG4 format.
  * @see https://core.telegram.org/bots/api#inputprofilephotoanimated
  */
+#[SkipConstructor]
 class InputProfilePhotoAnimated extends InputProfilePhoto
 {
     /**

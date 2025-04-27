@@ -2,12 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Story;
 
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * Describes a clickable area on a story media.
  * @see https://core.telegram.org/bots/api#storyarea
  */
+#[SkipConstructor]
 class StoryArea extends BaseType
 {
     /**
