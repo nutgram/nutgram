@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.37.2 - 2025-04-27
+
+### What's Changed
+
+* Fix missing SkipConstructor attribute to new types by @Lukasss93 in https://github.com/nutgram/nutgram/pull/883
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.37.1...4.37.2
+
 ## 4.37.1 - 2025-04-25
 
 ### What's Changed
