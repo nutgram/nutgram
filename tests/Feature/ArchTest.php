@@ -1,6 +1,7 @@
 <?php
 
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Common\Response;
@@ -70,6 +71,17 @@ test('check that Telegram Buildable Types does not have a "make" method', functi
         }
 
         expect($hasMakeMethod)->toBeFalse(sprintf('%s has a make method', $type->getName()));
+    }
+});
+
+test('check that Telegram Buildable Types does have OverrideConstructor attribute', function () {
+    $types = getTelegramTypes(TelegramTypeContext::Buildable);
+
+    foreach ($types as $type) {
+        $attributes = $type->getAttributes(OverrideConstructor::class);
+        $attribute = array_shift($attributes);
+
+        expect($attribute->getName())->toBe(OverrideConstructor::class);
     }
 });
 
