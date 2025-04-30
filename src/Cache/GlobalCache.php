@@ -14,9 +14,9 @@ class GlobalCache extends BotCache
 
     /**
      * @param  CacheInterface  $cache
-     * @param  int|null  $botId
+     * @param int $botId
      */
-    public function __construct(CacheInterface $cache, ?int $botId)
+    public function __construct(CacheInterface $cache, int $botId)
     {
         parent::__construct($cache, self::GLOBAL_PREFIX, $botId);
     }
