@@ -248,3 +248,34 @@ it('returns an array using toArray method', function ($update) {
 
     $bot->run();
 })->with('command');
+
+it('returns a custom download url when using a custom bot api server', function () {
+    $bot = Nutgram::fake(config: new Configuration(
+        apiUrl: 'https://api.example.com/',
+        isLocal: false,
+    ));
+
+    $bot->onDocument(function (Nutgram $bot) {
+        $document = $bot->message()->document;
+        $file = $bot->getFile($document->file_id);
+        $url = $bot->downloadUrl($file);
+
+        // domain is ignored because it's overriden by FakeNutgram (test environment only)
+        expect($url)->toBe(sprintf('/file/bot%s/%s',
+            FakeNutgram::TOKEN,
+            'var/lib/telegram-bot-api/1234/photos/file_1.jpg'
+        ));
+    });
+
+    $bot
+        ->hearMessage([
+            'document' => [
+                'file_id' => '123',
+            ],
+        ])
+        ->willReceivePartial([
+            'file_id' => '123',
+            'file_path' => '/var/lib/telegram-bot-api/1234/photos/file_1.jpg',
+        ])
+        ->reply();
+});
