@@ -261,7 +261,8 @@ it('returns a custom download url when using a custom bot api server', function 
         $url = $bot->downloadUrl($file);
 
         // domain is ignored because it's overriden by FakeNutgram (test environment only)
-        expect($url)->toBe(sprintf('/file/bot%s/%s',
+        expect($url)->toBe(sprintf(
+            '/file/bot%s/%s',
             FakeNutgram::TOKEN,
             'var/lib/telegram-bot-api/1234/photos/file_1.jpg'
         ));
