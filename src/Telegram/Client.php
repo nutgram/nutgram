@@ -265,7 +265,7 @@ trait Client
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
-            $content = $this->mapResponse($response, $mapTo);
+            $content = $this->mapResponse($response, $mapTo, $endpoint);
 
             $this->logResponse((string)$response->getBody());
 
@@ -274,7 +274,7 @@ trait Client
             if (!$exception->hasResponse()) {
                 throw $exception;
             }
-            return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
+            return $this->mapResponse($exception->getResponse(), $mapTo, $endpoint, $exception);
         }
     }
 
@@ -340,7 +340,7 @@ trait Client
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
-            $content = $this->mapResponse($response, $mapTo);
+            $content = $this->mapResponse($response, $mapTo, $endpoint);
 
             $this->logResponse((string)$response->getBody());
 
@@ -349,22 +349,23 @@ trait Client
             if (!$exception->hasResponse()) {
                 throw $exception;
             }
-            return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
+            return $this->mapResponse($exception->getResponse(), $mapTo, $endpoint, $exception);
         }
     }
 
     /**
      * @param ResponseInterface $response
      * @param string $mapTo
+     * @param string $endpoint
      * @param Exception|null $clientException
      * @return mixed
      * @throws JsonException
      * @throws TelegramException
      */
-    protected function mapResponse(ResponseInterface $response, string $mapTo, ?Exception $clientException = null): mixed
+    protected function mapResponse(ResponseInterface $response, string $mapTo, string $endpoint, ?Exception $clientException = null): mixed
     {
         $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
-        $json = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$json]) ?? $json;
+        $json = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$json, $endpoint]) ?? $json;
 
         if (!$json?->ok) {
             $e = new TelegramException(
