@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Handlers;
 
+use Closure;
 use Illuminate\Support\Traits\Macroable;
 use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Container\ContainerExceptionInterface;
@@ -219,7 +220,7 @@ class Handler extends MiddlewareChain
     {
         $data = [
             'pattern' => $this->pattern,
-            'callable' => new SerializableClosure($this->callable),
+            'callable' => new SerializableClosure(Closure::fromCallable($this->callable)),
             'disabled' => $this->disabled,
             'constraints' => $this->constraints,
             'tags' => $this->tags,

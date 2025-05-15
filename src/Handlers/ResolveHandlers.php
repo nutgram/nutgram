@@ -13,6 +13,7 @@ use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
@@ -80,20 +81,20 @@ abstract class ResolveHandlers extends CollectHandlers
         }
 
         if ($updateType->isMessageType()) {
-            $messageType = $this->update->getMessage()?->getType();
+            $messageType = $this->message()?->getType();
 
             if ($messageType === MessageType::TEXT) {
                 $username = $this->getConfig()->botName;
-                $text = $this->update->getMessage()?->getParsedCommand($username) ?? $this->update->getMessage()?->text;
+                $text = $this->message()?->getParsedCommand($username) ?? $this->message()?->text;
 
                 if ($text !== null) {
                     $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $text);
                 }
             } elseif ($messageType === MessageType::SUCCESSFUL_PAYMENT) {
-                $data = $this->update->getMessage()->successful_payment?->invoice_payload;
+                $data = $this->message()?->successful_payment?->invoice_payload;
                 $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $data);
             } elseif ($messageType === MessageType::REFUNDED_PAYMENT) {
-                $data = $this->update->getMessage()->refunded_payment?->invoice_payload;
+                $data = $this->message()?->refunded_payment?->invoice_payload;
                 $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $data);
             }
 
@@ -101,19 +102,19 @@ abstract class ResolveHandlers extends CollectHandlers
                 $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType?->value);
             }
         } elseif ($updateType === UpdateType::CALLBACK_QUERY) {
-            $data = $this->update->callback_query?->data;
+            $data = $this->update?->callback_query?->data;
             $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         } elseif ($updateType === UpdateType::CHOSEN_INLINE_RESULT) {
             $data = $this->chosenInlineResult()?->query;
             $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         } elseif ($updateType === UpdateType::PRE_CHECKOUT_QUERY) {
-            $data = $this->update->pre_checkout_query?->invoice_payload;
+            $data = $this->update?->pre_checkout_query?->invoice_payload;
             $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         } elseif ($updateType === UpdateType::INLINE_QUERY) {
-            $data = $this->update->inline_query?->query;
+            $data = $this->update?->inline_query?->query;
             $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         } elseif ($updateType === UpdateType::PURCHASED_PAID_MEDIA) {
-            $data = $this->update->purchased_paid_media?->paid_media_payload;
+            $data = $this->update?->purchased_paid_media?->paid_media_payload;
             $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         }
 
@@ -183,6 +184,7 @@ abstract class ResolveHandlers extends CollectHandlers
                 // we should escape the conversation
                 if ($handler->getPattern() !== null || $handler->shouldStopConversation()) {
                     if ($conversation instanceof Conversation) {
+                        /** @var Nutgram $this */
                         $conversation->terminate($this);
                     }
                     return $handlers;
@@ -239,7 +241,7 @@ abstract class ResolveHandlers extends CollectHandlers
 
         // load global rate limiter
         if ($this->getRateLimit() !== null) {
-            $handler->middleware($this->getRateLimit()->setKey('global'));
+            $handler->middleware($this->getRateLimit()?->setKey('global'));
         }
     }
 
@@ -307,7 +309,7 @@ abstract class ResolveHandlers extends CollectHandlers
             $constraints = [...$currentConstraints, ...$group->getConstraints()];
             $rateLimiters = [
                 ...$currentRateLimiters,
-                ...($group->getRateLimit() !== null ? [$group->getRateLimit()->setKey($group->getHash())] : []),
+                ...($group->getRateLimit() !== null ? [$group->getRateLimit()?->setKey($group->getHash())] : []),
             ];
             $this->groupHandlers = [];
             ($group->groupCallable)($this);

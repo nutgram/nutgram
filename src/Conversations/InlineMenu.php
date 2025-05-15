@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Conversations;
 
 use InvalidArgumentException;
-use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
+use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
@@ -100,15 +100,17 @@ abstract class InlineMenu extends Conversation
     protected function addButtonRow(...$buttons): self
     {
         foreach ($buttons as $button) {
-            if ($button->callback_data === null || !str_contains($button->callback_data, '@')) {
+            if (!str_contains($button->callback_data ?? '', '@')) {
                 continue;
             }
 
-            if (str_starts_with($button->callback_data, '@')) {
+            if (str_starts_with($button->callback_data ?? '', '@')) {
                 $button->callback_data = substr($button->text, 0, Limits::CALLBACK_DATA_LENGTH).$button->callback_data;
             }
 
-            @[$callbackData, $method] = explode('@', $button->callback_data);
+            /** @var string $callbackData */
+            /** @var string $method */
+            [$callbackData, $method] = array_pad(explode('@', $button->callback_data ?? ''), 2, '');
 
             if (!method_exists($this, $method)) {
                 throw new InvalidArgumentException("The method $method does not exists.");
@@ -143,13 +145,15 @@ abstract class InlineMenu extends Conversation
     public function handleStep(): mixed
     {
         if ($this->bot->isCallbackQuery()) {
-            $data = $this->bot->callbackQuery()?->data;
+            /** @var CallbackQuery $callbackQuery */
+            $callbackQuery = $this->bot->callbackQuery();
 
+            $data = $callbackQuery?->data ?? '';
             $result = null;
             if (isset($this->callbacks[$data])) {
                 $this->step = $this->callbacks[$data];
                 $data = trim($data, '@');
-                $this->bot->callbackQuery()->data = $data;
+                $callbackQuery->data = $data;
                 $result = $this($this->bot, $data);
             }
 
@@ -187,8 +191,10 @@ abstract class InlineMenu extends Conversation
             $message = $this->doUpdate($this->text, $this->chatId, $this->messageId, $this->buttons, $this->opt);
         }
 
-        $this->messageId = $message?->message_id ?? $this->messageId;
-        $this->chatId = $message?->chat?->id ?? $this->chatId;
+        if (!is_bool($message)) {
+            $this->messageId = $message?->message_id ?? $this->messageId;
+            $this->chatId = $message?->chat?->id ?? $this->chatId;
+        }
 
         $this->setSkipHandlers($noHandlers)
             ->setSkipMiddlewares($noMiddlewares)
