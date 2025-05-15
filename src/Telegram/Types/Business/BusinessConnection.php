@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Business;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -32,12 +34,6 @@ class BusinessConnection extends BaseType
      * Date the connection was established in Unix time
      */
     public int $date;
-
-    /**
-     * True, if the bot can act on behalf of the business account in chats that were active in the last 24 hours
-     * @deprecated since Bot API v9.0 Please use the "rights" field instead.
-     */
-    public bool $can_reply;
 
     /**
      * Optional. Rights of the business bot

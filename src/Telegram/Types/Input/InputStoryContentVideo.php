@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use Psr\Http\Message\StreamInterface;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputStoryContentType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
 
@@ -12,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
  * Describes a video to post as a story.
  * @see https://core.telegram.org/bots/api#inputstorycontentvideo
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputStoryContentVideo extends InputStoryContent implements Uploadable
 {
     /**
@@ -26,6 +30,7 @@ class InputStoryContentVideo extends InputStoryContent implements Uploadable
      * The video can't be reused and can only be uploaded as a new file, so you can pass “attach://<file_attach_name>” if the video was uploaded using multipart/form-data under <file_attach_name>.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string $video;
 
     /**
@@ -53,9 +58,9 @@ class InputStoryContentVideo extends InputStoryContent implements Uploadable
         return $this->video->getFilename();
     }
 
-    public function getResource()
+    public function getStream(): StreamInterface
     {
-        return $this->video->getResource();
+        return $this->video->getStream();
     }
 
     public function __construct(InputFile|string $video, ?float $duration = null, ?float $cover_frame_timestamp = null, ?bool $is_animation = null)

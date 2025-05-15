@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
@@ -14,9 +16,4 @@ class BotCommandScopeAllPrivateChats extends BotCommandScope
     /** Scope type, must be all_private_chats */
     #[EnumOrScalar]
     public BotCommandScopeType|string $type = BotCommandScopeType::ALL_PRIVATE_CHATS;
-
-    public function make(): self
-    {
-        return new self();
-    }
 }
