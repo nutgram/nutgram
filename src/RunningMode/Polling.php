@@ -66,7 +66,6 @@ class Polling implements RunningMode
             };
 
             pcntl_signal(SIGINT, $killMe);
-            pcntl_signal(SIGKILL, $killMe);
             pcntl_signal(SIGQUIT, $killMe);
             pcntl_signal(SIGTERM, $exitGracefully);
         }
