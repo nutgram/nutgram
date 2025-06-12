@@ -7,42 +7,29 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 class SingleUpdate extends Polling
 {
-    private static int $offset = 1;
-
     public function processUpdates(Nutgram $bot): void
     {
         $this->listenForSignals();
         $config = $bot->getConfig();
 
-        if (self::$offset === 1) {
-            $lastUpdates = $bot->getUpdates(
-                offset: self::$offset,
-                limit: $config->pollingLimit,
-                timeout: $config->pollingTimeout,
-                allowed_updates: $config->pollingAllowedUpdates
-            );
-
-            /** @var Update $last */
-            $last = end($lastUpdates);
-            if ($last) {
-                self::$offset = $last->update_id;
-            }
-        }
-
-        $updates = $bot->getUpdates(
-            offset: self::$offset,
-            limit: $config->pollingLimit,
+        $lastUpdates = $bot->getUpdates(
+            offset: -1,
+            limit: 1,
             timeout: $config->pollingTimeout,
             allowed_updates: $config->pollingAllowedUpdates
         );
 
-        self::$offset += count($updates);
+        /** @var Update $last */
+        $last = end($lastUpdates);
+        $offset = $last ? $last->update_id + 1 : -1;
+
+        $updates = $bot->getUpdates(
+            offset: $offset,
+            limit: 1,
+            timeout: $config->pollingTimeout,
+            allowed_updates: $config->pollingAllowedUpdates
+        );
 
         $this->fire($bot, $updates);
-    }
-
-    public static function resetOffset(): void
-    {
-        self::$offset = 1;
     }
 }
