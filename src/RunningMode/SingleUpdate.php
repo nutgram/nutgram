@@ -20,7 +20,7 @@ class SingleUpdate extends Polling
 
         $this->fire($bot, $updates);
 
-        if(empty($updates)) {
+        if (empty($updates)) {
             return;
         }
 
