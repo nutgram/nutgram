@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Business;
 
-use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * Represents the rights of a business bot.
  * @see https://core.telegram.org/bots/api#businessbotrights
  */
-class BusinessBotRights extends BaseType implements JsonSerializable
+class BusinessBotRights extends BaseType
 {
     /**
      * Optional. True, if the bot can send and edit messages in the private chats that had incoming messages in the last 24 hours
@@ -80,9 +81,4 @@ class BusinessBotRights extends BaseType implements JsonSerializable
      * Optional. True, if the bot can post, edit and delete stories on behalf of the business account
      */
     public ?bool $can_manage_stories = null;
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
 }
