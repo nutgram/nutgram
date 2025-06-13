@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\RunningMode;
 
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 class SingleUpdate extends Polling
 {
@@ -12,24 +11,24 @@ class SingleUpdate extends Polling
         $this->listenForSignals();
         $config = $bot->getConfig();
 
-        $lastUpdates = $bot->getUpdates(
+        $updates = $bot->getUpdates(
             offset: -1,
             limit: 1,
             timeout: $config->pollingTimeout,
             allowed_updates: $config->pollingAllowedUpdates
         );
 
-        /** @var Update $last */
-        $last = end($lastUpdates);
-        $offset = $last ? $last->update_id + 1 : -1;
+        $this->fire($bot, $updates);
 
-        $updates = $bot->getUpdates(
-            offset: $offset,
+        if(empty($updates)) {
+            return;
+        }
+
+        $bot->getUpdates(
+            offset: end($updates)?->update_id + 1,
             limit: 1,
-            timeout: $config->pollingTimeout,
+            timeout: 0,
             allowed_updates: $config->pollingAllowedUpdates
         );
-
-        $this->fire($bot, $updates);
     }
 }
