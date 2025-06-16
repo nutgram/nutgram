@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Location;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * Describes the physical address of a location.
  * @see https://core.telegram.org/bots/api#locationaddress
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class LocationAddress extends BaseType
 {
     /**

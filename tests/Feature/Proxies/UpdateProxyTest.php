@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;

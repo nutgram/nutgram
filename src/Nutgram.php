@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram;
 
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use Laravel\SerializableClosure\SerializableClosure;
+use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -108,13 +110,14 @@ class Nutgram extends ResolveHandlers
                 '%s/bot%s/%s',
                 $config->apiUrl,
                 $this->token,
-                $config->testEnv ?? false ? 'test/' : ''
+                $config->testEnv ? 'test/' : ''
             ),
             'timeout' => $config->clientTimeout,
             'version' => $config->enableHttp2 ? '2.0' : '1.1',
             ...$config->clientOptions,
         ]);
         $this->container->set(ClientInterface::class, $this->http);
+        $this->container->singleton(ClockInterface::class, $config->clock);
         $this->container->singleton(Hydrator::class, $config->hydrator);
         $this->container->singleton(CacheInterface::class, $config->cache);
         $this->container->singleton(LoggerInterface::class, $config->logger);
@@ -321,7 +324,7 @@ class Nutgram extends ResolveHandlers
                     $hashCode = crc32(serialize(get_object_vars($scope)));
 
                     // language_code
-                    foreach ($handler->getAllDescriptions() as $language => $description) {
+                    foreach ($handler->getDescription() as $language => $description) {
                         $myCommands[$hashCode]['scopes'][$language] = $scope;
                         $myCommands[$hashCode]['commands'][$language][] = $handler->toBotCommand($language);
                     }
