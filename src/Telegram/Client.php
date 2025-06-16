@@ -180,7 +180,12 @@ trait Client
             return $file->file_path;
         }
 
-        return "{$this->config->apiUrl}/file/bot$this->token/$file->file_path";
+        return sprintf(
+            '%s/file/bot%s/%s',
+            rtrim($this->config->apiUrl, '/'),
+            $this->token,
+            ltrim($file->file_path, '/'),
+        );
     }
 
     /**
