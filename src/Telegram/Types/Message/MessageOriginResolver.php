@@ -10,7 +10,7 @@ use SergiX44\Nutgram\Telegram\Properties\MessageOriginType;
 #[Attribute(Attribute::TARGET_CLASS)]
 class MessageOriginResolver extends ConcreteResolver
 {
-    public function concreteFor(array $data): ?string
+    public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
 

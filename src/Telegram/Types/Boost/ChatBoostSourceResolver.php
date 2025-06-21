@@ -10,7 +10,7 @@ use SergiX44\Nutgram\Telegram\Properties\ChatBoostSourceSource;
 #[Attribute(Attribute::TARGET_CLASS)]
 class ChatBoostSourceResolver extends ConcreteResolver
 {
-    public function concreteFor(array $data): ?string
+    public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['source'] ?? throw new InvalidArgumentException('Type must be defined');
 

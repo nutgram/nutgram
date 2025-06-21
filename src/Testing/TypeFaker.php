@@ -208,7 +208,7 @@ class TypeFaker
             $resolver = $this->hydrator->getConcreteFor($reflectionClass->getName());
 
             try {
-                return new ReflectionClass($resolver?->concreteFor($context));
+                return new ReflectionClass($resolver?->concreteFor($context, $context));
             } catch (Throwable) {
                 $concretes = $resolver?->getConcretes();
                 if (!empty($concretes)) {

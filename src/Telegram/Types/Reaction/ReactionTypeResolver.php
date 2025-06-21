@@ -10,7 +10,7 @@ use SergiX44\Nutgram\Telegram\Properties\ReactionTypeType;
 #[Attribute(Attribute::TARGET_CLASS)]
 class ReactionTypeResolver extends ConcreteResolver
 {
-    public function concreteFor(array $data): ?string
+    public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
 
