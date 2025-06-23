@@ -51,12 +51,14 @@ class InputTextMessageContent extends InputMessageContent
         ParseMode|string|null $parse_mode = null,
         ?array $entities = null,
         ?bool $disable_web_page_preview = null,
+        ?LinkPreviewOptions $link_preview_options = null,
     ) {
         parent::__construct();
         $this->message_text = $message_text;
         $this->parse_mode = $parse_mode;
         $this->entities = $entities;
         $this->disable_web_page_preview = $disable_web_page_preview;
+        $this->link_preview_options = $link_preview_options;
     }
 
     public static function make(
@@ -64,12 +66,14 @@ class InputTextMessageContent extends InputMessageContent
         ParseMode|string|null $parse_mode = null,
         ?array $entities = null,
         ?bool $disable_web_page_preview = null,
+        ?LinkPreviewOptions $link_preview_options = null,
     ): self {
         return new self(
             message_text: $message_text,
             parse_mode: $parse_mode,
             entities: $entities,
             disable_web_page_preview: $disable_web_page_preview,
+            link_preview_options: $link_preview_options,
         );
     }
 
