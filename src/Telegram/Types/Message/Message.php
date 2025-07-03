@@ -8,6 +8,9 @@ use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostAdded;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
+use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksAdded;
+use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksDone;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicClosed;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicCreated;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicEdited;
@@ -39,6 +42,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Video;
 use SergiX44\Nutgram\Telegram\Types\Media\VideoNote;
 use SergiX44\Nutgram\Telegram\Types\Media\Voice;
 use SergiX44\Nutgram\Telegram\Types\Passport\PassportData;
+use SergiX44\Nutgram\Telegram\Types\Payment\DirectMessagePriceChanged;
 use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaInfo;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMessagePriceChanged;
@@ -352,6 +356,10 @@ class Message extends BaseType
     public ?bool $has_media_spoiler = null;
 
     /**
+     * Optional. Message is a checklist
+     */
+    public ?Checklist $checklist = null;
+    /**
      * Optional.
      * Message is a shared contact, information about the contact
      */
@@ -556,6 +564,22 @@ class Message extends BaseType
     public ?ChatBackground $chat_background_set = null;
 
     /**
+     * Optional. Service message: some tasks in a checklist were marked as done or not done
+     */
+    public ?ChecklistTasksDone $checklist_tasks_done = null;
+
+    /**
+     * Optional. Service message: tasks were added to a checklist
+     */
+    public ?ChecklistTasksAdded $checklist_tasks_added = null;
+
+    /**
+     * Optional.
+     * Service message: the price for paid messages in the corresponding direct messages chat of a channel has changed
+     */
+    public ?DirectMessagePriceChanged $direct_message_price_changed = null;
+
+    /**
      * Optional.
      * Service message: forum topic created
      */
@@ -697,6 +721,7 @@ class Message extends BaseType
             $this->video !== null => MessageType::VIDEO,
             $this->voice !== null => MessageType::VOICE,
             $this->video_note !== null => MessageType::VIDEO_NOTE,
+            $this->checklist !== null => MessageType::CHECKLIST,
             $this->contact !== null => MessageType::CONTACT,
             $this->venue !== null => MessageType::VENUE,
             $this->location !== null => MessageType::LOCATION,
@@ -726,6 +751,9 @@ class Message extends BaseType
             $this->passport_data !== null => MessageType::PASSPORT_DATA,
             $this->proximity_alert_triggered !== null => MessageType::PROXIMITY_ALERT_TRIGGERED,
             $this->boost_added !== null => MessageType::BOOST_ADDED,
+            $this->checklist_tasks_done !== null => MessageType::CHECKLIST_TASKS_DONE,
+            $this->checklist_tasks_added !== null => MessageType::CHECKLIST_TASKS_ADDED,
+            $this->direct_message_price_changed !== null => MessageType::DIRECT_MESSAGE_PRICE_CHANGED,
             $this->forum_topic_created !== null => MessageType::FORUM_TOPIC_CREATED,
             $this->forum_topic_edited !== null => MessageType::FORUM_TOPIC_EDITED,
             $this->forum_topic_closed !== null => MessageType::FORUM_TOPIC_CLOSED,

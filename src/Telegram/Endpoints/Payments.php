@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
 use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingOption;
+use SergiX44\Nutgram\Telegram\Types\Payment\StarAmount;
 use SergiX44\Nutgram\Telegram\Types\Payment\StarTransactions;
 
 /**
@@ -248,6 +249,18 @@ trait Payments
         $parameters = compact('pre_checkout_query_id', 'ok', 'error_message');
 
         return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * A method to get the current Telegram Stars balance of the bot.
+     * Requires no parameters.
+     * On success, returns a StarAmount object.
+     * @see https://core.telegram.org/bots/api#getmystarbalance
+     * @return StarAmount|null
+     */
+    public function getMyStarBalance(): ?StarAmount
+    {
+        return $this->requestJson(__FUNCTION__, mapTo: StarAmount::class);
     }
 
     /**
