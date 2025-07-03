@@ -39,8 +39,10 @@ trait MessageListeners
         $target->validateMessageType();
         if (is_string($command)) {
             if (!is_subclass_of($command, Command::class)) {
-                throw new InvalidArgumentException(sprintf('You must provide subclass of the %s class or an instance.',
-                    Command::class));
+                throw new InvalidArgumentException(sprintf(
+                    'You must provide subclass of the %s class or an instance.',
+                    Command::class
+                ));
             }
             $command = new $command();
         }
