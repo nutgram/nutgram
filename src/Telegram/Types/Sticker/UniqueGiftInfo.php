@@ -41,5 +41,5 @@ class UniqueGiftInfo extends BaseType
     /**
      * Optional. Point in time (Unix timestamp) when the gift can be transferred. If it is in the past, then the gift can be transferred now
      */
-    public ?string $next_transfer_date = null;
+    public ?int $next_transfer_date = null;
 }
