@@ -11,7 +11,6 @@ use SergiX44\Nutgram\Telegram\Types\Message\Message;
  */
 class ChecklistTasksDone extends BaseType
 {
-
     /**
      * Optional. Message containing the checklist whose tasks were marked as done or not done.
      * Note that the Message object in this field will not contain the reply_to_message field even if it itself is a reply.
