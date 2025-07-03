@@ -6,7 +6,7 @@
   <img src="https://i.imgur.com/yrd8jr2.png" width="400px">
 </p>
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-9.0%09--%20April%2011,%202025-28a8ea.svg?logo=telegram)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-9.1%09--%20July%2011,%202025-28a8ea.svg?logo=telegram)](https://core.telegram.org/bots/api)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/nutgram/nutgram.svg?label=composer&logo=composer)](https://packagist.org/packages/nutgram/nutgram)
 ![PHP](https://img.shields.io/packagist/dependency-v/nutgram/nutgram/php?logo=php)
 ![License](https://img.shields.io/github/license/nutgram/nutgram)
@@ -105,11 +105,14 @@ Official Documentation on [https://nutgram.dev/](https://nutgram.dev)
 
 - AnonyMeet ([@AnonyMeetBot](https://t.me/AnonyMeetBot)) - Anonymous chat bot
 - File Converter ([@newfileconverterbot](https://t.me/newfileconverterbot)) - Convert files to other formats
-- [Sticker Optimizer](https://github.com/Lukasss93/telegram-stickeroptimizer) ([@NewStickerOptimizerBot](https://t.me/NewStickerOptimizerBot)) - Optimize images for the @stickers bot
+- [Sticker Optimizer](https://github.com/Lukasss93/telegram-stickeroptimizer) ([@NewStickerOptimizerBot](https://t.me/NewStickerOptimizerBot)) -
+  Optimize images for the @stickers bot
 - Stickerizer ([@StickerizerBot](https://t.me/StickerizerBot)) - Create stickers on the fly, via Telegram Mini App.
-- [Mermaid Generator](https://github.com/Lukasss93/telegram-mermaid) ([@newmermaidbot](https://t.me/newmermaidbot)) - Generate mermaid diagrams from text
+- [Mermaid Generator](https://github.com/Lukasss93/telegram-mermaid) ([@newmermaidbot](https://t.me/newmermaidbot)) -
+  Generate mermaid diagrams from text
 - Voice Transcriber ([@voicetranscriberobot](https://t.me/voicetranscriberobot)) - Transcribe audio messages to text
-- Effin Birds ([@effinbirdsbot](https://t.me/effinbirdsbot)) - Search and send in inline mode images made by https://twitter.com/EffinBirds
+- Effin Birds ([@effinbirdsbot](https://t.me/effinbirdsbot)) - Search and send in inline mode images made
+  by https://twitter.com/EffinBirds
 - Resizer Image ([@ResizerTool_bot](https://t.me/ResizerTool_bot))] - Resize an image easily
 
 ## ⚗️ Testing
