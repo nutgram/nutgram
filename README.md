@@ -6,7 +6,7 @@
   <img src="https://i.imgur.com/yrd8jr2.png" width="400px">
 </p>
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-9.1%09--%20July%2011,%202025-28a8ea.svg?logo=telegram)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-9.1%09--%20July%203,%202025-28a8ea.svg?logo=telegram)](https://core.telegram.org/bots/api)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/nutgram/nutgram.svg?label=composer&logo=composer)](https://packagist.org/packages/nutgram/nutgram)
 ![PHP](https://img.shields.io/packagist/dependency-v/nutgram/nutgram/php?logo=php)
 ![License](https://img.shields.io/github/license/nutgram/nutgram)
