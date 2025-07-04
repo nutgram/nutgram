@@ -4,6 +4,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
+use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
@@ -214,3 +215,11 @@ test('isCommand() returns false on text', function ($update) {
 
     expect($bot->isCommand())->toBeFalse();
 })->with('text');
+
+test('checklist() returns Checklist object', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->run();
+
+    expect($bot->checklist())->toBeInstanceOf(Checklist::class);
+})->with('checklist');

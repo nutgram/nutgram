@@ -11,6 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\Business\BusinessMessagesDeleted;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
+use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
@@ -223,5 +224,12 @@ trait UpdateProxy
     public function removedChatBoost(): ?ChatBoostRemoved
     {
         return $this->update?->removed_chat_boost;
+    }
+
+    public function checklist(): ?Checklist
+    {
+        return $this->message()?->checklist
+            ?? $this->message()?->checklist_tasks_done?->checklist_message?->checklist
+            ?? $this->message()?->checklist_tasks_added?->checklist_message?->checklist;
     }
 }

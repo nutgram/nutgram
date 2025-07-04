@@ -15,7 +15,7 @@ use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 trait MessageListeners
 {
     /**
-     * @param  string  $command
+     * @param string $command
      * @param $callable
      * @return Command
      */
@@ -30,7 +30,7 @@ trait MessageListeners
     }
 
     /**
-     * @param  string|Command  $command
+     * @param string|Command $command
      * @return Command
      */
     public function registerCommand(string|Command $command, UpdateType $target = UpdateType::MESSAGE): Command
@@ -39,7 +39,10 @@ trait MessageListeners
         $target->validateMessageType();
         if (is_string($command)) {
             if (!is_subclass_of($command, Command::class)) {
-                throw new InvalidArgumentException(sprintf('You must provide subclass of the %s class or an instance.', Command::class));
+                throw new InvalidArgumentException(sprintf(
+                    'You must provide subclass of the %s class or an instance.',
+                    Command::class
+                ));
             }
             $command = new $command();
         }
@@ -48,7 +51,7 @@ trait MessageListeners
     }
 
     /**
-     * @param  string  $pattern
+     * @param string $pattern
      * @param $callable
      * @return Handler
      */
@@ -371,7 +374,7 @@ trait MessageListeners
     }
 
     /**
-     * @param  string  $pattern
+     * @param string $pattern
      * @param $callable
      * @return Handler
      */
@@ -462,6 +465,30 @@ trait MessageListeners
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::BOOST_ADDED->value][] = new Handler($callable);
+    }
+
+    public function onDirectMessagePriceChanged($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::DIRECT_MESSAGE_PRICE_CHANGED->value][] = new Handler($callable);
+    }
+
+    public function onChecklist($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::CHECKLIST->value][] = new Handler($callable);
+    }
+
+    public function onChecklistTasksDone($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::CHECKLIST_TASKS_DONE->value][] = new Handler($callable);
+    }
+
+    public function onChecklistTasksAdded($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::CHECKLIST_TASKS_ADDED->value][] = new Handler($callable);
     }
 
     /**

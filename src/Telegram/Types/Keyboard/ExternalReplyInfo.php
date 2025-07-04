@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
 use SergiX44\Nutgram\Telegram\Types\Game\Game;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\Giveaway;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayWinners;
@@ -122,6 +123,11 @@ class ExternalReplyInfo extends BaseType
      * @var bool|null
      */
     public ?bool $has_media_spoiler = null;
+
+    /**
+     * Optional. Message is a checklist
+     */
+    public ?Checklist $checklist = null;
 
     /**
      * Optional. Message is a shared contact, information about the contact

@@ -526,6 +526,54 @@ it('calls onBoostAdded() handler', function ($update) {
     expect($bot->get('called'))->toBeTrue();
 })->with('message_boost_added');
 
+it('calls onDirectMessagePriceChanged handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onDirectMessagePriceChanged(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('direct_message_price_changed');
+
+it('calls onChecklist handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onChecklist(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('checklist');
+
+it('calls onChecklistTasksDone handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onChecklistTasksDone(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('checklist_tasks_done');
+
+it('calls onChecklistTasksAdded handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onChecklistTasksAdded(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('checklist_tasks_added');
+
 it('calls onForumTopicCreated handler', function ($update) {
     $bot = Nutgram::fake($update);
 

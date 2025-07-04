@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Checklist\InputChecklist;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputStoryContent;
@@ -17,6 +18,7 @@ use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
 use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
 use SergiX44\Nutgram\Telegram\Types\Story\StoryArea;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Trait UpdatesMessages
@@ -197,6 +199,34 @@ trait UpdatesMessages
 
         $this->setChatMessageOrInlineMessageId($parameters);
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+    }
+
+    /**
+     * Use this method to edit a checklist on behalf of a connected business account. On success, the edited Message is returned.
+     * @see https://core.telegram.org/bots/api#editmessagechecklist
+     * @param InputChecklist|null $checklist A JSON-serialized object for the new checklist
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
+     * @param int|null $chat_id Unique identifier for the target chat
+     * @param int|null $message_id Unique identifier for the target message
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for the new inline keyboard for the message
+     * @return Message|null
+     */
+    public function editMessageChecklist(
+        InputChecklist $checklist = null,
+        ?string $business_connection_id = null,
+        ?int $chat_id = null,
+        ?int $message_id = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+    ): ?Message {
+        $business_connection_id ??= $this->businessConnectionId();
+        $chat_id ??= $this->chatId();
+        $message_id ??= $this->messageId();
+        $parameters = compact('checklist', 'business_connection_id', 'chat_id', 'message_id', 'reply_markup');
+        return $this->requestJson(__FUNCTION__, array_filter_null([
+            'checklist' => json_encode($checklist),
+            'reply_markup' => $reply_markup !== null ? json_encode($reply_markup) : null,
+            ...$parameters,
+        ]), Message::class);
     }
 
     /**

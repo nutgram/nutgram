@@ -15,6 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMember;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatPermissions;
+use SergiX44\Nutgram\Telegram\Types\Checklist\InputChecklist;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Command\MenuButton;
@@ -44,6 +45,7 @@ use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\User\UserProfilePhotos;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Trait AvailableMethods
@@ -1283,6 +1285,40 @@ trait AvailableMethods
             'options' => json_encode($options, JSON_THROW_ON_ERROR),
             ...$parameters,
         ], Message::class);
+    }
+
+    /**
+     * Use this method to send a checklist on behalf of a connected business account. On success, the sent Message is returned.
+     * @see https://core.telegram.org/bots/api#sendchecklist
+     * @param InputChecklist $checklist A JSON-serialized object for the checklist to send
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
+     * @param int|null $chat_id Unique identifier for the target chat
+     * @param bool|null $disable_notification Sends the message silently. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
+     * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message
+     * @param ReplyParameters|null $reply_parameters A JSON-serialized object for description of the message to reply to
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an inline keyboard
+     * @return Message|null
+     */
+    public function sendChecklist(
+        InputChecklist $checklist,
+        ?string $business_connection_id = null,
+        ?int $chat_id = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?string $message_effect_id = null,
+        ?ReplyParameters $reply_parameters = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+    ): ?Message {
+        $chat_id ??= $this->chatId();
+        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = compact('checklist', 'business_connection_id', 'chat_id', 'disable_notification', 'protect_content', 'message_effect_id', 'reply_parameters', 'reply_markup');
+        return $this->requestJson(__FUNCTION__, array_filter_null([
+            'checklist' => json_encode($checklist),
+            'reply_parameters' => $reply_parameters !== null ? json_encode($reply_parameters) : null,
+            'reply_markup' => $reply_markup !== null ? json_encode($reply_markup) : null,
+            ...$parameters,
+        ]), Message::class);
     }
 
     /**
