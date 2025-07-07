@@ -204,7 +204,7 @@ trait UpdatesMessages
     /**
      * Use this method to edit a checklist on behalf of a connected business account. On success, the edited Message is returned.
      * @see https://core.telegram.org/bots/api#editmessagechecklist
-     * @param InputChecklist|null $checklist A JSON-serialized object for the new checklist
+     * @param InputChecklist $checklist A JSON-serialized object for the new checklist
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param int|null $chat_id Unique identifier for the target chat
      * @param int|null $message_id Unique identifier for the target message
@@ -212,7 +212,7 @@ trait UpdatesMessages
      * @return Message|null
      */
     public function editMessageChecklist(
-        InputChecklist $checklist = null,
+        InputChecklist $checklist,
         ?string $business_connection_id = null,
         ?int $chat_id = null,
         ?int $message_id = null,
