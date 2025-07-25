@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.38.1 - 2025-07-25
+
+### What's Changed
+
+* Remove wrong null from checklist parameter in the editMessageChecklist method by @Lukasss93 in https://github.com/nutgram/nutgram/pull/906
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.38.0...4.38.1
+
 ## 4.38.0 - 2025-07-04
 
 ### What's Changed
