@@ -56,6 +56,12 @@ use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
 use SergiX44\Nutgram\Telegram\Types\Sticker\GiftInfo;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGiftInfo;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostApprovalFailed;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostApproved;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostDeclined;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostInfo;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostPaid;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostRefunded;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatEnded;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatParticipantsInvited;
@@ -237,6 +243,12 @@ class Message extends BaseType
     public ?bool $is_from_offline = null;
 
     /**
+     * Optional. True, if the message is a paid post.
+     * Note that such posts must not be deleted for 24 hours to receive the payment and can't be edited.
+     */
+    public ?bool $is_paid_post = null;
+
+    /**
      * Optional.
      * The unique identifier of a media message group this message belongs to
      */
@@ -273,6 +285,12 @@ class Message extends BaseType
      * if it is a text message and link preview options were changed
      */
     public ?LinkPreviewOptions $link_preview_options = null;
+
+    /**
+     * Optional. Information about suggested post parameters if the message is a suggested post in a channel direct messages chat.
+     * If the message is an approved or declined suggested post, then it can't be edited.
+     */
+    public ?SuggestedPostInfo $suggested_post_info = null;
 
     /**
      * Optional. Unique identifier of the message effect added to the message
@@ -650,6 +668,31 @@ class Message extends BaseType
      * Optional. Service message: the price for paid messages has changed in the chat
      */
     public ?PaidMessagePriceChanged $paid_message_price_changed = null;
+
+    /**
+     * Optional. Service message: a suggested post was approved
+     */
+    public ?SuggestedPostApproved $suggested_post_approved = null;
+
+    /**
+     * Optional. Service message: approval of a suggested post has failed
+     */
+    public ?SuggestedPostApprovalFailed $suggested_post_approval_failed = null;
+
+    /**
+     * Optional. Service message: a suggested post was declined
+     */
+    public ?SuggestedPostDeclined $suggested_post_declined = null;
+
+    /**
+     * Optional. Service message: payment for a suggested post was received
+     */
+    public ?SuggestedPostPaid $suggested_post_paid = null;
+
+    /**
+     * Optional. Service message: payment for a suggested post was refunded
+     */
+    public ?SuggestedPostRefunded $suggested_post_refunded = null;
 
     /**
      * Optional.

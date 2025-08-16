@@ -94,6 +94,13 @@ class ChatMemberAdministrator extends ChatMember
 
     /**
      * Optional.
+     * True, if the administrator can manage direct messages of the channel and decline suggested posts;
+     * for channels only
+     */
+    public ?bool $can_manage_direct_messages = null;
+
+    /**
+     * Optional.
      * Custom title for this user
      */
     public ?string $custom_title = null;

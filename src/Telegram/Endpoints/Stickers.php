@@ -19,6 +19,7 @@ use SergiX44\Nutgram\Telegram\Types\Sticker\Gifts;
 use SergiX44\Nutgram\Telegram\Types\Sticker\MaskPosition;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\Sticker\StickerSet;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
 
 /**
  * Trait Stickers
@@ -45,6 +46,7 @@ trait Stickers
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -63,6 +65,7 @@ trait Stickers
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
@@ -83,6 +86,7 @@ trait Stickers
             'message_effect_id',
             'allow_paid_broadcast',
             'direct_messages_topic_id',
+            'suggested_post_parameters',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'sticker', $sticker, $opt, $clientOpt);
