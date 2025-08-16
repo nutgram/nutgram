@@ -6,7 +6,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 class SuggestedPostPrice extends BaseType
 {
-
     /**
      * Currency in which the post will be paid.
      * Currently, must be one of “XTR” for Telegram Stars or “TON” for toncoins
