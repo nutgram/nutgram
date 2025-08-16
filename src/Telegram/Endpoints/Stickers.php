@@ -44,6 +44,7 @@ trait Stickers
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -61,11 +62,13 @@ trait Stickers
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -79,6 +82,7 @@ trait Stickers
             'business_connection_id',
             'message_effect_id',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'sticker', $sticker, $opt, $clientOpt);

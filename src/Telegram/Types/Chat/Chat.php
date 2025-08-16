@@ -59,6 +59,12 @@ class Chat extends BaseType
      */
     public ?bool $is_forum = null;
 
+    /**
+     * Optional.
+     * True, if the chat is the direct messages chat of a channel
+     */
+    public ?bool $is_direct_messages = null;
+
 
     /*
     |--------------------------------------------------------------------------
@@ -136,6 +142,12 @@ class Chat extends BaseType
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?Chat $personal_chat = null;
+
+    /**
+     * Optional.
+     * Information about the corresponding channel chat; for direct messages chats only
+     */
+    public ?Chat $parent_chat = null;
 
     /**
      * Optional.
@@ -387,6 +399,7 @@ class Chat extends BaseType
         ?ChatLocation $location = null,
         ?bool $can_send_paid_media = null,
         ?bool $can_send_gift = null,
+        ?bool $is_direct_messages = null,
     ): Chat {
         $chat = new self();
         $chat->id = $id;
@@ -419,6 +432,7 @@ class Chat extends BaseType
         $chat->location = $location;
         $chat->can_send_paid_media = $can_send_paid_media;
         $chat->can_send_gift = $can_send_gift;
+        $chat->is_direct_messages = $is_direct_messages;
         return $chat;
     }
 

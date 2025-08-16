@@ -81,6 +81,12 @@ class Message extends BaseType
 
     /**
      * Optional.
+     * Information about the direct messages chat topic that contains the message
+     */
+    public ?DirectMessagesTopic $direct_messages_topic = null;
+
+    /**
+     * Optional.
      * Sender of the message;
      * empty for messages sent to channels.
      * For backward compatibility, the field contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat.

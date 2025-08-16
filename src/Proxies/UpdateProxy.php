@@ -78,6 +78,11 @@ trait UpdateProxy
         return $this->chosenInlineResult()?->inline_message_id ?? $this->callbackQuery()?->inline_message_id;
     }
 
+    public function directMessagesTopicId(): ?int
+    {
+        return $this->message()?->direct_messages_topic?->topic_id;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Special proxies
@@ -133,6 +138,11 @@ trait UpdateProxy
     public function isMyChatMember(): bool
     {
         return $this->update?->my_chat_member !== null;
+    }
+
+    public function isDirectMessagesTopic(): bool
+    {
+        return $this->message()?->direct_messages_topic !== null;
     }
 
     /*
