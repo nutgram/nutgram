@@ -64,6 +64,12 @@ class ReplyParameters extends BaseType implements JsonSerializable
     public ?int $quote_position = null;
 
     /**
+     * Optional. Identifier of the specific checklist task to be replied to
+     * @var int|null
+     */
+    public ?int $checklist_task_id = null;
+
+    /**
      * @param int $message_id
      * @param int|string|null $chat_id
      * @param bool|null $allow_sending_without_reply
@@ -71,6 +77,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
      * @param string|null $quote_parse_mode
      * @param MessageEntity[]|null $quote_entities
      * @param int|null $quote_position
+     * @param int|null $checklist_task_id
      */
     public function __construct(
         int $message_id,
@@ -79,7 +86,8 @@ class ReplyParameters extends BaseType implements JsonSerializable
         ?string $quote = null,
         ?string $quote_parse_mode = null,
         ?array $quote_entities = null,
-        ?int $quote_position = null
+        ?int $quote_position = null,
+        ?int $checklist_task_id = null,
     ) {
         parent::__construct();
         $this->message_id = $message_id;
@@ -89,6 +97,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
         $this->quote_parse_mode = $quote_parse_mode;
         $this->quote_entities = $quote_entities;
         $this->quote_position = $quote_position;
+        $this->checklist_task_id = $checklist_task_id;
     }
 
     /**
@@ -99,6 +108,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
      * @param string|null $quote_parse_mode
      * @param MessageEntity[]|null $quote_entities
      * @param int|null $quote_position
+     * @param int|null $checklist_task_id
      * @return self
      */
     public static function make(
@@ -108,7 +118,8 @@ class ReplyParameters extends BaseType implements JsonSerializable
         ?string $quote = null,
         ?string $quote_parse_mode = null,
         ?array $quote_entities = null,
-        ?int $quote_position = null
+        ?int $quote_position = null,
+        ?int $checklist_task_id = null,
     ): self {
         return new self(
             message_id: $message_id,
@@ -117,7 +128,8 @@ class ReplyParameters extends BaseType implements JsonSerializable
             quote: $quote,
             quote_parse_mode: $quote_parse_mode,
             quote_entities: $quote_entities,
-            quote_position: $quote_position
+            quote_position: $quote_position,
+            checklist_task_id: $checklist_task_id,
         );
     }
 
@@ -131,6 +143,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
             'quote_parse_mode' => $this->quote_parse_mode,
             'quote_entities' => $this->quote_entities,
             'quote_position' => $this->quote_position,
+            'checklist_task_id' => $this->checklist_task_id,
         ]);
     }
 }

@@ -202,6 +202,11 @@ class Message extends BaseType
     public ?Story $reply_to_story = null;
 
     /**
+     * Optional. Identifier of the specific checklist task that is being replied to
+     */
+    public ?int $reply_to_checklist_task_id = null;
+
+    /**
      * Optional.
      * Bot through which the message was sent
      */
