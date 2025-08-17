@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\SuggestedPost;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
+use SergiX44\Nutgram\Telegram\Properties\Currency;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Payment\StarAmount;
@@ -22,7 +24,8 @@ class SuggestedPostPaid extends BaseType
      * Currency in which the payment was made.
      * Currently, one of “XTR” for Telegram Stars or “TON” for toncoins
      */
-    public string $currency;
+    #[EnumOrScalar]
+    public Currency|string $currency;
 
     /**
      * Optional. The amount of the currency that was received by the channel in nanotoncoins;
