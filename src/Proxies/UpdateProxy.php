@@ -145,6 +145,16 @@ trait UpdateProxy
         return $this->message()?->direct_messages_topic !== null;
     }
 
+    public function isSuggestedPost(): bool
+    {
+        return $this->message()?->suggested_post_info !== null
+            || $this->message()?->suggested_post_approved !== null
+            || $this->message()?->suggested_post_approval_failed !== null
+            || $this->message()?->suggested_post_declined !== null
+            || $this->message()?->suggested_post_paid !== null
+            || $this->message()?->suggested_post_refunded !== null;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Update proxies
