@@ -10,7 +10,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class SuggestedPostParameters extends BaseType
 {
-
     /**
      * Optional. Proposed price for the post. If the field is omitted, then the post is unpaid.
      */

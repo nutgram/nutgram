@@ -11,7 +11,6 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  */
 class DirectMessagesTopic extends BaseType
 {
-
     /**
      * Unique identifier of the topic
      */
