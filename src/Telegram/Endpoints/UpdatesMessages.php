@@ -286,6 +286,56 @@ trait UpdatesMessages
     }
 
     /**
+     * Use this method to approve a suggested post in a direct messages chat.
+     * The bot must have the 'can_post_messages' administrator right in the corresponding channel chat.
+     * Returns True on success.
+     * @param int|null $chat_id Unique identifier for the target direct messages chat
+     * @param int|null $message_id Identifier of a suggested post message to approve
+     * @param int|null $send_date Point in time (Unix timestamp) when the post is expected to be published; omit if the date has already been specified when the suggested post was created. If specified, then the date must be not more than 2678400 seconds (30 days) in the future
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#approvesuggestedpost
+     */
+    public function approveSuggestedPost(
+        ?int $chat_id = null,
+        ?int $message_id = null,
+        ?int $send_date = null,
+    ): ?bool {
+        $chat_id ??= $this->chatId();
+        $message_id ??= $this->messageId();
+        $parameters = compact(
+            'chat_id',
+            'message_id',
+            'send_date',
+        );
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to decline a suggested post in a direct messages chat.
+     * The bot must have the 'can_manage_direct_messages' administrator right in the corresponding channel chat.
+     * Returns True on success.
+     * @param int|null $chat_id Unique identifier for the target direct messages chat
+     * @param int|null $message_id Identifier of a suggested post message to decline
+     * @param string|null $comment Comment for the creator of the suggested post; 0-128 characters
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#declinesuggestedpost
+     */
+    public function declineSuggestedPost(
+        ?int $chat_id = null,
+        ?int $message_id = null,
+        ?string $comment = null,
+    ): ?bool {
+        $chat_id ??= $this->chatId();
+        $message_id ??= $this->messageId();
+        $parameters = compact(
+            'chat_id',
+            'message_id',
+            'comment',
+        );
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
      * Use this method to delete a message, including service messages, with the following limitations:- A message can only be deleted if it was sent less than 48 hours ago.- Service messages about a supergroup, channel, or forum topic creation can't be deleted.- A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.- Bots can delete outgoing messages in private chats, groups, and supergroups.- Bots can delete incoming messages in private chats.- Bots granted can_post_messages permissions can delete outgoing messages in channels.- If the bot is an administrator of a group, it can delete any message there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.Returns True on success.
      * @see https://core.telegram.org/bots/api#deletemessage
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)

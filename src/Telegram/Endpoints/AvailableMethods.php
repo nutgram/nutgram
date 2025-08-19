@@ -43,6 +43,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
 use SergiX44\Nutgram\Telegram\Types\Poll\InputPollOption;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\User\UserProfilePhotos;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -114,6 +115,8 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @return Message|null
      */
     public function sendMessage(
@@ -133,10 +136,13 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         $parameters = compact(
             'chat_id',
             'message_thread_id',
@@ -154,6 +160,8 @@ trait AvailableMethods
             'business_connection_id',
             'message_effect_id',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         );
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
@@ -171,6 +179,8 @@ trait AvailableMethods
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the forwarded message from forwarding and saving
      * @param int|null $video_start_timestamp New start timestamp for the forwarded video in the message
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @return Message|null
      */
     public function forwardMessage(
@@ -181,6 +191,8 @@ trait AvailableMethods
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
         ?int $video_start_timestamp = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -190,6 +202,8 @@ trait AvailableMethods
             'protect_content',
             'message_id',
             'video_start_timestamp',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         ), Message::class);
     }
 
@@ -206,6 +220,7 @@ trait AvailableMethods
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
      * @param bool|null $disable_notification Sends the messages {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the forwarded messages from forwarding and saving
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @return MessageId[]|null
      */
     public function forwardMessages(
@@ -215,6 +230,7 @@ trait AvailableMethods
         ?int $message_thread_id = null,
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
+        ?int $direct_messages_topic_id = null,
     ): ?array {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -222,7 +238,8 @@ trait AvailableMethods
             'message_ids',
             'message_thread_id',
             'disable_notification',
-            'protect_content'
+            'protect_content',
+            'direct_messages_topic_id',
         ), MessageId::class);
     }
 
@@ -249,6 +266,8 @@ trait AvailableMethods
      * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $video_start_timestamp New start timestamp for the forwarded video in the message
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @return MessageId|null
      */
     public function copyMessage(
@@ -268,6 +287,8 @@ trait AvailableMethods
         ?bool $show_caption_above_media = null,
         ?bool $allow_paid_broadcast = null,
         ?int $video_start_timestamp = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?MessageId {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -286,6 +307,8 @@ trait AvailableMethods
             'show_caption_above_media',
             'allow_paid_broadcast',
             'video_start_timestamp',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         ), MessageId::class);
     }
 
@@ -304,6 +327,7 @@ trait AvailableMethods
      * @param bool|null $disable_notification Sends the messages silently. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the sent messages from forwarding and saving
      * @param bool|null $remove_caption Pass True to copy the messages without their captions
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @return MessageId[]|null
      */
     public function copyMessages(
@@ -314,6 +338,7 @@ trait AvailableMethods
         ?bool $disable_notification = null,
         ?bool $protect_content = null,
         ?bool $remove_caption = null,
+        ?int $direct_messages_topic_id = null,
     ): ?array {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -322,7 +347,8 @@ trait AvailableMethods
             'message_ids',
             'disable_notification',
             'protect_content',
-            'remove_caption'
+            'remove_caption',
+            'direct_messages_topic_id',
         ), MessageId::class);
     }
 
@@ -347,6 +373,8 @@ trait AvailableMethods
      * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -368,11 +396,14 @@ trait AvailableMethods
         ?bool $show_caption_above_media = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -390,6 +421,8 @@ trait AvailableMethods
             'show_caption_above_media',
             'message_effect_id',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $opt, $clientOpt);
@@ -420,6 +453,8 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -443,11 +478,14 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -467,6 +505,8 @@ trait AvailableMethods
             'business_connection_id',
             'message_effect_id',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $opt, $clientOpt);
@@ -494,6 +534,8 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -515,11 +557,14 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -537,6 +582,8 @@ trait AvailableMethods
             'business_connection_id',
             'message_effect_id',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'document', $document, $opt, $clientOpt);
@@ -571,6 +618,8 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param InputFile|string|null $cover Cover for the video in the message. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      * @param int|null $start_timestamp Start timestamp for the video in the message
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -599,11 +648,14 @@ trait AvailableMethods
         ?bool $allow_paid_broadcast = null,
         InputFile|string|null $cover = null,
         ?int $start_timestamp = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -628,6 +680,8 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'cover',
             'start_timestamp',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'video', $video, $opt, $clientOpt);
@@ -659,6 +713,8 @@ trait AvailableMethods
      * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -684,11 +740,14 @@ trait AvailableMethods
         ?bool $show_caption_above_media = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -710,6 +769,8 @@ trait AvailableMethods
             'show_caption_above_media',
             'message_effect_id',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $opt, $clientOpt);
@@ -737,6 +798,8 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -757,11 +820,14 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -778,6 +844,8 @@ trait AvailableMethods
             'business_connection_id',
             'message_effect_id',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $opt, $clientOpt);
@@ -803,6 +871,8 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -822,11 +892,14 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         $opt = compact(
             'chat_id',
             'message_thread_id',
@@ -842,6 +915,8 @@ trait AvailableMethods
             'business_connection_id',
             'message_effect_id',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         );
 
         return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $opt, $clientOpt);
@@ -865,6 +940,8 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $payload Bot-defined paid media payload, 0-128 bytes. This will not be displayed to the user, use it for your internal processes.
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -883,10 +960,13 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?string $payload = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         $params = compact(
             'star_count',
             'chat_id',
@@ -901,6 +981,8 @@ trait AvailableMethods
             'business_connection_id',
             'payload',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         );
 
         return $this->requestMultipart(__FUNCTION__, [
@@ -925,6 +1007,7 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param array $clientOpt Client options
      * @return Message[]|null
      */
@@ -940,11 +1023,13 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
         array $clientOpt = [],
     ): ?array {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
 
         return $this->requestMultipart(__FUNCTION__, [
             'media' => new UploadableArray($media),
@@ -959,6 +1044,7 @@ trait AvailableMethods
                 'business_connection_id',
                 'message_effect_id',
                 'allow_paid_broadcast',
+                'direct_messages_topic_id',
             ),
         ], Message::class, $clientOpt);
     }
@@ -984,6 +1070,8 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @return Message|null
      */
     public function sendLocation(
@@ -1004,11 +1092,13 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
-
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
@@ -1027,6 +1117,8 @@ trait AvailableMethods
             'business_connection_id',
             'message_effect_id',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         ), Message::class);
     }
 
@@ -1083,6 +1175,8 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @return Message|null
      */
     public function sendVenue(
@@ -1105,10 +1199,13 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
 
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -1130,6 +1227,8 @@ trait AvailableMethods
             'business_connection_id',
             'message_effect_id',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         ), Message::class);
     }
 
@@ -1152,6 +1251,8 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @return Message|null
      */
     public function sendContact(
@@ -1170,10 +1271,13 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
 
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -1191,6 +1295,8 @@ trait AvailableMethods
             'business_connection_id',
             'message_effect_id',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         ), Message::class);
     }
 
@@ -1337,6 +1443,8 @@ trait AvailableMethods
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @return Message|null
      */
     public function sendDice(
@@ -1352,10 +1460,13 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?int $direct_messages_topic_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
         $chat_id ??= $this->chatId();
         $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
+        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
             'message_thread_id',
@@ -1369,6 +1480,8 @@ trait AvailableMethods
             'business_connection_id',
             'message_effect_id',
             'allow_paid_broadcast',
+            'direct_messages_topic_id',
+            'suggested_post_parameters',
         ), Message::class);
     }
 
@@ -1590,6 +1703,7 @@ trait AvailableMethods
      * @param bool|null $can_invite_users Pass True if the administrator can invite new users to the chat
      * @param bool|null $can_pin_messages Pass True if the administrator can pin messages, supergroups only
      * @param bool|null $can_manage_topics Pass True if the user is allowed to create, rename, close, and reopen forum topics, supergroups only
+     * @param bool|null $can_manage_direct_messages Pass True if the administrator can manage direct messages within the channel and decline suggested posts; for channels only
      * @return bool|null
      */
     public function promoteChatMember(
@@ -1610,6 +1724,7 @@ trait AvailableMethods
         ?bool $can_invite_users = null,
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
+        ?bool $can_manage_direct_messages = null,
     ): ?bool {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -1628,7 +1743,8 @@ trait AvailableMethods
             'can_change_info',
             'can_invite_users',
             'can_pin_messages',
-            'can_manage_topics'
+            'can_manage_topics',
+            'can_manage_direct_messages',
         ));
     }
 
