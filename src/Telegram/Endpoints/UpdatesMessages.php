@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Checklist\InputChecklist;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
 use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputStoryContent;
@@ -19,6 +20,7 @@ use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
 use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
 use SergiX44\Nutgram\Telegram\Types\Story\StoryArea;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Trait UpdatesMessages
@@ -202,6 +204,34 @@ trait UpdatesMessages
     }
 
     /**
+     * Use this method to edit a checklist on behalf of a connected business account. On success, the edited Message is returned.
+     * @see https://core.telegram.org/bots/api#editmessagechecklist
+     * @param InputChecklist $checklist A JSON-serialized object for the new checklist
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
+     * @param int|null $chat_id Unique identifier for the target chat
+     * @param int|null $message_id Unique identifier for the target message
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for the new inline keyboard for the message
+     * @return Message|null
+     */
+    public function editMessageChecklist(
+        InputChecklist $checklist,
+        ?string $business_connection_id = null,
+        ?int $chat_id = null,
+        ?int $message_id = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+    ): ?Message {
+        $business_connection_id ??= $this->businessConnectionId();
+        $chat_id ??= $this->chatId();
+        $message_id ??= $this->messageId();
+        $parameters = compact('checklist', 'business_connection_id', 'chat_id', 'message_id', 'reply_markup');
+        return $this->requestJson(__FUNCTION__, array_filter_null([
+            'checklist' => json_encode($checklist),
+            'reply_markup' => $reply_markup !== null ? json_encode($reply_markup) : null,
+            ...$parameters,
+        ]), Message::class);
+    }
+
+    /**
      * Use this method to edit only the reply markup of messages.
      * On success, if the edited message is not an inline message, the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagereplymarkup
@@ -255,6 +285,56 @@ trait UpdatesMessages
         );
 
         return $this->requestJson(__FUNCTION__, $parameters, Poll::class);
+    }
+
+    /**
+     * Use this method to approve a suggested post in a direct messages chat.
+     * The bot must have the 'can_post_messages' administrator right in the corresponding channel chat.
+     * Returns True on success.
+     * @param int|null $chat_id Unique identifier for the target direct messages chat
+     * @param int|null $message_id Identifier of a suggested post message to approve
+     * @param int|null $send_date Point in time (Unix timestamp) when the post is expected to be published; omit if the date has already been specified when the suggested post was created. If specified, then the date must be not more than 2678400 seconds (30 days) in the future
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#approvesuggestedpost
+     */
+    public function approveSuggestedPost(
+        ?int $chat_id = null,
+        ?int $message_id = null,
+        ?int $send_date = null,
+    ): ?bool {
+        $chat_id ??= $this->chatId();
+        $message_id ??= $this->messageId();
+        $parameters = compact(
+            'chat_id',
+            'message_id',
+            'send_date',
+        );
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to decline a suggested post in a direct messages chat.
+     * The bot must have the 'can_manage_direct_messages' administrator right in the corresponding channel chat.
+     * Returns True on success.
+     * @param int|null $chat_id Unique identifier for the target direct messages chat
+     * @param int|null $message_id Identifier of a suggested post message to decline
+     * @param string|null $comment Comment for the creator of the suggested post; 0-128 characters
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#declinesuggestedpost
+     */
+    public function declineSuggestedPost(
+        ?int $chat_id = null,
+        ?int $message_id = null,
+        ?string $comment = null,
+    ): ?bool {
+        $chat_id ??= $this->chatId();
+        $message_id ??= $this->messageId();
+        $parameters = compact(
+            'chat_id',
+            'message_id',
+            'comment',
+        );
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**

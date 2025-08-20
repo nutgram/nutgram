@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 
 /**
  * This object represents a gift that can be sent by the bot.
@@ -44,4 +45,10 @@ class Gift extends BaseType
      * The number of remaining gifts of this type that can be sent; for limited gifts only
      */
     public ?int $remaining_count = null;
+
+    /**
+     * Optional.
+     * Information about the chat that published the gift
+     */
+    public ?Chat $publisher_chat = null;
 }

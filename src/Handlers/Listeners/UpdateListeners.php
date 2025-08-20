@@ -25,7 +25,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param  MessageType  $type
+     * @param MessageType $type
      * @param $callable
      * @return Handler
      */
@@ -140,7 +140,16 @@ trait UpdateListeners
     public function onChosenInlineResultQuery(string $pattern, $callable): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::CHOSEN_INLINE_RESULT->value][$pattern] = new Handler(
+        return $this->{$this->target}[UpdateType::CHOSEN_INLINE_RESULT->value]['query'][$pattern] = new Handler(
+            $callable,
+            $pattern
+        );
+    }
+
+    public function onChosenInlineResultId(string $pattern, $callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::CHOSEN_INLINE_RESULT->value]['result_id'][$pattern] = new Handler(
             $callable,
             $pattern
         );
@@ -157,7 +166,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param  string  $pattern
+     * @param string $pattern
      * @param $callable
      * @return Handler
      */
@@ -188,7 +197,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param  string  $pattern
+     * @param string $pattern
      * @param $callable
      * @return Handler
      */

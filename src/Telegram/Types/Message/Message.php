@@ -10,6 +10,9 @@ use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostAdded;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
+use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksAdded;
+use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksDone;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicClosed;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicCreated;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicEdited;
@@ -41,6 +44,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Video;
 use SergiX44\Nutgram\Telegram\Types\Media\VideoNote;
 use SergiX44\Nutgram\Telegram\Types\Media\Voice;
 use SergiX44\Nutgram\Telegram\Types\Passport\PassportData;
+use SergiX44\Nutgram\Telegram\Types\Payment\DirectMessagePriceChanged;
 use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaInfo;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMessagePriceChanged;
@@ -53,6 +57,12 @@ use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
 use SergiX44\Nutgram\Telegram\Types\Sticker\GiftInfo;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGiftInfo;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostApprovalFailed;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostApproved;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostDeclined;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostInfo;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostPaid;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostRefunded;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatEnded;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatParticipantsInvited;
@@ -75,6 +85,12 @@ class Message extends BaseType
      * for supergroups only
      */
     public ?int $message_thread_id = null;
+
+    /**
+     * Optional.
+     * Information about the direct messages chat topic that contains the message
+     */
+    public ?DirectMessagesTopic $direct_messages_topic = null;
 
     /**
      * Optional.
@@ -157,6 +173,11 @@ class Message extends BaseType
     public ?Story $reply_to_story = null;
 
     /**
+     * Optional. Identifier of the specific checklist task that is being replied to
+     */
+    public ?int $reply_to_checklist_task_id = null;
+
+    /**
      * Optional.
      * Bot through which the message was sent
      */
@@ -179,6 +200,12 @@ class Message extends BaseType
      * True, if the message was sent by an implicit action, for example, as an away or a greeting business message, or as a scheduled message
      */
     public ?bool $is_from_offline = null;
+
+    /**
+     * Optional. True, if the message is a paid post.
+     * Note that such posts must not be deleted for 24 hours to receive the payment and can't be edited.
+     */
+    public ?bool $is_paid_post = null;
 
     /**
      * Optional.
@@ -217,6 +244,12 @@ class Message extends BaseType
      * if it is a text message and link preview options were changed
      */
     public ?LinkPreviewOptions $link_preview_options = null;
+
+    /**
+     * Optional. Information about suggested post parameters if the message is a suggested post in a channel direct messages chat.
+     * If the message is an approved or declined suggested post, then it can't be edited.
+     */
+    public ?SuggestedPostInfo $suggested_post_info = null;
 
     /**
      * Optional. Unique identifier of the message effect added to the message
@@ -311,6 +344,10 @@ class Message extends BaseType
      */
     public ?bool $has_media_spoiler = null;
 
+    /**
+     * Optional. Message is a checklist
+     */
+    public ?Checklist $checklist = null;
     /**
      * Optional.
      * Message is a shared contact, information about the contact
@@ -509,6 +546,22 @@ class Message extends BaseType
     public ?ChatBackground $chat_background_set = null;
 
     /**
+     * Optional. Service message: some tasks in a checklist were marked as done or not done
+     */
+    public ?ChecklistTasksDone $checklist_tasks_done = null;
+
+    /**
+     * Optional. Service message: tasks were added to a checklist
+     */
+    public ?ChecklistTasksAdded $checklist_tasks_added = null;
+
+    /**
+     * Optional.
+     * Service message: the price for paid messages in the corresponding direct messages chat of a channel has changed
+     */
+    public ?DirectMessagePriceChanged $direct_message_price_changed = null;
+
+    /**
      * Optional.
      * Service message: forum topic created
      */
@@ -568,6 +621,31 @@ class Message extends BaseType
      * Optional. Service message: the price for paid messages has changed in the chat
      */
     public ?PaidMessagePriceChanged $paid_message_price_changed = null;
+
+    /**
+     * Optional. Service message: a suggested post was approved
+     */
+    public ?SuggestedPostApproved $suggested_post_approved = null;
+
+    /**
+     * Optional. Service message: approval of a suggested post has failed
+     */
+    public ?SuggestedPostApprovalFailed $suggested_post_approval_failed = null;
+
+    /**
+     * Optional. Service message: a suggested post was declined
+     */
+    public ?SuggestedPostDeclined $suggested_post_declined = null;
+
+    /**
+     * Optional. Service message: payment for a suggested post was received
+     */
+    public ?SuggestedPostPaid $suggested_post_paid = null;
+
+    /**
+     * Optional. Service message: payment for a suggested post was refunded
+     */
+    public ?SuggestedPostRefunded $suggested_post_refunded = null;
 
     /**
      * Optional.
@@ -651,6 +729,7 @@ class Message extends BaseType
             $this->video !== null => MessageType::VIDEO,
             $this->voice !== null => MessageType::VOICE,
             $this->video_note !== null => MessageType::VIDEO_NOTE,
+            $this->checklist !== null => MessageType::CHECKLIST,
             $this->contact !== null => MessageType::CONTACT,
             $this->venue !== null => MessageType::VENUE,
             $this->location !== null => MessageType::LOCATION,
@@ -680,6 +759,9 @@ class Message extends BaseType
             $this->passport_data !== null => MessageType::PASSPORT_DATA,
             $this->proximity_alert_triggered !== null => MessageType::PROXIMITY_ALERT_TRIGGERED,
             $this->boost_added !== null => MessageType::BOOST_ADDED,
+            $this->checklist_tasks_done !== null => MessageType::CHECKLIST_TASKS_DONE,
+            $this->checklist_tasks_added !== null => MessageType::CHECKLIST_TASKS_ADDED,
+            $this->direct_message_price_changed !== null => MessageType::DIRECT_MESSAGE_PRICE_CHANGED,
             $this->forum_topic_created !== null => MessageType::FORUM_TOPIC_CREATED,
             $this->forum_topic_edited !== null => MessageType::FORUM_TOPIC_EDITED,
             $this->forum_topic_closed !== null => MessageType::FORUM_TOPIC_CLOSED,

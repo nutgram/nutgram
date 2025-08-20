@@ -459,6 +459,30 @@ trait MessageListeners
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::BOOST_ADDED->value][] = new Handler($callable);
     }
 
+    public function onDirectMessagePriceChanged($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::DIRECT_MESSAGE_PRICE_CHANGED->value][] = new Handler($callable);
+    }
+
+    public function onChecklist($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::CHECKLIST->value][] = new Handler($callable);
+    }
+
+    public function onChecklistTasksDone($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::CHECKLIST_TASKS_DONE->value][] = new Handler($callable);
+    }
+
+    public function onChecklistTasksAdded($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::CHECKLIST_TASKS_ADDED->value][] = new Handler($callable);
+    }
+
     /**
      * @param $callable
      * @return Handler

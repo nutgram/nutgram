@@ -46,10 +46,12 @@ class InputTextMessageContent extends InputMessageContent
         string $message_text,
         ParseMode|string|null $parse_mode = null,
         ?array $entities = null,
+        ?LinkPreviewOptions $link_preview_options = null,
     ) {
         parent::__construct();
         $this->message_text = $message_text;
         $this->parse_mode = $parse_mode;
         $this->entities = $entities;
+        $this->link_preview_options = $link_preview_options;
     }
 }

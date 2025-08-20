@@ -2,6 +2,36 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.39.0 - 2025-08-20
+
+### What's Changed
+
+* Update to Bot API 9.2 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/912
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.38.1...4.39.0
+
+## 4.38.1 - 2025-07-25
+
+### What's Changed
+
+* Remove wrong null from checklist parameter in the editMessageChecklist method by @Lukasss93 in https://github.com/nutgram/nutgram/pull/906
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.38.0...4.38.1
+
+## 4.38.0 - 2025-07-04
+
+### What's Changed
+
+* Improve slash handling in "downloadUrl" method by @Lukasss93 in https://github.com/nutgram/nutgram/pull/892
+* Improve signal handling for graceful shutdown by @sergix44 in https://github.com/nutgram/nutgram/pull/893
+* Fix update offset logic in SingleUpdate for improved update processing by @sergix44 in https://github.com/nutgram/nutgram/pull/894
+* Add missing link_preview_options field to InputTextMessageContent methods by @Lukasss93 in https://github.com/nutgram/nutgram/pull/899
+* Add fromArray method to BaseType class by @Lukasss93 in https://github.com/nutgram/nutgram/pull/900
+* Added onChosenInlineResultId handler by @Lukasss93 in https://github.com/nutgram/nutgram/pull/902
+* Update to Bot API 9.1 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/903
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.37.2...4.38.0
+
 ## 4.37.2 - 2025-04-27
 
 ### What's Changed

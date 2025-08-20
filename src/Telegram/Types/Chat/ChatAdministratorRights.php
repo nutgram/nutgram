@@ -84,6 +84,13 @@ class ChatAdministratorRights extends BaseType
      */
     public ?bool $can_manage_topics = null;
 
+    /**
+     * Optional.
+     * True, if the administrator can manage direct messages of the channel and decline suggested posts;
+     * for channels only
+     */
+    public ?bool $can_manage_direct_messages = null;
+
     public function __construct(
         bool $is_anonymous,
         bool $can_manage_chat,
@@ -96,7 +103,11 @@ class ChatAdministratorRights extends BaseType
         ?bool $can_post_messages = null,
         ?bool $can_edit_messages = null,
         ?bool $can_pin_messages = null,
+        ?bool $can_post_stories = null,
+        ?bool $can_edit_stories = null,
+        ?bool $can_delete_stories = null,
         ?bool $can_manage_topics = null,
+        ?bool $can_manage_direct_messages = null,
     ) {
         parent::__construct();
         $this->is_anonymous = $is_anonymous;
@@ -111,5 +122,9 @@ class ChatAdministratorRights extends BaseType
         $this->can_edit_messages = $can_edit_messages;
         $this->can_pin_messages = $can_pin_messages;
         $this->can_manage_topics = $can_manage_topics;
+        $this->can_post_stories = $can_post_stories;
+        $this->can_edit_stories = $can_edit_stories;
+        $this->can_delete_stories = $can_delete_stories;
+        $this->can_manage_direct_messages = $can_manage_direct_messages;
     }
 }

@@ -10,6 +10,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 use SergiX44\Nutgram\Testing\FormDataParser;
 use SergiX44\Nutgram\Testing\OutgoingResource;
@@ -282,4 +283,16 @@ it('returns a custom download url when using a custom bot api server', function 
             'file_path' => '/var/lib/telegram-bot-api/1234/photos/file_1.jpg',
         ])
         ->reply();
+});
+
+it('makes a keyboard from array', function () {
+    $keyboard = InlineKeyboardMarkup::fromArray([
+        'inline_keyboard' => [
+            [
+                ['text' => 'Button 1', 'callback_data' => 'data_1'],
+                ['text' => 'Button 2', 'callback_data' => 'data_2'],
+            ],
+        ],
+    ]);
+    expect($keyboard)->toBeInstanceOf(InlineKeyboardMarkup::class);
 });

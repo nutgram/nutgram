@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 
 /**
  * This object describes a unique gift that was upgraded from a regular gift.
@@ -41,4 +42,10 @@ class UniqueGift extends BaseType
      * Backdrop of the gift
      */
     public UniqueGiftBackdrop $backdrop;
+
+    /**
+     * Optional.
+     * Information about the chat that published the gift
+     */
+    public ?Chat $publisher_chat = null;
 }

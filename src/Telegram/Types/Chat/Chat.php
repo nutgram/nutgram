@@ -53,6 +53,12 @@ class Chat extends BaseType
      */
     public ?bool $is_forum = null;
 
+    /**
+     * Optional.
+     * True, if the chat is the direct messages chat of a channel
+     */
+    public ?bool $is_direct_messages = null;
+
     public static function make(
         int $id,
         ChatType|string $type,
@@ -61,6 +67,7 @@ class Chat extends BaseType
         ?string $first_name = null,
         ?string $last_name = null,
         ?bool $is_forum = null,
+        ?bool $is_direct_messages = null,
     ): Chat {
         $chat = new self();
         $chat->id = $id;
@@ -70,6 +77,7 @@ class Chat extends BaseType
         $chat->first_name = $first_name;
         $chat->last_name = $last_name;
         $chat->is_forum = $is_forum;
+        $chat->is_direct_messages = $is_direct_messages;
         return $chat;
     }
 

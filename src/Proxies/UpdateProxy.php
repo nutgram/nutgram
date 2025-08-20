@@ -12,6 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\Business\BusinessMessagesDeleted;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatJoinRequest;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
+use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
@@ -78,6 +79,11 @@ trait UpdateProxy
         return $this->chosenInlineResult()?->inline_message_id ?? $this->callbackQuery()?->inline_message_id;
     }
 
+    public function directMessagesTopicId(): ?int
+    {
+        return $this->message()?->direct_messages_topic?->topic_id;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Special proxies
@@ -133,6 +139,21 @@ trait UpdateProxy
     public function isMyChatMember(): bool
     {
         return $this->update?->my_chat_member !== null;
+    }
+
+    public function isDirectMessagesTopic(): bool
+    {
+        return $this->message()?->direct_messages_topic !== null;
+    }
+
+    public function isSuggestedPost(): bool
+    {
+        return $this->message()?->suggested_post_info !== null
+            || $this->message()?->suggested_post_approved !== null
+            || $this->message()?->suggested_post_approval_failed !== null
+            || $this->message()?->suggested_post_declined !== null
+            || $this->message()?->suggested_post_paid !== null
+            || $this->message()?->suggested_post_refunded !== null;
     }
 
     /*
@@ -224,5 +245,12 @@ trait UpdateProxy
     public function removedChatBoost(): ?ChatBoostRemoved
     {
         return $this->update?->removed_chat_boost;
+    }
+
+    public function checklist(): ?Checklist
+    {
+        return $this->message()?->checklist
+            ?? $this->message()?->checklist_tasks_done?->checklist_message?->checklist
+            ?? $this->message()?->checklist_tasks_added?->checklist_message?->checklist;
     }
 }

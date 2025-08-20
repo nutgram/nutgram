@@ -7,6 +7,8 @@ namespace SergiX44\Nutgram\Telegram\Types;
 use BackedEnum;
 use Illuminate\Support\Traits\Macroable;
 use JsonSerializable;
+use SergiX44\Container\Container;
+use SergiX44\Hydrator\Hydrator;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Internal\Arrayable;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -89,6 +91,11 @@ abstract class BaseType implements Arrayable, JsonSerializable
     public function getBot(): ?Nutgram
     {
         return $this->_bot;
+    }
+
+    public static function fromArray(array $data): static
+    {
+        return (new Hydrator(new Container()))->hydrate(static::class, $data);
     }
 
     public function toArray(): array

@@ -28,7 +28,7 @@ class ChatMemberResolver extends ConcreteResolver
         ChatMemberStatus::KICKED->value => ChatMemberBanned::class,
     ];
 
-    public function concreteFor(array $data): ?string
+    public function concreteFor(array $data, array $all): ?string
     {
         $status = $data['status'] ?? throw new InvalidArgumentException('Status must be defined');
         return $this->concretes[$status] ?? (new class extends ChatMember {
