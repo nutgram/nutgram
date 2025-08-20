@@ -1,11 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\SuggestedPost;
 
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\Currency;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
+/**
+ * Describes the price of a suggested post.
+ * @see https://core.telegram.org/bots/api#suggestedpostprice
+ */
+#[OverrideConstructor('bindToInstance')]
 class SuggestedPostPrice extends BaseType
 {
     /**
@@ -25,13 +33,8 @@ class SuggestedPostPrice extends BaseType
 
     public function __construct(Currency|string $currency, int $amount)
     {
+        parent::__construct();
         $this->currency = $currency;
         $this->amount = $amount;
-        parent::__construct();
-    }
-
-    public static function make(Currency|string $currency, int $amount): self
-    {
-        return new self($currency, $amount);
     }
 }

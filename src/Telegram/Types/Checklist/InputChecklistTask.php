@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Checklist;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -12,6 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * Describes a task to add to a checklist.
  * @see https://core.telegram.org/bots/api#inputchecklisttask
  */
+#[OverrideConstructor('bindToInstance')]
 class InputChecklistTask extends BaseType
 {
     /**

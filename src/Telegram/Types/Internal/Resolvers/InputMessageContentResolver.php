@@ -11,7 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputTextMessageContent;
 #[Attribute(Attribute::TARGET_CLASS)]
 class InputMessageContentResolver extends ConcreteResolver
 {
-    public function concreteFor(array $data): ?string
+    public function concreteFor(array $data, array $all): ?string
     {
         // This object type is never returned by the API, only sent by the user.
         return InputTextMessageContent::class;

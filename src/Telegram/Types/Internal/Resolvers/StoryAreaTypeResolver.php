@@ -26,7 +26,7 @@ class StoryAreaTypeResolver extends ConcreteResolver
         StoryAreaTypeType::UNIQUE_GIFT->value => StoryAreaTypeUniqueGift::class,
     ];
 
-    public function concreteFor(array $data): ?string
+    public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
         return $this->concretes[$type] ?? (new class extends StoryAreaType {

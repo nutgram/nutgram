@@ -22,7 +22,7 @@ class ChatBoostSourceResolver extends ConcreteResolver
         ChatBoostSourceSource::GIVEAWAY->value => ChatBoostSourceGiveaway::class,
     ];
 
-    public function concreteFor(array $data): ?string
+    public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['source'] ?? throw new InvalidArgumentException('Source must be defined');
         return $this->concretes[$type] ?? (new class extends ChatBoostSource {

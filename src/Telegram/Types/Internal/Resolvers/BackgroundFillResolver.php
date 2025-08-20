@@ -22,7 +22,7 @@ class BackgroundFillResolver extends ConcreteResolver
         BackgroundFillType::FREEFORM_GRADIENT->value => BackgroundFillFreeformGradient::class,
     ];
 
-    public function concreteFor(array $data): ?string
+    public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
         return $this->concretes[$type] ?? (new class extends BackgroundFill {

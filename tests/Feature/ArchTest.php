@@ -81,7 +81,10 @@ test('check that Telegram Buildable Types does have OverrideConstructor attribut
         $attributes = $type->getAttributes(OverrideConstructor::class);
         $attribute = array_shift($attributes);
 
-        expect($attribute->getName())->toBe(OverrideConstructor::class);
+        expect($attribute?->getName())->toBe(
+            OverrideConstructor::class,
+            sprintf('%s is missing an OverrideConstructor attribute', $type->getName())
+        );
     }
 });
 
