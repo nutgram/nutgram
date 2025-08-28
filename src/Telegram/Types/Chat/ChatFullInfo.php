@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessIntro;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessLocation;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessOpeningHours;
@@ -19,6 +18,12 @@ use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
  */
 class ChatFullInfo extends Chat
 {
+    /**
+     * Optional.
+     * True, if the chat is the direct messages chat of a channel
+     */
+    public ?bool $is_direct_messages = null;
+
     /**
      * Identifier of the accent color for the chat name and backgrounds of the chat photo, reply header, and link preview.
      * See {@see https://core.telegram.org/bots/api#accent-colors accent colors} for more details.
@@ -79,6 +84,12 @@ class ChatFullInfo extends Chat
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?Chat $personal_chat = null;
+
+    /**
+     * Optional.
+     * Information about the corresponding channel chat; for direct messages chats only
+     */
+    public ?Chat $parent_chat = null;
 
     /**
      * Optional.
