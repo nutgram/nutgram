@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Support;
 
 use InvalidArgumentException;
+use ReflectionMethod;
 
 if (!function_exists(__NAMESPACE__.'\array_filter_null')) {
     function array_filter_null(array $array): array
@@ -83,5 +84,32 @@ if (!function_exists(__NAMESPACE__.'\deepLink')) {
     function deepLink(?string $baseUrl = null): DeepLink
     {
         return new DeepLink($baseUrl);
+    }
+}
+
+if(!function_exists(__NAMESPACE__.'\func_get_named_args')) {
+    /**
+     * This function retrieves the named arguments of the calling class method.
+     * Functions or closures are not supported.
+     * This is a temporary solution until PHP supports a native way to do this.
+     * @param array $values Values passed to the function via func_get_args()
+     * @return array An associative array of parameter names and their corresponding values
+     */
+    function func_get_named_args(array $values = []): array
+    {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
+
+        $reflection = new ReflectionMethod($trace['class'], $trace['function']);
+
+        $parameters = [];
+        foreach ($reflection->getParameters() as $parameter) {
+            $name = $parameter->getName();
+            $position = $parameter->getPosition();
+            $default = $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null;
+
+            $parameters[$name] = $values[$position] ?? $default;
+        }
+
+        return $parameters;
     }
 }
