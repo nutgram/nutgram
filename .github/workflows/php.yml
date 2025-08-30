@@ -71,12 +71,10 @@ jobs:
                 run: composer install --prefer-dist --no-interaction --no-suggest
 
             -   name: Run test suite
-                uses: paambaati/codeclimate-action@v9
-                env:
-                    CC_TEST_REPORTER_ID: ${{ secrets.CC_REPORTER_ID }}
+                uses: qltysh/qlty-action/coverage@v2
                 with:
-                    coverageCommand: composer run-script test-coverage
-                    coverageLocations: ${{github.workspace}}/coverage.xml:clover
+                    token: ${{ secrets.COVERAGE_TOKEN }}
+                    files: ${{github.workspace}}/coverage.xml
     static-analysis:
         runs-on: ubuntu-latest
         name: Psalm
