@@ -38,6 +38,7 @@
     },
     "require-dev": {
         "ext-reflection": "*",
+        "illuminate/testing": "^12.0",
         "mockery/mockery": "^1.6",
         "pestphp/pest": "^3.0",
         "roave/security-advisories": "dev-latest",
