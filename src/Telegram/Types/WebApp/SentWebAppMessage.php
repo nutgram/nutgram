@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\WebApp;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;

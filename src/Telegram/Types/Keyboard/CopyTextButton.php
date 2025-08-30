@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents an inline keyboard button that copies specified text to the clipboard.
  * @see https://core.telegram.org/bots/api#copytextbutton
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class CopyTextButton extends BaseType
 {
     /**
@@ -21,10 +23,5 @@ class CopyTextButton extends BaseType
     {
         parent::__construct();
         $this->text = $text;
-    }
-
-    public static function make(string $text): self
-    {
-        return new self($text);
     }
 }

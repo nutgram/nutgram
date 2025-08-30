@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use Psr\Http\Message\StreamInterface;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
 
@@ -30,6 +33,7 @@ abstract class InputMedia extends BaseType implements Uploadable
      * Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string $media;
 
     public function isLocal(): bool
@@ -37,9 +41,9 @@ abstract class InputMedia extends BaseType implements Uploadable
         return $this->media instanceof InputFile;
     }
 
-    public function getResource()
+    public function getStream(): StreamInterface
     {
-        return $this->media->getResource();
+        return $this->media->getStream();
     }
 
     public function getFilename(): string

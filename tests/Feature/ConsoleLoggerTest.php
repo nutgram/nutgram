@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Logger\ConsoleLogger;
 use SergiX44\Nutgram\Nutgram;
