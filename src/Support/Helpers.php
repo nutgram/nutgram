@@ -87,7 +87,7 @@ if (!function_exists(__NAMESPACE__.'\deepLink')) {
     }
 }
 
-if(!function_exists(__NAMESPACE__.'\func_get_named_args')) {
+if (!function_exists(__NAMESPACE__.'\func_get_named_args')) {
     /**
      * This function retrieves the named arguments of the calling class method.
      * Functions or closures are not supported.
