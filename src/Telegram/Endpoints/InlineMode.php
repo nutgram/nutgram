@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\Inline\InlineQueryResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQueryResultsButton;
 use SergiX44\Nutgram\Telegram\Types\Inline\PreparedInlineMessage;
 use SergiX44\Nutgram\Telegram\Types\WebApp\SentWebAppMessage;
+use function SergiX44\Nutgram\Support\func_get_named_args;
 
 /**
  * Trait InlineMode
@@ -37,15 +38,8 @@ trait InlineMode
         ?string $next_offset = null,
         ?InlineQueryResultsButton $button = null,
     ): ?bool {
-        $inline_query_id ??= $this->inlineQuery()?->id;
-        $parameters = compact(
-            'inline_query_id',
-            'results',
-            'cache_time',
-            'is_personal',
-            'next_offset',
-            'button'
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['inline_query_id'] ??= $this->inlineQuery()?->id;
         $parameters['results'] = json_encode($results, JSON_THROW_ON_ERROR);
 
         return $this->requestJson(__FUNCTION__, $parameters);
@@ -61,7 +55,7 @@ trait InlineMode
      */
     public function answerWebAppQuery(string $web_app_query_id, InlineQueryResult $result): ?SentWebAppMessage
     {
-        $parameters = compact('web_app_query_id', 'result');
+        $parameters = func_get_named_args(func_get_args());
         $parameters['result'] = json_encode($result, JSON_THROW_ON_ERROR);
 
         return $this->requestJson(__FUNCTION__, $parameters, SentWebAppMessage::class);
@@ -87,15 +81,9 @@ trait InlineMode
         ?bool $allow_group_chats = null,
         ?bool $allow_channel_chats = null,
     ): ?PreparedInlineMessage {
-        $user_id ??= $this->userId();
-        $parameters = compact(
-            'result',
-            'user_id',
-            'allow_user_chats',
-            'allow_bot_chats',
-            'allow_group_chats',
-            'allow_channel_chats'
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['user_id'] ??= $this->userId();
+
         return $this->requestJson(__FUNCTION__, $parameters, PreparedInlineMessage::class);
     }
 }

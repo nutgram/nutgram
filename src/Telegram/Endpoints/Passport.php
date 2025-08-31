@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Passport\PassportElementError;
+use function SergiX44\Nutgram\Support\func_get_named_args;
 
 /**
  * Trait Passport
@@ -25,7 +26,7 @@ trait Passport
      */
     public function setPassportDataErrors(int $user_id, array $errors): ?bool
     {
-        $parameters = compact('user_id', 'errors');
+        $parameters = func_get_named_args(func_get_args());
         $parameters['errors'] = json_encode($parameters['errors'], JSON_THROW_ON_ERROR);
 
         return $this->requestJson(__FUNCTION__, $parameters);

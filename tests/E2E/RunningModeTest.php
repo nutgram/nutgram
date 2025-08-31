@@ -179,7 +179,7 @@ it('works with send as response', function ($update) {
         $contents = ob_get_contents();
         ob_end_clean();
         expect($u)->toBeNull()
-            ->and($contents)->toBe('{"method":"sendMessage","chat_id":456,"text":"Hello"}');
+            ->and($contents)->toBe('{"method":"sendMessage","text":"Hello","chat_id":456}');
     });
 
     $bot->willReceivePartial([

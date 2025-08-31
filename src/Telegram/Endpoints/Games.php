@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\Game\GameHighScore;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
+use function SergiX44\Nutgram\Support\func_get_named_args;
 
 /**
  * Trait Games
@@ -49,23 +50,10 @@ trait Games
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id',
-            'game_short_name',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-            'allow_paid_broadcast',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
@@ -93,15 +81,7 @@ trait Games
         ?int $message_id = null,
         ?string $inline_message_id = null,
     ): Message|bool|null {
-        $parameters = compact(
-            'user_id',
-            'score',
-            'force',
-            'disable_edit_message',
-            'chat_id',
-            'message_id',
-            'inline_message_id'
-        );
+        $parameters = func_get_named_args(func_get_args());
         $this->setChatMessageOrInlineMessageId($parameters);
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
@@ -124,14 +104,9 @@ trait Games
         ?int $message_id = null,
         ?string $inline_message_id = null,
     ): ?array {
-        $parameters = compact(
-            'user_id',
-            'chat_id',
-            'message_id',
-            'inline_message_id'
-        );
-
+        $parameters = func_get_named_args(func_get_args());
         $this->setChatMessageOrInlineMessageId($parameters);
+
         return $this->requestJson(__FUNCTION__, $parameters, GameHighScore::class);
     }
 }

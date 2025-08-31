@@ -13,6 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Payment\ShippingOption;
 use SergiX44\Nutgram\Telegram\Types\Payment\StarAmount;
 use SergiX44\Nutgram\Telegram\Types\Payment\StarTransactions;
 use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
+use function SergiX44\Nutgram\Support\func_get_named_args;
 
 /**
  * Trait Payments
@@ -95,45 +96,12 @@ trait Payments
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id',
-            'title',
-            'description',
-            'payload',
-            'provider_token',
-            'currency',
-            'prices',
-            'max_tip_amount',
-            'suggested_tip_amounts',
-            'start_parameter',
-            'provider_data',
-            'photo_url',
-            'photo_size',
-            'photo_width',
-            'photo_height',
-            'need_name',
-            'need_phone_number',
-            'need_email',
-            'need_shipping_address',
-            'send_phone_number_to_provider',
-            'send_email_to_provider',
-            'is_flexible',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
         $parameters['prices'] = json_encode($prices, JSON_THROW_ON_ERROR);
+
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
@@ -189,30 +157,8 @@ trait Payments
         ?int $subscription_period = null,
         ?string $business_connection_id = null,
     ): ?string {
-        $parameters = compact(
-            'title',
-            'description',
-            'payload',
-            'provider_token',
-            'currency',
-            'prices',
-            'max_tip_amount',
-            'suggested_tip_amounts',
-            'provider_data',
-            'photo_url',
-            'photo_size',
-            'photo_width',
-            'photo_height',
-            'need_name',
-            'need_phone_number',
-            'need_email',
-            'need_shipping_address',
-            'send_phone_number_to_provider',
-            'send_email_to_provider',
-            'is_flexible',
-            'subscription_period',
-            'business_connection_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
+
         return $this->requestJson(__FUNCTION__, $parameters);
     }
 
@@ -233,8 +179,8 @@ trait Payments
         ?array $shipping_options = null,
         ?string $error_message = null,
     ): ?bool {
-        $shipping_query_id ??= $this->shippingQuery()?->id;
-        $parameters = compact('shipping_query_id', 'ok', 'shipping_options', 'error_message');
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['shipping_query_id'] ??= $this->shippingQuery()?->id;
 
         return $this->requestJson(__FUNCTION__, $parameters);
     }
@@ -255,8 +201,8 @@ trait Payments
         ?string $pre_checkout_query_id = null,
         ?string $error_message = null,
     ): ?bool {
-        $pre_checkout_query_id ??= $this->preCheckoutQuery()?->id;
-        $parameters = compact('pre_checkout_query_id', 'ok', 'error_message');
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['pre_checkout_query_id'] ??= $this->preCheckoutQuery()?->id;
 
         return $this->requestJson(__FUNCTION__, $parameters);
     }
@@ -283,7 +229,7 @@ trait Payments
      */
     public function getStarTransactions(?int $offset = null, ?int $limit = null): ?StarTransactions
     {
-        $parameters = compact('offset', 'limit');
+        $parameters = func_get_named_args(func_get_args());
 
         return $this->requestJson(__FUNCTION__, $parameters, StarTransactions::class);
     }
@@ -302,8 +248,8 @@ trait Payments
         bool $is_canceled,
         ?int $user_id = null,
     ): ?bool {
-        $user_id ??= $this->userId();
-        $parameters = compact('user_id', 'telegram_payment_charge_id', 'is_canceled');
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['user_id'] ??= $this->userId();
 
         return $this->requestJson(__FUNCTION__, $parameters);
     }
@@ -320,8 +266,8 @@ trait Payments
         string $telegram_payment_charge_id,
         ?int $user_id = null
     ): ?bool {
-        $user_id ??= $this->userId();
-        $parameters = compact('user_id', 'telegram_payment_charge_id');
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['user_id'] ??= $this->userId();
 
         return $this->requestJson(__FUNCTION__, $parameters);
     }
