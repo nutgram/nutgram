@@ -12,7 +12,6 @@ use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Properties\PollType;
 use SergiX44\Nutgram\Telegram\Types\Boost\UserChatBoosts;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
-use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatFullInfo;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -49,7 +48,7 @@ use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\User\UserProfilePhotos;
-use function SergiX44\Nutgram\Support\array_filter_null;
+use function SergiX44\Nutgram\Support\func_get_named_args;
 
 /**
  * Trait AvailableMethods
@@ -142,30 +141,11 @@ trait AvailableMethods
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id',
-            'text',
-            'parse_mode',
-            'entities',
-            'disable_web_page_preview',
-            'link_preview_options',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
@@ -197,17 +177,9 @@ trait AvailableMethods
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'from_chat_id',
-            'disable_notification',
-            'protect_content',
-            'message_id',
-            'video_start_timestamp',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        ), Message::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -235,15 +207,9 @@ trait AvailableMethods
         ?bool $protect_content = null,
         ?int $direct_messages_topic_id = null,
     ): ?array {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'from_chat_id',
-            'message_ids',
-            'message_thread_id',
-            'disable_notification',
-            'protect_content',
-            'direct_messages_topic_id',
-        ), MessageId::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, MessageId::class);
     }
 
     /**
@@ -293,26 +259,9 @@ trait AvailableMethods
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?MessageId {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'from_chat_id',
-            'message_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'show_caption_above_media',
-            'allow_paid_broadcast',
-            'video_start_timestamp',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        ), MessageId::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, MessageId::class);
     }
 
     /**
@@ -343,16 +292,9 @@ trait AvailableMethods
         ?bool $remove_caption = null,
         ?int $direct_messages_topic_id = null,
     ): ?array {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'from_chat_id',
-            'message_thread_id',
-            'message_ids',
-            'disable_notification',
-            'protect_content',
-            'remove_caption',
-            'direct_messages_topic_id',
-        ), MessageId::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, MessageId::class);
     }
 
     /**
@@ -403,32 +345,14 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'has_spoiler',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'show_caption_above_media',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+        unset($parameters['clientOpt']);
 
-        return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $opt, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $parameters, $clientOpt);
     }
 
     /**
@@ -485,34 +409,14 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'duration',
-            'performer',
-            'title',
-            'thumbnail',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+        unset($parameters['clientOpt']);
 
-        return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $opt, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $parameters, $clientOpt);
     }
 
     /**
@@ -564,32 +468,14 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'thumbnail',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'disable_content_type_detection',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+        unset($parameters['clientOpt']);
 
-        return $this->sendAttachment(__FUNCTION__, 'document', $document, $opt, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, 'document', $document, $parameters, $clientOpt);
     }
 
     /**
@@ -655,39 +541,14 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'duration',
-            'width',
-            'height',
-            'thumbnail',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'has_spoiler',
-            'supports_streaming',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'show_caption_above_media',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'cover',
-            'start_timestamp',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+        unset($parameters['clientOpt']);
 
-        return $this->sendAttachment(__FUNCTION__, 'video', $video, $opt, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, 'video', $video, $parameters, $clientOpt);
     }
 
     /**
@@ -747,36 +608,14 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'duration',
-            'width',
-            'height',
-            'thumbnail',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'has_spoiler',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'show_caption_above_media',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+        unset($parameters['clientOpt']);
 
-        return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $opt, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $parameters, $clientOpt);
     }
 
     /**
@@ -827,31 +666,14 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'duration',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+        unset($parameters['clientOpt']);
 
-        return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $opt, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $parameters, $clientOpt);
     }
 
     /**
@@ -899,30 +721,14 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'duration',
-            'length',
-            'thumbnail',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+        unset($parameters['clientOpt']);
 
-        return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $opt, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $parameters, $clientOpt);
     }
 
     /**
@@ -967,31 +773,14 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $params = compact(
-            'star_count',
-            'chat_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'show_caption_above_media',
-            'disable_notification',
-            'protect_content',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'payload',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['media'] = new UploadableArray($media);
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+        unset($parameters['clientOpt']);
 
-        return $this->requestMultipart(__FUNCTION__, [
-            'media' => new UploadableArray($media),
-            ...$params,
-        ], Message::class, $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, $parameters, Message::class, $clientOpt);
     }
 
     /**
@@ -1029,27 +818,15 @@ trait AvailableMethods
         ?int $direct_messages_topic_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['media'] = new UploadableArray($media);
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+        unset($parameters['clientOpt']);
 
-        return $this->requestMultipart(__FUNCTION__, [
-            'media' => new UploadableArray($media),
-            ...compact(
-                'chat_id',
-                'message_thread_id',
-                'disable_notification',
-                'protect_content',
-                'reply_to_message_id',
-                'allow_sending_without_reply',
-                'reply_parameters',
-                'business_connection_id',
-                'message_effect_id',
-                'allow_paid_broadcast',
-                'direct_messages_topic_id',
-            ),
-        ], Message::class, $clientOpt);
+        return $this->requestMultipart(__FUNCTION__, $parameters, Message::class, $clientOpt);
     }
 
     /**
@@ -1098,31 +875,13 @@ trait AvailableMethods
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'latitude',
-            'longitude',
-            'horizontal_accuracy',
-            'live_period',
-            'heading',
-            'proximity_alert_radius',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        ), Message::class);
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -1143,15 +902,9 @@ trait AvailableMethods
         ?InlineKeyboardMarkup $reply_markup = null,
         ?string $business_connection_id = null,
     ): Message|bool|null {
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'inline_message_id',
-            'reply_markup',
-            'business_connection_id',
-        );
-
+        $parameters = func_get_named_args(func_get_args());
         $this->setChatMessageOrInlineMessageId($parameters);
+
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
@@ -1205,34 +958,13 @@ trait AvailableMethods
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'latitude',
-            'longitude',
-            'title',
-            'address',
-            'foursquare_id',
-            'foursquare_type',
-            'google_place_id',
-            'google_place_type',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        ), Message::class);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -1277,30 +1009,13 @@ trait AvailableMethods
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'phone_number',
-            'first_name',
-            'last_name',
-            'vcard',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        ), Message::class);
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -1361,39 +1076,13 @@ trait AvailableMethods
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id',
-            'question',
-            'is_anonymous',
-            'type',
-            'allows_multiple_answers',
-            'correct_option_id',
-            'explanation',
-            'explanation_parse_mode',
-            'explanation_entities',
-            'open_period',
-            'close_date',
-            'is_closed',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'question_parse_mode',
-            'question_entities',
-            'message_effect_id',
-            'allow_paid_broadcast',
-        );
-        return $this->requestJson(__FUNCTION__, [
-            'options' => json_encode($options, JSON_THROW_ON_ERROR),
-            ...$parameters,
-        ], Message::class);
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['options'] = json_encode($options, JSON_THROW_ON_ERROR);
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -1419,15 +1108,12 @@ trait AvailableMethods
         ?ReplyParameters $reply_parameters = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $parameters = compact('checklist', 'business_connection_id', 'chat_id', 'disable_notification', 'protect_content', 'message_effect_id', 'reply_parameters', 'reply_markup');
-        return $this->requestJson(__FUNCTION__, array_filter_null([
-            'checklist' => json_encode($checklist),
-            'reply_parameters' => $reply_parameters !== null ? json_encode($reply_parameters) : null,
-            'reply_markup' => $reply_markup !== null ? json_encode($reply_markup) : null,
-            ...$parameters,
-        ]), Message::class);
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['checklist'] = json_encode($checklist, JSON_THROW_ON_ERROR);
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -1466,26 +1152,13 @@ trait AvailableMethods
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'emoji',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        ), Message::class);
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -1505,15 +1178,12 @@ trait AvailableMethods
         ?int $message_thread_id = null,
         ?string $business_connection_id = null,
     ): ?bool {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_thread_id',
-            'action',
-            'business_connection_id',
-        ));
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1535,15 +1205,11 @@ trait AvailableMethods
         int|string|null $chat_id = null,
         ?int $message_id = null
     ): ?bool {
-        $chat_id ??= $this->chatId();
-        $message_id ??= $this->messageId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_id'] ??= $this->messageId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_id',
-            'reaction',
-            'is_big'
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1560,12 +1226,10 @@ trait AvailableMethods
         ?int $offset = null,
         ?int $limit = null,
     ): ?UserProfilePhotos {
-        $user_id ??= $this->userId();
-        return $this->requestJson(__FUNCTION__, compact(
-            'user_id',
-            'offset',
-            'limit'
-        ), UserProfilePhotos::class);
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['user_id'] ??= $this->userId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, UserProfilePhotos::class);
     }
 
     /**
@@ -1582,8 +1246,9 @@ trait AvailableMethods
         ?int $emoji_status_expiration_date = null,
         ?int $user_id = null,
     ): ?bool {
-        $user_id ??= $this->userId();
-        $parameters = compact('user_id', 'emoji_status_custom_emoji_id', 'emoji_status_expiration_date');
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['user_id'] ??= $this->userId();
+
         return $this->requestJson(__FUNCTION__, $parameters);
     }
 
@@ -1600,7 +1265,9 @@ trait AvailableMethods
      */
     public function getFile(string $file_id): ?File
     {
-        return $this->requestJson(__FUNCTION__, compact('file_id'), File::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, File::class);
     }
 
     /**
@@ -1621,12 +1288,9 @@ trait AvailableMethods
         ?int $until_date = null,
         ?bool $revoke_messages = null,
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'user_id',
-            'until_date',
-            'revoke_messages'
-        ));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1645,11 +1309,9 @@ trait AvailableMethods
      */
     public function unbanChatMember(int|string $chat_id, int $user_id, ?bool $only_if_banned = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'user_id',
-            'only_if_banned'
-        ));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1672,15 +1334,10 @@ trait AvailableMethods
         ?bool $use_independent_chat_permissions = null,
         ?int $until_date = null,
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, [
-            'permissions' => json_encode($permissions),
-            ...compact(
-                'chat_id',
-                'user_id',
-                'use_independent_chat_permissions',
-                'until_date'
-            ),
-        ]);
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['permissions'] = json_encode($permissions, JSON_THROW_ON_ERROR);
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1729,26 +1386,9 @@ trait AvailableMethods
         ?bool $can_manage_topics = null,
         ?bool $can_manage_direct_messages = null,
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'user_id',
-            'is_anonymous',
-            'can_manage_chat',
-            'can_post_messages',
-            'can_edit_messages',
-            'can_delete_messages',
-            'can_post_stories',
-            'can_edit_stories',
-            'can_delete_stories',
-            'can_manage_video_chats',
-            'can_restrict_members',
-            'can_promote_members',
-            'can_change_info',
-            'can_invite_users',
-            'can_pin_messages',
-            'can_manage_topics',
-            'can_manage_direct_messages',
-        ));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1762,11 +1402,9 @@ trait AvailableMethods
      */
     public function setChatAdministratorCustomTitle(int|string $chat_id, int $user_id, string $custom_title): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'user_id',
-            'custom_title'
-        ));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1781,10 +1419,9 @@ trait AvailableMethods
      */
     public function banChatSenderChat(int|string $chat_id, int $sender_chat_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'sender_chat_id'
-        ));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1798,7 +1435,9 @@ trait AvailableMethods
      */
     public function unbanChatSenderChat(int|string $chat_id, int $sender_chat_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'sender_chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1816,14 +1455,10 @@ trait AvailableMethods
         ChatPermissions $permissions,
         ?bool $use_independent_chat_permissions = null,
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, [
-            'permissions' => json_encode($permissions),
-            ...compact(
-                'chat_id',
-                'permissions',
-                'use_independent_chat_permissions'
-            ),
-        ]);
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['permissions'] = json_encode($permissions, JSON_THROW_ON_ERROR);
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1837,7 +1472,9 @@ trait AvailableMethods
      */
     public function exportChatInviteLink(int|string $chat_id): ?string
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1860,13 +1497,9 @@ trait AvailableMethods
         ?int $member_limit = null,
         ?bool $creates_join_request = null,
     ): ?ChatInviteLink {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'name',
-            'expire_date',
-            'member_limit',
-            'creates_join_request'
-        ), ChatInviteLink::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, ChatInviteLink::class);
     }
 
     /**
@@ -1890,14 +1523,9 @@ trait AvailableMethods
         ?int $member_limit = null,
         ?bool $creates_join_request = null,
     ): ?ChatInviteLink {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'invite_link',
-            'name',
-            'expire_date',
-            'member_limit',
-            'creates_join_request'
-        ), ChatInviteLink::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, ChatInviteLink::class);
     }
 
     /**
@@ -1922,12 +1550,9 @@ trait AvailableMethods
         int $subscription_price,
         ?string $name = null,
     ): ?ChatInviteLink {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'subscription_period',
-            'subscription_price',
-            'name',
-        ), ChatInviteLink::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, ChatInviteLink::class);
     }
 
     /**
@@ -1945,11 +1570,9 @@ trait AvailableMethods
         string $invite_link,
         ?string $name = null,
     ): ?ChatInviteLink {
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'invite_link',
-            'name',
-        ), ChatInviteLink::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, ChatInviteLink::class);
     }
 
     /**
@@ -1964,7 +1587,9 @@ trait AvailableMethods
      */
     public function revokeChatInviteLink(int|string $chat_id, string $invite_link): ?ChatInviteLink
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'invite_link'), ChatInviteLink::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, ChatInviteLink::class);
     }
 
     /**
@@ -1978,7 +1603,9 @@ trait AvailableMethods
      */
     public function approveChatJoinRequest(int|string $chat_id, int $user_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -1992,7 +1619,9 @@ trait AvailableMethods
      */
     public function declineChatJoinRequest(int|string $chat_id, int $user_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2008,7 +1637,10 @@ trait AvailableMethods
      */
     public function setChatPhoto(int|string $chat_id, InputFile $photo, array $clientOpt = []): ?bool
     {
-        return $this->requestMultipart(__FUNCTION__, compact('chat_id', 'photo'), options: $clientOpt);
+        $parameters = func_get_named_args(func_get_args());
+        unset($parameters['clientOpt']);
+
+        return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
     }
 
     /**
@@ -2022,7 +1654,9 @@ trait AvailableMethods
      */
     public function deleteChatPhoto(int|string $chat_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2037,7 +1671,9 @@ trait AvailableMethods
      */
     public function setChatTitle(int|string $chat_id, string $title): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'title'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2051,7 +1687,9 @@ trait AvailableMethods
      */
     public function setChatDescription(int|string $chat_id, ?string $description = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'description'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2071,8 +1709,10 @@ trait AvailableMethods
         ?bool $disable_notification = null,
         ?string $business_connection_id = null,
     ): ?bool {
-        $business_connection_id ??= $this->businessConnectionId();
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id', 'disable_notification', 'business_connection_id'));
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2090,8 +1730,10 @@ trait AvailableMethods
         ?int $message_id = null,
         ?string $business_connection_id = null,
     ): ?bool {
-        $business_connection_id ??= $this->businessConnectionId();
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id', 'business_connection_id'));
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2104,7 +1746,9 @@ trait AvailableMethods
      */
     public function unpinAllChatMessages(int|string $chat_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2116,7 +1760,9 @@ trait AvailableMethods
      */
     public function leaveChat(int|string $chat_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2128,7 +1774,9 @@ trait AvailableMethods
      */
     public function getChat(int|string $chat_id): ?ChatFullInfo
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'), ChatFullInfo::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, ChatFullInfo::class);
     }
 
     /**
@@ -2140,7 +1788,9 @@ trait AvailableMethods
      */
     public function getChatAdministrators(int|string $chat_id): ?array
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'), ChatMember::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, ChatMember::class);
     }
 
     /**
@@ -2152,7 +1802,9 @@ trait AvailableMethods
      */
     public function getChatMemberCount(int|string $chat_id): ?int
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2166,7 +1818,9 @@ trait AvailableMethods
      */
     public function getChatMember(int|string $chat_id, int $user_id): ?ChatMember
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), ChatMember::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, ChatMember::class);
     }
 
     /**
@@ -2181,7 +1835,9 @@ trait AvailableMethods
      */
     public function setChatStickerSet(int|string $chat_id, string $sticker_set_name): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'sticker_set_name'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2195,7 +1851,9 @@ trait AvailableMethods
      */
     public function deleteChatStickerSet(int|string $chat_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2227,7 +1885,8 @@ trait AvailableMethods
         ForumIconColor|int|null $icon_color = null,
         ?string $icon_custom_emoji_id = null,
     ): ?ForumTopic {
-        $parameters = compact('chat_id', 'name', 'icon_color', 'icon_custom_emoji_id');
+        $parameters = func_get_named_args(func_get_args());
+
         return $this->requestJson(__FUNCTION__, $parameters, ForumTopic::class);
     }
 
@@ -2248,7 +1907,8 @@ trait AvailableMethods
         ?string $name = null,
         ?string $icon_custom_emoji_id = null,
     ): ?bool {
-        $parameters = compact('chat_id', 'message_thread_id', 'name', 'icon_custom_emoji_id');
+        $parameters = func_get_named_args(func_get_args());
+
         return $this->requestJson(__FUNCTION__, $parameters);
     }
 
@@ -2263,7 +1923,9 @@ trait AvailableMethods
      */
     public function closeForumTopic(int|string $chat_id, int $message_thread_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2277,7 +1939,9 @@ trait AvailableMethods
      */
     public function reopenForumTopic(int|string $chat_id, int $message_thread_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2291,7 +1955,9 @@ trait AvailableMethods
      */
     public function deleteForumTopic(int|string $chat_id, int $message_thread_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2305,7 +1971,9 @@ trait AvailableMethods
      */
     public function unpinAllForumTopicMessages(int|string $chat_id, int $message_thread_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_thread_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2319,7 +1987,9 @@ trait AvailableMethods
      */
     public function editGeneralForumTopic(int|string $chat_id, string $name): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'name'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2332,7 +2002,9 @@ trait AvailableMethods
      */
     public function closeGeneralForumTopic(int|string $chat_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2346,7 +2018,9 @@ trait AvailableMethods
      */
     public function reopenGeneralForumTopic(int|string $chat_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2360,7 +2034,9 @@ trait AvailableMethods
      */
     public function hideGeneralForumTopic(int|string $chat_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2373,7 +2049,9 @@ trait AvailableMethods
      */
     public function unhideGeneralForumTopic(int|string $chat_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2395,14 +2073,8 @@ trait AvailableMethods
         ?string $url = null,
         ?int $cache_time = null,
     ): ?bool {
-        $callback_query_id ??= $this->callbackQuery()?->id;
-        $parameters = compact(
-            'callback_query_id',
-            'text',
-            'show_alert',
-            'url',
-            'cache_time'
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
 
         return $this->requestJson(__FUNCTION__, $parameters);
     }
@@ -2418,7 +2090,9 @@ trait AvailableMethods
      */
     public function getUserChatBoosts(null|int|string $chat_id = null, ?int $user_id = null): ?UserChatBoosts
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), UserChatBoosts::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, UserChatBoosts::class);
     }
 
     /**
@@ -2430,7 +2104,9 @@ trait AvailableMethods
      */
     public function getBusinessConnection(string $business_connection_id): ?BusinessConnection
     {
-        return $this->requestJson(__FUNCTION__, compact('business_connection_id'), BusinessConnection::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, BusinessConnection::class);
     }
 
     /**
@@ -2445,13 +2121,9 @@ trait AvailableMethods
      */
     public function setMyCommands(array $commands, ?BotCommandScope $scope = null, ?string $language_code = null): ?bool
     {
-        $parameters = compact('commands', 'scope', 'language_code');
-
-        $parameters['commands'] = json_encode($parameters['commands']);
-
-        if ($parameters['scope'] !== null) {
-            $parameters['scope'] = json_encode($parameters['scope']);
-        }
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['commands'] = json_encode($commands, JSON_THROW_ON_ERROR);
+        $parameters['scope'] = $scope !== null ? json_encode($scope, JSON_THROW_ON_ERROR) : null;
 
         return $this->requestJson(__FUNCTION__, $parameters);
     }
@@ -2467,7 +2139,9 @@ trait AvailableMethods
      */
     public function deleteMyCommands(?BotCommandScope $scope = null, ?string $language_code = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('scope', 'language_code'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2481,7 +2155,9 @@ trait AvailableMethods
      */
     public function getMyCommands(?BotCommandScope $scope = null, ?string $language_code = null): ?array
     {
-        return $this->requestJson(__FUNCTION__, compact('scope', 'language_code'), BotCommand::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, BotCommand::class);
     }
 
     /**
@@ -2493,7 +2169,9 @@ trait AvailableMethods
      */
     public function getMyName(?string $language_code = null): ?BotName
     {
-        return $this->requestJson(__FUNCTION__, compact('language_code'), BotName::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, BotName::class);
     }
 
     /**
@@ -2506,7 +2184,9 @@ trait AvailableMethods
      */
     public function setMyName(?string $name = null, ?string $language_code = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('name', 'language_code'), BotCommand::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, BotCommand::class);
     }
 
     /**
@@ -2519,7 +2199,9 @@ trait AvailableMethods
      */
     public function setMyDescription(?string $description = null, ?string $language_code = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('description', 'language_code'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2531,7 +2213,9 @@ trait AvailableMethods
      */
     public function getMyDescription(?string $language_code = null): ?BotDescription
     {
-        return $this->requestJson(__FUNCTION__, compact('language_code'), BotDescription::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, BotDescription::class);
     }
 
     /**
@@ -2544,7 +2228,9 @@ trait AvailableMethods
      */
     public function setMyShortDescription(?string $short_description = null, ?string $language_code = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('short_description', 'language_code'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2556,7 +2242,9 @@ trait AvailableMethods
      */
     public function getMyShortDescription(?string $language_code = null): ?BotShortDescription
     {
-        return $this->requestJson(__FUNCTION__, compact('language_code'), BotShortDescription::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, BotShortDescription::class);
     }
 
     /**
@@ -2569,8 +2257,10 @@ trait AvailableMethods
      */
     public function setChatMenuButton(?int $chat_id = null, ?MenuButton $menu_button = null): ?bool
     {
-        $chat_id ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'menu_button'));
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2582,8 +2272,10 @@ trait AvailableMethods
      */
     public function getChatMenuButton(?int $chat_id = null): ?MenuButton
     {
-        $chat_id ??= $this->chatId();
-        return $this->requestJson(__FUNCTION__, compact('chat_id'), MenuButton::class);
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, MenuButton::class);
     }
 
     /**
@@ -2599,7 +2291,9 @@ trait AvailableMethods
         ?ChatAdministratorRights $rights = null,
         ?bool $for_channels = null,
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, compact('rights', 'for_channels'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2611,7 +2305,9 @@ trait AvailableMethods
      */
     public function getMyDefaultAdministratorRights(?bool $for_channels = null): ?ChatAdministratorRights
     {
-        return $this->requestJson(__FUNCTION__, compact('for_channels'), ChatAdministratorRights::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, ChatAdministratorRights::class);
     }
 
     /**
@@ -2624,6 +2320,8 @@ trait AvailableMethods
      */
     public function unpinAllGeneralForumTopicMessages(int|string $chat_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 }

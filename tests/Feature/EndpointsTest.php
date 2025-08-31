@@ -194,8 +194,8 @@ it('creates a new sticker set using InputFile', function () {
 
         $sticker = new InputSticker(
             sticker: $file,
-            format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
+            format: StickerFormat::STATIC,
         );
 
         $bot->createNewStickerSet(
@@ -211,23 +211,23 @@ it('creates a new sticker set using InputFile', function () {
     $bot->beforeApiRequest(function (Nutgram $bot, array $payload) {
         expect($payload['multipart'])->sequence(
             fn ($x) => $x
-                ->name->toBe('user_id')
-                ->contents->toBe(123),
-            fn ($x) => $x
                 ->name->toBe('name')
                 ->contents->toBe('MyPack_by_NutgramBot'),
             fn ($x) => $x
                 ->name->toBe('title')
                 ->contents->toBe('MyPack By Nutgram'),
             fn ($x) => $x
-                ->name->toBe('sticker_type')
-                ->contents->toBe('regular'),
-            fn ($x) => $x
                 ->name->toBe('sticker.png')
                 ->filename->toBe('sticker.png'),
             fn ($x) => $x
                 ->name->toBe('stickers')
                 ->contents->toBe('[{"sticker":"attach:\/\/sticker.png","format":"static","emoji_list":["\ud83e\udd14"]}]'),
+            fn ($x) => $x
+                ->name->toBe('user_id')
+                ->contents->toBe(123),
+            fn ($x) => $x
+                ->name->toBe('sticker_type')
+                ->contents->toBe('regular'),
         );
     });
 
@@ -243,8 +243,8 @@ it('creates a new sticker set using Url', function () {
     $bot->onCommand('start', function (Nutgram $bot) {
         $sticker = new InputSticker(
             sticker: 'https://example.com/sticker.png',
-            format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
+            format: StickerFormat::STATIC,
         );
 
         $bot->createNewStickerSet(
@@ -260,20 +260,20 @@ it('creates a new sticker set using Url', function () {
     $bot->beforeApiRequest(function (Nutgram $bot, array $payload) {
         expect($payload['multipart'])->sequence(
             fn ($x) => $x
-                ->name->toBe('user_id')
-                ->contents->toBe(123),
-            fn ($x) => $x
                 ->name->toBe('name')
                 ->contents->toBe('MyPack_by_NutgramBot'),
             fn ($x) => $x
                 ->name->toBe('title')
                 ->contents->toBe('MyPack By Nutgram'),
             fn ($x) => $x
-                ->name->toBe('sticker_type')
-                ->contents->toBe('regular'),
-            fn ($x) => $x
                 ->name->toBe('stickers')
                 ->contents->toBe('[{"sticker":"https:\/\/example.com\/sticker.png","format":"static","emoji_list":["\ud83e\udd14"]}]'),
+            fn ($x) => $x
+                ->name->toBe('user_id')
+                ->contents->toBe(123),
+            fn ($x) => $x
+                ->name->toBe('sticker_type')
+                ->contents->toBe('regular'),
         );
     });
 
@@ -294,8 +294,8 @@ it('add sticker to set using InputFile', function () {
 
         $sticker = new InputSticker(
             sticker: $file,
-            format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
+            format: StickerFormat::STATIC,
         );
 
         $bot->addStickerToSet(
@@ -308,9 +308,6 @@ it('add sticker to set using InputFile', function () {
         expect($payload['multipart'])
             ->sequence(
                 fn ($x) => $x
-                    ->name->toBe('user_id')
-                    ->contents->toBe(123),
-                fn ($x) => $x
                     ->name->toBe('name')
                     ->contents->toBe('MyPack_by_NutgramBot'),
                 fn ($x) => $x
@@ -319,6 +316,9 @@ it('add sticker to set using InputFile', function () {
                 fn ($x) => $x
                     ->name->toBe('sticker')
                     ->contents->toBe('{"sticker":"attach:\/\/sticker.png","format":"static","emoji_list":["\ud83e\udd14"]}'),
+                fn ($x) => $x
+                    ->name->toBe('user_id')
+                    ->contents->toBe(123),
             );
     });
 
@@ -334,8 +334,8 @@ it('add sticker to set using Url', function () {
     $bot->onCommand('start', function (Nutgram $bot) {
         $sticker = new InputSticker(
             sticker: 'https://example.com/sticker.png',
-            format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
+            format: StickerFormat::STATIC,
         );
 
         $bot->addStickerToSet(
@@ -348,14 +348,14 @@ it('add sticker to set using Url', function () {
         expect($payload['multipart'])
             ->sequence(
                 fn ($x) => $x
-                    ->name->toBe('user_id')
-                    ->contents->toBe(123),
-                fn ($x) => $x
                     ->name->toBe('name')
                     ->contents->toBe('MyPack_by_NutgramBot'),
                 fn ($x) => $x
                     ->name->toBe('sticker')
                     ->contents->toBe('{"sticker":"https:\/\/example.com\/sticker.png","format":"static","emoji_list":["\ud83e\udd14"]}'),
+                fn ($x) => $x
+                    ->name->toBe('user_id')
+                    ->contents->toBe(123),
             );
     });
 

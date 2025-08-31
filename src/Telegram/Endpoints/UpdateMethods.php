@@ -12,6 +12,7 @@ use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use function SergiX44\Nutgram\Support\func_get_named_args;
 
 /**
  * @mixin Client
@@ -34,12 +35,9 @@ trait UpdateMethods
      */
     public function getUpdates(?int $offset = null, ?int $limit = null, ?int $timeout = null, ?array $allowed_updates = null): ?array
     {
-        return $this->requestJson(__FUNCTION__, compact(
-            'offset',
-            'limit',
-            'timeout',
-            'allowed_updates'
-        ), Update::class, [
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, Update::class, [
             'timeout' => ($timeout ?? $this->config->pollingTimeout) + 1
         ]);
     }
@@ -66,15 +64,9 @@ trait UpdateMethods
         ?bool $drop_pending_updates = null,
         ?string $secret_token = null
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, compact(
-            'url',
-            'certificate',
-            'ip_address',
-            'max_connections',
-            'allowed_updates',
-            'drop_pending_updates',
-            'secret_token'
-        ));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -86,7 +78,9 @@ trait UpdateMethods
      */
     public function deleteWebhook(?bool $drop_pending_updates = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('drop_pending_updates'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**

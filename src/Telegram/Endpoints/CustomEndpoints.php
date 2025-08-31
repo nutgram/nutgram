@@ -15,6 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use function SergiX44\Nutgram\Support\array_filter_null;
+use function SergiX44\Nutgram\Support\func_get_named_args;
 
 /**
  * @mixin Client
@@ -56,24 +57,11 @@ trait CustomEndpoints
         ?string $business_connection_id = null,
         ?string $message_effect_id = null,
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $parameters = compact(
-            'chat_id',
-            'message_thread_id',
-            'text',
-            'parse_mode',
-            'entities',
-            'disable_web_page_preview',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+
         unset($parameters['text']);
 
         // chunk text
@@ -139,29 +127,17 @@ trait CustomEndpoints
         ?string $message_effect_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'has_spoiler',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        unset($parameters['clientOpt']);
+
         return $this->sendChunkedMedia(
             endpoint: 'sendPhoto',
             media: $photo,
             param: 'photo',
-            opt: $opt,
+            opt: $parameters,
             clientOpt: $clientOpt
         );
     }
@@ -215,33 +191,17 @@ trait CustomEndpoints
         ?string $message_effect_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'duration',
-            'performer',
-            'title',
-            'thumbnail',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        unset($parameters['clientOpt']);
 
         return $this->sendChunkedMedia(
             endpoint: 'sendAudio',
             media: $audio,
             param: 'audio',
-            opt: $opt,
+            opt: $parameters,
             clientOpt: $clientOpt
         );
     }
@@ -288,31 +248,17 @@ trait CustomEndpoints
         ?string $message_effect_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'thumbnail',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'disable_content_type_detection',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        unset($parameters['clientOpt']);
 
         return $this->sendChunkedMedia(
             endpoint: 'sendDocument',
             media: $document,
             param: 'document',
-            opt: $opt,
+            opt: $parameters,
             clientOpt: $clientOpt
         );
     }
@@ -368,35 +314,17 @@ trait CustomEndpoints
         ?string $message_effect_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'duration',
-            'width',
-            'height',
-            'thumbnail',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'has_spoiler',
-            'supports_streaming',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        unset($parameters['clientOpt']);
 
         return $this->sendChunkedMedia(
             endpoint: 'sendVideo',
             media: $video,
             param: 'video',
-            opt: $opt,
+            opt: $parameters,
             clientOpt: $clientOpt
         );
     }
@@ -449,34 +377,17 @@ trait CustomEndpoints
         ?string $message_effect_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'duration',
-            'width',
-            'height',
-            'thumbnail',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'has_spoiler',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        unset($parameters['clientOpt']);
 
         return $this->sendChunkedMedia(
             endpoint: 'sendAnimation',
             media: $animation,
             param: 'animation',
-            opt: $opt,
+            opt: $parameters,
             clientOpt: $clientOpt
         );
     }
@@ -524,30 +435,17 @@ trait CustomEndpoints
         ?string $message_effect_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'duration',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        unset($parameters['clientOpt']);
 
         return $this->sendChunkedMedia(
             endpoint: 'sendVoice',
             media: $voice,
             param: 'voice',
-            opt: $opt,
+            opt: $parameters,
             clientOpt: $clientOpt
         );
     }

@@ -22,6 +22,7 @@ use SergiX44\Nutgram\Telegram\Types\Sticker\MaskPosition;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\Sticker\StickerSet;
 use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
+use function SergiX44\Nutgram\Support\func_get_named_args;
 
 /**
  * Trait Stickers
@@ -70,28 +71,14 @@ trait Stickers
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
-            'chat_id',
-            'message_thread_id',
-            'emoji',
-            'disable_notification',
-            'protect_content',
-            'reply_to_message_id',
-            'allow_sending_without_reply',
-            'reply_parameters',
-            'reply_markup',
-            'business_connection_id',
-            'message_effect_id',
-            'allow_paid_broadcast',
-            'direct_messages_topic_id',
-            'suggested_post_parameters',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+        unset($parameters['clientOpt']);
 
-        return $this->sendAttachment(__FUNCTION__, 'sticker', $sticker, $opt, $clientOpt);
+        return $this->sendAttachment(__FUNCTION__, 'sticker', $sticker, $parameters, $clientOpt);
     }
 
     /**
@@ -103,7 +90,9 @@ trait Stickers
      */
     public function getStickerSet(string $name): ?StickerSet
     {
-        return $this->requestJson(__FUNCTION__, compact('name'), StickerSet::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, StickerSet::class);
     }
 
     /**
@@ -122,8 +111,9 @@ trait Stickers
         ?int $user_id = null,
         array $clientOpt = [],
     ): ?File {
-        $user_id ??= $this->userId();
-        $parameters = compact('user_id', 'sticker', 'sticker_format');
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['user_id'] ??= $this->userId();
+        unset($parameters['clientOpt']);
 
         if ($sticker instanceof InputFile) {
             return $this->requestMultipart(__FUNCTION__, $parameters, File::class, $clientOpt);
@@ -155,15 +145,10 @@ trait Stickers
         ?bool $needs_repainting = null,
         array $clientOpt = [],
     ): ?bool {
-        $user_id ??= $this->userId();
-        $parameters = compact(
-            'user_id',
-            'name',
-            'title',
-            'sticker_type',
-            'needs_repainting',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['user_id'] ??= $this->userId();
         $parameters['stickers'] = new UploadableArray($stickers);
+        unset($parameters['clientOpt']);
 
         return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
     }
@@ -188,12 +173,9 @@ trait Stickers
         ?int $user_id = null,
         array $clientOpt = [],
     ): ?bool {
-        $user_id ??= $this->userId();
-        $parameters = compact(
-            'user_id',
-            'name',
-            'sticker',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['user_id'] ??= $this->userId();
+        unset($parameters['clientOpt']);
 
         return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
     }
@@ -208,7 +190,9 @@ trait Stickers
      */
     public function setStickerPositionInSet(string $sticker, int $position): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('sticker', 'position'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -221,7 +205,9 @@ trait Stickers
      */
     public function setCustomEmojiStickerSetThumbnail(string $name, ?string $custom_emoji_id = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('name', 'custom_emoji_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -233,7 +219,9 @@ trait Stickers
      */
     public function deleteStickerFromSet(string $sticker): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('sticker'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -252,13 +240,9 @@ trait Stickers
      */
     public function replaceStickerInSet(string $name, string $old_sticker, InputSticker $sticker, ?int $user_id = null, array $clientOpt = []): ?bool
     {
-        $user_id ??= $this->userId();
-        $parameters = compact(
-            'user_id',
-            'name',
-            'old_sticker',
-            'sticker',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['user_id'] ??= $this->userId();
+        unset($parameters['clientOpt']);
 
         return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
     }
@@ -274,7 +258,9 @@ trait Stickers
      */
     public function setStickerEmojiList(string $sticker, array $emoji_list): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('sticker', 'emoji_list'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -288,7 +274,9 @@ trait Stickers
      */
     public function setStickerKeywords(string $sticker, ?array $keywords = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('sticker', 'keywords'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -302,7 +290,9 @@ trait Stickers
      */
     public function setStickerMaskPosition(string $sticker, ?MaskPosition $mask_position = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('sticker', 'mask_position'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -324,8 +314,9 @@ trait Stickers
         InputFile|string|null $thumbnail = null,
         array $clientOpt = [],
     ): ?bool {
-        $user_id ??= $this->userId();
-        $parameters = compact('name', 'format', 'user_id', 'thumbnail');
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['user_id'] ??= $this->userId();
+        unset($parameters['clientOpt']);
 
         return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
     }
@@ -339,7 +330,9 @@ trait Stickers
      */
     public function getCustomEmojiStickers(array $custom_emoji_ids): ?array
     {
-        return $this->requestJson(__FUNCTION__, compact('custom_emoji_ids'), Sticker::class);
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters, Sticker::class);
     }
 
     /**
@@ -352,7 +345,9 @@ trait Stickers
      */
     public function setStickerSetTitle(string $name, string $title): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('name', 'title'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -364,7 +359,9 @@ trait Stickers
      */
     public function deleteStickerSet(string $name): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('name'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -400,9 +397,10 @@ trait Stickers
         ?bool $pay_for_upgrade = null,
         int|string|null $chat_id = null,
     ): ?bool {
-        $user_id ??= $this->userId();
-        $chat_id ??= $this->chatId();
-        $parameters = compact('gift_id', 'user_id', 'text', 'text_parse_mode', 'text_entities', 'pay_for_upgrade', 'chat_id');
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['user_id'] ??= $this->userId();
+        $parameters['chat_id'] ??= $this->chatId();
+
         return $this->requestJson(__FUNCTION__, $parameters);
     }
 
@@ -415,7 +413,9 @@ trait Stickers
      */
     public function verifyUser(int $user_id, ?string $custom_description = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('user_id', 'custom_description'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -427,7 +427,9 @@ trait Stickers
      */
     public function verifyChat(int|string $chat_id, ?string $custom_description = null): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'custom_description'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -438,7 +440,9 @@ trait Stickers
      */
     public function removeUserVerification(int $user_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('user_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -449,6 +453,8 @@ trait Stickers
      */
     public function removeChatVerification(int|string $chat_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 }

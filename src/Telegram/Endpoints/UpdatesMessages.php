@@ -20,7 +20,7 @@ use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
 use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
 use SergiX44\Nutgram\Telegram\Types\Story\StoryArea;
-use function SergiX44\Nutgram\Support\array_filter_null;
+use function SergiX44\Nutgram\Support\func_get_named_args;
 
 /**
  * Trait UpdatesMessages
@@ -57,18 +57,7 @@ trait UpdatesMessages
         ?InlineKeyboardMarkup $reply_markup = null,
         ?string $business_connection_id = null,
     ): Message|bool|null {
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'inline_message_id',
-            'text',
-            'parse_mode',
-            'entities',
-            'disable_web_page_preview',
-            'link_preview_options',
-            'reply_markup',
-            'business_connection_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
         $this->setChatMessageOrInlineMessageId($parameters);
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
@@ -100,17 +89,7 @@ trait UpdatesMessages
         ?bool $show_caption_above_media = null,
         ?string $business_connection_id = null,
     ): Message|bool|null {
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'inline_message_id',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'reply_markup',
-            'show_caption_above_media',
-            'business_connection_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
         $this->setChatMessageOrInlineMessageId($parameters);
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
@@ -141,15 +120,9 @@ trait UpdatesMessages
         ?string $business_connection_id = null,
         array $clientOpt = [],
     ): Message|bool|null {
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'inline_message_id',
-            'media',
-            'reply_markup',
-            'business_connection_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
         $this->setChatMessageOrInlineMessageId($parameters);
+        unset($parameters['clientOpt']);
 
         return $this->requestMultipart(__FUNCTION__, $parameters, Message::class, $clientOpt);
     }
@@ -185,21 +158,9 @@ trait UpdatesMessages
         ?int $live_period = null,
         ?string $business_connection_id = null,
     ): Message|bool|null {
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'inline_message_id',
-            'latitude',
-            'longitude',
-            'horizontal_accuracy',
-            'heading',
-            'proximity_alert_radius',
-            'reply_markup',
-            'live_period',
-            'business_connection_id',
-        );
-
+        $parameters = func_get_named_args(func_get_args());
         $this->setChatMessageOrInlineMessageId($parameters);
+
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
@@ -220,15 +181,13 @@ trait UpdatesMessages
         ?int $message_id = null,
         ?InlineKeyboardMarkup $reply_markup = null,
     ): ?Message {
-        $business_connection_id ??= $this->businessConnectionId();
-        $chat_id ??= $this->chatId();
-        $message_id ??= $this->messageId();
-        $parameters = compact('checklist', 'business_connection_id', 'chat_id', 'message_id', 'reply_markup');
-        return $this->requestJson(__FUNCTION__, array_filter_null([
-            'checklist' => json_encode($checklist),
-            'reply_markup' => $reply_markup !== null ? json_encode($reply_markup) : null,
-            ...$parameters,
-        ]), Message::class);
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['checklist'] = json_encode($checklist, JSON_THROW_ON_ERROR);
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_id'] ??= $this->messageId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -249,13 +208,7 @@ trait UpdatesMessages
         ?InlineKeyboardMarkup $reply_markup = null,
         ?string $business_connection_id = null,
     ): Message|bool|null {
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'inline_message_id',
-            'reply_markup',
-            'business_connection_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
         $this->setChatMessageOrInlineMessageId($parameters);
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
@@ -277,12 +230,7 @@ trait UpdatesMessages
         ?InlineKeyboardMarkup $reply_markup = null,
         ?string $business_connection_id = null,
     ): ?Poll {
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'reply_markup',
-            'business_connection_id',
-        );
+        $parameters = func_get_named_args(func_get_args());
 
         return $this->requestJson(__FUNCTION__, $parameters, Poll::class);
     }
@@ -302,13 +250,10 @@ trait UpdatesMessages
         ?int $message_id = null,
         ?int $send_date = null,
     ): ?bool {
-        $chat_id ??= $this->chatId();
-        $message_id ??= $this->messageId();
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'send_date',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_id'] ??= $this->messageId();
+
         return $this->requestJson(__FUNCTION__, $parameters);
     }
 
@@ -327,13 +272,10 @@ trait UpdatesMessages
         ?int $message_id = null,
         ?string $comment = null,
     ): ?bool {
-        $chat_id ??= $this->chatId();
-        $message_id ??= $this->messageId();
-        $parameters = compact(
-            'chat_id',
-            'message_id',
-            'comment',
-        );
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_id'] ??= $this->messageId();
+
         return $this->requestJson(__FUNCTION__, $parameters);
     }
 
@@ -346,7 +288,9 @@ trait UpdatesMessages
      */
     public function deleteMessage(int|string $chat_id, int $message_id): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_id'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -359,7 +303,9 @@ trait UpdatesMessages
      */
     public function deleteMessages(int|string $chat_id, array $message_ids): ?bool
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_ids'));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -381,14 +327,9 @@ trait UpdatesMessages
         ParseMode|string|null $text_parse_mode = null,
         ?array $text_entities = null,
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, compact(
-            'user_id',
-            'month_count',
-            'star_count',
-            'text',
-            'text_parse_mode',
-            'text_entities',
-        ));
+        $parameters = func_get_named_args(func_get_args());
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -401,13 +342,10 @@ trait UpdatesMessages
      */
     public function readBusinessMessage(int $chat_id, int $message_id, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'chat_id',
-            'message_id',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -419,12 +357,10 @@ trait UpdatesMessages
      */
     public function deleteBusinessMessages(array $message_ids, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'message_ids',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -437,13 +373,10 @@ trait UpdatesMessages
      */
     public function setBusinessAccountName(string $first_name, string $last_name, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'first_name',
-            'last_name',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -455,12 +388,10 @@ trait UpdatesMessages
      */
     public function setBusinessAccountUsername(?string $username = null, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'username',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -472,12 +403,10 @@ trait UpdatesMessages
      */
     public function setBusinessAccountBio(?string $bio = null, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'bio',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -492,13 +421,10 @@ trait UpdatesMessages
      */
     public function setBusinessAccountProfilePhoto(InputProfilePhoto $photo, ?bool $is_public = null, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestMultipart(__FUNCTION__, compact(
-            'photo',
-            'is_public',
-            'business_connection_id',
-        ));
+        return $this->requestMultipart(__FUNCTION__, $parameters);
     }
 
     /**
@@ -512,12 +438,10 @@ trait UpdatesMessages
      */
     public function removeBusinessAccountProfilePhoto(?bool $is_public = null, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'is_public',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -532,13 +456,10 @@ trait UpdatesMessages
      */
     public function setBusinessAccountGiftSettings(bool $show_gift_button, AcceptedGiftTypes $accepted_gift_types, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'show_gift_button',
-            'accepted_gift_types',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -549,11 +470,10 @@ trait UpdatesMessages
      */
     public function getBusinessAccountStarBalance(?string $business_connection_id = null): ?StarAmount
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'business_connection_id',
-        ), StarAmount::class);
+        return $this->requestJson(__FUNCTION__, $parameters, StarAmount::class);
     }
 
     /**
@@ -567,12 +487,10 @@ trait UpdatesMessages
      */
     public function transferBusinessAccountStars(int $star_count, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'star_count',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -602,19 +520,10 @@ trait UpdatesMessages
         ?bool $limit = null,
         ?string $business_connection_id = null,
     ): ?OwnedGifts {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'exclude_unsaved',
-            'exclude_saved',
-            'exclude_unlimited',
-            'exclude_limited',
-            'exclude_unique',
-            'sort_by_price',
-            'offset',
-            'limit',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -628,12 +537,10 @@ trait UpdatesMessages
      */
     public function convertGiftToStars(string $owned_gift_id, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'owned_gift_id',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -650,14 +557,10 @@ trait UpdatesMessages
      */
     public function upgradeGift(string $owned_gift_id, ?bool $keep_original_details = null, ?bool $star_count = null, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'owned_gift_id',
-            'keep_original_details',
-            'star_count',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -674,14 +577,10 @@ trait UpdatesMessages
      */
     public function transferGift(string $owned_gift_id, int $new_owner_chat_id, ?int $star_count = null, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'owned_gift_id',
-            'new_owner_chat_id',
-            'star_count',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -711,19 +610,10 @@ trait UpdatesMessages
         ?bool $protect_content = null,
         ?string $business_connection_id = null,
     ): ?Story {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestMultipart(__FUNCTION__, compact(
-            'content',
-            'active_period',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'areas',
-            'post_to_chat_page',
-            'protect_content',
-            'business_connection_id',
-        ), Story::class);
+        return $this->requestMultipart(__FUNCTION__, $parameters, Story::class);
     }
 
     /**
@@ -749,17 +639,10 @@ trait UpdatesMessages
         ?array $areas = null,
         ?string $business_connection_id = null,
     ): ?Story {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestMultipart(__FUNCTION__, compact(
-            'story_id',
-            'content',
-            'caption',
-            'parse_mode',
-            'caption_entities',
-            'areas',
-            'business_connection_id',
-        ), Story::class);
+        return $this->requestMultipart(__FUNCTION__, $parameters, Story::class);
     }
 
     /**
@@ -773,11 +656,9 @@ trait UpdatesMessages
      */
     public function deleteStory(int $story_id, ?string $business_connection_id = null): ?bool
     {
-        $business_connection_id ??= $this->businessConnectionId();
+        $parameters = func_get_named_args(func_get_args());
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->requestJson(__FUNCTION__, compact(
-            'story_id',
-            'business_connection_id',
-        ));
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 }
