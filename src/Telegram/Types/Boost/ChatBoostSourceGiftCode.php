@@ -22,5 +22,5 @@ class ChatBoostSourceGiftCode extends ChatBoostSource
     /**
      * User for which the gift code was created
      */
-    public ?User $user;
+    public ?User $user = null;
 }
