@@ -20,15 +20,15 @@ class PaidMediaPreview extends PaidMedia
     /**
      * Optional. Media width as defined by the sender
      */
-    public ?int $width;
+    public ?int $width = null;
 
     /**
      * Optional. Media height as defined by the sender
      */
-    public ?int $height;
+    public ?int $height = null;
 
     /**
      * Optional. Duration of the media in seconds as defined by the sender
      */
-    public ?int $duration;
+    public ?int $duration = null;
 }
