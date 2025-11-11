@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 dataset('left_chat_member', function () {
     $file = file_get_contents(__DIR__.'/../Fixtures/Updates/left_chat_member.json');
 

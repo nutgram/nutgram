@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
@@ -11,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
  * Represents a menu button, which launches a {@see https://core.telegram.org/bots/webapps Web App}.
  * @see https://core.telegram.org/bots/api#menubuttonwebapp
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class MenuButtonWebApp extends MenuButton
 {
     /** Type of the button, must be web_app */
@@ -27,28 +29,10 @@ class MenuButtonWebApp extends MenuButton
      */
     public WebAppInfo $web_app;
 
-    public function __construct(
-        string $text,
-        WebAppInfo $web_app
-    ) {
+    public function __construct(string $text, WebAppInfo $web_app)
+    {
         parent::__construct();
         $this->text = $text;
         $this->web_app = $web_app;
-    }
-
-    public function make(
-        string $text,
-        WebAppInfo $web_app,
-    ): self {
-        return new self($text, $web_app);
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'type' => $this->type,
-            'text' => $this->text,
-            'web_app' => $this->web_app,
-        ];
     }
 }

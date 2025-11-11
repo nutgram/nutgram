@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 dataset('deleted_business_messages', function () {
     $file = file_get_contents(__DIR__.'/../Fixtures/Updates/deleted_business_messages.json');
 

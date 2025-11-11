@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\SuggestedPost;
 
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * Contains parameters of a post that is being suggested by the bot.
  * @see https://core.telegram.org/bots/api#suggestedpostparameters
  */
+#[OverrideConstructor('bindToInstance')]
 class SuggestedPostParameters extends BaseType
 {
     /**
@@ -24,13 +28,8 @@ class SuggestedPostParameters extends BaseType
 
     public function __construct(?SuggestedPostPrice $price = null, ?int $send_date = null)
     {
+        parent::__construct();
         $this->price = $price;
         $this->send_date = $send_date;
-        parent::__construct();
-    }
-
-    public static function make(?SuggestedPostPrice $price = null, ?int $send_date = null): self
-    {
-        return new self($price, $send_date);
     }
 }
