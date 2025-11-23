@@ -37,7 +37,13 @@ trait InteractsWithRateLimit
 
     public function getRateLimit(): ?RateLimit
     {
-        return $this->rateLimiters[array_key_first($this->rateLimiters)] ?? null;
+        $firstKey = array_key_first($this->rateLimiters);
+
+        if ($firstKey === null) {
+            return null;
+        }
+
+        return $this->rateLimiters[$firstKey] ?? null;
     }
 
     public function appendRateLimiters(array $rateLimiters): void
