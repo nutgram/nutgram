@@ -180,7 +180,7 @@ it('sends file works as mocked instance', function () {
 it('throws an exception when no fake update specified', function () {
     $bot = Nutgram::fake();
     $bot->reply();
-})->expectException(InvalidArgumentException::class);
+})->throws(InvalidArgumentException::class);
 
 it('use another logger', function () {
     $bot = Nutgram::fake(config: new Configuration(

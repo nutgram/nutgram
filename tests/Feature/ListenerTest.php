@@ -42,7 +42,7 @@ it('throws exception after finalization', function ($update) {
 
     $bot->onMessage(function ($bot) use (&$test) {
     });
-})->expectException(StatusFinalizedException::class)->with('message');
+})->throws(StatusFinalizedException::class)->with('message');
 
 it('calls the message handler with a middleware', function ($update) {
     $bot = Nutgram::fake($update);
@@ -234,7 +234,7 @@ it('throws an error if not when not specifying a callable', function ($update) {
     $bot = Nutgram::fake($update);
 
     $bot->registerCommand('garbage');
-})->with('command_message')->expectException(InvalidArgumentException::class);
+})->with('command_message')->throws(InvalidArgumentException::class);
 
 it('works as-is specifying the minimum', function ($update) {
     $bot = Nutgram::fake($update);
@@ -242,7 +242,7 @@ it('works as-is specifying the minimum', function ($update) {
     $bot->registerCommand(new Command(command: 'start'));
 
     $bot->run();
-})->with('command_message')->expectException(RuntimeException::class);
+})->with('command_message')->throws(RuntimeException::class);
 
 it('parse callback queries', function ($update) {
     $bot = Nutgram::fake($update);
@@ -342,7 +342,7 @@ it('doesnt call the exception handler when cleared', function ($update) {
     $bot->clearErrorHandlers(exception: true);
 
     $bot->reply();
-})->with('callback_query')->expectException(RuntimeException::class);
+})->with('callback_query')->throws(RuntimeException::class);
 
 it('calls the specific exception handler', function ($update) {
     $bot = Nutgram::fake($update);

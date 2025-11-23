@@ -37,7 +37,7 @@ it('doesnt call the api error handler when cleared', function ($responseBody) {
     $bot->clearErrorHandlers(apiError: true);
 
     $bot->sendMessage('hi');
-})->with('response_user_deactivated')->expectException(TelegramException::class);
+})->with('response_user_deactivated')->throws(TelegramException::class);
 
 it('calls the specific api error handler', function ($responseBody) {
     $bot = Nutgram::fake(responses: [
@@ -83,7 +83,7 @@ it('throws exception if no handler specified', function ($responseBody) {
     ]);
 
     $bot->sendMessage('hi');
-})->with('response_wrong_file_id')->expectException(TelegramException::class);
+})->with('response_wrong_file_id')->throws(TelegramException::class);
 
 it('throws exception if too many requests', function ($responseBody) {
     $bot = Nutgram::fake(responses: [
@@ -109,7 +109,7 @@ it('redacts bot token when there is a connectexception', function () {
             new ConnectException(
                 'cURL error 6: Could not resolve host: api.telegram.org (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/getUpdates',
                 new Request('GET', 'https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/sendMessage')
-            )
+            ),
         ],
     );
 
