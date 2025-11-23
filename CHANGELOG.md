@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.39.2 - 2025-11-23
+
+### What's Changed
+
+* PHP 8.5 Compatibility by @Lukasss93 in https://github.com/nutgram/nutgram/pull/922
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.39.1...4.39.2
+
 ## 4.39.1 - 2025-11-10
 
 ### What's Changed
