@@ -29,7 +29,7 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
     /** True, if the administrator can manage video chats */
     public bool $can_manage_video_chats;
 
-    /** True, if the administrator can restrict, ban or unban chat members */
+    /** True, if the administrator can restrict, ban or unban chat members, or access supergroup statistics */
     public bool $can_restrict_members;
 
     /** True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that they have promoted, directly or indirectly (promoted by administrators that were appointed by the user) */

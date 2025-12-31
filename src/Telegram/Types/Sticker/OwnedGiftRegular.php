@@ -60,4 +60,15 @@ class OwnedGiftRegular extends OwnedGift
      * Optional. Number of Telegram Stars that were paid by the sender for the ability to upgrade the gift
      */
     public ?int $prepaid_upgrade_star_count = null;
+
+    /**
+     * Optional. True, if the gift's upgrade was purchased after the gift was sent; for gifts received on behalf of business accounts only
+     */
+    public ?bool $is_upgrade_separate = null;
+
+    /**
+     * Optional. Unique number reserved for this gift when upgraded.
+     * See the number field in {@see https://core.telegram.org/bots/api#uniquegift UniqueGift}
+     */
+    public ?int $unique_gift_number = null;
 }

@@ -12,7 +12,9 @@ use SergiX44\Nutgram\Telegram\Types\Business\BusinessOpeningHours;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
+use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGiftColors;
 use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
+use SergiX44\Nutgram\Telegram\Types\User\UserRating;
 
 /**
  * This object represents a chat.
@@ -368,6 +370,21 @@ class Chat extends BaseType
      */
     public ?ChatLocation $location = null;
 
+    /**
+     * Optional. For private chats, the rating of the user if any
+     */
+    public ?UserRating $rating = null;
+
+    /**
+     * Optional. The color scheme based on a unique gift that must be used for the chat's name, message replies and link previews
+     */
+    public ?UniqueGiftColors $unique_gift_colors = null;
+
+    /**
+     * Optional. The number of Telegram Stars a general user have to pay to send a message to the chat
+     */
+    public ?int $paid_message_star_count = null;
+
     public static function make(
         int $id,
         ChatType|string $type,
@@ -400,6 +417,9 @@ class Chat extends BaseType
         ?bool $can_send_paid_media = null,
         ?bool $can_send_gift = null,
         ?bool $is_direct_messages = null,
+        ?UserRating $rating = null,
+        ?UniqueGiftColors $unique_gift_colors = null,
+        ?int $paid_message_star_count = null,
     ): Chat {
         $chat = new self();
         $chat->id = $id;
@@ -433,6 +453,9 @@ class Chat extends BaseType
         $chat->can_send_paid_media = $can_send_paid_media;
         $chat->can_send_gift = $can_send_gift;
         $chat->is_direct_messages = $is_direct_messages;
+        $chat->rating = $rating;
+        $chat->unique_gift_colors = $unique_gift_colors;
+        $chat->paid_message_star_count = $paid_message_star_count;
         return $chat;
     }
 

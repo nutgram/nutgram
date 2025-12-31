@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Telegram\Properties\DiceEmoji;
 use SergiX44\Nutgram\Telegram\Properties\ForumIconColor;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Properties\PollType;
+use SergiX44\Nutgram\Telegram\Properties\StoryActivePeriod;
 use SergiX44\Nutgram\Telegram\Types\Boost\UserChatBoosts;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
@@ -35,6 +36,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
+use SergiX44\Nutgram\Telegram\Types\Media\Story;
 use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
@@ -42,6 +44,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageId;
 use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
 use SergiX44\Nutgram\Telegram\Types\Poll\InputPollOption;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
+use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -101,7 +104,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendmessage
      * @param string $text Text of the message to be sent, 1-4096 characters after entities parsing
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message text. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
      * @param bool|null $disable_web_page_preview Disables link previews for links in this message
@@ -175,12 +178,13 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|string $from_chat_id Unique identifier for the chat where the original message was sent (or channel username in the format &#64;channelusername)
      * @param int $message_id Message identifier in the chat specified in from_chat_id
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the forwarded message from forwarding and saving
      * @param int|null $video_start_timestamp New start timestamp for the forwarded video in the message
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; only available when forwarding to private chats
      * @return Message|null
      */
     public function forwardMessage(
@@ -193,6 +197,7 @@ trait AvailableMethods
         ?int $video_start_timestamp = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?string $message_effect_id = null,
     ): ?Message {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -204,6 +209,7 @@ trait AvailableMethods
             'video_start_timestamp',
             'direct_messages_topic_id',
             'suggested_post_parameters',
+            'message_effect_id',
         ), Message::class);
     }
 
@@ -217,7 +223,7 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|string $from_chat_id Unique identifier for the chat where the original messages were sent (or channel username in the format &#64;channelusername)
      * @param array $message_ids Identifiers of 1-100 messages in the chat from_chat_id to forward. The identifiers must be specified in a strictly increasing order.
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param bool|null $disable_notification Sends the messages {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the forwarded messages from forwarding and saving
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
@@ -253,7 +259,7 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|string $from_chat_id Unique identifier for the chat where the original message was sent (or channel username in the format &#64;channelusername)
      * @param int $message_id Message identifier in the chat specified in from_chat_id
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param string|null $caption New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the new caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $caption_entities A JSON-serialized list of special entities that appear in the new caption, which can be specified instead of parse_mode
@@ -268,6 +274,7 @@ trait AvailableMethods
      * @param int|null $video_start_timestamp New start timestamp for the forwarded video in the message
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; only available when forwarding to private chats
      * @return MessageId|null
      */
     public function copyMessage(
@@ -289,6 +296,7 @@ trait AvailableMethods
         ?int $video_start_timestamp = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?string $message_effect_id = null,
     ): ?MessageId {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -309,6 +317,7 @@ trait AvailableMethods
             'video_start_timestamp',
             'direct_messages_topic_id',
             'suggested_post_parameters',
+            'message_thread_id',
         ), MessageId::class);
     }
 
@@ -322,7 +331,7 @@ trait AvailableMethods
      * On success, an array of {@see https://core.telegram.org/bots/api#messageid MessageId} of the sent messages is returned.
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|string $from_chat_id Unique identifier for the chat where the original messages were sent (or channel username in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param array|null $message_ids Identifiers of 1-100 messages in the chat from_chat_id to copy. The identifiers must be specified in a strictly increasing order.
      * @param bool|null $disable_notification Sends the messages silently. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the sent messages from forwarding and saving
@@ -358,7 +367,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendphoto
      * @param InputFile|string $photo Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param string|null $caption Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the photo caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
@@ -436,7 +445,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendaudio
      * @param InputFile|string $audio Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param string|null $caption Audio caption, 0-1024 characters after entities parsing
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the audio caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
@@ -519,7 +528,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#senddocument
      * @param InputFile|string $document File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param InputFile|string|null $thumbnail Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      * @param string|null $caption Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the document caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
@@ -596,7 +605,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendvideo
      * @param InputFile|string $video Video to send. Pass a file_id as String to send a video that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a video from the Internet, or upload a new video using multipart/form-data. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param int|null $duration Duration of sent video in seconds
      * @param int|null $width Video width
      * @param int|null $height Video height
@@ -694,7 +703,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendanimation
      * @param InputFile|string $animation Animation to send. Pass a file_id as String to send an animation that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an animation from the Internet, or upload a new animation using multipart/form-data. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param int|null $duration Duration of sent animation in seconds
      * @param int|null $width Animation width
      * @param int|null $height Animation height
@@ -784,7 +793,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendvoice
      * @param InputFile|string $voice Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param string|null $caption Voice message caption, 0-1024 characters after entities parsing
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the voice message caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
@@ -858,7 +867,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendvideonote
      * @param InputFile|string $video_note Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}. Sending video notes by a URL is currently unsupported
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param int|null $duration Duration of sent video in seconds
      * @param int|null $length Video width and height, i.e. diameter of the video message
      * @param InputFile|string|null $thumbnail Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
@@ -926,7 +935,7 @@ trait AvailableMethods
      * Use this method to send paid media to channel chats.
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#sendpaidmedia
-     * @param int $star_count The number of Telegram Stars that must be paid to buy access to the media; 1-10000
+     * @param int $star_count The number of Telegram Stars that must be paid to buy access to the media; 1-25000
      * @param InputPaidMedia[] $media A JSON-serialized array describing the media to be sent; up to 10 items
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string|null $caption Media caption, 0-1024 characters after entities parsing
@@ -942,6 +951,7 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -962,9 +972,11 @@ trait AvailableMethods
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?int $message_thread_id = null,
         array $clientOpt = [],
     ): ?Message {
         $chat_id ??= $this->chatId();
+        $message_thread_id ??= $this->messageThreadId();
         $business_connection_id ??= $this->businessConnectionId();
         $direct_messages_topic_id ??= $this->directMessagesTopicId();
         $params = compact(
@@ -983,6 +995,7 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
+            'message_thread_id',
         );
 
         return $this->requestMultipart(__FUNCTION__, [
@@ -998,7 +1011,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendmediagroup
      * @param InputMediaAudio[]|InputMediaDocument[]|InputMediaPhoto[]|InputMediaVideo[] $media A JSON-serialized array describing messages to be sent, must include 2-10 items
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param bool|null $disable_notification Sends messages {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the sent messages from forwarding and saving
      * @param int|null $reply_to_message_id If the messages are a reply, ID of the original message
@@ -1056,7 +1069,7 @@ trait AvailableMethods
      * @param float $latitude Latitude of the location
      * @param float $longitude Longitude of the location
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param float|null $horizontal_accuracy The radius of uncertainty for the location, measured in meters; 0-1500
      * @param int|null $live_period Period in seconds for which the location will be updated (see {@see https://telegram.org/blog/live-locations Live Locations}, should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely.
      * @param int|null $heading For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
@@ -1161,7 +1174,7 @@ trait AvailableMethods
      * @param string $title Name of the venue
      * @param string $address Address of the venue
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param string|null $foursquare_id Foursquare identifier of the venue
      * @param string|null $foursquare_type Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
      * @param string|null $google_place_id Google Places identifier of the venue
@@ -1239,7 +1252,7 @@ trait AvailableMethods
      * @param string $phone_number Contact's phone number
      * @param string $first_name Contact's first name
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param string|null $last_name Contact's last name
      * @param string|null $vcard Additional data about the contact in the form of a {@see https://en.wikipedia.org/wiki/VCard vCard}, 0-2048 bytes
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
@@ -1307,7 +1320,7 @@ trait AvailableMethods
      * @param string $question Poll question, 1-300 characters
      * @param InputPollOption[]|string[] $options A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param bool|null $is_anonymous True, if the poll needs to be anonymous, defaults to True
      * @param PollType|string|null $type Poll type, “quiz” or “regular”, defaults to “regular”
      * @param bool|null $allows_multiple_answers True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False
@@ -1432,7 +1445,7 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#senddice
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param DiceEmoji|string|null $emoji Emoji on which the dice throw animation is based. Currently, must be one of “”, “”, “”, “”, “”, or “”. Dice can have values 1-6 for “”, “” and “”, values 1-5 for “” and “”, and values 1-64 for “”. Defaults to “”
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding
@@ -1486,13 +1499,41 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to stream a partial message to a user while the message is being generated;
+     * supported only for bots with forum topic mode enabled.
+     * Returns True on success.
+     * @param int $draft_id Unique identifier of the message draft; must be non-zero. Changes of drafts with the same identifier are animated
+     * @param string $text Text of the message to be sent, 1-4096 characters after entities parsing
+     * @param int|null $chat_id Unique identifier for the target private chat
+     * @param int|null $message_thread_id Unique identifier for the target message thread
+     * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message text. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
+     * @see https://core.telegram.org/bots/api#sendmessagedraft
+     */
+    public function sendMessageDraft(
+        int $draft_id,
+        string $text,
+        ?int $chat_id = null,
+        ?int $message_thread_id = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $entities = null,
+    ): ?bool
+    {
+        $parameters = compact('draft_id', 'text', 'chat_id', 'message_thread_id', 'parse_mode', 'entities');
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
      * Use this method when you need to tell the user that something is happening on the bot's side.
      * The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status).
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#sendchataction
      * @param ChatAction|string $action Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for {@see https://core.telegram.org/bots/api#sendmessage text messages}, upload_photo for {@see https://core.telegram.org/bots/api#sendphoto photos}, record_video or upload_video for {@see https://core.telegram.org/bots/api#sendvideo videos}, record_voice or upload_voice for {@see https://core.telegram.org/bots/api#sendvoice voice notes}, upload_document for {@see https://core.telegram.org/bots/api#senddocument general files}, choose_sticker for {@see https://core.telegram.org/bots/api#sendsticker stickers}, find_location for {@see https://core.telegram.org/bots/api#sendlocation location data}, record_video_note or upload_video_note for {@see https://core.telegram.org/bots/api#sendvideonote video notes}.
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param int|null $message_thread_id Unique identifier for the target message thread; supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread or topic of a forum; for supergroups and private chats of bots with forum topic mode enabled only
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the action will be sent
      * @return bool|null
      */
@@ -1697,7 +1738,7 @@ trait AvailableMethods
      * @param bool|null $can_edit_stories Pass True if the administrator can edit stories posted by other users
      * @param bool|null $can_delete_stories Pass True if the administrator can delete stories posted by other users
      * @param bool|null $can_manage_video_chats Pass True if the administrator can manage video chats
-     * @param bool|null $can_restrict_members Pass True if the administrator can restrict, ban or unban chat members
+     * @param bool|null $can_restrict_members Pass True if the administrator can restrict, ban or unban chat members, or access supergroup statistics. For backward compatibility, defaults to True for promotions of channel administrators
      * @param bool|null $can_promote_members Pass True if the administrator can add new administrators with a subset of their own privileges or demote administrators that they have promoted, directly or indirectly (promoted by administrators that were appointed by him)
      * @param bool|null $can_change_info Pass True if the administrator can change chat title, photo and other settings
      * @param bool|null $can_invite_users Pass True if the administrator can invite new users to the chat
@@ -2622,5 +2663,133 @@ trait AvailableMethods
     public function unpinAllGeneralForumTopicMessages(int|string $chat_id): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id'));
+    }
+
+    /**
+     * Returns the gifts owned and hosted by a user.
+     * Returns {@see https://core.telegram.org/bots/api#ownedgifts OwnedGifts} on success.
+     * @param int|null $user_id Unique identifier of the user
+     * @param bool|null $exclude_unlimited Pass True to exclude gifts that can be purchased an unlimited number of times
+     * @param bool|null $exclude_limited_upgradable Pass True to exclude gifts that can be purchased a limited number of times and can be upgraded to unique
+     * @param bool|null $exclude_limited_non_upgradable Pass True to exclude gifts that can be purchased a limited number of times and can't be upgraded to unique
+     * @param bool|null $exclude_from_blockchain Pass True to exclude gifts that were assigned from the TON blockchain and can't be resold or transferred in Telegram
+     * @param bool|null $exclude_unique Pass True to exclude unique gifts
+     * @param bool|null $sort_by_price Pass True to sort results by gift price instead of send date. Sorting is applied before pagination.
+     * @param string|null $offset Offset of the first entry to return as received from the previous request; use an empty string to get the first chunk of results
+     * @param int|null $limit The maximum number of gifts to be returned; 1-100. Defaults to 100
+     * @return OwnedGifts|null
+     * @see https://core.telegram.org/bots/api#getusergifts
+     */
+    public function getUserGifts(
+        ?int $user_id = null,
+        ?bool $exclude_unlimited = null,
+        ?bool $exclude_limited_upgradable = null,
+        ?bool $exclude_limited_non_upgradable = null,
+        ?bool $exclude_from_blockchain = null,
+        ?bool $exclude_unique = null,
+        ?bool $sort_by_price = null,
+        ?string $offset = null,
+        ?int $limit = null,
+    ): ?OwnedGifts
+    {
+        $parameters = compact(
+            'user_id',
+            'exclude_unlimited',
+            'exclude_limited_upgradable',
+            'exclude_limited_non_upgradable',
+            'exclude_from_blockchain',
+            'exclude_unique',
+            'sort_by_price',
+            'offset',
+            'limit',
+        );
+        $parameters['user_id'] ??= $this->userId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, OwnedGifts::class);
+    }
+
+    /**
+     * Returns the gifts owned by a chat.
+     * Returns {@see https://core.telegram.org/bots/api#ownedgifts OwnedGifts} on success.
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param bool|null $exclude_unsaved Pass True to exclude gifts that aren't saved to the chat's profile page. Always True, unless the bot has the can_post_messages administrator right in the channel.
+     * @param bool|null $exclude_saved Pass True to exclude gifts that are saved to the chat's profile page. Always False, unless the bot has the can_post_messages administrator right in the channel.
+     * @param bool|null $exclude_unlimited Pass True to exclude gifts that can be purchased an unlimited number of times
+     * @param bool|null $exclude_limited_upgradable Pass True to exclude gifts that can be purchased a limited number of times and can be upgraded to unique
+     * @param bool|null $exclude_limited_non_upgradable Pass True to exclude gifts that can be purchased a limited number of times and can't be upgraded to unique
+     * @param bool|null $exclude_from_blockchain Pass True to exclude gifts that were assigned from the TON blockchain and can't be resold or transferred in Telegram
+     * @param bool|null $exclude_unique Pass True to exclude unique gifts
+     * @param bool|null $sort_by_price Pass True to sort results by gift price instead of send date. Sorting is applied before pagination.
+     * @param string|null $offset Offset of the first entry to return as received from the previous request; use an empty string to get the first chunk of results
+     * @param int|null $limit The maximum number of gifts to be returned; 1-100. Defaults to 100
+     * @return OwnedGifts|null
+     * @see https://core.telegram.org/bots/api#getchatgifts
+     */
+    public function getChatGifts(
+        int|string|null $chat_id = null,
+        ?bool $exclude_unsaved = null,
+        ?bool $exclude_saved = null,
+        ?bool $exclude_unlimited = null,
+        ?bool $exclude_limited_upgradable = null,
+        ?bool $exclude_limited_non_upgradable = null,
+        ?bool $exclude_from_blockchain = null,
+        ?bool $exclude_unique = null,
+        ?bool $sort_by_price = null,
+        ?string $offset = null,
+        ?int $limit = null,
+    ): ?OwnedGifts
+    {
+        $parameters = compact(
+            'chat_id',
+            'exclude_unsaved',
+            'exclude_saved',
+            'exclude_unlimited',
+            'exclude_limited_upgradable',
+            'exclude_limited_non_upgradable',
+            'exclude_from_blockchain',
+            'exclude_unique',
+            'sort_by_price',
+            'offset',
+            'limit',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, OwnedGifts::class);
+    }
+
+    /**
+     * Reposts a story on behalf of a business account from another business account.
+     * Both business accounts must be managed by the same bot, and the story on the source account must have been posted (or reposted) by the bot.
+     * Requires the can_manage_stories business bot right for both business accounts.
+     * Returns {@see https://core.telegram.org/bots/api#story Story} on success.
+     * @param string|null $business_connection_id Unique identifier of the business connection
+     * @param int $from_chat_id Unique identifier of the chat which posted the story that should be reposted
+     * @param int $from_story_id Unique identifier of the story that should be reposted
+     * @param StoryActivePeriod|int $active_period Period after which the story is moved to the archive, in seconds; must be one of 6 * 3600, 12 * 3600, 86400, or 2 * 86400
+     * @param bool|null $post_to_chat_page Pass True to keep the story accessible after it expires
+     * @param bool|null $protect_content Pass True if the content of the story must be protected from forwarding and screenshotting
+     * @return Story|null
+     * @see https://core.telegram.org/bots/api#repoststory
+     */
+    public function repostStory(
+        int $from_chat_id,
+        int $from_story_id,
+        StoryActivePeriod|int $active_period,
+        ?string $business_connection_id = null,
+        ?bool $post_to_chat_page = null,
+        ?bool $protect_content = null,
+    ): ?Story
+    {
+        $parameters = compact(
+            'from_chat_id',
+            'from_story_id',
+            'active_period',
+            'business_connection_id',
+            'post_to_chat_page',
+            'protect_content'
+        );
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, Story::class);
     }
 }
