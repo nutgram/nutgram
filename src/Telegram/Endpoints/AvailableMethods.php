@@ -1517,8 +1517,7 @@ trait AvailableMethods
         ?int $message_thread_id = null,
         ParseMode|string|null $parse_mode = null,
         ?array $entities = null,
-    ): ?bool
-    {
+    ): ?bool {
         $parameters = compact('draft_id', 'text', 'chat_id', 'message_thread_id', 'parse_mode', 'entities');
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -2690,8 +2689,7 @@ trait AvailableMethods
         ?bool $sort_by_price = null,
         ?string $offset = null,
         ?int $limit = null,
-    ): ?OwnedGifts
-    {
+    ): ?OwnedGifts {
         $parameters = compact(
             'user_id',
             'exclude_unlimited',
@@ -2737,8 +2735,7 @@ trait AvailableMethods
         ?bool $sort_by_price = null,
         ?string $offset = null,
         ?int $limit = null,
-    ): ?OwnedGifts
-    {
+    ): ?OwnedGifts {
         $parameters = compact(
             'chat_id',
             'exclude_unsaved',
@@ -2778,8 +2775,7 @@ trait AvailableMethods
         ?string $business_connection_id = null,
         ?bool $post_to_chat_page = null,
         ?bool $protect_content = null,
-    ): ?Story
-    {
+    ): ?Story {
         $parameters = compact(
             'from_chat_id',
             'from_story_id',
