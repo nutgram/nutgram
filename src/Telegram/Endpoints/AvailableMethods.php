@@ -317,7 +317,7 @@ trait AvailableMethods
             'video_start_timestamp',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'message_thread_id',
+            'message_effect_id',
         ), MessageId::class);
     }
 
