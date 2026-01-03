@@ -10,7 +10,9 @@ use SergiX44\Nutgram\Telegram\Types\Business\BusinessLocation;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessOpeningHours;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
+use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGiftColors;
 use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
+use SergiX44\Nutgram\Telegram\Types\User\UserRating;
 
 /**
  * This object contains full information about a chat.
@@ -303,4 +305,22 @@ class ChatFullInfo extends Chat
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      */
     public ?ChatLocation $location = null;
+
+    /**
+     * Optional.
+     * For private chats, the rating of the user if any
+     */
+    public ?UserRating $rating = null;
+
+    /**
+     * Optional.
+     * The color scheme based on a unique gift that must be used for the chat's name, message replies and link previews
+     */
+    public ?UniqueGiftColors $unique_gift_colors = null;
+
+    /**
+     * Optional.
+     * The number of Telegram Stars a general user have to pay to send a message to the chat
+     */
+    public ?int $paid_message_star_count = null;
 }
