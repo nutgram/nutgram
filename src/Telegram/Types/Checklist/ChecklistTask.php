@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Checklist;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -36,6 +37,11 @@ class ChecklistTask extends BaseType
      * Optional. User that completed the task; omitted if the task wasn't completed
      */
     public ?User $completed_by_user = null;
+
+    /**
+     * Optional. Chat that completed the task; omitted if the task wasn't completed by a chat
+     */
+    public ?Chat $completed_by_chat = null;
 
     /**
      * Optional. Point in time (Unix timestamp) when the task was completed; 0 if the task wasn't completed

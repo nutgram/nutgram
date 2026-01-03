@@ -2,6 +2,30 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.40.0 - 2026-01-03
+
+### What's Changed
+
+* Update to Bot API 9.3 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/923
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.39.2...4.40.0
+
+## 4.39.2 - 2025-11-23
+
+### What's Changed
+
+* PHP 8.5 Compatibility by @Lukasss93 in https://github.com/nutgram/nutgram/pull/922
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.39.1...4.39.2
+
+## 4.39.1 - 2025-11-10
+
+### What's Changed
+
+* Fix missing null values to nullable properties by @Lukasss93 in https://github.com/nutgram/nutgram/pull/921
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.39.0...4.39.1
+
 ## 4.39.0 - 2025-08-20
 
 ### What's Changed

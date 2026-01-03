@@ -90,6 +90,13 @@ class User extends BaseType
      */
     public ?bool $has_main_web_app = null;
 
+    /**
+     * Optional.
+     * True, if the bot has forum topic mode enabled in private chats.
+     * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     */
+    public ?bool $has_topics_enabled = null;
+
     public static function make(
         int $id,
         bool $is_bot,
@@ -104,6 +111,7 @@ class User extends BaseType
         ?bool $supports_inline_queries = null,
         ?bool $can_connect_to_business = null,
         ?bool $has_main_web_app = null,
+        ?bool $has_topics_enabled = null
     ): User {
         $user = new self();
         $user->id = $id;
@@ -119,6 +127,7 @@ class User extends BaseType
         $user->supports_inline_queries = $supports_inline_queries;
         $user->can_connect_to_business = $can_connect_to_business;
         $user->has_main_web_app = $has_main_web_app;
+        $user->has_topics_enabled = $has_topics_enabled;
         return $user;
     }
 }

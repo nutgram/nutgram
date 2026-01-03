@@ -34,16 +34,23 @@ class AcceptedGiftTypes extends BaseType
      */
     public bool $premium_subscription;
 
+    /**
+     * True, if transfers of unique gifts from channels are accepted
+     */
+    public bool $gifts_from_channels;
+
     public function __construct(
         bool $unlimited_gifts,
         bool $limited_gifts,
         bool $unique_gifts,
-        bool $premium_subscription
+        bool $premium_subscription,
+        bool $gifts_from_channels,
     ) {
         parent::__construct();
         $this->unlimited_gifts = $unlimited_gifts;
         $this->limited_gifts = $limited_gifts;
         $this->unique_gifts = $unique_gifts;
         $this->premium_subscription = $premium_subscription;
+        $this->gifts_from_channels = $gifts_from_channels;
     }
 }

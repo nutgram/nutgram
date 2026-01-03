@@ -36,6 +36,17 @@ class Gift extends BaseType
 
     /**
      * Optional.
+     * True, if the gift can only be purchased by Telegram Premium subscribers
+     */
+    public ?bool $is_premium = null;
+
+    /**
+     * Optional. True, if the gift can be used (after being upgraded) to customize a user's appearance
+     */
+    public ?bool $has_colors = null;
+
+    /**
+     * Optional.
      * The total number of the gifts of this type that can be sent; for limited gifts only
      */
     public ?int $total_count = null;
@@ -45,6 +56,28 @@ class Gift extends BaseType
      * The number of remaining gifts of this type that can be sent; for limited gifts only
      */
     public ?int $remaining_count = null;
+
+    /**
+     * Optional.
+     * The total number of gifts of this type that can be sent by the bot; for limited gifts only
+     */
+    public ?int $personal_total_count = null;
+
+    /**
+     * Optional.
+     * The number of remaining gifts of this type that can be sent by the bot; for limited gifts only
+     */
+    public ?int $personal_remaining_count = null;
+
+    /**
+     * Optional. Background of the gift
+     */
+    public ?GiftBackground $background = null;
+
+    /**
+     * Optional. The total number of different unique gifts that can be obtained by upgrading the gift
+     */
+    public ?int $unique_gift_variant_count = null;
 
     /**
      * Optional.

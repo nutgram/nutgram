@@ -29,4 +29,10 @@ class ForumTopic extends BaseType
      * Unique identifier of the custom emoji shown as the topic icon
      */
     public ?string $icon_custom_emoji_id = null;
+
+    /**
+     * Optional.
+     * True, if the name of the topic wasn't specified explicitly by its creator and likely needs to be changed by the bot
+     */
+    public ?bool $is_name_implicit = null;
 }

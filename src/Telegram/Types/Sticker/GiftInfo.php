@@ -35,6 +35,11 @@ class GiftInfo extends BaseType
     public ?int $prepaid_upgrade_star_count = null;
 
     /**
+     * Optional. True, if the gift's upgrade was purchased after the gift was sent
+     */
+    public ?bool $is_upgrade_separate = null;
+
+    /**
      * Optional. True, if the gift can be upgraded to a unique gift
      */
     public ?bool $can_be_upgraded = null;
@@ -55,4 +60,10 @@ class GiftInfo extends BaseType
      * Optional. True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them
      */
     public ?bool $is_private = null;
+
+    /**
+     * Optional. Unique number reserved for this gift when upgraded.
+     * See the number field in {@see https://core.telegram.org/bots/api#uniquegift UniqueGift}
+     */
+    public ?int $unique_gift_number = null;
 }

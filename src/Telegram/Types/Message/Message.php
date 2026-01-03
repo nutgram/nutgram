@@ -139,7 +139,7 @@ class Message extends BaseType
 
     /**
      * Optional.
-     * True, if the message is sent to a forum topic
+     * Unique identifier of a message thread or forum topic to which the message belongs; for supergroups and private chats only
      */
     public ?bool $is_topic_message = null;
 
@@ -507,6 +507,11 @@ class Message extends BaseType
      * Optional. Service message: a unique gift was sent or received
      */
     public ?UniqueGiftInfo $unique_gift = null;
+
+    /**
+     * Optional. Service message: upgrade of a gift was purchased after the gift was sent
+     */
+    public ?GiftInfo $gift_upgrade_sent = null;
 
     /**
      * Optional.
