@@ -21,7 +21,7 @@ trait Games
      * @see https://core.telegram.org/bots/api#sendgame
      * @param string $game_short_name Short name of the game, serves as the unique identifier for the game. Set up your games via {@see https://t.me/botfather @BotFather}.
      * @param int|null $chat_id Unique identifier for the target chat
-     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message

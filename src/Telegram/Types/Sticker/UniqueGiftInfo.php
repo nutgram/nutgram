@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
+use SergiX44\Nutgram\Telegram\Properties\UniqueGiftInfoOrigin;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -16,17 +18,29 @@ class UniqueGiftInfo extends BaseType
     public UniqueGift $gift;
 
     /**
-     * Origin of the gift. Currently, either
+     * Origin of the gift.
+     * Currently, either
      * “upgrade” for gifts upgraded from regular gifts,
-     * “transfer” for gifts transferred from other users or channels, or
-     * “resale” for gifts bought from other users
+     * “transfer” for gifts transferred from other users or channels,
+     * “resale” for gifts bought from other users,
+     * “gifted_upgrade” for upgrades purchased after the gift was sent, or
+     * “offer” for gifts bought or sold through gift purchase offers
      */
-    public string $origin;
+    #[EnumOrScalar]
+    public UniqueGiftInfoOrigin|string $origin;
 
     /**
-     * Optional. For gifts bought from other users, the price paid for the gift
+     * Optional.
+     * For gifts bought from other users, the currency in which the payment for the gift was done.
+     * Currently, one of “XTR” for Telegram Stars or “TON” for toncoins.
      */
-    public ?int $last_resale_star_count = null;
+    public ?string $last_resale_currency = null;
+
+    /**
+     * Optional.
+     * For gifts bought from other users, the price paid for the gift in either Telegram Stars or nanotoncoins
+     */
+    public ?int $last_resale_amount = null;
 
     /**
      * Optional. Unique identifier of the received gift for the bot; only present for gifts received on behalf of business accounts
