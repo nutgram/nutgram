@@ -33,7 +33,7 @@ trait MessageListeners
         }
 
         if (is_subclass_of($callable, TelegramCommand::class)) {
-            if(!($callable instanceof TelegramCommand)){
+            if (!($callable instanceof TelegramCommand)) {
                 $callable = $this->container->make($callable);
             }
 
