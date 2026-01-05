@@ -9,7 +9,7 @@ use SergiX44\Nutgram\Nutgram;
 
 class HelpStringDescriptionCommand implements TelegramCommand
 {
-    public static string|array $description = 'Global description';
+    public string|array $description = 'Global description';
 
     public function __invoke(Nutgram $bot): void
     {

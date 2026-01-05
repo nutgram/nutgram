@@ -32,11 +32,13 @@ trait MessageListeners
             $callable = $callable[0];
         }
 
-        if (is_subclass_of($callable, TelegramCommand::class) &&
-            property_exists($callable, 'description') &&
-            (is_array($callable::$description) || is_string($callable::$description))
-        ) {
-            $registeringCommand->description($callable::$description);
+        if (is_subclass_of($callable, TelegramCommand::class)) {
+            if(!($callable instanceof TelegramCommand)){
+                $callable = $this->container->make($callable);
+            }
+
+            /** @var TelegramCommand $callable */
+            $registeringCommand->description($callable->description);
         }
 
         return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command] = $registeringCommand;
