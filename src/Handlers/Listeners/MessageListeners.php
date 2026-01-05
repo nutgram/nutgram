@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Handlers\Listeners;
 
+use SergiX44\Container\Container;
 use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\Type\Command;
@@ -16,6 +17,8 @@ use SergiX44\Nutgram\Telegram\Properties\UpdateType;
  */
 trait MessageListeners
 {
+    protected Container $container;
+
     /**
      * @param string $command
      * @param $callable
