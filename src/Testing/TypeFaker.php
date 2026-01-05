@@ -19,6 +19,7 @@ use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Hydrator\Annotation\UnionResolver;
 use SergiX44\Nutgram\Hydrator\Hydrator;
 use Throwable;
+use function SergiX44\Nutgram\Support\getSafeReflectionTypeName;
 
 class TypeFaker
 {
@@ -32,8 +33,8 @@ class TypeFaker
     }
 
     /**
-     * @template T of object
-     * @param class-string<T>|string $type
+     * @template T of class-string|string
+     * @param T $type
      * @param array $partial
      * @return T|object|scalar|array|null
      * @throws ContainerExceptionInterface
@@ -98,7 +99,7 @@ class TypeFaker
             if ($property->getType() instanceof ReflectionUnionType) {
                 $typeName = $this->resolveUnionType($property, $userDefined);
             } else {
-                $typeName = $property->getType()?->getName();
+                $typeName = getSafeReflectionTypeName($property->getType());
             }
 
             // if is a class, try to resolve it
@@ -220,12 +221,11 @@ class TypeFaker
             return $reflectionClass;
         }
 
-        /** @var ConcreteResolver $resolver */
+        /** @var ConcreteResolver|null $concreteResolver */
         $concreteResolver = $this->hydrator->getConcreteFor($reflectionClass->getName());
         if ($concreteResolver !== null) {
             try {
-                $rf = new ReflectionClass($concreteResolver->concreteFor($context, $context));
-                return $rf;
+                return new ReflectionClass($concreteResolver->concreteFor($context, $context));
             } catch (Throwable) {
                 $concretes = $concreteResolver->getConcretes();
                 if (!empty($concretes)) {
@@ -252,11 +252,19 @@ class TypeFaker
         }
 
         try {
-            return $unionResolver->resolve(
+            $resolvedType = $unionResolver->resolve(
                 propertyName: $property->name,
                 propertyTypes: array_filter($propertyTypes, fn ($type) => $type instanceof ReflectionNamedType),
                 data: $userDefined,
-            )->getName();
+            );
+
+            $resolvedName = getSafeReflectionTypeName($resolvedType);
+
+            if($resolvedName === null){
+                throw new RuntimeException('Unable to resolve union type');
+            }
+
+            return $resolvedName;
         } catch (Throwable) {
             return $propertyTypes[0]->getName();
         }

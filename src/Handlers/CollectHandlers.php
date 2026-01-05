@@ -55,7 +55,7 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param Array<callable|callable-string|array> $callable
+     * @param callable|callable-string|array|Array<callable|callable-string|array> $callable
      */
     public function middlewares($callable): void
     {

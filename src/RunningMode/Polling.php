@@ -38,7 +38,7 @@ class Polling implements RunningMode
             );
 
             if ($offset === 1) {
-                /** @var Update $last */
+                /** @var Update|false $last */
                 $last = end($updates);
                 if ($last) {
                     $offset = $last->update_id;

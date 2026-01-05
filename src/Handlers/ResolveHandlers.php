@@ -13,6 +13,7 @@ use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
@@ -25,6 +26,8 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 abstract class ResolveHandlers extends CollectHandlers
 {
     use UpdateProxy;
+
+    protected Container $container;
 
     /**
      * @var ConversationCache
@@ -49,6 +52,8 @@ abstract class ResolveHandlers extends CollectHandlers
     abstract public function getConfig(): Configuration;
 
     abstract public function getContainer(): Container;
+
+    abstract public function getInstance(): Nutgram;
 
     /**
      * @param int|null $userId
@@ -189,7 +194,7 @@ abstract class ResolveHandlers extends CollectHandlers
                 // we should escape the conversation
                 if ($handler->getPattern() !== null || $handler->shouldStopConversation()) {
                     if ($conversation instanceof Conversation) {
-                        $conversation->terminate($this);
+                        $conversation->terminate($this->getInstance());
                     }
                     return $handlers;
                 }

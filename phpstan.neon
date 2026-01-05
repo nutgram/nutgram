@@ -1,0 +1,21 @@
+includes:
+    - vendor/phpstan/phpstan-mockery/extension.neon
+
+parameters:
+    level: 5
+    tips:
+        treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        -
+            identifier: property.notFound
+            paths:
+                - src/Testing/FakeNutgram.php
+        -
+            identifier: new.static
+            paths:
+                - src/Exception/ApiException.php
+                - src/Testing/FormDataParser.php
+        -
+            identifier: nullsafe.neverNull
+    paths:
+        - src

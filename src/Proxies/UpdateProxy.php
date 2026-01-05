@@ -113,7 +113,7 @@ trait UpdateProxy
 
     public function isCommand(): bool
     {
-        /** @var MessageEntity $entity */
+        /** @var MessageEntity|null $entity */
         $entity = $this->update?->message?->entities[0] ?? null;
 
         return $entity !== null &&

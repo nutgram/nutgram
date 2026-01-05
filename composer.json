@@ -41,6 +41,8 @@
         "illuminate/testing": "^12.0",
         "mockery/mockery": "^1.6",
         "pestphp/pest": "^3.0|^4.0",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-mockery": "^2.0",
         "roave/security-advisories": "dev-latest",
         "vimeo/psalm": "^6.1.0"
     },
@@ -66,7 +68,8 @@
     "scripts": {
         "test": "@php vendor/bin/pest --fail-on-warning",
         "test-coverage": "@php vendor/bin/pest --coverage --coverage-clover=coverage.xml --fail-on-warning",
-        "psalm": "@php vendor/bin/psalm --no-cache --config=psalm.xml"
+        "psalm": "@php vendor/bin/psalm --no-cache --config=psalm.xml",
+        "phpstan": "@php vendor/bin/phpstan analyse"
     },
     "config": {
         "sort-packages": true,

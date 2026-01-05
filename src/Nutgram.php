@@ -299,6 +299,11 @@ class Nutgram extends ResolveHandlers
         return $this->config;
     }
 
+    public function getInstance(): static
+    {
+        return $this;
+    }
+
     /**
      * @return string
      * @throws ContainerExceptionInterface

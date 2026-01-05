@@ -24,6 +24,7 @@ use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\User\User;
+use function SergiX44\Nutgram\Support\getSafeReflectionTypeName;
 use function sodium_bin2base64;
 
 class FakeNutgram extends Nutgram
@@ -88,7 +89,7 @@ class FakeNutgram extends Nutgram
     protected ?Chat $commonChat = null;
 
     /**
-     * @param mixed $update
+     * @param null|array|object $update
      * @param array $responses
      * @return FakeNutgram
      */
@@ -131,7 +132,8 @@ class FakeNutgram extends Nutgram
             foreach ($properties as $property) {
                 $return = $property->getReturnType();
                 if ($return instanceof ReflectionNamedType) {
-                    $this->methodsReturnTypes[$property->getReturnType()?->getName()][] = $property->getName();
+                    $returnTypeName = getSafeReflectionTypeName($property->getReturnType());
+                    $this->methodsReturnTypes[$returnTypeName][] = $property->getName();
                 }
 
                 if ($return instanceof ReflectionUnionType) {

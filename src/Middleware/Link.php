@@ -9,7 +9,7 @@ use SergiX44\Nutgram\Nutgram;
 class Link
 {
     /**
-     * @var
+     * @var callable
      */
     private $callable;
 

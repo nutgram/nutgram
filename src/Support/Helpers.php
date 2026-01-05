@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Support;
 
 use InvalidArgumentException;
+use ReflectionIntersectionType;
+use ReflectionNamedType;
+use ReflectionType;
+use ReflectionUnionType;
 
 if (!function_exists(__NAMESPACE__.'\array_filter_null')) {
     function array_filter_null(array $array): array
@@ -83,5 +87,24 @@ if (!function_exists(__NAMESPACE__.'\deepLink')) {
     function deepLink(?string $baseUrl = null): DeepLink
     {
         return new DeepLink($baseUrl);
+    }
+}
+
+if (!function_exists(__NAMESPACE__.'\getSafeReflectionTypeName')) {
+    function getSafeReflectionTypeName(?ReflectionType $type): ?string
+    {
+        if($type instanceof ReflectionUnionType) {
+            return $type->getTypes()[0]->getName();
+        }
+
+        if($type instanceof ReflectionIntersectionType) {
+            return getSafeReflectionTypeName($type->getTypes()[0]);
+        }
+
+        if($type instanceof ReflectionNamedType) {
+            return $type->getName();
+        }
+
+        return null;
     }
 }

@@ -7,7 +7,7 @@ namespace SergiX44\Nutgram\Middleware;
 abstract class MiddlewareChain
 {
     /**
-     * @var
+     * @var Link
      */
     protected mixed $head;
 

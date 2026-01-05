@@ -64,7 +64,8 @@ trait SpecialListeners
     }
 
     /**
-     * @param class-string<ApiException>|ApiException $exceptionClass
+     * @template T of class-string<ApiException>|ApiException
+     * @param T $exceptionClass
      * @return Handler
      */
     public function registerApiException(string|ApiException $exceptionClass): Handler
