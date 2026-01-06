@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Handlers\Type\TelegramCommand;
+use SergiX44\Nutgram\Handlers\Type\WithScopes;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
@@ -41,6 +42,10 @@ trait MessageListeners
 
         if ($callable instanceof TelegramCommand) {
             $registeringCommand->description($callable->description());
+        }
+
+        if ($callable instanceof WithScopes) {
+            $registeringCommand->scope($callable->scopes());
         }
 
         return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command] = $registeringCommand;
