@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Handlers\Type;
 
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
-use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
 
 interface WithScopes
 {
