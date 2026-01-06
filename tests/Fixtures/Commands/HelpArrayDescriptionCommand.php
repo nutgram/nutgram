@@ -9,11 +9,14 @@ use SergiX44\Nutgram\Nutgram;
 
 class HelpArrayDescriptionCommand implements TelegramCommand
 {
-    public string|array $description = [
-        '*' => 'Global description',
-        'es' => 'Español descripción',
-        'it' => 'Descrizione italiana',
-    ];
+    public function description(): string|array
+    {
+        return [
+            '*' => 'Global description',
+            'es' => 'Español descripción',
+            'it' => 'Descrizione italiana',
+        ];
+    }
 
     public function __invoke(Nutgram $bot): void
     {

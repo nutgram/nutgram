@@ -17,7 +17,7 @@ use SergiX44\Nutgram\Telegram\Properties\UpdateType;
  */
 trait MessageListeners
 {
-    protected Container $container;
+    abstract public function getContainer(): Container;
 
     /**
      * @param string $command
@@ -35,13 +35,12 @@ trait MessageListeners
             $callable = $callable[0];
         }
 
-        if (is_subclass_of($callable, TelegramCommand::class)) {
-            if (!($callable instanceof TelegramCommand)) {
-                $callable = $this->container->make($callable);
-            }
+        if (is_string($callable)) {
+            $callable = $this->getContainer()->make($callable);
+        }
 
-            /** @var TelegramCommand $callable */
-            $registeringCommand->description($callable->description);
+        if ($callable instanceof TelegramCommand) {
+            $registeringCommand->description($callable->description());
         }
 
         return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command] = $registeringCommand;

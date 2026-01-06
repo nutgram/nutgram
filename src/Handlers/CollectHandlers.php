@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Handlers;
 
+use SergiX44\Container\Container;
 use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\Listeners\MessageListeners;
 use SergiX44\Nutgram\Handlers\Listeners\SpecialListeners;
@@ -44,6 +45,8 @@ abstract class CollectHandlers
      * @var bool
      */
     protected bool $finalized = false;
+
+    abstract public function getContainer(): Container;
 
     /**
      * @param callable|callable-string|array $callable
