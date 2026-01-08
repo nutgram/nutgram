@@ -299,7 +299,7 @@ class Nutgram extends ResolveHandlers
         return $this->config;
     }
 
-    public function getInstance(): static
+    public function getInstance(): Nutgram
     {
         return $this;
     }
