@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Tests\Fixtures\Commands;
 
-use SergiX44\Nutgram\Handlers\Type\TelegramCommand;
+use SergiX44\Nutgram\Handlers\Type\Command\Command;
 use SergiX44\Nutgram\Nutgram;
 
-class HelpStringDescriptionCommand implements TelegramCommand
+class HelpStringDescriptionCommand implements Command
 {
-    public static string|array $description = 'Global description';
+    public function description(): string|array
+    {
+        return 'Global description';
+    }
 
     public function __invoke(Nutgram $bot): void
     {

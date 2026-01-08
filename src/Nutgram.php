@@ -21,7 +21,7 @@ use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\FireHandlers;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
-use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Handlers\Type\InternalCommand;
 use SergiX44\Nutgram\Hydrator\Hydrator;
 use SergiX44\Nutgram\Proxies\GlobalCacheProxy;
 use SergiX44\Nutgram\Proxies\UpdateDataProxy;
@@ -323,7 +323,7 @@ class Nutgram extends ResolveHandlers
 
         $myCommands = [];
         array_walk_recursive($this->handlers, static function ($handler) use (&$myCommands) {
-            if ($handler instanceof Command && !$handler->isHidden() && !$handler->isDisabled()) {
+            if ($handler instanceof InternalCommand && !$handler->isHidden() && !$handler->isDisabled()) {
                 // scopes
                 foreach ($handler->scopes() as $scope) {
                     $hashCode = crc32(serialize(get_object_vars($scope)));

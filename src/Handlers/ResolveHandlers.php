@@ -12,8 +12,7 @@ use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
-use SergiX44\Nutgram\Handlers\Type\Command;
-use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Handlers\Type\InternalCommand;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
@@ -26,8 +25,6 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 abstract class ResolveHandlers extends CollectHandlers
 {
     use UpdateProxy;
-
-    protected Container $container;
 
     /**
      * @var ConversationCache
@@ -333,7 +330,7 @@ abstract class ResolveHandlers extends CollectHandlers
                         foreach ($middlewares as $middleware) {
                             $leaf->middleware($middleware);
                         }
-                        if ($leaf instanceof Command && !empty($scopes)) {
+                        if ($leaf instanceof InternalCommand && !empty($scopes)) {
                             $leaf->scope($scopes);
                         }
                         $leaf->tags([...$leaf->getTags(), ...$tags]);
