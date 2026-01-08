@@ -48,7 +48,7 @@ test('onCommand with description', function () {
     $bot->registerMyCommands();
 });
 
-test('onCommand with TelegramCommand interface', function () {
+test('onCommand with Command interface', function () {
     $bot = Nutgram::fake();
 
     $bot->onCommand('start', HelpStringDescriptionCommand::class);
@@ -64,7 +64,7 @@ test('onCommand with TelegramCommand interface', function () {
     $bot->registerMyCommands();
 });
 
-test('onCommand with TelegramCommand and WithScopes interfaces', function () {
+test('onCommand with Command and WithScopes interfaces', function () {
     $bot = Nutgram::fake();
 
     $bot->onCommand('start', HelpStringDescriptionWithScopesCommand::class);

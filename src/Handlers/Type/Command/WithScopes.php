@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SergiX44\Nutgram\Handlers\Type;
+namespace SergiX44\Nutgram\Handlers\Type\Command;
 
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 

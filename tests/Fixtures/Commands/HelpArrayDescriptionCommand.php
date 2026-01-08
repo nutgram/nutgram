@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Tests\Fixtures\Commands;
 
-use SergiX44\Nutgram\Handlers\Type\TelegramCommand;
+use SergiX44\Nutgram\Handlers\Type\Command\Command;
 use SergiX44\Nutgram\Nutgram;
 
-class HelpArrayDescriptionCommand implements TelegramCommand
+class HelpArrayDescriptionCommand implements Command
 {
     public function description(): string|array
     {

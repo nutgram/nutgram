@@ -7,9 +7,9 @@ namespace SergiX44\Nutgram\Handlers\Listeners;
 use SergiX44\Container\Container;
 use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
-use SergiX44\Nutgram\Handlers\Type\Command;
-use SergiX44\Nutgram\Handlers\Type\TelegramCommand;
-use SergiX44\Nutgram\Handlers\Type\WithScopes;
+use SergiX44\Nutgram\Handlers\Type\Command\Command;
+use SergiX44\Nutgram\Handlers\Type\Command\WithScopes;
+use SergiX44\Nutgram\Handlers\Type\InternalCommand;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
@@ -23,14 +23,14 @@ trait MessageListeners
     /**
      * @param string $command
      * @param $callable
-     * @return Command
+     * @return InternalCommand
      */
-    public function onCommand(string $command, $callable, UpdateType $target = UpdateType::MESSAGE): Command
+    public function onCommand(string $command, $callable, UpdateType $target = UpdateType::MESSAGE): InternalCommand
     {
         $this->checkFinalized();
         $target->validateMessageType();
 
-        $registeringCommand = new Command($callable, $command);
+        $registeringCommand = new InternalCommand($callable, $command);
 
         if (is_array($callable)) {
             $callable = $callable[0];
@@ -40,7 +40,7 @@ trait MessageListeners
             $callable = $this->getContainer()->make($callable);
         }
 
-        if ($callable instanceof TelegramCommand) {
+        if ($callable instanceof Command) {
             $registeringCommand->description($callable->description());
         }
 

@@ -2,20 +2,15 @@
 
 declare(strict_types=1);
 
-namespace SergiX44\Nutgram\Handlers\Type;
+namespace SergiX44\Nutgram\Handlers\Type\Command;
 
-interface TelegramCommand
+interface Command
 {
     /**
      * Human-readable description of the command.
      *
      * When provided as a string, the same description is used for all locales.
-     *
-     * When provided as an array, the keys MUST be language codes (e.g. "en", "de")
-     * and MAY include the special "*" key to define a default description that is
-     * used when a more specific language code is not available.
-     *
-     * Example 1:
+     * Example:
      * <code>
      * public function description(): string|array
      * {
@@ -23,7 +18,10 @@ interface TelegramCommand
      * }
      * </code>
      *
-     * Example 2:
+     * When provided as an array, the keys MUST be language codes (e.g. "en", "de")
+     * and MAY include the special "*" key to define a default description that is
+     * used when a more specific language code is not available.
+     * Example:
      * <code>
      * public function description(): string|array
      * {

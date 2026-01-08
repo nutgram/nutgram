@@ -9,7 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
 
-final class Command extends Handler
+final class InternalCommand extends Handler
 {
     protected array $description = [];
 
@@ -48,9 +48,9 @@ final class Command extends Handler
 
     /**
      * @param array<string, string>|string $description
-     * @return Command
+     * @return InternalCommand
      */
-    public function description(array|string $description): Command
+    public function description(array|string $description): InternalCommand
     {
         if (is_string($description)) {
             $this->description['*'] = $description;
@@ -65,7 +65,7 @@ final class Command extends Handler
      * @param BotCommandScope|BotCommandScope[] $scope
      * @return $this
      */
-    public function scope(BotCommandScope|array $scope): Command
+    public function scope(BotCommandScope|array $scope): InternalCommand
     {
         if (!is_array($scope)) {
             $scope = [$scope];
