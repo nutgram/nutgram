@@ -11,6 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChatAdministrators;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChatMember;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
 use SergiX44\Nutgram\Tests\Fixtures\Commands\HelpStringDescriptionCommand;
+use SergiX44\Nutgram\Tests\Fixtures\Commands\HelpStringDescriptionWithScopesCommand;
 
 test('onCommand without description', function () {
     $bot = Nutgram::fake();
@@ -47,7 +48,7 @@ test('onCommand with description', function () {
     $bot->registerMyCommands();
 });
 
-test('onCommand with WithDescription interface', function () {
+test('onCommand with Command interface', function () {
     $bot = Nutgram::fake();
 
     $bot->onCommand('start', HelpStringDescriptionCommand::class);
@@ -56,6 +57,22 @@ test('onCommand with WithDescription interface', function () {
         expect($request['json'])
             ->scope->toBe('{"type":"default"}')
             ->commands->toBe('[{"command":"start","description":"Global description"}]');
+
+        return $request;
+    });
+
+    $bot->registerMyCommands();
+});
+
+test('onCommand with Command and WithScopes interfaces', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', HelpStringDescriptionWithScopesCommand::class);
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request['json'])
+            ->scope->toBe('{"type":"all_private_chats"}')
+            ->commands->toBe('[{"command":"start","description":"Description with scopes"}]');
 
         return $request;
     });
