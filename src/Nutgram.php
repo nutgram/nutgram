@@ -30,6 +30,7 @@ use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Support\BulkMessenger;
 use SergiX44\Nutgram\Support\HandleLogging;
+use SergiX44\Nutgram\Support\SystemClock;
 use SergiX44\Nutgram\Support\ValidatesWebData;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
@@ -117,7 +118,7 @@ class Nutgram extends ResolveHandlers
             ...$config->clientOptions,
         ]);
         $this->container->set(ClientInterface::class, $this->http);
-        $this->container->singleton(ClockInterface::class, $config->clock);
+        $this->container->singleton(ClockInterface::class, $this->getClock());
         $this->container->singleton(Hydrator::class, $config->hydrator);
         $this->container->singleton(CacheInterface::class, $config->cache);
         $this->container->singleton(LoggerInterface::class, $config->logger);
@@ -358,5 +359,10 @@ class Nutgram extends ResolveHandlers
     public function invoke(callable|array|string $callable, array $params = []): mixed
     {
         return $this->container->call($callable, $params);
+    }
+
+    public function getClock(): ClockInterface
+    {
+        return new SystemClock();
     }
 }

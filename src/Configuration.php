@@ -7,7 +7,6 @@ namespace SergiX44\Nutgram;
 use Closure;
 use DateInterval;
 use Laravel\SerializableClosure\SerializableClosure;
-use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -15,7 +14,6 @@ use Psr\SimpleCache\CacheInterface;
 use SergiX44\Hydrator\HydratorInterface;
 use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Hydrator\NutgramHydrator;
-use SergiX44\Nutgram\Support\SystemClock;
 
 final readonly class Configuration
 {
@@ -53,7 +51,6 @@ final readonly class Configuration
     ];
     public const DEFAULT_ENABLE_HTTP2 = true;
     public const DEFAULT_CONVERSATION_TTL = 43200;
-    public const DEFAULT_CLOCK = SystemClock::class;
 
     public function __construct(
         public string $apiUrl = self::DEFAULT_API_URL,
@@ -73,7 +70,6 @@ final readonly class Configuration
         public int $pollingLimit = self::DEFAULT_POLLING_LIMIT,
         public bool $enableHttp2 = self::DEFAULT_ENABLE_HTTP2,
         public DateInterval|int|null $conversationTtl = self::DEFAULT_CONVERSATION_TTL,
-        public ClockInterface|string $clock = self::DEFAULT_CLOCK,
         public array $extra = [],
     ) {
     }
@@ -101,7 +97,6 @@ final readonly class Configuration
             conversationTtl: array_key_exists('conversation_ttl', $config)
                 ? $config['conversation_ttl']
                 : self::DEFAULT_CONVERSATION_TTL,
-            clock: $config['clock'] ?? self::DEFAULT_CLOCK,
             extra: $config['extra'] ?? [],
         );
     }
@@ -128,7 +123,6 @@ final readonly class Configuration
                 'allowed_updates' => $this->pollingAllowedUpdates,
             ],
             'conversation_ttl' => $this->conversationTtl,
-            'clock' => $this->clock,
             'extra' => $this->extra,
         ];
     }

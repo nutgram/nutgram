@@ -3,9 +3,10 @@
 declare(strict_types=1);
 
 use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
+use SergiX44\Nutgram\Testing\TestClock;
 
 beforeEach(function () {
-    $this->cache = new ArrayCache();
+    $this->cache = new ArrayCache(new TestClock());
 });
 
 it('gets value', function () {
@@ -18,20 +19,13 @@ it('does not get value due to missing key', function () {
 });
 
 it('does not get value due to expired key', function ($ttl) {
-    $this->cache = mock(ArrayCache::class)
-        ->makePartial()
-        ->shouldAllowMockingProtectedMethods()
-        ->shouldReceive('getNow')
-        ->andReturn(
-            new DateTimeImmutable('2023-12-25 00:00:00'),
-            new DateTimeImmutable('2023-12-25 00:00:02'),
-        )
-        ->getMock();
+    TestClock::freeze();
 
     $this->cache->set('foo', 'bar', $ttl);
-    $result = $this->cache->get('foo', 'baz');
 
-    expect($result)->toBe('baz');
+    TestClock::sleep(2);
+
+    expect($this->cache->get('foo', 'baz'))->toBe('baz');
 })->with([
     'int' => [1],
     'DateInterval' => [new DateInterval('PT1S')],

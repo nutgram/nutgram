@@ -11,6 +11,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use InvalidArgumentException;
 use JsonException;
+use Psr\Clock\ClockInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
@@ -103,7 +104,6 @@ class FakeNutgram extends Nutgram
         $c = [
             'client' => ['handler' => $handlerStack, 'base_uri' => ''],
             'api_url' => '',
-            'clock' => TestClock::class,
         ];
 
         if ($config !== null) {
@@ -117,6 +117,11 @@ class FakeNutgram extends Nutgram
         self::inject($bot, $mock, $handlerStack);
 
         return $bot;
+    }
+
+    public function getClock(): ClockInterface
+    {
+        return new TestClock();
     }
 
     private static function inject(Nutgram $bot, MockHandler $mock, HandlerStack $handlerStack): void
