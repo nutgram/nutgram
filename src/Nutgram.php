@@ -49,7 +49,7 @@ class Nutgram extends ResolveHandlers
     /**
      * @var Configuration
      */
-    private Configuration $config;
+    protected Configuration $config;
 
     /**
      * @var Guzzle
@@ -118,7 +118,7 @@ class Nutgram extends ResolveHandlers
             ...$config->clientOptions,
         ]);
         $this->container->set(ClientInterface::class, $this->http);
-        $this->container->singleton(ClockInterface::class, $this->getClock());
+        $this->container->set(ClockInterface::class, new SystemClock());
         $this->container->singleton(Hydrator::class, $config->hydrator);
         $this->container->singleton(CacheInterface::class, $config->cache);
         $this->container->singleton(LoggerInterface::class, $config->logger);
@@ -359,10 +359,5 @@ class Nutgram extends ResolveHandlers
     public function invoke(callable|array|string $callable, array $params = []): mixed
     {
         return $this->container->call($callable, $params);
-    }
-
-    public function getClock(): ClockInterface
-    {
-        return new SystemClock();
     }
 }
