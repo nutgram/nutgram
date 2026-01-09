@@ -17,16 +17,20 @@ use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
 use SergiX44\Nutgram\Hydrator\NutgramHydrator;
 use SergiX44\Nutgram\Support\SystemClock;
 
+/**
+ * Nutgram Configuration Class.
+ * @see https://nutgram.dev/docs/configuration/installation#configuration
+ */
 final readonly class Configuration
 {
-    public const DEFAULT_API_URL = 'https://api.telegram.org';
-    public const DEFAULT_POLLING_TIMEOUT = 10;
-    public const DEFAULT_POLLING_LIMIT = 100;
-    public const DEFAULT_CLIENT_TIMEOUT = 5;
-    public const DEFAULT_HYDRATOR = NutgramHydrator::class;
-    public const DEFAULT_CACHE = ArrayCache::class;
-    public const DEFAULT_LOGGER = NullLogger::class;
-    public const DEFAULT_ALLOWED_UPDATES = [
+    public const string DEFAULT_API_URL = 'https://api.telegram.org';
+    public const int DEFAULT_POLLING_TIMEOUT = 10;
+    public const int DEFAULT_POLLING_LIMIT = 100;
+    public const int DEFAULT_CLIENT_TIMEOUT = 5;
+    public const string DEFAULT_HYDRATOR = NutgramHydrator::class;
+    public const string DEFAULT_CACHE = ArrayCache::class;
+    public const string DEFAULT_LOGGER = NullLogger::class;
+    public const array DEFAULT_ALLOWED_UPDATES = [
         'message',
         'edited_message',
         'channel_post',
@@ -51,10 +55,31 @@ final readonly class Configuration
         'chat_boost',
         'removed_chat_boost',
     ];
-    public const DEFAULT_ENABLE_HTTP2 = true;
-    public const DEFAULT_CONVERSATION_TTL = 43200;
-    public const DEFAULT_CLOCK = SystemClock::class;
+    public const bool DEFAULT_ENABLE_HTTP2 = true;
+    public const int DEFAULT_CONVERSATION_TTL = 43200;
+    public const string DEFAULT_CLOCK = SystemClock::class;
 
+    /**
+     * @param string $apiUrl Useful if you need to change to a local or different API server. WARNING: If the server does not support HTTP/2, remember to disable enableHttp2 in the configuration.
+     * @param int|null $botId Bot ID. It will be automatically retrieved from the bot token if not specified.
+     * @param string|null $botName Useful when the bot is a group bot (with {@see https://core.telegram.org/bots/features#privacy-mode Group Privacy} disabled) and you need to specify the bot name.
+     * @param bool $testEnv Enable test environments useful when working with {@see https://core.telegram.org/bots/webapps#testing-web-apps Web Apps}.
+     * @param bool $isLocal Enable the local mode when used along a self-hosted Telegram Bot API server. Nutgram will copy the file from your Telegram Bot API server instead downloading it. WARNING: If your local server does not support HTTP/2, remember to disable enableHttp2 in the configuration.
+     * @param int $clientTimeout In seconds, define the timeout when sending requests to the Telegram API.
+     * @param array<string, mixed> $clientOptions An array of options for the underlying {@see https://docs.guzzlephp.org/en/stable/quickstart.html Guzzle HTTP client}. Checkout the Guzzle documentation for further informations.
+     * @param ContainerInterface|null $container Delegate container to resolve dependencies.
+     * @param HydratorInterface|class-string $hydrator TODO: TO REMOVE Nutgram is too coupled to nutgram/hydrator. Remove.
+     * @param CacheInterface|class-string $cache The object used to store conversation and data, must implements the PSR-16 CacheInterface.
+     * @param LoggerInterface|class-string $logger The logger used to log debug http requests. Check out the {@see https://nutgram.dev/docs/configuration/logging Logging page} for other info.
+     * @param array<string, string>|Closure|class-string|null $localPathTransformer Useful if you need to remap a relative file path when used along is_local config.
+     * @param int $pollingTimeout In seconds, define the timeout when polling updates from the Telegram API.
+     * @param list<string> $pollingAllowedUpdates Define the allowed updates to be retrieved from the Telegram API.
+     * @param int $pollingLimit Define the maximum number of updates to be retrieved from the Telegram API.
+     * @param bool $enableHttp2 Enable HTTP/2 support
+     * @param DateInterval|int|null $conversationTtl The time-to-live for a conversation in seconds or a DateInterval object. Set to null to disable the TTL.
+     * @param ClockInterface|string $clock TODO: TO REMOVE. Do not expose. Just replace in FakeNutgram
+     * @param array<string, mixed> $extra Extra configuration parameters.
+     */
     public function __construct(
         public string $apiUrl = self::DEFAULT_API_URL,
         public ?int $botId = null,
@@ -78,7 +103,11 @@ final readonly class Configuration
     ) {
     }
 
-
+    /**
+     * Create a configuration from an array.
+     * @param array<string, mixed> $config
+     * @return self
+     */
     public static function fromArray(array $config): self
     {
         return new self(
@@ -106,6 +135,10 @@ final readonly class Configuration
         );
     }
 
+    /**
+     * Returns the configuration as an array.
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
@@ -150,6 +183,10 @@ final readonly class Configuration
         return $data;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return void
+     */
     public function __unserialize(array $data): void
     {
         $data['cache'] = self::DEFAULT_CACHE;

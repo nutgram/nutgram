@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Cache\Adapters;
 
 use DateInterval;
+use DateTimeImmutable;
 use Psr\Clock\ClockInterface;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Support\InteractsWithTime;
@@ -18,7 +19,16 @@ class ArrayCache implements CacheInterface
 {
     use InteractsWithTime;
 
+    /**
+     * The cache values.
+     * @var array<string, mixed>
+     */
     private array $cache = [];
+
+    /**
+     * Expiration timestamps.
+     * @var array<string, DateTimeImmutable>
+     */
     private array $expires = [];
 
     public function __construct(protected ClockInterface $clock = new SystemClock())

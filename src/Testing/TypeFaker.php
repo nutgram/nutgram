@@ -270,7 +270,14 @@ class TypeFaker
         }
     }
 
-    private function fakeArray(ArrayType $arrayType, array $userDefined = [], $depth = 1): array
+    /**
+     * @template T of class-string
+     * @param ArrayType<T> $arrayType
+     * @param array<string, string> $userDefined
+     * @param int $depth
+     * @return T[]
+     */
+    private function fakeArray(ArrayType $arrayType, array $userDefined = [], int $depth = 1): array
     {
         $wrapped = [];
         foreach ($userDefined as $layer) {

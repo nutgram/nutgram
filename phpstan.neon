@@ -2,7 +2,7 @@ includes:
     - vendor/phpstan/phpstan-mockery/extension.neon
 
 parameters:
-    level: 5
+    level: 6
     tips:
         treatPhpDocTypesAsCertain: false
     ignoreErrors:
@@ -17,5 +17,10 @@ parameters:
                 - src/Testing/FormDataParser.php
         -
             identifier: nullsafe.neverNull
+        -
+            identifier: missingType.iterableValue
+            paths:
+                # unable to infer iterable type from inherited docblock
+                - src/Cache/Adapters/ArrayCache.php
     paths:
         - src
