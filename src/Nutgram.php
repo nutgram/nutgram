@@ -62,11 +62,6 @@ class Nutgram extends ResolveHandlers
     protected Hydrator $hydrator;
 
     /**
-     * @var LoggerInterface
-     */
-    private LoggerInterface $logger;
-
-    /**
      * @var Container
      */
     protected Container $container;
@@ -140,7 +135,6 @@ class Nutgram extends ResolveHandlers
         $this->conversationCache = $this->container->get(ConversationCache::class);
         $this->globalCache = $this->container->get(GlobalCache::class);
         $this->userCache = $this->container->get(UserCache::class);
-        $this->logger = $this->container->get(LoggerInterface::class);
 
         $this->container->singleton(RunningMode::class, Polling::class);
         $this->container->set(__CLASS__, $this);
