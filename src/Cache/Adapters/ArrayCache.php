@@ -8,7 +8,6 @@ use DateInterval;
 use Psr\Clock\ClockInterface;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Support\InteractsWithTime;
-use SergiX44\Nutgram\Support\SystemClock;
 
 /**
  * Class ArrayCache
@@ -21,7 +20,7 @@ class ArrayCache implements CacheInterface
     private array $cache = [];
     private array $expires = [];
 
-    public function __construct(protected ClockInterface $clock = new SystemClock())
+    public function __construct(protected ClockInterface $clock)
     {
     }
 

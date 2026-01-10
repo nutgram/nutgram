@@ -30,6 +30,7 @@ use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Support\BulkMessenger;
 use SergiX44\Nutgram\Support\HandleLogging;
+use SergiX44\Nutgram\Support\SystemClock;
 use SergiX44\Nutgram\Support\ValidatesWebData;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
@@ -48,7 +49,7 @@ class Nutgram extends ResolveHandlers
     /**
      * @var Configuration
      */
-    private Configuration $config;
+    protected Configuration $config;
 
     /**
      * @var Guzzle
@@ -117,7 +118,7 @@ class Nutgram extends ResolveHandlers
             ...$config->clientOptions,
         ]);
         $this->container->set(ClientInterface::class, $this->http);
-        $this->container->singleton(ClockInterface::class, $config->clock);
+        $this->container->set(ClockInterface::class, new SystemClock());
         $this->container->singleton(Hydrator::class, $config->hydrator);
         $this->container->singleton(CacheInterface::class, $config->cache);
         $this->container->singleton(LoggerInterface::class, $config->logger);

@@ -11,6 +11,8 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use InvalidArgumentException;
 use JsonException;
+use Psr\Clock\ClockInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
@@ -18,6 +20,9 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionUnionType;
 use RuntimeException;
+use SergiX44\Nutgram\Cache\ConversationCache;
+use SergiX44\Nutgram\Cache\GlobalCache;
+use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
@@ -103,7 +108,6 @@ class FakeNutgram extends Nutgram
         $c = [
             'client' => ['handler' => $handlerStack, 'base_uri' => ''],
             'api_url' => '',
-            'clock' => TestClock::class,
         ];
 
         if ($config !== null) {
@@ -125,6 +129,24 @@ class FakeNutgram extends Nutgram
             /** @psalm-scope-this \SergiX44\Nutgram\Testing\FakeNutgram */
             $this->mockHandler = $mock;
             $this->typeFaker = $this->container->get(TypeFaker::class);
+            $this->container->set(ClockInterface::class, new TestClock());
+            $this->container->singleton(CacheInterface::class, $this->config->cache);
+            $this->container->singleton(ConversationCache::class, fn (ContainerInterface $c) => new ConversationCache(
+                cache: $c->get(CacheInterface::class),
+                botId: $this->getBotId(),
+                ttl: $this->config->conversationTtl,
+            ));
+            $this->container->singleton(GlobalCache::class, fn (ContainerInterface $c) => new GlobalCache(
+                cache: $c->get(CacheInterface::class),
+                botId: $this->getBotId(),
+            ));
+            $this->container->singleton(UserCache::class, fn (ContainerInterface $c) => new UserCache(
+                cache: $c->get(CacheInterface::class),
+                botId: $this->getBotId(),
+            ));
+            $this->conversationCache = $this->container->get(ConversationCache::class);
+            $this->globalCache = $this->container->get(GlobalCache::class);
+            $this->userCache = $this->container->get(UserCache::class);
 
             $properties = (new ReflectionClass(Client::class))->getMethods(ReflectionMethod::IS_PUBLIC);
 
