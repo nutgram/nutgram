@@ -1,6 +1,7 @@
 <?php
 
-use SergiX44\Nutgram\Handlers\Type\Command;
+declare(strict_types=1);
+
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeAllChatAdministrators;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeAllGroupChats;
@@ -9,35 +10,14 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChat;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChatAdministrators;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChatMember;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
-use SergiX44\Nutgram\Tests\Fixtures\CommandWithMultipleDescription;
+use SergiX44\Nutgram\Tests\Fixtures\Commands\HelpStringDescriptionCommand;
+use SergiX44\Nutgram\Tests\Fixtures\Commands\HelpStringDescriptionWithScopesCommand;
 
 test('onCommand without description', function () {
     $bot = Nutgram::fake();
 
     $bot->onCommand('start', function (Nutgram $bot) {
         $bot->sendMessage('Hello World!');
-    });
-
-    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
-        $bot->setGlobalData('called', true);
-        return $request;
-    });
-
-    $bot->registerMyCommands();
-
-    expect($bot->getGlobalData('called', false))->toBeFalse();
-});
-
-test('registerCommand without description', function () {
-    $bot = Nutgram::fake();
-
-    $bot->registerCommand(new class extends Command {
-        protected string $command = 'start';
-
-        public function handle(Nutgram $bot): void
-        {
-            $bot->sendMessage('Hello World!');
-        }
     });
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
@@ -68,23 +48,31 @@ test('onCommand with description', function () {
     $bot->registerMyCommands();
 });
 
-test('registerCommand with description', function () {
+test('onCommand with Command interface', function () {
     $bot = Nutgram::fake();
 
-    $bot->registerCommand(new class extends Command {
-        protected string $command = 'start';
-        protected ?string $description = 'Start command';
-
-        public function handle(Nutgram $bot): void
-        {
-            $bot->sendMessage('Hello World!');
-        }
-    });
+    $bot->onCommand('start', HelpStringDescriptionCommand::class);
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
         expect($request['json'])
             ->scope->toBe('{"type":"default"}')
-            ->commands->toBe('[{"command":"start","description":"Start command"}]');
+            ->commands->toBe('[{"command":"start","description":"Global description"}]');
+
+        return $request;
+    });
+
+    $bot->registerMyCommands();
+});
+
+test('onCommand with Command and WithScopes interfaces', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', HelpStringDescriptionWithScopesCommand::class);
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request['json'])
+            ->scope->toBe('{"type":"all_private_chats"}')
+            ->commands->toBe('[{"command":"start","description":"Description with scopes"}]');
 
         return $request;
     });
@@ -98,37 +86,6 @@ test('onCommand with description and scope', function () {
     $bot->onCommand('start', function (Nutgram $bot) {
         $bot->sendMessage('Hello World!');
     })->description('Start command')->scope(new BotCommandScopeAllPrivateChats);
-
-    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
-        expect($request['json'])
-            ->scope->toBe('{"type":"all_private_chats"}')
-            ->commands->toBe('[{"command":"start","description":"Start command"}]');
-
-        return $request;
-    });
-
-    $bot->registerMyCommands();
-});
-
-test('registerCommand with description and scope', function () {
-    $bot = Nutgram::fake();
-
-    $bot->registerCommand(new class extends Command {
-        protected string $command = 'start';
-        protected ?string $description = 'Start command';
-
-        public function scopes(): array
-        {
-            return [
-                new BotCommandScopeAllPrivateChats,
-            ];
-        }
-
-        public function handle(Nutgram $bot): void
-        {
-            $bot->sendMessage('Hello World!');
-        }
-    });
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
         expect($request['json'])
@@ -580,31 +537,5 @@ test('register commands with languages', function () {
         fn ($x) => $x
             ->commands->toBe('[{"command":"help","description":"Help command"}]')
             ->scope->toBe('{"type":"default"}'),
-    );
-});
-
-test('register command with languages', function () {
-    $bot = Nutgram::fake();
-
-    $history = [];
-
-    $bot->registerCommand(CommandWithMultipleDescription::class);
-
-    $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
-        $history[] = $request['json'];
-
-        return $request;
-    });
-
-    $bot->registerMyCommands();
-
-    expect($history)->sequence(
-        fn ($x) => $x
-            ->commands->toBe('[{"command":"start","description":"Start the bot"}]')
-            ->scope->toBe('{"type":"default"}'),
-        fn ($x) => $x
-            ->commands->toBe('[{"command":"start","description":"Avvia il bot"}]')
-            ->scope->toBe('{"type":"default"}')
-            ->language_code->toBe('it'),
     );
 });
