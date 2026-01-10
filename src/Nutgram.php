@@ -132,9 +132,6 @@ class Nutgram extends ResolveHandlers
         ));
 
         $this->hydrator = $this->container->get(Hydrator::class);
-        $this->conversationCache = $this->container->get(ConversationCache::class);
-        $this->globalCache = $this->container->get(GlobalCache::class);
-        $this->userCache = $this->container->get(UserCache::class);
 
         $this->container->singleton(RunningMode::class, Polling::class);
         $this->container->set(__CLASS__, $this);
@@ -251,7 +248,7 @@ class Nutgram extends ResolveHandlers
             throw new InvalidArgumentException('You cannot step a conversation without userId and chatId.');
         }
 
-        $this->conversationCache->set($userId, $chatId, $callable);
+        $this->container->get(ConversationCache::class)->set($userId, $chatId, $callable);
 
         return $this;
     }
@@ -271,7 +268,7 @@ class Nutgram extends ResolveHandlers
             throw new InvalidArgumentException('You cannot end a conversation without userId and chatId.');
         }
 
-        $this->conversationCache->delete($userId, $chatId);
+        $this->container->get(ConversationCache::class)->delete($userId, $chatId);
 
         return $this;
     }

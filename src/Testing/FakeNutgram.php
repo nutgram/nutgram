@@ -144,9 +144,6 @@ class FakeNutgram extends Nutgram
                 cache: $c->get(CacheInterface::class),
                 botId: $this->getBotId(),
             ));
-            $this->conversationCache = $this->container->get(ConversationCache::class);
-            $this->globalCache = $this->container->get(GlobalCache::class);
-            $this->userCache = $this->container->get(UserCache::class);
 
             $properties = (new ReflectionClass(Client::class))->getMethods(ReflectionMethod::IS_PUBLIC);
 
