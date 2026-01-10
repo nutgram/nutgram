@@ -130,23 +130,6 @@ class FakeNutgram extends Nutgram
             $this->mockHandler = $mock;
             $this->typeFaker = $this->container->get(TypeFaker::class);
             $this->container->set(ClockInterface::class, new TestClock());
-            $this->container->singleton(CacheInterface::class, $this->config->cache);
-            $this->container->singleton(ConversationCache::class, fn (ContainerInterface $c) => new ConversationCache(
-                cache: $c->get(CacheInterface::class),
-                botId: $this->getBotId(),
-                ttl: $this->config->conversationTtl,
-            ));
-            $this->container->singleton(GlobalCache::class, fn (ContainerInterface $c) => new GlobalCache(
-                cache: $c->get(CacheInterface::class),
-                botId: $this->getBotId(),
-            ));
-            $this->container->singleton(UserCache::class, fn (ContainerInterface $c) => new UserCache(
-                cache: $c->get(CacheInterface::class),
-                botId: $this->getBotId(),
-            ));
-            $this->conversationCache = $this->container->get(ConversationCache::class);
-            $this->globalCache = $this->container->get(GlobalCache::class);
-            $this->userCache = $this->container->get(UserCache::class);
 
             $properties = (new ReflectionClass(Client::class))->getMethods(ReflectionMethod::IS_PUBLIC);
 

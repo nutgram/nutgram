@@ -385,8 +385,11 @@ trait Client
 
         return match (true) {
             is_scalar($json->result) => $json->result,
-            is_array($json->result) => $this->hydrator->hydrateArray($json->result, $mapTo),
-            default => $this->hydrator->hydrate($json->result, $mapTo)
+            is_array($json->result) => array_map(
+                callback: fn ($obj): mixed => $this->hydrator->hydrate($mapTo, $obj),
+                array: $json->result,
+            ),
+            default => $this->hydrator->hydrate($mapTo, $json->result)
         };
     }
 

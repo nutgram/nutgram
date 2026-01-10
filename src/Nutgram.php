@@ -15,6 +15,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Container\Container;
+use SergiX44\Hydrator\Hydrator;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
@@ -22,7 +23,6 @@ use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\FireHandlers;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
 use SergiX44\Nutgram\Handlers\Type\InternalCommand;
-use SergiX44\Nutgram\Hydrator\Hydrator;
 use SergiX44\Nutgram\Proxies\GlobalCacheProxy;
 use SergiX44\Nutgram\Proxies\UpdateDataProxy;
 use SergiX44\Nutgram\Proxies\UserCacheProxy;
@@ -60,11 +60,6 @@ class Nutgram extends ResolveHandlers
      * @var Hydrator
      */
     protected Hydrator $hydrator;
-
-    /**
-     * @var LoggerInterface
-     */
-    private LoggerInterface $logger;
 
     /**
      * @var Container
@@ -119,7 +114,6 @@ class Nutgram extends ResolveHandlers
         ]);
         $this->container->set(ClientInterface::class, $this->http);
         $this->container->set(ClockInterface::class, new SystemClock());
-        $this->container->singleton(Hydrator::class, $config->hydrator);
         $this->container->singleton(CacheInterface::class, $config->cache);
         $this->container->singleton(LoggerInterface::class, $config->logger);
         $this->container->singleton(ConversationCache::class, fn (ContainerInterface $c) => new ConversationCache(
@@ -136,11 +130,7 @@ class Nutgram extends ResolveHandlers
             botId: $this->getBotId(),
         ));
 
-        $this->hydrator = $this->container->get(Hydrator::class);
-        $this->conversationCache = $this->container->get(ConversationCache::class);
-        $this->globalCache = $this->container->get(GlobalCache::class);
-        $this->userCache = $this->container->get(UserCache::class);
-        $this->logger = $this->container->get(LoggerInterface::class);
+        $this->hydrator = new Hydrator($this->container);
 
         $this->container->singleton(RunningMode::class, Polling::class);
         $this->container->set(__CLASS__, $this);
@@ -257,7 +247,7 @@ class Nutgram extends ResolveHandlers
             throw new InvalidArgumentException('You cannot step a conversation without userId and chatId.');
         }
 
-        $this->conversationCache->set($userId, $chatId, $callable);
+        $this->container->get(ConversationCache::class)->set($userId, $chatId, $callable);
 
         return $this;
     }
@@ -277,7 +267,7 @@ class Nutgram extends ResolveHandlers
             throw new InvalidArgumentException('You cannot end a conversation without userId and chatId.');
         }
 
-        $this->conversationCache->delete($userId, $chatId);
+        $this->container->get(ConversationCache::class)->delete($userId, $chatId);
 
         return $this;
     }
