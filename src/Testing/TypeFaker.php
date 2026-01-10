@@ -17,18 +17,18 @@ use RuntimeException;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Hydrator\Annotation\UnionResolver;
-use SergiX44\Nutgram\Hydrator\Hydrator;
+use SergiX44\Hydrator\Hydrator;
+use SergiX44\Nutgram\Nutgram;
 use Throwable;
 
 class TypeFaker
 {
+    private Hydrator $hydrator;
     private array $resolveStack = [];
 
-    /**
-     * @param Hydrator $hydrator
-     */
-    public function __construct(private Hydrator $hydrator)
+    public function __construct(Nutgram $bot)
     {
+        $this->hydrator = new Hydrator($bot->getContainer());
     }
 
     /**
@@ -45,7 +45,7 @@ class TypeFaker
         try {
             if (class_exists($type)) {
                 $data = $this->fakeDataFor($type, $partial);
-                return $this->hydrator->hydrate($data, $type);
+                return $this->hydrator->hydrate($type, $data);
             }
 
             return self::randomScalarOf($type);
@@ -221,11 +221,10 @@ class TypeFaker
         }
 
         /** @var ConcreteResolver $resolver */
-        $concreteResolver = $this->hydrator->getConcreteFor($reflectionClass->getName());
+        $concreteResolver = $this->hydrator->getConcreteResolverFor($reflectionClass->getName());
         if ($concreteResolver !== null) {
             try {
-                $rf = new ReflectionClass($concreteResolver->concreteFor($context, $context));
-                return $rf;
+                return new ReflectionClass($concreteResolver->concreteFor($context, $context));
             } catch (Throwable) {
                 $concretes = $concreteResolver->getConcretes();
                 if (!empty($concretes)) {
