@@ -22,25 +22,11 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 /**
  * Trait ResolveHandlers
  * @package SergiX44\Nutgram\Handlers
+ * @mixin Nutgram
  */
 abstract class ResolveHandlers extends CollectHandlers
 {
     use UpdateProxy;
-
-    /**
-     * @var ConversationCache
-     */
-    protected ConversationCache $conversationCache;
-
-    /**
-     * @var GlobalCache
-     */
-    protected GlobalCache $globalCache;
-
-    /**
-     * @var UserCache
-     */
-    protected UserCache $userCache;
 
     /**
      * @var Update|null
@@ -65,7 +51,7 @@ abstract class ResolveHandlers extends CollectHandlers
             return null;
         }
 
-        return $this->conversationCache->get($userId, $chatId);
+        return $this->container->get(ConversationCache::class)->get($userId, $chatId);
     }
 
     /**

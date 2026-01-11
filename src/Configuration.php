@@ -7,15 +7,11 @@ namespace SergiX44\Nutgram;
 use Closure;
 use DateInterval;
 use Laravel\SerializableClosure\SerializableClosure;
-use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Psr\SimpleCache\CacheInterface;
-use SergiX44\Hydrator\HydratorInterface;
 use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
-use SergiX44\Nutgram\Hydrator\NutgramHydrator;
-use SergiX44\Nutgram\Support\SystemClock;
 
 /**
  * Nutgram Configuration Class.
@@ -27,7 +23,6 @@ final readonly class Configuration
     public const int DEFAULT_POLLING_TIMEOUT = 10;
     public const int DEFAULT_POLLING_LIMIT = 100;
     public const int DEFAULT_CLIENT_TIMEOUT = 5;
-    public const string DEFAULT_HYDRATOR = NutgramHydrator::class;
     public const string DEFAULT_CACHE = ArrayCache::class;
     public const string DEFAULT_LOGGER = NullLogger::class;
     public const array DEFAULT_ALLOWED_UPDATES = [
@@ -57,7 +52,6 @@ final readonly class Configuration
     ];
     public const bool DEFAULT_ENABLE_HTTP2 = true;
     public const int DEFAULT_CONVERSATION_TTL = 43200;
-    public const string DEFAULT_CLOCK = SystemClock::class;
 
     /**
      * @param string $apiUrl Useful if you need to change to a local or different API server. WARNING: If the server does not support HTTP/2, remember to disable enableHttp2 in the configuration.
@@ -68,7 +62,6 @@ final readonly class Configuration
      * @param int $clientTimeout In seconds, define the timeout when sending requests to the Telegram API.
      * @param array<string, mixed> $clientOptions An array of options for the underlying {@see https://docs.guzzlephp.org/en/stable/quickstart.html Guzzle HTTP client}. Checkout the Guzzle documentation for further informations.
      * @param ContainerInterface|null $container Delegate container to resolve dependencies.
-     * @param HydratorInterface|class-string $hydrator TODO: TO REMOVE Nutgram is too coupled to nutgram/hydrator. Remove.
      * @param CacheInterface|class-string $cache The object used to store conversation and data, must implements the PSR-16 CacheInterface.
      * @param LoggerInterface|class-string $logger The logger used to log debug http requests. Check out the {@see https://nutgram.dev/docs/configuration/logging Logging page} for other info.
      * @param array<string, string>|Closure|class-string|null $localPathTransformer Useful if you need to remap a relative file path when used along is_local config.
@@ -77,7 +70,6 @@ final readonly class Configuration
      * @param int $pollingLimit Define the maximum number of updates to be retrieved from the Telegram API.
      * @param bool $enableHttp2 Enable HTTP/2 support
      * @param DateInterval|int|null $conversationTtl The time-to-live for a conversation in seconds or a DateInterval object. Set to null to disable the TTL.
-     * @param ClockInterface|string $clock TODO: TO REMOVE. Do not expose. Just replace in FakeNutgram
      * @param array<string, mixed> $extra Extra configuration parameters.
      */
     public function __construct(
@@ -89,7 +81,6 @@ final readonly class Configuration
         public int $clientTimeout = self::DEFAULT_CLIENT_TIMEOUT,
         public array $clientOptions = [],
         public ?ContainerInterface $container = null,
-        public HydratorInterface|string $hydrator = self::DEFAULT_HYDRATOR,
         public CacheInterface|string $cache = self::DEFAULT_CACHE,
         public string|LoggerInterface $logger = self::DEFAULT_LOGGER,
         public array|Closure|string|null $localPathTransformer = null,
@@ -98,7 +89,6 @@ final readonly class Configuration
         public int $pollingLimit = self::DEFAULT_POLLING_LIMIT,
         public bool $enableHttp2 = self::DEFAULT_ENABLE_HTTP2,
         public DateInterval|int|null $conversationTtl = self::DEFAULT_CONVERSATION_TTL,
-        public ClockInterface|string $clock = self::DEFAULT_CLOCK,
         public array $extra = [],
     ) {
     }
@@ -119,7 +109,6 @@ final readonly class Configuration
             clientTimeout: $config['timeout'] ?? self::DEFAULT_CLIENT_TIMEOUT,
             clientOptions: $config['client'] ?? [],
             container: $config['container'] ?? null,
-            hydrator: $config['hydrator'] ?? self::DEFAULT_HYDRATOR,
             cache: $config['cache'] ?? self::DEFAULT_CACHE,
             logger: $config['logger'] ?? self::DEFAULT_LOGGER,
             localPathTransformer: $config['local_path_transformer'] ?? null,
@@ -130,7 +119,6 @@ final readonly class Configuration
             conversationTtl: array_key_exists('conversation_ttl', $config)
                 ? $config['conversation_ttl']
                 : self::DEFAULT_CONVERSATION_TTL,
-            clock: $config['clock'] ?? self::DEFAULT_CLOCK,
             extra: $config['extra'] ?? [],
         );
     }
@@ -150,7 +138,6 @@ final readonly class Configuration
             'timeout' => $this->clientTimeout,
             'client' => $this->clientOptions,
             'container' => $this->container,
-            'hydrator' => $this->hydrator,
             'cache' => $this->cache,
             'logger' => $this->logger,
             'local_path_transformer' => $this->localPathTransformer,
@@ -161,7 +148,6 @@ final readonly class Configuration
                 'allowed_updates' => $this->pollingAllowedUpdates,
             ],
             'conversation_ttl' => $this->conversationTtl,
-            'clock' => $this->clock,
             'extra' => $this->extra,
         ];
     }
