@@ -62,7 +62,7 @@ class Handler extends MiddlewareChain
     protected bool $skipGlobalMiddlewares = false;
 
     /**
-     * @var array
+     * @var list<callable>
      */
     protected array $skippedGlobalMiddlewares = [];
 
@@ -70,7 +70,7 @@ class Handler extends MiddlewareChain
 
     /**
      * Handler constructor.
-     * @param $callable
+     * @param callable $callable
      * @param string|null $pattern
      */
     public function __construct($callable, ?string $pattern = null)
@@ -147,7 +147,7 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param array $parameters
+     * @param list<mixed> $parameters
      * @return Handler
      */
     public function addParameters(array $parameters): Handler

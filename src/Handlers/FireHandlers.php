@@ -24,8 +24,7 @@ trait FireHandlers
 
     /**
      * Returns a list of all parameters parsed by the current handlers
-     *
-     * @return array
+     * @return array<string, mixed>
      */
     public function currentParameters(): array
     {
@@ -34,7 +33,7 @@ trait FireHandlers
 
     /**
      * @param string $type
-     * @param array $parameters
+     * @param list<mixed> $parameters
      * @return mixed
      * @throws Throwable
      */
@@ -46,8 +45,8 @@ trait FireHandlers
     }
 
     /**
-     * @param array $handlers
-     * @param array $parameters
+     * @param Handler[] $handlers
+     * @param list<mixed> $parameters
      * @return mixed
      * @throws Throwable
      */
@@ -55,7 +54,6 @@ trait FireHandlers
     {
         $result = null;
 
-        /** @var Handler $handler */
         foreach ($handlers as $handler) {
             try {
                 $this->currentHandler = $handler;

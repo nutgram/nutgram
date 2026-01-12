@@ -17,7 +17,7 @@ abstract class CollectHandlers
     use UpdateListeners, MessageListeners, SpecialListeners, InteractsWithRateLimit;
 
     /**
-     * @var array
+     * @var list<callable>
      */
     protected array $globalMiddlewares = [];
 
@@ -27,7 +27,7 @@ abstract class CollectHandlers
     protected string $target = 'handlers';
 
     /**
-     * @var array
+     * @var array<string, callable>|array<string, array<string, callable>>
      */
     protected array $handlers = [];
 
@@ -37,19 +37,16 @@ abstract class CollectHandlers
     protected array $groups = [];
 
     /**
-     * @var array
+     * @var array<string, callable>|array<string, array<string, callable>>
      */
     protected array $groupHandlers = [];
 
-    /**
-     * @var bool
-     */
     protected bool $finalized = false;
 
     abstract public function getContainer(): Container;
 
     /**
-     * @param callable|callable-string|array $callable
+     * @param callable $callable
      */
     public function middleware($callable): void
     {
@@ -58,15 +55,14 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param callable|callable-string|array|Array<callable|callable-string|array> $callable
+     * @param list<callable> $callables
      */
-    public function middlewares($callable): void
+    public function middlewares($callables): void
     {
         $this->checkFinalized();
-        $middlewares = is_array($callable) ? $callable : [$callable];
 
-        foreach ($middlewares as $middleware) {
-            $this->middleware($middleware);
+        foreach ($callables as $callable) {
+            $this->middleware($callable);
         }
     }
 
@@ -78,8 +74,8 @@ abstract class CollectHandlers
 
     /**
      * @param string $type
-     * @param $callableOrPattern
-     * @param $callable
+     * @param callable|string $callableOrPattern
+     * @param callable|null $callable
      * @return Handler
      */
     private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
@@ -113,7 +109,7 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param $callable
+     * @param callable $callable
      * @return Handler
      */
     public function onUpdate($callable): Handler
