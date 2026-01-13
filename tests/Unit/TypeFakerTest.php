@@ -90,10 +90,10 @@ it('get user profile photos with default', function () {
         ]);
 });
 
-it('gets message from replied message', function(){
+it('gets message from replied message', function () {
     $bot = Nutgram::fake();
 
-    $bot->onCommand('hello', function(Nutgram $bot){
+    $bot->onCommand('hello', function (Nutgram $bot) {
         $reply = $bot->message()->reply_to_message;
 
         expect($reply)->toBeInstanceOf(Message::class)
