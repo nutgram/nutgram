@@ -9,7 +9,7 @@ final readonly class IsAdmin
 {
     public function __invoke(Nutgram $bot, Link $next): void
     {
-        if($bot->userId() !== 1111) {
+        if ($bot->userId() !== 1111) {
             return;
         }
 
