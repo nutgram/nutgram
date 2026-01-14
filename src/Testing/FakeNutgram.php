@@ -299,7 +299,7 @@ class FakeNutgram extends Nutgram
 
             $data = self::getActualData($request);
 
-            if(!empty($data)){
+            if (!empty($data)) {
                 $content = json_encode(
                     value: $data,
                     flags: JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR,
