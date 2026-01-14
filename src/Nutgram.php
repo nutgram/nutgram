@@ -77,9 +77,7 @@ class Nutgram extends ResolveHandlers
      */
     public function __construct(string $token, ?Configuration $config = null)
     {
-        if (empty($token)) {
-            throw new InvalidArgumentException('The token cannot be empty.');
-        }
+        $this->validateToken($token);
 
         $this->bootstrap($token, $config ?? new Configuration());
     }
@@ -142,7 +140,7 @@ class Nutgram extends ResolveHandlers
         $this->container->set(__CLASS__, $this);
     }
 
-    protected function getBotId(): int
+    public function getBotId(): int
     {
         return $this->config->botId ?? (int)explode(':', $this->token)[0];
     }
@@ -355,5 +353,21 @@ class Nutgram extends ResolveHandlers
     public function invoke(callable|array|string $callable, array $params = []): mixed
     {
         return $this->container->call($callable, $params);
+    }
+
+    /**
+     * Validate the token
+     * @param string $token
+     * @return void
+     */
+    protected function validateToken(string $token): void
+    {
+        if (empty($token)) {
+            throw new InvalidArgumentException('The token cannot be empty.');
+        }
+
+        if (!preg_match("/\d+:.+/", $token)) {
+            throw new InvalidArgumentException('The token is invalid.');
+        }
     }
 }
