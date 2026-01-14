@@ -140,7 +140,7 @@ class Nutgram extends ResolveHandlers
         $this->container->set(__CLASS__, $this);
     }
 
-    protected function getBotId(): int
+    public function getBotId(): int
     {
         return $this->config->botId ?? (int)explode(':', $this->token)[0];
     }
