@@ -5,7 +5,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 
 test('the instance can be serialized', function () {
-    $bot = new Nutgram('fake');
+    $bot = new Nutgram('123:abc');
 
     $str = serialize($bot);
 
@@ -21,7 +21,7 @@ test('it can serialize with local path transformer as closure', function () {
         return 'blah';
     };
 
-    $bot = new Nutgram('fake', new Configuration(localPathTransformer: $closure));
+    $bot = new Nutgram('123:abc', new Configuration(localPathTransformer: $closure));
 
     $str = serialize($bot);
 
@@ -33,7 +33,7 @@ test('it can serialize with local path transformer as closure', function () {
 });
 
 test('the instance works with local path transformer as callable', function () {
-    $bot = new Nutgram('fake', new Configuration(localPathTransformer: DummyPathTransformer::class));
+    $bot = new Nutgram('123:abc', new Configuration(localPathTransformer: DummyPathTransformer::class));
 
     $str = serialize($bot);
 
