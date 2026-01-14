@@ -199,16 +199,7 @@ trait Asserts
 
     public function assertMiddlewarePassed(array|callable|string|object $callable): self
     {
-        if(!is_object($callable)){
-            $middleware = $this->getContainer()->make($callable);
-        } else {
-            $middleware = $callable;
-        }
-
-        $passed = false;
-        $middleware($this, new Link(function () use (&$passed) {
-            $passed = true;
-        }));
+        $passed = $this->invokeMiddleware($callable);
 
         PHPUnit::assertTrue($passed, 'Middleware did not pass.');
 
@@ -217,7 +208,20 @@ trait Asserts
 
     public function assertMiddlewareBlocked(array|callable|string|object $callable): self
     {
-        if(!is_object($callable)){
+        $passed = $this->invokeMiddleware($callable);
+
+        PHPUnit::assertFalse($passed, 'Middleware passed.');
+
+        return $this;
+    }
+
+    /**
+     * @param callable|object|array|string $callable
+     * @return bool
+     */
+    protected function invokeMiddleware(callable|object|array|string $callable): bool
+    {
+        if (!is_object($callable)) {
             $middleware = $this->getContainer()->make($callable);
         } else {
             $middleware = $callable;
@@ -228,8 +232,6 @@ trait Asserts
             $passed = true;
         }));
 
-        PHPUnit::assertFalse($passed, 'Middleware passed.');
-
-        return $this;
+        return $passed;
     }
 }
