@@ -7,6 +7,8 @@ use GuzzleHttp\Psr7\Request;
 use InvalidArgumentException;
 use JsonException;
 use PHPUnit\Framework\Assert as PHPUnit;
+use SergiX44\Nutgram\Middleware\Link;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Testing\Constraints\ArraySubset;
 
@@ -194,5 +196,21 @@ trait Asserts
             throw new InvalidArgumentException('You cannot do this assert without userId and chatId.');
         }
         return [$userId, $chatId];
+    }
+
+    public function assertMiddlewarePassed(int $index = 0): self
+    {
+        $index ??= $this->sequenceIndex;
+        PHPUnit::assertTrue($this->middlewareHistory[$index], "Middleware at index $index did not pass.");
+
+        return $this;
+    }
+
+    public function assertMiddlewareBlocked(int $index = 0): self
+    {
+        $index ??= $this->sequenceIndex;
+        PHPUnit::assertFalse($this->middlewareHistory[$index], "Middleware at index $index passed.");
+
+        return $this;
     }
 }
