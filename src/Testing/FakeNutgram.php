@@ -225,21 +225,30 @@ class FakeNutgram extends Nutgram
         return $this;
     }
 
-    protected function registerMiddlewares(): void
+    protected function registerTestingMiddlewares(): void
     {
-        foreach ($this->middlewareToTest as $i => $middleware) {
-            $this->middlewareHistory[$i] = false;
-
-            $this->middleware($middleware);
-            $this->middleware(function (Nutgram $bot, Link $next) use ($i) {
-                $this->middlewareHistory[$i] = true;
-
-                $next($bot);
-            });
+        if (empty($this->middlewareToTest)) {
+            return;
         }
 
-        $this->onUpdate(function () {
+        $handler = $this->onUpdate(function () {
+            // do nothing
         });
+
+        $count = count($this->middlewareToTest) - 1;
+        for ($i = $count; $i >= 0; $i--) {
+            $middleware = $this->middlewareToTest[$i];
+            $index = $count - $i;
+            $this->middlewareHistory[$index] = false;
+
+            $handler
+                ->middleware(function (Nutgram $bot, Link $next) use ($index) {
+                    $this->middlewareHistory[$index] = true;
+
+                    $next($bot);
+                })
+                ->middleware($middleware);
+        }
     }
 
     /**
@@ -248,7 +257,7 @@ class FakeNutgram extends Nutgram
     public function reply(): self
     {
         $this->testingHistory = [];
-        $this->registerMiddlewares();
+        $this->registerTestingMiddlewares();
 
         $this->run();
 

@@ -200,6 +200,7 @@ trait Asserts
 
     public function assertMiddlewarePassed(int $index = 0): self
     {
+        $index ??= $this->sequenceIndex;
         PHPUnit::assertTrue($this->middlewareHistory[$index], "Middleware at index $index did not pass.");
 
         return $this;
@@ -207,6 +208,7 @@ trait Asserts
 
     public function assertMiddlewareBlocked(int $index = 0): self
     {
+        $index ??= $this->sequenceIndex;
         PHPUnit::assertFalse($this->middlewareHistory[$index], "Middleware at index $index passed.");
 
         return $this;
