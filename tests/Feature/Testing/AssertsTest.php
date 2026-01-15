@@ -52,7 +52,7 @@ it('checks two middleware in chain using sequence', function () {
         ->willTestMiddleware(new HasPermission('test'))
         ->reply()
         ->assertSequence(
-            fn(FakeNutgram $x) => $x->assertMiddlewarePassed(),
-            fn(FakeNutgram $x) => $x->assertMiddlewarePassed(),
+            fn (FakeNutgram $x) => $x->assertMiddlewarePassed(),
+            fn (FakeNutgram $x) => $x->assertMiddlewarePassed(),
         );
 });
