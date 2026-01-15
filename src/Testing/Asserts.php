@@ -221,16 +221,13 @@ trait Asserts
      */
     protected function invokeMiddleware(callable|object|array|string $callable): bool
     {
-        if (!is_object($callable)) {
-            $middleware = $this->getContainer()->make($callable);
-        } else {
-            $middleware = $callable;
-        }
-
         $passed = false;
-        $middleware($this, new Link(function () use (&$passed) {
+
+        $this->getContainer()->set(Link::class, new Link(function () use (&$passed) {
             $passed = true;
         }));
+
+        $this->invoke($callable);
 
         return $passed;
     }

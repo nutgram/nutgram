@@ -15,4 +15,13 @@ final readonly class IsAdmin
 
         $next($bot);
     }
+
+    public function moderator(Nutgram $bot, Link $next): void
+    {
+        if($bot->userId() !== 2222) {
+            return;
+        }
+
+        $next($bot);
+    }
 }
