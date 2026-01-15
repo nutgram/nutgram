@@ -17,6 +17,7 @@ use ReflectionNamedType;
 use ReflectionUnionType;
 use RuntimeException;
 use SergiX44\Nutgram\Configuration;
+use SergiX44\Nutgram\Middleware\Link;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\Telegram\Client;
@@ -84,6 +85,9 @@ class FakeNutgram extends Nutgram
      * @var Chat|null
      */
     protected ?Chat $commonChat = null;
+
+    protected array $middlewareToTest = [];
+    protected array $middlewareHistory = [];
 
     /**
      * @param mixed $update
@@ -214,12 +218,37 @@ class FakeNutgram extends Nutgram
         return $this;
     }
 
+    public function willTestMiddleware(callable|array|string $callable): self
+    {
+        $this->middlewareToTest[] = $callable;
+
+        return $this;
+    }
+
+    protected function registerMiddlewares(): void
+    {
+        foreach ($this->middlewareToTest as $i => $middleware) {
+            $this->middlewareHistory[$i] = false;
+
+            $this->middleware($middleware);
+            $this->middleware(function (Nutgram $bot, Link $next) use ($i) {
+                $this->middlewareHistory[$i] = true;
+
+                $next($bot);
+            });
+        }
+
+        $this->onUpdate(function () {
+        });
+    }
+
     /**
      * @return $this
      */
     public function reply(): self
     {
         $this->testingHistory = [];
+        $this->registerMiddlewares();
 
         $this->run();
 

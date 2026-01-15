@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use JsonException;
 use PHPUnit\Framework\Assert as PHPUnit;
 use SergiX44\Nutgram\Middleware\Link;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Testing\Constraints\ArraySubset;
 
@@ -197,38 +198,17 @@ trait Asserts
         return [$userId, $chatId];
     }
 
-    public function assertMiddlewarePassed(array|callable|string|object $callable): self
+    public function assertMiddlewarePassed(int $index = 0): self
     {
-        $passed = $this->invokeMiddleware($callable);
-
-        PHPUnit::assertTrue($passed, 'Middleware did not pass.');
+        PHPUnit::assertTrue($this->middlewareHistory[$index], "Middleware at index $index did not pass.");
 
         return $this;
     }
 
-    public function assertMiddlewareBlocked(array|callable|string|object $callable): self
+    public function assertMiddlewareBlocked(int $index = 0): self
     {
-        $passed = $this->invokeMiddleware($callable);
-
-        PHPUnit::assertFalse($passed, 'Middleware passed.');
+        PHPUnit::assertFalse($this->middlewareHistory[$index], "Middleware at index $index passed.");
 
         return $this;
-    }
-
-    /**
-     * @param callable|object|array|string $callable
-     * @return bool
-     */
-    protected function invokeMiddleware(callable|object|array|string $callable): bool
-    {
-        $passed = false;
-
-        $this->getContainer()->set(Link::class, new Link(function () use (&$passed) {
-            $passed = true;
-        }));
-
-        $this->invoke($callable);
-
-        return $passed;
     }
 }

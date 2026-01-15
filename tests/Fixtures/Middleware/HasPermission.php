@@ -14,6 +14,7 @@ final readonly class HasPermission
     public function __invoke(Nutgram $bot, Link $next): void
     {
         if ($bot->message()->text !== $this->permission) {
+            $bot->sendMessage('You have no permission');
             return;
         }
 
