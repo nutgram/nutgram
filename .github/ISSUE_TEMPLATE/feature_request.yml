@@ -10,12 +10,15 @@ body:
 
     - type: dropdown
       attributes:
-        label: Select the Nutgram package relevant to your feature request
-        multiple: true
+        label: Package type
+        description: Select the Nutgram package relevant to your feature request
         options:
           - nutgram/nutgram
           - nutgram/laravel
           - nutgram/symfony-bundle
+        default: 0
+        validations:
+          required: true
 
     - type: textarea
       attributes:
