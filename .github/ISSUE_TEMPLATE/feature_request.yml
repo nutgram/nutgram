@@ -17,8 +17,8 @@ body:
           - nutgram/laravel
           - nutgram/symfony-bundle
         default: 0
-        validations:
-          required: true
+      validations:
+        required: true
 
     - type: textarea
       attributes:
