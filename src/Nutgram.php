@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram;
 
+use Closure;
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use Laravel\SerializableClosure\SerializableClosure;
@@ -349,5 +350,22 @@ class Nutgram extends ResolveHandlers
     public function invoke(callable|array|string $callable, array $params = []): mixed
     {
         return $this->container->call($callable, $params);
+    }
+
+    protected static ?Closure $handlerActionCallback = null;
+    public static function onHandlerAction(Closure $callback): void
+    {
+        static::$handlerActionCallback = $callback;
+    }
+
+    protected function fireHandlerAction(mixed $result): void
+    {
+        if(static::$handlerActionCallback === null) {
+            static::$handlerActionCallback = static function (Nutgram $bot, mixed $result) {
+                $bot->sendMessage($result);
+            };
+        }
+
+        (static::$handlerActionCallback)($this, $result);
     }
 }

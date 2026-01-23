@@ -42,7 +42,7 @@ trait FireHandlers
     {
         $handlers = [];
         $this->addHandlersBy($handlers, $type);
-        return $this->fireHandlers($handlers, $parameters);
+        return $this->fireHandlers($handlers, $parameters, false);
     }
 
     /**
@@ -51,7 +51,7 @@ trait FireHandlers
      * @return mixed
      * @throws Throwable
      */
-    protected function fireHandlers(array $handlers, array $parameters = []): mixed
+    protected function fireHandlers(array $handlers, array $parameters = [], bool $handleReturnAsAction = true): mixed
     {
         $result = null;
 
@@ -60,6 +60,11 @@ trait FireHandlers
             try {
                 $this->currentHandler = $handler;
                 $result = $this->invoke($handler->addParameters($parameters)->getHead());
+
+                if ($handleReturnAsAction && !empty($result)) {
+                    $this->fireHandlerAction($result);
+                }
+
             } catch (Throwable $e) {
                 $this->fireExceptionHandlerBy(self::EXCEPTION, $e);
             }

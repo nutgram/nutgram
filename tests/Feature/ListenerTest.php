@@ -924,3 +924,31 @@ it('calls onCommand() handler with bot command with underscore', function () {
         ->reply()
         ->assertReplyText('foo');
 });
+
+it('sends a message via return', function() {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        return 'foo';
+    });
+
+    $bot->hearText('/start')
+        ->reply()
+        ->assertReplyText('foo');
+});
+
+it('sends a custom message via return', function() {
+    Nutgram::onHandlerAction(function(Nutgram $bot, mixed $result){
+        $bot->sendMessage($result.'bar');
+    });
+
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        return 'foo';
+    });
+
+    $bot->hearText('/start')
+        ->reply()
+        ->assertReplyText('foobar');
+});
