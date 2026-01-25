@@ -104,7 +104,7 @@ class TypeFaker
             // if is a class, try to resolve it
             if ($this->shouldInstantiate($typeName, $isNullable, !empty($userDefined))) {
                 $reflectionClass = $this->getReflectionClass($typeName, $additional[$property->name] ?? []);
-                $data[$property->name] = $this->fakeDataFor($reflectionClass->getName(), $additional[$property->name] ?? [],);
+                $data[$property->name] = $this->fakeDataFor($reflectionClass->getName(), $additional[$property->name] ?? [], );
                 continue;
             }
 
