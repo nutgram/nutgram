@@ -62,8 +62,8 @@
     ]
   },
   "scripts": {
-    "test": "@php vendor/bin/pest --fail-on-warning",
-    "test-coverage": "@php vendor/bin/pest --coverage --coverage-clover=coverage.xml --fail-on-warning",
+    "test": "@php vendor/bin/pest --fail-on-warning --fail-on-deprecation",
+    "test-coverage": "@php vendor/bin/pest --coverage --coverage-clover=coverage.xml --fail-on-warning --fail-on-deprecation",
     "psalm": "@php vendor/bin/psalm"
   },
   "config": {

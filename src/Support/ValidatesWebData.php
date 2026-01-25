@@ -30,7 +30,7 @@ trait ValidatesWebData
         $secretKey = $this->createHashHmac($this->token, 'WebAppData');
         $localHash = bin2hex($this->createHashHmac($sortedData, $secretKey));
 
-        if (strcmp($localHash, $remoteHash) !== 0) {
+        if (strcmp($localHash, $remoteHash ?? '') !== 0) {
             throw new InvalidDataException('Invalid webapp data');
         }
 
