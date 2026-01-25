@@ -2,6 +2,23 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.40.2 - 2026-01-25
+
+### What's Changed
+
+* PHP 8.5 Compatibility x2 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/942
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.40.1...4.40.2
+
+## 4.40.1 - 2026-01-14
+
+### What's Changed
+
+* Fix: Enable nullable property initialization with manual data by @Lukasss93 in https://github.com/nutgram/nutgram/pull/933
+* Make getBotId method public by @Lukasss93 in https://github.com/nutgram/nutgram/pull/936
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.40.0...4.40.1
+
 ## 4.40.0 - 2026-01-03
 
 ### What's Changed

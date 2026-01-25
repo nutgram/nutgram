@@ -102,19 +102,16 @@ class TypeFaker
             }
 
             // if is a class, try to resolve it
-            if ($this->shouldInstantiate($typeName, $isNullable)) {
+            if ($this->shouldInstantiate($typeName, $isNullable, !empty($userDefined))) {
                 $reflectionClass = $this->getReflectionClass($typeName, $additional[$property->name] ?? []);
-                $data[$property->name] = $this->fakeDataFor(
-                    $reflectionClass->getName(),
-                    $additional[$property->name] ?? [],
-                );
+                $data[$property->name] = $this->fakeDataFor($reflectionClass->getName(), $additional[$property->name] ?? [],);
                 continue;
             }
 
             $attributes = $property->getAttributes(ArrayType::class);
             /** @var ArrayType|null $arrayType */
             $arrayType = array_shift($attributes)?->newInstance();
-            if ($arrayType !== null && $this->shouldInstantiate($arrayType->class, $isNullable)) {
+            if ($arrayType !== null && $this->shouldInstantiate($arrayType->class, $isNullable, !empty($userDefined))) {
                 $data[$property->name] = $this->fakeArray($arrayType, $userDefined);
                 continue;
             }
@@ -136,13 +133,24 @@ class TypeFaker
     /**
      * @param string $class
      * @param bool $isNullable
+     * @param bool $defined
      * @return bool
      */
-    protected function shouldInstantiate(string $class, bool $isNullable): bool
+    protected function shouldInstantiate(string $class, bool $isNullable, bool $defined = false): bool
     {
-        return class_exists($class) &&
-            (!in_array($class, $this->resolveStack, true) || !$isNullable) &&
-            !enum_exists($class);
+        if (!class_exists($class)) {
+            return false;
+        }
+
+        if (enum_exists($class)) {
+            return false;
+        }
+
+        if (!in_array($class, $this->resolveStack, true) || !$isNullable || $defined) {
+            return true;
+        }
+
+        return false;
     }
 
 

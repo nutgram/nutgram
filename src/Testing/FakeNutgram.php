@@ -303,12 +303,17 @@ class FakeNutgram extends Nutgram
             [$request,] = array_values($item);
 
             $requestIndex = "[$i] ";
-            print($requestIndex."\e[34m".$request->getUri()->getPath()."\e[39m".PHP_EOL);
-            $content = json_encode(
-                value: self::getActualData($request),
-                flags: JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR,
-            );
-            print(preg_replace('/"(.+)":/', "\"\e[33m\${1}\e[39m\":", $content));
+            print($requestIndex."\e[34m".$request->getUri()->getPath()."\e[39m");
+
+            $data = self::getActualData($request);
+
+            if (!empty($data)) {
+                $content = json_encode(
+                    value: $data,
+                    flags: JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR,
+                );
+                print(PHP_EOL.preg_replace('/"(.+)":/', "\"\e[33m\${1}\e[39m\":", $content));
+            }
 
             if ($i < count($history) - 1) {
                 print(PHP_EOL);
