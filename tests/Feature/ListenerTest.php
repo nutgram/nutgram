@@ -925,7 +925,7 @@ it('calls onCommand() handler with bot command with underscore', function () {
         ->assertReplyText('foo');
 });
 
-it('sends a message via return', function() {
+it('sends a message via return', function () {
     $bot = Nutgram::fake();
 
     $bot->onCommand('start', function (Nutgram $bot) {
@@ -937,8 +937,8 @@ it('sends a message via return', function() {
         ->assertReplyText('foo');
 });
 
-it('sends a custom message via return', function() {
-    Nutgram::onHandlerAction(function(Nutgram $bot, mixed $result){
+it('sends a custom message via return', function () {
+    Nutgram::onHandlerAction(function (Nutgram $bot, mixed $result) {
         $bot->sendMessage($result.'bar');
     });
 

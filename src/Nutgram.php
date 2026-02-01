@@ -360,7 +360,7 @@ class Nutgram extends ResolveHandlers
 
     protected function fireHandlerAction(mixed $result): void
     {
-        if(static::$handlerActionCallback === null) {
+        if (static::$handlerActionCallback === null) {
             static::$handlerActionCallback = static function (Nutgram $bot, mixed $result) {
                 $bot->sendMessage($result);
             };

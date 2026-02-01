@@ -64,7 +64,6 @@ trait FireHandlers
                 if ($handleReturnAsAction && !empty($result)) {
                     $this->fireHandlerAction($result);
                 }
-
             } catch (Throwable $e) {
                 $this->fireExceptionHandlerBy(self::EXCEPTION, $e);
             }
