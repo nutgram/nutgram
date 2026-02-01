@@ -260,7 +260,7 @@ class TypeFaker
 
             $resolvedName = getSafeReflectionTypeName($resolvedType);
 
-            if($resolvedName === null){
+            if ($resolvedName === null) {
                 throw new RuntimeException('Unable to resolve union type');
             }
 
