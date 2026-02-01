@@ -93,15 +93,15 @@ if (!function_exists(__NAMESPACE__.'\deepLink')) {
 if (!function_exists(__NAMESPACE__.'\getSafeReflectionTypeName')) {
     function getSafeReflectionTypeName(?ReflectionType $type): ?string
     {
-        if($type instanceof ReflectionUnionType) {
+        if ($type instanceof ReflectionUnionType) {
             return $type->getTypes()[0]->getName();
         }
 
-        if($type instanceof ReflectionIntersectionType) {
+        if ($type instanceof ReflectionIntersectionType) {
             return getSafeReflectionTypeName($type->getTypes()[0]);
         }
 
-        if($type instanceof ReflectionNamedType) {
+        if ($type instanceof ReflectionNamedType) {
             return $type->getName();
         }
 
