@@ -302,6 +302,7 @@ class Nutgram extends ResolveHandlers
 
     /**
      * Set my commands call to Telegram using all the registered commands
+     * @return array{command:string, description:string, language:string, scope:array{type:string, chat_id?:int, user_id?:int}}[]
      */
     public function registerMyCommands(): array
     {
