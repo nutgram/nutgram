@@ -33,6 +33,8 @@ use SergiX44\Nutgram\Support\HandleLogging;
 use SergiX44\Nutgram\Support\SystemClock;
 use SergiX44\Nutgram\Support\ValidatesWebData;
 use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 use Throwable;
@@ -301,10 +303,13 @@ class Nutgram extends ResolveHandlers
     /**
      * Set my commands call to Telegram using all the registered commands
      */
-    public function registerMyCommands(): void
+    public function registerMyCommands(): array
     {
         $this->preflight();
 
+        /**
+         * @var array<string, array{scopes:BotCommandScope[], commands:BotCommand[]}> $myCommands
+         */
         $myCommands = [];
         array_walk_recursive($this->handlers, static function ($handler) use (&$myCommands) {
             if ($handler instanceof InternalCommand && !$handler->isHidden() && !$handler->isDisabled()) {
@@ -321,17 +326,32 @@ class Nutgram extends ResolveHandlers
             }
         });
 
+        $recap = [];
+
         // set commands for each scope
         foreach ($myCommands as $myCommand) {
             // set commands for each language
             foreach ($myCommand['scopes'] as $language => $scope) {
+                $commands = array_values(array_unique($myCommand['commands'][$language], SORT_REGULAR));
+                $language_code = $language === '*' ? null : $language;
+
                 $this->setMyCommands(
-                    commands: array_values(array_unique($myCommand['commands'][$language], SORT_REGULAR)),
+                    commands: $commands,
                     scope: $scope,
-                    language_code: $language === '*' ? null : $language
+                    language_code: $language_code,
                 );
+
+                foreach ($commands as $command) {
+                    $recap[] = [
+                        ...$command->toArray(),
+                        'language' => $language_code,
+                        'scope' => $scope->toArray(),
+                    ];
+                }
             }
         }
+
+        return $recap;
     }
 
     /**

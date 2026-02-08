@@ -137,7 +137,7 @@ test('onCommand with description and scopes (as array)', function () {
     })->description('Start command')
         ->scope([
             new BotCommandScopeAllPrivateChats,
-            new BotCommandScopeAllGroupChats
+            new BotCommandScopeAllGroupChats,
         ]);
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
@@ -438,7 +438,7 @@ test('register commands with multiple scopes + languages', function () {
     })
         ->description([
             'en' => 'Start command',
-            'it' => 'Comando start'
+            'it' => 'Comando start',
         ])
         ->scope(new BotCommandScopeAllPrivateChats)
         ->scope(new BotCommandScopeAllGroupChats);
@@ -448,7 +448,7 @@ test('register commands with multiple scopes + languages', function () {
     })
         ->description([
             'it' => 'Comando help',
-            '*' => 'Help command'
+            '*' => 'Help command',
         ])
         ->scope(new BotCommandScopeAllPrivateChats);
 
@@ -506,7 +506,7 @@ test('register commands with languages', function () {
     })
         ->description([
             'en' => 'Start command',
-            'it' => 'Comando start'
+            'it' => 'Comando start',
         ]);
 
     $bot->onCommand('help', function (Nutgram $bot) {
@@ -514,7 +514,7 @@ test('register commands with languages', function () {
     })
         ->description([
             'it' => 'Comando help',
-            '*' => 'Help command'
+            '*' => 'Help command',
         ]);
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
@@ -538,4 +538,128 @@ test('register commands with languages', function () {
             ->commands->toBe('[{"command":"help","description":"Help command"}]')
             ->scope->toBe('{"type":"default"}'),
     );
+});
+
+test('registerMyCommands returns a recap', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendMessage('Start command!');
+    })->description('Start command');
+
+    $bot->onCommand('help', function (Nutgram $bot) {
+        $bot->sendMessage('Help command!');
+    })->description([
+        '*' => 'Help command',
+        'it' => 'Comando help',
+        'es' => 'Comando ayuda',
+    ]);
+
+    $bot->onCommand('about', function (Nutgram $bot) {
+        $bot->sendMessage('About command!');
+    })->description('About command')->scope(new BotCommandScopeAllChatAdministrators());
+
+    $bot->onCommand('foo', function (Nutgram $bot) {
+        $bot->sendMessage('Foo command!');
+    })->description([
+        '*' => 'Foo command',
+        'en' => 'Foo command',
+        'it' => 'Comando foo',
+    ])->scope([new BotCommandScopeChat(123), new BotCommandScopeAllChatAdministrators()]);
+
+    $recap = $bot->registerMyCommands();
+
+    expect($recap)->toBe([
+        [
+            'command' => 'start',
+            'description' => 'Start command',
+            'language' => null,
+            'scope' => [
+                'type' => 'default',
+            ],
+        ],
+        [
+            'command' => 'help',
+            'description' => 'Help command',
+            'language' => null,
+            'scope' => [
+                'type' => 'default',
+            ],
+        ],
+        [
+            'command' => 'help',
+            'description' => 'Comando help',
+            'language' => 'it',
+            'scope' => [
+                'type' => 'default',
+            ],
+        ],
+        [
+            'command' => 'help',
+            'description' => 'Comando ayuda',
+            'language' => 'es',
+            'scope' => [
+                'type' => 'default',
+            ],
+        ],
+        [
+            'command' => 'about',
+            'description' => 'About command',
+            'language' => null,
+            'scope' => [
+                'type' => 'all_chat_administrators',
+            ],
+        ],
+        [
+            'command' => 'foo',
+            'description' => 'Foo command',
+            'language' => null,
+            'scope' => [
+                'type' => 'all_chat_administrators',
+            ],
+        ],
+        [
+            'command' => 'foo',
+            'description' => 'Foo command',
+            'language' => 'en',
+            'scope' => [
+                'type' => 'all_chat_administrators',
+            ],
+        ],
+        [
+            'command' => 'foo',
+            'description' => 'Comando foo',
+            'language' => 'it',
+            'scope' => [
+                'type' => 'all_chat_administrators',
+            ],
+        ],
+        [
+            'command' => 'foo',
+            'description' => 'Foo command',
+            'language' => null,
+            'scope' => [
+                'type' => 'chat',
+                'chat_id' => 123,
+            ],
+        ],
+        [
+            'command' => 'foo',
+            'description' => 'Foo command',
+            'language' => 'en',
+            'scope' => [
+                'type' => 'chat',
+                'chat_id' => 123,
+            ],
+        ],
+        [
+            'command' => 'foo',
+            'description' => 'Comando foo',
+            'language' => 'it',
+            'scope' => [
+                'type' => 'chat',
+                'chat_id' => 123,
+            ],
+        ],
+    ]);
 });
