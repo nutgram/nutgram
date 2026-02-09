@@ -23,6 +23,8 @@ enum MessageType: string
     case STORY = 'story';
     case NEW_CHAT_MEMBERS = 'new_chat_members';
     case LEFT_CHAT_MEMBER = 'left_chat_member';
+    case CHAT_OWNER_LEFT = 'chat_owner_left';
+    case CHAT_OWNER_CHANGED = 'chat_owner_changed';
     case NEW_CHAT_TITLE = 'new_chat_title';
     case NEW_CHAT_PHOTO = 'new_chat_photo';
     case DELETE_CHAT_PHOTO = 'delete_chat_photo';

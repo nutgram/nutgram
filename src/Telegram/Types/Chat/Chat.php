@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessIntro;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessLocation;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessOpeningHours;
+use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
@@ -376,6 +377,11 @@ class Chat extends BaseType
     public ?UserRating $rating = null;
 
     /**
+     * Optional. For private chats, the first audio added to the profile of the user
+     */
+    public ?Audio $first_profile_audio = null;
+
+    /**
      * Optional. The color scheme based on a unique gift that must be used for the chat's name, message replies and link previews
      */
     public ?UniqueGiftColors $unique_gift_colors = null;
@@ -420,6 +426,7 @@ class Chat extends BaseType
         ?UserRating $rating = null,
         ?UniqueGiftColors $unique_gift_colors = null,
         ?int $paid_message_star_count = null,
+        ?Audio $first_profile_audio = null
     ): Chat {
         $chat = new self();
         $chat->id = $id;
@@ -456,6 +463,7 @@ class Chat extends BaseType
         $chat->rating = $rating;
         $chat->unique_gift_colors = $unique_gift_colors;
         $chat->paid_message_star_count = $paid_message_star_count;
+        $chat->first_profile_audio = $first_profile_audio;
         return $chat;
     }
 

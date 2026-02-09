@@ -29,6 +29,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaDocument;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputPaidMedia;
+use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhoto;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
@@ -48,6 +49,7 @@ use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
 use SergiX44\Nutgram\Telegram\Types\User\User;
+use SergiX44\Nutgram\Telegram\Types\User\UserProfileAudios;
 use SergiX44\Nutgram\Telegram\Types\User\UserProfilePhotos;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -1606,6 +1608,23 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to get a list of profile audios for a user.
+     * Returns a {@see https://core.telegram.org/bots/api#userprofileaudios UserProfileAudios} object.
+     * @see https://core.telegram.org/bots/api#getuserprofileaudios
+     * @param int|null $user_id Unique identifier of the target user
+     * @param int|null $offset Sequential number of the first audio to be returned. By default, all audios are returned.
+     * @param int|null $limit Limits the number of audios to be retrieved. Values between 1-100 are accepted. Defaults to 100.
+     * @return UserProfileAudios|null
+     */
+    public function getUserProfileAudios(?int $user_id = null, ?int $offset = null, ?int $limit = null): ?UserProfileAudios
+    {
+        $parameters = compact('user_id', 'offset', 'limit');
+        $parameters['user_id'] ??= $this->userId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, UserProfileAudios::class);
+    }
+
+    /**
      * Changes the emoji status for a given user that previously allowed the bot to manage their emoji status via the Mini App method requestEmojiStatusAccess.
      * Returns True on success.
      * @param string|null $emoji_status_custom_emoji_id Custom emoji identifier of the emoji status to set. Pass an empty string to remove the status.
@@ -2248,8 +2267,8 @@ trait AvailableMethods
     }
 
     /**
-     * Use this method to create a topic in a forum supergroup chat.
-     * The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
+     * Use this method to create a topic in a forum supergroup chat or a private chat with a user.
+     * In the case of a supergroup chat the bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator right.
      * Returns information about the created topic as a {@see https://core.telegram.org/bots/api#forumtopic ForumTopic} object.
      * @see https://core.telegram.org/bots/api#createforumtopic
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
@@ -2594,6 +2613,28 @@ trait AvailableMethods
     public function getMyShortDescription(?string $language_code = null): ?BotShortDescription
     {
         return $this->requestJson(__FUNCTION__, compact('language_code'), BotShortDescription::class);
+    }
+
+    /**
+     * Changes the profile photo of the bot. Returns True on success.
+     * @see https://core.telegram.org/bots/api#setmyprofilephoto
+     * @param InputProfilePhoto $photo The new profile photo to set
+     * @return bool|null
+     */
+    public function setMyProfilePhoto(InputProfilePhoto $photo): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('photo'));
+    }
+
+    /**
+     * Removes the profile photo of the bot.
+     * Requires no parameters.
+     * Returns True on success.
+     * @return bool|null
+     */
+    public function removeMyProfilePhoto(): ?bool
+    {
+        return $this->requestJson(__FUNCTION__);
     }
 
     /**

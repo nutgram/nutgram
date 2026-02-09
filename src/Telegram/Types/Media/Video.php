@@ -53,6 +53,13 @@ class Video extends BaseType
     public ?int $start_timestamp = null;
 
     /**
+     * Optional. List of available qualities of the video
+     * @var VideoQuality[]|null
+     */
+    #[ArrayType(VideoQuality::class)]
+    public ?array $qualities = null;
+
+    /**
      * Optional.
      * Original filename as defined by sender
      */
