@@ -4,14 +4,16 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
+use SergiX44\Nutgram\Telegram\Properties\ButtonStyle;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object represents one button of the reply keyboard.
+ * At most one of the fields other than text, icon_custom_emoji_id, and style must be used to specify the type of the button.
  * For simple text buttons, String can be used instead of this object to specify the button text.
- * The optional fields web_app, request_user, request_chat, request_contact, request_location, and request_poll are mutually exclusive.
  * @see https://core.telegram.org/bots/api#keyboardbutton
  */
 #[SkipConstructor]
@@ -22,6 +24,22 @@ class KeyboardButton extends BaseType implements JsonSerializable
      * If none of the optional fields are used, it will be sent as a message when the button is pressed
      */
     public string $text;
+
+    /**
+     * Optional. Unique identifier of the custom emoji shown before the text of the button.
+     * Can only be used by bots that purchased additional usernames on {@see https://fragment.com/ Fragment} or
+     * in the messages directly sent by the bot to private, group and
+     * supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     */
+    public ?string $icon_custom_emoji_id = null;
+
+    /**
+     * Optional. Style of the button.
+     * Must be one of “danger” (red), “success” (green) or “primary” (blue).
+     * If omitted, then an app-specific style is used.
+     */
+    #[EnumOrScalar]
+    public ButtonStyle|string|null $style = null;
 
     /**
      * Optional.
@@ -85,6 +103,8 @@ class KeyboardButton extends BaseType implements JsonSerializable
         ?KeyboardButtonRequestUser $request_user = null,
         ?KeyboardButtonRequestUsers $request_users = null,
         ?KeyboardButtonRequestChat $request_chat = null,
+        ?string $icon_custom_emoji_id = null,
+        ButtonStyle|string|null $style = null,
     ) {
         parent::__construct();
         $this->text = $text;
@@ -95,6 +115,8 @@ class KeyboardButton extends BaseType implements JsonSerializable
         $this->request_user = $request_user;
         $this->request_users = $request_users;
         $this->request_chat = $request_chat;
+        $this->icon_custom_emoji_id = $icon_custom_emoji_id;
+        $this->style = $style;
     }
 
     public static function make(
@@ -106,6 +128,8 @@ class KeyboardButton extends BaseType implements JsonSerializable
         ?KeyboardButtonRequestUser $request_user = null,
         ?KeyboardButtonRequestUsers $request_users = null,
         ?KeyboardButtonRequestChat $request_chat = null,
+        ?string $icon_custom_emoji_id = null,
+        ButtonStyle|string|null $style = null,
     ): self {
         return new self(
             text: $text,
@@ -116,6 +140,8 @@ class KeyboardButton extends BaseType implements JsonSerializable
             request_user: $request_user,
             request_users: $request_users,
             request_chat: $request_chat,
+            icon_custom_emoji_id: $icon_custom_emoji_id,
+            style: $style,
         );
     }
 
@@ -123,6 +149,8 @@ class KeyboardButton extends BaseType implements JsonSerializable
     {
         return array_filter_null([
             'text' => $this->text,
+            'icon_custom_emoji_id' => $this->icon_custom_emoji_id,
+            'style' => $this->style,
             'request_user' => $this->request_user,
             'request_users' => $this->request_users,
             'request_chat' => $this->request_chat,

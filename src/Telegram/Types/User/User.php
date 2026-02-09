@@ -95,6 +95,12 @@ class User extends BaseType
      */
     public ?bool $has_topics_enabled = null;
 
+    /**
+     * Optional. True, if the bot allows users to create and delete topics in private chats.
+     * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     */
+    public ?bool $allows_users_to_create_topics = null;
+
     public static function make(
         int $id,
         bool $is_bot,

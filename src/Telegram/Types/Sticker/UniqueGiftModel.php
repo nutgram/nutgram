@@ -2,6 +2,8 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
+use SergiX44\Nutgram\Telegram\Properties\UniqueGiftModelRarity;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -24,4 +26,11 @@ class UniqueGiftModel extends BaseType
      * The number of unique gifts that receive this model for every 1000 gifts upgraded
      */
     public int $rarity_per_mille;
+
+    /**
+     * Optional. Rarity of the model if it is a crafted model.
+     * Currently, can be “uncommon”, “rare”, “epic”, or “legendary”.
+     */
+    #[EnumOrScalar]
+    public UniqueGiftModelRarity|string|null $rarity = null;
 }

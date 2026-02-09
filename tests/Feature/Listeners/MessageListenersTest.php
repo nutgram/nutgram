@@ -3,6 +3,7 @@
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 it('calls onText() handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -236,6 +237,28 @@ it('calls onLeftChatMember() handler', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('left_chat_member');
+
+it('calls onChatOwnerLeft() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onChatOwnerLeft(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('chat_owner_left');
+
+it('calls onChatOwnerChanged() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->onChatOwnerChanged(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('chat_owner_changed');
 
 it('calls onNewChatTitle() handler', function ($update) {
     $bot = Nutgram::fake($update);
