@@ -22,7 +22,24 @@ abstract class Conversation
     private ?int $chatId = null;
     private ?int $threadId = null;
 
-    public static function begin(
+    public static function begin(Nutgram $bot, ?int $userId = null, ?int $chatId = null, array $data = []): self
+    {
+        if ($userId xor $chatId) {
+            throw new \InvalidArgumentException('You need to provide both userId and chatId.');
+        }
+
+        $instance = $bot->getContainer()->get(static::class);
+        $instance->userId = $userId;
+        $instance->chatId = $chatId;
+        $instance($bot, ...$data);
+
+        return $instance;
+    }
+
+    /**
+     * @todo: remove in favor of the begin() method in Nutgram 5.0, as the threadId parameter will be set placed after the $chatId parameter.
+     */
+    public static function beginThread(
         Nutgram $bot,
         ?int $userId = null,
         ?int $chatId = null,
