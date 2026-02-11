@@ -106,7 +106,7 @@ class Nutgram extends ResolveHandlers
                 '%s/bot%s/%s',
                 $config->apiUrl,
                 $this->token,
-                $config->testEnv ?? false ? 'test/' : ''
+                    $config->testEnv ?? false ? 'test/' : ''
             ),
             'timeout' => $config->clientTimeout,
             'version' => $config->enableHttp2 ? '2.0' : '1.1',
@@ -213,7 +213,7 @@ class Nutgram extends ResolveHandlers
     {
         $this->update = $update;
 
-        $conversation = $this->currentConversation($this->userId(), $this->chatId());
+        $conversation = $this->currentConversation($this->userId(), $this->chatId(), $this->messageThreadId());
 
         if ($conversation !== null) {
             $handlers = $this->continueConversation($conversation);
@@ -242,16 +242,18 @@ class Nutgram extends ResolveHandlers
     public function stepConversation(
         Conversations\Conversation|callable $callable,
         ?int $userId = null,
-        ?int $chatId = null
+        ?int $chatId = null,
+        ?int $threadId = null,
     ): self {
-        $userId = $userId ?? $this->userId();
-        $chatId = $chatId ?? $this->chatId();
+        $userId ??= $this->userId();
+        $chatId ??= $this->chatId();
+        $threadId ??= $this->messageThreadId();
 
         if ($this->update === null && ($userId === null || $chatId === null)) {
             throw new InvalidArgumentException('You cannot step a conversation without userId and chatId.');
         }
 
-        $this->conversationCache->set($userId, $chatId, $callable);
+        $this->conversationCache->set($userId, $chatId, $threadId, $callable);
 
         return $this;
     }
@@ -262,7 +264,7 @@ class Nutgram extends ResolveHandlers
      * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function endConversation(?int $userId = null, ?int $chatId = null): self
+    public function endConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): self
     {
         $userId = $userId ?? $this->userId();
         $chatId = $chatId ?? $this->chatId();
@@ -271,7 +273,7 @@ class Nutgram extends ResolveHandlers
             throw new InvalidArgumentException('You cannot end a conversation without userId and chatId.');
         }
 
-        $this->conversationCache->delete($userId, $chatId);
+        $this->conversationCache->delete($userId, $chatId, $threadId);
 
         return $this;
     }

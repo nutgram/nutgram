@@ -20,9 +20,15 @@ abstract class Conversation
     private static bool $refreshInstance = false;
     private ?int $userId = null;
     private ?int $chatId = null;
+    private ?int $threadId = null;
 
-    public static function begin(Nutgram $bot, ?int $userId = null, ?int $chatId = null, array $data = []): self
-    {
+    public static function begin(
+        Nutgram $bot,
+        ?int $userId = null,
+        ?int $chatId = null,
+        ?int $threadId = null,
+        array $data = []
+    ): self {
         if ($userId xor $chatId) {
             throw new \InvalidArgumentException('You need to provide both userId and chatId.');
         }
@@ -30,6 +36,7 @@ abstract class Conversation
         $instance = $bot->getContainer()->get(static::class);
         $instance->userId = $userId;
         $instance->chatId = $chatId;
+        $instance->threadId = $threadId;
         $instance($bot, ...$data);
 
         return $instance;
@@ -44,7 +51,7 @@ abstract class Conversation
     }
 
     /**
-     * @param  bool  $flag
+     * @param bool $flag
      * @return void
      */
     public static function refreshOnDeserialize(bool $flag = true): void
@@ -53,7 +60,7 @@ abstract class Conversation
     }
 
     /**
-     * @param  string  $step
+     * @param string $step
      * @return void
      * @throws InvalidArgumentException
      */
@@ -61,7 +68,7 @@ abstract class Conversation
     {
         $this->step = $step;
 
-        $this->bot->stepConversation($this, $this->userId, $this->chatId);
+        $this->bot->stepConversation($this, $this->userId, $this->chatId, $this->threadId);
     }
 
     /**
@@ -70,13 +77,13 @@ abstract class Conversation
      */
     protected function end(): void
     {
-        $this->bot->endConversation($this->userId, $this->chatId);
+        $this->bot->endConversation($this->userId, $this->chatId, $this->threadId);
         $this->closing($this->bot);
     }
 
     /**
      * Developer defined function called before the current step.
-     * @param  Nutgram  $bot
+     * @param Nutgram $bot
      * @return void
      */
     protected function beforeStep(Nutgram $bot)
@@ -85,7 +92,7 @@ abstract class Conversation
 
     /**
      * Developer defined function called when the conversation is shut down.
-     * @param  Nutgram  $bot
+     * @param Nutgram $bot
      * @return void
      */
     protected function closing(Nutgram $bot)
@@ -94,8 +101,8 @@ abstract class Conversation
 
     /**
      * Invokes the correct conversation step.
-     * @param  Nutgram  $bot
-     * @param  mixed  ...$parameters
+     * @param Nutgram $bot
+     * @param mixed ...$parameters
      * @return mixed
      */
     public function __invoke(Nutgram $bot, ...$parameters): mixed
@@ -110,20 +117,20 @@ abstract class Conversation
     }
 
     /**
-     * @param  Nutgram  $bot
-     * @param  int|null  $userId
-     * @param  int|null  $chatId
+     * @param Nutgram $bot
+     * @param int|null $userId
+     * @param int|null $chatId
      * @throws InvalidArgumentException
      */
     public function terminate(Nutgram $bot, ?int $userId = null, ?int $chatId = null): void
     {
         $this->bot = $bot;
-        $this->bot->endConversation($userId, $chatId);
+        $this->bot->endConversation($userId, $chatId, $this->threadId);
         $this->closing($this->bot);
     }
 
     /**
-     * @param  bool  $skipHandlers
+     * @param bool $skipHandlers
      * @return Conversation
      */
     protected function setSkipHandlers(bool $skipHandlers): self
@@ -134,7 +141,7 @@ abstract class Conversation
     }
 
     /**
-     * @param  bool  $skipMiddlewares
+     * @param bool $skipMiddlewares
      * @return Conversation
      */
     protected function setSkipMiddlewares(bool $skipMiddlewares): self
