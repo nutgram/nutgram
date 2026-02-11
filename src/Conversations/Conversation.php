@@ -37,7 +37,7 @@ abstract class Conversation
     }
 
     /**
-     * @todo: remove in favor of the begin() method in Nutgram 5.0, as the threadId parameter will be set placed after the $chatId parameter.
+     * @todo: remove in favor of the begin() method in Nutgram 5.0, as the threadId parameter will be placed after the $chatId parameter.
      */
     public static function beginThread(
         Nutgram $bot,
