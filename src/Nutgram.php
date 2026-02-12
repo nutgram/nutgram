@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram;
 
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
 use Laravel\SerializableClosure\SerializableClosure;
+use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -13,14 +15,14 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Container\Container;
+use SergiX44\Hydrator\Hydrator;
 use SergiX44\Nutgram\Cache\ConversationCache;
 use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\FireHandlers;
 use SergiX44\Nutgram\Handlers\ResolveHandlers;
-use SergiX44\Nutgram\Handlers\Type\Command;
-use SergiX44\Nutgram\Hydrator\Hydrator;
+use SergiX44\Nutgram\Handlers\Type\InternalCommand;
 use SergiX44\Nutgram\Proxies\GlobalCacheProxy;
 use SergiX44\Nutgram\Proxies\UpdateDataProxy;
 use SergiX44\Nutgram\Proxies\UserCacheProxy;
@@ -28,6 +30,7 @@ use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Support\BulkMessenger;
 use SergiX44\Nutgram\Support\HandleLogging;
+use SergiX44\Nutgram\Support\SystemClock;
 use SergiX44\Nutgram\Support\ValidatesWebData;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
@@ -46,7 +49,7 @@ class Nutgram extends ResolveHandlers
     /**
      * @var Configuration
      */
-    private Configuration $config;
+    protected Configuration $config;
 
     /**
      * @var Guzzle
@@ -57,11 +60,6 @@ class Nutgram extends ResolveHandlers
      * @var Hydrator
      */
     protected Hydrator $hydrator;
-
-    /**
-     * @var LoggerInterface
-     */
-    private LoggerInterface $logger;
 
     /**
      * @var Container
@@ -106,14 +104,14 @@ class Nutgram extends ResolveHandlers
                 '%s/bot%s/%s',
                 $config->apiUrl,
                 $this->token,
-                $config->testEnv ?? false ? 'test/' : ''
+                $config->testEnv ? 'test/' : ''
             ),
             'timeout' => $config->clientTimeout,
             'version' => $config->enableHttp2 ? '2.0' : '1.1',
             ...$config->clientOptions,
         ]);
         $this->container->set(ClientInterface::class, $this->http);
-        $this->container->singleton(Hydrator::class, $config->hydrator);
+        $this->container->set(ClockInterface::class, new SystemClock());
         $this->container->singleton(CacheInterface::class, $config->cache);
         $this->container->singleton(LoggerInterface::class, $config->logger);
         $this->container->singleton(ConversationCache::class, fn (ContainerInterface $c) => new ConversationCache(
@@ -130,11 +128,7 @@ class Nutgram extends ResolveHandlers
             botId: $this->getBotId(),
         ));
 
-        $this->hydrator = $this->container->get(Hydrator::class);
-        $this->conversationCache = $this->container->get(ConversationCache::class);
-        $this->globalCache = $this->container->get(GlobalCache::class);
-        $this->userCache = $this->container->get(UserCache::class);
-        $this->logger = $this->container->get(LoggerInterface::class);
+        $this->hydrator = new Hydrator($this->container);
 
         $this->container->singleton(RunningMode::class, Polling::class);
         $this->container->set(__CLASS__, $this);
@@ -253,7 +247,7 @@ class Nutgram extends ResolveHandlers
             throw new InvalidArgumentException('You cannot step a conversation without userId and chatId.');
         }
 
-        $this->conversationCache->set($userId, $chatId, $threadId, $callable);
+        $this->container->get(ConversationCache::class)->set($userId, $chatId, $threadId, $callable);
 
         return $this;
     }
@@ -273,7 +267,7 @@ class Nutgram extends ResolveHandlers
             throw new InvalidArgumentException('You cannot end a conversation without userId and chatId.');
         }
 
-        $this->conversationCache->delete($userId, $chatId, $threadId);
+        $this->container->get(ConversationCache::class)->delete($userId, $chatId, $threadId);
 
         return $this;
     }
@@ -315,13 +309,13 @@ class Nutgram extends ResolveHandlers
 
         $myCommands = [];
         array_walk_recursive($this->handlers, static function ($handler) use (&$myCommands) {
-            if ($handler instanceof Command && !$handler->isHidden() && !$handler->isDisabled()) {
+            if ($handler instanceof InternalCommand && !$handler->isHidden() && !$handler->isDisabled()) {
                 // scopes
                 foreach ($handler->scopes() as $scope) {
                     $hashCode = crc32(serialize(get_object_vars($scope)));
 
                     // language_code
-                    foreach ($handler->getAllDescriptions() as $language => $description) {
+                    foreach ($handler->getDescription() as $language => $description) {
                         $myCommands[$hashCode]['scopes'][$language] = $scope;
                         $myCommands[$hashCode]['commands'][$language][] = $handler->toBotCommand($language);
                     }

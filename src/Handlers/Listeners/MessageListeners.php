@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Handlers\Listeners;
 
-use InvalidArgumentException;
+use SergiX44\Container\Container;
 use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
-use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Handlers\Type\Command\Command;
+use SergiX44\Nutgram\Handlers\Type\Command\WithScopes;
+use SergiX44\Nutgram\Handlers\Type\InternalCommand;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
@@ -14,40 +18,37 @@ use SergiX44\Nutgram\Telegram\Properties\UpdateType;
  */
 trait MessageListeners
 {
+    abstract public function getContainer(): Container;
+
     /**
      * @param string $command
      * @param $callable
-     * @return Command
+     * @return InternalCommand
      */
-    public function onCommand(string $command, $callable, UpdateType $target = UpdateType::MESSAGE): Command
+    public function onCommand(string $command, $callable, UpdateType $target = UpdateType::MESSAGE): InternalCommand
     {
         $this->checkFinalized();
         $target->validateMessageType();
-        return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command] = new Command(
-            $callable,
-            $command
-        );
-    }
 
-    /**
-     * @param string|Command $command
-     * @return Command
-     */
-    public function registerCommand(string|Command $command, UpdateType $target = UpdateType::MESSAGE): Command
-    {
-        $this->checkFinalized();
-        $target->validateMessageType();
-        if (is_string($command)) {
-            if (!is_subclass_of($command, Command::class)) {
-                throw new InvalidArgumentException(sprintf(
-                    'You must provide subclass of the %s class or an instance.',
-                    Command::class
-                ));
-            }
-            $command = new $command();
+        $registeringCommand = new InternalCommand($callable, $command);
+
+        if (is_array($callable)) {
+            $callable = $callable[0];
         }
 
-        return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command->getPattern()] = $command;
+        if (is_string($callable)) {
+            $callable = $this->getContainer()->make($callable);
+        }
+
+        if ($callable instanceof Command) {
+            $registeringCommand->description($callable->description());
+        }
+
+        if ($callable instanceof WithScopes) {
+            $registeringCommand->scope($callable->scopes());
+        }
+
+        return $this->{$this->target}[$target->value][MessageType::TEXT->value][$command] = $registeringCommand;
     }
 
     /**
