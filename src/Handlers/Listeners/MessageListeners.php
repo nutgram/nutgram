@@ -248,6 +248,20 @@ trait MessageListeners
         return $this->{$this->target}[$target->value][MessageType::LEFT_CHAT_MEMBER->value][] = new Handler($callable);
     }
 
+    public function onChatOwnerLeft($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    {
+        $this->checkFinalized();
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::CHAT_OWNER_LEFT->value][] = new Handler($callable);
+    }
+
+    public function onChatOwnerChanged($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    {
+        $this->checkFinalized();
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::CHAT_OWNER_CHANGED->value][] = new Handler($callable);
+    }
+
     /**
      * @param $callable
      * @return Handler

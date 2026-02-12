@@ -2,6 +2,22 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.42.0 - 2026-02-12
+
+### What's Changed
+
+* Add thread support to Conversations by @Lukasss93 in https://github.com/nutgram/nutgram/pull/950
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.41.0...4.42.0
+
+## 4.41.0 - 2026-02-09
+
+### What's Changed
+
+* Update to Bot API 9.4 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/947
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.40.2...4.41.0
+
 ## 4.40.2 - 2026-01-25
 
 ### What's Changed

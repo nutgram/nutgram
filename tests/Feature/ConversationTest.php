@@ -259,6 +259,20 @@ it('starts manually for a specific user/chat', function () {
     expect($bot->get('test'))->toBe(1);
 });
 
+it('starts manually for a specific user/chat/thread', function () {
+    $userId = 123;
+    $chatId = 456;
+    $thread = 789;
+
+    $bot = Nutgram::fake();
+
+    TwoStepConversation::beginThread($bot, $userId, $chatId, $thread);
+
+    $bot->assertActiveConversation($userId, $chatId, $thread);
+
+    expect($bot->get('test'))->toBe(1);
+});
+
 it('fails to start manually for a specific user/chat', function () {
     $bot = Nutgram::fake();
     TwoStepConversation::begin($bot, 123, null);

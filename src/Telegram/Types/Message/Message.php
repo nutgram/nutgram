@@ -10,6 +10,8 @@ use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostAdded;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatOwnerChanged;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatOwnerLeft;
 use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
 use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksAdded;
 use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksDone;
@@ -401,6 +403,16 @@ class Message extends BaseType
     public ?User $left_chat_member = null;
 
     /**
+     * Optional. Service message: chat owner has left
+     */
+    public ?ChatOwnerLeft $chat_owner_left = null;
+
+    /**
+     * Optional. Service message: chat owner has changed
+     */
+    public ?ChatOwnerChanged $chat_owner_changed = null;
+
+    /**
      * Optional.
      * A chat title was changed to this value
      */
@@ -743,6 +755,8 @@ class Message extends BaseType
             $this->dice !== null => MessageType::DICE,
             $this->new_chat_members !== null => MessageType::NEW_CHAT_MEMBERS,
             $this->left_chat_member !== null => MessageType::LEFT_CHAT_MEMBER,
+            $this->chat_owner_left !== null => MessageType::CHAT_OWNER_LEFT,
+            $this->chat_owner_changed !== null => MessageType::CHAT_OWNER_CHANGED,
             $this->new_chat_title !== null => MessageType::NEW_CHAT_TITLE,
             $this->new_chat_photo !== null => MessageType::NEW_CHAT_PHOTO,
             $this->delete_chat_photo !== null => MessageType::DELETE_CHAT_PHOTO,
