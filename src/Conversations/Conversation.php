@@ -3,9 +3,12 @@
 
 namespace SergiX44\Nutgram\Conversations;
 
+use Closure;
 use Psr\SimpleCache\InvalidArgumentException;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Properties\MessageType;
+use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 
 /**
  * Class Conversation
@@ -13,10 +16,11 @@ use SergiX44\Nutgram\Nutgram;
  */
 abstract class Conversation
 {
+    protected Nutgram $bot;
     protected bool $skipHandlers = false;
     protected bool $skipMiddlewares = false;
     protected ?string $step = 'start';
-    protected Nutgram $bot;
+    private ?Stepper $stepper = null;
     private static bool $refreshInstance = false;
     private ?int $userId = null;
     private ?int $chatId = null;
@@ -78,14 +82,17 @@ abstract class Conversation
 
     /**
      * @param string $step
-     * @return void
+     * @param UpdateType|MessageType|Closure|null $condition
+     * @return Conversation
      * @throws InvalidArgumentException
      */
-    protected function next(string $step): void
+    protected function next(string $step, UpdateType|MessageType|Closure|null $condition = null): static
     {
-        $this->step = $step;
+        $this->stepper->addCondition($step, $condition);
 
         $this->bot->stepConversation($this, $this->userId, $this->chatId, $this->threadId);
+
+        return $this;
     }
 
     /**
@@ -124,9 +131,14 @@ abstract class Conversation
      */
     public function __invoke(Nutgram $bot, ...$parameters): mixed
     {
+        if ($this->stepper !== null) {
+            $this->step = $this->stepper->resolve($bot) ?? $this->step;
+        }
+
         if (method_exists($this, $this->step)) {
             $this->bot = $bot;
             $this->beforeStep($bot);
+            $this->stepper = new Stepper();
             return $this->{$this->step}($bot, ...$parameters);
         }
 
