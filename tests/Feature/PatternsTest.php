@@ -463,7 +463,6 @@ it('uses whereAlphaNumeric constraint', function ($hearValue, $expected) {
 ]);
 
 describe('pattern matching with BackedEnum', function () {
-
     test('onCommand handler', function () {
         $bot = Nutgram::fake();
         $bot->onCommand(TestEnum::Test, function (Nutgram $bot) {
