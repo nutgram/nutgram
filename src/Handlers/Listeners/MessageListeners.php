@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Handlers\Listeners;
 
+use BackedEnum;
 use SergiX44\Container\Container;
+use SergiX44\Container\Exception\NotFoundException;
+use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\Type\Command\Command;
@@ -12,6 +15,7 @@ use SergiX44\Nutgram\Handlers\Type\Command\WithScopes;
 use SergiX44\Nutgram\Handlers\Type\InternalCommand;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
+use function SergiX44\Nutgram\Support\enum_value;
 
 /**
  * @mixin CollectHandlers
@@ -21,14 +25,21 @@ trait MessageListeners
     abstract public function getContainer(): Container;
 
     /**
-     * @param string $command
+     * @param BackedEnum|string $command
      * @param $callable
+     * @param UpdateType $target
      * @return InternalCommand
+     * @throws NotFoundException
+     * @throws StatusFinalizedException
      */
-    public function onCommand(string $command, $callable, UpdateType $target = UpdateType::MESSAGE): InternalCommand
-    {
+    public function onCommand(
+        BackedEnum|string $command,
+        $callable,
+        UpdateType $target = UpdateType::MESSAGE
+    ): InternalCommand {
         $this->checkFinalized();
         $target->validateMessageType();
+        $command = enum_value($command);
 
         $registeringCommand = new InternalCommand($callable, $command);
 
@@ -52,14 +63,17 @@ trait MessageListeners
     }
 
     /**
-     * @param string $pattern
+     * @param BackedEnum|string $pattern
      * @param $callable
+     * @param UpdateType $target
      * @return Handler
+     * @throws StatusFinalizedException
      */
-    public function onText(string $pattern, $callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    public function onText(BackedEnum|string $pattern, $callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
         $target->validateMessageType();
+        $pattern = enum_value($pattern);
         return $this->{$this->target}[$target->value][MessageType::TEXT->value][$pattern] = new Handler(
             $callable,
             $pattern
@@ -389,13 +403,15 @@ trait MessageListeners
     }
 
     /**
-     * @param string $pattern
+     * @param BackedEnum|string $pattern
      * @param $callable
      * @return Handler
+     * @throws StatusFinalizedException
      */
-    public function onSuccessfulPaymentPayload(string $pattern, $callable): Handler
+    public function onSuccessfulPaymentPayload(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
+        $pattern = enum_value($pattern);
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::SUCCESSFUL_PAYMENT->value][$pattern] = new Handler(
             $callable,
             $pattern
@@ -413,13 +429,15 @@ trait MessageListeners
     }
 
     /**
-     * @param string $pattern
+     * @param BackedEnum|string $pattern
      * @param $callable
      * @return Handler
+     * @throws StatusFinalizedException
      */
-    public function onRefundedPaymentPayload(string $pattern, $callable): Handler
+    public function onRefundedPaymentPayload(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
+        $pattern = enum_value($pattern);
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::REFUNDED_PAYMENT->value][$pattern] = new Handler(
             $callable,
             $pattern
