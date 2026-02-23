@@ -1,5 +1,6 @@
 <?php
 
+use SergiX44\Nutgram\Tests\Fixtures\TestEnum;
 use function SergiX44\Nutgram\Support\enum_value;
 
 it('returns a string from a string', function () {
@@ -11,12 +12,7 @@ it('returns a string from a string', function () {
 });
 
 it('returns a string from an enum', function () {
-    enum TestEnum: string
-    {
-        case TEST = 'test';
-    }
+    $result = enum_value(TestEnum::Test);
 
-    $result = enum_value(TestEnum::TEST);
-
-    expect($result)->toBe(TestEnum::TEST->value);
+    expect($result)->toBe(TestEnum::Test->value);
 });
