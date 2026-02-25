@@ -92,7 +92,7 @@ abstract class Conversation
         if ($type instanceof UpdateType || $type instanceof MessageType) {
             $this->conditionalSteps[$type->value] = $step;
         } elseif ($type instanceof Closure) {
-            $this->conditionalSteps[0] = [$step, new SerializableClosure($type)];
+            $this->conditionalSteps[0][] = [$step, new SerializableClosure($type)];
         } else {
             $this->step = $step;
         }
@@ -162,11 +162,12 @@ abstract class Conversation
             return $step;
         }
 
-        if (array_key_exists(0, $this->conditionalSteps) &&
-            ([$step, $closure] = $this->conditionalSteps[0]) &&
-            $closure($bot)
-        ) {
-            return $step;
+        if (array_key_exists(0, $this->conditionalSteps)) {
+            foreach ($this->conditionalSteps[0] as [$step, $closure]) {
+                if ($closure($bot)) {
+                    return $step;
+                }
+            }
         }
 
         return $this->step;
