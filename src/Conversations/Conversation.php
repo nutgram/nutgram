@@ -157,7 +157,7 @@ abstract class Conversation
         if ($updateType &&
             $updateType->isMessageType() &&
             ($messageType = $bot->update()?->getMessage()?->getType()) &&
-            ($step = $this->conditionalSteps[$messageType->value] ?? $this->conditionalSteps[$updateType->value])
+            ($step = $this->conditionalSteps[$messageType->value] ?? $this->conditionalSteps[$updateType->value] ?? null)
         ) {
             return $step;
         }
