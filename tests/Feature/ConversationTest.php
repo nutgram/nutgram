@@ -6,8 +6,11 @@ use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
-use SergiX44\Nutgram\Testing\TestClock;
+use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\User\User;
+use SergiX44\Nutgram\Testing\TestClock;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationEmpty;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithBeforeStep;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithClosing;
@@ -312,6 +315,13 @@ it('starts a conversation from server', function () {
         'text' => 'First step',
         'chat_id' => 123456789,
     ]);
+
+    $bot
+        ->setCommonChat(Chat::make(123456789, ChatType::PRIVATE))
+        ->setCommonUser(User::make(123456789, false, 'John'))
+        ->hearText('foo')
+        ->reply()
+        ->assertReplyText('Second step');
 });
 
 it('restarts the conversation with an expired cache', function ($update) {

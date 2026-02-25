@@ -32,6 +32,8 @@ abstract class Conversation
         $instance = $bot->getContainer()->get(static::class);
         $instance->userId = $userId;
         $instance->chatId = $chatId;
+        (fn ($conversation) => $this->currentServerSideConversation = $conversation)->call($bot, $instance);
+
         $instance($bot, ...$data);
 
         return $instance;
@@ -207,12 +209,18 @@ abstract class Conversation
         return [];
     }
 
-    public function getChatId(): ?int
+    /**
+     * @internal Used internally to get the chat ID via the chatId() proxy when a conversation is initiated server-side.
+     */
+    protected function getChatId(): ?int
     {
         return $this->chatId;
     }
 
-    public function getUserId(): ?int
+    /**
+     * @internal Used internally to get the user ID via the userId() proxy when a conversation is initiated server-side.
+     */
+    protected function getUserId(): ?int
     {
         return $this->userId;
     }
