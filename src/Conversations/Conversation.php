@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\Conversations;
 
 use Closure;
+use Laravel\SerializableClosure\SerializableClosure;
 use Psr\SimpleCache\InvalidArgumentException;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
@@ -20,7 +21,7 @@ abstract class Conversation
     protected bool $skipHandlers = false;
     protected bool $skipMiddlewares = false;
     protected ?string $step = 'start';
-    private ?Stepper $stepper = null;
+    private array $conditionalSteps = [];
     private static bool $refreshInstance = false;
     private ?int $userId = null;
     private ?int $chatId = null;
@@ -82,13 +83,19 @@ abstract class Conversation
 
     /**
      * @param string $step
-     * @param UpdateType|MessageType|Closure|null $condition
+     * @param UpdateType|MessageType|Closure|null $type
      * @return Conversation
      * @throws InvalidArgumentException
      */
-    protected function next(string $step, UpdateType|MessageType|Closure|null $condition = null): static
+    protected function next(string $step, UpdateType|MessageType|Closure|null $type = null): static
     {
-        $this->stepper->addCondition($step, $condition);
+        if ($type instanceof UpdateType || $type instanceof MessageType) {
+            $this->conditionalSteps[$type->value] = $step;
+        } elseif ($type instanceof Closure) {
+            $this->conditionalSteps[0] = [$step, new SerializableClosure($type)];
+        } else {
+            $this->step = $step;
+        }
 
         $this->bot->stepConversation($this, $this->userId, $this->chatId, $this->threadId);
 
@@ -131,18 +138,38 @@ abstract class Conversation
      */
     public function __invoke(Nutgram $bot, ...$parameters): mixed
     {
-        if ($this->stepper !== null) {
-            $this->step = $this->stepper->resolve($bot) ?? $this->step;
-        }
+        $currentStep = $this->resolveCurrentStep($bot);
 
         if (method_exists($this, $this->step)) {
             $this->bot = $bot;
             $this->beforeStep($bot);
-            $this->stepper = new Stepper();
-            return $this->{$this->step}($bot, ...$parameters);
+            $this->conditionalSteps = [];
+            return $this->{$currentStep}($bot, ...$parameters);
         }
 
-        throw new RuntimeException("Conversation step '$this->step' not found.");
+        throw new RuntimeException("Conversation step '$currentStep' not found.");
+    }
+
+    private function resolveCurrentStep(Nutgram $bot): ?string
+    {
+        $updateType = $bot->update()?->getType();
+
+        if ($updateType &&
+            $updateType->isMessageType() &&
+            ($messageType = $bot->update()?->getMessage()?->getType()) &&
+            ($step = $this->conditionalSteps[$messageType->value] ?? $this->conditionalSteps[$updateType->value])
+        ) {
+            return $step;
+        }
+
+        if (array_key_exists(0, $this->conditionalSteps) &&
+            ([$step, $closure] = $this->conditionalSteps[0]) &&
+            $closure($bot)
+        ) {
+            return $step;
+        }
+
+        return $this->step;
     }
 
     /**
