@@ -15,7 +15,7 @@ use SergiX44\Nutgram\Handlers\Type\Command\WithScopes;
 use SergiX44\Nutgram\Handlers\Type\InternalCommand;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
-use function SergiX44\Nutgram\Support\enum_value;
+use function SergiX44\Nutgram\Support\get_value;
 
 /**
  * @mixin CollectHandlers
@@ -39,7 +39,7 @@ trait MessageListeners
     ): InternalCommand {
         $this->checkFinalized();
         $target->validateMessageType();
-        $command = enum_value($command);
+        $command = get_value($command);
 
         $registeringCommand = new InternalCommand($callable, $command);
 
@@ -73,7 +73,7 @@ trait MessageListeners
     {
         $this->checkFinalized();
         $target->validateMessageType();
-        $pattern = enum_value($pattern);
+        $pattern = get_value($pattern);
         return $this->{$this->target}[$target->value][MessageType::TEXT->value][$pattern] = new Handler(
             $callable,
             $pattern
@@ -411,7 +411,7 @@ trait MessageListeners
     public function onSuccessfulPaymentPayload(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
-        $pattern = enum_value($pattern);
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::SUCCESSFUL_PAYMENT->value][$pattern] = new Handler(
             $callable,
             $pattern
@@ -437,7 +437,7 @@ trait MessageListeners
     public function onRefundedPaymentPayload(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
-        $pattern = enum_value($pattern);
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::REFUNDED_PAYMENT->value][$pattern] = new Handler(
             $callable,
             $pattern

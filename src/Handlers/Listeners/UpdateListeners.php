@@ -9,7 +9,7 @@ use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
-use function SergiX44\Nutgram\Support\enum_value;
+use function SergiX44\Nutgram\Support\get_value;
 
 /**
  * @mixin CollectHandlers
@@ -121,7 +121,7 @@ trait UpdateListeners
     public function onInlineQueryText(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
-        $pattern = enum_value($pattern);
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::INLINE_QUERY->value][$pattern] = new Handler($callable, $pattern);
     }
 
@@ -143,7 +143,7 @@ trait UpdateListeners
     public function onChosenInlineResultQuery(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
-        $pattern = enum_value($pattern);
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::CHOSEN_INLINE_RESULT->value]['query'][$pattern] = new Handler(
             $callable,
             $pattern
@@ -158,7 +158,7 @@ trait UpdateListeners
     public function onChosenInlineResultId(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
-        $pattern = enum_value($pattern);
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::CHOSEN_INLINE_RESULT->value]['result_id'][$pattern] = new Handler(
             $callable,
             $pattern
@@ -183,7 +183,7 @@ trait UpdateListeners
     public function onCallbackQueryData(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
-        $pattern = enum_value($pattern);
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::CALLBACK_QUERY->value][$pattern] = new Handler($callable, $pattern);
     }
 
@@ -215,7 +215,7 @@ trait UpdateListeners
     public function onPreCheckoutQueryPayload(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
-        $pattern = enum_value($pattern);
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::PRE_CHECKOUT_QUERY->value][$pattern] = new Handler(
             $callable,
             $pattern
@@ -240,7 +240,7 @@ trait UpdateListeners
     public function onPaidMediaPurchasedPayload(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
-        $pattern = enum_value($pattern);
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::PURCHASED_PAID_MEDIA->value][$pattern] = new Handler(
             $callable,
             $pattern

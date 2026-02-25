@@ -87,16 +87,13 @@ if (!function_exists(__NAMESPACE__.'\deepLink')) {
     }
 }
 
-if (!function_exists(__NAMESPACE__.'\enum_value')) {
+if (!function_exists(__NAMESPACE__.'\get_value')) {
     /**
-     * Return a string value for the given value that might be a backed enum.
+     * Resolve the value of a BackedEnum or return the value as is if it's not an enum.
      * @internal
      */
-    function enum_value(BackedEnum|string $value): string
+    function get_value(mixed $value): mixed
     {
-        return match (true) {
-            $value instanceof BackedEnum => (string)$value->value,
-            default => $value,
-        };
+        return $value instanceof BackedEnum ? (string)$value->value : $value;
     }
 }
