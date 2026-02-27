@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Handlers\Listeners;
 
+use BackedEnum;
 use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
+use function SergiX44\Nutgram\Support\get_value;
 
 /**
  * @mixin CollectHandlers
@@ -112,13 +114,14 @@ trait UpdateListeners
     }
 
     /**
-     * @param string $pattern
+     * @param BackedEnum|string $pattern
      * @param $callable
      * @return Handler
      */
-    public function onInlineQueryText(string $pattern, $callable): Handler
+    public function onInlineQueryText(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::INLINE_QUERY->value][$pattern] = new Handler($callable, $pattern);
     }
 
@@ -133,22 +136,29 @@ trait UpdateListeners
     }
 
     /**
-     * @param string $pattern
+     * @param BackedEnum|string $pattern
      * @param $callable
      * @return Handler
      */
-    public function onChosenInlineResultQuery(string $pattern, $callable): Handler
+    public function onChosenInlineResultQuery(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::CHOSEN_INLINE_RESULT->value]['query'][$pattern] = new Handler(
             $callable,
             $pattern
         );
     }
 
-    public function onChosenInlineResultId(string $pattern, $callable): Handler
+    /**
+     * @param BackedEnum|string $pattern
+     * @param $callable
+     * @return Handler
+     */
+    public function onChosenInlineResultId(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::CHOSEN_INLINE_RESULT->value]['result_id'][$pattern] = new Handler(
             $callable,
             $pattern
@@ -166,13 +176,14 @@ trait UpdateListeners
     }
 
     /**
-     * @param string $pattern
+     * @param BackedEnum|string $pattern
      * @param $callable
      * @return Handler
      */
-    public function onCallbackQueryData(string $pattern, $callable): Handler
+    public function onCallbackQueryData(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::CALLBACK_QUERY->value][$pattern] = new Handler($callable, $pattern);
     }
 
@@ -197,13 +208,14 @@ trait UpdateListeners
     }
 
     /**
-     * @param string $pattern
+     * @param BackedEnum|string $pattern
      * @param $callable
      * @return Handler
      */
-    public function onPreCheckoutQueryPayload(string $pattern, $callable): Handler
+    public function onPreCheckoutQueryPayload(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::PRE_CHECKOUT_QUERY->value][$pattern] = new Handler(
             $callable,
             $pattern
@@ -221,13 +233,14 @@ trait UpdateListeners
     }
 
     /**
-     * @param string $pattern
+     * @param BackedEnum|string $pattern
      * @param $callable
      * @return Handler
      */
-    public function onPaidMediaPurchasedPayload(string $pattern, $callable): Handler
+    public function onPaidMediaPurchasedPayload(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::PURCHASED_PAID_MEDIA->value][$pattern] = new Handler(
             $callable,
             $pattern

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Support;
 
+use BackedEnum;
 use InvalidArgumentException;
 
 if (!function_exists(__NAMESPACE__.'\array_filter_null')) {
@@ -83,5 +84,16 @@ if (!function_exists(__NAMESPACE__.'\deepLink')) {
     function deepLink(?string $baseUrl = null): DeepLink
     {
         return new DeepLink($baseUrl);
+    }
+}
+
+if (!function_exists(__NAMESPACE__.'\get_value')) {
+    /**
+     * Resolve the value of a BackedEnum or return the value as is if it's not an enum.
+     * @internal
+     */
+    function get_value(mixed $value): mixed
+    {
+        return $value instanceof BackedEnum ? (string)$value->value : $value;
     }
 }
