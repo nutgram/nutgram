@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.43.0 - 2026-02-26
+
+### What's Changed
+
+* Dispatch a `repository_dispatch` event on repository release by @Lukasss93 in https://github.com/nutgram/nutgram/pull/955
+* Add support for specifying update type(s) in conversation `next` method by @Lukasss93 in https://github.com/nutgram/nutgram/pull/951
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.42.0...4.43.0
+
 ## 4.42.0 - 2026-02-12
 
 ### What's Changed
