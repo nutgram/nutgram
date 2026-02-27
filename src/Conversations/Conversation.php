@@ -68,7 +68,7 @@ abstract class Conversation
     /**
      * @param string $step
      * @param UpdateType|MessageType|Closure|null $type
-     * @return Conversation
+     * @return static
      * @throws InvalidArgumentException
      */
     protected function next(string $step, UpdateType|MessageType|Closure|null $type = null): static
