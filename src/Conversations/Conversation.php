@@ -67,6 +67,9 @@ abstract class Conversation
                 ],
             ]);
 
+            /**
+             * @psalm-suppress UndefinedThisPropertyAssignment
+             */
             (fn ($update) => $this->update = $update)->call($bot, $update);
         }
 
