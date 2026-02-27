@@ -42,24 +42,12 @@ trait UpdateProxy
 
     public function userId(): ?int
     {
-        $userId = $this->update?->getUser()?->id;
-
-        if ($userId === null && $this->currentServerSideConversation !== null) {
-            $userId = (fn () => $this->getUserId())->call($this->currentServerSideConversation);
-        }
-
-        return $userId;
+        return $this->update?->getUser()?->id;
     }
 
     public function chatId(): ?int
     {
-        $chatId = $this->update?->getChat()?->id;
-
-        if ($chatId === null && $this->currentServerSideConversation !== null) {
-            $chatId = (fn () => $this->getChatId())->call($this->currentServerSideConversation);
-        }
-
-        return $chatId;
+        return $this->update?->getChat()?->id;
     }
 
     public function updateId(): ?int

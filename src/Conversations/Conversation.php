@@ -7,6 +7,8 @@ namespace SergiX44\Nutgram\Conversations;
 use Psr\SimpleCache\InvalidArgumentException;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
+use SergiX44\Nutgram\Testing\TypeFaker;
 
 /**
  * Class Conversation
@@ -38,7 +40,30 @@ abstract class Conversation
         $instance->userId = $userId;
         $instance->chatId = $chatId;
         $instance->threadId = $threadId;
-        (fn ($conversation) => $this->currentServerSideConversation = $conversation)->call($bot, $instance);
+
+        if ($userId && $chatId) {
+            $typeFaker = $bot->getContainer()->get(TypeFaker::class);
+            $update = $typeFaker->fakeInstanceOf(Update::class, [
+                'update_id' => 123,
+                'message' => [
+                    'message_id' => 456,
+                    'from' => [
+                        'id' => $userId,
+                        'is_bot' => false,
+                        'first_name' => '$$__ssc__$$',
+                    ],
+                    'chat' => [
+                        'id' => $chatId,
+                        'type' => 'private',
+                        'first_name' => '$$__ssc__$$',
+                    ],
+                    'date' => time(),
+                    'text' => '$$__ssc__$$',
+                ],
+            ]);
+
+            (fn ($update) => $this->update = $update)->call($bot, $update);
+        }
 
         $instance($bot, ...$data);
 
@@ -190,21 +215,5 @@ abstract class Conversation
     protected function getSerializableAttributes(): array
     {
         return [];
-    }
-
-    /**
-     * @internal Used internally to get the chat ID via the chatId() proxy when a conversation is initiated server-side.
-     */
-    protected function getChatId(): ?int
-    {
-        return $this->chatId;
-    }
-
-    /**
-     * @internal Used internally to get the user ID via the userId() proxy when a conversation is initiated server-side.
-     */
-    protected function getUserId(): ?int
-    {
-        return $this->userId;
     }
 }

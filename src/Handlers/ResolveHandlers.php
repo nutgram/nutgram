@@ -31,8 +31,6 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected ?Update $update = null;
 
-    protected ?Conversation $currentServerSideConversation = null;
-
     abstract public function getConfig(): Configuration;
 
     abstract public function getContainer(): Container;
