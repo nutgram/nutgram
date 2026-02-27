@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use Psr\Http\Message\StreamInterface;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputProfilePhotoType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
@@ -11,7 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
  * A static profile photo in the .JPG format.
  * @see https://core.telegram.org/bots/api#inputprofilephoto
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputProfilePhotoStatic extends InputProfilePhoto
 {
     /**
@@ -25,6 +29,7 @@ class InputProfilePhotoStatic extends InputProfilePhoto
      * so you can pass “attach://<file_attach_name>” if the photo was uploaded using multipart/form-data under <file_attach_name>.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string $photo;
 
     public function isLocal(): bool
@@ -37,9 +42,9 @@ class InputProfilePhotoStatic extends InputProfilePhoto
         return $this->photo->getFilename();
     }
 
-    public function getResource()
+    public function getStream(): StreamInterface
     {
-        return $this->photo->getResource();
+        return $this->photo->getStream();
     }
 
     public function __construct(InputFile|string $photo)

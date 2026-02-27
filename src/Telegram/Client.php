@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram;
 
@@ -211,7 +212,7 @@ trait Client
                     if ($file->isLocal()) {
                         $parameters[] = [
                             'name' => $file->getFilename(),
-                            'contents' => $file->getResource(),
+                            'contents' => $file->getStream(),
                             'filename' => $file->getFilename(),
                         ];
                     }
@@ -221,7 +222,7 @@ trait Client
             $parameters[] = match (true) {
                 $contents instanceof InputFile => [
                     'name' => $name,
-                    'contents' => $contents->getResource(),
+                    'contents' => $contents->getStream(),
                     'filename' => $contents->getFilename(),
                 ],
                 $contents instanceof JsonSerializable, is_array($contents) => [
@@ -269,7 +270,7 @@ trait Client
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
-            $content = $this->mapResponse($response, $mapTo);
+            $content = $this->mapResponse($response, $mapTo, $endpoint);
 
             $this->logResponse((string)$response->getBody());
 
@@ -278,7 +279,7 @@ trait Client
             if (!$exception->hasResponse()) {
                 throw $exception;
             }
-            return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
+            return $this->mapResponse($exception->getResponse(), $mapTo, $endpoint, $exception);
         }
     }
 
@@ -344,7 +345,7 @@ trait Client
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
-            $content = $this->mapResponse($response, $mapTo);
+            $content = $this->mapResponse($response, $mapTo, $endpoint);
 
             $this->logResponse((string)$response->getBody());
 
@@ -353,22 +354,23 @@ trait Client
             if (!$exception->hasResponse()) {
                 throw $exception;
             }
-            return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
+            return $this->mapResponse($exception->getResponse(), $mapTo, $endpoint, $exception);
         }
     }
 
     /**
      * @param ResponseInterface $response
      * @param string $mapTo
+     * @param string $endpoint
      * @param Exception|null $clientException
      * @return mixed
      * @throws JsonException
      * @throws TelegramException
      */
-    protected function mapResponse(ResponseInterface $response, string $mapTo, ?Exception $clientException = null): mixed
+    protected function mapResponse(ResponseInterface $response, string $mapTo, string $endpoint, ?Exception $clientException = null): mixed
     {
         $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
-        $json = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$json]) ?? $json;
+        $json = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$json, $endpoint]) ?? $json;
 
         if (!$json?->ok) {
             $e = new TelegramException(
@@ -383,8 +385,11 @@ trait Client
 
         return match (true) {
             is_scalar($json->result) => $json->result,
-            is_array($json->result) => $this->hydrator->hydrateArray($json->result, $mapTo),
-            default => $this->hydrator->hydrate($json->result, $mapTo)
+            is_array($json->result) => array_map(
+                callback: fn ($obj): mixed => $this->hydrator->hydrate($mapTo, $obj),
+                array: $json->result,
+            ),
+            default => $this->hydrator->hydrate($mapTo, $json->result)
         };
     }
 

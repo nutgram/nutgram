@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object describes the types of gifts that can be gifted to a user or a chat.
  * @see https://core.telegram.org/bots/api#acceptedgifttypes
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class AcceptedGiftTypes extends BaseType
 {
     /**

@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Handlers;
 
@@ -11,7 +12,8 @@ use SergiX44\Nutgram\Cache\GlobalCache;
 use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
-use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Handlers\Type\InternalCommand;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Proxies\UpdateProxy;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
@@ -20,25 +22,11 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 /**
  * Trait ResolveHandlers
  * @package SergiX44\Nutgram\Handlers
+ * @mixin Nutgram
  */
 abstract class ResolveHandlers extends CollectHandlers
 {
     use UpdateProxy;
-
-    /**
-     * @var ConversationCache
-     */
-    protected ConversationCache $conversationCache;
-
-    /**
-     * @var GlobalCache
-     */
-    protected GlobalCache $globalCache;
-
-    /**
-     * @var UserCache
-     */
-    protected UserCache $userCache;
 
     /**
      * @var Update|null
@@ -62,7 +50,7 @@ abstract class ResolveHandlers extends CollectHandlers
             return null;
         }
 
-        return $this->conversationCache->get($userId, $chatId, $threadId);
+        return $this->container->get(ConversationCache::class)->get($userId, $chatId, $threadId);
     }
 
     /**
@@ -73,12 +61,18 @@ abstract class ResolveHandlers extends CollectHandlers
         $resolvedHandlers = [];
         $updateType = $this->update?->getType();
 
-        if ($updateType?->isMessageType()) {
+        if ($updateType === null) {
+            $this->addHandlersBy($resolvedHandlers, Update::class);
+
+            return $resolvedHandlers;
+        }
+
+        if ($updateType->isMessageType()) {
             $messageType = $this->update->getMessage()?->getType();
 
             if ($messageType === MessageType::TEXT) {
                 $username = $this->getConfig()->botName;
-                $text = $this->update?->getMessage()?->getParsedCommand($username) ?? $this->update->getMessage()?->text;
+                $text = $this->update->getMessage()?->getParsedCommand($username) ?? $this->update->getMessage()?->text;
 
                 if ($text !== null) {
                     $this->addHandlersBy($resolvedHandlers, $updateType->value, $messageType->value, $text);
@@ -117,7 +111,7 @@ abstract class ResolveHandlers extends CollectHandlers
             $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         }
 
-        if (empty($resolvedHandlers) && $updateType !== null) {
+        if (empty($resolvedHandlers)) {
             $this->addHandlersBy($resolvedHandlers, $updateType->value);
         }
 
@@ -268,7 +262,7 @@ abstract class ResolveHandlers extends CollectHandlers
             }
         };
 
-        $freshConversation = $this->container->get($conversation::class);
+        $freshConversation = $this->getContainer()->get($conversation::class);
         $freshAttributes = $getAttributes->call($freshConversation);
         $currentAttributes = $getAttributes->call($conversation);
         $attributes = array_diff_key($freshAttributes, $currentAttributes);
@@ -322,7 +316,7 @@ abstract class ResolveHandlers extends CollectHandlers
                         foreach ($middlewares as $middleware) {
                             $leaf->middleware($middleware);
                         }
-                        if ($leaf instanceof Command && !empty($scopes)) {
+                        if ($leaf instanceof InternalCommand && !empty($scopes)) {
                             $leaf->scope($scopes);
                         }
                         $leaf->tags([...$leaf->getTags(), ...$tags]);

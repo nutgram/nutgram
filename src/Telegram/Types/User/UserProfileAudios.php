@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\User;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\Audio;
-use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 
 /**
  * This object represents the audios displayed on a user's profile.

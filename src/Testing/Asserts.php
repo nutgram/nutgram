@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Testing;
 
 use ArrayAccess;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Testing\Assert;
 use InvalidArgumentException;
 use JsonException;
 use PHPUnit\Framework\Assert as PHPUnit;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
-use SergiX44\Nutgram\Testing\Constraints\ArraySubset;
 
 /**
  * @mixin FakeNutgram
@@ -178,8 +180,7 @@ trait Asserts
         bool $checkForIdentity = false,
         string $msg = ''
     ): void {
-        $constraint = new ArraySubset($subset, $checkForIdentity);
-        PHPUnit::assertThat($array, $constraint, $msg);
+        Assert::assertArraySubset($subset, $array, $checkForIdentity, $msg);
     }
 
     /**

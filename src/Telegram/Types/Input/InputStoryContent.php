@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputStoryContentType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -13,13 +14,8 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * - {@see InputStoryContentVideo}
  * @see https://core.telegram.org/bots/api#inputstorycontent
  */
-abstract class InputStoryContent extends BaseType implements JsonSerializable
+abstract class InputStoryContent extends BaseType
 {
     #[EnumOrScalar]
     public InputStoryContentType|string $type;
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
 }

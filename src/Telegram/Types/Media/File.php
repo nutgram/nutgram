@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -38,8 +40,8 @@ class File extends BaseType
     public ?string $file_path = null;
 
     /**
-     * @param  string  $path
-     * @param  array  $clientOpt
+     * @param string $path
+     * @param array $clientOpt
      * @return bool|null
      */
     public function save(string $path, array $clientOpt = []): ?bool
@@ -48,6 +50,7 @@ class File extends BaseType
             $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
             $path .= basename($this->file_path ?? $this->file_id);
         }
+
         return $this->getBot()?->downloadFile($this, $path, $clientOpt);
     }
 

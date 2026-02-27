@@ -1,22 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use Psr\Http\Message\StreamInterface;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
 use SergiX44\Nutgram\Telegram\Types\Sticker\MaskPosition;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object describes a sticker to be added to a sticker set.
  * @see https://core.telegram.org/bots/api#inputsticker
  */
-#[SkipConstructor]
-class InputSticker extends BaseType implements JsonSerializable, Uploadable
+#[OverrideConstructor('bindToInstance')]
+class InputSticker extends BaseType implements Uploadable
 {
     /**
      * The added sticker.
@@ -24,12 +26,14 @@ class InputSticker extends BaseType implements JsonSerializable, Uploadable
      * Animated and video stickers can't be uploaded via HTTP URL.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string $sticker;
 
     /**
      * Format of the added sticker, must be one of “static” for a .WEBP or .PNG image,
      * “animated” for a .TGS animation, “video” for a WEBM video
      */
+    #[BaseUnion]
     public StickerFormat|string|null $format = null;
 
     /**
@@ -68,33 +72,6 @@ class InputSticker extends BaseType implements JsonSerializable, Uploadable
         $this->keywords = $keywords;
     }
 
-    public static function make(
-        InputFile|string $sticker,
-        array $emoji_list,
-        ?MaskPosition $mask_position = null,
-        ?array $keywords = null,
-        StickerFormat|string|null $format = null,
-    ): self {
-        return new self(
-            sticker: $sticker,
-            emoji_list: $emoji_list,
-            mask_position: $mask_position,
-            keywords: $keywords,
-            format: $format,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'sticker' => $this->sticker,
-            'format' => $this->format,
-            'emoji_list' => $this->emoji_list,
-            'mask_position' => $this->mask_position,
-            'keywords' => $this->keywords,
-        ]);
-    }
-
     public function isLocal(): bool
     {
         return $this->sticker instanceof InputFile;
@@ -105,8 +82,8 @@ class InputSticker extends BaseType implements JsonSerializable, Uploadable
         return $this->sticker->getFilename();
     }
 
-    public function getResource()
+    public function getStream(): StreamInterface
     {
-        return $this->sticker->getResource();
+        return $this->sticker->getStream();
     }
 }

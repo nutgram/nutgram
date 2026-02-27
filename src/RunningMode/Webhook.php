@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\RunningMode;
 
@@ -7,7 +8,7 @@ use Closure;
 use JsonMapper_Exception;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\InvalidArgumentException;
-use SergiX44\Nutgram\Hydrator\Hydrator;
+use SergiX44\Hydrator\Hydrator;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use Throwable;
@@ -47,19 +48,18 @@ class Webhook implements RunningMode
         $update = null;
         try {
             /** @var Update $update */
-            $update = $bot->getContainer()
-                ->get(Hydrator::class)
-                ->hydrate(json_decode($input, true, flags: JSON_THROW_ON_ERROR), Update::class);
+            $update = new Hydrator($bot->getContainer())
+                ->hydrate(Update::class, json_decode($input, true, flags: JSON_THROW_ON_ERROR));
 
             $bot->processUpdate($update);
 
             $bot->getContainer()
                 ->get(LoggerInterface::class)
-                ->debug(sprintf('Update processed: %s%s%s', $update?->getType()?->value, PHP_EOL, $input));
+                ->debug(sprintf('Update processed: %s%s%s', $update->getType()?->value ?? '', PHP_EOL, $input));
         } catch (Throwable $e) {
             $bot->getContainer()
                 ->get(LoggerInterface::class)
-                ->error(sprintf('Update failed: %s%s%s', $update?->getType()?->value, PHP_EOL, $input), ['exception' => $e]);
+                ->error(sprintf('Update failed: %s%s%s', $update?->getType()?->value ?? '', PHP_EOL, $input), ['exception' => $e]);
             throw $e;
         }
     }

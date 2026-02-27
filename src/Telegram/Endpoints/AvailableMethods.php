@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
@@ -13,6 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Boost\UserChatBoosts;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatFullInfo;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMember;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatPermissions;
@@ -2176,15 +2179,15 @@ trait AvailableMethods
     }
 
     /**
-     * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.).
-     * Returns a {@see https://core.telegram.org/bots/api#chat Chat} object on success.
+     * Use this method to get up-to-date information about the chat.
+     * Returns a {@see https://core.telegram.org/bots/api#chatfullinfo ChatFullInfo} object on success.
      * @see https://core.telegram.org/bots/api#getchat
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
-     * @return Chat|null
+     * @return ChatFullInfo|null
      */
-    public function getChat(int|string $chat_id): ?Chat
+    public function getChat(int|string $chat_id): ?ChatFullInfo
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'), Chat::class);
+        return $this->requestJson(__FUNCTION__, compact('chat_id'), ChatFullInfo::class);
     }
 
     /**

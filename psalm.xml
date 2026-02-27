@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="7"
+    errorLevel="4"
     resolveFromConfigFile="true"
     findUnusedBaselineEntry="true"
     findUnusedCode="false"
@@ -22,6 +22,11 @@
                 <directory name="src"/>
             </errorLevel>
         </PropertyNotSetInConstructor>
+        <NoInterfaceProperties>
+            <errorLevel type="suppress">
+                <file name="src/Handlers/Listeners/MessageListeners.php"/>
+            </errorLevel>
+        </NoInterfaceProperties>
         <UndefinedMethod>
             <errorLevel type="suppress">
                 <referencedMethod name="ReflectionType::getName"/>
@@ -40,5 +45,20 @@
                 <file name="src/Testing/FakeNutgram.php"/>
             </errorLevel>
         </UndefinedConstant>
+        <UndefinedPropertyFetch>
+            <errorLevel type="suppress">
+                <file name="src/Handlers/Listeners/MessageListeners.php"/>
+            </errorLevel>
+        </UndefinedPropertyFetch>
+        <InternalClass>
+            <errorLevel type="suppress">
+                <file name="src/Testing/Asserts.php"/>
+            </errorLevel>
+        </InternalClass>
+        <InternalMethod>
+            <errorLevel type="suppress">
+                <file name="src/Testing/Asserts.php"/>
+            </errorLevel>
+        </InternalMethod>
     </issueHandlers>
 </psalm>

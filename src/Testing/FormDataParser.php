@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Testing;
 
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Utils;
 use Throwable;
 
 class FormDataParser
@@ -52,6 +55,7 @@ class FormDataParser
                 try {
                     $tmpResource = fopen('php://memory', 'rwb+');
                     fwrite($tmpResource, $value);
+                    $tmpResource = Utils::streamFor($value);
                     $error = UPLOAD_ERR_OK;
                 } catch (Throwable) {
                     $error = UPLOAD_ERR_CANT_WRITE;
@@ -66,7 +70,7 @@ class FormDataParser
                     ) ? $headers['content-type'] : 'application/octet-stream',
                     size: mb_strlen($value, '8bit'),
                     error: $error,
-                    tmp_resource: $tmpResource
+                    stream: $tmpResource
                 );
             } else {
                 $this->params[$headers['content-disposition']['name']] = $value;

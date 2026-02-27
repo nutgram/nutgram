@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
-use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Describes a Telegram Star transaction.
  * @see https://core.telegram.org/bots/api#startransaction
  */
-class StarTransaction extends BaseType implements JsonSerializable
+class StarTransaction extends BaseType
 {
     /**
      * Unique identifier of the transaction.
@@ -49,16 +49,4 @@ class StarTransaction extends BaseType implements JsonSerializable
      * Only for outgoing transactions
      */
     public ?TransactionPartner $receiver = null;
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'id' => $this->id,
-            'amount' => $this->amount,
-            'nanostar_amount' => $this->nanostar_amount,
-            'date' => $this->date,
-            'source' => $this->source,
-            'receiver' => $this->receiver,
-        ]);
-    }
 }

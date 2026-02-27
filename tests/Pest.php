@@ -1,6 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
+use SergiX44\Nutgram\Tests\TelegramTypeContext;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +16,8 @@ use PHPUnit\Framework\TestCase;
 |
 */
 
-uses(TestCase::class)
+pest()
+    ->extend(TestCase::class)
     ->in('Feature', 'Unit', 'E2E');
 
 /*
@@ -27,7 +31,9 @@ uses(TestCase::class)
 |
 */
 
-expect()->extend('getFileContent', fn () => $this->and(File::get($this->value)));
+expect()->extend('toBeOne', function () {
+    return $this->toBe(1);
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -47,4 +53,47 @@ function getUpdateType(string $type, bool $associative = false): array|stdClass
         $associative,
         flags: JSON_THROW_ON_ERROR
     );
+}
+
+/**
+ * @param TelegramTypeContext $context
+ * @return ReflectionClass[]
+ * @throws ReflectionException
+ */
+function getTelegramTypes(TelegramTypeContext $context = TelegramTypeContext::All): array
+{
+    $classes = glob(__DIR__.'/../src/Telegram/Types/**/*.php');
+
+    $types = array_map(function (string $classPath) {
+        $classPath = realpath($classPath);
+        $classPath = str_replace(realpath(__DIR__.'/../src/'), 'SergiX44\Nutgram', $classPath);
+        $classPath = str_replace('/', '\\', $classPath);
+        $classPath = str_replace('.php', '', $classPath);
+
+        return new ReflectionClass($classPath);
+    }, $classes);
+
+    return array_values(array_filter($types, function (ReflectionClass $class) use ($context) {
+        if (str_contains($class->getName(), 'SergiX44\Nutgram\Telegram\Types\Internal')) {
+            return false;
+        }
+
+        if ($context === TelegramTypeContext::All) {
+            return true;
+        }
+
+        if ($context === TelegramTypeContext::NonAbstract) {
+            return !$class->isAbstract();
+        }
+
+        if ($context === TelegramTypeContext::Abstract) {
+            return $class->isAbstract();
+        }
+
+        if ($context === TelegramTypeContext::Buildable) {
+            return $class->getMethod('__construct')?->getDeclaringClass()?->getName() === $class->getName();
+        }
+
+        return false;
+    }));
 }

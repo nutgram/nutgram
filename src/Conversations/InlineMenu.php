@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Conversations;
 
 use InvalidArgumentException;
+use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
@@ -40,7 +43,7 @@ abstract class InlineMenu extends Conversation
     /**
      * @var string|null
      */
-    private ?string $orNext;
+    private ?string $orNext = null;
 
     /**
      * @var array
@@ -54,7 +57,7 @@ abstract class InlineMenu extends Conversation
 
     public function __construct()
     {
-        $this->buttons = InlineKeyboardMarkup::make();
+        $this->buttons = new InlineKeyboardMarkup();
     }
 
     /**
@@ -84,7 +87,7 @@ abstract class InlineMenu extends Conversation
      */
     protected function clearButtons(): self
     {
-        $this->buttons = InlineKeyboardMarkup::make();
+        $this->buttons = new InlineKeyboardMarkup();
         $this->callbacks = [];
         $this->orNext = null;
         return $this;
@@ -167,14 +170,14 @@ abstract class InlineMenu extends Conversation
      * @param bool $reopen
      * @param bool $noHandlers
      * @param bool $noMiddlewares
-     * @return Message|null
+     * @return Message|bool|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function showMenu(
         bool $reopen = false,
         bool $noHandlers = false,
         bool $noMiddlewares = false
-    ): Message|null {
+    ): Message|bool|null {
         if ($reopen || !$this->messageId || !$this->chatId) {
             if ($reopen) {
                 $this->closeMenu();

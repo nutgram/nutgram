@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
@@ -14,9 +16,4 @@ class MenuButtonDefault extends MenuButton
     /** Type of the button, must be default */
     #[EnumOrScalar]
     public MenuButtonType|string $type = MenuButtonType::DEFAULT;
-
-    public function make(): self
-    {
-        return new self();
-    }
 }

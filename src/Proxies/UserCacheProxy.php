@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Proxies;
 
 use DateInterval;
 use Psr\SimpleCache\InvalidArgumentException;
+use SergiX44\Nutgram\Cache\UserCache;
 
 /**
  * Trait UserCacheProxy
@@ -22,7 +24,7 @@ trait UserCacheProxy
     public function getUserData($key, ?int $userId = null, $default = null): mixed
     {
         $userId = $userId ?? $this->userId();
-        return $this->userCache->get($userId, $key, $default);
+        return $this->container->get(UserCache::class)->get($userId, $key, $default);
     }
 
     /**
@@ -36,7 +38,7 @@ trait UserCacheProxy
     public function setUserData($key, $value, ?int $userId = null, DateInterval|int|null $ttl = null): bool
     {
         $userId = $userId ?? $this->userId();
-        return $this->userCache->set($userId, $key, $value, $ttl);
+        return $this->container->get(UserCache::class)->set($userId, $key, $value, $ttl);
     }
 
     /**
@@ -48,6 +50,6 @@ trait UserCacheProxy
     public function deleteUserData($key, ?int $userId = null): bool
     {
         $userId = $userId ?? $this->userId();
-        return $this->userCache->delete($userId, $key);
+        return $this->container->get(UserCache::class)->delete($userId, $key);
     }
 }
