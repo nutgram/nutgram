@@ -6,8 +6,8 @@ use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
-use SergiX44\Nutgram\Testing\TestClock;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
+use SergiX44\Nutgram\Testing\TestClock;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationEmpty;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithBeforeStep;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithClosing;
@@ -266,7 +266,7 @@ it('starts manually for a specific user/chat/thread', function () {
 
     $bot = Nutgram::fake();
 
-    TwoStepConversation::beginThread($bot, $userId, $chatId, $thread);
+    TwoStepConversation::begin($bot, $userId, $chatId, $thread);
 
     $bot->assertActiveConversation($userId, $chatId, $thread);
 
