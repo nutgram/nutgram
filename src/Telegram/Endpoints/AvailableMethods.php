@@ -1837,7 +1837,7 @@ trait AvailableMethods
      * @return bool|null
      * @see https://core.telegram.org/bots/api#setchatmembertag
      */
-    public function setChatMemberTag(?string $tag = null, int|string $chat_id = null, int $user_id = null): ?bool
+    public function setChatMemberTag(?string $tag = null, int|string|null $chat_id = null, int|null $user_id = null): ?bool
     {
         $parameters = compact('tag', 'chat_id', 'user_id');
         $parameters['chat_id'] ??= $this->chatId();
