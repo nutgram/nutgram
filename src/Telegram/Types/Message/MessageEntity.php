@@ -20,7 +20,25 @@ class MessageEntity extends BaseType implements JsonSerializable
 {
     /**
      * Type of the entity.
-     * Currently, can be “mention” (&#64;username), “hashtag” (#hashtag), “cashtag” ($USD), “bot_command” (/start&#64;jobs_bot), “url” (https://telegram.org), “email” (do-not-reply&#64;telegram.org), “phone_number” (+1-212-555-0123), “bold” (bold text), “italic” (italic text), “underline” (underlined text), “strikethrough” (strikethrough text), “spoiler” (spoiler message), “code” (monowidth string), “pre” (monowidth block), “text_link” (for clickable text URLs), “text_mention” (for users {@see https://telegram.org/blog/edit#new-mentions without usernames}), “custom_emoji” (for inline custom emoji stickers)
+     * Currently, can be
+     * “mention” (&#64;username),
+     * “hashtag” (#hashtag),
+     * “cashtag” ($USD),
+     * “bot_command” (/start&#64;jobs_bot),
+     * “url” (https://telegram.org),
+     * “email” (do-not-reply&#64;telegram.org),
+     * “phone_number” (+1-212-555-0123),
+     * “bold” (bold text),
+     * “italic” (italic text),
+     * “underline” (underlined text),
+     * “strikethrough” (strikethrough text),
+     * “spoiler” (spoiler message),
+     * “code” (monowidth string),
+     * “pre” (monowidth block),
+     * “text_link” (for clickable text URLs),
+     * “text_mention” (for users {@see https://telegram.org/blog/edit#new-mentions without usernames}),
+     * “custom_emoji” (for inline custom emoji stickers),
+     * or “date_time” (for formatted date and time)
      */
     #[EnumOrScalar]
     public MessageEntityType|string $type;
