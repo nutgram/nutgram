@@ -101,6 +101,13 @@ class ChatMemberAdministrator extends ChatMember
 
     /**
      * Optional.
+     * True, if the administrator can edit the tags of regular members; for groups and supergroups only.
+     * If omitted defaults to the value of can_pin_messages.
+     */
+    public ?bool $can_manage_tags = null;
+
+    /**
+     * Optional.
      * Custom title for this user
      */
     public ?string $custom_title = null;

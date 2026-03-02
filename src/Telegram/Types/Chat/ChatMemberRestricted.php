@@ -17,6 +17,11 @@ class ChatMemberRestricted extends ChatMember
     #[EnumOrScalar]
     public ChatMemberStatus|string $status = ChatMemberStatus::RESTRICTED;
 
+    /**
+     * Optional. Tag of the member
+     */
+    public ?string $tag = null;
+
     /** Information about the user */
     public User $user;
 
@@ -52,6 +57,11 @@ class ChatMemberRestricted extends ChatMember
 
     /** True, if the user is allowed to add web page previews to their messages */
     public bool $can_add_web_page_previews;
+
+    /**
+     * True, if the user is allowed to edit their own tag
+     */
+    public bool $can_edit_tag;
 
     /** True, if the user is allowed to change the chat title, photo and other settings */
     public bool $can_change_info;
