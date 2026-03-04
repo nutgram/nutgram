@@ -1766,6 +1766,7 @@ trait AvailableMethods
      * @param bool|null $can_pin_messages Pass True if the administrator can pin messages, supergroups only
      * @param bool|null $can_manage_topics Pass True if the user is allowed to create, rename, close, and reopen forum topics, supergroups only
      * @param bool|null $can_manage_direct_messages Pass True if the administrator can manage direct messages within the channel and decline suggested posts; for channels only
+     * @param bool|null $can_manage_tags Pass True if the administrator can edit the tags of regular members; for groups and supergroups only
      * @return bool|null
      */
     public function promoteChatMember(
@@ -1787,6 +1788,7 @@ trait AvailableMethods
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
         ?bool $can_manage_direct_messages = null,
+        ?bool $can_manage_tags = null,
     ): ?bool {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -1807,6 +1809,7 @@ trait AvailableMethods
             'can_pin_messages',
             'can_manage_topics',
             'can_manage_direct_messages',
+            'can_manage_tags',
         ));
     }
 
@@ -1826,6 +1829,24 @@ trait AvailableMethods
             'user_id',
             'custom_title'
         ));
+    }
+
+    /**
+     * Use this method to set a tag for a regular member in a group or a supergroup.
+     * The bot must be an administrator in the chat for this to work and must have the can_manage_tags administrator right. Returns True on success.
+     * @param string|null $tag New tag for the member; 0-16 characters, emoji are not allowed
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
+     * @param int|null $user_id Unique identifier of the target user
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#setchatmembertag
+     */
+    public function setChatMemberTag(?string $tag = null, int|string|null $chat_id = null, int|null $user_id = null): ?bool
+    {
+        $parameters = compact('tag', 'chat_id', 'user_id');
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['user_id'] ??= $this->userId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
