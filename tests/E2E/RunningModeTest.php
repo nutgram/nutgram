@@ -33,7 +33,7 @@ it('works with webhook mode with safe mode and wrong secret', function () {
 
     $bot = Nutgram::fake();
 
-    $mock = mock(Webhook::class, [null, 'bar'])
+    $mock = mock(Webhook::class, ['bar', null])
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('input')
         ->andReturn(file_get_contents(__DIR__.'/../Fixtures/Updates/message.json'))
@@ -56,7 +56,7 @@ it('works with webhook mode with safe mode and right secret', function () {
 
     $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] = 'foo';
 
-    $mock = mock(Webhook::class, [null, 'foo'])
+    $mock = mock(Webhook::class, ['foo', null])
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('input')
         ->andReturn(file_get_contents(__DIR__.'/../Fixtures/Updates/message.json'))
