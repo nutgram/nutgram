@@ -45,8 +45,8 @@ abstract class Conversation
         $instance->chatId = $chatId;
         $instance->threadId = $threadId;
 
-        if ($userId && $chatId && $bot->update() === null) {
-            $bot->setUpdate(Update::forServerSideConversation($userId, $chatId, $threadId));
+        if ($userId && $chatId) {
+            $bot->setUpdate(Update::frankensteinize($userId, $chatId, $threadId, $bot->update()));
         }
 
         $instance($bot, ...$data);

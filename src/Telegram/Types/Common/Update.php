@@ -364,12 +364,13 @@ class Update extends BaseType
         };
     }
 
-    public static function forServerSideConversation(int $userId, int $chatId, ?int $threadId): self
+    public static function frankensteinize(int $userId, int $chatId, ?int $threadId, ?Update $existingUpdate = null): self
     {
-        return self::fromArray([
-            'update_id' => 123,
+        // the barest minimum update data to make the update valid
+        $updateData = [
+            'update_id' => 0,
             'message' => [
-                'message_id' => 456,
+                'message_id' => 0,
                 'message_thread_id' => $threadId,
                 'from' => [
                     'id' => $userId,
@@ -384,6 +385,28 @@ class Update extends BaseType
                 'date' => time(),
                 'text' => '$$__ssc__$$',
             ],
+        ];
+
+        if ($existingUpdate === null) {
+            return self::fromArray($updateData);
+        }
+
+        // fill in the existing update data
+        $updateData = array_replace_recursive($updateData, $existingUpdate->toArray());
+
+        // overwrite the message data with the new data to change context
+        $updateData = array_replace_recursive($updateData, [
+            'message' => [
+                'message_thread_id' => $threadId,
+                'from' => [
+                    'id' => $userId,
+                ],
+                'chat' => [
+                    'id' => $chatId,
+                ],
+            ],
         ]);
+
+        return self::fromArray($updateData);
     }
 }
