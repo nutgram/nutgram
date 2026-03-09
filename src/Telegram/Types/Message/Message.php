@@ -121,6 +121,11 @@ class Message extends BaseType
      */
     public ?User $sender_business_bot = null;
 
+    /**
+     * Optional. Tag or custom title of the sender of the message; for supergroups only
+     */
+    public ?string $sender_tag = null;
+
     /** Date the message was sent in Unix time */
     public int $date;
 

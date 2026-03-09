@@ -76,6 +76,12 @@ class ChatPermissions extends BaseType
 
     /**
      * Optional.
+     * True, if the user is allowed to edit their own tag
+     */
+    public ?bool $can_edit_tag = null;
+
+    /**
+     * Optional.
      * True, if the user is allowed to change the chat title, photo and other settings.
      * Ignored in public supergroups
      */
@@ -116,6 +122,7 @@ class ChatPermissions extends BaseType
         ?bool $can_invite_users = null,
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
+        ?bool $can_edit_tag = null,
     ) {
         parent::__construct();
         $this->can_send_messages = $can_send_messages;
@@ -132,5 +139,6 @@ class ChatPermissions extends BaseType
         $this->can_invite_users = $can_invite_users;
         $this->can_pin_messages = $can_pin_messages;
         $this->can_manage_topics = $can_manage_topics;
+        $this->can_edit_tag = $can_edit_tag;
     }
 }

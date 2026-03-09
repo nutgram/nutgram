@@ -25,4 +25,5 @@ enum MessageEntityType: string
     case TEXT_LINK = 'text_link';
     case TEXT_MENTION = 'text_mention';
     case CUSTOM_EMOJI = 'custom_emoji';
+    case DATE_TIME = 'date_time';
 }

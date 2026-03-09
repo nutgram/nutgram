@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.44.0 - 2026-03-02
+
+### What's Changed
+
+* Update to Bot API 9.5 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/957
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.43.0...4.44.0
+
 ## 4.43.0 - 2026-02-26
 
 ### What's Changed

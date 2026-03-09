@@ -91,6 +91,13 @@ class ChatAdministratorRights extends BaseType
      */
     public ?bool $can_manage_direct_messages = null;
 
+    /**
+     * Optional.
+     * True, if the administrator can edit the tags of regular members; for groups and supergroups only.
+     * If omitted defaults to the value of can_pin_messages.
+     */
+    public ?bool $can_manage_tags = null;
+
     public function __construct(
         bool $is_anonymous,
         bool $can_manage_chat,
@@ -108,6 +115,7 @@ class ChatAdministratorRights extends BaseType
         ?bool $can_delete_stories = null,
         ?bool $can_manage_topics = null,
         ?bool $can_manage_direct_messages = null,
+        ?bool $can_manage_tags = null,
     ) {
         parent::__construct();
         $this->is_anonymous = $is_anonymous;
@@ -126,5 +134,6 @@ class ChatAdministratorRights extends BaseType
         $this->can_edit_stories = $can_edit_stories;
         $this->can_delete_stories = $can_delete_stories;
         $this->can_manage_direct_messages = $can_manage_direct_messages;
+        $this->can_manage_tags = $can_manage_tags;
     }
 }

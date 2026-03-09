@@ -18,6 +18,11 @@ class ChatMemberMember extends ChatMember
     #[EnumOrScalar]
     public ChatMemberStatus|string $status = ChatMemberStatus::MEMBER;
 
+    /**
+     * Optional. Tag of the member
+     */
+    public ?string $tag = null;
+
     /** Information about the user */
     public User $user;
 
