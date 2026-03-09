@@ -12,7 +12,6 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
-use SergiX44\Nutgram\Testing\TypeFaker;
 
 /**
  * Class Conversation
@@ -46,31 +45,8 @@ abstract class Conversation
         $instance->chatId = $chatId;
         $instance->threadId = $threadId;
 
-        if ($userId && $chatId) {
-            $typeFaker = $bot->getContainer()->get(TypeFaker::class);
-            $update = $typeFaker->fakeInstanceOf(Update::class, [
-                'update_id' => 123,
-                'message' => [
-                    'message_id' => 456,
-                    'from' => [
-                        'id' => $userId,
-                        'is_bot' => false,
-                        'first_name' => '$$__ssc__$$',
-                    ],
-                    'chat' => [
-                        'id' => $chatId,
-                        'type' => 'private',
-                        'first_name' => '$$__ssc__$$',
-                    ],
-                    'date' => time(),
-                    'text' => '$$__ssc__$$',
-                ],
-            ]);
-
-            /**
-             * @psalm-suppress UndefinedThisPropertyAssignment
-             */
-            (fn ($update) => $this->update = $update)->call($bot, $update);
+        if ($userId && $chatId && $bot->update() === null) {
+            $bot->setUpdate(Update::forServerSideConversation($userId, $chatId, $threadId));
         }
 
         $instance($bot, ...$data);

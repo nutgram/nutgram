@@ -363,4 +363,27 @@ class Update extends BaseType
             default => null
         };
     }
+
+    public static function forServerSideConversation(int $userId, int $chatId, ?int $threadId): self
+    {
+        return self::fromArray([
+            'update_id' => 123,
+            'message' => [
+                'message_id' => 456,
+                'message_thread_id' => $threadId,
+                'from' => [
+                    'id' => $userId,
+                    'is_bot' => false,
+                    'first_name' => '$$__ssc__$$',
+                ],
+                'chat' => [
+                    'id' => $chatId,
+                    'type' => 'private',
+                    'first_name' => '$$__ssc__$$',
+                ],
+                'date' => time(),
+                'text' => '$$__ssc__$$',
+            ],
+        ]);
+    }
 }
