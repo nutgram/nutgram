@@ -45,11 +45,17 @@ abstract class Conversation
         $instance->chatId = $chatId;
         $instance->threadId = $threadId;
 
+        $originalUpdate = null;
         if ($userId && $chatId) {
-            $bot->setUpdate(Update::frankensteinize($userId, $chatId, $threadId, $bot->update()));
+            $originalUpdate = $bot->update();
+            $bot->setContextUpdate(Update::frankensteinize($userId, $chatId, $threadId, $originalUpdate));
         }
 
         $instance($bot, ...$data);
+
+        if ($originalUpdate) {
+            $bot->setContextUpdate($originalUpdate);
+        }
 
         return $instance;
     }
