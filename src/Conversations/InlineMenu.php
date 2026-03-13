@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Conversations;
 
 use InvalidArgumentException;
-use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
@@ -195,15 +194,6 @@ abstract class InlineMenu extends Conversation
             ->next('handleStep');
 
         return $message;
-    }
-
-    protected function beforeStep(Nutgram $bot)
-    {
-        parent::beforeStep($bot);
-
-        if ($this->chatId === null) {
-            $this->chatId = $this->getChatId();
-        }
     }
 
     /**

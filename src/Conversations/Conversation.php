@@ -11,6 +11,7 @@ use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 /**
  * Class Conversation
@@ -43,7 +44,18 @@ abstract class Conversation
         $instance->userId = $userId;
         $instance->chatId = $chatId;
         $instance->threadId = $threadId;
+
+        $originalUpdate = null;
+        if ($userId && $chatId) {
+            $originalUpdate = $bot->update();
+            $bot->setContextUpdate(Update::frankensteinize($userId, $chatId, $threadId, $originalUpdate));
+        }
+
         $instance($bot, ...$data);
+
+        if ($originalUpdate) {
+            $bot->setContextUpdate($originalUpdate);
+        }
 
         return $instance;
     }
@@ -228,15 +240,5 @@ abstract class Conversation
     protected function getSerializableAttributes(): array
     {
         return [];
-    }
-
-    public function getChatId(): ?int
-    {
-        return $this->chatId;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
     }
 }

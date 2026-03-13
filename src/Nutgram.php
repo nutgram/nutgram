@@ -205,7 +205,7 @@ class Nutgram extends ResolveHandlers
      */
     public function processUpdate(Update $update): void
     {
-        $this->update = $update;
+        $this->setContextUpdate($update);
 
         $conversation = $this->currentConversation($this->userId(), $this->chatId(), $this->messageThreadId());
 
@@ -224,6 +224,11 @@ class Nutgram extends ResolveHandlers
         }
 
         $this->fireHandlers($handlers);
+    }
+
+    public function setContextUpdate(Update $update): void
+    {
+        $this->update = $update;
     }
 
     /**
@@ -255,6 +260,7 @@ class Nutgram extends ResolveHandlers
     /**
      * @param int|null $userId
      * @param int|null $chatId
+     * @param int|null $threadId
      * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
