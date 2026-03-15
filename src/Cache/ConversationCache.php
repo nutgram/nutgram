@@ -58,10 +58,6 @@ class ConversationCache extends BotCache
         ?int $threadId,
         callable|Conversation $conversation
     ): bool {
-        if ($conversation instanceof Closure) {
-            $conversation = serialize($conversation);
-        }
-
         $data = serialize($conversation);
 
         return $this->cache->set($this->makeKey($userId, $chatId, $threadId), $data, $this->ttl);

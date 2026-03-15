@@ -88,7 +88,7 @@ abstract class Conversation
         if ($type instanceof UpdateType || $type instanceof MessageType) {
             $this->conditionalSteps[$type->value] = $step;
         } elseif ($type instanceof Closure) {
-            $this->conditionalSteps[0][] = [$step, serialize($type)];
+            $this->conditionalSteps[0][] = [$step, $type];
         } else {
             $this->step = $step;
         }
