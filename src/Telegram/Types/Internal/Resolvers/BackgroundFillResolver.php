@@ -19,12 +19,7 @@ class BackgroundFillResolver extends ConcreteResolver
     public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
-        return $this->getConcretes()[$type] ?? (new class extends BackgroundFill {
-        })::class;
-    }
-
-    public function getConcretes(): array
-    {
-        return BackgroundFillType::resolvers();
+        return BackgroundFillType::resolve($type) ?? new class extends BackgroundFill {
+        }::class;
     }
 }

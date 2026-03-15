@@ -14,12 +14,13 @@ enum BackgroundFillType: string
     case GRADIENT = 'gradient';
     case FREEFORM_GRADIENT = 'freeform_gradient';
 
-    public static function resolvers(): array
+    public static function resolve(string $type): ?string
     {
-        return [
+        return match($type) {
             self::SOLID->value => BackgroundFillSolid::class,
             self::GRADIENT->value => BackgroundFillGradient::class,
             self::FREEFORM_GRADIENT->value => BackgroundFillFreeformGradient::class,
-        ];
+            default => null,
+        };
     }
 }
