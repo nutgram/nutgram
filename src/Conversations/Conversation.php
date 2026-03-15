@@ -11,7 +11,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
-use function Opis\Closure\{serialize};
+use function Opis\Closure\serialize;
 
 /**
  * Class Conversation

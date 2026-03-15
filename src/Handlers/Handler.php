@@ -15,7 +15,7 @@ use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
 use SergiX44\Nutgram\Support\InteractsWithRateLimit;
 use SergiX44\Nutgram\Support\Taggable;
-use function Opis\Closure\{serialize};
+use function Opis\Closure\serialize;
 
 class Handler extends MiddlewareChain
 {

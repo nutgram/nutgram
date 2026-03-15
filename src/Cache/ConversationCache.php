@@ -9,7 +9,8 @@ use DateInterval;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 use SergiX44\Nutgram\Conversations\Conversation;
-use function Opis\Closure\{serialize, unserialize};
+use function Opis\Closure\serialize;
+use function Opis\Closure\unserialize;
 
 class ConversationCache extends BotCache
 {

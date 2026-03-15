@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
-use function Opis\Closure\{serialize};
+use function Opis\Closure\serialize;
 
 final readonly class Configuration
 {

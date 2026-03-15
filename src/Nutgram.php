@@ -35,7 +35,7 @@ use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 use Throwable;
-use function Opis\Closure\{init};
+use function Opis\Closure\init;
 
 class Nutgram extends ResolveHandlers
 {
