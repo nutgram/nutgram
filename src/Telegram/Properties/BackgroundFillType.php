@@ -16,7 +16,7 @@ enum BackgroundFillType: string
 
     public static function resolve(string $type): ?string
     {
-        return match($type) {
+        return match ($type) {
             self::SOLID->value => BackgroundFillSolid::class,
             self::GRADIENT->value => BackgroundFillGradient::class,
             self::FREEFORM_GRADIENT->value => BackgroundFillFreeformGradient::class,
