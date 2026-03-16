@@ -97,7 +97,7 @@ class Nutgram extends ResolveHandlers
             $this->container->delegate($config->container);
         }
 
-        init($this->token);
+        init($this->token, true);
 
         $this->http = new Guzzle([
             'base_uri' => sprintf(
