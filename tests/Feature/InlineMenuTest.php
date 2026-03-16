@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -22,10 +24,10 @@ test('valid inline menu + no end', function () {
         ->assertActiveConversation()
         ->assertReplyMessage([
             'text' => 'Choose a color:',
-            'reply_markup' => InlineKeyboardMarkup::make()
-                ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
-                ->addRow(InlineKeyboardButton::make('Green', callback_data: 'green'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow'))
+            'reply_markup' => new InlineKeyboardMarkup()
+                ->addRow(new InlineKeyboardButton('Red', callback_data: 'red'))
+                ->addRow(new InlineKeyboardButton('Green', callback_data: 'green'))
+                ->addRow(new InlineKeyboardButton('Yellow', callback_data: 'yellow'))
         ])
         ->hearCallbackQueryData('red')
         ->reply()
@@ -49,8 +51,8 @@ test('valid inline menu + no end + no data', function () {
         ->reply()
         ->assertReplyMessage([
             'text' => 'Choose a color:',
-            'reply_markup' => InlineKeyboardMarkup::make()
-                ->addRow(InlineKeyboardButton::make('Red', callback_data: 'Red'))
+            'reply_markup' => new InlineKeyboardMarkup()
+                ->addRow(new InlineKeyboardButton('Red', callback_data: 'Red'))
         ])
         ->hearCallbackQueryData('Red')
         ->reply()
@@ -79,10 +81,10 @@ test('valid inline menu + reopen', function () {
         ->reply()
         ->assertReplyMessage([
             'text' => 'Choose a color:',
-            'reply_markup' => InlineKeyboardMarkup::make()
-                ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
-                ->addRow(InlineKeyboardButton::make('Green', callback_data: 'green'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow'))
+            'reply_markup' => new InlineKeyboardMarkup()
+                ->addRow(new InlineKeyboardButton('Red', callback_data: 'red'))
+                ->addRow(new InlineKeyboardButton('Green', callback_data: 'green'))
+                ->addRow(new InlineKeyboardButton('Yellow', callback_data: 'yellow'))
         ])
         ->hearCallbackQueryData('red')
         ->reply()
@@ -101,10 +103,10 @@ test('valid inline menu + orNext + click button', function () {
         ->reply()
         ->assertReplyMessage([
             'text' => 'Choose a color:',
-            'reply_markup' => InlineKeyboardMarkup::make()
-                ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
-                ->addRow(InlineKeyboardButton::make('Green', callback_data: 'green'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow'))
+            'reply_markup' => new InlineKeyboardMarkup()
+                ->addRow(new InlineKeyboardButton('Red', callback_data: 'red'))
+                ->addRow(new InlineKeyboardButton('Green', callback_data: 'green'))
+                ->addRow(new InlineKeyboardButton('Yellow', callback_data: 'yellow'))
         ])
         ->hearCallbackQueryData('red')
         ->reply()
@@ -122,10 +124,10 @@ test('valid inline menu + orNext + no button click', function () {
         ->reply()
         ->assertReplyMessage([
             'text' => 'Choose a color:',
-            'reply_markup' => InlineKeyboardMarkup::make()
-                ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
-                ->addRow(InlineKeyboardButton::make('Green', callback_data: 'green'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'yellow'))
+            'reply_markup' => new InlineKeyboardMarkup()
+                ->addRow(new InlineKeyboardButton('Red', callback_data: 'red'))
+                ->addRow(new InlineKeyboardButton('Green', callback_data: 'green'))
+                ->addRow(new InlineKeyboardButton('Yellow', callback_data: 'yellow'))
         ])
         ->hearText('wow')
         ->reply()
@@ -173,10 +175,10 @@ test('works with same callback data but different callback method', function () 
         ->assertActiveConversation()
         ->assertReplyMessage([
             'text' => 'Choose a color:',
-            'reply_markup' => InlineKeyboardMarkup::make()
-                ->addRow(InlineKeyboardButton::make('Red', callback_data: 'red'))
-                ->addRow(InlineKeyboardButton::make('Green', callback_data: 'red@'))
-                ->addRow(InlineKeyboardButton::make('Yellow', callback_data: 'red@@'))
+            'reply_markup' => new InlineKeyboardMarkup()
+                ->addRow(new InlineKeyboardButton('Red', callback_data: 'red'))
+                ->addRow(new InlineKeyboardButton('Green', callback_data: 'red@'))
+                ->addRow(new InlineKeyboardButton('Yellow', callback_data: 'red@@'))
         ])
         ->hearCallbackQueryData('red@')
         ->reply()

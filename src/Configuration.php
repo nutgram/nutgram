@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram;
 
 use Closure;
 use DateInterval;
-use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Psr\SimpleCache\CacheInterface;
-use SergiX44\Hydrator\HydratorInterface;
 use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
-use SergiX44\Nutgram\Hydrator\NutgramHydrator;
+use function Opis\Closure\serialize;
 
 final readonly class Configuration
 {
@@ -19,7 +19,6 @@ final readonly class Configuration
     public const DEFAULT_POLLING_TIMEOUT = 10;
     public const DEFAULT_POLLING_LIMIT = 100;
     public const DEFAULT_CLIENT_TIMEOUT = 5;
-    public const DEFAULT_HYDRATOR = NutgramHydrator::class;
     public const DEFAULT_CACHE = ArrayCache::class;
     public const DEFAULT_LOGGER = NullLogger::class;
     public const DEFAULT_ALLOWED_UPDATES = [
@@ -48,7 +47,6 @@ final readonly class Configuration
         'removed_chat_boost',
     ];
     public const DEFAULT_ENABLE_HTTP2 = true;
-
     public const DEFAULT_CONVERSATION_TTL = 43200;
 
     public function __construct(
@@ -60,7 +58,6 @@ final readonly class Configuration
         public int $clientTimeout = self::DEFAULT_CLIENT_TIMEOUT,
         public array $clientOptions = [],
         public ?ContainerInterface $container = null,
-        public HydratorInterface|string $hydrator = self::DEFAULT_HYDRATOR,
         public CacheInterface|string $cache = self::DEFAULT_CACHE,
         public string|LoggerInterface $logger = self::DEFAULT_LOGGER,
         public array|Closure|string|null $localPathTransformer = null,
@@ -85,7 +82,6 @@ final readonly class Configuration
             clientTimeout: $config['timeout'] ?? self::DEFAULT_CLIENT_TIMEOUT,
             clientOptions: $config['client'] ?? [],
             container: $config['container'] ?? null,
-            hydrator: $config['hydrator'] ?? self::DEFAULT_HYDRATOR,
             cache: $config['cache'] ?? self::DEFAULT_CACHE,
             logger: $config['logger'] ?? self::DEFAULT_LOGGER,
             localPathTransformer: $config['local_path_transformer'] ?? null,
@@ -111,7 +107,6 @@ final readonly class Configuration
             'timeout' => $this->clientTimeout,
             'client' => $this->clientOptions,
             'container' => $this->container,
-            'hydrator' => $this->hydrator,
             'cache' => $this->cache,
             'logger' => $this->logger,
             'local_path_transformer' => $this->localPathTransformer,
@@ -137,7 +132,7 @@ final readonly class Configuration
         }
 
         if ($this->localPathTransformer instanceof Closure) {
-            $data['localPathTransformer'] = new SerializableClosure($this->localPathTransformer);
+            $data['localPathTransformer'] = serialize($this->localPathTransformer);
         }
 
         return $data;
@@ -151,10 +146,6 @@ final readonly class Configuration
 
         if (!isset($data['logger'])) {
             $data['logger'] = self::DEFAULT_LOGGER;
-        }
-
-        if ($data['localPathTransformer'] instanceof SerializableClosure) {
-            $data['localPathTransformer'] = $data['localPathTransformer']->getClosure();
         }
 
         foreach ($data as $attribute => $value) {

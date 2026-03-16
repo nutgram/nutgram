@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\OwnedGiftType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\OwnedGiftResolver;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
@@ -15,7 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  * @see https://core.telegram.org/bots/api#ownedgift
  */
 #[OwnedGiftResolver]
-abstract class OwnedGift extends BaseType implements JsonSerializable
+abstract class OwnedGift extends BaseType
 {
     #[EnumOrScalar]
     public OwnedGiftType|string $type;
@@ -39,9 +41,4 @@ abstract class OwnedGift extends BaseType implements JsonSerializable
      * Optional. True, if the gift is displayed on the account's profile page; for gifts received on behalf of business accounts only
      */
     public ?bool $is_saved = null;
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
 }
