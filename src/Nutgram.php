@@ -6,7 +6,6 @@ namespace SergiX44\Nutgram;
 
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
-use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -36,6 +35,7 @@ use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 use Throwable;
+use function Opis\Closure\init;
 
 class Nutgram extends ResolveHandlers
 {
@@ -97,7 +97,7 @@ class Nutgram extends ResolveHandlers
             $this->container->delegate($config->container);
         }
 
-        SerializableClosure::setSecretKey($this->token);
+        init($this->token, true);
 
         $this->http = new Guzzle([
             'base_uri' => sprintf(

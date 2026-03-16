@@ -6,12 +6,12 @@ namespace SergiX44\Nutgram;
 
 use Closure;
 use DateInterval;
-use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Cache\Adapters\ArrayCache;
+use function Opis\Closure\serialize;
 
 final readonly class Configuration
 {
@@ -132,7 +132,7 @@ final readonly class Configuration
         }
 
         if ($this->localPathTransformer instanceof Closure) {
-            $data['localPathTransformer'] = new SerializableClosure($this->localPathTransformer);
+            $data['localPathTransformer'] = serialize($this->localPathTransformer);
         }
 
         return $data;
@@ -146,10 +146,6 @@ final readonly class Configuration
 
         if (!isset($data['logger'])) {
             $data['logger'] = self::DEFAULT_LOGGER;
-        }
-
-        if ($data['localPathTransformer'] instanceof SerializableClosure) {
-            $data['localPathTransformer'] = $data['localPathTransformer']->getClosure();
         }
 
         foreach ($data as $attribute => $value) {

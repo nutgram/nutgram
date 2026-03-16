@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Conversations;
 
 use Closure;
-use Laravel\SerializableClosure\SerializableClosure;
 use Psr\SimpleCache\InvalidArgumentException;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
+use function Opis\Closure\serialize;
 
 /**
  * Class Conversation
@@ -88,7 +88,7 @@ abstract class Conversation
         if ($type instanceof UpdateType || $type instanceof MessageType) {
             $this->conditionalSteps[$type->value] = $step;
         } elseif ($type instanceof Closure) {
-            $this->conditionalSteps[0][] = [$step, new SerializableClosure($type)];
+            $this->conditionalSteps[0][] = [$step, $type];
         } else {
             $this->step = $step;
         }
