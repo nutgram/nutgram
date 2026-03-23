@@ -11,7 +11,7 @@ abstract class MiddlewareChain
     protected mixed $head;
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return $this
      */
     public function middleware($callable): self

@@ -124,9 +124,6 @@ class ArrayCache implements CacheInterface
         return array_key_exists($key, $this->cache);
     }
 
-    /**
-     * @param $key
-     */
     private function checkExpire(string $key): void
     {
         $expiration = $this->expires[$key] ?? null;
