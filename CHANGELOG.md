@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.44.1 - 2026-03-23
+
+### What's Changed
+
+* Improve type annotations by @Lukasss93 in https://github.com/nutgram/nutgram/pull/963
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.44.0...4.44.1
+
 ## 4.44.0 - 2026-03-02
 
 ### What's Changed
