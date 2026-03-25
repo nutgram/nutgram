@@ -3,6 +3,7 @@
 namespace SergiX44\Nutgram\Handlers\Listeners;
 
 use InvalidArgumentException;
+use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\Type\Command;
@@ -16,7 +17,7 @@ trait MessageListeners
 {
     /**
      * @param string $command
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Command
      */
     public function onCommand(string $command, $callable, UpdateType $target = UpdateType::MESSAGE): Command
@@ -52,7 +53,7 @@ trait MessageListeners
 
     /**
      * @param string $pattern
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onText(string $pattern, $callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -110,7 +111,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onSticker($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -404,7 +405,7 @@ trait MessageListeners
 
     /**
      * @param string $pattern
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onSuccessfulPaymentPayload(string $pattern, $callable): Handler
@@ -428,7 +429,7 @@ trait MessageListeners
 
     /**
      * @param string $pattern
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onRefundedPaymentPayload(string $pattern, $callable): Handler

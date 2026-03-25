@@ -10,7 +10,7 @@ class TelegramException extends Exception
 
     /**
      * TelegramException constructor.
-     * @param $message
+     * @param string $message
      * @param int $code
      * @param  array  $parameters
      * @param  null  $previous
