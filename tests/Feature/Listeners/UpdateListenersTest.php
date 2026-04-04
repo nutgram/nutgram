@@ -6,6 +6,7 @@ use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostRemoved;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessMessagesDeleted;
+use SergiX44\Nutgram\Telegram\Types\ManagedBot\ManagedBotUpdated;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageOriginUser;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
@@ -419,3 +420,16 @@ it('calls onRemovedChatBoost() handler', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('removed_chat_boost');
+
+it('calls onManagedBotUpdated() handler', function($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onManagedBotUpdated(function(Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->update()->managed_bot)->toBeInstanceOf(ManagedBotUpdated::class);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called', false))->toBeTrue();
+})->with('managed_bot');

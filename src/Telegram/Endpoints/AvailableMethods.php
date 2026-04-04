@@ -34,6 +34,8 @@ use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\PreparedKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
@@ -1326,12 +1328,12 @@ trait AvailableMethods
      * @param bool|null $is_anonymous True, if the poll needs to be anonymous, defaults to True
      * @param PollType|string|null $type Poll type, “quiz” or “regular”, defaults to “regular”
      * @param bool|null $allows_multiple_answers True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False
-     * @param int|null $correct_option_id 0-based identifier of the correct answer option, required for polls in quiz mode
+     * @param int[]|null $correct_option_ids A JSON-serialized list of monotonically increasing 0-based identifiers of the correct answer options, required for polls in quiz mode
      * @param string|null $explanation Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
      * @param ParseMode|string|null $explanation_parse_mode Mode for parsing entities in the explanation. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $explanation_entities A JSON-serialized list of special entities that appear in the poll explanation, which can be specified instead of parse_mode
-     * @param int|null $open_period Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
-     * @param int|null $close_date Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
+     * @param int|null $open_period Amount of time in seconds the poll will be active after creation, 5-2628000. Can't be used together with close_date.
+     * @param int|null $close_date Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 2628000 seconds in the future. Can't be used together with open_period.
      * @param bool|null $is_closed Pass True if the poll needs to be immediately closed. This can be useful for poll preview.
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
@@ -1344,6 +1346,13 @@ trait AvailableMethods
      * @param MessageEntity[]|null $question_entities A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of question_parse_mode
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
+     * @param bool|null $allows_revoting Pass True, if the poll allows to change chosen answer options, defaults to False for quizzes and to True for regular polls
+     * @param bool|null $shuffle_options Pass True, if the poll options must be shown in random order
+     * @param bool|null $allow_adding_options Pass True, if answer options can be added to the poll after creation; not supported for anonymous polls and quizzes
+     * @param bool|null $hide_results_until_closes Pass True, if poll results must be shown only after the poll closes
+     * @param string|null $description Description of the poll to be sent, 0-1024 characters after entities parsing
+     * @param ParseMode|string|null $description_parse_mode Mode for parsing entities in the poll description. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param MessageEntity[]|null $description_entities A JSON-serialized list of special entities that appear in the poll description, which can be specified instead of description_parse_mode
      * @return Message|null
      */
     public function sendPoll(
@@ -1354,7 +1363,7 @@ trait AvailableMethods
         ?bool $is_anonymous = null,
         PollType|string|null $type = null,
         ?bool $allows_multiple_answers = null,
-        ?int $correct_option_id = null,
+        ?array $correct_option_ids = null,
         ?string $explanation = null,
         ParseMode|string|null $explanation_parse_mode = null,
         ?array $explanation_entities = null,
@@ -1372,10 +1381,14 @@ trait AvailableMethods
         ?array $question_entities = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?bool $allows_revoting = null,
+        ?bool $shuffle_options = null,
+        ?bool $allow_adding_options = null,
+        ?bool $hide_results_until_closes = null,
+        ?string $description = null,
+        ParseMode|string|null $description_parse_mode = null,
+        ?array $description_entities = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
         $parameters = compact(
             'chat_id',
             'message_thread_id',
@@ -1383,7 +1396,7 @@ trait AvailableMethods
             'is_anonymous',
             'type',
             'allows_multiple_answers',
-            'correct_option_id',
+            'correct_option_ids',
             'explanation',
             'explanation_parse_mode',
             'explanation_entities',
@@ -1401,11 +1414,20 @@ trait AvailableMethods
             'question_entities',
             'message_effect_id',
             'allow_paid_broadcast',
+            'allows_revoting',
+            'shuffle_options',
+            'allow_adding_options',
+            'hide_results_until_closes',
+            'description',
+            'description_parse_mode',
+            'description_entities',
         );
-        return $this->requestJson(__FUNCTION__, [
-            'options' => json_encode($options, JSON_THROW_ON_ERROR),
-            ...$parameters,
-        ], Message::class);
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['options'] = json_encode($options, JSON_THROW_ON_ERROR);
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -2511,6 +2533,29 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to get the token of a managed bot.
+     * Returns the token as String on success.
+     * @param int $user_id User identifier of the managed bot whose token will be returned
+     * @return string|null
+     * @see https://core.telegram.org/bots/api#getmanagedbottoken
+     */
+    public function getManagedBotToken(int $user_id): ?string
+    {
+        return $this->requestJson(__FUNCTION__, compact('user_id'));
+    }
+
+    /**
+     * Use this method to revoke the current token of a managed bot and generate a new one. Returns the new token as String on success.
+     * @param int $user_id User identifier of the managed bot whose token will be replaced
+     * @return string|null
+     * @see https://core.telegram.org/bots/api#replacemanagedbottoken
+     */
+    public function replaceManagedBotToken(int $user_id): ?string
+    {
+        return $this->requestJson(__FUNCTION__, compact('user_id'));
+    }
+
+    /**
      * Use this method to change the list of the bot's commands.
      * See {@see https://core.telegram.org/bots/features#commands this manual} for more details about bot commands.
      * Returns True on success.
@@ -2849,5 +2894,21 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
         return $this->requestJson(__FUNCTION__, $parameters, Story::class);
+    }
+
+    /**
+     * Stores a keyboard button that can be used by a user within a Mini App.
+     * Returns a {@see https://core.telegram.org/bots/api#preparedkeyboardbutton PreparedKeyboardButton} object.
+     * @param KeyboardButton $button A JSON-serialized object describing the button to be saved. The button must be of the type request_users, request_chat, or request_managed_bot
+     * @param int|null $user_id Unique identifier of the target user that can use the button
+     * @return PreparedKeyboardButton|null
+     * @see https://core.telegram.org/bots/api#savepreparedkeyboardbutton
+     */
+    public function savePreparedKeyboardButton(KeyboardButton $button, ?int $user_id = null): ?PreparedKeyboardButton
+    {
+        $parameters = compact('user_id', 'button');
+        $parameters['user_id'] ??= $this->userId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, PreparedKeyboardButton::class);
     }
 }

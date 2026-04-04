@@ -1,0 +1,31 @@
+{
+  "update_id": 144011148,
+  "message": {
+    "message_id": 123456,
+    "date": 1668633998,
+    "from": {
+      "id": 12345,
+      "is_bot": false,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "language_code": "it",
+      "is_premium": false
+    },
+    "chat": {
+      "id": 12345,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "type": "private"
+    },
+    "managed_bot_created": {
+      "bot": {
+        "id": 67890,
+        "is_bot": true,
+        "first_name": "My Robot",
+        "username": "MyRobot"
+      }
+    }
+  }
+}

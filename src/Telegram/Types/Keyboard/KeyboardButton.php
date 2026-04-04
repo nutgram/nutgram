@@ -67,6 +67,14 @@ class KeyboardButton extends BaseType implements JsonSerializable
 
     /**
      * Optional.
+     * If specified, pressing the button will ask the user to create and share a bot that will be managed by the current bot.
+     * Available for bots that enabled management of other bots in the {@see https://t.me/BotFather @BotFather} Mini App.
+     * Available in private chats only.
+     */
+    public ?KeyboardButtonRequestManagedBot $request_managed_bot = null;
+
+    /**
+     * Optional.
      * If True, the user's phone number will be sent as a contact when the button is pressed.
      * Available in private chats only.
      */

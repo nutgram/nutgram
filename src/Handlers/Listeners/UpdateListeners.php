@@ -330,4 +330,14 @@ trait UpdateListeners
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::REMOVED_CHAT_BOOST->value][] = new Handler($callable);
     }
+
+    /**
+     * @param callable|callable-string|array $callable
+     * @return Handler
+     */
+    public function onManagedBotUpdated($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MANAGED_BOT->value][] = new Handler($callable);
+    }
 }

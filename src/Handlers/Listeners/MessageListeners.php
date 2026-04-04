@@ -674,4 +674,26 @@ trait MessageListeners
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::WEB_APP_DATA->value][] = new Handler($callable);
     }
+
+    /**
+     * @param callable|callable-string|array $callable
+     * @return Handler
+     */
+    public function onManagedBotCreated($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::MANAGED_BOT_CREATED->value][] = new Handler($callable);
+    }
+
+    public function onPollOptionAdded($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::POLL_OPTION_ADDED->value][] = new Handler($callable);
+    }
+
+    public function onPollOptionDeleted($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::POLL_OPTION_DELETED->value][] = new Handler($callable);
+    }
 }
