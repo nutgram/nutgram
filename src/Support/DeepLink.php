@@ -772,7 +772,7 @@ class DeepLink
 
     public function createManagedBot(string $botUsername, string $newBotUsername, string $newBotName): string
     {
-        return $this->buildUrl("newbot/$botUsername/$newBotUsername",[
+        return $this->buildUrl("newbot/$botUsername/$newBotUsername", [
             'name' => $newBotName,
         ]);
     }

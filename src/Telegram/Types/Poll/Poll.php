@@ -104,5 +104,4 @@ class Poll extends BaseType
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $description_entities = null;
-
 }
