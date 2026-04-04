@@ -32,7 +32,8 @@ class InputChecklistTask extends BaseType
     public ParseMode|string|null $parse_mode = null;
 
     /**
-     * Optional. Special entities that appear in the task text
+     * Optional. List of special entities that appear in the text, which can be specified instead of parse_mode.
+     * Currently, only bold, italic, underline, strikethrough, spoiler, custom_emoji, and date_time entities are allowed.
      * @var MessageEntity[]|null
      */
     #[ArrayType(MessageEntity::class)]

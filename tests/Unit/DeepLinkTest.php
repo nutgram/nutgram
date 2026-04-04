@@ -334,3 +334,13 @@ it('can create a deep link to attach', function () {
     );
     expect($link)->toBe('https://t.me/foouser?attach=barbot&startattach=baz');
 });
+
+it('can create a deep link to the creation of a managed bot', function () {
+    $deepLink = new DeepLink();
+    $link = $deepLink->createManagedBot(
+        botUsername: 'ManagerBot',
+        newBotUsername: 'CoolAIAgentBot',
+        newBotName: 'Cool AI Agent',
+    );
+    expect($link)->toBe('https://t.me/newbot/ManagerBot/CoolAIAgentBot?name=Cool+AI+Agent');
+});

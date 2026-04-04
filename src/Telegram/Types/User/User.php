@@ -101,6 +101,13 @@ class User extends BaseType
      */
     public ?bool $allows_users_to_create_topics = null;
 
+    /**
+     * Optional.
+     * True, if other bots can be created to be controlled by the bot.
+     * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     */
+    public ?bool $can_manage_bots = null;
+
     public static function make(
         int $id,
         bool $is_bot,
@@ -115,7 +122,9 @@ class User extends BaseType
         ?bool $supports_inline_queries = null,
         ?bool $can_connect_to_business = null,
         ?bool $has_main_web_app = null,
-        ?bool $has_topics_enabled = null
+        ?bool $has_topics_enabled = null,
+        ?bool $allows_users_to_create_topics = null,
+        ?bool $can_manage_bots = null,
     ): User {
         $user = new self();
         $user->id = $id;
@@ -132,6 +141,8 @@ class User extends BaseType
         $user->can_connect_to_business = $can_connect_to_business;
         $user->has_main_web_app = $has_main_web_app;
         $user->has_topics_enabled = $has_topics_enabled;
+        $user->allows_users_to_create_topics = $allows_users_to_create_topics;
+        $user->can_manage_bots = $can_manage_bots;
         return $user;
     }
 }

@@ -46,6 +46,7 @@ final readonly class Configuration
         'chat_join_request',
         'chat_boost',
         'removed_chat_boost',
+        'managed_bot',
     ];
     public const DEFAULT_ENABLE_HTTP2 = true;
 

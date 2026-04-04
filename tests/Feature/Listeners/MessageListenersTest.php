@@ -704,3 +704,39 @@ it('calls onWebAppData handler', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('web_app_data');
+
+it('calls onManagedBotCreated handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onManagedBotCreated(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('managed_bot_created');
+
+it('calls onPollOptionAdded handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onPollOptionAdded(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('poll_option_added');
+
+it('calls onPollOptionDeleted handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onPollOptionDeleted(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('poll_option_deleted');

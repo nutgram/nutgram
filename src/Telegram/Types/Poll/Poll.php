@@ -50,11 +50,18 @@ class Poll extends BaseType
     public bool $allows_multiple_answers;
 
     /**
-     * Optional.
-     * 0-based identifier of the correct answer option.
-     * Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
+     * True, if the poll allows to change the chosen answer options
      */
-    public ?int $correct_option_id = null;
+    public bool $allows_revoting;
+
+    /**
+     * Optional.
+     * Array of 0-based identifiers of the correct answer options.
+     * Available only for polls in quiz mode which are closed or
+     * were sent (not forwarded) by the bot or to the private chat with the bot.
+     * @var int[]|null
+     */
+    public ?array $correct_option_ids = null;
 
     /**
      * Optional.
@@ -82,4 +89,19 @@ class Poll extends BaseType
      * Point in time (Unix timestamp) when the poll will be automatically closed
      */
     public ?int $close_date = null;
+
+    /**
+     * Optional.
+     * Description of the poll; for polls inside the {@see https://core.telegram.org/bots/api#message Message} object only
+     */
+    public ?string $description = null;
+
+    /**
+     * Optional.
+     * Special entities like usernames, URLs, bot commands, etc.
+     * that appear in the description
+     * @var MessageEntity[]|null
+     */
+    #[ArrayType(MessageEntity::class)]
+    public ?array $description_entities = null;
 }

@@ -5,10 +5,12 @@
     "question": "What's your favorite color?",
     "options": [
       {
+        "persistent_id": "abc",
         "text": "Red",
         "voter_count": 1
       },
       {
+        "persistent_id": "def",
         "text": "Blue",
         "voter_count": 2
       }
@@ -17,6 +19,7 @@
     "is_closed": false,
     "is_anonymous": false,
     "type": "regular",
-    "allows_multiple_answers": false
+    "allows_multiple_answers": false,
+    "allows_revoting": false
   }
 }

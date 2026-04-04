@@ -37,7 +37,8 @@ class ReplyParameters extends BaseType implements JsonSerializable
 
     /**
      * Optional. Quoted part of the message to be replied to; 0-1024 characters after entities parsing.
-     * The quote must be an exact substring of the message to be replied to, including bold, italic, underline, strikethrough, spoiler, and custom_emoji entities.
+     * The quote must be an exact substring of the message to be replied to,
+     * including bold, italic, underline, strikethrough, spoiler, custom_emoji, and date_time entities.
      * The message will fail to send if the quote isn't found in the original message.
      * @var string|null
      */
@@ -70,6 +71,11 @@ class ReplyParameters extends BaseType implements JsonSerializable
     public ?int $checklist_task_id = null;
 
     /**
+     * Optional. Persistent identifier of the specific poll option to be replied to
+     */
+    public ?string $poll_option_id = null;
+
+    /**
      * @param int $message_id
      * @param int|string|null $chat_id
      * @param bool|null $allow_sending_without_reply
@@ -78,6 +84,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
      * @param MessageEntity[]|null $quote_entities
      * @param int|null $quote_position
      * @param int|null $checklist_task_id
+     * @param string|null $poll_option_id
      */
     public function __construct(
         int $message_id,
@@ -88,6 +95,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
         ?array $quote_entities = null,
         ?int $quote_position = null,
         ?int $checklist_task_id = null,
+        ?string $poll_option_id = null,
     ) {
         parent::__construct();
         $this->message_id = $message_id;
@@ -98,6 +106,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
         $this->quote_entities = $quote_entities;
         $this->quote_position = $quote_position;
         $this->checklist_task_id = $checklist_task_id;
+        $this->poll_option_id = $poll_option_id;
     }
 
     /**
@@ -109,6 +118,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
      * @param MessageEntity[]|null $quote_entities
      * @param int|null $quote_position
      * @param int|null $checklist_task_id
+     * @param string|null $poll_option_id
      * @return self
      */
     public static function make(
@@ -120,6 +130,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
         ?array $quote_entities = null,
         ?int $quote_position = null,
         ?int $checklist_task_id = null,
+        ?string $poll_option_id = null,
     ): self {
         return new self(
             message_id: $message_id,
@@ -130,6 +141,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
             quote_entities: $quote_entities,
             quote_position: $quote_position,
             checklist_task_id: $checklist_task_id,
+            poll_option_id: $poll_option_id,
         );
     }
 
@@ -144,6 +156,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
             'quote_entities' => $this->quote_entities,
             'quote_position' => $this->quote_position,
             'checklist_task_id' => $this->checklist_task_id,
+            'poll_option_id' => $this->poll_option_id,
         ]);
     }
 }
