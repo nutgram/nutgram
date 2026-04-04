@@ -421,10 +421,10 @@ it('calls onRemovedChatBoost() handler', function ($update) {
     expect($bot->get('called'))->toBeTrue();
 })->with('removed_chat_boost');
 
-it('calls onManagedBotUpdated() handler', function($update) {
+it('calls onManagedBotUpdated() handler', function ($update) {
     $bot = Nutgram::fake($update);
 
-    $bot->onManagedBotUpdated(function(Nutgram $bot) {
+    $bot->onManagedBotUpdated(function (Nutgram $bot) {
         $bot->set('called', true);
         expect($bot->update()->managed_bot)->toBeInstanceOf(ManagedBotUpdated::class);
     });
