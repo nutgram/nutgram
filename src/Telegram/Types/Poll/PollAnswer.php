@@ -35,4 +35,11 @@ class PollAnswer extends BaseType
      * @var int[] $option_ids
      */
     public array $option_ids;
+
+    /**
+     * Persistent identifiers of the chosen answer options.
+     * May be empty if the vote was retracted.
+     * @var string[]
+     */
+    public array $option_persistent_ids;
 }

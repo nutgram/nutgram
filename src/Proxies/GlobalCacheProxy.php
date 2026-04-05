@@ -15,8 +15,8 @@ use SergiX44\Nutgram\Cache\GlobalCache;
 trait GlobalCacheProxy
 {
     /**
-     * @param  $key
-     * @param  mixed  $default
+     * @param string $key
+     * @param mixed $default
      * @return mixed
      * @throws InvalidArgumentException
      */
@@ -26,9 +26,9 @@ trait GlobalCacheProxy
     }
 
     /**
-     * @param $key
-     * @param $value
-     * @param  DateInterval|int|null  $ttl
+     * @param string $key
+     * @param mixed $value
+     * @param DateInterval|int|null $ttl
      * @return bool
      * @throws InvalidArgumentException
      */
@@ -38,7 +38,7 @@ trait GlobalCacheProxy
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return bool
      * @throws InvalidArgumentException
      */

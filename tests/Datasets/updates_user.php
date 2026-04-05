@@ -23,5 +23,6 @@ dataset('updates_user', function () {
         'chat_join_request' => [getUpdateType('chat_join_request'), 'onChatJoinRequest', true],
         'chat_boost' => [getUpdateType('chat_boost'), 'onChatBoost', true],
         'removed_chat_boost' => [getUpdateType('removed_chat_boost'), 'onRemovedChatBoost', true],
+        'managed_bot' => [getUpdateType('managed_bot'), 'onManagedBotUpdated', true],
     ];
 });

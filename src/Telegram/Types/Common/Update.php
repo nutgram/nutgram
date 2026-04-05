@@ -17,6 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
 use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
+use SergiX44\Nutgram\Telegram\Types\ManagedBot\ManagedBotUpdated;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPurchased;
 use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
@@ -193,6 +194,11 @@ class Update extends BaseType
     public ?ChatBoostRemoved $removed_chat_boost = null;
 
     /**
+     * Optional. A new bot was created to be managed by the bot or token of a bot was changed
+     */
+    public ?ManagedBotUpdated $managed_bot = null;
+
+    /**
      * Return the current update type
      * @return UpdateType|null
      */
@@ -222,6 +228,7 @@ class Update extends BaseType
             $this->chat_join_request !== null => UpdateType::CHAT_JOIN_REQUEST,
             $this->chat_boost !== null => UpdateType::CHAT_BOOST,
             $this->removed_chat_boost !== null => UpdateType::REMOVED_CHAT_BOOST,
+            $this->managed_bot !== null => UpdateType::MANAGED_BOT,
             default => null
         };
     }
@@ -256,6 +263,7 @@ class Update extends BaseType
             $this->chat_join_request !== null => $this->chat_join_request->from,
             $this->chat_boost !== null => $this->chat_boost->boost->source->user,
             $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user,
+            $this->managed_bot !== null => $this->managed_bot->user,
             default => null,
         };
     }
@@ -286,6 +294,7 @@ class Update extends BaseType
             $this->chat_join_request !== null => $this->chat_join_request->from = $user,
             $this->chat_boost !== null => $this->chat_boost->boost->source->user = $user,
             $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user = $user,
+            $this->managed_bot !== null => $this->managed_bot->user = $user,
             default => null,
         };
     }
@@ -316,6 +325,7 @@ class Update extends BaseType
             $this->chat_join_request !== null => $this->chat_join_request->chat,
             $this->chat_boost !== null => $this->chat_boost->chat,
             $this->removed_chat_boost !== null => $this->removed_chat_boost->chat,
+            // managed_bot doesn't have a chat
             default => null
         };
     }
@@ -346,6 +356,7 @@ class Update extends BaseType
             $this->chat_join_request !== null => $this->chat_join_request->chat = $chat,
             $this->chat_boost !== null => $this->chat_boost->chat = $chat,
             $this->removed_chat_boost !== null => $this->removed_chat_boost->chat = $chat,
+            // managed_bot doesn't have a chat
             default => null
         };
     }
