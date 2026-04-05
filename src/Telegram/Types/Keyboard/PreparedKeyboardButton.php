@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * Describes a keyboard button to be used by a user of a Mini App.
  * @see https://core.telegram.org/bots/api#preparedkeyboardbutton
  */
+#[OverrideConstructor('bindToInstance')]
 class PreparedKeyboardButton extends BaseType
 {
     /**
@@ -19,10 +23,5 @@ class PreparedKeyboardButton extends BaseType
     {
         parent::__construct();
         $this->id = $id;
-    }
-
-    public static function make(string $id): self
-    {
-        return new self($id);
     }
 }

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
@@ -11,6 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * with the field managed_bot_created.
  * @see https://core.telegram.org/bots/api#keyboardbuttonrequestmanagedbot
  */
+#[OverrideConstructor('bindToInstance')]
 class KeyboardButtonRequestManagedBot extends BaseType
 {
     /**
@@ -38,17 +42,5 @@ class KeyboardButtonRequestManagedBot extends BaseType
         $this->request_id = $request_id;
         $this->suggested_name = $suggested_name;
         $this->suggested_username = $suggested_username;
-    }
-
-    public static function make(
-        int $request_id,
-        ?string $suggested_name = null,
-        ?string $suggested_username = null,
-    ): self {
-        return new self(
-            request_id: $request_id,
-            suggested_name: $suggested_name,
-            suggested_username: $suggested_username,
-        );
     }
 }
