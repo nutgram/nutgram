@@ -18,6 +18,7 @@ use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\ManagedBot\ManagedBotUpdated;
+use SergiX44\Nutgram\Telegram\Types\Message\MaybeInaccessibleMessage;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPurchased;
 use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
@@ -361,7 +362,7 @@ class Update extends BaseType
         };
     }
 
-    public function getMessage(): ?Message
+    public function getMessage(): ?MaybeInaccessibleMessage
     {
         return match (true) {
             $this->message !== null => $this->message,

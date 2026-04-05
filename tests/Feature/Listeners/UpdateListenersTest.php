@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessMessagesDeleted;
 use SergiX44\Nutgram\Telegram\Types\ManagedBot\ManagedBotUpdated;
+use SergiX44\Nutgram\Telegram\Types\Message\InaccessibleMessage;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageOriginUser;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
@@ -270,6 +271,7 @@ it('calls onCallbackQuery() handler with inaccessible message', function ($updat
     $bot->onCallbackQuery(function (Nutgram $bot) {
         $bot->set('called', true);
         expect($bot->message()->isInaccessible())->toBeTrue();
+        expect($bot->message())->toBeInstanceOf(InaccessibleMessage::class);
     });
 
     $bot->run();

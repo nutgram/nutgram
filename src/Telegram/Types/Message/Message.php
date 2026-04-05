@@ -79,7 +79,7 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppData;
  * This object represents a message.
  * @see https://core.telegram.org/bots/api#message
  */
-class Message extends BaseType
+class Message extends MaybeInaccessibleMessage
 {
     /** Unique message identifier inside this chat */
     public int $message_id;
@@ -492,9 +492,10 @@ class Message extends BaseType
     /**
      * Optional.
      * Specified message was pinned.
-     * Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
+     * Note that the {@see https://core.telegram.org/bots/api#message Message}
+     * object in this field will not contain further reply_to_message fields even if it is itself a reply.
      */
-    public ?Message $pinned_message = null;
+    public ?MaybeInaccessibleMessage $pinned_message = null;
 
     /**
      * Optional.
@@ -989,15 +990,6 @@ class Message extends BaseType
             disable_notification: $disable_notification,
             protect_content: $protect_content,
         );
-    }
-
-    /**
-     * Check if this message is deleted or is inaccessible to the bot.
-     * @return bool
-     */
-    public function isInaccessible(): bool
-    {
-        return $this->date === 0;
     }
 
     /**
