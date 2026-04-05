@@ -42,8 +42,8 @@ trait SpecialListeners
     }
 
     /**
-     * @param callable|string $callableOrException
-     * @param callable|null $callable
+     * @param class-string|callable|callable-string|array $callableOrException
+     * @param callable|callable-string|array|null $callable
      * @return Handler
      */
     public function onException($callableOrException, $callable = null): Handler

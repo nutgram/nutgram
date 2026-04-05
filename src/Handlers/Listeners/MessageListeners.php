@@ -29,7 +29,7 @@ trait MessageListeners
      * @param BackedEnum|string $command
      * @param callable|callable-string|array $callable
      * @param UpdateType $target
-     * @return Command
+     * @return InternalCommand
      */
     public function onCommand(
         BackedEnum|string $command,

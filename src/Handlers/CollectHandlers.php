@@ -78,8 +78,8 @@ abstract class CollectHandlers
 
     /**
      * @param string $type
-     * @param callable|callable-string|array $callableOrPattern
-     * @param callable|callable-string|array $callable
+     * @param class-string|string|callable|callable-string|array $callableOrPattern
+     * @param callable|callable-string|array|null $callable
      * @return Handler
      */
     private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
