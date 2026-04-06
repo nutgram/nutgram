@@ -163,7 +163,7 @@ trait UpdateProxy
     |--------------------------------------------------------------------------
     */
 
-    public function message(): ?MaybeInaccessibleMessage
+    public function message(): ?Message
     {
         return $this->update?->getMessage();
     }

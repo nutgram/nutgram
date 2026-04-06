@@ -362,7 +362,7 @@ class Update extends BaseType
         };
     }
 
-    public function getMessage(): ?MaybeInaccessibleMessage
+    public function getMessage(): ?Message
     {
         return match (true) {
             $this->message !== null => $this->message,
@@ -371,7 +371,7 @@ class Update extends BaseType
             $this->edited_channel_post !== null => $this->edited_channel_post,
             $this->business_message !== null => $this->business_message,
             $this->edited_business_message !== null => $this->edited_business_message,
-            $this->callback_query !== null => $this->callback_query->message,
+            $this->callback_query !== null => $this->callback_query->message !== null && !$this->callback_query->message->isInaccessible() ? $this->callback_query->message : null,
             default => null
         };
     }
