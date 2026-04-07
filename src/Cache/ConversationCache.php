@@ -5,7 +5,6 @@ namespace SergiX44\Nutgram\Cache;
 
 use Closure;
 use DateInterval;
-use Laravel\SerializableClosure\Exceptions\PhpVersionNotSupportedException;
 use Laravel\SerializableClosure\SerializableClosure;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
@@ -32,7 +31,6 @@ class ConversationCache extends BotCache
      * @param int|null $threadId
      * @return callable|Conversation|null
      * @throws InvalidArgumentException
-     * @throws PhpVersionNotSupportedException
      */
     public function get(int $userId, int $chatId, ?int $threadId): null|callable|Conversation
     {
@@ -57,7 +55,6 @@ class ConversationCache extends BotCache
      * @param callable|Conversation|SerializableClosure $conversation
      * @return bool
      * @throws InvalidArgumentException
-     * @throws PhpVersionNotSupportedException
      */
     public function set(
         int $userId,
