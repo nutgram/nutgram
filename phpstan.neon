@@ -3,6 +3,8 @@ includes:
 
 parameters:
     level: 6
+    paths:
+        - src
     tips:
         treatPhpDocTypesAsCertain: false
     ignoreErrors:
@@ -20,7 +22,4 @@ parameters:
         -
             identifier: missingType.iterableValue
             paths:
-                # unable to infer iterable type from inherited docblock
                 - src/Cache/Adapters/ArrayCache.php
-    paths:
-        - src

@@ -43,6 +43,7 @@ abstract class ResolveHandlers extends CollectHandlers
      * @param int|null $threadId
      * @return callable|Conversation|\Closure|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Psr\Container\NotFoundExceptionInterface|ContainerExceptionInterface
      */
     public function currentConversation(?int $userId, ?int $chatId, ?int $threadId): callable|Conversation|\Closure|null
     {
@@ -50,7 +51,7 @@ abstract class ResolveHandlers extends CollectHandlers
             return null;
         }
 
-        return $this->container->get(ConversationCache::class)->get($userId, $chatId, $threadId);
+        return $this->getContainer()->get(ConversationCache::class)->get($userId, $chatId, $threadId);
     }
 
     /**

@@ -279,11 +279,10 @@ class TypeFaker
     }
 
     /**
-     * @template T of class-string
-     * @param ArrayType<T> $arrayType
-     * @param array<string, string> $userDefined
+     * @param ArrayType $arrayType
+     * @param array<string, mixed> $userDefined
      * @param int $depth
-     * @return T[]
+     * @return array
      */
     private function fakeArray(ArrayType $arrayType, array $userDefined = [], int $depth = 1): array
     {
