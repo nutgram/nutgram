@@ -8,8 +8,6 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Container\Container;
 use SergiX44\Nutgram\Cache\ConversationCache;
-use SergiX44\Nutgram\Cache\GlobalCache;
-use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\Type\InternalCommand;
@@ -42,16 +40,17 @@ abstract class ResolveHandlers extends CollectHandlers
     /**
      * @param int|null $userId
      * @param int|null $chatId
+     * @param int|null $threadId
      * @return callable|Conversation|\Closure|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function currentConversation(?int $userId, ?int $chatId): callable|Conversation|\Closure|null
+    public function currentConversation(?int $userId, ?int $chatId, ?int $threadId): callable|Conversation|\Closure|null
     {
         if ($chatId === null || $userId === null) {
             return null;
         }
 
-        return $this->container->get(ConversationCache::class)->get($userId, $chatId);
+        return $this->container->get(ConversationCache::class)->get($userId, $chatId, $threadId);
     }
 
     /**

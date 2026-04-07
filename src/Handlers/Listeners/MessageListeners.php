@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Handlers\Listeners;
 
+use BackedEnum;
 use SergiX44\Container\Container;
+use SergiX44\Container\Exception\NotFoundException;
+use SergiX44\Nutgram\Exception\StatusFinalizedException;
+use InvalidArgumentException;
 use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\Type\Command\Command;
@@ -12,6 +16,7 @@ use SergiX44\Nutgram\Handlers\Type\Command\WithScopes;
 use SergiX44\Nutgram\Handlers\Type\InternalCommand;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
+use function SergiX44\Nutgram\Support\get_value;
 
 /**
  * @mixin CollectHandlers
@@ -21,14 +26,19 @@ trait MessageListeners
     abstract public function getContainer(): Container;
 
     /**
-     * @param string $command
-     * @param $callable
+     * @param BackedEnum|string $command
+     * @param callable|callable-string|array $callable
+     * @param UpdateType $target
      * @return InternalCommand
      */
-    public function onCommand(string $command, $callable, UpdateType $target = UpdateType::MESSAGE): InternalCommand
-    {
+    public function onCommand(
+        BackedEnum|string $command,
+        $callable,
+        UpdateType $target = UpdateType::MESSAGE
+    ): InternalCommand {
         $this->checkFinalized();
         $target->validateMessageType();
+        $command = get_value($command);
 
         $registeringCommand = new InternalCommand($callable, $command);
 
@@ -52,14 +62,16 @@ trait MessageListeners
     }
 
     /**
-     * @param string $pattern
-     * @param $callable
+     * @param BackedEnum|string $pattern
+     * @param callable|callable-string|array $callable
+     * @param UpdateType $target
      * @return Handler
      */
-    public function onText(string $pattern, $callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    public function onText(BackedEnum|string $pattern, $callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
         $target->validateMessageType();
+        $pattern = get_value($pattern);
         return $this->{$this->target}[$target->value][MessageType::TEXT->value][$pattern] = new Handler(
             $callable,
             $pattern
@@ -67,7 +79,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onAnimation($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -78,7 +90,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onAudio($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -89,7 +101,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onDocument($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -100,7 +112,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onPhoto($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -111,7 +123,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onSticker($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -122,7 +134,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onVideo($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -133,7 +145,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onVideoNote($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -144,7 +156,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onVoice($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -155,7 +167,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onContact($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -166,7 +178,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onDice($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -177,7 +189,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onGame($callable): Handler
@@ -187,7 +199,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onMessagePoll($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -198,7 +210,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onVenue($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -209,7 +221,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onLocation($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -219,6 +231,11 @@ trait MessageListeners
         return $this->{$this->target}[$target->value][MessageType::LOCATION->value][] = new Handler($callable);
     }
 
+    /**
+     * @param callable|callable-string|array $callable
+     * @param UpdateType $target
+     * @return Handler
+     */
     public function onStory($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
@@ -227,7 +244,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onNewChatMembers($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -238,7 +255,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onLeftChatMember($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -249,7 +266,31 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
+     * @param UpdateType $target
+     * @return Handler
+     */
+    public function onChatOwnerLeft($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    {
+        $this->checkFinalized();
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::CHAT_OWNER_LEFT->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|callable-string|array $callable
+     * @param UpdateType $target
+     * @return Handler
+     */
+    public function onChatOwnerChanged($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    {
+        $this->checkFinalized();
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::CHAT_OWNER_CHANGED->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onNewChatTitle($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -260,7 +301,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onNewChatPhoto($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -271,7 +312,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onDeleteChatPhoto($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -282,7 +323,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onGroupChatCreated($callable): Handler
@@ -292,7 +333,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onSupergroupChatCreated($callable): Handler
@@ -302,7 +343,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onChannelChatCreated($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -313,7 +354,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onMessageAutoDeleteTimerChanged($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -324,7 +365,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onMigrateToChatId($callable): Handler
@@ -334,7 +375,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onMigrateFromChatId($callable): Handler
@@ -344,7 +385,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onPinnedMessage($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -355,7 +396,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onInvoice($callable): Handler
@@ -365,7 +406,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onSuccessfulPayment($callable): Handler
@@ -375,13 +416,14 @@ trait MessageListeners
     }
 
     /**
-     * @param string $pattern
-     * @param $callable
+     * @param BackedEnum|string $pattern
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
-    public function onSuccessfulPaymentPayload(string $pattern, $callable): Handler
+    public function onSuccessfulPaymentPayload(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::SUCCESSFUL_PAYMENT->value][$pattern] = new Handler(
             $callable,
             $pattern
@@ -389,7 +431,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onRefundedPayment($callable): Handler
@@ -399,13 +441,14 @@ trait MessageListeners
     }
 
     /**
-     * @param string $pattern
-     * @param $callable
+     * @param BackedEnum|string $pattern
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
-    public function onRefundedPaymentPayload(string $pattern, $callable): Handler
+    public function onRefundedPaymentPayload(BackedEnum|string $pattern, $callable): Handler
     {
         $this->checkFinalized();
+        $pattern = get_value($pattern);
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::REFUNDED_PAYMENT->value][$pattern] = new Handler(
             $callable,
             $pattern
@@ -413,7 +456,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onUsersShared($callable): Handler
@@ -423,7 +466,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onChatShared($callable): Handler
@@ -433,7 +476,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onConnectedWebsite($callable): Handler
@@ -443,7 +486,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onPassportData($callable): Handler
@@ -453,7 +496,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onProximityAlertTriggered($callable): Handler
@@ -462,30 +505,50 @@ trait MessageListeners
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::PROXIMITY_ALERT_TRIGGERED->value][] = new Handler($callable);
     }
 
+    /**
+     * @param callable|callable-string|array $callable
+     * @return Handler
+     */
     public function onBoostAdded($callable): Handler
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::BOOST_ADDED->value][] = new Handler($callable);
     }
 
+    /**
+     * @param callable|callable-string|array $callable
+     * @return Handler
+     */
     public function onDirectMessagePriceChanged($callable): Handler
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::DIRECT_MESSAGE_PRICE_CHANGED->value][] = new Handler($callable);
     }
 
+    /**
+     * @param callable|callable-string|array $callable
+     * @return Handler
+     */
     public function onChecklist($callable): Handler
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::CHECKLIST->value][] = new Handler($callable);
     }
 
+    /**
+     * @param callable|callable-string|array $callable
+     * @return Handler
+     */
     public function onChecklistTasksDone($callable): Handler
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::CHECKLIST_TASKS_DONE->value][] = new Handler($callable);
     }
 
+    /**
+     * @param callable|callable-string|array $callable
+     * @return Handler
+     */
     public function onChecklistTasksAdded($callable): Handler
     {
         $this->checkFinalized();
@@ -493,7 +556,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onForumTopicCreated($callable): Handler
@@ -503,7 +566,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onForumTopicEdited($callable): Handler
@@ -513,7 +576,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onForumTopicClosed($callable): Handler
@@ -523,7 +586,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onForumTopicReopened($callable): Handler
@@ -533,7 +596,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onGiveawayCreated($callable): Handler
@@ -543,7 +606,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onGiveaway($callable): Handler
@@ -553,7 +616,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onGiveawayWinners($callable): Handler
@@ -563,7 +626,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onGiveawayCompleted($callable): Handler
@@ -573,7 +636,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onVideoChatScheduled($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -584,7 +647,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onVideoChatStarted($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -595,7 +658,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onVideoChatEnded($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -606,7 +669,7 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onVideoChatParticipantsInvited($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -617,12 +680,34 @@ trait MessageListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function onWebAppData($callable): Handler
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::WEB_APP_DATA->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|callable-string|array $callable
+     * @return Handler
+     */
+    public function onManagedBotCreated($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::MANAGED_BOT_CREATED->value][] = new Handler($callable);
+    }
+
+    public function onPollOptionAdded($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::POLL_OPTION_ADDED->value][] = new Handler($callable);
+    }
+
+    public function onPollOptionDeleted($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::POLL_OPTION_DELETED->value][] = new Handler($callable);
     }
 }

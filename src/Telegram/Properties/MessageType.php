@@ -25,6 +25,8 @@ enum MessageType: string
     case STORY = 'story';
     case NEW_CHAT_MEMBERS = 'new_chat_members';
     case LEFT_CHAT_MEMBER = 'left_chat_member';
+    case CHAT_OWNER_LEFT = 'chat_owner_left';
+    case CHAT_OWNER_CHANGED = 'chat_owner_changed';
     case NEW_CHAT_TITLE = 'new_chat_title';
     case NEW_CHAT_PHOTO = 'new_chat_photo';
     case DELETE_CHAT_PHOTO = 'delete_chat_photo';
@@ -57,7 +59,10 @@ enum MessageType: string
     case GIVEAWAY = 'giveaway';
     case GIVEAWAY_WINNERS = 'giveaway_winners';
     case GIVEAWAY_COMPLETED = 'giveaway_completed';
+    case MANAGED_BOT_CREATED = 'managed_bot_created';
     case PAID_MESSAGE_PRICE_CHANGED = 'paid_message_price_changed';
+    case POLL_OPTION_ADDED = 'poll_option_added';
+    case POLL_OPTION_DELETED = 'poll_option_deleted';
     case VIDEO_CHAT_SCHEDULED = 'video_chat_scheduled';
     case VIDEO_CHAT_STARTED = 'video_chat_started';
     case VIDEO_CHAT_ENDED = 'video_chat_ended';

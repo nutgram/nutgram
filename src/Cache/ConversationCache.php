@@ -6,12 +6,11 @@ namespace SergiX44\Nutgram\Cache;
 
 use Closure;
 use DateInterval;
-use Laravel\SerializableClosure\Exceptions\PhpVersionNotSupportedException;
-use Laravel\SerializableClosure\SerializableClosure;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
-use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
+use function Opis\Closure\serialize;
+use function Opis\Closure\unserialize;
 
 class ConversationCache extends BotCache
 {
@@ -19,9 +18,9 @@ class ConversationCache extends BotCache
 
     /**
      * ConversationCache constructor.
-     * @param  CacheInterface  $cache
-     * @param  int|null  $botId
-     * @param  DateInterval|int|null  $ttl
+     * @param CacheInterface $cache
+     * @param int|null $botId
+     * @param DateInterval|int|null $ttl
      */
     public function __construct(CacheInterface $cache, ?int $botId, DateInterval|int|null $ttl = null)
     {
@@ -29,55 +28,50 @@ class ConversationCache extends BotCache
     }
 
     /**
-     * @param  int  $userId
-     * @param  int  $chatId
+     * @param int $userId
+     * @param int $chatId
+     * @param int|null $threadId
      * @return callable|Conversation|null
      * @throws InvalidArgumentException
-     * @throws PhpVersionNotSupportedException
      */
-    public function get(int $userId, int $chatId): null|callable|Conversation
+    public function get(int $userId, int $chatId, ?int $threadId): null|callable|Conversation
     {
-        $data = $this->cache->get($this->makeKey($userId, $chatId));
+        $data = $this->cache->get($this->makeKey($userId, $chatId, $threadId));
         if ($data !== null) {
-            $handler = unserialize($data);
-
-            if ($handler instanceof SerializableClosure) {
-                $handler = $handler->getClosure();
-            }
-
-            return $handler;
+            return unserialize($data);
         }
 
         return null;
     }
 
     /**
-     * @param  int  $userId
-     * @param  int  $chatId
-     * @param  callable|Conversation|SerializableClosure  $conversation
+     * @param int $userId
+     * @param int $chatId
+     * @param int|null $threadId
+     * @param callable|Conversation $conversation
      * @return bool
      * @throws InvalidArgumentException
-     * @throws PhpVersionNotSupportedException
      */
-    public function set(int $userId, int $chatId, callable|Conversation|SerializableClosure $conversation): bool
-    {
-        if ($conversation instanceof Closure) {
-            $conversation = new SerializableClosure($conversation);
-        }
-
+    public function set(
+        int $userId,
+        int $chatId,
+        ?int $threadId,
+        callable|Conversation $conversation
+    ): bool {
         $data = serialize($conversation);
 
-        return $this->cache->set($this->makeKey($userId, $chatId), $data, $this->ttl);
+        return $this->cache->set($this->makeKey($userId, $chatId, $threadId), $data, $this->ttl);
     }
 
     /**
-     * @param  int  $userId
-     * @param  int  $chatId
+     * @param int $userId
+     * @param int $chatId
+     * @param int|null $threadId
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function delete(int $userId, int $chatId): bool
+    public function delete(int $userId, int $chatId, ?int $threadId): bool
     {
-        return $this->cache->delete($this->makeKey($userId, $chatId));
+        return $this->cache->delete($this->makeKey($userId, $chatId, $threadId));
     }
 }

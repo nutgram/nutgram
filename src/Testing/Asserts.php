@@ -121,14 +121,15 @@ trait Asserts
     /**
      * @param int|null $userId
      * @param int|null $chatId
+     * @param int|null $threadId
      * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function assertActiveConversation(?int $userId = null, ?int $chatId = null): self
+    public function assertActiveConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): self
     {
         [$userId, $chatId] = $this->checkUserChatIds($userId, $chatId);
 
-        PHPUnit::assertNotNull($this->currentConversation($userId, $chatId), 'No active conversation found');
+        PHPUnit::assertNotNull($this->currentConversation($userId, $chatId, $threadId), 'No active conversation found');
 
         return $this;
     }
@@ -136,14 +137,15 @@ trait Asserts
     /**
      * @param int|null $userId
      * @param int|null $chatId
+     * @param int|null $threadId
      * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function assertNoConversation(?int $userId = null, ?int $chatId = null): self
+    public function assertNoConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): self
     {
         [$userId, $chatId] = $this->checkUserChatIds($userId, $chatId);
 
-        PHPUnit::assertNull($this->currentConversation($userId, $chatId), 'Found an active conversation');
+        PHPUnit::assertNull($this->currentConversation($userId, $chatId, $threadId), 'Found an active conversation');
 
         return $this;
     }

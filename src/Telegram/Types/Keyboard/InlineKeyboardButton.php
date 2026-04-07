@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
+use SergiX44\Nutgram\Telegram\Properties\ButtonStyle;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Common\LoginUrl;
 use SergiX44\Nutgram\Telegram\Types\Game\CallbackGame;
@@ -12,7 +14,8 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 /**
  * This object represents one button of an inline keyboard.
- * You must use exactly one of the optional fields.
+ * Exactly one of the fields other than text, icon_custom_emoji_id,
+ * and style must be used to specify the type of the button.
  * @see https://core.telegram.org/bots/api#inlinekeyboardbutton
  */
 #[OverrideConstructor('bindToInstance')]
@@ -20,6 +23,22 @@ class InlineKeyboardButton extends BaseType
 {
     /** Label text on the button */
     public string $text;
+
+    /**
+     * Optional. Unique identifier of the custom emoji shown before the text of the button.
+     * Can only be used by bots that purchased additional usernames on {@see https://fragment.com/ Fragment} or
+     * in the messages directly sent by the bot to private, group and
+     * supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     */
+    public ?string $icon_custom_emoji_id = null;
+
+    /**
+     * Optional. Style of the button.
+     * Must be one of “danger” (red), “success” (green) or “primary” (blue).
+     * If omitted, then an app-specific style is used.
+     */
+    #[EnumOrScalar]
+    public ButtonStyle|string|null $style = null;
 
     /**
      * Optional.
@@ -102,6 +121,8 @@ class InlineKeyboardButton extends BaseType
         ?WebAppInfo $web_app = null,
         ?SwitchInlineQueryChosenChat $switch_inline_query_chosen_chat = null,
         ?CopyTextButton $copy_text = null,
+        ?string $icon_custom_emoji_id = null,
+        ButtonStyle|string|null $style = null,
     ) {
         parent::__construct();
         $this->text = $text;
@@ -115,5 +136,7 @@ class InlineKeyboardButton extends BaseType
         $this->web_app = $web_app;
         $this->switch_inline_query_chosen_chat = $switch_inline_query_chosen_chat;
         $this->copy_text = $copy_text;
+        $this->icon_custom_emoji_id = $icon_custom_emoji_id;
+        $this->style = $style;
     }
 }

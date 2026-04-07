@@ -22,7 +22,7 @@ trait SpecialListeners
     protected const API_ERROR = 'API_ERROR';
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function fallback($callable): Handler
@@ -32,7 +32,7 @@ trait SpecialListeners
 
     /**
      * @param UpdateType $type
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function fallbackOn(UpdateType $type, $callable): Handler
@@ -42,8 +42,8 @@ trait SpecialListeners
     }
 
     /**
-     * @param callable|string $callableOrException
-     * @param callable|null $callable
+     * @param class-string|callable|callable-string|array $callableOrException
+     * @param callable|callable-string|array|null $callable
      * @return Handler
      */
     public function onException($callableOrException, $callable = null): Handler
@@ -88,7 +88,7 @@ trait SpecialListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function beforeApiRequest($callable): Handler
@@ -98,7 +98,7 @@ trait SpecialListeners
     }
 
     /**
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @return Handler
      */
     public function afterApiRequest($callable): Handler

@@ -6,7 +6,6 @@ namespace SergiX44\Nutgram;
 
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
-use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -36,6 +35,7 @@ use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 use Throwable;
+use function Opis\Closure\init;
 
 class Nutgram extends ResolveHandlers
 {
@@ -75,9 +75,7 @@ class Nutgram extends ResolveHandlers
      */
     public function __construct(string $token, ?Configuration $config = null)
     {
-        if (empty($token)) {
-            throw new InvalidArgumentException('The token cannot be empty.');
-        }
+        $this->validateToken($token);
 
         $this->bootstrap($token, $config ?? new Configuration());
     }
@@ -99,7 +97,7 @@ class Nutgram extends ResolveHandlers
             $this->container->delegate($config->container);
         }
 
-        SerializableClosure::setSecretKey($this->token);
+        init($this->token, true);
 
         $this->http = new Guzzle([
             'base_uri' => sprintf(
@@ -136,7 +134,7 @@ class Nutgram extends ResolveHandlers
         $this->container->set(__CLASS__, $this);
     }
 
-    protected function getBotId(): int
+    public function getBotId(): int
     {
         return $this->config->botId ?? (int)explode(':', $this->token)[0];
     }
@@ -207,9 +205,9 @@ class Nutgram extends ResolveHandlers
      */
     public function processUpdate(Update $update): void
     {
-        $this->update = $update;
+        $this->setContextUpdate($update);
 
-        $conversation = $this->currentConversation($this->userId(), $this->chatId());
+        $conversation = $this->currentConversation($this->userId(), $this->chatId(), $this->messageThreadId());
 
         if ($conversation !== null) {
             $handlers = $this->continueConversation($conversation);
@@ -228,6 +226,11 @@ class Nutgram extends ResolveHandlers
         $this->fireHandlers($handlers);
     }
 
+    public function setContextUpdate(Update $update): void
+    {
+        $this->update = $update;
+    }
+
     /**
      * @param Conversations\Conversation|callable $callable
      * @param int|null $userId
@@ -238,16 +241,18 @@ class Nutgram extends ResolveHandlers
     public function stepConversation(
         Conversations\Conversation|callable $callable,
         ?int $userId = null,
-        ?int $chatId = null
+        ?int $chatId = null,
+        ?int $threadId = null,
     ): self {
-        $userId = $userId ?? $this->userId();
-        $chatId = $chatId ?? $this->chatId();
+        $userId ??= $this->userId();
+        $chatId ??= $this->chatId();
+        $threadId ??= $this->messageThreadId();
 
         if ($this->update === null && ($userId === null || $chatId === null)) {
             throw new InvalidArgumentException('You cannot step a conversation without userId and chatId.');
         }
 
-        $this->container->get(ConversationCache::class)->set($userId, $chatId, $callable);
+        $this->container->get(ConversationCache::class)->set($userId, $chatId, $threadId, $callable);
 
         return $this;
     }
@@ -255,10 +260,11 @@ class Nutgram extends ResolveHandlers
     /**
      * @param int|null $userId
      * @param int|null $chatId
+     * @param int|null $threadId
      * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function endConversation(?int $userId = null, ?int $chatId = null): self
+    public function endConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): self
     {
         $userId = $userId ?? $this->userId();
         $chatId = $chatId ?? $this->chatId();
@@ -267,7 +273,7 @@ class Nutgram extends ResolveHandlers
             throw new InvalidArgumentException('You cannot end a conversation without userId and chatId.');
         }
 
-        $this->container->get(ConversationCache::class)->delete($userId, $chatId);
+        $this->container->get(ConversationCache::class)->delete($userId, $chatId, $threadId);
 
         return $this;
     }
@@ -354,5 +360,21 @@ class Nutgram extends ResolveHandlers
     public function invoke(callable|array|string $callable, array $params = []): mixed
     {
         return $this->container->call($callable, $params);
+    }
+
+    /**
+     * Validate the token
+     * @param string $token
+     * @return void
+     */
+    protected function validateToken(string $token): void
+    {
+        if (empty($token)) {
+            throw new InvalidArgumentException('The token cannot be empty.');
+        }
+
+        if (!preg_match("/\d+:.+/", $token)) {
+            throw new InvalidArgumentException('The token is invalid.');
+        }
     }
 }

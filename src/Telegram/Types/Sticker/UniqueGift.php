@@ -54,6 +54,11 @@ class UniqueGift extends BaseType
     public ?bool $is_premium = null;
 
     /**
+     * Optional. True, if the gift was used to craft another gift and isn't available anymore
+     */
+    public ?bool $is_burned = null;
+
+    /**
      * Optional. True, if the gift is assigned from the TON blockchain and can't be resold or transferred in Telegram
      */
     public ?bool $is_from_blockchain = null;

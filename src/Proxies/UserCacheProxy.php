@@ -15,9 +15,9 @@ use SergiX44\Nutgram\Cache\UserCache;
 trait UserCacheProxy
 {
     /**
-     * @param  $key
-     * @param  int|null  $userId
-     * @param  mixed  $default
+     * @param string $key
+     * @param int|null $userId
+     * @param mixed $default
      * @return mixed
      * @throws InvalidArgumentException
      */
@@ -28,10 +28,10 @@ trait UserCacheProxy
     }
 
     /**
-     * @param $key
-     * @param $value
-     * @param  int|null  $userId
-     * @param  DateInterval|int|null  $ttl
+     * @param string $key
+     * @param mixed $value
+     * @param int|null $userId
+     * @param DateInterval|int|null $ttl
      * @return bool
      * @throws InvalidArgumentException
      */
@@ -42,8 +42,8 @@ trait UserCacheProxy
     }
 
     /**
-     * @param $key
-     * @param  int|null  $userId
+     * @param string $key
+     * @param int|null $userId
      * @return bool
      * @throws InvalidArgumentException
      */

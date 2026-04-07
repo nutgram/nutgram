@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Handlers;
 
 use Illuminate\Support\Traits\Macroable;
-use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Container\Container;
@@ -16,6 +15,7 @@ use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
 use SergiX44\Nutgram\Support\InteractsWithRateLimit;
 use SergiX44\Nutgram\Support\Taggable;
+use function Opis\Closure\serialize;
 
 class Handler extends MiddlewareChain
 {
@@ -219,7 +219,7 @@ class Handler extends MiddlewareChain
     {
         $data = [
             'pattern' => $this->pattern,
-            'callable' => new SerializableClosure($this->callable),
+            'callable' => serialize($this->callable),
             'disabled' => $this->disabled,
             'constraints' => $this->constraints,
             'tags' => $this->tags,

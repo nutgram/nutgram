@@ -20,7 +20,7 @@ class Link
 
     /**
      * Link constructor.
-     * @param $callable
+     * @param callable|callable-string|array $callable
      * @param  Link|null  $next
      */
     public function __construct($callable, ?Link $next = null)

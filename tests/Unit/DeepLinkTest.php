@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use SergiX44\Nutgram\Support\DeepLink;
-use function SergiX44\Nutgram\Support\deepLink;
+use function SergiX44\Nutgram\Support\deep_link;
 
 it('can be instantiated statically', function () {
     $deepLink = DeepLink::make();
@@ -11,7 +11,7 @@ it('can be instantiated statically', function () {
 });
 
 it('can be used via helper function', function () {
-    $deepLink = deepLink();
+    $deepLink = deep_link();
     expect($deepLink)->toBeInstanceOf(DeepLink::class);
 });
 
@@ -335,4 +335,14 @@ it('can create a deep link to attach', function () {
         startParameter: 'baz'
     );
     expect($link)->toBe('https://t.me/foouser?attach=barbot&startattach=baz');
+});
+
+it('can create a deep link to the creation of a managed bot', function () {
+    $deepLink = new DeepLink();
+    $link = $deepLink->createManagedBot(
+        botUsername: 'ManagerBot',
+        newBotUsername: 'CoolAIAgentBot',
+        newBotName: 'Cool AI Agent',
+    );
+    expect($link)->toBe('https://t.me/newbot/ManagerBot/CoolAIAgentBot?name=Cool+AI+Agent');
 });

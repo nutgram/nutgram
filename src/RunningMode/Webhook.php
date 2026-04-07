@@ -16,20 +16,18 @@ use Throwable;
 class Webhook implements RunningMode
 {
     protected bool $safeMode = false;
-
     protected Closure $resolveSecretToken;
     protected ?string $secretToken = null;
 
     /**
-     * @param Closure|null $getToken
-     * @param string|null $secretToken
+     * @param string|null $secretToken Secret token to verify incoming requests.
+     * @param Closure|null $getToken A closure that returns the secret token. If not provided, it will look for the token in the `HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN` header.
      */
-    public function __construct(?Closure $getToken = null, ?string $secretToken = null)
+    public function __construct(?string $secretToken = null, ?Closure $getToken = null)
     {
-        $this->resolveSecretToken = $getToken ?? static fn (): string => $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ?? '';
         $this->secretToken = $secretToken;
+        $this->resolveSecretToken = $getToken ?? static fn (): string => $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ?? '';
     }
-
 
     /**
      * @param Nutgram $bot

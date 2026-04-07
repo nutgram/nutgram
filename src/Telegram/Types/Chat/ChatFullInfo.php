@@ -8,6 +8,7 @@ use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessIntro;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessLocation;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessOpeningHours;
+use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGiftColors;
@@ -311,6 +312,11 @@ class ChatFullInfo extends Chat
      * For private chats, the rating of the user if any
      */
     public ?UserRating $rating = null;
+
+    /**
+     * Optional. For private chats, the first audio added to the profile of the user
+     */
+    public ?Audio $first_profile_audio = null;
 
     /**
      * Optional.

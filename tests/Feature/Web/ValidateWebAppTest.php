@@ -39,3 +39,8 @@ it('fails to validate webapp data', function () {
     $queryString = str_replace('start_param=foo', 'start_param=bar', $queryString);
     $bot->validateWebAppData($queryString);
 })->throws(InvalidDataException::class);
+
+it('fails to validate webapp data with empty string', function () {
+    $bot = Nutgram::fake();
+    $bot->validateWebAppData('');
+})->throws(InvalidDataException::class);

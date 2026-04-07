@@ -10,6 +10,8 @@ use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostAdded;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatOwnerChanged;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatOwnerLeft;
 use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
 use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksAdded;
 use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksDone;
@@ -33,6 +35,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
 use SergiX44\Nutgram\Telegram\Types\Location\ProximityAlertTriggered;
 use SergiX44\Nutgram\Telegram\Types\Location\Venue;
+use SergiX44\Nutgram\Telegram\Types\ManagedBot\ManagedBotCreated;
 use SergiX44\Nutgram\Telegram\Types\Media\Animation;
 use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Media\Contact;
@@ -51,6 +54,8 @@ use SergiX44\Nutgram\Telegram\Types\Payment\PaidMessagePriceChanged;
 use SergiX44\Nutgram\Telegram\Types\Payment\RefundedPayment;
 use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
+use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionAdded;
+use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionDeleted;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
@@ -119,6 +124,11 @@ class Message extends BaseType
      */
     public ?User $sender_business_bot = null;
 
+    /**
+     * Optional. Tag or custom title of the sender of the message; for supergroups only
+     */
+    public ?string $sender_tag = null;
+
     /** Date the message was sent in Unix time */
     public int $date;
 
@@ -176,6 +186,11 @@ class Message extends BaseType
      * Optional. Identifier of the specific checklist task that is being replied to
      */
     public ?int $reply_to_checklist_task_id = null;
+
+    /**
+     * Optional. Persistent identifier of the specific poll option that is being replied to
+     */
+    public ?string $reply_to_poll_option_id = null;
 
     /**
      * Optional.
@@ -401,6 +416,16 @@ class Message extends BaseType
     public ?User $left_chat_member = null;
 
     /**
+     * Optional. Service message: chat owner has left
+     */
+    public ?ChatOwnerLeft $chat_owner_left = null;
+
+    /**
+     * Optional. Service message: chat owner has changed
+     */
+    public ?ChatOwnerChanged $chat_owner_changed = null;
+
+    /**
      * Optional.
      * A chat title was changed to this value
      */
@@ -623,9 +648,24 @@ class Message extends BaseType
     public ?GiveawayCompleted $giveaway_completed = null;
 
     /**
+     * Optional. Service message: user created a bot that will be managed by the current bot
+     */
+    public ?ManagedBotCreated $managed_bot_created = null;
+
+    /**
      * Optional. Service message: the price for paid messages has changed in the chat
      */
     public ?PaidMessagePriceChanged $paid_message_price_changed = null;
+
+    /**
+     * Optional. Service message: answer option was added to a poll
+     */
+    public ?PollOptionAdded $poll_option_added = null;
+
+    /**
+     * Optional. Service message: answer option was deleted from a poll
+     */
+    public ?PollOptionDeleted $poll_option_deleted = null;
 
     /**
      * Optional. Service message: a suggested post was approved
@@ -743,6 +783,8 @@ class Message extends BaseType
             $this->dice !== null => MessageType::DICE,
             $this->new_chat_members !== null => MessageType::NEW_CHAT_MEMBERS,
             $this->left_chat_member !== null => MessageType::LEFT_CHAT_MEMBER,
+            $this->chat_owner_left !== null => MessageType::CHAT_OWNER_LEFT,
+            $this->chat_owner_changed !== null => MessageType::CHAT_OWNER_CHANGED,
             $this->new_chat_title !== null => MessageType::NEW_CHAT_TITLE,
             $this->new_chat_photo !== null => MessageType::NEW_CHAT_PHOTO,
             $this->delete_chat_photo !== null => MessageType::DELETE_CHAT_PHOTO,
@@ -775,7 +817,10 @@ class Message extends BaseType
             $this->giveaway !== null => MessageType::GIVEAWAY,
             $this->giveaway_winners !== null => MessageType::GIVEAWAY_WINNERS,
             $this->giveaway_completed !== null => MessageType::GIVEAWAY_COMPLETED,
+            $this->managed_bot_created !== null => MessageType::MANAGED_BOT_CREATED,
             $this->paid_message_price_changed !== null => MessageType::PAID_MESSAGE_PRICE_CHANGED,
+            $this->poll_option_added !== null => MessageType::POLL_OPTION_ADDED,
+            $this->poll_option_deleted !== null => MessageType::POLL_OPTION_DELETED,
             $this->video_chat_scheduled !== null => MessageType::VIDEO_CHAT_SCHEDULED,
             $this->video_chat_started !== null => MessageType::VIDEO_CHAT_STARTED,
             $this->video_chat_ended !== null => MessageType::VIDEO_CHAT_ENDED,

@@ -2,6 +2,80 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.45.0 - 2026-04-04
+
+### What's Changed
+
+* Update to Bot API 9.6 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/966
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.44.2...4.45.0
+
+## 4.44.2 - 2026-03-25
+
+### What's Changed
+
+* Improve type annotations (again) by @Lukasss93 in https://github.com/nutgram/nutgram/pull/965
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.44.1...4.44.2
+
+## 4.44.1 - 2026-03-23
+
+### What's Changed
+
+* Improve type annotations by @Lukasss93 in https://github.com/nutgram/nutgram/pull/963
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.44.0...4.44.1
+
+## 4.44.0 - 2026-03-02
+
+### What's Changed
+
+* Update to Bot API 9.5 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/957
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.43.0...4.44.0
+
+## 4.43.0 - 2026-02-26
+
+### What's Changed
+
+* Dispatch a `repository_dispatch` event on repository release by @Lukasss93 in https://github.com/nutgram/nutgram/pull/955
+* Add support for specifying update type(s) in conversation `next` method by @Lukasss93 in https://github.com/nutgram/nutgram/pull/951
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.42.0...4.43.0
+
+## 4.42.0 - 2026-02-12
+
+### What's Changed
+
+* Add thread support to Conversations by @Lukasss93 in https://github.com/nutgram/nutgram/pull/950
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.41.0...4.42.0
+
+## 4.41.0 - 2026-02-09
+
+### What's Changed
+
+* Update to Bot API 9.4 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/947
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.40.2...4.41.0
+
+## 4.40.2 - 2026-01-25
+
+### What's Changed
+
+* PHP 8.5 Compatibility x2 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/942
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.40.1...4.40.2
+
+## 4.40.1 - 2026-01-14
+
+### What's Changed
+
+* Fix: Enable nullable property initialization with manual data by @Lukasss93 in https://github.com/nutgram/nutgram/pull/933
+* Make getBotId method public by @Lukasss93 in https://github.com/nutgram/nutgram/pull/936
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.40.0...4.40.1
+
 ## 4.40.0 - 2026-01-03
 
 ### What's Changed

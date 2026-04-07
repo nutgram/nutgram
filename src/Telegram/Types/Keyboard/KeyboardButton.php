@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
+use SergiX44\Nutgram\Telegram\Properties\ButtonStyle;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 /**
  * This object represents one button of the reply keyboard.
+ * At most one of the fields other than text, icon_custom_emoji_id, and style must be used to specify the type of the button.
  * For simple text buttons, String can be used instead of this object to specify the button text.
- * The optional fields web_app, request_user, request_chat, request_contact, request_location, and request_poll are mutually exclusive.
  * @see https://core.telegram.org/bots/api#keyboardbutton
  */
 #[OverrideConstructor('bindToInstance')]
@@ -22,6 +24,22 @@ class KeyboardButton extends BaseType
      * If none of the optional fields are used, it will be sent as a message when the button is pressed
      */
     public string $text;
+
+    /**
+     * Optional. Unique identifier of the custom emoji shown before the text of the button.
+     * Can only be used by bots that purchased additional usernames on {@see https://fragment.com/ Fragment} or
+     * in the messages directly sent by the bot to private, group and
+     * supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     */
+    public ?string $icon_custom_emoji_id = null;
+
+    /**
+     * Optional. Style of the button.
+     * Must be one of “danger” (red), “success” (green) or “primary” (blue).
+     * If omitted, then an app-specific style is used.
+     */
+    #[EnumOrScalar]
+    public ButtonStyle|string|null $style = null;
 
     /**
      * Optional. If specified, pressing the button will open a list of suitable users.
@@ -37,6 +55,14 @@ class KeyboardButton extends BaseType
      * Available in private chats only.
      */
     public ?KeyboardButtonRequestChat $request_chat = null;
+
+    /**
+     * Optional.
+     * If specified, pressing the button will ask the user to create and share a bot that will be managed by the current bot.
+     * Available for bots that enabled management of other bots in the {@see https://t.me/BotFather @BotFather} Mini App.
+     * Available in private chats only.
+     */
+    public ?KeyboardButtonRequestManagedBot $request_managed_bot = null;
 
     /**
      * Optional.
@@ -75,6 +101,8 @@ class KeyboardButton extends BaseType
         ?WebAppInfo $web_app = null,
         ?KeyboardButtonRequestUsers $request_users = null,
         ?KeyboardButtonRequestChat $request_chat = null,
+        ?string $icon_custom_emoji_id = null,
+        ButtonStyle|string|null $style = null,
     ) {
         parent::__construct();
         $this->text = $text;
@@ -84,5 +112,7 @@ class KeyboardButton extends BaseType
         $this->web_app = $web_app;
         $this->request_users = $request_users;
         $this->request_chat = $request_chat;
+        $this->icon_custom_emoji_id = $icon_custom_emoji_id;
+        $this->style = $style;
     }
 }
