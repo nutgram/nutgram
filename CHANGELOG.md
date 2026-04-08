@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.45.1 - 2026-04-08
+
+### What's Changed
+
+* Fix wrong callable parameter type annotations by @Lukasss93 in https://github.com/nutgram/nutgram/pull/970
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.45.0...4.45.1
+
 ## 4.45.0 - 2026-04-04
 
 ### What's Changed
