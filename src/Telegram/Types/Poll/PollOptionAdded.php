@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Poll;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Message\MaybeInaccessibleMessage;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
@@ -20,19 +21,16 @@ class PollOptionAdded extends BaseType
      * Message containing the poll to which the option was added, if known.
      * Note that the Message object in this field will not contain
      * the reply_to_message field even if it itself is a reply.
-     * @var Message|null
      */
-    public ?Message $poll_message = null;
+    public ?MaybeInaccessibleMessage $poll_message = null;
 
     /**
      * Unique identifier of the added option
-     * @var string
      */
     public string $option_persistent_id;
 
     /**
      * Option text
-     * @var string
      */
     public string $option_text;
 
