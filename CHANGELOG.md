@@ -2,6 +2,18 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.45.2 - 2026-04-10
+
+### What's Changed
+
+* Fixed setWebhook method to use request  multipart by @userator in https://github.com/nutgram/nutgram/pull/971
+
+### New Contributors
+
+* @userator made their first contribution in https://github.com/nutgram/nutgram/pull/971
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.45.1...4.45.2
+
 ## 4.45.1 - 2026-04-08
 
 ### What's Changed
