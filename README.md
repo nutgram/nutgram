@@ -21,6 +21,7 @@
 [![Test Coverage](https://qlty.sh/gh/nutgram/projects/nutgram/coverage.svg)](https://qlty.sh/gh/nutgram/projects/nutgram/coverage)
 
 [![Documentation](https://img.shields.io/badge/%20Documentation-nutgram.dev-blue?logo=data:image/png;base64,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)](https://nutgram.dev/)
+[![StarterKit](https://img.shields.io/badge/Starter%20Kit-available-success?logo=php)](https://github.com/nutgram/starter-kit)
 [![Laravel](https://img.shields.io/badge/%20Laravel%20Package-available-success?logo=laravel)](https://github.com/nutgram/laravel)
 [![Symfony](https://img.shields.io/badge/%20Symfony%20Bundle-available-success?logo=symfony)](https://github.com/nutgram/symfony-bundle)
 
@@ -56,6 +57,9 @@ You can install the package via composer:
 composer require nutgram/nutgram
 ```
 
+Check out our official [Starter Kit](https://github.com/nutgram/starter-kit),
+a plain PHP project with no frameworks, to get up and running fast.
+
 Looking for a **Laravel** or **Symfony** integration?
 Check out [Nutgram Laravel](https://github.com/nutgram/laravel)
 and [Nutgram Symfony Bundle](https://github.com/nutgram/symfony-bundle).
@@ -68,7 +72,8 @@ Official Documentation on [https://nutgram.dev/](https://nutgram.dev)
 
 - Latest PHP 8.2 features
 - Framework agnostic
-- Framework integrations (Laravel and Symfony)
+- Vanilla PHP [Starter Kit](https://github.com/nutgram/starter-kit)
+- Framework integrations ([Laravel](https://github.com/nutgram/laravel) and [Symfony](https://github.com/nutgram/symfony-bundle))
 - Cache system (you can use your own cache system that implements PSR-16 CacheInterface)
 - Logging system (you can use your own logger that implements PSR-3 LoggerInterface)
 - Flexible update processing
