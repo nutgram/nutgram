@@ -70,7 +70,7 @@ class Handler extends MiddlewareChain
 
     /**
      * Handler constructor.
-     * @param callable $callable
+     * @param callable|class-string|array $callable
      * @param string|null $pattern
      */
     public function __construct($callable, ?string $pattern = null)

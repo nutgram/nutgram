@@ -12,7 +12,7 @@ abstract class MiddlewareChain
     protected mixed $head;
 
     /**
-     * @param callable|callable-string|array $callable
+     * @param callable|class-string|array $callable
      * @return $this
      */
     public function middleware($callable): self
@@ -23,9 +23,6 @@ abstract class MiddlewareChain
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getHead(): mixed
     {
         return $this->head;

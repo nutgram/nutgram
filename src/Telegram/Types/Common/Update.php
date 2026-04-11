@@ -18,6 +18,7 @@ use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\ManagedBot\ManagedBotUpdated;
+use SergiX44\Nutgram\Telegram\Types\Message\MaybeInaccessibleMessage;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPurchased;
 use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
@@ -370,7 +371,7 @@ class Update extends BaseType
             $this->edited_channel_post !== null => $this->edited_channel_post,
             $this->business_message !== null => $this->business_message,
             $this->edited_business_message !== null => $this->edited_business_message,
-            $this->callback_query !== null => $this->callback_query->message,
+            $this->callback_query !== null => $this->callback_query->message !== null && !$this->callback_query->message->isInaccessible() ? $this->callback_query->message : null,
             default => null
         };
     }

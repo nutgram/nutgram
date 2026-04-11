@@ -46,7 +46,7 @@ abstract class CollectHandlers
     abstract public function getContainer(): Container;
 
     /**
-     * @param callable $callable
+     * @param callable|class-string|array $callable
      */
     public function middleware($callable): void
     {
@@ -55,9 +55,9 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param list<callable> $callables
+     * @param list<callable|class-string|array> $callable
      */
-    public function middlewares($callables): void
+    public function middlewares(array $callables): void
     {
         $this->checkFinalized();
 
@@ -74,8 +74,8 @@ abstract class CollectHandlers
 
     /**
      * @param string $type
-     * @param class-string|string|callable|callable-string|array $callableOrPattern
-     * @param callable|callable-string|array|null $callable
+     * @param callable|class-string|array $callableOrPattern
+     * @param callable|class-string|array $callable
      * @return Handler
      */
     private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
@@ -109,7 +109,7 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param callable|callable-string|array $callable
+     * @param callable|class-string|array $callable
      * @return Handler
      */
     public function onUpdate($callable): Handler
