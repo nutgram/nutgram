@@ -29,6 +29,15 @@ abstract class Conversation
     private ?int $chatId = null;
     private ?int $threadId = null;
 
+    /**
+     * Start a conversation.
+     * @param Nutgram $bot
+     * @param int|null $userId
+     * @param int|null $chatId
+     * @param int|null $threadId
+     * @param array<string, mixed> $data
+     * @return self
+     */
     public static function begin(
         Nutgram $bot,
         ?int $userId = null,
@@ -221,7 +230,7 @@ abstract class Conversation
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function __serialize(): array
     {
@@ -235,7 +244,7 @@ abstract class Conversation
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     protected function getSerializableAttributes(): array
     {

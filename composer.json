@@ -41,6 +41,8 @@
         "ext-reflection": "*",
         "mockery/mockery": "^1.6",
         "pestphp/pest": "^4.0",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-mockery": "^2.0",
         "vimeo/psalm": "^6.1.0"
     },
     "suggest": {
@@ -65,7 +67,8 @@
     "scripts": {
         "test": "@php vendor/bin/pest --fail-on-warning --fail-on-deprecation",
         "test-coverage": "@php vendor/bin/pest --coverage --coverage-clover=coverage.xml --fail-on-warning --fail-on-deprecation",
-        "psalm": "@php vendor/bin/psalm --no-cache --config=psalm.xml"
+        "psalm": "@php vendor/bin/psalm --no-cache --config=psalm.xml",
+        "phpstan": "@php vendor/bin/phpstan analyse"
     },
     "config": {
         "sort-packages": true,

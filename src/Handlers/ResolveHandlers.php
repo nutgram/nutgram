@@ -35,12 +35,15 @@ abstract class ResolveHandlers extends CollectHandlers
 
     abstract public function getContainer(): Container;
 
+    abstract public function getInstance(): Nutgram;
+
     /**
      * @param int|null $userId
      * @param int|null $chatId
      * @param int|null $threadId
      * @return callable|Conversation|\Closure|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Psr\Container\NotFoundExceptionInterface|ContainerExceptionInterface
      */
     public function currentConversation(?int $userId, ?int $chatId, ?int $threadId): callable|Conversation|\Closure|null
     {
@@ -48,7 +51,7 @@ abstract class ResolveHandlers extends CollectHandlers
             return null;
         }
 
-        return $this->container->get(ConversationCache::class)->get($userId, $chatId, $threadId);
+        return $this->getContainer()->get(ConversationCache::class)->get($userId, $chatId, $threadId);
     }
 
     /**
@@ -175,7 +178,7 @@ abstract class ResolveHandlers extends CollectHandlers
                 // we should escape the conversation
                 if ($handler->getPattern() !== null || $handler->shouldStopConversation()) {
                     if ($conversation instanceof Conversation) {
-                        $conversation->terminate($this);
+                        $conversation->terminate($this->getInstance());
                     }
                     return $handlers;
                 }

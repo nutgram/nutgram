@@ -14,7 +14,7 @@ abstract class ApiException extends TelegramException
     /**
      * @throws ApiException
      */
-    public function __invoke(Nutgram $bot, TelegramException $e)
+    public function __invoke(Nutgram $bot, TelegramException $e): void
     {
         // lemme yeeet myself
         throw new static($e->getMessage(), $e->getCode(), $e);

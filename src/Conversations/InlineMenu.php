@@ -35,7 +35,7 @@ abstract class InlineMenu extends Conversation
     private InlineKeyboardMarkup $buttons;
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     private array $callbacks = [];
 
@@ -45,12 +45,12 @@ abstract class InlineMenu extends Conversation
     private ?string $orNext = null;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private array $opt = [];
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private array $callbackQueryOpt = [];
 
@@ -60,7 +60,7 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     protected function getSerializableAttributes(): array
     {
@@ -70,8 +70,9 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
+     * Set the message text and the optional message parameters
      * @param string $text
-     * @param array $opt
+     * @param array<string, mixed> $opt
      * @return InlineMenu
      */
     protected function menuText(string $text, array $opt = []): self
@@ -197,10 +198,10 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
+     * Close the menu deleting the current message
      * @param string|null $finalText
-     * @param array $opt
+     * @param array<string, mixed> $opt
      * @param bool $reopen
-     *
      * @return Message|bool
      */
     protected function closeMenu(?string $finalText = null, array $opt = [], bool $reopen = false): bool|Message
@@ -233,7 +234,7 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param array $opt
+     * @param array<string, mixed> $opt
      * @return $this
      */
     protected function setCallbackQueryOptions(array $opt): self
@@ -253,11 +254,12 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
+     * Send the message. Default: sendMessage
+     * Override only to change the Telegram method.
      * @param string $text
      * @param InlineKeyboardMarkup $buttons
-     * @param array $opt
+     * @param array<string, mixed> $opt
      * @return Message|null
-     * @internal Override only to change the Telegram method.
      */
     protected function doOpen(string $text, InlineKeyboardMarkup $buttons, array $opt): Message|null
     {
@@ -270,15 +272,14 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
+     * Edit the message. Default: editMessageText
+     * Override only to change the Telegram method.
      * @param string $text
      * @param int|null $chatId
      * @param int|null $messageId
      * @param InlineKeyboardMarkup $buttons
-     * @param array $opt
-     *
+     * @param array<string, mixed> $opt
      * @return Message|bool|null
-     *
-     * @internal Override only to change the Telegram method.
      */
     protected function doUpdate(
         string $text,
