@@ -66,7 +66,7 @@ trait UpdateMethods
         ?bool $drop_pending_updates = null,
         ?string $secret_token = null
     ): ?bool {
-        return $this->requestJson(__FUNCTION__, compact(
+        return $this->requestMultipart(__FUNCTION__, compact(
             'url',
             'certificate',
             'ip_address',

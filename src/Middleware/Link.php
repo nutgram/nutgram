@@ -9,7 +9,7 @@ use SergiX44\Nutgram\Nutgram;
 class Link
 {
     /**
-     * @var
+     * @var callable|class-string|array
      */
     private $callable;
 
@@ -20,7 +20,7 @@ class Link
 
     /**
      * Link constructor.
-     * @param callable|callable-string|array $callable
+     * @param callable|class-string|array $callable
      * @param  Link|null  $next
      */
     public function __construct($callable, ?Link $next = null)
