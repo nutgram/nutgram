@@ -17,7 +17,7 @@ class UserDeactivatedException extends ApiException
         parent::__construct($message, $code, $previous, $parameters);
     }
 
-    public function __invoke(Nutgram $bot, TelegramException $e)
+    public function __invoke(Nutgram $bot, TelegramException $e): void
     {
         if ($this->mute) {
             return;
