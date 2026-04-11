@@ -101,3 +101,6 @@ jobs:
                 run: |
                         echo Psalm Level: $(grep -oP '(?<=errorLevel=")[0-9]+' psalm.xml)
                         composer run-script psalm
+
+            -   name: Run Phpstan
+                run: composer run-script phpstan
