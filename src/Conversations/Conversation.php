@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Conversations;
 
 use Closure;
-use Laravel\SerializableClosure\SerializableClosure;
 use Psr\SimpleCache\InvalidArgumentException;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
+use SergiX44\Nutgram\Telegram\Types\Common\Update;
+use function Opis\Closure\serialize;
 
 /**
  * Class Conversation
@@ -27,29 +29,12 @@ abstract class Conversation
     private ?int $chatId = null;
     private ?int $threadId = null;
 
-    public static function begin(Nutgram $bot, ?int $userId = null, ?int $chatId = null, array $data = []): self
-    {
-        if ($userId xor $chatId) {
-            throw new \InvalidArgumentException('You need to provide both userId and chatId.');
-        }
-
-        $instance = $bot->getContainer()->get(static::class);
-        $instance->userId = $userId;
-        $instance->chatId = $chatId;
-        $instance($bot, ...$data);
-
-        return $instance;
-    }
-
-    /**
-     * @todo: remove in favor of the begin() method in Nutgram 5.0, as the threadId parameter will be placed after the $chatId parameter.
-     */
-    public static function beginThread(
+    public static function begin(
         Nutgram $bot,
         ?int $userId = null,
         ?int $chatId = null,
         ?int $threadId = null,
-        array $data = []
+        array $data = [],
     ): self {
         if ($userId xor $chatId) {
             throw new \InvalidArgumentException('You need to provide both userId and chatId.');
@@ -59,7 +44,18 @@ abstract class Conversation
         $instance->userId = $userId;
         $instance->chatId = $chatId;
         $instance->threadId = $threadId;
+
+        $originalUpdate = null;
+        if ($userId && $chatId) {
+            $originalUpdate = $bot->update();
+            $bot->setContextUpdate(Update::frankensteinize($userId, $chatId, $threadId, $originalUpdate));
+        }
+
         $instance($bot, ...$data);
+
+        if ($originalUpdate) {
+            $bot->setContextUpdate($originalUpdate);
+        }
 
         return $instance;
     }
@@ -84,7 +80,7 @@ abstract class Conversation
     /**
      * @param string $step
      * @param UpdateType|MessageType|Closure|null $type
-     * @return Conversation
+     * @return static
      * @throws InvalidArgumentException
      */
     protected function next(string $step, UpdateType|MessageType|Closure|null $type = null): static
@@ -92,7 +88,7 @@ abstract class Conversation
         if ($type instanceof UpdateType || $type instanceof MessageType) {
             $this->conditionalSteps[$type->value] = $step;
         } elseif ($type instanceof Closure) {
-            $this->conditionalSteps[0][] = [$step, new SerializableClosure($type)];
+            $this->conditionalSteps[0][] = [$step, $type];
         } else {
             $this->step = $step;
         }
@@ -244,15 +240,5 @@ abstract class Conversation
     protected function getSerializableAttributes(): array
     {
         return [];
-    }
-
-    public function getChatId(): ?int
-    {
-        return $this->chatId;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
@@ -16,6 +18,7 @@ use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\ManagedBot\ManagedBotUpdated;
+use SergiX44\Nutgram\Telegram\Types\Message\MaybeInaccessibleMessage;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPurchased;
 use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
@@ -368,8 +371,54 @@ class Update extends BaseType
             $this->edited_channel_post !== null => $this->edited_channel_post,
             $this->business_message !== null => $this->business_message,
             $this->edited_business_message !== null => $this->edited_business_message,
-            $this->callback_query !== null => $this->callback_query->message,
+            $this->callback_query !== null => $this->callback_query->message !== null && !$this->callback_query->message->isInaccessible() ? $this->callback_query->message : null,
             default => null
         };
+    }
+
+    public static function frankensteinize(int $userId, int $chatId, ?int $threadId, ?Update $existingUpdate = null): self
+    {
+        // the barest minimum update data to make the update valid
+        $updateData = [
+            'update_id' => 0,
+            'message' => [
+                'message_id' => 0,
+                'message_thread_id' => $threadId,
+                'from' => [
+                    'id' => $userId,
+                    'is_bot' => false,
+                    'first_name' => '$$__ssc__$$',
+                ],
+                'chat' => [
+                    'id' => $chatId,
+                    'type' => 'private',
+                    'first_name' => '$$__ssc__$$',
+                ],
+                'date' => time(),
+                'text' => '$$__ssc__$$',
+            ],
+        ];
+
+        if ($existingUpdate === null) {
+            return self::fromArray($updateData);
+        }
+
+        // fill in the existing update data
+        $updateData = array_replace_recursive($updateData, $existingUpdate->toArray());
+
+        // overwrite the message data with the new data to change context
+        $updateData = array_replace_recursive($updateData, [
+            'message' => [
+                'message_thread_id' => $threadId,
+                'from' => [
+                    'id' => $userId,
+                ],
+                'chat' => [
+                    'id' => $chatId,
+                ],
+            ],
+        ]);
+
+        return self::fromArray($updateData);
     }
 }

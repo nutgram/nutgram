@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
@@ -56,7 +58,6 @@ use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionAdded;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionDeleted;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
-use SergiX44\Nutgram\Telegram\Types\Shared\UserShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
 use SergiX44\Nutgram\Telegram\Types\Sticker\GiftInfo;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
@@ -78,7 +79,7 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppData;
  * This object represents a message.
  * @see https://core.telegram.org/bots/api#message
  */
-class Message extends BaseType
+class Message extends MaybeInaccessibleMessage
 {
     /** Unique message identifier inside this chat */
     public int $message_id;
@@ -145,48 +146,6 @@ class Message extends BaseType
      * Information about the original message for forwarded messages
      */
     public ?MessageOrigin $forward_origin = null;
-
-    /**
-     * Optional.
-     * For forwarded messages, sender of the original message
-     * @deprecated Use the $forward_origin field instead
-     */
-    public ?User $forward_from = null;
-
-    /**
-     * Optional.
-     * For messages forwarded from channels or from anonymous administrators, information about the original sender chat
-     * @deprecated Use the $forward_origin field instead
-     */
-    public ?Chat $forward_from_chat = null;
-
-    /**
-     * Optional.
-     * For messages forwarded from channels, identifier of the original message in the channel
-     * @deprecated Use the $forward_origin field instead
-     */
-    public ?int $forward_from_message_id = null;
-
-    /**
-     * Optional.
-     * For forwarded messages that were originally sent in channels or by an anonymous chat administrator, signature of the message sender if present
-     * @deprecated Use the $forward_origin field instead
-     */
-    public ?string $forward_signature = null;
-
-    /**
-     * Optional.
-     * Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages
-     * @deprecated Use the $forward_origin field instead
-     */
-    public ?string $forward_sender_name = null;
-
-    /**
-     * Optional.
-     * For forwarded messages, date the original message was sent in Unix time
-     * @deprecated Use the $forward_origin field instead
-     */
-    public ?int $forward_date = null;
 
     /**
      * Optional.
@@ -311,6 +270,7 @@ class Message extends BaseType
      * Optional. Unique identifier of the message effect added to the message
      */
     public ?string $effect_id = null;
+
     /**
      * Optional.
      * Message is an animation, information about the animation.
@@ -532,9 +492,10 @@ class Message extends BaseType
     /**
      * Optional.
      * Specified message was pinned.
-     * Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
+     * Note that the {@see https://core.telegram.org/bots/api#message Message}
+     * object in this field will not contain further reply_to_message fields even if it is itself a reply.
      */
-    public ?Message $pinned_message = null;
+    public ?MaybeInaccessibleMessage $pinned_message = null;
 
     /**
      * Optional.
@@ -551,13 +512,6 @@ class Message extends BaseType
     public ?SuccessfulPayment $successful_payment = null;
 
     public ?RefundedPayment $refunded_payment = null;
-
-    /**
-     * Optional.
-     * Service message: a user was shared with the bot
-     * @deprecated Use the $users_shared field instead
-     */
-    public ?UserShared $user_shared = null;
 
     /**
      * Optional. Service message: users were shared with the bot
@@ -792,6 +746,7 @@ class Message extends BaseType
         if ($this->text !== null && preg_match($pattern, $this->text, $matches)) {
             return $matches['name'].($matches['args'] ?? '');
         }
+
         return null;
     }
 
@@ -1035,15 +990,6 @@ class Message extends BaseType
             disable_notification: $disable_notification,
             protect_content: $protect_content,
         );
-    }
-
-    /**
-     * Check if this message is deleted or is inaccessible to the bot.
-     * @return bool
-     */
-    public function isInaccessible(): bool
-    {
-        return $this->date === 0;
     }
 
     /**

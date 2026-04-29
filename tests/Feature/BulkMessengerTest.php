@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\BulkMessenger;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;

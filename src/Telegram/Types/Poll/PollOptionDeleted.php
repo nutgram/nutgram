@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Poll;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Message\MaybeInaccessibleMessage;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
@@ -19,7 +22,7 @@ class PollOptionDeleted extends BaseType
      * Note that the Message object in this field will not contain
      * the reply_to_message field even if it itself is a reply.
      */
-    public ?Message $poll_message = null;
+    public ?MaybeInaccessibleMessage $poll_message = null;
 
     /**
      * Unique identifier of the deleted option
