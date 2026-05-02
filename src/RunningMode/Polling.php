@@ -58,7 +58,7 @@ class Polling implements RunningMode
             pcntl_async_signals(true);
 
             $killMe = static function () {
-                exit('Goodbye!');
+                exit("\nGoodbye!\n");
             };
 
             $exitGracefully = static function () {
