@@ -223,3 +223,27 @@ test('checklist() returns Checklist object', function ($update) {
 
     expect($bot->checklist())->toBeInstanceOf(Checklist::class);
 })->with('checklist');
+
+test('managed_bot_created: managedBot() returns User object', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->run();
+
+    expect($bot->managedBot())->toBeInstanceOf(User::class);
+})->with('managed_bot_created');
+
+test('managed_bot: managedBot() returns User object', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->run();
+
+    expect($bot->managedBot())->toBeInstanceOf(User::class);
+})->with('managed_bot');
+
+test('managedBotId() returns bot id', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->run();
+
+    expect($bot->managedBotId())->toBe(67890);
+})->with('managed_bot_created');
