@@ -113,6 +113,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
         ?KeyboardButtonRequestChat $request_chat = null,
         ?string $icon_custom_emoji_id = null,
         ButtonStyle|string|null $style = null,
+        ?KeyboardButtonRequestManagedBot $request_managed_bot = null,
     ) {
         parent::__construct();
         $this->text = $text;
@@ -125,6 +126,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
         $this->request_chat = $request_chat;
         $this->icon_custom_emoji_id = $icon_custom_emoji_id;
         $this->style = $style;
+        $this->request_managed_bot = $request_managed_bot;
     }
 
     public static function make(
@@ -138,6 +140,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
         ?KeyboardButtonRequestChat $request_chat = null,
         ?string $icon_custom_emoji_id = null,
         ButtonStyle|string|null $style = null,
+        ?KeyboardButtonRequestManagedBot $request_managed_bot = null,
     ): self {
         return new self(
             text: $text,
@@ -150,6 +153,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
             request_chat: $request_chat,
             icon_custom_emoji_id: $icon_custom_emoji_id,
             style: $style,
+            request_managed_bot: $request_managed_bot,
         );
     }
 
@@ -166,6 +170,7 @@ class KeyboardButton extends BaseType implements JsonSerializable
             'request_location' => $this->request_location,
             'request_poll' => $this->request_poll,
             'web_app' => $this->web_app,
+            'request_managed_bot' => $this->request_managed_bot,
         ]);
     }
 }
