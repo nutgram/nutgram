@@ -17,7 +17,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * @see https://core.telegram.org/bots/api#inputmediavideo
  */
 #[SkipConstructor]
-class InputMediaVideo extends InputMedia implements JsonSerializable
+class InputMediaVideo extends InputMedia implements InputPollMedia, InputPollOptionMedia, JsonSerializable
 {
     /** Type of the result, must be video */
     #[EnumOrScalar]

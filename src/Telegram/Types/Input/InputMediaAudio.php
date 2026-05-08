@@ -17,7 +17,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * @see https://core.telegram.org/bots/api#inputmediaaudio
  */
 #[SkipConstructor]
-class InputMediaAudio extends InputMedia implements JsonSerializable
+class InputMediaAudio extends InputMedia implements InputPollMedia, JsonSerializable
 {
     /** Type of the result, must be audio */
     #[EnumOrScalar]

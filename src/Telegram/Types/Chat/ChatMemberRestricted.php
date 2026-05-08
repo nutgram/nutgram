@@ -59,6 +59,11 @@ class ChatMemberRestricted extends ChatMember
     public bool $can_add_web_page_previews;
 
     /**
+     * True, if the user is allowed to react to messages
+     */
+    public bool $can_react_to_messages;
+
+    /**
      * True, if the user is allowed to edit their own tag
      */
     public bool $can_edit_tag;

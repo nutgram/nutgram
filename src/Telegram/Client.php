@@ -33,6 +33,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use function SergiX44\Nutgram\Support\array_filter_null;
+use function SergiX44\Nutgram\Support\in_array_any;
 use function SergiX44\Nutgram\Support\word_wrap;
 
 /**
@@ -90,6 +91,7 @@ trait Client
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
+     * @deprecated Use sendAttachments instead
      */
     protected function sendAttachment(
         string $endpoint,
@@ -98,17 +100,22 @@ trait Client
         array $opt = [],
         array $clientOpt = []
     ): ?Message {
-        $required = [
-            'chat_id' => $this->chatId(),
-            $param => $value,
-        ];
+        return $this->sendAttachments($endpoint, [$param], [...$opt, $param => $value], $clientOpt);
+    }
 
-        if (is_resource($value) || $value instanceof InputFile) {
-            $required[$param] = $value instanceof InputFile ? $value : new InputFile($value);
-            return $this->requestMultipart($endpoint, [...$required, ...$opt], Message::class, $clientOpt);
+    protected function sendAttachments(string $endpoint, array $attachments, array $parameters = [], array $clientOpt = []): ?Message
+    {
+        if(empty(array_intersect_key($parameters, array_flip($attachments)))) {
+            return $this->requestJson($endpoint, $parameters, Message::class, $clientOpt);
         }
 
-        return $this->requestJson($endpoint, [...$required, ...$opt], Message::class);
+        foreach ($parameters as $key => $value) {
+            if (in_array($key, $attachments, true) && (is_resource($value) || $value instanceof InputFile)) {
+                $parameters[$key] = $value instanceof InputFile ? $value : new InputFile($value);
+            }
+        }
+
+        return $this->requestMultipart($endpoint, $parameters, Message::class, $clientOpt);
     }
 
     /**

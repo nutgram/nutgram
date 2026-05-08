@@ -340,4 +340,14 @@ trait UpdateListeners
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MANAGED_BOT->value][] = new Handler($callable);
     }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onGuestMessage($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::GUEST_MESSAGE->value][] = new Handler($callable);
+    }
 }

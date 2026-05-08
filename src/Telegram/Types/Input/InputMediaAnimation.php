@@ -17,7 +17,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * @see https://core.telegram.org/bots/api#inputmediaanimation
  */
 #[SkipConstructor]
-class InputMediaAnimation extends InputMedia implements JsonSerializable
+class InputMediaAnimation extends InputMedia implements InputPollMedia, InputPollOptionMedia, JsonSerializable
 {
     /** Type of the result, must be animation */
     #[EnumOrScalar]

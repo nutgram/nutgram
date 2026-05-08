@@ -14,6 +14,7 @@ enum UpdateType: string
     case BUSINESS_MESSAGE = 'business_message';
     case EDITED_BUSINESS_MESSAGE = 'edited_business_message';
     case DELETED_BUSINESS_MESSAGES = 'deleted_business_messages';
+    case GUEST_MESSAGE = 'guest_message';
     case MESSAGE_REACTION = 'message_reaction';
     case MESSAGE_REACTION_COUNT = 'message_reaction_count';
     case INLINE_QUERY = 'inline_query';
@@ -40,6 +41,7 @@ enum UpdateType: string
             self::EDITED_CHANNEL_POST,
             self::BUSINESS_MESSAGE,
             self::EDITED_BUSINESS_MESSAGE,
+            self::GUEST_MESSAGE,
         ];
     }
 

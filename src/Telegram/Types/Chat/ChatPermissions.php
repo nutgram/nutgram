@@ -75,6 +75,11 @@ class ChatPermissions extends BaseType implements JsonSerializable
     public ?bool $can_add_web_page_previews = null;
 
     /**
+     * True, if the user is allowed to react to messages
+     */
+    public ?bool $can_react_to_messages = null;
+
+    /**
      * Optional.
      * True, if the user is allowed to edit their own tag
      */
@@ -123,6 +128,7 @@ class ChatPermissions extends BaseType implements JsonSerializable
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
         ?bool $can_edit_tag = null,
+        ?bool $can_react_to_messages = null,
     ) {
         parent::__construct();
         $this->can_send_messages = $can_send_messages;
@@ -140,6 +146,7 @@ class ChatPermissions extends BaseType implements JsonSerializable
         $this->can_pin_messages = $can_pin_messages;
         $this->can_manage_topics = $can_manage_topics;
         $this->can_edit_tag = $can_edit_tag;
+        $this->can_react_to_messages = $can_react_to_messages;
     }
 
     public static function make(
@@ -158,6 +165,7 @@ class ChatPermissions extends BaseType implements JsonSerializable
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
         ?bool $can_edit_tag = null,
+        ?bool $can_react_to_messages = null,
     ): self {
         return new self(
             can_send_messages: $can_send_messages,
@@ -175,6 +183,7 @@ class ChatPermissions extends BaseType implements JsonSerializable
             can_pin_messages: $can_pin_messages,
             can_manage_topics: $can_manage_topics,
             can_edit_tag: $can_edit_tag,
+            can_react_to_messages: $can_react_to_messages,
         );
     }
 
@@ -191,6 +200,7 @@ class ChatPermissions extends BaseType implements JsonSerializable
             'can_send_polls' => $this->can_send_polls,
             'can_send_other_messages' => $this->can_send_other_messages,
             'can_add_web_page_previews' => $this->can_add_web_page_previews,
+            'can_react_to_messages' => $this->can_react_to_messages,
             'can_change_info' => $this->can_change_info,
             'can_invite_users' => $this->can_invite_users,
             'can_pin_messages' => $this->can_pin_messages,

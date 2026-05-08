@@ -28,6 +28,11 @@ class PollOption extends BaseType
     #[ArrayType(MessageEntity::class)]
     public ?array $text_entities = null;
 
+    /**
+     * Optional. Media added to the poll option
+     */
+    public ?PollMedia $media = null;
+
     /** Number of users that voted for this option */
     public int $voter_count;
 

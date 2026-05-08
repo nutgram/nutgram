@@ -13,19 +13,19 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
- * Represents a photo to be sent.
- * @see https://core.telegram.org/bots/api#inputmediaphoto
+ * Represents a live photo to be sent.
+ * @see https://core.telegram.org/bots/api#inputmedialivephoto
  */
 #[SkipConstructor]
-class InputMediaPhoto extends InputMedia implements InputPollMedia, InputPollOptionMedia, JsonSerializable
+class InputMediaLivePhoto extends InputMedia implements InputPollMedia, InputPollOptionMedia, JsonSerializable
 {
-    /** Type of the result, must be photo */
+    /** Type of the result, must be live_photo */
     #[EnumOrScalar]
-    public InputMediaType|string $type = InputMediaType::PHOTO;
+    public InputMediaType|string $type = InputMediaType::LIVE_PHOTO;
 
     /**
      * Optional.
-     * Caption of the photo to be sent, 0-1024 characters after entities parsing
+     * Optional. Caption of the live photo to be sent, 0-1024 characters after entities parsing
      */
     public ?string $caption = null;
 

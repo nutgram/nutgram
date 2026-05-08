@@ -812,7 +812,7 @@ it('sends enum value as multipart', function ($update) {
     });
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
-        expect($request['multipart'][3]['contents'])->toBe('HTML');
+        expect($request['multipart'][2]['contents'])->toBe('HTML');
         return $request;
     });
 

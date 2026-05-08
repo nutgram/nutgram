@@ -88,6 +88,11 @@ trait UpdateProxy
         return $this->managedBot()?->id;
     }
 
+    public function guestQueryId(): ?string
+    {
+        return $this->message()?->guest_query_id;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Special proxies

@@ -24,11 +24,14 @@ use SergiX44\Nutgram\Telegram\Types\Description\BotDescription;
 use SergiX44\Nutgram\Telegram\Types\Description\BotName;
 use SergiX44\Nutgram\Telegram\Types\Description\BotShortDescription;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopic;
+use SergiX44\Nutgram\Telegram\Types\Inline\InlineQueryResult;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaAudio;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaDocument;
+use SergiX44\Nutgram\Telegram\Types\Input\InputMediaLivePhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputPaidMedia;
+use SergiX44\Nutgram\Telegram\Types\Input\InputPollMedia;
 use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhoto;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
@@ -38,6 +41,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\PreparedKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
+use SergiX44\Nutgram\Telegram\Types\ManagedBot\BotAccessSettings;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Media\Story;
 use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
@@ -45,6 +49,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageId;
 use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
+use SergiX44\Nutgram\Telegram\Types\Message\SentGuestMessage;
 use SergiX44\Nutgram\Telegram\Types\Poll\InputPollOption;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
@@ -439,6 +444,77 @@ trait AvailableMethods
         );
 
         return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $opt, $clientOpt);
+    }
+
+    /**
+     * @param string|null $business_connection_id
+     * @param int|string|null $chat_id
+     * @param int|null $message_thread_id
+     * @param int|null $direct_messages_topic_id
+     * @param InputFile|string $live_photo
+     * @param InputFile|string $photo
+     * @param string|null $caption
+     * @param ParseMode|string|null $parse_mode
+     * @param array|null $caption_entities
+     * @param bool|null $show_caption_above_media
+     * @param bool|null $has_spoiler
+     * @param bool|null $disable_notification
+     * @param bool|null $protect_content
+     * @param bool|null $allow_paid_broadcast
+     * @param string|null $message_effect_id
+     * @param SuggestedPostParameters|null $suggested_post_parameters
+     * @param ReplyParameters|null $reply_parameters
+     * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup
+     * @return Message|null
+     */
+    public function sendLivePhoto(
+        InputFile|string $live_photo,
+        InputFile|string $photo,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
+        ?int $message_thread_id = null,
+        ?int $direct_messages_topic_id = null,
+        ?bool $show_caption_above_media = null,
+        ?bool $has_spoiler = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?bool $allow_paid_broadcast = null,
+        ?string $message_effect_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?ReplyParameters $reply_parameters = null,
+        InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        array $clientOpt = [],
+    ): ?Message
+    {
+        $parameters = compact(
+            'business_connection_id',
+            'chat_id',
+            'message_thread_id',
+            'direct_messages_topic_id',
+            'live_photo',
+            'photo',
+            'caption',
+            'parse_mode',
+            'caption_entities',
+            'show_caption_above_media',
+            'has_spoiler',
+            'disable_notification',
+            'protect_content',
+            'allow_paid_broadcast',
+            'message_effect_id',
+            'suggested_post_parameters',
+            'reply_parameters',
+            'reply_markup',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+
+        return $this->sendAttachments(__FUNCTION__, ['live_photo', 'photo'], $parameters, $clientOpt);
     }
 
     /**
@@ -1013,7 +1089,7 @@ trait AvailableMethods
      * Documents and audio files can be only grouped in an album with messages of the same type.
      * On success, an array of {@see https://core.telegram.org/bots/api#message Messages} that were sent is returned.
      * @see https://core.telegram.org/bots/api#sendmediagroup
-     * @param InputMediaAudio[]|InputMediaDocument[]|InputMediaPhoto[]|InputMediaVideo[] $media A JSON-serialized array describing messages to be sent, must include 2-10 items
+     * @param InputMediaAudio[]|InputMediaDocument[]|InputMediaPhoto[]|InputMediaLivePhoto[]|InputMediaVideo[] $media A JSON-serialized array describing messages to be sent, must include 2-10 items
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param bool|null $disable_notification Sends messages {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
@@ -1322,7 +1398,7 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#sendpoll
      * @param string $question Poll question, 1-300 characters
-     * @param InputPollOption[]|string[] $options A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
+     * @param InputPollOption[]|string[] $options A JSON-serialized list of 1-12 answer options
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param bool|null $is_anonymous True, if the poll needs to be anonymous, defaults to True
@@ -1353,6 +1429,10 @@ trait AvailableMethods
      * @param string|null $description Description of the poll to be sent, 0-1024 characters after entities parsing
      * @param ParseMode|string|null $description_parse_mode Mode for parsing entities in the poll description. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $description_entities A JSON-serialized list of special entities that appear in the poll description, which can be specified instead of description_parse_mode
+     * @param InputPollMedia|null $media Media added to the poll description
+     * @param InputPollMedia|null $explanation_media Media added to the quiz explanation
+     * @param bool|null $member_only Pass True, if voting is limited to users who have been members of the chat where the poll is being sent for more than 24 hours; for channel chats only
+     * @param string[]|null $country_codes A JSON-serialized list of 0-12 two-letter {@see https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 ISO 3166-1 alpha-2} country codes indicating the countries from which users can vote in the poll; for channel chats only. If omitted or empty, then users from any country can participate in the poll.
      * @return Message|null
      */
     public function sendPoll(
@@ -1388,6 +1468,10 @@ trait AvailableMethods
         ?string $description = null,
         ParseMode|string|null $description_parse_mode = null,
         ?array $description_entities = null,
+        ?InputPollMedia $media = null,
+        ?InputPollMedia $explanation_media = null,
+        ?bool $member_only = null,
+        ?array $country_codes = null,
     ): ?Message {
         $parameters = compact(
             'chat_id',
@@ -1421,6 +1505,10 @@ trait AvailableMethods
             'description',
             'description_parse_mode',
             'description_entities',
+            'media',
+            'explanation_media',
+            'member_only',
+            'country_codes',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -1527,7 +1615,7 @@ trait AvailableMethods
      * supported only for bots with forum topic mode enabled.
      * Returns True on success.
      * @param int $draft_id Unique identifier of the message draft; must be non-zero. Changes of drafts with the same identifier are animated
-     * @param string $text Text of the message to be sent, 1-4096 characters after entities parsing
+     * @param string $text Text of the message to be sent, 0-4096 characters after entities parsing. Pass an empty text to show a “Thinking…” placeholder.
      * @param int|null $chat_id Unique identifier for the target private chat
      * @param int|null $message_thread_id Unique identifier for the target message thread
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message text. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
@@ -1536,7 +1624,7 @@ trait AvailableMethods
      */
     public function sendMessageDraft(
         int $draft_id,
-        string $text,
+        string $text = '',
         ?int $chat_id = null,
         ?int $message_thread_id = null,
         ParseMode|string|null $parse_mode = null,
@@ -2231,15 +2319,16 @@ trait AvailableMethods
     }
 
     /**
-     * Use this method to get a list of administrators in a chat, which aren't bots.
+     * Use this method to get a list of administrators in a chat.
      * Returns an Array of {@see https://core.telegram.org/bots/api#chatmember ChatMember} objects.
      * @see https://core.telegram.org/bots/api#getchatadministrators
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
+     * @param bool|null $return_bots Pass True to additionally receive all bots that are administrators of the chat. By default, bots other than the current bot are omitted.
      * @return ChatMember[]|null
      */
-    public function getChatAdministrators(int|string $chat_id): ?array
+    public function getChatAdministrators(int|string $chat_id, ?bool $return_bots = null): ?array
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'), ChatMember::class);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'return_bots'), ChatMember::class);
     }
 
     /**
@@ -2266,6 +2355,21 @@ trait AvailableMethods
     public function getChatMember(int|string $chat_id, int $user_id): ?ChatMember
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), ChatMember::class);
+    }
+
+    /**
+     * Use this method to get the last messages from the personal chat (i.e., the chat currently added to their profile) of a given user.
+     * On success, an array of {@see https://core.telegram.org/bots/api#message Message} objects is returned.
+     * @param int $user_id Unique identifier for the target user
+     * @param int $limit The maximum number of messages to return; 1-20
+     * @return Message[]|null
+     * @see https://core.telegram.org/bots/api#getuserpersonalchatmessages
+     */
+    public function getUserPersonalChatMessages(int $user_id, int $limit = 20): ?array
+    {
+        $params = compact('user_id', 'limit');
+
+        return $this->requestJson(__FUNCTION__, $params, Message::class);
     }
 
     /**
@@ -2507,6 +2611,22 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to reply to a received guest message.
+     * On success, a {@see https://core.telegram.org/bots/api#sentguestmessage SentGuestMessage} object is returned.
+     * @param InlineQueryResult $result A JSON-serialized object describing the message to be sent
+     * @param string|null $guest_query_id Unique identifier for the query to be answered
+     * @return SentGuestMessage|null
+     * @see https://core.telegram.org/bots/api#answerguestquery
+     */
+    public function answerGuestQuery(InlineQueryResult $result, ?string $guest_query_id = null): ?SentGuestMessage
+    {
+        $parameters = compact('guest_query_id', 'result');
+        $parameters['guest_query_id'] ??= $this->guestQueryId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, SentGuestMessage::class);
+    }
+
+    /**
      * Use this method to get the list of boosts added to a chat by a user.
      * Requires administrator rights in the chat.
      * Returns a UserChatBoosts object.
@@ -2553,6 +2673,33 @@ trait AvailableMethods
     public function replaceManagedBotToken(int $user_id): ?string
     {
         return $this->requestJson(__FUNCTION__, compact('user_id'));
+    }
+
+    /**
+     * Use this method to get the access settings of a managed bot.
+     * Returns a {@see https://core.telegram.org/bots/api#botaccesssettings BotAccessSettings} object on success.
+     * @param int $user_id User identifier of the managed bot whose access settings will be returned
+     * @return BotAccessSettings|null
+     * @see https://core.telegram.org/bots/api#getmanagedbotaccesssettings
+     */
+    public function getManagedBotAccessSettings(int $user_id): ?BotAccessSettings
+    {
+        return $this->requestJson(__FUNCTION__, compact('user_id'), BotAccessSettings::class);
+    }
+
+    /**
+     * Use this method to change the access settings of a managed bot. Returns True on success.
+     * @param int $user_id User identifier of the managed bot whose access settings will be changed
+     * @param bool $is_access_restricted Pass True, if only selected users can access the bot. The bot's owner can always access it.
+     * @param array|null $added_user_ids A JSON-serialized list of up to 10 identifiers of users who will have access to the bot in addition to its owner. Ignored if is_access_restricted is false.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#setmanagedbotaccesssettings
+     */
+    public function setManagedBotAccessSettings(int $user_id, bool $is_access_restricted, ?array $added_user_ids = null): ?bool
+    {
+        $parameters = compact('user_id', 'is_access_restricted', 'added_user_ids');
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**

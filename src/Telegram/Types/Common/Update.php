@@ -89,6 +89,11 @@ class Update extends BaseType
     public ?BusinessMessagesDeleted $deleted_business_messages = null;
 
     /**
+     * Optional. New guest message. The bot can use the field Message.guest_query_id and the method answerGuestQuery to send a message in response.
+     */
+    public ?Message $guest_message = null;
+
+    /**
      * Optional.
      * A reaction to a message was changed by a user.
      * The bot must be an administrator in the chat and must explicitly specify "message_reaction" in the list of allowed_updates to receive these updates.
@@ -211,6 +216,7 @@ class Update extends BaseType
             $this->business_message !== null => UpdateType::BUSINESS_MESSAGE,
             $this->edited_business_message !== null => UpdateType::EDITED_BUSINESS_MESSAGE,
             $this->deleted_business_messages !== null => UpdateType::DELETED_BUSINESS_MESSAGES,
+            $this->guest_message !== null => UpdateType::GUEST_MESSAGE,
             $this->message_reaction !== null => UpdateType::MESSAGE_REACTION,
             $this->message_reaction_count !== null => UpdateType::MESSAGE_REACTION_COUNT,
             $this->inline_query !== null => UpdateType::INLINE_QUERY,
@@ -246,6 +252,7 @@ class Update extends BaseType
             $this->business_message !== null => $this->business_message->from,
             $this->edited_business_message !== null => $this->edited_business_message->from,
             // deleted_business_messages: doesn't have a user
+            $this->guest_message !== null => $this->guest_message->from,
             $this->message_reaction !== null => $this->message_reaction->user,
             // message_reaction_count: doesn't have a user
             $this->inline_query !== null => $this->inline_query->from,
@@ -277,6 +284,7 @@ class Update extends BaseType
             $this->business_message !== null => $this->business_message->from = $user,
             $this->edited_business_message !== null => $this->edited_business_message->from = $user,
             // deleted_business_messages: doesn't have a user
+            $this->guest_message !== null => $this->guest_message->from = $user,
             $this->message_reaction !== null => $this->message_reaction->user = $user,
             // message_reaction_count: doesn't have a user
             $this->inline_query !== null => $this->inline_query->from = $user,
@@ -308,6 +316,7 @@ class Update extends BaseType
             $this->business_message !== null => $this->business_message->chat,
             $this->edited_business_message !== null => $this->edited_business_message->chat,
             $this->deleted_business_messages !== null => $this->deleted_business_messages->chat,
+            $this->guest_message !== null => $this->guest_message->chat,
             $this->message_reaction !== null => $this->message_reaction->chat,
             $this->message_reaction_count !== null => $this->message_reaction_count->chat,
             // inline_query doesn't have a chat
@@ -339,6 +348,7 @@ class Update extends BaseType
             $this->business_message !== null => $this->business_message->chat = $chat,
             $this->edited_business_message !== null => $this->edited_business_message->chat = $chat,
             $this->deleted_business_messages !== null => $this->deleted_business_messages->chat = $chat,
+            $this->guest_message !== null => $this->guest_message->chat = $chat,
             $this->message_reaction !== null => $this->message_reaction->chat = $chat,
             $this->message_reaction_count !== null => $this->message_reaction_count->chat = $chat,
             // inline_query doesn't have a chat
@@ -369,6 +379,7 @@ class Update extends BaseType
             $this->business_message !== null => $this->business_message,
             $this->edited_business_message !== null => $this->edited_business_message,
             $this->callback_query !== null => $this->callback_query->message,
+            $this->guest_message !== null => $this->guest_message,
             default => null
         };
     }
