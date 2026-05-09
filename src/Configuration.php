@@ -47,6 +47,7 @@ final readonly class Configuration
         'chat_boost',
         'removed_chat_boost',
         'managed_bot',
+        'guest_message',
     ];
     public const DEFAULT_ENABLE_HTTP2 = true;
 

@@ -137,10 +137,8 @@ trait CustomEndpoints
         ?string $message_effect_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $opt = compact(
+        $parameters = compact(
+            'photo',
             'chat_id',
             'message_thread_id',
             'caption',
@@ -155,13 +153,11 @@ trait CustomEndpoints
             'business_connection_id',
             'message_effect_id',
         );
-        return $this->sendChunkedMedia(
-            endpoint: 'sendPhoto',
-            media: $photo,
-            param: 'photo',
-            opt: $opt,
-            clientOpt: $clientOpt
-        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+
+        return $this->sendChunkedMedia('sendPhoto', ['photo'], $parameters, $clientOpt);
     }
 
     /**
@@ -213,10 +209,8 @@ trait CustomEndpoints
         ?string $message_effect_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $opt = compact(
+        $parameters = compact(
+            'audio',
             'chat_id',
             'message_thread_id',
             'caption',
@@ -234,14 +228,11 @@ trait CustomEndpoints
             'business_connection_id',
             'message_effect_id',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->sendChunkedMedia(
-            endpoint: 'sendAudio',
-            media: $audio,
-            param: 'audio',
-            opt: $opt,
-            clientOpt: $clientOpt
-        );
+        return $this->sendChunkedMedia('sendAudio', ['audio'], $parameters, $clientOpt);
     }
 
     /**
@@ -286,10 +277,8 @@ trait CustomEndpoints
         ?string $message_effect_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $opt = compact(
+        $parameters = compact(
+            'document',
             'chat_id',
             'message_thread_id',
             'thumbnail',
@@ -305,14 +294,11 @@ trait CustomEndpoints
             'business_connection_id',
             'message_effect_id',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->sendChunkedMedia(
-            endpoint: 'sendDocument',
-            media: $document,
-            param: 'document',
-            opt: $opt,
-            clientOpt: $clientOpt
-        );
+        return $this->sendChunkedMedia('sendDocument', ['document'], $parameters, $clientOpt);
     }
 
     /**
@@ -366,10 +352,8 @@ trait CustomEndpoints
         ?string $message_effect_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $opt = compact(
+        $parameters = compact(
+            'video',
             'chat_id',
             'message_thread_id',
             'duration',
@@ -389,14 +373,11 @@ trait CustomEndpoints
             'business_connection_id',
             'message_effect_id',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->sendChunkedMedia(
-            endpoint: 'sendVideo',
-            media: $video,
-            param: 'video',
-            opt: $opt,
-            clientOpt: $clientOpt
-        );
+        return $this->sendChunkedMedia('sendVideo', ['video'], $parameters, $clientOpt);
     }
 
     /**
@@ -447,10 +428,8 @@ trait CustomEndpoints
         ?string $message_effect_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $opt = compact(
+        $parameters = compact(
+            'animation',
             'chat_id',
             'message_thread_id',
             'duration',
@@ -469,14 +448,11 @@ trait CustomEndpoints
             'business_connection_id',
             'message_effect_id',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->sendChunkedMedia(
-            endpoint: 'sendAnimation',
-            media: $animation,
-            param: 'animation',
-            opt: $opt,
-            clientOpt: $clientOpt
-        );
+        return $this->sendChunkedMedia('sendAnimation', ['animation'], $parameters, $clientOpt);
     }
 
     /**
@@ -522,10 +498,8 @@ trait CustomEndpoints
         ?string $message_effect_id = null,
         array $clientOpt = [],
     ): ?array {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $opt = compact(
+        $parameters = compact(
+            'voice',
             'chat_id',
             'message_thread_id',
             'caption',
@@ -540,77 +514,63 @@ trait CustomEndpoints
             'business_connection_id',
             'message_effect_id',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
-        return $this->sendChunkedMedia(
-            endpoint: 'sendVoice',
-            media: $voice,
-            param: 'voice',
-            opt: $opt,
-            clientOpt: $clientOpt
-        );
+        return $this->sendChunkedMedia('sendVoice', ['voice'], $parameters, $clientOpt);
     }
 
     protected function sendChunkedMedia(
         string $endpoint,
-        InputFile|string $media,
-        string $param,
-        array $opt = [],
+        array $attachments,
+        array $parameters,
         $clientOpt = []
     ): ?array {
-        $caption = $opt['caption'] ?? null;
+        $caption = $parameters['caption'] ?? null;
+        unset($parameters['caption']);
 
         if ($caption === null) {
-            return [
-                $this->sendAttachment(
-                    endpoint: $endpoint,
-                    param: $param,
-                    value: $media,
-                    opt: array_filter_null($opt),
-                    clientOpt: $clientOpt
-                ),
-            ];
+            return [$this->sendAttachments($endpoint, $attachments, $parameters, $clientOpt)];
         }
 
-        $opt = array_filter_null($opt);
+        $parameters = array_filter_null($parameters);
 
         //chunk caption
         $chunks = $this->chunkText($caption, Limits::CAPTION_LENGTH);
         $totalChunks = count($chunks);
 
         //get reply_markup
-        $replyMarkup = $opt['reply_markup'] ?? null;
+        $replyMarkup = $parameters['reply_markup'] ?? null;
+        unset($parameters['reply_markup']);
 
-        unset($opt['reply_markup'], $opt['caption']);
+        //medias
+        $medias = array_intersect_key($parameters, array_flip($attachments));
+        foreach ($attachments as $attachment) {
+            unset($parameters[$attachment]);
+        }
 
         //send messages
-        return array_map(function ($chunk, $index) use (
-            $param,
-            $clientOpt,
-            $media,
-            &$opt,
-            $totalChunks,
-            $replyMarkup,
-            $endpoint
-        ) {
-            if ($index === $totalChunks - 1 && $replyMarkup !== null) {
-                $opt['reply_markup'] = $replyMarkup;
-            }
-
+        return array_map(function ($chunk, $index) use ($medias, $parameters, $clientOpt, $attachments, $totalChunks, $replyMarkup, $endpoint) {
+            // first message = send media + first caption chunk + other parameters
             if ($index === 0) {
-                $opt['caption'] = $chunk;
-                return $this->sendAttachment(
+                return $this->sendAttachments(
                     endpoint: $endpoint,
-                    param: $param,
-                    value: $media,
-                    opt: $opt,
+                    attachments: $attachments,
+                    parameters: [...$parameters, ...$medias, 'caption' => $chunk],
                     clientOpt: $clientOpt
                 );
             }
 
+            // other messages = send message + other caption chunk + other parameters
             $parameters = [
+                ...$parameters,
                 'text' => $chunk,
-                ...$opt,
             ];
+
+            if ($index === $totalChunks - 1 && $replyMarkup !== null) {
+                $parameters['reply_markup'] = $replyMarkup;
+            }
 
             return $this->sendMessage(...$parameters);
         }, $chunks, array_keys($chunks));

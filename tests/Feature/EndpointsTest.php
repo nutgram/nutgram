@@ -12,6 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
+use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -477,3 +478,27 @@ it('calls getMyDefaultAdministratorRights', function ($responseBody) {
 
     $bot->hearText('/start')->reply();
 })->with('response_ChatAdministratorRights');
+
+it('sends multiple medias via sendMediaGroup', function () {
+    $bot = Nutgram::fake();
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        $data = array_column($request['multipart'], 'contents', 'name');
+
+        expect($data)->toHaveKeys(['chat_id', 'media', 'photoA.jpg', 'photoB.jpg', 'video.jpg']);
+    });
+
+    $bot->sendMediaGroup(
+        media: [
+            InputMediaPhoto::make(
+                media: InputFile::make(fopen('php://temp', 'rb'), 'photoA.jpg'),
+            ),
+            InputMediaVideo::make(
+                media: InputFile::make(fopen('php://temp', 'rb'), 'video.jpg'),
+                thumbnail: 'https://i.ytimg.com/vi/fQ1BU25IogA/maxresdefault.jpg',
+                cover: InputFile::make(fopen('php://temp', 'rb'), 'photoB.jpg'),
+            ),
+        ],
+        chat_id: 123,
+    );
+});

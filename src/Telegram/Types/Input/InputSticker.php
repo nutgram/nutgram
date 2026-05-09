@@ -7,7 +7,7 @@ use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
-use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Sticker\MaskPosition;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -16,7 +16,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * @see https://core.telegram.org/bots/api#inputsticker
  */
 #[SkipConstructor]
-class InputSticker extends BaseType implements JsonSerializable, Uploadable
+class InputSticker extends BaseType implements JsonSerializable, Uploadables
 {
     /**
      * The added sticker.
@@ -95,18 +95,8 @@ class InputSticker extends BaseType implements JsonSerializable, Uploadable
         ]);
     }
 
-    public function isLocal(): bool
+    public function uploadables(): array
     {
-        return $this->sticker instanceof InputFile;
-    }
-
-    public function getFilename(): string
-    {
-        return $this->sticker->getFilename();
-    }
-
-    public function getResource()
-    {
-        return $this->sticker->getResource();
+        return ['sticker'];
     }
 }

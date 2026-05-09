@@ -433,3 +433,16 @@ it('calls onManagedBotUpdated() handler', function ($update) {
 
     expect($bot->get('called', false))->toBeTrue();
 })->with('managed_bot');
+
+it('calls onGuestMessage() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onGuestMessage(function (Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->guestQueryId())->toBe('abc');
+    });
+
+    $bot->run();
+
+    expect($bot->get('called', false))->toBeTrue();
+})->with('guest_message');

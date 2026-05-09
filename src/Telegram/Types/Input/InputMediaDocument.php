@@ -8,7 +8,9 @@ use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
@@ -17,11 +19,20 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * @see https://core.telegram.org/bots/api#inputmediadocument
  */
 #[SkipConstructor]
-class InputMediaDocument extends InputMedia implements JsonSerializable
+class InputMediaDocument extends BaseType implements InputMedia, InputPollMedia, Uploadables, JsonSerializable
 {
     /** Type of the result, must be document */
     #[EnumOrScalar]
     public InputMediaType|string $type = InputMediaType::DOCUMENT;
+
+    /**
+     * File to send.
+     * Pass a file_id to send a file that exists on the Telegram servers (recommended),
+     * pass an HTTP URL for Telegram to get a file from the Internet,
+     * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
+     * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
+     */
+    public InputFile|string $media;
 
     /**
      * Optional.
@@ -30,7 +41,8 @@ class InputMediaDocument extends InputMedia implements JsonSerializable
      * The thumbnail should be in JPEG format and less than 200 kB in size.
      * A thumbnail's width and height should not exceed 320.
      * Ignored if the file is not uploaded using multipart/form-data.
-     * Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+     * Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>”
+     * if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
     public InputFile|string|null $thumbnail = null;
@@ -110,5 +122,10 @@ class InputMediaDocument extends InputMedia implements JsonSerializable
             'caption_entities' => $this->caption_entities,
             'disable_content_type_detection' => $this->disable_content_type_detection,
         ]);
+    }
+
+    public function uploadables(): array
+    {
+        return ['media', 'thumbnail'];
     }
 }

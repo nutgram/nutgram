@@ -15,15 +15,15 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
- * Represents a video to be sent.
- * @see https://core.telegram.org/bots/api#inputmediavideo
+ * Represents a live photo to be sent.
+ * @see https://core.telegram.org/bots/api#inputmedialivephoto
  */
 #[SkipConstructor]
-class InputMediaVideo extends BaseType implements InputMedia, InputPollMedia, InputPollOptionMedia, Uploadables, JsonSerializable
+class InputMediaLivePhoto extends BaseType implements InputMedia, InputPollMedia, InputPollOptionMedia, Uploadables, JsonSerializable
 {
-    /** Type of the result, must be video */
+    /** Type of the result, must be live_photo */
     #[EnumOrScalar]
-    public InputMediaType|string $type = InputMediaType::VIDEO;
+    public InputMediaType|string $type = InputMediaType::LIVE_PHOTO;
 
     /**
      * File to send.
@@ -35,43 +35,23 @@ class InputMediaVideo extends BaseType implements InputMedia, InputPollMedia, In
     public InputFile|string $media;
 
     /**
-     * Optional.
-     * Thumbnail of the file sent;
-     * can be ignored if thumbnail generation for the file is supported server-side.
-     * The thumbnail should be in JPEG format and less than 200 kB in size.
-     * A thumbnail's width and height should not exceed 320.
-     * Ignored if the file is not uploaded using multipart/form-data.
-     * Thumbnails can't be reused and can be only uploaded as a new file,
-     * so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
-     * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
-     */
-    public InputFile|string|null $thumbnail = null;
-
-    /**
-     * Optional.
-     * Cover for the video in the message.
+     * The static photo to send.
      * Pass a file_id to send a file that exists on the Telegram servers (recommended),
      * pass an HTTP URL for Telegram to get a file from the Internet,
      * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
-    public InputFile|string|null $cover = null;
+    public InputFile|string $photo;
 
     /**
      * Optional.
-     * Start timestamp for the video in the message
-     */
-    public ?int $start_timestamp = null;
-
-    /**
-     * Optional.
-     * Caption of the video to be sent, 0-1024 characters after entities parsing
+     * Optional. Caption of the live photo to be sent, 0-1024 characters after entities parsing
      */
     public ?string $caption = null;
 
     /**
      * Optional.
-     * Mode for parsing entities in the video caption.
+     * Mode for parsing entities in the photo caption.
      * See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      */
     #[EnumOrScalar]
@@ -92,119 +72,66 @@ class InputMediaVideo extends BaseType implements InputMedia, InputPollMedia, In
 
     /**
      * Optional.
-     * Video width
-     */
-    public ?int $width = null;
-
-    /**
-     * Optional.
-     * Video height
-     */
-    public ?int $height = null;
-
-    /**
-     * Optional.
-     * Video duration in seconds
-     */
-    public ?int $duration = null;
-
-    /**
-     * Optional.
-     * Pass True if the uploaded video is suitable for streaming
-     */
-    public ?bool $supports_streaming = null;
-
-    /**
-     * Optional.
-     * Pass True if the video needs to be covered with a spoiler animation
+     * Pass True if the photo needs to be covered with a spoiler animation
      */
     public ?bool $has_spoiler = null;
 
     public function __construct(
         InputFile|string $media,
-        InputFile|string|null $thumbnail = null,
+        InputFile|string $photo,
         ?string $caption = null,
         ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
-        ?int $width = null,
-        ?int $height = null,
-        ?int $duration = null,
-        ?bool $supports_streaming = null,
         ?bool $has_spoiler = null,
         ?bool $show_caption_above_media = null,
-        InputFile|string|null $cover = null,
-        ?int $start_timestamp = null,
     ) {
         parent::__construct();
         $this->media = $media;
-        $this->thumbnail = $thumbnail;
+        $this->photo = $photo;
         $this->caption = $caption;
         $this->parse_mode = $parse_mode;
         $this->caption_entities = $caption_entities;
-        $this->width = $width;
-        $this->height = $height;
-        $this->duration = $duration;
-        $this->supports_streaming = $supports_streaming;
         $this->has_spoiler = $has_spoiler;
         $this->show_caption_above_media = $show_caption_above_media;
-        $this->cover = $cover;
-        $this->start_timestamp = $start_timestamp;
     }
 
     public static function make(
         InputFile|string $media,
-        InputFile|string|null $thumbnail = null,
+        InputFile|string $photo,
         ?string $caption = null,
         ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
-        ?int $width = null,
-        ?int $height = null,
-        ?int $duration = null,
-        ?bool $supports_streaming = null,
         ?bool $has_spoiler = null,
         ?bool $show_caption_above_media = null,
-        InputFile|string|null $cover = null,
-        ?int $start_timestamp = null,
     ): self {
         return new self(
             media: $media,
-            thumbnail: $thumbnail,
+            photo: $photo,
             caption: $caption,
             parse_mode: $parse_mode,
             caption_entities: $caption_entities,
-            width: $width,
-            height: $height,
-            duration: $duration,
-            supports_streaming: $supports_streaming,
             has_spoiler: $has_spoiler,
             show_caption_above_media: $show_caption_above_media,
-            cover: $cover,
-            start_timestamp: $start_timestamp,
         );
     }
+
 
     public function jsonSerialize(): array
     {
         return array_filter_null([
             'type' => $this->type,
             'media' => $this->media,
-            'thumbnail' => $this->thumbnail,
-            'cover' => $this->cover,
-            'start_timestamp' => $this->start_timestamp,
+            'photo' => $this->photo,
             'caption' => $this->caption,
             'parse_mode' => $this->parse_mode,
             'caption_entities' => $this->caption_entities,
             'show_caption_above_media' => $this->show_caption_above_media,
-            'width' => $this->width,
-            'height' => $this->height,
-            'duration' => $this->duration,
-            'supports_streaming' => $this->supports_streaming,
             'has_spoiler' => $this->has_spoiler,
         ]);
     }
 
     public function uploadables(): array
     {
-        return ['media', 'thumbnail', 'cover'];
+        return ['media', 'photo'];
     }
 }

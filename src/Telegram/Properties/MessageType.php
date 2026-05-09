@@ -9,6 +9,7 @@ enum MessageType: string
     case AUDIO = 'audio';
     case DOCUMENT = 'document';
     case PHOTO = 'photo';
+    case LIVE_PHOTO = 'live_photo';
     case STICKER = 'sticker';
     case VIDEO = 'video';
     case VIDEO_NOTE = 'video_note';

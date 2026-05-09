@@ -16,6 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Media\Contact;
 use SergiX44\Nutgram\Telegram\Types\Media\Dice;
 use SergiX44\Nutgram\Telegram\Types\Media\Document;
+use SergiX44\Nutgram\Telegram\Types\Media\LivePhoto;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 use SergiX44\Nutgram\Telegram\Types\Media\Story;
 use SergiX44\Nutgram\Telegram\Types\Media\Video;
@@ -75,6 +76,11 @@ class ExternalReplyInfo extends BaseType
      * @var Document|null
      */
     public ?Document $document = null;
+
+    /**
+     * Optional. Message is a live photo, information about the live photo
+     */
+    public ?LivePhoto $live_photo = null;
 
     /**
      * Optional. Message contains paid media; information about the paid media

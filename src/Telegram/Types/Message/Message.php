@@ -39,6 +39,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Media\Contact;
 use SergiX44\Nutgram\Telegram\Types\Media\Dice;
 use SergiX44\Nutgram\Telegram\Types\Media\Document;
+use SergiX44\Nutgram\Telegram\Types\Media\LivePhoto;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 use SergiX44\Nutgram\Telegram\Types\Media\Story;
 use SergiX44\Nutgram\Telegram\Types\Media\Video;
@@ -130,6 +131,13 @@ class Message extends BaseType
 
     /** Date the message was sent in Unix time */
     public int $date;
+
+    /**
+     * Optional. The unique identifier for the guest query.
+     * Use this identifier with the method {@see https://core.telegram.org/bots/api#answerguestquery answerGuestQuery} to send a response message.
+     * If non-empty, the message belongs to the chat where the guest bot was summoned, which may not coincide with other existing bot chats sharing the same identifier.
+     */
+    public ?string $guest_query_id = null;
 
     /**
      * Optional. Unique identifier of the business connection from which the message was received.
@@ -240,6 +248,16 @@ class Message extends BaseType
     public ?User $via_bot = null;
 
     /**
+     * Optional. For a message sent by a guest bot, this is the user whose original message triggered the bot's response
+     */
+    public ?User $guest_bot_caller_user = null;
+
+    /**
+     * Optional. For a message sent by a guest bot, this is the chat whose original message triggered the bot's response
+     */
+    public ?Chat $guest_bot_caller_chat = null;
+
+    /**
      * Optional.
      * Date the message was last edited in Unix time
      */
@@ -329,6 +347,12 @@ class Message extends BaseType
      * Message is a general file, information about the file
      */
     public ?Document $document = null;
+
+    /**
+     * Optional. Message is a live photo, information about the live photo.
+     * For backward compatibility, when this field is set, the photo field will also be set
+     */
+    public ?LivePhoto $live_photo = null;
 
     /**
      * Optional. Message contains paid media; information about the paid media
@@ -815,6 +839,7 @@ class Message extends BaseType
             $this->audio !== null => MessageType::AUDIO,
             $this->animation !== null => MessageType::ANIMATION,
             $this->game !== null => MessageType::GAME,
+            $this->live_photo !== null => MessageType::LIVE_PHOTO,
             $this->photo !== null => MessageType::PHOTO,
             $this->sticker !== null => MessageType::STICKER,
             $this->video !== null => MessageType::VIDEO,

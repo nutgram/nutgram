@@ -28,8 +28,8 @@ use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\UnknownType;
-use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
 use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -80,35 +80,19 @@ trait Client
         return $this->requestJson($endpoint, options: $options);
     }
 
-    /**
-     * @param string $endpoint
-     * @param string $param
-     * @param mixed $value
-     * @param array $opt
-     * @param array $clientOpt
-     * @return Message|null
-     * @throws GuzzleException
-     * @throws JsonException
-     * @throws TelegramException
-     */
-    protected function sendAttachment(
-        string $endpoint,
-        string $param,
-        mixed $value,
-        array $opt = [],
-        array $clientOpt = []
-    ): ?Message {
-        $required = [
-            'chat_id' => $this->chatId(),
-            $param => $value,
-        ];
-
-        if (is_resource($value) || $value instanceof InputFile) {
-            $required[$param] = $value instanceof InputFile ? $value : new InputFile($value);
-            return $this->requestMultipart($endpoint, [...$required, ...$opt], Message::class, $clientOpt);
+    protected function sendAttachments(string $endpoint, array $attachments, array $parameters = [], array $clientOpt = []): ?Message
+    {
+        if (empty(array_intersect_key($parameters, array_flip($attachments)))) {
+            return $this->requestJson($endpoint, $parameters, Message::class, $clientOpt);
         }
 
-        return $this->requestJson($endpoint, [...$required, ...$opt], Message::class);
+        foreach ($parameters as $key => $value) {
+            if (in_array($key, $attachments, true) && (is_resource($value) || $value instanceof InputFile)) {
+                $parameters[$key] = $value instanceof InputFile ? $value : new InputFile($value);
+            }
+        }
+
+        return $this->requestMultipart($endpoint, $parameters, Message::class, $clientOpt);
     }
 
     /**
@@ -205,15 +189,19 @@ trait Client
     ): mixed {
         $parameters = [];
         foreach (array_filter_null($multipart) as $name => $contents) {
-            if ($contents instanceof UploadableArray || $contents instanceof Uploadable) {
+            if ($contents instanceof UploadableArray || $contents instanceof Uploadables) {
                 $files = $contents instanceof UploadableArray ? $contents->files : [$contents];
                 foreach ($files as $file) {
-                    if ($file->isLocal()) {
-                        $parameters[] = [
-                            'name' => $file->getFilename(),
-                            'contents' => $file->getResource(),
-                            'filename' => $file->getFilename(),
-                        ];
+                    if ($file instanceof Uploadables) {
+                        foreach ($file->uploadables() as $field) {
+                            if ($file->{$field} instanceof InputFile) {
+                                $parameters[] = [
+                                    'name' => $file->{$field}->getFilename(),
+                                    'contents' => $file->{$field}->getResource(),
+                                    'filename' => $file->{$field}->getFilename(),
+                                ];
+                            }
+                        }
                     }
                 }
             }

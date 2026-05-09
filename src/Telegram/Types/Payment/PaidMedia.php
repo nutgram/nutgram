@@ -9,8 +9,9 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object describes paid media. Currently, it can be one of:
- * - {@see PaidMediaPreview}
+ * - {@see PaidMediaLivePhoto}
  * - {@see PaidMediaPhoto}
+ * - {@see PaidMediaPreview}
  * - {@see PaidMediaVideo}
  * @see https://core.telegram.org/bots/api#paidmedia
  */
@@ -18,7 +19,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 abstract class PaidMedia extends BaseType
 {
     /**
-     * Type of the transaction partner, can be “preview”, “photo”, or “video”.
+     * Type of the transaction partner, can be “preview”, “photo”, “live_photo” or “video”.
      */
     #[EnumOrScalar]
     public PaidMediaType|string $type;

@@ -55,6 +55,20 @@ class Poll extends BaseType
     public bool $allows_revoting;
 
     /**
+     * True if voting is limited to users who have been members of the chat where the poll was originally sent for more than 24 hours
+     */
+    public ?bool $members_only = null;
+
+    /**
+     * Optional.
+     * A list of two-letter {@see https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 ISO 3166-1 alpha-2}
+     * country codes indicating the countries from which users can vote in the poll.
+     * If omitted, then users from any country can participate in the poll.
+     * @var string[]|null
+     */
+    public ?array $country_codes = null;
+
+    /**
      * Optional.
      * Array of 0-based identifiers of the correct answer options.
      * Available only for polls in quiz mode which are closed or
@@ -79,6 +93,11 @@ class Poll extends BaseType
     public ?array $explanation_entities = null;
 
     /**
+     * Optional. Media added to the quiz explanation
+     */
+    public ?PollMedia $explanation_media = null;
+
+    /**
      * Optional.
      * Amount of time in seconds the poll will be active after creation
      */
@@ -95,6 +114,11 @@ class Poll extends BaseType
      * Description of the poll; for polls inside the {@see https://core.telegram.org/bots/api#message Message} object only
      */
     public ?string $description = null;
+
+    /**
+     * Optional. Media added to the poll description; for polls inside the Message object only
+     */
+    public ?PollMedia $media = null;
 
     /**
      * Optional.
