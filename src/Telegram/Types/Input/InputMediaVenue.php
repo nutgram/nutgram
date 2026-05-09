@@ -93,8 +93,7 @@ class InputMediaVenue extends BaseType implements InputPollMedia, InputPollOptio
         ?string $foursquare_type = null,
         ?string $google_place_id = null,
         ?string $google_place_type = null,
-    ): self
-    {
+    ): self {
         return new self(
             latitude: $latitude,
             longitude: $longitude,

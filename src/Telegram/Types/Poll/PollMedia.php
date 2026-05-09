@@ -74,7 +74,7 @@ class PollMedia extends BaseType
      */
     public function is(string $type): bool
     {
-        $currentType = match(true) {
+        $currentType = match (true) {
             $this->animation !== null => Animation::class,
             $this->audio !== null => Audio::class,
             $this->document !== null => Document::class,
