@@ -81,28 +81,6 @@ trait Client
         return $this->requestJson($endpoint, options: $options);
     }
 
-    /**
-     * @param string $endpoint
-     * @param string $param
-     * @param mixed $value
-     * @param array $opt
-     * @param array $clientOpt
-     * @return Message|null
-     * @throws GuzzleException
-     * @throws JsonException
-     * @throws TelegramException
-     * @deprecated Use sendAttachments instead
-     */
-    protected function sendAttachment(
-        string $endpoint,
-        string $param,
-        mixed $value,
-        array $opt = [],
-        array $clientOpt = []
-    ): ?Message {
-        return $this->sendAttachments($endpoint, [$param], [...$opt, $param => $value], $clientOpt);
-    }
-
     protected function sendAttachments(string $endpoint, array $attachments, array $parameters = [], array $clientOpt = []): ?Message
     {
         if(empty(array_intersect_key($parameters, array_flip($attachments)))) {

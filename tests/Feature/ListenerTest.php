@@ -1,6 +1,7 @@
 <?php
 
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\Type\Command;
@@ -812,7 +813,12 @@ it('sends enum value as multipart', function ($update) {
     });
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
-        expect($request['multipart'][2]['contents'])->toBe('HTML');
+        $data = array_column($request['multipart'], 'contents', 'name');
+
+        expect($data['chat_id'])->toBe(456);
+        expect($data['caption'])->toBe('test');
+        expect($data['parse_mode'])->toBe('HTML');
+        expect($data['document'])->toBeInstanceOf(Stream::class);
         return $request;
     });
 

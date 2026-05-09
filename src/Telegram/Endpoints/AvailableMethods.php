@@ -418,11 +418,8 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'photo',
             'chat_id',
             'message_thread_id',
             'caption',
@@ -442,8 +439,12 @@ trait AvailableMethods
             'direct_messages_topic_id',
             'suggested_post_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $opt, $clientOpt);
+        return $this->sendAttachments(__FUNCTION__, ['photo'], $parameters, $clientOpt);
     }
 
     /**
@@ -571,11 +572,8 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'audio',
             'chat_id',
             'message_thread_id',
             'caption',
@@ -597,8 +595,12 @@ trait AvailableMethods
             'direct_messages_topic_id',
             'suggested_post_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $opt, $clientOpt);
+        return $this->sendAttachments(__FUNCTION__, ['audio'], $parameters, $clientOpt);
     }
 
     /**
@@ -650,11 +652,8 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'document',
             'chat_id',
             'message_thread_id',
             'thumbnail',
@@ -674,8 +673,12 @@ trait AvailableMethods
             'direct_messages_topic_id',
             'suggested_post_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'document', $document, $opt, $clientOpt);
+        return $this->sendAttachments(__FUNCTION__, ['document'], $parameters, $clientOpt);
     }
 
     /**
@@ -741,11 +744,8 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'video',
             'chat_id',
             'message_thread_id',
             'duration',
@@ -772,8 +772,12 @@ trait AvailableMethods
             'direct_messages_topic_id',
             'suggested_post_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'video', $video, $opt, $clientOpt);
+        return $this->sendAttachments(__FUNCTION__, ['video'], $parameters, $clientOpt);
     }
 
     /**
@@ -833,11 +837,8 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'animation',
             'chat_id',
             'message_thread_id',
             'duration',
@@ -861,8 +862,12 @@ trait AvailableMethods
             'direct_messages_topic_id',
             'suggested_post_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $opt, $clientOpt);
+        return $this->sendAttachments(__FUNCTION__, ['animation'], $parameters, $clientOpt);
     }
 
     /**
@@ -913,11 +918,8 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'voice',
             'chat_id',
             'message_thread_id',
             'caption',
@@ -936,8 +938,12 @@ trait AvailableMethods
             'direct_messages_topic_id',
             'suggested_post_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $opt, $clientOpt);
+        return $this->sendAttachments(__FUNCTION__, ['voice'], $parameters, $clientOpt);
     }
 
     /**
@@ -985,11 +991,8 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'video_note',
             'chat_id',
             'message_thread_id',
             'duration',
@@ -1007,8 +1010,12 @@ trait AvailableMethods
             'direct_messages_topic_id',
             'suggested_post_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $opt, $clientOpt);
+        return $this->sendAttachments(__FUNCTION__, ['video_note'], $parameters, $clientOpt);
     }
 
     /**
