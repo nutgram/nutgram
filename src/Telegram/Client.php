@@ -83,7 +83,7 @@ trait Client
 
     protected function sendAttachments(string $endpoint, array $attachments, array $parameters = [], array $clientOpt = []): ?Message
     {
-        if(empty(array_intersect_key($parameters, array_flip($attachments)))) {
+        if (empty(array_intersect_key($parameters, array_flip($attachments)))) {
             return $this->requestJson($endpoint, $parameters, Message::class, $clientOpt);
         }
 

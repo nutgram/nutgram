@@ -488,8 +488,7 @@ trait AvailableMethods
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
         array $clientOpt = [],
-    ): ?Message
-    {
+    ): ?Message {
         $parameters = compact(
             'business_connection_id',
             'chat_id',
