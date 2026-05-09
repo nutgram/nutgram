@@ -28,12 +28,11 @@ use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\UnknownType;
-use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
 use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use function SergiX44\Nutgram\Support\array_filter_null;
-use function SergiX44\Nutgram\Support\in_array_any;
 use function SergiX44\Nutgram\Support\word_wrap;
 
 /**
@@ -190,15 +189,19 @@ trait Client
     ): mixed {
         $parameters = [];
         foreach (array_filter_null($multipart) as $name => $contents) {
-            if ($contents instanceof UploadableArray || $contents instanceof Uploadable) {
+            if ($contents instanceof UploadableArray || $contents instanceof Uploadables) {
                 $files = $contents instanceof UploadableArray ? $contents->files : [$contents];
                 foreach ($files as $file) {
-                    if ($file->isLocal()) {
-                        $parameters[] = [
-                            'name' => $file->getFilename(),
-                            'contents' => $file->getResource(),
-                            'filename' => $file->getFilename(),
-                        ];
+                    if($file instanceof Uploadables) {
+                        foreach ($file->uploadables() as $field) {
+                            if ($file->{$field} instanceof InputFile) {
+                                $parameters[] = [
+                                    'name' => $file->{$field}->getFilename(),
+                                    'contents' => $file->{$field}->getResource(),
+                                    'filename' => $file->{$field}->getFilename(),
+                                ];
+                            }
+                        }
                     }
                 }
             }

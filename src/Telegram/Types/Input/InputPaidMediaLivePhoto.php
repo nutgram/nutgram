@@ -6,7 +6,9 @@ use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputPaidMediaType;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
@@ -14,13 +16,22 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * @see https://core.telegram.org/bots/api#inputpaidmedialivephoto
  */
 #[SkipConstructor]
-class InputPaidMediaLivePhoto extends InputPaidMedia implements JsonSerializable
+class InputPaidMediaLivePhoto extends BaseType implements InputPaidMedia, Uploadables, JsonSerializable
 {
     /**
      * Type of the media, must be live_photo
      */
     #[EnumOrScalar]
     public InputPaidMediaType|string $type = InputPaidMediaType::LIVE_PHOTO;
+
+    /**
+     * File to send.
+     * Pass a file_id to send a file that exists on the Telegram servers (recommended),
+     * pass an HTTP URL for Telegram to get a file from the Internet,
+     * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
+     * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
+     */
+    public InputFile|string $media;
 
     /**
      * The static photo to send.
@@ -59,5 +70,10 @@ class InputPaidMediaLivePhoto extends InputPaidMedia implements JsonSerializable
             'media' => $this->media,
             'photo' => $this->photo,
         ]);
+    }
+
+    public function uploadables(): array
+    {
+        return ['media', 'photo'];
     }
 }

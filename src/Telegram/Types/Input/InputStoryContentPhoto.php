@@ -6,14 +6,14 @@ use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputStoryContentType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
-use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 
 /**
  * Describes a photo to post as a story.
  * @see https://core.telegram.org/bots/api#inputstorycontentphoto
  */
 #[SkipConstructor]
-class InputStoryContentPhoto extends InputStoryContent implements Uploadable
+class InputStoryContentPhoto extends InputStoryContent implements Uploadables
 {
     /**
      * Type of the content, must be photo
@@ -28,24 +28,14 @@ class InputStoryContentPhoto extends InputStoryContent implements Uploadable
      */
     public InputFile|string $photo;
 
-    public function isLocal(): bool
-    {
-        return $this->photo instanceof InputFile;
-    }
-
-    public function getFilename(): string
-    {
-        return $this->photo->getFilename();
-    }
-
-    public function getResource()
-    {
-        return $this->photo->getResource();
-    }
-
     public function __construct(InputFile|string $photo)
     {
         parent::__construct();
         $this->photo = $photo;
+    }
+
+    public function uploadables(): array
+    {
+        return ['photo'];
     }
 }

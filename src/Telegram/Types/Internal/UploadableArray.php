@@ -5,7 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Internal;
 class UploadableArray implements \JsonSerializable
 {
     /**
-     * @param Uploadable[] $files
+     * @param Uploadables[] $files
      */
     public function __construct(public readonly array $files)
     {

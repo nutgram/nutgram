@@ -8,7 +8,7 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
-use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
@@ -16,7 +16,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * @see https://core.telegram.org/bots/api#inputmediasticker
  */
 #[SkipConstructor]
-class InputMediaSticker extends BaseType implements InputPollOptionMedia, Uploadable, JsonSerializable
+class InputMediaSticker extends BaseType implements InputPollOptionMedia, Uploadables, JsonSerializable
 {
     /**
      * Type of the result, must be sticker
@@ -62,18 +62,8 @@ class InputMediaSticker extends BaseType implements InputPollOptionMedia, Upload
         ]);
     }
 
-    public function isLocal(): bool
+    public function uploadables(): array
     {
-        return $this->media instanceof InputFile;
-    }
-
-    public function getResource()
-    {
-        return $this->media->getResource();
-    }
-
-    public function getFilename(): string
-    {
-        return $this->media->getFilename();
+        return ['media'];
     }
 }

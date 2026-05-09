@@ -6,7 +6,9 @@ use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputPaidMediaType;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
@@ -14,13 +16,22 @@ use function SergiX44\Nutgram\Support\array_filter_null;
  * @see https://core.telegram.org/bots/api#inputpaidmediavideo
  */
 #[SkipConstructor]
-class InputPaidMediaVideo extends InputPaidMedia implements JsonSerializable
+class InputPaidMediaVideo extends BaseType implements InputPaidMedia, Uploadables, JsonSerializable
 {
     /**
      * Type of the media, must be video
      */
     #[EnumOrScalar]
     public InputPaidMediaType|string $type = InputPaidMediaType::VIDEO;
+
+    /**
+     * File to send.
+     * Pass a file_id to send a file that exists on the Telegram servers (recommended),
+     * pass an HTTP URL for Telegram to get a file from the Internet,
+     * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
+     * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
+     */
+    public InputFile|string $media;
 
     /**
      * Optional.
@@ -130,5 +141,10 @@ class InputPaidMediaVideo extends InputPaidMedia implements JsonSerializable
             'duration' => $this->duration,
             'supports_streaming' => $this->supports_streaming,
         ]);
+    }
+
+    public function uploadables(): array
+    {
+        return ['media', 'thumbnail', 'cover'];
     }
 }

@@ -495,6 +495,7 @@ it('sends multiple medias via sendMediaGroup', function () {
             ),
             InputMediaVideo::make(
                 media: InputFile::make(fopen('php://temp', 'rb'), 'video.jpg'),
+                thumbnail: 'https://i.ytimg.com/vi/fQ1BU25IogA/maxresdefault.jpg',
                 cover: InputFile::make(fopen('php://temp', 'rb'), 'photoB.jpg'),
             ),
         ],
