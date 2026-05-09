@@ -192,7 +192,7 @@ trait Client
             if ($contents instanceof UploadableArray || $contents instanceof Uploadables) {
                 $files = $contents instanceof UploadableArray ? $contents->files : [$contents];
                 foreach ($files as $file) {
-                    if($file instanceof Uploadables) {
+                    if ($file instanceof Uploadables) {
                         foreach ($file->uploadables() as $field) {
                             if ($file->{$field} instanceof InputFile) {
                                 $parameters[] = [
