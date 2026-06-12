@@ -214,8 +214,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
-    ): ?Message
-    {
+    ): ?Message {
         $parameters = compact(
             'rich_message',
             'business_connection_id',
@@ -1720,8 +1719,7 @@ trait AvailableMethods
         InputRichMessage $rich_message,
         ?int $chat_id = null,
         ?int $message_thread_id = null,
-    ): ?bool
-    {
+    ): ?bool {
         $parameters = compact('draft_id', 'rich_message', 'chat_id', 'message_thread_id');
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();

@@ -41,8 +41,7 @@ class InputRichMessage extends BaseType
         ?string $markdown = null,
         ?bool $is_rtl = null,
         ?bool $skip_entity_detection = null,
-    )
-    {
+    ) {
         parent::__construct();
         $this->html = $html;
         $this->markdown = $markdown;
