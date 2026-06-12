@@ -431,7 +431,7 @@ class Chat extends BaseType
         ?int $paid_message_star_count = null,
         ?Audio $first_profile_audio = null,
         ?User $guard_bot = null,
-        ): Chat {
+    ): Chat {
         $chat = new self();
         $chat->id = $id;
         $chat->type = $type;
