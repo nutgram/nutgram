@@ -1,0 +1,28 @@
+<?php
+
+namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichText;
+
+use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
+use SergiX44\Nutgram\Telegram\Properties\RichTextType;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+
+/**
+ * A text covered by a spoiler.
+ * @see https://core.telegram.org/bots/api#richtextspoiler
+ */
+class RichTextSpoiler extends BaseType implements RichText
+{
+    /**
+     * Type of the rich text, always “spoiler”
+     */
+    #[EnumOrScalar]
+    public RichTextType|string $type = RichTextType::SPOILER;
+
+    /**
+     * The text
+     * @var string|RichText[]|RichText
+     */
+    #[ArrayType(RichText::class)]
+    public string|array|RichText $text;
+}

@@ -395,6 +395,18 @@ it('calls onChatJoinRequest() handler', function ($update) {
     expect($bot->get('called'))->toBeTrue();
 })->with('chat_join_request');
 
+it('calls onChatJoinRequestQuery() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onChatJoinRequestQuery('foo', function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('chat_join_request');
+
 it('calls onChatBoost() handler', function ($update) {
     $bot = Nutgram::fake($update);
 

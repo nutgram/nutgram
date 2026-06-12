@@ -16,6 +16,7 @@
       "username": "mariobros"
     },
     "user_chat_id": 123654789,
-    "date": 123456789
+    "date": 123456789,
+    "query_id": "foo"
   }
 }

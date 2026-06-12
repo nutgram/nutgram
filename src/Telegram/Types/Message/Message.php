@@ -56,6 +56,7 @@ use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionAdded;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionDeleted;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichMessage;
 use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UserShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
@@ -329,6 +330,12 @@ class Message extends BaseType
      * Optional. Unique identifier of the message effect added to the message
      */
     public ?string $effect_id = null;
+
+    /**
+     * Optional. Message is a rich formatted message
+     */
+    public ?RichMessage $rich_message = null;
+
     /**
      * Optional.
      * Message is an animation, information about the animation.

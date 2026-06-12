@@ -115,6 +115,12 @@ class User extends BaseType
      */
     public ?bool $can_manage_bots = null;
 
+    /**
+     * Optional. True, if the bot supports join request queries and can be assigned to process them.
+     * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     */
+    public ?bool $supports_join_request_queries = null;
+
     public static function make(
         int $id,
         bool $is_bot,
@@ -133,6 +139,7 @@ class User extends BaseType
         ?bool $allows_users_to_create_topics = null,
         ?bool $can_manage_bots = null,
         ?bool $supports_guest_queries = null,
+        ?bool $supports_join_request_queries = null,
     ): User {
         $user = new self();
         $user->id = $id;
@@ -152,6 +159,7 @@ class User extends BaseType
         $user->allows_users_to_create_topics = $allows_users_to_create_topics;
         $user->can_manage_bots = $can_manage_bots;
         $user->supports_guest_queries = $supports_guest_queries;
+        $user->supports_join_request_queries = $supports_join_request_queries;
         return $user;
     }
 }

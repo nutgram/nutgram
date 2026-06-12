@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * This object represents the content of a message to be sent as a result of an inline query.
  * Telegram clients currently support the following 5 types:
  * - {@see InputTextMessageContent InputTextMessageContent}
+ * - {@see InputRichMessageContent InputRichMessageContent}
  * - {@see InputLocationMessageContent InputLocationMessageContent}
  * - {@see InputVenueMessageContent InputVenueMessageContent}
  * - {@see InputContactMessageContent InputContactMessageContent}

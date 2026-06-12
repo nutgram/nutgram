@@ -4,6 +4,7 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Properties\ChatAction;
+use SergiX44\Nutgram\Telegram\Properties\ChatJoinRequestResult;
 use SergiX44\Nutgram\Telegram\Properties\DiceEmoji;
 use SergiX44\Nutgram\Telegram\Properties\ForumIconColor;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -52,6 +53,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
 use SergiX44\Nutgram\Telegram\Types\Message\SentGuestMessage;
 use SergiX44\Nutgram\Telegram\Types\Poll\InputPollOption;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichMessage;
 use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
@@ -175,6 +177,63 @@ trait AvailableMethods
             'direct_messages_topic_id',
             'suggested_post_parameters',
         );
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+    }
+
+    /**
+     * Use this method to send rich messages.
+     * If the message contains a block with a media element, then the bot must have the right to send the media to the chat.
+     * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
+     * @param InputRichMessage $rich_message The message to be sent
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target bot, supergroup or channel in the format &#64;username
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance.
+     * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
+     * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove a reply keyboard or to force a reply from the user.
+     * @return Message|null
+     * @see https://core.telegram.org/bots/api#sendrichmessage
+     *
+     */
+    public function sendRichMessage(
+        InputRichMessage $rich_message,
+        ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
+        ?int $message_thread_id = null,
+        ?int $direct_messages_topic_id = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?bool $allow_paid_broadcast = null,
+        ?string $message_effect_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?ReplyParameters $reply_parameters = null,
+        InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+    ): ?Message
+    {
+        $parameters = compact(
+            'rich_message',
+            'business_connection_id',
+            'chat_id',
+            'message_thread_id',
+            'direct_messages_topic_id',
+            'disable_notification',
+            'protect_content',
+            'allow_paid_broadcast',
+            'message_effect_id',
+            'suggested_post_parameters',
+            'reply_parameters',
+            'reply_markup',
+        );
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
@@ -1644,6 +1703,33 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to stream a partial rich message to a user while the message is being generated.
+     * Note that the streamed draft is ephemeral and acts as a temporary 30-second preview - once the output is finalized,
+     * you must call {@see https://core.telegram.org/bots/api#sendrichmessage sendRichMessage}
+     * with the complete message to persist it in the user's chat.
+     * Returns True on success.
+     * @param int $draft_id Unique identifier of the message draft; must be non-zero. Changes to drafts with the same identifier are animated.
+     * @param InputRichMessage $rich_message The partial message to be streamed
+     * @param int|null $chat_id Unique identifier for the target private chat
+     * @param int|null $message_thread_id Unique identifier for the target message thread
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#sendrichmessagedraft
+     */
+    public function sendRichMessageDraft(
+        int $draft_id,
+        InputRichMessage $rich_message,
+        ?int $chat_id = null,
+        ?int $message_thread_id = null,
+    ): ?bool
+    {
+        $parameters = compact('draft_id', 'rich_message', 'chat_id', 'message_thread_id');
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
      * Use this method when you need to tell the user that something is happening on the bot's side.
      * The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status).
      * Returns True on success.
@@ -2186,6 +2272,38 @@ trait AvailableMethods
     public function declineChatJoinRequest(int|string $chat_id, int $user_id): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'));
+    }
+
+    /**
+     * Use this method to process a received chat join request query.
+     * Returns True on success.
+     * @param ChatJoinRequestResult|string $result Result of the query. Must be either “approve” to allow the user to join the chat, “decline” to disallow the user to join the chat, or “queue” to leave the decision to other administrators.
+     * @param string|null $chat_join_request_query_id Unique identifier of the join request query
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#answerchatjoinrequestquery
+     */
+    public function answerChatJoinRequestQuery(ChatJoinRequestResult|string $result, ?string $chat_join_request_query_id = null): ?bool
+    {
+        $parameters = compact('result', 'chat_join_request_query_id');
+        $parameters['chat_join_request_query_id'] ??= $this->chatJoinRequest()->query_id;
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to process a received chat join request query by showing a Mini App to the user before deciding the outcome.
+     * Returns True on success.
+     * @param string $web_app_url The URL of the Mini App to be opened
+     * @param string|null $chat_join_request_query_id Unique identifier of the join request query
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#sendchatjoinrequestwebapp
+     */
+    public function sendChatJoinRequestWebApp(string $web_app_url, ?string $chat_join_request_query_id = null): ?bool
+    {
+        $parameters = compact('web_app_url', 'chat_join_request_query_id');
+        $parameters['chat_join_request_query_id'] ??= $this->chatJoinRequest()->query_id;
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
