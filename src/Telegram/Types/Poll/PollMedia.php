@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\Location\Venue;
 use SergiX44\Nutgram\Telegram\Types\Media\Animation;
 use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Media\Document;
+use SergiX44\Nutgram\Telegram\Types\Media\Link;
 use SergiX44\Nutgram\Telegram\Types\Media\LivePhoto;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 use SergiX44\Nutgram\Telegram\Types\Media\Video;
@@ -34,6 +35,11 @@ class PollMedia extends BaseType
      * Optional. Media is a general file, information about the file; currently, can't be received in a poll option
      */
     public ?Document $document = null;
+
+    /**
+     * Optional. The HTTP link attached to the poll option
+     */
+    public ?Link $link = null;
 
     /**
      * Optional. Media is a live photo, information about the live photo

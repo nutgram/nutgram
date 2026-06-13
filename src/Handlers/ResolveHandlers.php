@@ -115,6 +115,9 @@ abstract class ResolveHandlers extends CollectHandlers
         } elseif ($updateType === UpdateType::PURCHASED_PAID_MEDIA) {
             $data = $this->update->purchased_paid_media?->paid_media_payload;
             $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::CHAT_JOIN_REQUEST) {
+            $data = $this->update->chat_join_request?->query_id;
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         }
 
         if (empty($resolvedHandlers) && $updateType !== null) {

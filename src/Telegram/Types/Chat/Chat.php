@@ -15,6 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
 use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGiftColors;
 use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\User\UserRating;
 
 /**
@@ -391,6 +392,8 @@ class Chat extends BaseType
      */
     public ?int $paid_message_star_count = null;
 
+    public ?User $guard_bot = null;
+
     public static function make(
         int $id,
         ChatType|string $type,
@@ -426,7 +429,8 @@ class Chat extends BaseType
         ?UserRating $rating = null,
         ?UniqueGiftColors $unique_gift_colors = null,
         ?int $paid_message_star_count = null,
-        ?Audio $first_profile_audio = null
+        ?Audio $first_profile_audio = null,
+        ?User $guard_bot = null,
     ): Chat {
         $chat = new self();
         $chat->id = $id;
@@ -464,6 +468,7 @@ class Chat extends BaseType
         $chat->unique_gift_colors = $unique_gift_colors;
         $chat->paid_message_star_count = $paid_message_star_count;
         $chat->first_profile_audio = $first_profile_audio;
+        $chat->guard_bot = $guard_bot;
         return $chat;
     }
 
