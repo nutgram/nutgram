@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.47.1 - 2026-06-14
+
+### What's Changed
+
+* Fix RichMessage types by @Lukasss93 in https://github.com/nutgram/nutgram/pull/985
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.47.0...4.47.1
+
 ## 4.47.0 - 2026-06-13
 
 ### What's Changed
