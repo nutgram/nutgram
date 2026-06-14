@@ -7,6 +7,7 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextUnionResolver;
 
 /**
  * A quotation with centered text, loosely corresponding to the HTML tag <code><aside></code>.
@@ -25,6 +26,7 @@ class RichBlockPullQuotation extends BaseType implements RichBlock
      * @var string|RichText[]|RichText
      */
     #[ArrayType(RichText::class)]
+    #[RichTextUnionResolver]
     public string|array|RichText $text;
 
     /**
@@ -32,5 +34,6 @@ class RichBlockPullQuotation extends BaseType implements RichBlock
      * @var string|RichText[]|RichText|null
      */
     #[ArrayType(RichText::class)]
+    #[RichTextUnionResolver]
     public string|array|RichText|null $credit = null;
 }

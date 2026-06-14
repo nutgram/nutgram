@@ -25,6 +25,7 @@ class RichTextTextMention extends BaseType implements RichText
      * @var string|RichText[]|RichText
      */
     #[ArrayType(RichText::class)]
+    #[RichTextUnionResolver]
     public string|array|RichText $text;
 
     /**

@@ -7,6 +7,7 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextUnionResolver;
 
 /**
  * A block quotation, corresponding to the HTML tag <code><blockquote></code>.
@@ -32,5 +33,6 @@ class RichBlockBlockQuotation extends BaseType implements RichBlock
      * @var string|RichText[]|RichText|null
      */
     #[ArrayType(RichText::class)]
+    #[RichTextUnionResolver]
     public string|array|RichText|null $credit = null;
 }
