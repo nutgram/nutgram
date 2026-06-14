@@ -32,6 +32,7 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichText;
  * {@see RichTextReferenceLink}
  * @see https://core.telegram.org/bots/api#richtext
  */
+#[RichTextResolver]
 interface RichText
 {
     // nothing here, this interface is only for type hinting

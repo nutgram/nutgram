@@ -27,6 +27,7 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock;
  * {@see RichBlockThinking}
  * @see https://core.telegram.org/bots/api#richblock
  */
+#[RichBlockResolver]
 interface RichBlock
 {
     // nothing here, this interface is only for type hinting
