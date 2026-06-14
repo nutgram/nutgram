@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage;
 
+use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -11,7 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * @see https://core.telegram.org/bots/api#inputrichmessage
  */
 #[SkipConstructor]
-class InputRichMessage extends BaseType
+class InputRichMessage extends BaseType implements JsonSerializable
 {
     /**
      * Optional. Content of the rich message to send described using HTML formatting.
@@ -47,5 +48,10 @@ class InputRichMessage extends BaseType
         $this->markdown = $markdown;
         $this->is_rtl = $is_rtl;
         $this->skip_entity_detection = $skip_entity_detection;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

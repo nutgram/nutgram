@@ -7,6 +7,7 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextUnionResolver;
 
 /**
  * A text paragraph, corresponding to the HTML tag <code><p></code>.
@@ -25,5 +26,6 @@ class RichBlockParagraph extends BaseType implements RichBlock
      * @var string|RichText[]|RichText
      */
     #[ArrayType(RichText::class)]
+    #[RichTextUnionResolver]
     public string|array|RichText $text;
 }

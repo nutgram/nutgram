@@ -7,6 +7,7 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextUnionResolver;
 
 /**
  * A preformatted text block, corresponding to the nested HTML tags <code><pre></code> and <code><code></code>.
@@ -25,6 +26,7 @@ class RichBlockPreformatted extends BaseType implements RichBlock
      * @var string|RichText[]|RichText
      */
     #[ArrayType(RichText::class)]
+    #[RichTextUnionResolver]
     public string|array|RichText $text;
 
     /**

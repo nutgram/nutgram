@@ -16,7 +16,7 @@ class RichTextCustomEmoji extends BaseType implements RichText
      * Type of the rich text, always “custom_emoji”
      */
     #[EnumOrScalar]
-    public RichTextType|string $type = RichTextType::CustomEmoji;
+    public RichTextType|string $type = RichTextType::CUSTOM_EMOJI;
 
     /**
      * Unique identifier of the custom emoji.

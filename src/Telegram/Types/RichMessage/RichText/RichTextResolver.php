@@ -1,0 +1,46 @@
+<?php
+
+namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichText;
+
+use Attribute;
+use InvalidArgumentException;
+use SergiX44\Hydrator\Annotation\ConcreteResolver;
+use SergiX44\Nutgram\Telegram\Properties\RichTextType;
+
+#[Attribute(Attribute::TARGET_CLASS)]
+class RichTextResolver extends ConcreteResolver
+{
+    protected array $concretes = [
+        RichTextType::BOLD->value => RichTextBold::class,
+        RichTextType::ITALIC->value => RichTextItalic::class,
+        RichTextType::UNDERLINE->value => RichTextUnderline::class,
+        RichTextType::STRIKETHROUGH->value => RichTextStrikethrough::class,
+        RichTextType::SPOILER->value => RichTextSpoiler::class,
+        RichTextType::DATETIME->value => RichTextDateTime::class,
+        RichTextType::TEXT_MENTION->value => RichTextTextMention::class,
+        RichTextType::SUBSCRIPT->value => RichTextSubscript::class,
+        RichTextType::SUPERSCRIPT->value => RichTextSuperscript::class,
+        RichTextType::MARKED->value => RichTextMarked::class,
+        RichTextType::CODE->value => RichTextCode::class,
+        RichTextType::CUSTOM_EMOJI->value => RichTextCustomEmoji::class,
+        RichTextType::MATHEMATICAL_EXPRESSION->value => RichTextMathematicalExpression::class,
+        RichTextType::URL->value => RichTextUrl::class,
+        RichTextType::EMAIL_ADDRESS->value => RichTextEmailAddress::class,
+        RichTextType::PHONE_NUMBER->value => RichTextPhoneNumber::class,
+        RichTextType::BANK_CARD_NUMBER->value => RichTextBankCardNumber::class,
+        RichTextType::MENTION->value => RichTextMention::class,
+        RichTextType::HASHTAG->value => RichTextHashtag::class,
+        RichTextType::CASHTAG->value => RichTextCashtag::class,
+        RichTextType::BOT_COMMAND->value => RichTextBotCommand::class,
+        RichTextType::ANCHOR->value => RichTextAnchor::class,
+        RichTextType::ANCHOR_LINK->value => RichTextAnchorLink::class,
+        RichTextType::REFERENCE->value => RichTextReference::class,
+        RichTextType::REFERENCE_LINK->value => RichTextReferenceLink::class,
+    ];
+    public function concreteFor(array $data, array $all): ?string
+    {
+        $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
+        return $this->concretes[$type] ?? (new class implements RichText {
+        })::class;
+    }
+}
