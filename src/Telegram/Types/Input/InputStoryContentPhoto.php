@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use Psr\Http\Message\StreamInterface;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputStoryContentType;
@@ -16,7 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
  * Describes a photo to post as a story.
  * @see https://core.telegram.org/bots/api#inputstorycontentphoto
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputStoryContentPhoto extends InputStoryContent implements Uploadables
 {
     /**

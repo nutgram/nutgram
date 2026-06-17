@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use Psr\Http\Message\StreamInterface;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
-use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputProfilePhotoType;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 
@@ -17,7 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
  * @see https://core.telegram.org/bots/api#inputprofilephotoanimated
  */
 #[OverrideConstructor('bindToInstance')]
-class InputProfilePhotoAnimated extends InputProfilePhoto implements Uploadables
+class InputProfilePhotoAnimated extends BaseType implements InputProfilePhoto, Uploadables
 {
     /**
      * Type of the profile photo, must be animated

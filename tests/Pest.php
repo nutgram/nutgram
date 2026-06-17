@@ -78,6 +78,10 @@ function getTelegramTypes(TelegramTypeContext $context = TelegramTypeContext::Al
             return false;
         }
 
+        if ($class->isInterface()) {
+            return false;
+        }
+
         if ($context === TelegramTypeContext::All) {
             return true;
         }

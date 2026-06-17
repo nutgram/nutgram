@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use Psr\Http\Message\StreamInterface;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -72,7 +71,7 @@ class InputSticker extends BaseType implements Uploadables
         $this->keywords = $keywords;
     }
 
-    public function getFilename(): string
+    public function uploadables(): array
     {
         return ['sticker'];
     }

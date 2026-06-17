@@ -198,7 +198,7 @@ trait Client
                             if ($file->{$field} instanceof InputFile) {
                                 $parameters[] = [
                                     'name' => $file->{$field}->getFilename(),
-                                    'contents' => $file->{$field}->getResource(),
+                                    'contents' => $file->{$field}->getStream(),
                                     'filename' => $file->{$field}->getFilename(),
                                 ];
                             }
