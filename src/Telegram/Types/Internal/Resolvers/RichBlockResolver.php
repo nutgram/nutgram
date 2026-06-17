@@ -1,11 +1,35 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock;
+declare(strict_types=1);
+
+namespace SergiX44\Nutgram\Telegram\Types\Internal\Resolvers;
 
 use Attribute;
 use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockType;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlock;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockAnchor;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockAnimation;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockAudio;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockBlockQuotation;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCollage;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockDetails;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockDivider;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockFooter;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockList;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockMap;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockMathematicalExpression;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockParagraph;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockPhoto;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockPreformatted;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockPullQuotation;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockSectionHeading;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockSlideshow;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockTable;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockThinking;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockVideo;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockVoiceNote;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class RichBlockResolver extends ConcreteResolver

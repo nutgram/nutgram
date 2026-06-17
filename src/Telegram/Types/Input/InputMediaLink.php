@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
@@ -11,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * Represents a general file to be sent.
  * @see https://core.telegram.org/bots/api#inputmediadocument
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputMediaLink extends BaseType implements InputPollOptionMedia
 {
     /**
@@ -30,10 +32,5 @@ class InputMediaLink extends BaseType implements InputPollOptionMedia
     {
         parent::__construct();
         $this->url = $url;
-    }
-
-    public static function make(string $url): self
-    {
-        return new self($url);
     }
 }
