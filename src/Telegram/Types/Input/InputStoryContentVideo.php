@@ -10,14 +10,14 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputStoryContentType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
-use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 
 /**
  * Describes a video to post as a story.
  * @see https://core.telegram.org/bots/api#inputstorycontentvideo
  */
 #[OverrideConstructor('bindToInstance')]
-class InputStoryContentVideo extends InputStoryContent implements Uploadable
+class InputStoryContentVideo extends InputStoryContent implements Uploadables
 {
     /**
      * Type of the content, must be video
@@ -48,21 +48,6 @@ class InputStoryContentVideo extends InputStoryContent implements Uploadable
      */
     public ?bool $is_animation = null;
 
-    public function isLocal(): bool
-    {
-        return $this->video instanceof InputFile;
-    }
-
-    public function getFilename(): string
-    {
-        return $this->video->getFilename();
-    }
-
-    public function getStream(): StreamInterface
-    {
-        return $this->video->getStream();
-    }
-
     public function __construct(InputFile|string $video, ?float $duration = null, ?float $cover_frame_timestamp = null, ?bool $is_animation = null)
     {
         parent::__construct();
@@ -70,5 +55,10 @@ class InputStoryContentVideo extends InputStoryContent implements Uploadable
         $this->duration = $duration;
         $this->cover_frame_timestamp = $cover_frame_timestamp;
         $this->is_animation = $is_animation;
+    }
+
+    public function uploadables(): array
+    {
+        return ['video'];
     }
 }

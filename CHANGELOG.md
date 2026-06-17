@@ -2,6 +2,21 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.45.3 - 2026-05-05
+
+### What's Changed
+
+* Use same polling timeout value for single update by @hosni in https://github.com/nutgram/nutgram/pull/973
+* Fix: add missing `request_managed_bot` parameter to `KeyboardButton` by @Lukasss93 in https://github.com/nutgram/nutgram/pull/974
+* Improve exit message formatting for graceful shutdown by @Lukasss93 in https://github.com/nutgram/nutgram/pull/975
+* Add `managedBot` and `managedBotId` proxy methods by @Lukasss93 in https://github.com/nutgram/nutgram/pull/976
+
+### New Contributors
+
+* @hosni made their first contribution in https://github.com/nutgram/nutgram/pull/973
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.45.2...4.45.3
+
 ## 4.45.2 - 2026-04-10
 
 ### What's Changed

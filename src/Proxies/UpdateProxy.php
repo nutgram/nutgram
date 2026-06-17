@@ -85,6 +85,16 @@ trait UpdateProxy
         return $this->message()?->direct_messages_topic?->topic_id;
     }
 
+    public function managedBotId(): ?int
+    {
+        return $this->managedBot()?->id;
+    }
+
+    public function guestQueryId(): ?string
+    {
+        return $this->message()?->guest_query_id;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Special proxies
@@ -253,5 +263,10 @@ trait UpdateProxy
         return $this->message()?->checklist
             ?? $this->message()?->checklist_tasks_done?->checklist_message?->checklist
             ?? $this->message()?->checklist_tasks_added?->checklist_message?->checklist;
+    }
+
+    public function managedBot(): ?User
+    {
+        return $this->message()?->managed_bot_created?->bot ?? $this->update()?->managed_bot?->bot;
     }
 }

@@ -10,7 +10,9 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
+use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
@@ -18,11 +20,20 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * @see https://core.telegram.org/bots/api#inputmediaaudio
  */
 #[OverrideConstructor('bindToInstance')]
-class InputMediaAudio extends InputMedia
+class InputMediaAudio extends BaseType implements InputMedia, InputPollMedia, Uploadables
 {
     /** Type of the result, must be audio */
     #[EnumOrScalar]
     public InputMediaType|string $type = InputMediaType::AUDIO;
+
+    /**
+     * File to send.
+     * Pass a file_id to send a file that exists on the Telegram servers (recommended),
+     * pass an HTTP URL for Telegram to get a file from the Internet,
+     * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
+     * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
+     */
+    public InputFile|string $media;
 
     /**
      * Optional.
@@ -96,5 +107,10 @@ class InputMediaAudio extends InputMedia
         $this->duration = $duration;
         $this->performer = $performer;
         $this->title = $title;
+    }
+
+    public function uploadables(): array
+    {
+        return ['media', 'thumbnail'];
     }
 }

@@ -10,13 +10,14 @@ use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputProfilePhotoType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 
 /**
  * An animated profile photo in the MPEG4 format.
  * @see https://core.telegram.org/bots/api#inputprofilephotoanimated
  */
 #[OverrideConstructor('bindToInstance')]
-class InputProfilePhotoAnimated extends InputProfilePhoto
+class InputProfilePhotoAnimated extends InputProfilePhoto implements Uploadables
 {
     /**
      * Type of the profile photo, must be animated
@@ -38,25 +39,15 @@ class InputProfilePhotoAnimated extends InputProfilePhoto
      */
     public ?float $main_frame_timestamp = null;
 
-    public function isLocal(): bool
-    {
-        return $this->animation instanceof InputFile;
-    }
-
-    public function getFilename(): string
-    {
-        return $this->animation->getFilename();
-    }
-
-    public function getStream(): StreamInterface
-    {
-        return $this->animation->getStream();
-    }
-
     public function __construct(InputFile|string $animation, ?float $main_frame_timestamp = null)
     {
         parent::__construct();
         $this->animation = $animation;
         $this->main_frame_timestamp = $main_frame_timestamp;
+    }
+
+    public function uploadables(): array
+    {
+        return ['animation'];
     }
 }

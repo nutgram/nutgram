@@ -29,7 +29,7 @@ class SingleUpdate extends Polling
         $bot->getUpdates(
             offset: end($updates)?->update_id + 1,
             limit: 1,
-            timeout: 0,
+            timeout: $config->pollingTimeout,
             allowed_updates: $config->pollingAllowedUpdates
         );
     }

@@ -1,11 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -13,17 +12,18 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
- * Represents a photo to be sent.
- * @see https://core.telegram.org/bots/api#inputmediaphoto
+ * Represents a live photo to be sent.
+ * @see https://core.telegram.org/bots/api#inputmedialivephoto
  */
-#[OverrideConstructor('bindToInstance')]
-class InputMediaPhoto extends BaseType implements InputMedia, InputPollMedia, InputPollOptionMedia, Uploadables
+#[SkipConstructor]
+class InputMediaLivePhoto extends BaseType implements InputMedia, InputPollMedia, InputPollOptionMedia, Uploadables, JsonSerializable
 {
-    /** Type of the result, must be photo */
+    /** Type of the result, must be live_photo */
     #[EnumOrScalar]
-    public InputMediaType|string $type = InputMediaType::PHOTO;
+    public InputMediaType|string $type = InputMediaType::LIVE_PHOTO;
 
     /**
      * File to send.
@@ -35,8 +35,17 @@ class InputMediaPhoto extends BaseType implements InputMedia, InputPollMedia, In
     public InputFile|string $media;
 
     /**
+     * The static photo to send.
+     * Pass a file_id to send a file that exists on the Telegram servers (recommended),
+     * pass an HTTP URL for Telegram to get a file from the Internet,
+     * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
+     * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
+     */
+    public InputFile|string $photo;
+
+    /**
      * Optional.
-     * Caption of the photo to be sent, 0-1024 characters after entities parsing
+     * Optional. Caption of the live photo to be sent, 0-1024 characters after entities parsing
      */
     public ?string $caption = null;
 
@@ -69,6 +78,7 @@ class InputMediaPhoto extends BaseType implements InputMedia, InputPollMedia, In
 
     public function __construct(
         InputFile|string $media,
+        InputFile|string $photo,
         ?string $caption = null,
         ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
@@ -77,6 +87,7 @@ class InputMediaPhoto extends BaseType implements InputMedia, InputPollMedia, In
     ) {
         parent::__construct();
         $this->media = $media;
+        $this->photo = $photo;
         $this->caption = $caption;
         $this->parse_mode = $parse_mode;
         $this->caption_entities = $caption_entities;
@@ -84,8 +95,43 @@ class InputMediaPhoto extends BaseType implements InputMedia, InputPollMedia, In
         $this->show_caption_above_media = $show_caption_above_media;
     }
 
+    public static function make(
+        InputFile|string $media,
+        InputFile|string $photo,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $has_spoiler = null,
+        ?bool $show_caption_above_media = null,
+    ): self {
+        return new self(
+            media: $media,
+            photo: $photo,
+            caption: $caption,
+            parse_mode: $parse_mode,
+            caption_entities: $caption_entities,
+            has_spoiler: $has_spoiler,
+            show_caption_above_media: $show_caption_above_media,
+        );
+    }
+
+
+    public function jsonSerialize(): array
+    {
+        return array_filter_null([
+            'type' => $this->type,
+            'media' => $this->media,
+            'photo' => $this->photo,
+            'caption' => $this->caption,
+            'parse_mode' => $this->parse_mode,
+            'caption_entities' => $this->caption_entities,
+            'show_caption_above_media' => $this->show_caption_above_media,
+            'has_spoiler' => $this->has_spoiler,
+        ]);
+    }
+
     public function uploadables(): array
     {
-        return ['media'];
+        return ['media', 'photo'];
     }
 }

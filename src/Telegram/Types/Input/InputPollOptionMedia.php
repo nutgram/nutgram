@@ -3,15 +3,16 @@
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 /**
- * This object represents the content of a media message to be sent. It should be one of
+ * This object represents the content of a poll option to be sent. It should be one of
  * - {@see InputMediaAnimation}
- * - {@see InputMediaAudio}
- * - {@see InputMediaDocument}
  * - {@see InputMediaLivePhoto}
+ * - {@see InputMediaLocation}
  * - {@see InputMediaPhoto}
+ * - {@see InputMediaSticker}
+ * - {@see InputMediaVenue}
  * - {@see InputMediaVideo}
  */
-interface InputMedia
+interface InputPollOptionMedia
 {
     // nothing here, this interface is only for type hinting
 }

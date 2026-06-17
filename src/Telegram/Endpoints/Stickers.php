@@ -70,11 +70,8 @@ trait Stickers
         ?SuggestedPostParameters $suggested_post_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'sticker',
             'chat_id',
             'message_thread_id',
             'emoji',
@@ -90,8 +87,12 @@ trait Stickers
             'direct_messages_topic_id',
             'suggested_post_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'sticker', $sticker, $opt, $clientOpt);
+        return $this->sendAttachments(__FUNCTION__, ['sticker'], $parameters, $clientOpt);
     }
 
     /**
