@@ -13,6 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGiftColors;
 use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\User\UserRating;
 
 /**
@@ -329,4 +330,11 @@ class ChatFullInfo extends Chat
      * The number of Telegram Stars a general user have to pay to send a message to the chat
      */
     public ?int $paid_message_star_count = null;
+
+    /**
+     * Optional.
+     * The bot that processes join request queries in the chat.
+     * The field is only available to chat administrators.
+     */
+    public ?User $guard_bot = null;
 }

@@ -41,4 +41,13 @@ class ChatJoinRequest extends BaseType
      * Chat invite link that was used by the user to send the join request
      */
     public ?ChatInviteLink $invite_link = null;
+
+    /**
+     * Optional. Identifier of the join request query.
+     * If present, then the bot must call
+     * {@see https://core.telegram.org/bots/api#sendchatjoinrequestwebapp sendChatJoinRequestWebApp}
+     * or directly call {@see https://core.telegram.org/bots/api#answerchatjoinrequestquery answerChatJoinRequestQuery}
+     * within 10 seconds.
+     */
+    public ?string $query_id = null;
 }

@@ -9,6 +9,8 @@ enum InputMediaType: string
     case ANIMATION = 'animation';
     case AUDIO = 'audio';
     case DOCUMENT = 'document';
+
+    case LINK = 'link';
     case LIVE_PHOTO = 'live_photo';
     case LOCATION = 'location';
     case PHOTO = 'photo';

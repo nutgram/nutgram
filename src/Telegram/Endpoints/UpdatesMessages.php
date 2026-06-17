@@ -17,6 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Payment\StarAmount;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichMessage;
 use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
 use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
 use SergiX44\Nutgram\Telegram\Types\Story\StoryArea;
@@ -30,10 +31,10 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 trait UpdatesMessages
 {
     /**
-     * Use this method to edit text and {@see https://core.telegram.org/bots/api#games game} messages.
+     * Use this method to edit text, rich and {@see https://core.telegram.org/bots/api#games game} messages.
      * On success, if the edited message is not an inline message, the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagetext
-     * @param string $text New text of the message, 1-4096 characters after entities parsing
+     * @param string|null $text New text of the message, 1-4096 characters after entity parsing; required if rich_message isn't specified
      * @param int|string|null $chat_id Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_id Required if inline_message_id is not specified. Identifier of the message to edit
      * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message
@@ -43,10 +44,11 @@ trait UpdatesMessages
      * @param LinkPreviewOptions|null $link_preview_options Link preview generation options for the message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
+     * @param InputRichMessage|null $rich_message New rich content of the message; required if text isn't specified
      * @return Message|bool|null
      */
     public function editMessageText(
-        string $text,
+        ?string $text = null,
         int|string|null $chat_id = null,
         ?int $message_id = null,
         ?string $inline_message_id = null,
@@ -56,6 +58,7 @@ trait UpdatesMessages
         ?LinkPreviewOptions $link_preview_options = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?string $business_connection_id = null,
+        ?InputRichMessage $rich_message = null,
     ): Message|bool|null {
         $parameters = compact(
             'chat_id',
@@ -68,6 +71,7 @@ trait UpdatesMessages
             'link_preview_options',
             'reply_markup',
             'business_connection_id',
+            'rich_message',
         );
         $this->setChatMessageOrInlineMessageId($parameters);
 

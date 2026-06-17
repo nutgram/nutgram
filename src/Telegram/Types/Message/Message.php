@@ -7,7 +7,6 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostAdded;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatOwnerChanged;
@@ -58,6 +57,7 @@ use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionAdded;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionDeleted;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichMessage;
 use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
 use SergiX44\Nutgram\Telegram\Types\Sticker\GiftInfo;
@@ -288,6 +288,11 @@ class Message extends MaybeInaccessibleMessage
      * Optional. Unique identifier of the message effect added to the message
      */
     public ?string $effect_id = null;
+
+    /**
+     * Optional. Message is a rich formatted message
+     */
+    public ?RichMessage $rich_message = null;
 
     /**
      * Optional.

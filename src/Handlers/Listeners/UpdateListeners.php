@@ -322,6 +322,17 @@ trait UpdateListeners
     }
 
     /**
+     * @param string $pattern
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onChatJoinRequestQuery(string $pattern, $callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::CHAT_JOIN_REQUEST->value][$pattern] = new Handler($callable, $pattern);
+    }
+
+    /**
      * @param callable|class-string|array $callable
      * @return Handler
      */

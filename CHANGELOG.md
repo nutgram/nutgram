@@ -2,6 +2,30 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.47.1 - 2026-06-14
+
+### What's Changed
+
+* Fix RichMessage types by @Lukasss93 in https://github.com/nutgram/nutgram/pull/985
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.47.0...4.47.1
+
+## 4.47.0 - 2026-06-13
+
+### What's Changed
+
+* Update to Bot API 10.1 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/982
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.46.0...4.47.0
+
+## 4.46.0 - 2026-05-10
+
+### What's Changed
+
+* Update to Bot API 10.0 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/978
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.45.3...4.46.0
+
 ## 4.45.3 - 2026-05-05
 
 ### What's Changed
