@@ -6,6 +6,10 @@ namespace SergiX44\Nutgram\Support;
 
 use BackedEnum;
 use InvalidArgumentException;
+use ReflectionIntersectionType;
+use ReflectionNamedType;
+use ReflectionType;
+use ReflectionUnionType;
 
 function array_filter_null(array $array): array
 {
@@ -88,4 +92,23 @@ function deep_link(?string $baseUrl = null): DeepLink
 function get_value(mixed $value): mixed
 {
     return $value instanceof BackedEnum ? (string)$value->value : $value;
+}
+
+if (!function_exists(__NAMESPACE__.'\getSafeReflectionTypeName')) {
+    function getSafeReflectionTypeName(?ReflectionType $type): ?string
+    {
+        if ($type instanceof ReflectionUnionType) {
+            return $type->getTypes()[0]->getName();
+        }
+
+        if ($type instanceof ReflectionIntersectionType) {
+            return getSafeReflectionTypeName($type->getTypes()[0]);
+        }
+
+        if ($type instanceof ReflectionNamedType) {
+            return $type->getName();
+        }
+
+        return null;
+    }
 }

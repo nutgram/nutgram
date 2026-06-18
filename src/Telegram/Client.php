@@ -140,6 +140,7 @@ trait Client
         $endpoint = $this->downloadUrl($file);
 
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
+
         try {
             $response = $this->http->get($endpoint, $requestPost ?? $request);
             $this->progressHandler = null;
@@ -409,7 +410,7 @@ trait Client
         return explode('%#TGMSG#%', word_wrap($text, $length, "%#TGMSG#%", true));
     }
 
-    protected function redactTokenFromConnectException(ConnectException $e): void
+    protected function redactTokenFromConnectException(ConnectException $e): never
     {
         throw new ConnectException(
             str_replace($this->token, str_repeat('*', 5), $e->getMessage()),
