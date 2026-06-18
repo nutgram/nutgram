@@ -62,7 +62,17 @@ function getUpdateType(string $type, bool $associative = false): array|stdClass
  */
 function getTelegramTypes(TelegramTypeContext $context = TelegramTypeContext::All): array
 {
-    $classes = glob(__DIR__.'/../src/Telegram/Types/**/*.php');
+    $directory = __DIR__.'/../src/Telegram/Types/';
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS)
+    );
+
+    $classes = [];
+    foreach ($iterator as $file) {
+        if ($file->isFile() && $file->getExtension() === 'php') {
+            $classes[] = $file->getPathname();
+        }
+    }
 
     $types = array_map(function (string $classPath) {
         $classPath = realpath($classPath);
