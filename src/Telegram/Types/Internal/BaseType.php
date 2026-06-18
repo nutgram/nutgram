@@ -104,7 +104,7 @@ abstract class BaseType implements Arrayable, JsonSerializable
 
         $data = [...$objectVars, ...$this->_extra];
 
-        array_walk($data, static function (mixed &$value, string $key) {
+        array_walk_recursive($data, static function (mixed &$value, string $key) {
             match (true) {
                 str_starts_with($key, '_') => $value = null, // remove internal properties
                 $value instanceof Arrayable => $value = $value->toArray(),
