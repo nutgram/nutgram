@@ -99,7 +99,10 @@ abstract class BaseType implements Arrayable, JsonSerializable
 
     public function toArray(): array
     {
-        $data = [...get_object_vars($this), ...$this->_extra];
+        $objectVars = get_object_vars($this);
+        unset($objectVars['_extra']);
+
+        $data = [...$objectVars, ...$this->_extra];
 
         array_walk($data, static function (mixed &$value, string $key) {
             match (true) {
