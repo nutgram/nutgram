@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Testing;
 
 use ArrayAccess;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Testing\Assert;
 use InvalidArgumentException;
 use JsonException;
@@ -30,9 +31,10 @@ trait Asserts
         $reqRes = $this->testingHistory[$index];
 
         /** @var Request $request */
-        [$request,] = array_values($reqRes);
+        /** @var Response $response */
+        [$request, $response] = array_values($reqRes);
 
-        PHPUnit::assertTrue($closure($request), $message);
+        PHPUnit::assertTrue($closure($request, new ResponseData($response)), $message);
 
         return $this;
     }
