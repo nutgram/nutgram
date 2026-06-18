@@ -6,7 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\SuggestedPost;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\SuggestedPostInfoState;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Contains information about a suggested post.

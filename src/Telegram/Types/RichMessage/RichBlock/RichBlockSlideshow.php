@@ -7,7 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * A slideshow, corresponding to the custom HTML tag <code><tg-slideshow></code>.

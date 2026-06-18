@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object describes a unique gift that was upgraded from a regular gift.

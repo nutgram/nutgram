@@ -7,7 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MaskPositionPoint;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object describes the position on faces where a mask should be placed by default.

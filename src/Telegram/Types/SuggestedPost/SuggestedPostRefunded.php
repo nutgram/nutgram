@@ -6,7 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\SuggestedPost;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\SuggestedPostRefundedReason;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 /**

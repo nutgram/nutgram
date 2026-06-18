@@ -6,7 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Media;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\VideoQualityCodec;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object represents a video file of a specific quality.

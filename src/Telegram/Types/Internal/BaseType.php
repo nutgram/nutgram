@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SergiX44\Nutgram\Telegram\Types;
+namespace SergiX44\Nutgram\Telegram\Types\Internal;
 
 use BackedEnum;
 use Illuminate\Support\Traits\Macroable;
@@ -10,7 +10,6 @@ use JsonSerializable;
 use SergiX44\Container\Container;
 use SergiX44\Hydrator\Hydrator;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\Internal\Arrayable;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**

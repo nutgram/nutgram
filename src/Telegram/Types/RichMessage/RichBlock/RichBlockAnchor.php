@@ -6,7 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * A block with an anchor, corresponding to the HTML tag <code><a></code> with the attribute name.
