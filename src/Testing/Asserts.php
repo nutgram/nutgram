@@ -21,11 +21,13 @@ trait Asserts
     private int $sequenceIndex = 0;
 
     /**
+     * Asserts custom conditions on the request and response.
      * @param callable(Request):bool $closure
      * @param int|null $index
-     * @return $this
+     * @param string $message
+     * @return static
      */
-    public function assertRaw(callable $closure, ?int $index = null, string $message = ''): self
+    public function assertRaw(callable $closure, ?int $index = null, string $message = ''): static
     {
         $index = $index ?? $this->sequenceIndex;
         $reqRes = $this->testingHistory[$index];
@@ -40,11 +42,12 @@ trait Asserts
     }
 
     /**
+     * Asserts that a method was called.
      * @param string $method
      * @param int $times
-     * @return $this
+     * @return static
      */
-    public function assertCalled(string $method, int $times = 1): self
+    public function assertCalled(string $method, int $times = 1): static
     {
         $actual = 0;
         foreach ($this->testingHistory as $reqRes) {
@@ -62,12 +65,13 @@ trait Asserts
     }
 
     /**
+     * Asserts that a reply was sent.
      * @param string|string[] $method
      * @param array|null $expected
      * @param int|null $index
-     * @return $this
+     * @return static
      */
-    public function assertReply(string|array $method, ?array $expected = null, ?int $index = null): self
+    public function assertReply(string|array $method, ?array $expected = null, ?int $index = null): static
     {
         $index = $index ?? $this->sequenceIndex;
         $method = !is_array($method) ? [$method] : $method;
@@ -98,36 +102,39 @@ trait Asserts
     }
 
     /**
+     * Asserts that the reply message is equal to the expected message.
      * @param array $expected
      * @param int|null $index
      * @param string|null $forceMethod
-     * @return $this
+     * @return static
      */
-    public function assertReplyMessage(array $expected, ?int $index = null, ?string $forceMethod = null): self
+    public function assertReplyMessage(array $expected, ?int $index = null, ?string $forceMethod = null): static
     {
         $index = $index ?? $this->sequenceIndex;
         return $this->assertReply($forceMethod ?? $this->methodsReturnTypes[Message::class] ?? [], $expected, $index);
     }
 
     /**
+     * Asserts that the reply message text is equal to the expected text.
      * @param string $expected
      * @param int|null $index
-     * @return $this
+     * @return static
      */
-    public function assertReplyText(string $expected, ?int $index = null): self
+    public function assertReplyText(string $expected, ?int $index = null): static
     {
         $index = $index ?? $this->sequenceIndex;
         return $this->assertReplyMessage(['text' => $expected], $index);
     }
 
     /**
+     * Asserts that a conversation is active.
      * @param int|null $userId
      * @param int|null $chatId
      * @param int|null $threadId
-     * @return $this
+     * @return static
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function assertActiveConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): self
+    public function assertActiveConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): static
     {
         [$userId, $chatId] = $this->checkUserChatIds($userId, $chatId);
 
@@ -137,13 +144,14 @@ trait Asserts
     }
 
     /**
+     * Asserts that no conversation is active.
      * @param int|null $userId
      * @param int|null $chatId
      * @param int|null $threadId
-     * @return $this
+     * @return static
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function assertNoConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): self
+    public function assertNoConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): static
     {
         [$userId, $chatId] = $this->checkUserChatIds($userId, $chatId);
 
@@ -153,16 +161,22 @@ trait Asserts
     }
 
     /**
-     * @return $this
+     * Asserts that no reply was sent.
+     * @return static
      */
-    public function assertNoReply(): self
+    public function assertNoReply(): static
     {
         PHPUnit::assertEmpty($this->testingHistory, 'A reply was sent');
 
         return $this;
     }
 
-    public function assertSequence(callable ...$callbacks): self
+    /**
+     * Asserts that the sequence of calls is correct.
+     * @param callable ...$callbacks
+     * @return static
+     */
+    public function assertSequence(callable ...$callbacks): static
     {
         $closures = func_get_args();
 
