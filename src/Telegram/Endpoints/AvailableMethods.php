@@ -38,6 +38,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputPollMedia;
 use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhoto;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
@@ -1082,7 +1083,7 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#sendpaidmedia
      * @param int $star_count The number of Telegram Stars that must be paid to buy access to the media; 1-25000
-     * @param InputPaidMedia[] $media A JSON-serialized array describing the media to be sent; up to 10 items
+     * @param array<InputPaidMedia&Uploadables> $media A JSON-serialized array describing the media to be sent; up to 10 items
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string|null $caption Media caption, 0-1024 characters after entities parsing
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the voice message caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
