@@ -11,7 +11,7 @@ readonly class OutgoingResource implements JsonSerializable
 {
     public function __construct(
         protected ?string $name,
-        protected string $type,
+        protected string $mime,
         protected ?int $size,
         protected StreamInterface $stream,
     ) {
@@ -31,9 +31,9 @@ readonly class OutgoingResource implements JsonSerializable
         return $this->name;
     }
 
-    public function getType(): string
+    public function getMime(): string
     {
-        return $this->type;
+        return $this->mime;
     }
 
     public function getSize(): ?int

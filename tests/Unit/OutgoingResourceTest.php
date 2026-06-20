@@ -12,7 +12,7 @@ beforeEach(function () {
 
     $this->outgoingResource = new OutgoingResource(
         name: 'foo.txt',
-        type: 'text/plain',
+        mime: 'text/plain',
         size: 3,
         stream: Utils::streamFor($resource),
     );
@@ -24,7 +24,7 @@ it('returns serialized json', function ($name, $output) {
 
     $outgoingResource = new OutgoingResource(
         name: $name,
-        type: 'text/plain',
+        mime: 'text/plain',
         size: 3,
         stream: Utils::streamFor($resource),
     );
@@ -39,8 +39,8 @@ it('returns name', function () {
     expect($this->outgoingResource->getName())->toBe('foo.txt');
 });
 
-it('returns type', function () {
-    expect($this->outgoingResource->getType())->toBe('text/plain');
+it('returns mime', function () {
+    expect($this->outgoingResource->getMime())->toBe('text/plain');
 });
 
 it('returns size', function () {

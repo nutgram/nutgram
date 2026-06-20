@@ -71,7 +71,7 @@ class RequestData
             $stream = Utils::streamFor($part->getBody());
             $this->files[$part->getName()] = new OutgoingResource(
                 name: $part->getFileName(),
-                type: $part->getMimeType(),
+                mime: $part->getMimeType(),
                 size: $stream->getSize(),
                 stream: $stream,
             );
