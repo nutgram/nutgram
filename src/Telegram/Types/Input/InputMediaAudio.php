@@ -91,13 +91,13 @@ class InputMediaAudio extends BaseType implements InputMedia, InputPollMedia, Up
 
     public function __construct(
         InputFile|string $media,
-        InputFile|string|null $thumbnail,
-        ?string $caption,
-        ParseMode|string|null $parse_mode,
-        ?array $caption_entities,
-        ?int $duration,
-        ?string $performer,
-        ?string $title
+        InputFile|string|null $thumbnail = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?int $duration = null,
+        ?string $performer = null,
+        ?string $title = null,
     ) {
         parent::__construct();
         $this->media = $media;

@@ -81,11 +81,11 @@ class InputMediaDocument extends BaseType implements InputMedia, InputPollMedia,
 
     public function __construct(
         InputFile|string $media,
-        InputFile|string|null $thumbnail,
-        ?string $caption,
-        ParseMode|string|null $parse_mode,
-        ?array $caption_entities,
-        ?bool $disable_content_type_detection
+        InputFile|string|null $thumbnail = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $disable_content_type_detection = null,
     ) {
         parent::__construct();
         $this->media = $media;
