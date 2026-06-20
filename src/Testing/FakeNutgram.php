@@ -353,7 +353,7 @@ class FakeNutgram extends Nutgram
     public static function getActualData(Request $request, array $mapping = []): array
     {
         $data = new RequestData($request);
-        $data->when($data->isMultipart(), function(RequestData $data) use ($mapping) {
+        $data->when($data->isMultipart(), function (RequestData $data) use ($mapping) {
             $data->withMapping(array_map(fn ($value) => gettype($value), $mapping));
         });
 

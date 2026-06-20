@@ -37,7 +37,7 @@ class RequestData
         try {
             $body = (string)$request->getBody();
 
-            if(json_validate($body)) {
+            if (json_validate($body)) {
                 $data = json_decode($body, true, flags: JSON_THROW_ON_ERROR);
                 $this->data = $data;
                 $this->rawData = $data;
@@ -55,14 +55,14 @@ class RequestData
         $body = 'Content-Type: '.$this->header('Content-Type')."\n\n".$body;
         $content = new StreamedPart(Utils::streamFor($body)->detach());
 
-        if(!$content->isMultipart()) {
+        if (!$content->isMultipart()) {
             return;
         }
 
         $this->multipart = true;
         $parts = $content->getParts();
         foreach ($parts as $part) {
-            if(!$part->isFile()){
+            if (!$part->isFile()) {
                 $this->rawData[$part->getName()] = $part->getBody();
                 $this->data[$part->getName()] = $this->remapBodyPart($part->getBody());
                 continue;
@@ -80,7 +80,7 @@ class RequestData
 
     protected function remapBodyPart(mixed $value): mixed
     {
-        if(is_string($value) && json_validate($value) && is_nonscalar_json($value)) {
+        if (is_string($value) && json_validate($value) && is_nonscalar_json($value)) {
             return json_decode($value, true, flags: JSON_THROW_ON_ERROR);
         }
 
@@ -113,7 +113,7 @@ class RequestData
 
     public function withMapping(array $mapping): static
     {
-        $caster = fn(string $cast, mixed $value) => match ($cast) {
+        $caster = fn (string $cast, mixed $value) => match ($cast) {
             'integer', 'int' => filter_var($value, FILTER_VALIDATE_INT),
             'double', 'float' => filter_var($value, FILTER_VALIDATE_FLOAT),
             'boolean', 'bool' => filter_var($value, FILTER_VALIDATE_BOOLEAN),
@@ -121,12 +121,12 @@ class RequestData
         };
 
         foreach ($mapping as $key => $cast) {
-            if(array_key_exists($key, $this->data)) {
-                $this->data[$key] = $caster($cast,$this->data[$key]);
+            if (array_key_exists($key, $this->data)) {
+                $this->data[$key] = $caster($cast, $this->data[$key]);
             }
 
-            if(array_key_exists($key, $this->rawData)) {
-                $this->rawData[$key] = $caster($cast,$this->rawData[$key]);
+            if (array_key_exists($key, $this->rawData)) {
+                $this->rawData[$key] = $caster($cast, $this->rawData[$key]);
             }
         }
 

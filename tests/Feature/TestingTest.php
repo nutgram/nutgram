@@ -38,7 +38,6 @@ test('assertRaw without files', function () {
 });
 
 test('assertRaw with file', function () {
-
     $bot = Nutgram::fake();
 
     $bot->onCommand('test', function (Nutgram $bot) {
@@ -77,7 +76,8 @@ test('assertRaw with multiple files', function () {
                     media: InputFile::makeFromString('bar', 'bar.txt'),
                     caption: 'bar',
                 ),
-            ]);
+            ]
+        );
     });
 
     $bot->hearText('/test')
@@ -270,4 +270,3 @@ test('assertSequence executed', function () {
             fn (FakeNutgram $x) => $x->assertReplyText('test 2')
         );
 });
-

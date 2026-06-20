@@ -31,7 +31,7 @@ trait Asserts
         $index = $index ?? $this->sequenceIndex;
         $reqRes = $this->testingHistory[$index] ?? null;
 
-        if($reqRes === null) {
+        if ($reqRes === null) {
             PHPUnit::fail('No request found');
         }
 
