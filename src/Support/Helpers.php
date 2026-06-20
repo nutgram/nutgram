@@ -119,3 +119,9 @@ function dot_has(array $array, string $key): bool {
 
     return true;
 }
+
+function is_nonscalar_json(string $value): bool {
+
+    return (str_starts_with($value, '{') && str_ends_with($value, '}'))
+        || (str_starts_with($value, '[') && str_ends_with($value, ']'));
+}

@@ -14,7 +14,6 @@ beforeEach(function () {
         name: 'foo.txt',
         type: 'text/plain',
         size: 3,
-        error: 0,
         stream: Utils::streamFor($resource),
     );
 });
@@ -27,7 +26,6 @@ it('returns serialized json', function ($name, $output) {
         name: $name,
         type: 'text/plain',
         size: 3,
-        error: 0,
         stream: Utils::streamFor($resource),
     );
 
@@ -47,10 +45,6 @@ it('returns type', function () {
 
 it('returns size', function () {
     expect($this->outgoingResource->getSize())->toBe(3);
-});
-
-it('returns error', function () {
-    expect($this->outgoingResource->getError())->toBe(0);
 });
 
 it('returns stream', function () {

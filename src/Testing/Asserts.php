@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Testing;
 
-use ArrayAccess;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Testing\Assert;
@@ -22,7 +21,7 @@ trait Asserts
 
     /**
      * Asserts custom conditions on the request and response.
-     * @param callable(Request):bool $closure
+     * @param callable(RequestData, ResponseData):bool $closure
      * @param int|null $index
      * @param string $message
      * @return static
@@ -30,13 +29,17 @@ trait Asserts
     public function assertRaw(callable $closure, ?int $index = null, string $message = ''): static
     {
         $index = $index ?? $this->sequenceIndex;
-        $reqRes = $this->testingHistory[$index];
+        $reqRes = $this->testingHistory[$index] ?? null;
+
+        if($reqRes === null) {
+            PHPUnit::fail('No request found');
+        }
 
         /** @var Request $request */
         /** @var Response $response */
         [$request, $response] = array_values($reqRes);
 
-        PHPUnit::assertTrue($closure($request, new ResponseData($response)), $message);
+        PHPUnit::assertTrue($closure(new RequestData($request), new ResponseData($response)), $message);
 
         return $this;
     }
@@ -76,7 +79,7 @@ trait Asserts
         $index = $index ?? $this->sequenceIndex;
         $method = !is_array($method) ? [$method] : $method;
 
-        $reqRes = $this->testingHistory[$index];
+        $reqRes = $this->testingHistory[$index] ?? null;
 
         if ($reqRes === null) {
             PHPUnit::fail('No request found');
@@ -95,7 +98,7 @@ trait Asserts
                 $actual = [];
             }
 
-            $this->assertArraySubset($expected, $actual, msg: 'Sub array not found in the request body');
+            Assert::assertArraySubset($expected, $actual, msg: 'Sub array not found in the request body');
         }
 
         return $this;
@@ -188,15 +191,6 @@ trait Asserts
         $this->sequenceIndex = 0;
 
         return $this;
-    }
-
-    protected function assertArraySubset(
-        ArrayAccess|array $subset,
-        ArrayAccess|array $array,
-        bool $checkForIdentity = false,
-        string $msg = ''
-    ): void {
-        Assert::assertArraySubset($subset, $array, $checkForIdentity, $msg);
     }
 
     /**
