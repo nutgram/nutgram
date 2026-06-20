@@ -90,7 +90,8 @@ function get_value(mixed $value): mixed
     return $value instanceof BackedEnum ? (string)$value->value : $value;
 }
 
-function dot_get(array $array, string $key, mixed $default = null): mixed {
+function dot_get(array $array, string $key, mixed $default = null): mixed
+{
     $dotKeys = explode('.', $key);
     $return = $array;
 
@@ -105,7 +106,8 @@ function dot_get(array $array, string $key, mixed $default = null): mixed {
     return $return;
 }
 
-function dot_has(array $array, string $key): bool {
+function dot_has(array $array, string $key): bool
+{
     $dotKeys = explode('.', $key);
     $return = $array;
 
@@ -120,8 +122,8 @@ function dot_has(array $array, string $key): bool {
     return true;
 }
 
-function is_nonscalar_json(string $value): bool {
-
+function is_nonscalar_json(string $value): bool
+{
     return (str_starts_with($value, '{') && str_ends_with($value, '}'))
         || (str_starts_with($value, '[') && str_ends_with($value, ']'));
 }
