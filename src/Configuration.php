@@ -53,7 +53,6 @@ final readonly class Configuration
 
     public function __construct(
         public string $apiUrl = self::DEFAULT_API_URL,
-        public ?int $botId = null,
         public ?string $botName = null,
         public bool $testEnv = false,
         public bool $isLocal = false,
@@ -77,7 +76,6 @@ final readonly class Configuration
     {
         return new self(
             apiUrl: $config['api_url'] ?? self::DEFAULT_API_URL,
-            botId: $config['bot_id'] ?? null,
             botName: $config['bot_name'] ?? null,
             testEnv: $config['test_env'] ?? false,
             isLocal: $config['is_local'] ?? false,
@@ -102,7 +100,6 @@ final readonly class Configuration
     {
         return [
             'api_url' => $this->apiUrl,
-            'bot_id' => $this->botId,
             'bot_name' => $this->botName,
             'test_env' => $this->testEnv,
             'is_local' => $this->isLocal,
