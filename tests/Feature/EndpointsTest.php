@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\StreamInterface;
 use SergiX44\Nutgram\Nutgram;
@@ -18,7 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\User\User;
-use SergiX44\Nutgram\Testing\FormDataParser;
+use SergiX44\Nutgram\Testing\RequestData;
 
 it('throws exception when text is too long', function ($responseBody) {
     $textOriginal = str_repeat('a', Limits::TEXT_LENGTH + 1);
@@ -178,9 +177,8 @@ it('uploads a file with attach:// logic', function () {
         ->assertReply('editMessageMedia', [
             'media' => '{"type":"photo","media":"attach:\\/\\/photoB.jpg","caption":"B"}',
         ], 1)
-        ->assertRaw(function (Request $request) {
-            $photo = FormDataParser::parse($request)->files['photoB.jpg'];
-            return $photo->getName() === 'photoB.jpg';
+        ->assertRaw(function (RequestData $request) {
+            return $request->hasFile('photoB.jpg');
         }, 1);
 });
 
