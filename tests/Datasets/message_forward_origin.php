@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 dataset('message_forward_origin', function () {
     $file = file_get_contents(__DIR__.'/../Fixtures/Updates/message_forward_origin.json');
 

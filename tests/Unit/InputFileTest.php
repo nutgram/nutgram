@@ -1,45 +1,74 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Psr7\Utils;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 
-it('returns filename with in memory file', function () {
-    $f = fopen('php://memory', 'rwb+');
-    fwrite($f, 'hi!');
-    $inputFile = new InputFile($f);
+it('works with StreamInterface', function () {
+    $stream = Utils::streamFor('foo');
+    $inputFile = new InputFile($stream);
 
-    expect($inputFile->getFilename())->toBe('memory');
+    expect($inputFile)
+        ->toBeInstanceOf(InputFile::class)
+        ->getFilename()->toBe('temp')
+        ->getStream()->getContents()->toBe('foo');
 });
 
-it('returns filename with stream', function () {
-    $f = Utils::streamFor('test')->detach();
-    $inputFile = new InputFile($f);
+it('works with resource', function () {
+    $stream = Utils::streamFor('foo')->detach();
+    $inputFile = new InputFile($stream);
 
-    expect($inputFile->getFilename())->toBe('temp');
+    expect($inputFile)
+        ->toBeInstanceOf(InputFile::class)
+        ->getFilename()->toBe('temp')
+        ->getStream()->getContents()->toBe('foo');
 });
 
-it('returns custom filename if set', function () {
-    $f = Utils::streamFor('test')->detach();
-    $inputFile = new InputFile($f, 'name.txt');
+it('works with uri', function () {
+    $stream = 'https://placehold.co/400';
+    $inputFile = new InputFile($stream);
 
-    expect($inputFile->getFilename())->toBe('name.txt');
+    expect($inputFile)
+        ->toBeInstanceOf(InputFile::class)
+        ->getFilename()->toBe('400');
 });
 
-it('works for filesystem files and custom name', function () {
-    $f = fopen(__DIR__.'/../Fixtures/Updates/command.json', 'rb+');
-    $inputFile = new InputFile($f, 'name.txt');
+it('works with text', function () {
+    $inputFile = InputFile::makeFromString('foo');
 
-    expect($inputFile->getFilename())->toBe('name.txt');
+    expect($inputFile)
+        ->toBeInstanceOf(InputFile::class)
+        ->getFilename()->toBe('temp')
+        ->getStream()->getContents()->toBe('foo');
 });
 
-it('works for filesystem files', function () {
-    $f = fopen(__DIR__.'/../Fixtures/Updates/command.json', 'rb+');
-    $inputFile = new InputFile($f);
+it('works with file path', function () {
+    $stream = __DIR__.'/../Fixtures/sample.txt';
+    $inputFile = InputFile::make($stream);
 
-    expect($inputFile->getFilename())->toBe('command.json');
+    expect($inputFile)
+        ->toBeInstanceOf(InputFile::class)
+        ->getFilename()->toBe('sample.txt')
+        ->getStream()->getContents()->toBe('foo');
 });
 
-it('throws exception for invalid resources', function () {
-    $f = 'a string';
-    $inputFile = new InputFile($f);
-})->throws(InvalidArgumentException::class);
+it('gets the filename and content', function (?string $filename, string $expectedFilename) {
+    $stream = __DIR__.'/../Fixtures/sample.txt';
+    $inputFile = new InputFile($stream, $filename);
+
+    expect($inputFile->getStream()->getContents())->toBe('foo');
+    expect($inputFile->getFilename())->toBe($expectedFilename);
+    expect(json_encode($inputFile, JSON_UNESCAPED_SLASHES))->toBe(sprintf('"attach://%s"', $expectedFilename));
+})->with([
+    'keep' => [null, 'sample.txt'],
+    'custom' => ['custom.txt', 'custom.txt'],
+]);
+
+it('throws exception for invalid stream', function () {
+    InputFile::make('foo');
+})->throws(RuntimeException::class, 'Unable to open "foo" using mode "rb": fopen(foo): Failed to open stream: No such file or directory');
+
+it('throws exception for invalid argument', function () {
+    InputFile::make(123);
+})->throws(InvalidArgumentException::class, 'Invalid stream specified.');

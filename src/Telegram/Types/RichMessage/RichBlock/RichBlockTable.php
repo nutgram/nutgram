@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
+use SergiX44\Nutgram\Telegram\Types\Internal\RichTextUnionResolver;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
-use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextUnionResolver;
 
 /**
  * A table, corresponding to the HTML tag <code><table></code>.
@@ -43,6 +46,6 @@ class RichBlockTable extends BaseType implements RichBlock
      * @var string|RichText[]|RichText|null
      */
     #[ArrayType(RichText::class)]
-    #[RichTextUnionResolver]
+    #[BaseUnion]
     public string|array|RichText|null $caption = null;
 }

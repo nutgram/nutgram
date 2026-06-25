@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
-use function SergiX44\Nutgram\Support\array_filter_null;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a venue message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputvenuemessagecontent
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputVenueMessageContent extends InputMessageContent
 {
     /** Latitude of the venue in degrees */
@@ -69,41 +70,5 @@ class InputVenueMessageContent extends InputMessageContent
         $this->foursquare_type = $foursquare_type;
         $this->google_place_id = $google_place_id;
         $this->google_place_type = $google_place_type;
-    }
-
-    public static function make(
-        float $latitude,
-        float $longitude,
-        string $title,
-        string $address,
-        ?string $foursquare_id = null,
-        ?string $foursquare_type = null,
-        ?string $google_place_id = null,
-        ?string $google_place_type = null,
-    ): self {
-        return new self(
-            latitude: $latitude,
-            longitude: $longitude,
-            title: $title,
-            address: $address,
-            foursquare_id: $foursquare_id,
-            foursquare_type: $foursquare_type,
-            google_place_id: $google_place_id,
-            google_place_type: $google_place_type,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            'title' => $this->title,
-            'address' => $this->address,
-            'foursquare_id' => $this->foursquare_id,
-            'foursquare_type' => $this->foursquare_type,
-            'google_place_id' => $this->google_place_id,
-            'google_place_type' => $this->google_place_type,
-        ]);
     }
 }

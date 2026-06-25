@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputProfilePhotoType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 
@@ -13,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
  * An animated profile photo in the MPEG4 format.
  * @see https://core.telegram.org/bots/api#inputprofilephotoanimated
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputProfilePhotoAnimated extends BaseType implements InputProfilePhoto, Uploadables
 {
     /**
@@ -27,6 +30,7 @@ class InputProfilePhotoAnimated extends BaseType implements InputProfilePhoto, U
      * so you can pass “attach://<file_attach_name>” if the photo was uploaded using multipart/form-data under <file_attach_name>.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string $animation;
 
     /**
