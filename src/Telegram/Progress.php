@@ -7,29 +7,18 @@ namespace SergiX44\Nutgram\Telegram;
 final readonly class Progress
 {
     public function __construct(
-        public int $totalDownloadBytes,
-        public int $downloadedBytes,
-        public int $totalUploadBytes,
-        public int $uploadedBytes,
+        public int $totalBytes,
+        public int $currentBytes,
+        public ProgressType $type,
     ) {
     }
 
-    public function downloadPercentage(int $precision = 0): float
+    public function percentage(int $precision = 0): float
     {
         return $this->mapRange(
-            current: $this->downloadedBytes,
+            current: $this->currentBytes,
             sourceStart: 1,
-            sourceEnd: $this->totalDownloadBytes,
-            precision: $precision
-        );
-    }
-
-    public function uploadPercentage(int $precision = 0): float
-    {
-        return $this->mapRange(
-            current: $this->uploadedBytes,
-            sourceStart: 1,
-            sourceEnd: $this->totalUploadBytes,
+            sourceEnd: $this->totalBytes,
             precision: $precision
         );
     }
