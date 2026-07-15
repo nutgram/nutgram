@@ -329,7 +329,7 @@ abstract class ResolveHandlers extends CollectHandlers
                             $leaf->middleware($middleware);
                         }
                         if ($leaf instanceof Command) {
-                            if(!empty($scopes)){
+                            if (!empty($scopes)) {
                                 $leaf->scope($scopes);
                             }
                             $leaf->ephemeral($group->isEphemeral());

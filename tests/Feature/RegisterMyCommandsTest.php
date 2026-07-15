@@ -618,20 +618,18 @@ test('register ephimeral commands', function () {
         $bot->sendMessage('Start command!');
     })->description('Start command');
 
-    $bot->onCommand('admin', function(Nutgram $bot){
+    $bot->onCommand('admin', function (Nutgram $bot) {
         $bot->sendMessage('Admin command!');
     })->description('Admin command')->ephemeral();
 
-    $bot->group(function(Nutgram $bot){
-
-        $bot->onCommand('ban', function(Nutgram $bot){
+    $bot->group(function (Nutgram $bot) {
+        $bot->onCommand('ban', function (Nutgram $bot) {
             $bot->sendMessage('ban command!');
         })->description('ban command');
 
-        $bot->onCommand('mute', function(Nutgram $bot){
+        $bot->onCommand('mute', function (Nutgram $bot) {
             $bot->sendMessage('mute command!');
         })->description('mute command');
-
     })->ephemeral();
 
     $bot->registerCommand(new class extends Command {
