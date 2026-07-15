@@ -9,6 +9,7 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessIntro;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessLocation;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessOpeningHours;
+use SergiX44\Nutgram\Telegram\Types\Community\Community;
 use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
@@ -392,7 +393,18 @@ class Chat extends BaseType
      */
     public ?int $paid_message_star_count = null;
 
+    /**
+     * Optional.
+     * The bot that processes join request queries in the chat.
+     * The field is only available to chat administrators.
+     */
     public ?User $guard_bot = null;
+
+    /**
+     * Optional.
+     * The {@see https://core.telegram.org/bots/api#community Community} to which the chat belongs
+     */
+    public ?Community $community = null;
 
     public static function make(
         int $id,
@@ -431,6 +443,7 @@ class Chat extends BaseType
         ?int $paid_message_star_count = null,
         ?Audio $first_profile_audio = null,
         ?User $guard_bot = null,
+        ?Community $community = null
     ): Chat {
         $chat = new self();
         $chat->id = $id;
@@ -469,6 +482,7 @@ class Chat extends BaseType
         $chat->paid_message_star_count = $paid_message_star_count;
         $chat->first_profile_audio = $first_profile_audio;
         $chat->guard_bot = $guard_bot;
+        $chat->community = $community;
         return $chat;
     }
 

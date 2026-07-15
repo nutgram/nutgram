@@ -118,6 +118,9 @@ abstract class ResolveHandlers extends CollectHandlers
         } elseif ($updateType === UpdateType::CHAT_JOIN_REQUEST) {
             $data = $this->update->chat_join_request?->query_id;
             $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::SUBSCRIPTION) {
+            $data = $this->update->subscription?->invoice_payload;
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         }
 
         if (empty($resolvedHandlers) && $updateType !== null) {
@@ -325,8 +328,11 @@ abstract class ResolveHandlers extends CollectHandlers
                         foreach ($middlewares as $middleware) {
                             $leaf->middleware($middleware);
                         }
-                        if ($leaf instanceof Command && !empty($scopes)) {
-                            $leaf->scope($scopes);
+                        if ($leaf instanceof Command) {
+                            if(!empty($scopes)){
+                                $leaf->scope($scopes);
+                            }
+                            $leaf->ephemeral($group->isEphemeral());
                         }
                         $leaf->tags([...$leaf->getTags(), ...$tags]);
                         $leaf->unless($group->isDisabled());

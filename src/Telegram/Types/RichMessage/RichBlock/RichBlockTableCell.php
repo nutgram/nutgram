@@ -2,7 +2,9 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock;
 
+use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockTableCellAlign;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockTableCellValign;
@@ -14,7 +16,8 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextUnionResolver;
  * Cell in a table.
  * @see https://core.telegram.org/bots/api#richblocktablecell
  */
-class RichBlockTableCell extends BaseType
+#[SkipConstructor]
+class RichBlockTableCell extends BaseType implements JsonSerializable
 {
     /**
      * Optional. Text in the cell. If omitted, then the cell is invisible.
@@ -50,4 +53,26 @@ class RichBlockTableCell extends BaseType
      */
     #[EnumOrScalar]
     public RichBlockTableCellValign|string $valign;
+
+    public function __construct(
+        RichBlockTableCellAlign|string $align,
+        RichBlockTableCellValign|string $valign,
+        string|array|RichText|null $text = null,
+        ?bool $is_header = null,
+        ?int $colspan = null,
+        ?int $rowspan = null,
+    ) {
+        parent::__construct();
+        $this->align = $align;
+        $this->valign = $valign;
+        $this->text = $text;
+        $this->is_header = $is_header;
+        $this->colspan = $colspan;
+        $this->rowspan = $rowspan;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
 }

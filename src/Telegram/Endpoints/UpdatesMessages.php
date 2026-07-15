@@ -290,6 +290,150 @@ trait UpdatesMessages
     }
 
     /**
+     * Use this method to edit an ephemeral text message.
+     * Note that it is not guaranteed that the user will receive the message edit event, especially if they are offline.
+     * On success, True is returned.
+     * @param string $text New text of the message, 1-4096 characters after entity parsing
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $receiver_user_id Identifier of the user who received the message
+     * @param int|null $ephemeral_message_id Identifier of the ephemeral message to edit
+     * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message text. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
+     * @param LinkPreviewOptions|null $link_preview_options Link preview generation options for the message
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#editephemeralmessagetext
+     */
+    public function editEphemeralMessageText(
+        string $text,
+        int|string|null $chat_id = null,
+        ?int $receiver_user_id = null,
+        ?int $ephemeral_message_id = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $entities = null,
+        ?LinkPreviewOptions $link_preview_options = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+    ): ?bool {
+        $parameters = compact(
+            'text',
+            'chat_id',
+            'receiver_user_id',
+            'ephemeral_message_id',
+            'parse_mode',
+            'entities',
+            'link_preview_options',
+            'reply_markup',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['receiver_user_id'] ??= $this->receiverUserId();
+        $parameters['ephemeral_message_id'] ??= $this->ephemeralMessageId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to edit the media of an ephemeral message.
+     * Note that it is not guaranteed that the user will receive the message edit event, especially if they are offline.
+     * On success, True is returned.
+     * @param InputMedia $media A JSON-serialized object for the new media content of the message. A new file can't be uploaded; use a previously uploaded file via its file_id or specify a URL.
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $receiver_user_id Identifier of the user who received the message
+     * @param int|null $ephemeral_message_id Identifier of the ephemeral message to edit
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#editephemeralmessagemedia
+     */
+    public function editEphemeralMessageMedia(
+        InputMedia $media,
+        int|string|null $chat_id = null,
+        ?int $receiver_user_id = null,
+        ?int $ephemeral_message_id = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+    ): ?bool {
+        $parameters = compact(
+            'media',
+            'chat_id',
+            'receiver_user_id',
+            'ephemeral_message_id',
+            'reply_markup',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['receiver_user_id'] ??= $this->receiverUserId();
+        $parameters['ephemeral_message_id'] ??= $this->ephemeralMessageId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to edit the caption of an ephemeral message.
+     * Note that it is not guaranteed that the user will receive the message edit event, especially if they are offline.
+     * On success, True is returned.
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $receiver_user_id Identifier of the user who received the message
+     * @param int|null $ephemeral_message_id Identifier of the ephemeral message to edit
+     * @param string|null $caption New caption of the message, 0-1024 characters after entities parsing
+     * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param array|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#editephemeralmessagecaption
+     */
+    public function editEphemeralMessageCaption(
+        int|string|null $chat_id = null,
+        ?int $receiver_user_id = null,
+        ?int $ephemeral_message_id = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+    ): ?bool {
+        $parameters = compact(
+            'chat_id',
+            'receiver_user_id',
+            'ephemeral_message_id',
+            'caption',
+            'parse_mode',
+            'caption_entities',
+            'reply_markup',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['receiver_user_id'] ??= $this->receiverUserId();
+        $parameters['ephemeral_message_id'] ??= $this->ephemeralMessageId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to edit only the reply markup of an ephemeral message.
+     * Note that it is not guaranteed that the user will receive the message edit event, especially if they are offline.
+     * On success, True is returned.
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $receiver_user_id Identifier of the user who received the message
+     * @param int|null $ephemeral_message_id Identifier of the ephemeral message to edit
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#editephemeralmessagereplymarkup
+     */
+    public function editEphemeralMessageReplyMarkup(
+        int|string|null $chat_id = null,
+        ?int $receiver_user_id = null,
+        ?int $ephemeral_message_id = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+    ): ?bool {
+        $parameters = compact(
+            'chat_id',
+            'receiver_user_id',
+            'ephemeral_message_id',
+            'reply_markup',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['receiver_user_id'] ??= $this->receiverUserId();
+        $parameters['ephemeral_message_id'] ??= $this->ephemeralMessageId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
      * Use this method to approve a suggested post in a direct messages chat.
      * The bot must have the 'can_post_messages' administrator right in the corresponding channel chat.
      * Returns True on success.
@@ -362,6 +506,30 @@ trait UpdatesMessages
     public function deleteMessages(int|string $chat_id, array $message_ids): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_ids'));
+    }
+
+    /**
+     * Use this method to delete an ephemeral message.
+     * Note that it is not guaranteed that the user will receive the message deletion event,
+     * especially if they are offline.
+     * Returns True on success.
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $receiver_user_id Identifier of the user who received the message
+     * @param int|null $ephemeral_message_id Identifier of the ephemeral message to delete
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#deleteephemeralmessage
+     */
+    public function deleteEphemeralMessage(
+        int|string|null $chat_id = null,
+        int|null $receiver_user_id = null,
+        int|null $ephemeral_message_id = null,
+    ): ?bool {
+        $parameters = compact('chat_id', 'receiver_user_id', 'ephemeral_message_id');
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['receiver_user_id'] ??= $this->receiverUserId();
+        $parameters['ephemeral_message_id'] ??= $this->ephemeralMessageId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
