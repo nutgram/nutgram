@@ -184,7 +184,7 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        if($this->message()?->isEphemeral()) {
+        if ($this->message()?->isEphemeral()) {
             $parameters['receiver_user_id'] ??= $this->receiverUserId();
             $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
         }
@@ -519,7 +519,7 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        if($this->message()?->isEphemeral()) {
+        if ($this->message()?->isEphemeral()) {
             $parameters['receiver_user_id'] ??= $this->receiverUserId();
             $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
         }
@@ -685,7 +685,7 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        if($this->message()?->isEphemeral()) {
+        if ($this->message()?->isEphemeral()) {
             $parameters['receiver_user_id'] ??= $this->receiverUserId();
             $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
         }
@@ -774,7 +774,7 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        if($this->message()?->isEphemeral()) {
+        if ($this->message()?->isEphemeral()) {
             $parameters['receiver_user_id'] ??= $this->receiverUserId();
             $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
         }
@@ -884,7 +884,7 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        if($this->message()?->isEphemeral()) {
+        if ($this->message()?->isEphemeral()) {
             $parameters['receiver_user_id'] ??= $this->receiverUserId();
             $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
         }
@@ -985,7 +985,7 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        if($this->message()?->isEphemeral()) {
+        if ($this->message()?->isEphemeral()) {
             $parameters['receiver_user_id'] ??= $this->receiverUserId();
             $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
         }
@@ -1072,7 +1072,7 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        if($this->message()?->isEphemeral()) {
+        if ($this->message()?->isEphemeral()) {
             $parameters['receiver_user_id'] ??= $this->receiverUserId();
             $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
         }
@@ -1155,7 +1155,7 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        if($this->message()?->isEphemeral()) {
+        if ($this->message()?->isEphemeral()) {
             $parameters['receiver_user_id'] ??= $this->receiverUserId();
             $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
         }
@@ -1372,7 +1372,7 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        if($this->message()?->isEphemeral()) {
+        if ($this->message()?->isEphemeral()) {
             $parameters['receiver_user_id'] ??= $this->receiverUserId();
             $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
         }
@@ -1494,7 +1494,7 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        if($this->message()?->isEphemeral()) {
+        if ($this->message()?->isEphemeral()) {
             $parameters['receiver_user_id'] ??= $this->receiverUserId();
             $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
         }
@@ -1574,7 +1574,7 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        if($this->message()?->isEphemeral()) {
+        if ($this->message()?->isEphemeral()) {
             $parameters['receiver_user_id'] ??= $this->receiverUserId();
             $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
         }

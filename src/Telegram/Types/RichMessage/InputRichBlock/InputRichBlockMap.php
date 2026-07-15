@@ -55,7 +55,8 @@ class InputRichBlockMap extends BaseType implements InputRichBlock, JsonSerializ
         int $zoom,
         int $width,
         int $height,
-        ?RichBlockCaption $caption = null)
+        ?RichBlockCaption $caption = null
+    )
     {
         parent::__construct();
         $this->location = $location;

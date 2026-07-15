@@ -740,7 +740,7 @@ it('calls onPollOptionDeleted handler', function ($update) {
     expect($bot->get('called'))->toBeTrue();
 })->with('poll_option_deleted');
 
-it('calls onCommunityChatAdded handler', function($update){
+it('calls onCommunityChatAdded handler', function ($update) {
     $bot = Nutgram::fake($update);
 
     $bot->onCommunityChatAdded(function (Nutgram $bot) {
@@ -752,7 +752,7 @@ it('calls onCommunityChatAdded handler', function($update){
     expect($bot->get('called'))->toBeTrue();
 })->with('community_chat_added');
 
-it('calls onCommunityChatRemoved handler', function($update) {
+it('calls onCommunityChatRemoved handler', function ($update) {
     $bot = Nutgram::fake($update);
 
     $bot->onCommunityChatRemoved(function (Nutgram $bot) {
