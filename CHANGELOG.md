@@ -2,6 +2,15 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.48.0 - 2026-07-18
+
+### What's Changed
+
+* Update to Bot API 10.2 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/990
+* Fix: handle `object` type in `RichTextUnionResolver` by @Lukasss93 in https://github.com/nutgram/nutgram/pull/994
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.47.1...4.48.0
+
 ## 4.47.1 - 2026-06-14
 
 ### What's Changed
