@@ -2,39 +2,43 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Location;
 
+use JsonSerializable;
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * This object represents a point on the map.
  * @see https://core.telegram.org/bots/api#location
  */
-class Location extends BaseType
+#[SkipConstructor]
+class Location extends BaseType implements JsonSerializable
 {
-    /** Longitude as defined by sender */
+    /**
+     * Longitude as defined by sender
+     */
     public float $longitude;
 
-    /** Latitude as defined by sender */
+    /**
+     * Latitude as defined by sender
+     */
     public float $latitude;
 
     /**
      * Optional.
-     * The radius of uncertainty for the location, measured in meters;
-     * 0-1500
+     * The radius of uncertainty for the location, measured in meters; 0-1500
      */
     public ?float $horizontal_accuracy = null;
 
     /**
      * Optional.
-     * Time relative to the message sending date, during which the location can be updated;
-     * in seconds.
+     * Time relative to the message sending date, during which the location can be updated; in seconds.
      * For active live locations only.
      */
     public ?int $live_period = null;
 
     /**
      * Optional.
-     * The direction in which user is moving, in degrees;
-     * 1-360.
+     * The direction in which user is moving, in degrees; 1-360.
      * For active live locations only.
      */
     public ?int $heading = null;
@@ -45,4 +49,26 @@ class Location extends BaseType
      * For sent live locations only.
      */
     public ?int $proximity_alert_radius = null;
+
+    public function __construct(
+        float $longitude,
+        float $latitude,
+        ?float $horizontal_accuracy = null,
+        ?int $live_period = null,
+        ?int $heading = null,
+        ?int $proximity_alert_radius = null,
+    ) {
+        parent::__construct();
+        $this->longitude = $longitude;
+        $this->latitude = $latitude;
+        $this->horizontal_accuracy = $horizontal_accuracy;
+        $this->live_period = $live_period;
+        $this->heading = $heading;
+        $this->proximity_alert_radius = $proximity_alert_radius;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
 }

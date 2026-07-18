@@ -3,7 +3,6 @@
 namespace SergiX44\Nutgram\Handlers\Listeners;
 
 use InvalidArgumentException;
-use SergiX44\Nutgram\Exception\StatusFinalizedException;
 use SergiX44\Nutgram\Handlers\CollectHandlers;
 use SergiX44\Nutgram\Handlers\Handler;
 use SergiX44\Nutgram\Handlers\Type\Command;
@@ -685,15 +684,43 @@ trait MessageListeners
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::MANAGED_BOT_CREATED->value][] = new Handler($callable);
     }
 
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
     public function onPollOptionAdded($callable): Handler
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::POLL_OPTION_ADDED->value][] = new Handler($callable);
     }
 
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
     public function onPollOptionDeleted($callable): Handler
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::POLL_OPTION_DELETED->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onCommunityChatAdded($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::COMMUNITY_CHAT_ADDED->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onCommunityChatRemoved($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::COMMUNITY_CHAT_REMOVED->value][] = new Handler($callable);
     }
 }

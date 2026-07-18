@@ -31,6 +31,7 @@ final readonly class Configuration
         'business_message',
         'edited_business_message',
         'deleted_business_messages',
+        'guest_message',
         'message_reaction',
         'message_reaction_count',
         'inline_query',
@@ -47,8 +48,9 @@ final readonly class Configuration
         'chat_boost',
         'removed_chat_boost',
         'managed_bot',
-        'guest_message',
+        'subscription',
     ];
+
     public const DEFAULT_ENABLE_HTTP2 = true;
 
     public const DEFAULT_CONVERSATION_TTL = 43200;

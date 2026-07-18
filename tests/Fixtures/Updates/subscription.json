@@ -1,0 +1,16 @@
+{
+  "update_id": 144011148,
+  "subscription": {
+    "user": {
+      "id": 12345,
+      "is_bot": false,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "language_code": "it",
+      "is_premium": false
+    },
+    "invoice_payload": "foo",
+    "state": "active"
+  }
+}
