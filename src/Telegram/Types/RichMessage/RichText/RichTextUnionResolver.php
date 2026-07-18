@@ -17,6 +17,7 @@ class RichTextUnionResolver extends UnionResolver
 
         $valueType = match ($valueType) {
             'NULL' => 'null',
+            'object' => RichText::class,
             default => $valueType,
         };
 
