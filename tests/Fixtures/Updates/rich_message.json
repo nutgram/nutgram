@@ -1,0 +1,51 @@
+{
+  "message_id": 1234,
+  "from": {
+    "id": 987654321,
+    "is_bot": true,
+    "first_name": "Test Bot",
+    "username": "mytestbot"
+  },
+  "chat": {
+    "id": 12345678,
+    "first_name": "Mario",
+    "last_name": "Bros",
+    "username": "SuperMario",
+    "type": "private"
+  },
+  "date": 1784483903,
+  "rich_message": {
+    "blocks": [
+      {
+        "type": "paragraph",
+        "text": "it's me"
+      },
+      {
+        "type": "heading",
+        "text": "Mario",
+        "size": 2
+      },
+      {
+        "type": "table",
+        "cells": [
+          [
+            {
+              "text": [
+                {
+                  "type": "code",
+                  "text": "Luigi"
+                },
+                {
+                  "type": "code",
+                  "text": "Toad"
+                }
+              ],
+              "align": "left",
+              "valign": "middle"
+            }
+          ]
+        ]
+      }
+    ]
+  }
+}
