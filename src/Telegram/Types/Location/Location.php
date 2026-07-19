@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Location;
 
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object represents a point on the map.
  * @see https://core.telegram.org/bots/api#location
  */
+#[OverrideConstructor('bindToInstance')]
 class Location extends BaseType
 {
     /**

@@ -8,9 +8,11 @@ use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessIntro;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessLocation;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessOpeningHours;
+use SergiX44\Nutgram\Telegram\Types\Community\Community;
 use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
+use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
 use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGiftColors;
 use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -22,12 +24,6 @@ use SergiX44\Nutgram\Telegram\Types\User\UserRating;
  */
 class ChatFullInfo extends Chat
 {
-    /**
-     * Optional.
-     * True, if the chat is the direct messages chat of a channel
-     */
-    public ?bool $is_direct_messages = null;
-
     /**
      * Identifier of the accent color for the chat name and backgrounds of the chat photo, reply header, and link preview.
      * See {@see https://core.telegram.org/bots/api#accent-colors accent colors} for more details.
@@ -205,10 +201,9 @@ class ChatFullInfo extends Chat
     public ?ChatPermissions $permissions = null;
 
     /**
-     * Optional.
-     * True, if gifts can be sent to the chat
+     * Information about types of gifts that are accepted by the chat or by the corresponding user for private chats
      */
-    public ?bool $can_send_gift = null;
+    public AcceptedGiftTypes $accepted_gift_types;
 
     /**
      * Optional.
@@ -337,4 +332,9 @@ class ChatFullInfo extends Chat
      * The field is only available to chat administrators.
      */
     public ?User $guard_bot = null;
+
+    /**
+     * Optional. The {@see https://core.telegram.org/bots/api#community Community} to which the chat belongs
+     */
+    public ?Community $community = null;
 }

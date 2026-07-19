@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * A divider, corresponding to the HTML tag <code><hr/></code>.
  * @see https://core.telegram.org/bots/api#inputrichblockdivider
  */
-#[SkipConstructor]
-class InputRichBlockDivider extends BaseType implements InputRichBlock, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichBlockDivider extends BaseType implements InputRichBlock
 {
     /**
      * Type of the block, always “divider”
@@ -24,10 +25,5 @@ class InputRichBlockDivider extends BaseType implements InputRichBlock, JsonSeri
     public function __construct()
     {
         parent::__construct();
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

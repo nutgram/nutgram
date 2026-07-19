@@ -8,8 +8,7 @@ use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichTextType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
-use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
-use SergiX44\Nutgram\Telegram\Types\Internal\RichTextUnionResolver;
+use SergiX44\Nutgram\Telegram\Types\Internal\UnionResolvers\RichTextUnionResolver;
 
 /**
  * A link to a reference.
@@ -28,7 +27,7 @@ class RichTextReferenceLink extends BaseType implements RichText
      * @var string|RichText[]|RichText
      */
     #[ArrayType(RichText::class)]
-    #[BaseUnion]
+    #[RichTextUnionResolver]
     public string|array|RichText $text;
 
     /**

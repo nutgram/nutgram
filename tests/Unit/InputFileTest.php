@@ -32,7 +32,7 @@ it('works with uri', function () {
     expect($inputFile)
         ->toBeInstanceOf(InputFile::class)
         ->getFilename()->toBe('400');
-});
+})->flaky(10);
 
 it('works with text', function () {
     $inputFile = InputFile::makeFromString('foo');

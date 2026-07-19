@@ -17,11 +17,4 @@ class InputRichMessageContent extends InputMessageContent
      * The message to be sent
      */
     public InputRichMessage $rich_message;
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'rich_message' => $this->rich_message,
-        ];
-    }
 }

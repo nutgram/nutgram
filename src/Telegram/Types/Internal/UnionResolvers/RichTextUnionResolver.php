@@ -1,11 +1,14 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichText;
+declare(strict_types=1);
+
+namespace SergiX44\Nutgram\Telegram\Types\Internal\UnionResolvers;
 
 use Attribute;
 use ReflectionType;
 use RuntimeException;
 use SergiX44\Hydrator\Annotation\UnionResolver;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class RichTextUnionResolver extends UnionResolver

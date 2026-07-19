@@ -4,30 +4,28 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockTableCellAlign;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockTableCellValign;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
-use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
-use SergiX44\Nutgram\Telegram\Types\Internal\RichTextUnionResolver;
+use SergiX44\Nutgram\Telegram\Types\Internal\UnionResolvers\RichTextUnionResolver;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
 
 /**
  * Cell in a table.
  * @see https://core.telegram.org/bots/api#richblocktablecell
  */
-#[SkipConstructor]
-class RichBlockTableCell extends BaseType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class RichBlockTableCell extends BaseType
 {
     /**
      * Optional. Text in the cell. If omitted, then the cell is invisible.
      * @var string|RichText[]|RichText
      */
     #[ArrayType(RichText::class)]
-    #[BaseUnion]
+    #[RichTextUnionResolver]
     public string|array|RichText|null $text = null;
 
     /**
@@ -72,10 +70,5 @@ class RichBlockTableCell extends BaseType implements JsonSerializable
         $this->is_header = $is_header;
         $this->colspan = $colspan;
         $this->rowspan = $rowspan;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }
