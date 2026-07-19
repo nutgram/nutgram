@@ -27,19 +27,19 @@ class RichTextUnionResolver extends UnionResolver
     {
         $value = $data[$propertyName] ?? null;
 
-        if($value === null){
+        if ($value === null) {
             $value = $data;
         }
 
-        if(is_string($value)){
+        if (is_string($value)) {
             return 'string';
         }
 
-        if(is_array($value) && array_is_list($value)){
+        if (is_array($value) && array_is_list($value)) {
             return 'array';
         }
 
-        if(is_array($value) && !array_is_list($value)){
+        if (is_array($value) && !array_is_list($value)) {
             return RichText::class;
         }
 
