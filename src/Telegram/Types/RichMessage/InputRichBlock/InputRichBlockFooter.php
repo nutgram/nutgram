@@ -33,7 +33,7 @@ class InputRichBlockFooter extends BaseType implements InputRichBlock
     #[TestUnionResolver('string')]
     public string|array|RichText $text;
 
-public function __construct(string|array|RichText $text)
+    public function __construct(string|array|RichText $text)
     {
         parent::__construct();
         $this->text = $text;

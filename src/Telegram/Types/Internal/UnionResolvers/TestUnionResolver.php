@@ -18,12 +18,12 @@ class TestUnionResolver extends UnionResolver
     {
         //! This resolver is used ONLY to test telegram types' properties with union types.
 
-        if($this->type === null) {
+        if ($this->type === null) {
             return array_first($propertyTypes);
         }
 
-        foreach($propertyTypes as $property) {
-            if($property->getName() === $this->type) {
+        foreach ($propertyTypes as $property) {
+            if ($property->getName() === $this->type) {
                 return $property;
             }
         }
