@@ -14,6 +14,8 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatOwnerLeft;
 use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
 use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksAdded;
 use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksDone;
+use SergiX44\Nutgram\Telegram\Types\Community\CommunityChatAdded;
+use SergiX44\Nutgram\Telegram\Types\Community\CommunityChatRemoved;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicClosed;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicCreated;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicEdited;
@@ -129,6 +131,17 @@ class Message extends MaybeInaccessibleMessage
      * Optional. Tag or custom title of the sender of the message; for supergroups only
      */
     public ?string $sender_tag = null;
+
+    /**
+     * Optional. For ephemeral messages, the user who received the message
+     */
+    public ?User $receiver_user = null;
+
+    /**
+     * Optional. For ephemeral messages, identifier of the ephemeral message inside this chat.
+     * The identifier may be reused for another ephemeral message after the message is deleted or expires.
+     */
+    public ?int $ephemeral_message_id = null;
 
     /** Date the message was sent in Unix time */
     public int $date;
@@ -616,6 +629,16 @@ class Message extends MaybeInaccessibleMessage
     public ?ChecklistTasksAdded $checklist_tasks_added = null;
 
     /**
+     * Optional. Service message: chat added to a {@see https://core.telegram.org/bots/api#community Community}
+     */
+    public ?CommunityChatAdded $community_chat_added = null;
+
+    /**
+     * Optional. Service message: chat removed from a {@see https://core.telegram.org/bots/api#community Community}
+     */
+    public ?CommunityChatRemoved $community_chat_removed = null;
+
+    /**
      * Optional.
      * Service message: the price for paid messages in the corresponding direct messages chat of a channel has changed
      */
@@ -839,6 +862,8 @@ class Message extends MaybeInaccessibleMessage
             $this->boost_added !== null => MessageType::BOOST_ADDED,
             $this->checklist_tasks_done !== null => MessageType::CHECKLIST_TASKS_DONE,
             $this->checklist_tasks_added !== null => MessageType::CHECKLIST_TASKS_ADDED,
+            $this->community_chat_added !== null => MessageType::COMMUNITY_CHAT_ADDED,
+            $this->community_chat_removed !== null => MessageType::COMMUNITY_CHAT_REMOVED,
             $this->direct_message_price_changed !== null => MessageType::DIRECT_MESSAGE_PRICE_CHANGED,
             $this->forum_topic_created !== null => MessageType::FORUM_TOPIC_CREATED,
             $this->forum_topic_edited !== null => MessageType::FORUM_TOPIC_EDITED,
@@ -878,6 +903,11 @@ class Message extends MaybeInaccessibleMessage
     public function getEntities(): ?array
     {
         return $this->entities ?? $this->caption_entities;
+    }
+
+    public function isEphemeral(): bool
+    {
+        return $this->receiver_user !== null && $this->ephemeral_message_id !== null;
     }
 
     /**

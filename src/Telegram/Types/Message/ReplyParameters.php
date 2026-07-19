@@ -17,18 +17,29 @@ use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 class ReplyParameters extends BaseType
 {
     /**
-     * Identifier of the message that will be replied to in the current chat, or in the chat chat_id if it is specified
-     * @var int
+     * Optional.
+     * Identifier of the message that will be replied to in the current chat, or in the chat chat_id if it is specified.
+     * Required if ephemeral_message_id isn't specified.
      */
-    public int $message_id;
+    public ?int $message_id = null;
 
     /**
-     * Optional. If the message to be replied to is from a different chat,
+     * Optional.
+     * If the message to be replied to is from a different chat,
      * unique identifier for the chat or username of the channel (in the format [at]channelusername)
      * @var int|string|null
      */
     #[BaseUnion]
     public int|string|null $chat_id = null;
+
+    /**
+     * Optional.
+     * Identifier of the incoming ephemeral message that will be replied to in the current chat.
+     * A reply to an ephemeral message must itself be an ephemeral message.
+     * An ephemeral message may only be replied to within 15 seconds of being sent.
+     * Required if message_id isn't specified.
+     */
+    public ?int $ephemeral_message_id = null;
 
     /**
      * Optional. Pass True if the message should be sent even if the specified message to be replied to is not found;
@@ -78,7 +89,7 @@ class ReplyParameters extends BaseType
     public ?string $poll_option_id = null;
 
     /**
-     * @param int $message_id
+     * @param int|null $message_id
      * @param int|string|null $chat_id
      * @param bool|null $allow_sending_without_reply
      * @param string|null $quote
@@ -87,9 +98,10 @@ class ReplyParameters extends BaseType
      * @param int|null $quote_position
      * @param int|null $checklist_task_id
      * @param string|null $poll_option_id
+     * @param int|null $ephemeral_message_id
      */
     public function __construct(
-        int $message_id,
+        ?int $message_id = null,
         int|string|null $chat_id = null,
         ?bool $allow_sending_without_reply = null,
         ?string $quote = null,
@@ -98,6 +110,7 @@ class ReplyParameters extends BaseType
         ?int $quote_position = null,
         ?int $checklist_task_id = null,
         ?string $poll_option_id = null,
+        ?int $ephemeral_message_id = null,
     ) {
         parent::__construct();
         $this->message_id = $message_id;
@@ -109,5 +122,6 @@ class ReplyParameters extends BaseType
         $this->quote_position = $quote_position;
         $this->checklist_task_id = $checklist_task_id;
         $this->poll_option_id = $poll_option_id;
+        $this->ephemeral_message_id = $ephemeral_message_id;
     }
 }

@@ -95,6 +95,16 @@ trait UpdateProxy
         return $this->message()?->guest_query_id;
     }
 
+    public function receiverUserId(): ?int
+    {
+        return $this->message()?->receiver_user?->id;
+    }
+
+    public function ephemeralMessageId(): ?int
+    {
+        return $this->message()?->ephemeral_message_id;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Special proxies

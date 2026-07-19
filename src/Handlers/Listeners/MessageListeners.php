@@ -699,15 +699,43 @@ trait MessageListeners
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::MANAGED_BOT_CREATED->value][] = new Handler($callable);
     }
 
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
     public function onPollOptionAdded($callable): Handler
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::POLL_OPTION_ADDED->value][] = new Handler($callable);
     }
 
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
     public function onPollOptionDeleted($callable): Handler
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::POLL_OPTION_DELETED->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onCommunityChatAdded($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::COMMUNITY_CHAT_ADDED->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onCommunityChatRemoved($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::COMMUNITY_CHAT_REMOVED->value][] = new Handler($callable);
     }
 }

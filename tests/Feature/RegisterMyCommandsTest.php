@@ -539,3 +539,41 @@ test('register commands with languages', function () {
             ->scope->toBe('{"type":"default"}'),
     );
 });
+
+test('register ephimeral commands', function () {
+    $bot = Nutgram::fake();
+
+    $history = [];
+
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendMessage('Start command!');
+    })->description('Start command');
+
+    $bot->onCommand('admin', function (Nutgram $bot) {
+        $bot->sendMessage('Admin command!');
+    })->description('Admin command')->ephemeral();
+
+    $bot->group(function (Nutgram $bot) {
+        $bot->onCommand('ban', function (Nutgram $bot) {
+            $bot->sendMessage('ban command!');
+        })->description('ban command');
+
+        $bot->onCommand('mute', function (Nutgram $bot) {
+            $bot->sendMessage('mute command!');
+        })->description('mute command');
+    })->ephemeral();
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) use (&$history) {
+        $history[] = $request['json'];
+
+        return $request;
+    });
+
+    $bot->registerMyCommands();
+
+    expect($history)->sequence(
+        fn ($x) => $x
+            ->commands->toBe('[{"command":"start","description":"Start command"},{"command":"admin","description":"Admin command","is_ephemeral":true},{"command":"ban","description":"ban command","is_ephemeral":true},{"command":"mute","description":"mute command","is_ephemeral":true}]')
+            ->scope->toBe('{"type":"default"}'),
+    );
+});

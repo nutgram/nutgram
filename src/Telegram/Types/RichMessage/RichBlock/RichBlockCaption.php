@@ -7,7 +7,6 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
-use SergiX44\Nutgram\Telegram\Types\Internal\RichTextUnionResolver;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
 
 /**
@@ -31,4 +30,11 @@ class RichBlockCaption extends BaseType
     #[ArrayType(RichText::class)]
     #[BaseUnion]
     public string|array|RichText|null $credit = null;
+
+    public function __construct(string|array|RichText $text, string|array|RichText|null $credit = null)
+    {
+        parent::__construct();
+        $this->text = $text;
+        $this->credit = $credit;
+    }
 }

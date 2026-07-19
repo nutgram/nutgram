@@ -371,4 +371,25 @@ trait UpdateListeners
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::GUEST_MESSAGE->value][] = new Handler($callable);
     }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onBotSubscriptionUpdated($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::SUBSCRIPTION->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param string $pattern
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onBotSubscriptionUpdatedPayload(string $pattern, $callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::SUBSCRIPTION->value][$pattern] = new Handler($callable, $pattern);
+    }
 }

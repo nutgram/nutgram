@@ -27,9 +27,17 @@ class BotCommand extends BaseType
      */
     public string $description;
 
-    public function __construct(string $command, string $description)
+    /**
+     * Optional.
+     * True, if the command sends an ephemeral message,
+     * which can be seen only by the sender of the message and the bot
+     */
+    public ?bool $is_ephemeral = null;
+
+    public function __construct(string $command, string $description, ?bool $is_ephemeral = null)
     {
         $this->command = $command;
         $this->description = $description;
+        $this->is_ephemeral = $is_ephemeral;
     }
 }

@@ -468,3 +468,29 @@ it('calls onGuestMessage() handler', function ($update) {
 
     expect($bot->get('called', false))->toBeTrue();
 })->with('guest_message');
+
+it('calls onBotSubscriptionUpdated() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onBotSubscriptionUpdated(function (Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->update()->subscription->invoice_payload)->toBe('foo');
+    });
+
+    $bot->run();
+
+    expect($bot->get('called', false))->toBeTrue();
+})->with('subscription');
+
+it('calls onBotSubscriptionUpdatedPayload() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onBotSubscriptionUpdatedPayload('foo', function (Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->update()->subscription->invoice_payload)->toBe('foo');
+    });
+
+    $bot->run();
+
+    expect($bot->get('called', false))->toBeTrue();
+})->with('subscription');

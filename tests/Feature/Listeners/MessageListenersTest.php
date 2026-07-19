@@ -5,7 +5,6 @@ declare(strict_types=1);
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
-use SergiX44\Nutgram\Telegram\Types\User\User;
 
 it('calls onText() handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -742,3 +741,27 @@ it('calls onPollOptionDeleted handler', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('poll_option_deleted');
+
+it('calls onCommunityChatAdded handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onCommunityChatAdded(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('community_chat_added');
+
+it('calls onCommunityChatRemoved handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onCommunityChatRemoved(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('community_chat_removed');
