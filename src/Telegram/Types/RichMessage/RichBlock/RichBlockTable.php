@@ -42,7 +42,7 @@ class RichBlockTable extends BaseType implements RichBlock
      * Optional. Caption of the table
      * @var string|RichText[]|RichText|null
      */
-    #[ArrayType(RichText::class, 16)]
+    #[ArrayType(RichText::class)]
     #[RichTextUnionResolver]
     public string|array|RichText|null $caption = null;
 }

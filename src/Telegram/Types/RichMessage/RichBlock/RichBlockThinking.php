@@ -29,7 +29,7 @@ class RichBlockThinking extends BaseType implements RichBlock
      * which are recommended for usage in the block.
      * @var string|RichText[]|RichText
      */
-    #[ArrayType(RichText::class, 16)]
+    #[ArrayType(RichText::class)]
     #[RichTextUnionResolver]
     public string|array|RichText $text;
 }

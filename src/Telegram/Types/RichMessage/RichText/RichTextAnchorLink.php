@@ -23,7 +23,7 @@ class RichTextAnchorLink extends BaseType implements RichText
      * The link text
      * @var string|RichText[]|RichText
      */
-    #[ArrayType(RichText::class, 16)]
+    #[ArrayType(RichText::class)]
     #[RichTextUnionResolver]
     public string|array|RichText $text;
 

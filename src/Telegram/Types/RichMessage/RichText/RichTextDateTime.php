@@ -23,7 +23,7 @@ class RichTextDateTime extends BaseType implements RichText
      * The text
      * @var string|RichText[]|RichText
      */
-    #[ArrayType(RichText::class, 16)]
+    #[ArrayType(RichText::class)]
     #[RichTextUnionResolver]
     public string|array|RichText $text;
 

@@ -32,7 +32,7 @@ class RichBlockBlockQuotation extends BaseType implements RichBlock
      * Optional. Credit of the block
      * @var string|RichText[]|RichText|null
      */
-    #[ArrayType(RichText::class, 16)]
+    #[ArrayType(RichText::class)]
     #[RichTextUnionResolver]
     public string|array|RichText|null $credit = null;
 }

@@ -27,7 +27,7 @@ class RichBlockSectionHeading extends BaseType implements RichBlock
      * Text of the block
      * @var string|RichText[]|RichText
      */
-    #[ArrayType(RichText::class, 16)]
+    #[ArrayType(RichText::class)]
     #[RichTextUnionResolver]
     public string|array|RichText $text;
 
