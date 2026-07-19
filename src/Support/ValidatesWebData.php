@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Support;
 
 use RuntimeException;
@@ -34,7 +36,7 @@ trait ValidatesWebData
             throw new InvalidDataException('Invalid webapp data');
         }
 
-        return $this->hydrator->hydrate(self::queryStringToArray($queryString), WebAppData::class);
+        return $this->hydrator->hydrate(WebAppData::class, self::queryStringToArray($queryString));
     }
 
     /**
@@ -81,7 +83,7 @@ trait ValidatesWebData
             throw new InvalidDataException('Invalid login data');
         }
 
-        return $this->hydrator->hydrate(self::queryStringToArray($queryString), LoginData::class);
+        return $this->hydrator->hydrate(LoginData::class, self::queryStringToArray($queryString));
     }
 
     protected function createHashHmac(string $data, string $secretKey): string

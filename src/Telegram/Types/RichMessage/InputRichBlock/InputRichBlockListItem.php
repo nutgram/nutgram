@@ -1,20 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockListItemType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * An item of a list to be sent.
  * @see https://core.telegram.org/bots/api#inputrichblocklistitem
  */
-#[SkipConstructor]
-class InputRichBlockListItem extends BaseType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichBlockListItem extends BaseType
 {
     /**
      * The content of the item
@@ -63,10 +64,5 @@ class InputRichBlockListItem extends BaseType implements JsonSerializable
         $this->is_checked = $is_checked;
         $this->value = $value;
         $this->type = $type;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

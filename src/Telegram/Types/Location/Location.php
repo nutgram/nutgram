@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Location;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object represents a point on the map.
  * @see https://core.telegram.org/bots/api#location
  */
-#[SkipConstructor]
-class Location extends BaseType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class Location extends BaseType
 {
     /**
      * Longitude as defined by sender
@@ -65,10 +66,5 @@ class Location extends BaseType implements JsonSerializable
         $this->live_period = $live_period;
         $this->heading = $heading;
         $this->proximity_alert_radius = $proximity_alert_radius;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

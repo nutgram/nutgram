@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Tests\Fixtures\CommandWithNamedParameter;
 use SergiX44\Nutgram\Tests\Fixtures\DummyEnum;
+use SergiX44\Nutgram\Tests\Fixtures\TestEnum;
 
 it('calls the command handler with valid regex', function ($update) {
     $bot = Nutgram::fake($update);
@@ -278,22 +280,6 @@ it('calls handler with optional named parameter', function (string $hear, string
     'letter-number-ko' => ['/start hello', '[a-z]\d', false],
 ]);
 
-it(
-    'calls handler with optional named parameter using command class',
-    function (string $hear, string $constraint, bool $expected) {
-        $bot = Nutgram::fake();
-
-        $bot->registerCommand(CommandWithNamedParameter::class);
-
-        $bot->hearText($hear)->reply();
-
-        expect($bot->get('called', false))->toBe($expected);
-    }
-)->with([
-    'valid' => ['/start hello', '[a-z]+', true],
-    'invalid' => ['/start 123', '[a-z]+', false],
-]);
-
 it('calls handler with optional named parameters', function (string $hear, bool $expected) {
     $bot = Nutgram::fake();
 
@@ -475,3 +461,77 @@ it('uses whereAlphaNumeric constraint', function ($hearValue, $expected) {
     ['abc13', true],
     ['abc123!', false],
 ]);
+
+describe('pattern matching with BackedEnum', function () {
+    test('onCommand handler', function () {
+        $bot = Nutgram::fake();
+        $bot->onCommand(TestEnum::Test, function (Nutgram $bot) {
+            $bot->sendMessage('called');
+        });
+        $bot->hearText('/test')->reply()->assertReplyText('called');
+    });
+
+    test('onText handler', function () {
+        $bot = Nutgram::fake();
+        $bot->onText(TestEnum::Test, function (Nutgram $bot) {
+            $bot->sendMessage('called');
+        });
+        $bot->hearText('test')->reply()->assertReplyText('called');
+    });
+
+    test('onSuccessfulPaymentPayload handler', function ($update) {
+        $bot = Nutgram::fake($update);
+        $bot->onSuccessfulPaymentPayload(TestEnum::Data, function (Nutgram $bot) {
+            $bot->sendMessage('called');
+        });
+        $bot->reply()->assertReplyText('called');
+    })->with('successful_payment');
+
+    test('onRefundedPaymentPayload handler', function ($update) {
+        $bot = Nutgram::fake($update);
+        $bot->onRefundedPaymentPayload(TestEnum::Data, function (Nutgram $bot) {
+            $bot->sendMessage('called');
+        });
+        $bot->reply()->assertReplyText('called');
+    })->with('refunded_payment');
+
+    test('onInlineQueryText handler', function ($update) {
+        $bot = Nutgram::fake($update);
+        $bot->onInlineQueryText(TestEnum::Test, function (Nutgram $bot) {
+            $bot->sendMessage('called');
+        });
+        $bot->reply()->assertReplyText('called');
+    })->with('inline_query');
+
+    test('onChosenInlineResultQuery handler', function ($update) {
+        $bot = Nutgram::fake($update);
+        $bot->onChosenInlineResultQuery(TestEnum::Test, function (Nutgram $bot) {
+            $bot->sendMessage('called');
+        });
+        $bot->reply()->assertReplyText('called');
+    })->with('chosen_inline_result');
+
+    test('onCallbackQueryData handler', function ($update) {
+        $bot = Nutgram::fake($update);
+        $bot->onCallbackQueryData(TestEnum::Data, function (Nutgram $bot) {
+            $bot->sendMessage('called');
+        });
+        $bot->reply()->assertReplyText('called');
+    })->with('callback_query');
+
+    test('onPreCheckoutQueryPayload handler', function ($update) {
+        $bot = Nutgram::fake($update);
+        $bot->onPreCheckoutQueryPayload(TestEnum::Data, function (Nutgram $bot) {
+            $bot->sendMessage('called');
+        });
+        $bot->reply()->assertReplyText('called');
+    })->with('pre_checkout_query');
+
+    test('onPaidMediaPurchasedPayload handler', function ($update) {
+        $bot = Nutgram::fake($update);
+        $bot->onPaidMediaPurchasedPayload(TestEnum::Pay, function (Nutgram $bot) {
+            $bot->sendMessage('called');
+        });
+        $bot->reply()->assertReplyText('called');
+    })->with('paid_media_purchased');
+});

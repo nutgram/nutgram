@@ -1,0 +1,13 @@
+{
+    "ok": true,
+    "result": [
+        {
+            "command": "start",
+            "description": "Start the bot"
+        },
+        {
+            "command": "help",
+            "description": "Get help"
+        }
+    ]
+}

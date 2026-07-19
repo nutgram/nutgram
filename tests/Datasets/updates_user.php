@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 dataset('updates_user', function () {
     return [
         'message' => [getUpdateType('message'), 'onMessage', true],

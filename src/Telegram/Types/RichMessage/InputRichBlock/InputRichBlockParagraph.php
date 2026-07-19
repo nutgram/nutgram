@@ -1,20 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\UnionResolvers\TestUnionResolver;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
 
 /**
  * A text paragraph, corresponding to the HTML tag <code><p></code>.
  * @see https://core.telegram.org/bots/api#inputrichblockparagraph
  */
-#[SkipConstructor]
-class InputRichBlockParagraph extends BaseType implements InputRichBlock, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichBlockParagraph extends BaseType implements InputRichBlock
 {
     /**
      * Type of the block, always “paragraph”
@@ -24,17 +27,15 @@ class InputRichBlockParagraph extends BaseType implements InputRichBlock, JsonSe
 
     /**
      * Text of the block
+     * @var string|RichText[]|RichText
      */
-    public RichText $text;
+    #[ArrayType(RichText::class)]
+    #[TestUnionResolver('string')]
+    public string|array|RichText $text;
 
-    public function __construct(RichText $text)
+    public function __construct(string|array|RichText $text)
     {
         parent::__construct();
         $this->text = $text;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

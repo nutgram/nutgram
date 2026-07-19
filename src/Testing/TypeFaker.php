@@ -1,34 +1,41 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Testing;
 
 use BackedEnum;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionNamedType;
 use ReflectionProperty;
+use ReflectionUnionType;
+use RuntimeException;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
-use SergiX44\Nutgram\Hydrator\Hydrator;
+use SergiX44\Hydrator\Annotation\UnionResolver;
+use SergiX44\Hydrator\Hydrator;
+use SergiX44\Nutgram\Nutgram;
 use Throwable;
 
 class TypeFaker
 {
+    private Hydrator $hydrator;
     private array $resolveStack = [];
 
-    /**
-     * @param Hydrator $hydrator
-     */
-    public function __construct(private Hydrator $hydrator)
+    public function __construct(Nutgram $bot)
     {
+        $this->hydrator = new Hydrator($bot->getContainer());
     }
 
     /**
-     * @template T
-     * @param class-string $type
+     * @template T of object
+     * @param class-string<T>|string $type
      * @param array $partial
-     * @return T|string|int|bool|array|null|float
+     * @return T|object|scalar|array|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
@@ -38,7 +45,7 @@ class TypeFaker
         try {
             if (class_exists($type)) {
                 $data = $this->fakeDataFor($type, $partial);
-                return $this->hydrator->hydrate($data, $type);
+                return $this->hydrator->hydrate($type, $data);
             }
 
             return self::randomScalarOf($type);
@@ -88,13 +95,16 @@ class TypeFaker
                 continue;
             }
 
-            $typeName = $property->getType() instanceof \ReflectionUnionType
-                ? $property->getType()->getTypes()[0]->getName()
-                : $property->getType()?->getName();
+            if ($property->getType() instanceof ReflectionUnionType) {
+                $typeName = $this->resolveUnionType($property, $userDefined);
+            } else {
+                $typeName = $property->getType()?->getName();
+            }
 
             // if is a class, try to resolve it
             if ($this->shouldInstantiate($typeName, $isNullable, !empty($userDefined))) {
-                $data[$property->name] = $this->fakeDataFor($typeName, $userDefined);
+                $reflectionClass = $this->getReflectionClass($typeName, $additional[$property->name] ?? []);
+                $data[$property->name] = $this->fakeDataFor($reflectionClass->getName(), $additional[$property->name] ?? [], );
                 continue;
             }
 
@@ -202,7 +212,7 @@ class TypeFaker
      */
     public static function randomFloat(): float
     {
-        return abs(1 - self::randomInt() / self::randomInt());
+        return abs(1.0 - ((float)self::randomInt() / (float)self::randomInt()));
     }
 
     /**
@@ -214,20 +224,49 @@ class TypeFaker
     {
         $reflectionClass = new ReflectionClass($class);
 
-        if ($reflectionClass->isAbstract()) {
-            /** @var ConcreteResolver $resolver */
-            $resolver = $this->hydrator->getConcreteFor($reflectionClass->getName());
+        if (!$reflectionClass->isAbstract()) {
+            return $reflectionClass;
+        }
 
+        /** @var ConcreteResolver $resolver */
+        $concreteResolver = $this->hydrator->getConcreteResolverFor($reflectionClass->getName());
+        if ($concreteResolver !== null) {
             try {
-                return new ReflectionClass($resolver?->concreteFor($context, $context));
+                return new ReflectionClass($concreteResolver->concreteFor($context, $context));
             } catch (Throwable) {
-                $concretes = $resolver?->getConcretes();
+                $concretes = $concreteResolver->getConcretes();
                 if (!empty($concretes)) {
                     return new ReflectionClass(array_shift($concretes));
                 }
             }
         }
-        return $reflectionClass;
+
+        throw new RuntimeException('Unable to resolve abstract class '.$class);
+    }
+
+    private function resolveUnionType(ReflectionProperty $property, array $userDefined): string
+    {
+        /** @var ReflectionUnionType $propertyType */
+        $propertyType = $property->getType();
+        $propertyTypes = $propertyType->getTypes();
+
+        $attributes = $property->getAttributes(UnionResolver::class, ReflectionAttribute::IS_INSTANCEOF);
+        /** @var ?UnionResolver $unionResolver */
+        $unionResolver = array_shift($attributes)?->newInstance();
+
+        if ($unionResolver === null) {
+            return $propertyTypes[0]->getName();
+        }
+
+        try {
+            return $unionResolver->resolve(
+                propertyName: $property->name,
+                propertyTypes: array_filter($propertyTypes, fn ($type) => $type instanceof ReflectionNamedType),
+                data: $userDefined,
+            )->getName();
+        } catch (Throwable) {
+            return $propertyTypes[0]->getName();
+        }
     }
 
     private function fakeArray(ArrayType $arrayType, array $userDefined = [], $depth = 1): array

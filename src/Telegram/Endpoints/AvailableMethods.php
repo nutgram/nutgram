@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Telegram\Client;
@@ -12,8 +14,8 @@ use SergiX44\Nutgram\Telegram\Properties\PollType;
 use SergiX44\Nutgram\Telegram\Properties\StoryActivePeriod;
 use SergiX44\Nutgram\Telegram\Types\Boost\UserChatBoosts;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
-use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatFullInfo;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMember;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatPermissions;
@@ -36,6 +38,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputPollMedia;
 use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhoto;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
@@ -1168,7 +1171,7 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#sendpaidmedia
      * @param int $star_count The number of Telegram Stars that must be paid to buy access to the media; 1-25000
-     * @param InputPaidMedia[] $media A JSON-serialized array describing the media to be sent; up to 10 items
+     * @param array<InputPaidMedia&Uploadables> $media A JSON-serialized array describing the media to be sent; up to 10 items
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string|null $caption Media caption, 0-1024 characters after entities parsing
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the voice message caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
@@ -2554,15 +2557,15 @@ trait AvailableMethods
     }
 
     /**
-     * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.).
-     * Returns a {@see https://core.telegram.org/bots/api#chat Chat} object on success.
+     * Use this method to get up-to-date information about the chat.
+     * Returns a {@see https://core.telegram.org/bots/api#chatfullinfo ChatFullInfo} object on success.
      * @see https://core.telegram.org/bots/api#getchat
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
-     * @return Chat|null
+     * @return ChatFullInfo|null
      */
-    public function getChat(int|string $chat_id): ?Chat
+    public function getChat(int|string $chat_id): ?ChatFullInfo
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'), Chat::class);
+        return $this->requestJson(__FUNCTION__, compact('chat_id'), ChatFullInfo::class);
     }
 
     /**

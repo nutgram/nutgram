@@ -1,20 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\UnionResolvers\RichTextUnionResolver;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
-use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextUnionResolver;
 
 /**
  * Caption of a rich formatted block.
  * @see https://core.telegram.org/bots/api#richblockcaption
  */
-#[SkipConstructor]
-class RichBlockCaption extends BaseType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class RichBlockCaption extends BaseType
 {
     /**
      * Block caption
@@ -37,10 +38,5 @@ class RichBlockCaption extends BaseType implements JsonSerializable
         parent::__construct();
         $this->text = $text;
         $this->credit = $credit;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

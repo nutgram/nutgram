@@ -1,7 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Tests\Fixtures\DumbCommand;
 
 // NESTING
 
@@ -259,33 +260,6 @@ it('groups middleware with onCommand', function ($update) {
     $bot->run();
 
     expect($test)->toBe('-[MW0][MW1]LM1H1');
-})->with('command');
-
-it('groups middleware with registerCommand', function ($update) {
-    $bot = Nutgram::fake($update);
-
-    $middleware0 = function (Nutgram $bot, $next) {
-        $bot->setGlobalData('flow', $bot->getGlobalData('flow', '').'-[MW0]');
-        $next($bot);
-    };
-
-    $middleware1 = function (Nutgram $bot, $next) {
-        $bot->setGlobalData('flow', $bot->getGlobalData('flow', '').'[MW1]');
-        $next($bot);
-    };
-
-    $bot->middleware($middleware0);
-
-    $bot->group(function (Nutgram $bot) {
-        $bot->registerCommand(DumbCommand::class)->middleware(function (Nutgram $bot, $next) {
-            $bot->setGlobalData('flow', $bot->getGlobalData('flow', '').'LM');
-            $next($bot);
-        });
-    })->middleware($middleware1);
-
-    $bot->run();
-
-    expect($bot->getGlobalData('flow', ''))->toBe('-[MW0][MW1]LMH');
 })->with('command');
 
 // USE CASES

@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * A block with an anchor, corresponding to the HTML tag <code><a></code> with the attribute <code>name</code>.
  * @see https://core.telegram.org/bots/api#inputrichblockanchor
  */
-#[SkipConstructor]
-class InputRichBlockAnchor extends BaseType implements InputRichBlock, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichBlockAnchor extends BaseType implements InputRichBlock
 {
     /**
      * Type of the block, always “anchor”
@@ -30,10 +31,5 @@ class InputRichBlockAnchor extends BaseType implements InputRichBlock, JsonSeria
     {
         parent::__construct();
         $this->name = $name;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

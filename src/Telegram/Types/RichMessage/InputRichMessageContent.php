@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage;
 
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
@@ -15,11 +17,4 @@ class InputRichMessageContent extends InputMessageContent
      * The message to be sent
      */
     public InputRichMessage $rich_message;
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'rich_message' => $this->rich_message,
-        ];
-    }
 }

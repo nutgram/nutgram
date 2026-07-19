@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
-use function SergiX44\Nutgram\Support\array_filter_null;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object represents a bot command.
  * @see https://core.telegram.org/bots/api#botcommand
  */
-#[SkipConstructor]
-class BotCommand implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class BotCommand extends BaseType
 {
     /**
      * Text of the command;
@@ -38,23 +39,5 @@ class BotCommand implements JsonSerializable
         $this->command = $command;
         $this->description = $description;
         $this->is_ephemeral = $is_ephemeral;
-    }
-
-    public static function make(string $command, string $description, ?bool $is_ephemeral = null): self
-    {
-        return new self(
-            command: $command,
-            description: $description,
-            is_ephemeral: $is_ephemeral,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'command' => $this->command,
-            'description' => $this->description,
-            'is_ephemeral' => $this->is_ephemeral,
-        ]);
     }
 }
