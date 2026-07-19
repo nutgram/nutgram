@@ -20,7 +20,7 @@ class RichBlockCaption extends BaseType implements JsonSerializable
      * Block caption
      * @var string|RichText[]|RichText
      */
-    #[ArrayType(RichText::class)]
+    #[ArrayType(RichText::class, 16)]
     #[RichTextUnionResolver]
     public string|array|RichText $text;
 
@@ -28,7 +28,7 @@ class RichBlockCaption extends BaseType implements JsonSerializable
      * Optional. Block credit which corresponds to the HTML tag <cite>
      * @var string|RichText[]|RichText|null
      */
-    #[ArrayType(RichText::class)]
+    #[ArrayType(RichText::class, 16)]
     #[RichTextUnionResolver]
     public string|array|RichText|null $credit = null;
 

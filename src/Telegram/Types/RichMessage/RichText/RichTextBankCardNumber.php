@@ -23,7 +23,7 @@ class RichTextBankCardNumber extends BaseType implements RichText
      * The text
      * @var string|RichText[]|RichText
      */
-    #[ArrayType(RichText::class)]
+    #[ArrayType(RichText::class, 16)]
     #[RichTextUnionResolver]
     public string|array|RichText $text;
 
