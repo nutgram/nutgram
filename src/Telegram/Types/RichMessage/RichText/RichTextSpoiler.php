@@ -23,7 +23,7 @@ class RichTextSpoiler extends BaseType implements RichText
      * The text
      * @var string|RichText[]|RichText
      */
-    #[ArrayType(RichText::class)]
+    #[ArrayType(RichText::class, skipScalars: true)]
     #[RichTextUnionResolver]
     public string|array|RichText $text;
 }
