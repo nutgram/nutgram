@@ -34,6 +34,12 @@
               "is_header": true,
               "align": "center",
               "valign": "middle"
+            },
+            {
+              "text": "Colors",
+              "is_header": true,
+              "align": "center",
+              "valign": "middle"
             }
           ],
           [
@@ -41,12 +47,38 @@
               "text": [
                 {
                   "type": "code",
-                  "text": "EI136"
+                  "text": "A"
                 },
                 " ",
                 {
                   "type": "code",
-                  "text": "EI136"
+                  "text": "B"
+                }
+              ],
+              "align": "left",
+              "valign": "middle"
+            },
+            {
+              "text": [
+                {
+                  "type": "bold",
+                  "text": [
+                    "red",
+                    {
+                      "type": "italic",
+                      "text": "One"
+                    }
+                  ]
+                },
+                "capisco",
+                {
+                  "type": "bold",
+                  "text": "red"
+                },
+                " ",
+                {
+                  "type": "code",
+                  "text": "blue"
                 }
               ],
               "align": "left",
