@@ -30,14 +30,23 @@
         "cells": [
           [
             {
+              "text": "Codes",
+              "is_header": true,
+              "align": "center",
+              "valign": "middle"
+            }
+          ],
+          [
+            {
               "text": [
                 {
                   "type": "code",
-                  "text": "Luigi"
+                  "text": "EI136"
                 },
+                " ",
                 {
                   "type": "code",
-                  "text": "Toad"
+                  "text": "EI136"
                 }
               ],
               "align": "left",
