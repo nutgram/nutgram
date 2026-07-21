@@ -25,7 +25,7 @@ class RichBlockDetails extends BaseType implements RichBlock
      * Always shown summary of the block
      * @var string|RichText[]|RichText
      */
-    #[ArrayType(RichText::class)]
+    #[ArrayType(RichText::class, skipScalars: true)]
     #[RichTextUnionResolver]
     public string|array|RichText $summary;
 

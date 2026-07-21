@@ -12,14 +12,7 @@ class RichTextUnionResolver extends UnionResolver
 {
     public function resolve(string $propertyName, array $propertyTypes, array $data): ReflectionType
     {
-        $value = $data[$propertyName] ?? null;
-        $valueType = gettype($value);
-
-        $valueType = match ($valueType) {
-            'NULL' => 'null',
-            'object' => RichText::class,
-            default => $valueType,
-        };
+        $valueType = $this->getType($propertyName, $data);
 
         foreach ($propertyTypes as $t) {
             if ($t->getName() === $valueType) {
@@ -28,5 +21,32 @@ class RichTextUnionResolver extends UnionResolver
         }
 
         throw new RuntimeException('Unable to resolve '.$propertyName);
+    }
+
+    protected function getType(string $propertyName, array $data): string
+    {
+        $value = $data[$propertyName] ?? null;
+
+        if ($value === null) {
+            $value = $data;
+        }
+
+        if (is_string($value)) {
+            return 'string';
+        }
+
+        if (is_array($value) && array_is_list($value)) {
+            return 'array';
+        }
+
+        if (is_array($value) && !array_is_list($value)) {
+            return RichText::class;
+        }
+
+        if (is_object($value)) {
+            return RichText::class;
+        }
+
+        return 'null';
     }
 }
