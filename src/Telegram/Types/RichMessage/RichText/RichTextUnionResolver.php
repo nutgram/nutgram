@@ -6,6 +6,7 @@ use Attribute;
 use ReflectionType;
 use RuntimeException;
 use SergiX44\Hydrator\Annotation\UnionResolver;
+use stdClass;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class RichTextUnionResolver extends UnionResolver
@@ -40,6 +41,10 @@ class RichTextUnionResolver extends UnionResolver
         }
 
         if (is_array($value) && !array_is_list($value)) {
+            return RichText::class;
+        }
+
+        if ($value instanceof stdClass) {
             return RichText::class;
         }
 
