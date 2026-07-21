@@ -22,7 +22,7 @@
       },
       {
         "type": "heading",
-        "text": "Mario",
+        "text": "mario",
         "size": 2
       },
       {
@@ -47,12 +47,12 @@
               "text": [
                 {
                   "type": "code",
-                  "text": "A"
+                  "text": "EI136"
                 },
                 " ",
                 {
                   "type": "code",
-                  "text": "B"
+                  "text": "EI136"
                 }
               ],
               "align": "left",
@@ -85,6 +85,24 @@
               "valign": "middle"
             }
           ]
+        ]
+      },
+      {
+        "type": "footer",
+        "text": {
+          "type": "bold",
+          "text": "bold"
+        }
+      },
+      {
+        "type": "footer",
+        "text": [
+          "prefix",
+          {
+            "type": "bold",
+            "text": "bold"
+          },
+          "suffix"
         ]
       }
     ]
