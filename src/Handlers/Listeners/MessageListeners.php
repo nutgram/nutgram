@@ -67,6 +67,18 @@ trait MessageListeners
 
     /**
      * @param callable|class-string|array $callable
+     * @param UpdateType $target
+     * @return Handler
+     */
+    public function onRichMessage($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    {
+        $this->checkFinalized();
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::RICH_MESSAGE->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
      * @return Handler
      */
     public function onAnimation($callable, UpdateType $target = UpdateType::MESSAGE): Handler
