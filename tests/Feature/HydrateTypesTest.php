@@ -10,4 +10,4 @@ it('hydrate rich_message', function ($content) {
     $result = $hydrator->hydrate($content, Message::class);
 
     expect($result)->toBeInstanceOf(Message::class);
-})->with('messages.rich_message');
+})->with('message.rich_message');
