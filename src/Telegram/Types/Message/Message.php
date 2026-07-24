@@ -866,6 +866,7 @@ class Message extends BaseType
     {
         return match (true) {
             $this->text !== null => MessageType::TEXT,
+            $this->rich_message !== null => MessageType::RICH_MESSAGE,
             $this->audio !== null => MessageType::AUDIO,
             $this->animation !== null => MessageType::ANIMATION,
             $this->game !== null => MessageType::GAME,

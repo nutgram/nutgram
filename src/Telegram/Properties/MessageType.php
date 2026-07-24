@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Properties;
 enum MessageType: string
 {
     case TEXT = 'text';
+    case RICH_MESSAGE = 'rich_message';
     case ANIMATION = 'animation';
     case AUDIO = 'audio';
     case DOCUMENT = 'document';
