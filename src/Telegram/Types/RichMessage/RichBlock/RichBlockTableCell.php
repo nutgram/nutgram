@@ -23,7 +23,7 @@ class RichBlockTableCell extends BaseType implements JsonSerializable
      * Optional. Text in the cell. If omitted, then the cell is invisible.
      * @var string|RichText[]|RichText
      */
-    #[ArrayType(RichText::class)]
+    #[ArrayType(RichText::class, skipScalars: true)]
     #[RichTextUnionResolver]
     public string|array|RichText|null $text = null;
 
