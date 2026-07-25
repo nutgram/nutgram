@@ -26,6 +26,12 @@ class RichTextUnionResolver extends UnionResolver
         throw new RuntimeException('Unable to resolve '.$propertyName);
     }
 
+    /**
+     * @param string $propertyName
+     * @param array $data
+     * @return string
+     * @psalm-suppress TypeDoesNotContainType
+     */
     protected function getType(string $propertyName, array $data): string
     {
         $value = $data[$propertyName] ?? null;
