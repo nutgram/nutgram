@@ -22,7 +22,7 @@ class TestUnionResolver extends UnionResolver
 
         $value = $data[$propertyName] ?? null;
 
-        if($value === null){
+        if ($value === null) {
             //$this->type = 'null';
         }
 
