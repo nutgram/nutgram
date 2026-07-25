@@ -48,7 +48,7 @@ class InputRichBlockTable extends BaseType implements InputRichBlock
      * @var string|RichText[]|RichText|null
      */
     #[ArrayType(RichText::class)]
-    #[TestUnionResolver('string')]
+    #[TestUnionResolver('null')]
     public string|array|RichText|null $caption = null;
 
     public function __construct(

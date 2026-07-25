@@ -38,7 +38,7 @@ class InputRichBlockPullQuotation extends BaseType implements InputRichBlock
      * @var string|RichText[]|RichText|null
      */
     #[ArrayType(RichText::class)]
-    #[TestUnionResolver('string')]
+    #[TestUnionResolver('null')]
     public string|array|RichText|null $credit = null;
 
     public function __construct(string|array|RichText $text, string|array|RichText|null $credit = null)

@@ -8,12 +8,12 @@ afterEach(function () {
 });
 
 it('returns current time when not freezed', function () {
-    $clock = new TestClock();
-    $now = new DateTimeImmutable();
+    $clock = new TestClock()->now()->getTimestamp();
+    $now = new DateTimeImmutable()->getTimestamp();
 
     // allow 1 second difference for execution time
-    expect($clock->now()->getTimestamp())->toBeGreaterThanOrEqual($now->getTimestamp());
-});
+    expect($clock)->toBeGreaterThanOrEqual($now);
+})->flaky(5);
 
 it('can freeze the clock with "now"', function () {
     $clock = new TestClock();

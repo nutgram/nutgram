@@ -1,13 +1,12 @@
 <?php
 
-use SergiX44\Nutgram\Hydrator\Hydrator;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 it('hydrate rich_message', function ($content) {
-    $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
+    $hydrator = Nutgram::fake()->getHydrator();
 
-    $result = $hydrator->hydrate($content, Message::class);
+    $result = $hydrator->hydrate(Message::class, $content);
 
     expect($result)->toBeInstanceOf(Message::class);
 })->with('message.rich_message');

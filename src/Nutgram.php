@@ -283,6 +283,11 @@ class Nutgram extends ResolveHandlers
         return $this->container;
     }
 
+    public function getHydrator(): Hydrator
+    {
+        return $this->hydrator;
+    }
+
     public function bindParameter(string $name, callable $resolver): \SergiX44\Container\Definition
     {
         return $this->container->bind("param.$name", $resolver);

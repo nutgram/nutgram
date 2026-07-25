@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Internal\UnionResolvers;
 
 use Attribute;
@@ -17,6 +19,12 @@ class TestUnionResolver extends UnionResolver
     public function resolve(string $propertyName, array $propertyTypes, array $data): ReflectionType
     {
         //! This resolver is used ONLY to test telegram types' properties with union types.
+
+        $value = $data[$propertyName] ?? null;
+
+        if($value === null){
+            //$this->type = 'null';
+        }
 
         if ($this->type === null) {
             return array_first($propertyTypes);
