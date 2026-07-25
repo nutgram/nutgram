@@ -125,10 +125,9 @@ trait Client
                 'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
                     $this->invoke($this->progressHandler, [
                         new Progress(
-                            totalDownloadBytes: $totalDownloadBytes,
-                            downloadedBytes: $downloadedBytes,
-                            totalUploadBytes: $totalUploadBytes,
-                            uploadedBytes: $uploadedBytes,
+                            totalBytes: $totalDownloadBytes,
+                            currentBytes: $downloadedBytes,
+                            type: ProgressType::Download,
                         ),
                     ]);
                 },
@@ -229,10 +228,9 @@ trait Client
                 'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
                     $this->invoke($this->progressHandler, [
                         new Progress(
-                            totalDownloadBytes: $totalDownloadBytes,
-                            downloadedBytes: $downloadedBytes,
-                            totalUploadBytes: $totalUploadBytes,
-                            uploadedBytes: $uploadedBytes,
+                            totalBytes: $totalUploadBytes,
+                            currentBytes: $uploadedBytes,
+                            type: ProgressType::Upload,
                         ),
                     ]);
                 },
@@ -297,10 +295,9 @@ trait Client
                 'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
                     $this->invoke($this->progressHandler, [
                         new Progress(
-                            totalDownloadBytes: $totalDownloadBytes,
-                            downloadedBytes: $downloadedBytes,
-                            totalUploadBytes: $totalUploadBytes,
-                            uploadedBytes: $uploadedBytes,
+                            totalBytes: $totalUploadBytes,
+                            currentBytes: $uploadedBytes,
+                            type: ProgressType::Upload,
                         ),
                     ]);
                 },
