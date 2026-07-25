@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.49.0 - 2026-07-25
+
+### What's Changed
+
+* Fix hydrate richmessage by @Lukasss93 in https://github.com/nutgram/nutgram/pull/998
+* Fix missing RICH_MESSAGE support to MessageType by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1000
+* Add `onRichMessage` handler by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1001
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.48.0...4.49.0
+
 ## 4.48.0 - 2026-07-18
 
 ### What's Changed

@@ -21,7 +21,7 @@ class RichBlockCaption extends BaseType
      * Block caption
      * @var string|RichText[]|RichText
      */
-    #[ArrayType(RichText::class)]
+    #[ArrayType(RichText::class, skipScalars: true)]
     #[RichTextUnionResolver]
     public string|array|RichText $text;
 
@@ -29,7 +29,7 @@ class RichBlockCaption extends BaseType
      * Optional. Block credit which corresponds to the HTML tag <cite>
      * @var string|RichText[]|RichText|null
      */
-    #[ArrayType(RichText::class)]
+    #[ArrayType(RichText::class, skipScalars: true)]
     #[RichTextUnionResolver]
     public string|array|RichText|null $credit = null;
 

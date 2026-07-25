@@ -765,3 +765,15 @@ it('calls onCommunityChatRemoved handler', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('community_chat_removed');
+
+it('calls onRichMessage handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onRichMessage(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('rich_message');
