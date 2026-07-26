@@ -159,7 +159,7 @@ function mapInterval(
     $result = $targetStart + $map * ($current - $sourceStart);
     $result = round($result, $precision);
 
-    if($precision === 0) {
+    if ($precision === 0) {
         return (int)$result;
     }
 
