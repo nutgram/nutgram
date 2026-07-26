@@ -13,7 +13,7 @@ use SergiX44\Nutgram\Testing\TestClock;
 function rangeProgress(int $until = 10): array
 {
     return array_map(
-        fn($current) => new Progress($until, $current, ProgressType::Upload),
+        fn ($current) => new Progress($until, $current, ProgressType::Upload),
         range(1, $until)
     );
 }
@@ -62,7 +62,7 @@ test('use EveryBytes(5)', function () {
     ]);
 });
 
-test('use EveryPercent(20)', function() {
+test('use EveryPercent(20)', function () {
     $trigger = new EveryPercent(20);
 
     $results = array_map(
@@ -84,7 +84,7 @@ test('use EveryPercent(20)', function() {
     ]);
 });
 
-test('use EverySeconds(5)', function(){
+test('use EverySeconds(5)', function () {
     $container = new Container();
     $container->singleton(ClockInterface::class, new TestClock());
     $progress = new Progress(1, 10, ProgressType::Upload);
@@ -113,7 +113,7 @@ test('use EverySeconds(5)', function(){
     expect($result)->toBe(true);
 });
 
-test('use everyMilliseconds(500)', function(){
+test('use everyMilliseconds(500)', function () {
     $container = new Container();
     $container->singleton(ClockInterface::class, new TestClock());
     $progress = new Progress(1, 10, ProgressType::Upload);
