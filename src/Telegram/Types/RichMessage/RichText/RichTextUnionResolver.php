@@ -27,7 +27,7 @@ class RichTextUnionResolver extends UnionResolver
     {
         $value = $data[$propertyName] ?? null;
 
-        if ($value === null) {
+        if (!array_key_exists($propertyName, $data)) {
             $value = $data;
         }
 
