@@ -17,6 +17,8 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Support\Progress\ProgressType;
+use SergiX44\Nutgram\Support\Progress\WithProgress;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\CustomEndpoints;
 use SergiX44\Nutgram\Telegram\Endpoints\Games;
@@ -53,15 +55,8 @@ trait Client
         CustomEndpoints,
         Macroable,
         UpdateMethods,
-        ProvidesHttpResponse;
-
-    protected $progressHandler = null;
-
-    public function withProgress(string|array|callable|object $callable): static
-    {
-        $this->progressHandler = $callable;
-        return $this;
-    }
+        ProvidesHttpResponse,
+        WithProgress;
 
     /**
      * @param string $endpoint
@@ -120,20 +115,7 @@ trait Client
             return copy($this->downloadUrl($file), $path);
         }
 
-        if ($this->progressHandler !== null) {
-            $clientOpt = [
-                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    $this->invoke($this->progressHandler, [
-                        new Progress(
-                            totalBytes: $totalDownloadBytes,
-                            currentBytes: $downloadedBytes,
-                            type: ProgressType::Download,
-                        ),
-                    ]);
-                },
-                ...$clientOpt,
-            ];
-        }
+        $this->setGuzzleHandler($clientOpt, ProgressType::Download);
 
         $request = ['sink' => $path, ...$clientOpt];
         $endpoint = $this->downloadUrl($file);
@@ -141,7 +123,6 @@ trait Client
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
         try {
             $response = $this->http->get($endpoint, $requestPost ?? $request);
-            $this->progressHandler = null;
         } catch (ConnectException $e) {
             $this->redactTokenFromConnectException($e);
         }
@@ -223,20 +204,7 @@ trait Client
             };
         }
 
-        if ($this->progressHandler !== null) {
-            $options = [
-                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    $this->invoke($this->progressHandler, [
-                        new Progress(
-                            totalBytes: $totalUploadBytes,
-                            currentBytes: $uploadedBytes,
-                            type: ProgressType::Upload,
-                        ),
-                    ]);
-                },
-                ...$options,
-            ];
-        }
+        $this->setGuzzleHandler($options, ProgressType::Upload);
 
         $request = ['multipart' => $parameters, ...$options];
 
@@ -252,7 +220,6 @@ trait Client
 
             try {
                 $response = $this->http->post($endpoint, $requestData);
-                $this->progressHandler = null;
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
@@ -290,20 +257,7 @@ trait Client
             default => $item,
         }, array_filter_null($json));
 
-        if ($this->progressHandler !== null) {
-            $options = [
-                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    $this->invoke($this->progressHandler, [
-                        new Progress(
-                            totalBytes: $totalUploadBytes,
-                            currentBytes: $uploadedBytes,
-                            type: ProgressType::Upload,
-                        ),
-                    ]);
-                },
-                ...$options,
-            ];
-        }
+        $this->setGuzzleHandler($options, ProgressType::Upload);
 
         $request = ['json' => $json, ...$options];
 
@@ -326,7 +280,6 @@ trait Client
                     'headers' => ['Content-Type' => 'application/json'],
                     ...$requestData,
                 ]);
-                $this->progressHandler = null;
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }

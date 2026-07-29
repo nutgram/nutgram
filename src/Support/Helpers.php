@@ -127,3 +127,41 @@ function is_nonscalar_json(string $value): bool
     return (str_starts_with($value, '{') && str_ends_with($value, '}'))
         || (str_starts_with($value, '[') && str_ends_with($value, ']'));
 }
+
+/**
+ * Map the interval [$sourceStart,$sourceEnd] onto the interval [$targetStart,$targetEnd].
+ * @param float $current
+ * @param float $sourceStart
+ * @param float $sourceEnd
+ * @param float $targetStart
+ * @param float $targetEnd
+ * @param int $precision
+ * @return int|float
+ * @see https://math.stackexchange.com/a/914843
+ */
+function mapInterval(
+    float $current,
+    float $sourceStart,
+    float $sourceEnd,
+    float $targetStart = 0,
+    float $targetEnd = 100,
+    int $precision = 0,
+): int|float {
+    if ($sourceEnd <= 0) {
+        return 0;
+    }
+
+    if ($sourceEnd === $sourceStart) {
+        return $targetEnd;
+    }
+
+    $map = ($targetEnd - $targetStart) / ($sourceEnd - $sourceStart);
+    $result = $targetStart + $map * ($current - $sourceStart);
+    $result = round($result, $precision);
+
+    if ($precision === 0) {
+        return (int)$result;
+    }
+
+    return $result;
+}
