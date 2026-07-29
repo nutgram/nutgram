@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Testing;
 
 use GuzzleHttp\Handler\MockHandler;
@@ -7,8 +9,8 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use InvalidArgumentException;
 use JsonException;
+use Psr\Clock\ClockInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
@@ -121,7 +123,8 @@ class FakeNutgram extends Nutgram
         (function () use ($handlerStack, $mock) {
             /** @psalm-scope-this \SergiX44\Nutgram\Testing\FakeNutgram */
             $this->mockHandler = $mock;
-            $this->typeFaker = new TypeFaker($this->hydrator);
+            $this->typeFaker = $this->container->get(TypeFaker::class);
+            $this->container->set(ClockInterface::class, new TestClock());
 
             $properties = (new ReflectionClass(Client::class))->getMethods(ReflectionMethod::IS_PUBLIC);
 
@@ -156,7 +159,7 @@ class FakeNutgram extends Nutgram
                         } elseif ($return instanceof ReflectionUnionType) {
                             foreach ($return->getTypes() as $type) {
                                 $instance = $this->typeFaker->fakeInstanceOf(
-                                    $type,
+                                    $type->getName(),
                                     $partialResult
                                 );
                                 if (is_object($instance)) {
@@ -349,39 +352,12 @@ class FakeNutgram extends Nutgram
      */
     public static function getActualData(Request $request, array $mapping = []): array
     {
-        //get content type
-        $contentType = $request->getHeaderLine('Content-Type');
+        $data = new RequestData($request);
+        $data->when($data->isMultipart(), function (RequestData $data) use ($mapping) {
+            $data->withMapping(array_map(fn ($value) => gettype($value), $mapping));
+        });
 
-        //get body
-        $body = (string)$request->getBody();
-
-        //get data from json
-        if (str_contains($contentType, 'application/json')) {
-            return json_decode($body, true, flags: JSON_THROW_ON_ERROR);
-        }
-
-        //get data from form data
-        if (str_contains($contentType, 'multipart/form-data')) {
-            $formData = FormDataParser::parse($request);
-            $params = $formData->params;
-
-            //remap types lost in the form data parser
-            if (count($mapping) > 0) {
-                array_walk_recursive($params, function (&$value, $key) use ($mapping) {
-                    if (array_key_exists($key, $mapping)) {
-                        $value = match (gettype($mapping[$key])) {
-                            'integer' => filter_var($value, FILTER_VALIDATE_INT),
-                            'double' => filter_var($value, FILTER_VALIDATE_FLOAT),
-                            'boolean' => filter_var($value, FILTER_VALIDATE_BOOLEAN),
-                            default => $value,
-                        };
-                    }
-                });
-            }
-            return [...$params, ...$formData->files];
-        }
-
-        throw new InvalidArgumentException("Content-Type '$contentType' not supported");
+        return [...$data->allRaw(), ...$data->files()];
     }
 
     /**

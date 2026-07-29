@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use GuzzleHttp\Psr7\Utils;
+use Psr\Http\Message\StreamInterface;
 use SergiX44\Nutgram\Testing\OutgoingResource;
 
 beforeEach(function () {
@@ -8,10 +12,9 @@ beforeEach(function () {
 
     $this->outgoingResource = new OutgoingResource(
         name: 'foo.txt',
-        type: 'text/plain',
+        mime: 'text/plain',
         size: 3,
-        error: 0,
-        tmp_resource: $resource
+        stream: Utils::streamFor($resource),
     );
 });
 
@@ -21,10 +24,9 @@ it('returns serialized json', function ($name, $output) {
 
     $outgoingResource = new OutgoingResource(
         name: $name,
-        type: 'text/plain',
+        mime: 'text/plain',
         size: 3,
-        error: 0,
-        tmp_resource: $resource
+        stream: Utils::streamFor($resource),
     );
 
     expect(json_encode($outgoingResource))->toContain($output);
@@ -37,18 +39,14 @@ it('returns name', function () {
     expect($this->outgoingResource->getName())->toBe('foo.txt');
 });
 
-it('returns type', function () {
-    expect($this->outgoingResource->getType())->toBe('text/plain');
+it('returns mime', function () {
+    expect($this->outgoingResource->getMime())->toBe('text/plain');
 });
 
 it('returns size', function () {
     expect($this->outgoingResource->getSize())->toBe(3);
 });
 
-it('returns error', function () {
-    expect($this->outgoingResource->getError())->toBe(0);
-});
-
-it('returns tmp resource', function () {
-    expect($this->outgoingResource->getTmpResource())->toBeResource();
+it('returns stream', function () {
+    expect($this->outgoingResource->getStream())->toBeInstanceOf(StreamInterface::class);
 });

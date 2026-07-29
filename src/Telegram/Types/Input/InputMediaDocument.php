@@ -1,25 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a general file to be sent.
  * @see https://core.telegram.org/bots/api#inputmediadocument
  */
-#[SkipConstructor]
-class InputMediaDocument extends BaseType implements InputMedia, InputPollMedia, Uploadables, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputMediaDocument extends BaseType implements InputMedia, InputPollMedia, Uploadables
 {
     /** Type of the result, must be document */
     #[EnumOrScalar]
@@ -32,6 +33,7 @@ class InputMediaDocument extends BaseType implements InputMedia, InputPollMedia,
      * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string $media;
 
     /**
@@ -45,6 +47,7 @@ class InputMediaDocument extends BaseType implements InputMedia, InputPollMedia,
      * if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string|null $thumbnail = null;
 
     /**
@@ -78,11 +81,11 @@ class InputMediaDocument extends BaseType implements InputMedia, InputPollMedia,
 
     public function __construct(
         InputFile|string $media,
-        InputFile|string|null $thumbnail,
-        ?string $caption,
-        ParseMode|string|null $parse_mode,
-        ?array $caption_entities,
-        ?bool $disable_content_type_detection
+        InputFile|string|null $thumbnail = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $disable_content_type_detection = null,
     ) {
         parent::__construct();
         $this->media = $media;
@@ -91,37 +94,6 @@ class InputMediaDocument extends BaseType implements InputMedia, InputPollMedia,
         $this->parse_mode = $parse_mode;
         $this->caption_entities = $caption_entities;
         $this->disable_content_type_detection = $disable_content_type_detection;
-    }
-
-    public static function make(
-        InputFile|string $media,
-        InputFile|string|null $thumbnail = null,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?bool $disable_content_type_detection = null
-    ): self {
-        return new self(
-            media: $media,
-            thumbnail: $thumbnail,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            disable_content_type_detection: $disable_content_type_detection
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'media' => $this->media,
-            'thumbnail' => $this->thumbnail,
-            'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode,
-            'caption_entities' => $this->caption_entities,
-            'disable_content_type_detection' => $this->disable_content_type_detection,
-        ]);
     }
 
     public function uploadables(): array

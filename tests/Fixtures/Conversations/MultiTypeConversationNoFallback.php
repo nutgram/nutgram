@@ -17,8 +17,8 @@ class MultiTypeConversationNoFallback extends Conversation
 
         $bot->sendMessage(
             text: 'Waiting for a callback query...',
-            reply_markup: InlineKeyboardMarkup::make()
-                ->addRow(InlineKeyboardButton::make(text: 'Click me', callback_data: 'button_clicked'))
+            reply_markup: new InlineKeyboardMarkup()
+                ->addRow(new InlineKeyboardButton(text: 'Click me', callback_data: 'button_clicked'))
         );
 
         $this->next('getCallbackQuery', fn (Nutgram $bot) => $bot->isCallbackQuery());

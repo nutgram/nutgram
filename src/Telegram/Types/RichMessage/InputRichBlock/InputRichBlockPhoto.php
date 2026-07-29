@@ -1,21 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
 
 /**
  * A block with a photo, corresponding to the HTML tag <code><img></code>.
  * @see https://core.telegram.org/bots/api#inputrichblockphoto
  */
-#[SkipConstructor]
-class InputRichBlockPhoto extends BaseType implements InputRichBlock, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichBlockPhoto extends BaseType implements InputRichBlock
 {
     /**
      * Type of the block, always “photo”
@@ -38,10 +39,5 @@ class InputRichBlockPhoto extends BaseType implements InputRichBlock, JsonSerial
         parent::__construct();
         $this->photo = $photo;
         $this->caption = $caption;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

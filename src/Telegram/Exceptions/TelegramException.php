@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Exceptions;
 
 use Exception;
+use Throwable;
 
 class TelegramException extends Exception
 {
@@ -13,9 +16,9 @@ class TelegramException extends Exception
      * @param string $message
      * @param int $code
      * @param  array  $parameters
-     * @param  null  $previous
+     * @param  Throwable|null  $previous
      */
-    public function __construct($message = '', int $code = 0, $previous = null, array $parameters = [])
+    public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null, array $parameters = [])
     {
         $this->parameters = $parameters;
         parent::__construct($message, $code, $previous);

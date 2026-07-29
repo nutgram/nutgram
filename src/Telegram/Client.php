@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram;
 
@@ -16,6 +17,8 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Support\Progress\ProgressType;
+use SergiX44\Nutgram\Support\Progress\WithProgress;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\CustomEndpoints;
 use SergiX44\Nutgram\Telegram\Endpoints\Games;
@@ -52,15 +55,8 @@ trait Client
         CustomEndpoints,
         Macroable,
         UpdateMethods,
-        ProvidesHttpResponse;
-
-    protected $progressHandler = null;
-
-    public function withProgress(string|array|callable|object $callable): static
-    {
-        $this->progressHandler = $callable;
-        return $this;
-    }
+        ProvidesHttpResponse,
+        WithProgress;
 
     /**
      * @param string $endpoint
@@ -119,21 +115,7 @@ trait Client
             return copy($this->downloadUrl($file), $path);
         }
 
-        if ($this->progressHandler !== null) {
-            $clientOpt = [
-                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    $this->invoke($this->progressHandler, [
-                        new Progress(
-                            totalDownloadBytes: $totalDownloadBytes,
-                            downloadedBytes: $downloadedBytes,
-                            totalUploadBytes: $totalUploadBytes,
-                            uploadedBytes: $uploadedBytes,
-                        ),
-                    ]);
-                },
-                ...$clientOpt,
-            ];
-        }
+        $this->setGuzzleHandler($clientOpt, ProgressType::Download);
 
         $request = ['sink' => $path, ...$clientOpt];
         $endpoint = $this->downloadUrl($file);
@@ -141,7 +123,6 @@ trait Client
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
         try {
             $response = $this->http->get($endpoint, $requestPost ?? $request);
-            $this->progressHandler = null;
         } catch (ConnectException $e) {
             $this->redactTokenFromConnectException($e);
         }
@@ -197,7 +178,7 @@ trait Client
                             if ($file->{$field} instanceof InputFile) {
                                 $parameters[] = [
                                     'name' => $file->{$field}->getFilename(),
-                                    'contents' => $file->{$field}->getResource(),
+                                    'contents' => $file->{$field}->getStream(),
                                     'filename' => $file->{$field}->getFilename(),
                                 ];
                             }
@@ -209,7 +190,7 @@ trait Client
             $parameters[] = match (true) {
                 $contents instanceof InputFile => [
                     'name' => $name,
-                    'contents' => $contents->getResource(),
+                    'contents' => $contents->getStream(),
                     'filename' => $contents->getFilename(),
                 ],
                 $contents instanceof JsonSerializable, is_array($contents) => [
@@ -223,21 +204,7 @@ trait Client
             };
         }
 
-        if ($this->progressHandler !== null) {
-            $options = [
-                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    $this->invoke($this->progressHandler, [
-                        new Progress(
-                            totalDownloadBytes: $totalDownloadBytes,
-                            downloadedBytes: $downloadedBytes,
-                            totalUploadBytes: $totalUploadBytes,
-                            uploadedBytes: $uploadedBytes,
-                        ),
-                    ]);
-                },
-                ...$options,
-            ];
-        }
+        $this->setGuzzleHandler($options, ProgressType::Upload);
 
         $request = ['multipart' => $parameters, ...$options];
 
@@ -253,11 +220,10 @@ trait Client
 
             try {
                 $response = $this->http->post($endpoint, $requestData);
-                $this->progressHandler = null;
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
-            $content = $this->mapResponse($response, $mapTo);
+            $content = $this->mapResponse($response, $mapTo, $endpoint);
 
             $this->logResponse((string)$response->getBody());
 
@@ -266,7 +232,7 @@ trait Client
             if (!$exception->hasResponse()) {
                 throw $exception;
             }
-            return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
+            return $this->mapResponse($exception->getResponse(), $mapTo, $endpoint, $exception);
         }
     }
 
@@ -291,21 +257,7 @@ trait Client
             default => $item,
         }, array_filter_null($json));
 
-        if ($this->progressHandler !== null) {
-            $options = [
-                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    $this->invoke($this->progressHandler, [
-                        new Progress(
-                            totalDownloadBytes: $totalDownloadBytes,
-                            downloadedBytes: $downloadedBytes,
-                            totalUploadBytes: $totalUploadBytes,
-                            uploadedBytes: $uploadedBytes,
-                        ),
-                    ]);
-                },
-                ...$options,
-            ];
-        }
+        $this->setGuzzleHandler($options, ProgressType::Upload);
 
         $request = ['json' => $json, ...$options];
 
@@ -328,11 +280,10 @@ trait Client
                     'headers' => ['Content-Type' => 'application/json'],
                     ...$requestData,
                 ]);
-                $this->progressHandler = null;
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
-            $content = $this->mapResponse($response, $mapTo);
+            $content = $this->mapResponse($response, $mapTo, $endpoint);
 
             $this->logResponse((string)$response->getBody());
 
@@ -341,22 +292,23 @@ trait Client
             if (!$exception->hasResponse()) {
                 throw $exception;
             }
-            return $this->mapResponse($exception->getResponse(), $mapTo, $exception);
+            return $this->mapResponse($exception->getResponse(), $mapTo, $endpoint, $exception);
         }
     }
 
     /**
      * @param ResponseInterface $response
      * @param string $mapTo
+     * @param string $endpoint
      * @param Exception|null $clientException
      * @return mixed
      * @throws JsonException
      * @throws TelegramException
      */
-    protected function mapResponse(ResponseInterface $response, string $mapTo, ?Exception $clientException = null): mixed
+    protected function mapResponse(ResponseInterface $response, string $mapTo, string $endpoint, ?Exception $clientException = null): mixed
     {
         $json = json_decode((string)$response->getBody(), flags: JSON_THROW_ON_ERROR);
-        $json = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$json]) ?? $json;
+        $json = $this->fireHandlersBy(self::AFTER_API_REQUEST, [$json, $endpoint]) ?? $json;
 
         if (!$json?->ok) {
             $e = new TelegramException(
@@ -371,8 +323,11 @@ trait Client
 
         return match (true) {
             is_scalar($json->result) => $json->result,
-            is_array($json->result) => $this->hydrator->hydrateArray($json->result, $mapTo),
-            default => $this->hydrator->hydrate($json->result, $mapTo)
+            is_array($json->result) => array_map(
+                callback: fn ($obj): mixed => $this->hydrator->hydrate($mapTo, $obj),
+                array: $json->result,
+            ),
+            default => $this->hydrator->hydrate($mapTo, $json->result)
         };
     }
 

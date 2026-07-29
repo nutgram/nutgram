@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object contains information about the color scheme for a user's name, message replies and link previews based on a unique gift.

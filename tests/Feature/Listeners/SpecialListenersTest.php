@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
@@ -187,10 +189,11 @@ it('calls afterApiRequest() method', function ($update) {
         );
     });
 
-    $bot->afterApiRequest(function (Nutgram $bot, $request) {
+    $bot->afterApiRequest(function (Nutgram $bot, $request, $endpoint) {
         expect($request)
             ->ok->toBeTrue()
-            ->result->toBeInstanceOf(stdClass::class);
+            ->result->toBeInstanceOf(stdClass::class)
+            ->and($endpoint)->toBe('sendMessage');
         return $request;
     });
 

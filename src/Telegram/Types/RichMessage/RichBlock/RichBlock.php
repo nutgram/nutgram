@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock;
+
+use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\RichBlockResolver;
 
 /**
  * This object represents a block in a rich formatted message. Currently, it can be any of the following types:

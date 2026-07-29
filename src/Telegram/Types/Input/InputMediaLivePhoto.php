@@ -1,25 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a live photo to be sent.
  * @see https://core.telegram.org/bots/api#inputmedialivephoto
  */
-#[SkipConstructor]
-class InputMediaLivePhoto extends BaseType implements InputMedia, InputPollMedia, InputPollOptionMedia, Uploadables, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputMediaLivePhoto extends BaseType implements InputMedia, InputPollMedia, InputPollOptionMedia, Uploadables
 {
     /** Type of the result, must be live_photo */
     #[EnumOrScalar]
@@ -32,6 +33,7 @@ class InputMediaLivePhoto extends BaseType implements InputMedia, InputPollMedia
      * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string $media;
 
     /**
@@ -41,6 +43,7 @@ class InputMediaLivePhoto extends BaseType implements InputMedia, InputPollMedia
      * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string $photo;
 
     /**
@@ -93,41 +96,6 @@ class InputMediaLivePhoto extends BaseType implements InputMedia, InputPollMedia
         $this->caption_entities = $caption_entities;
         $this->has_spoiler = $has_spoiler;
         $this->show_caption_above_media = $show_caption_above_media;
-    }
-
-    public static function make(
-        InputFile|string $media,
-        InputFile|string $photo,
-        ?string $caption = null,
-        ParseMode|string|null $parse_mode = null,
-        ?array $caption_entities = null,
-        ?bool $has_spoiler = null,
-        ?bool $show_caption_above_media = null,
-    ): self {
-        return new self(
-            media: $media,
-            photo: $photo,
-            caption: $caption,
-            parse_mode: $parse_mode,
-            caption_entities: $caption_entities,
-            has_spoiler: $has_spoiler,
-            show_caption_above_media: $show_caption_above_media,
-        );
-    }
-
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'media' => $this->media,
-            'photo' => $this->photo,
-            'caption' => $this->caption,
-            'parse_mode' => $this->parse_mode,
-            'caption_entities' => $this->caption_entities,
-            'show_caption_above_media' => $this->show_caption_above_media,
-            'has_spoiler' => $this->has_spoiler,
-        ]);
     }
 
     public function uploadables(): array

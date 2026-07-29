@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Handlers;
 
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;

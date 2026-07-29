@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 use SergiX44\Nutgram\Support\DeepLink;
-use function SergiX44\Nutgram\Support\deepLink;
+use function SergiX44\Nutgram\Support\deep_link;
 
 it('can be instantiated statically', function () {
     $deepLink = DeepLink::make();
@@ -9,7 +11,7 @@ it('can be instantiated statically', function () {
 });
 
 it('can be used via helper function', function () {
-    $deepLink = deepLink();
+    $deepLink = deep_link();
     expect($deepLink)->toBeInstanceOf(DeepLink::class);
 });
 

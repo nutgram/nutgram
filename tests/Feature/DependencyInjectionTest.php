@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use SergiX44\Container\Container;
 use SergiX44\Container\Exception\ContainerException;
 use SergiX44\Nutgram\Configuration;
@@ -9,7 +11,6 @@ use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithConstructor;
 use SergiX44\Nutgram\Tests\Fixtures\CustomService;
 use SergiX44\Nutgram\Tests\Fixtures\DI\MiddlewareCallable;
 use SergiX44\Nutgram\Tests\Fixtures\DI\StartCommandCallable;
-use SergiX44\Nutgram\Tests\Fixtures\DI\StartCommandClass;
 use SergiX44\Nutgram\Tests\Fixtures\DI\TextHandlerCallable;
 use SergiX44\Nutgram\Tests\Fixtures\MyService;
 use SergiX44\Nutgram\Tests\Fixtures\ServiceHandler;
@@ -32,7 +33,7 @@ it('uses a different container', function () {
 it('throws an exception when resolving an invalid callable', function () {
     $bot = Nutgram::fake();
 
-    $bot->onText('foo', 123);
+    $bot->onText('foo', 'invalid_callable');
 
     $bot->hearText('foo')->reply();
 })->throws(ContainerException::class, 'Invalid callable specified');
@@ -55,15 +56,6 @@ describe('DI in Command', function () {
         $bot->getContainer()->set(CustomService::class, new CustomService());
 
         $bot->onCommand('start {value}', StartCommandCallable::class);
-
-        $bot->hearText('/start foo')->reply();
-    });
-
-    test('class', function () {
-        $bot = Nutgram::fake();
-        $bot->getContainer()->set(CustomService::class, new CustomService());
-
-        $bot->registerCommand(StartCommandClass::class);
 
         $bot->hearText('/start foo')->reply();
     });

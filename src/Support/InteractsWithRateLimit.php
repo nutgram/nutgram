@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Support;
 
 use SergiX44\Nutgram\Middleware\RateLimit;

@@ -1,22 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Represents a sticker file to be sent.
  * @see https://core.telegram.org/bots/api#inputmediasticker
  */
-#[SkipConstructor]
-class InputMediaSticker extends BaseType implements InputPollOptionMedia, Uploadables, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputMediaSticker extends BaseType implements InputPollOptionMedia, Uploadables
 {
     /**
      * Type of the result, must be sticker
@@ -31,6 +32,7 @@ class InputMediaSticker extends BaseType implements InputPollOptionMedia, Upload
      * using multipart/form-data under <file_attach_name> name.
      * More information on Sending Files »
      */
+    #[BaseUnion]
     public InputFile|string $media;
 
     /**
@@ -43,23 +45,6 @@ class InputMediaSticker extends BaseType implements InputPollOptionMedia, Upload
         parent::__construct();
         $this->media = $media;
         $this->emoji = $emoji;
-    }
-
-    public static function make(InputFile|string $media, ?string $emoji = null): self
-    {
-        return new self(
-            media: $media,
-            emoji: $emoji,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'media' => $this->media,
-            'emoji' => $this->emoji,
-        ]);
     }
 
     public function uploadables(): array

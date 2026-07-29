@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 dataset('command_tags', function () {
     return [
         'empty' => [json_decode(file_get_contents(__DIR__.'/../Fixtures/Updates/command.json')), true],

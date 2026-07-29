@@ -1,18 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Internal;
 
-class UploadableArray implements \JsonSerializable
+use JsonSerializable;
+
+readonly class UploadableArray implements JsonSerializable
 {
     /**
      * @param Uploadables[] $files
      */
-    public function __construct(public readonly array $files)
+    public function __construct(public array $files)
     {
     }
 
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         return $this->files;
     }

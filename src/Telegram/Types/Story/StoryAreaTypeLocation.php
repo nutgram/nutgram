@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Story;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\StoryAreaTypeType;
 use SergiX44\Nutgram\Telegram\Types\Location\LocationAddress;
@@ -11,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Location\LocationAddress;
  * Describes a story area pointing to a location. Currently, a story can have up to 10 location areas.
  * @see https://core.telegram.org/bots/api#storyareatypelocation
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class StoryAreaTypeLocation extends StoryAreaType
 {
     /**

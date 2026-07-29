@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * A block with a mathematical expression in LaTeX format, corresponding to the custom HTML tag <code><tg-math-block></code>.
  * @see https://core.telegram.org/bots/api#inputrichblockmathematicalexpression
  */
-#[SkipConstructor]
-class InputRichBlockMathematicalExpression extends BaseType implements InputRichBlock, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichBlockMathematicalExpression extends BaseType implements InputRichBlock
 {
     /**
      * Type of the block, always “mathematical_expression”
@@ -30,10 +31,5 @@ class InputRichBlockMathematicalExpression extends BaseType implements InputRich
     {
         parent::__construct();
         $this->expression = $expression;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

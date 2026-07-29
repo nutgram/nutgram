@@ -1,6 +1,7 @@
 <?php
 
-use GuzzleHttp\Psr7\Request;
+declare(strict_types=1);
+
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\StreamInterface;
 use SergiX44\Nutgram\Nutgram;
@@ -16,7 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\User\User;
-use SergiX44\Nutgram\Testing\FormDataParser;
+use SergiX44\Nutgram\Testing\RequestData;
 
 it('throws exception when text is too long', function ($responseBody) {
     $textOriginal = str_repeat('a', Limits::TEXT_LENGTH + 1);
@@ -158,7 +159,7 @@ it('uploads a file with attach:// logic', function () {
         );
 
         $bot->editMessageMedia(
-            media: InputMediaPhoto::make(
+            media: new InputMediaPhoto(
                 media: InputFile::make(fopen('php://temp', 'rb'), 'photoB.jpg'),
                 caption: 'B',
             ),
@@ -176,9 +177,8 @@ it('uploads a file with attach:// logic', function () {
         ->assertReply('editMessageMedia', [
             'media' => '{"type":"photo","media":"attach:\\/\\/photoB.jpg","caption":"B"}',
         ], 1)
-        ->assertRaw(function (Request $request) {
-            $photo = FormDataParser::parse($request)->files['photoB.jpg'];
-            return $photo->getName() === 'photoB.jpg';
+        ->assertRaw(function (RequestData $request) {
+            return $request->hasFile('photoB.jpg');
         }, 1);
 });
 
@@ -187,11 +187,11 @@ it('creates a new sticker set using InputFile', function () {
 
     $bot->onCommand('start', function (Nutgram $bot) {
         $file = InputFile::make(
-            resource: fopen('php://temp', 'rb'),
+            stream: fopen('php://temp', 'rb'),
             filename: 'sticker.png',
         );
 
-        $sticker = InputSticker::make(
+        $sticker = new InputSticker(
             sticker: $file,
             format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
@@ -240,7 +240,7 @@ it('creates a new sticker set using Url', function () {
     $bot = Nutgram::fake();
 
     $bot->onCommand('start', function (Nutgram $bot) {
-        $sticker = InputSticker::make(
+        $sticker = new InputSticker(
             sticker: 'https://example.com/sticker.png',
             format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
@@ -287,11 +287,11 @@ it('add sticker to set using InputFile', function () {
 
     $bot->onCommand('start', function (Nutgram $bot) {
         $file = InputFile::make(
-            resource: fopen('php://temp', 'rb'),
+            stream: fopen('php://temp', 'rb'),
             filename: 'sticker.png',
         );
 
-        $sticker = InputSticker::make(
+        $sticker = new InputSticker(
             sticker: $file,
             format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
@@ -331,7 +331,7 @@ it('add sticker to set using Url', function () {
     $bot = Nutgram::fake();
 
     $bot->onCommand('start', function (Nutgram $bot) {
-        $sticker = InputSticker::make(
+        $sticker = new InputSticker(
             sticker: 'https://example.com/sticker.png',
             format: StickerFormat::STATIC,
             emoji_list: ['🤔'],
@@ -385,11 +385,11 @@ it('sends a media group', function () {
     });
 
     $bot->sendMediaGroup([
-        InputMediaPhoto::make(
+        new InputMediaPhoto(
             media: InputFile::make(fopen('php://temp', 'rb'), 'photoA.jpg'),
             caption: '150',
         ),
-        InputMediaPhoto::make(
+        new InputMediaPhoto(
             media: InputFile::make(fopen('php://temp', 'rb'), 'photoB.jpg'),
             caption: '200',
         ),
@@ -490,10 +490,10 @@ it('sends multiple medias via sendMediaGroup', function () {
 
     $bot->sendMediaGroup(
         media: [
-            InputMediaPhoto::make(
+            new InputMediaPhoto(
                 media: InputFile::make(fopen('php://temp', 'rb'), 'photoA.jpg'),
             ),
-            InputMediaVideo::make(
+            new InputMediaVideo(
                 media: InputFile::make(fopen('php://temp', 'rb'), 'video.jpg'),
                 thumbnail: 'https://i.ytimg.com/vi/fQ1BU25IogA/maxresdefault.jpg',
                 cover: InputFile::make(fopen('php://temp', 'rb'), 'photoB.jpg'),
@@ -502,3 +502,14 @@ it('sends multiple medias via sendMediaGroup', function () {
         chat_id: 123,
     );
 });
+
+it('returns a list of my commands', function ($responseBody) {
+    $bot = Nutgram::fake(responses: [
+        new Response(200, body: $responseBody),
+    ]);
+
+    $commands = $bot->getMyCommands();
+
+    expect($commands)->toBeArray()->toHaveCount(2);
+    expect($commands[0]->getBot())->toBeInstanceOf(Nutgram::class);
+})->with('response_my_commands');
