@@ -120,9 +120,11 @@ trait Client
         }
 
         if ($this->progressHandler !== null) {
+            $progressHandler = $this->progressHandler;
+            $this->progressHandler = null;
             $clientOpt = [
-                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    $this->invoke($this->progressHandler, [
+                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) use ($progressHandler) {
+                    $this->invoke($progressHandler, [
                         new Progress(
                             totalDownloadBytes: $totalDownloadBytes,
                             downloadedBytes: $downloadedBytes,
@@ -141,7 +143,6 @@ trait Client
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
         try {
             $response = $this->http->get($endpoint, $requestPost ?? $request);
-            $this->progressHandler = null;
         } catch (ConnectException $e) {
             $this->redactTokenFromConnectException($e);
         }
@@ -224,9 +225,11 @@ trait Client
         }
 
         if ($this->progressHandler !== null) {
+            $progressHandler = $this->progressHandler;
+            $this->progressHandler = null;
             $options = [
-                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    $this->invoke($this->progressHandler, [
+                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) use ($progressHandler) {
+                    $this->invoke($progressHandler, [
                         new Progress(
                             totalDownloadBytes: $totalDownloadBytes,
                             downloadedBytes: $downloadedBytes,
@@ -253,7 +256,6 @@ trait Client
 
             try {
                 $response = $this->http->post($endpoint, $requestData);
-                $this->progressHandler = null;
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
@@ -292,9 +294,11 @@ trait Client
         }, array_filter_null($json));
 
         if ($this->progressHandler !== null) {
+            $progressHandler = $this->progressHandler;
+            $this->progressHandler = null;
             $options = [
-                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    $this->invoke($this->progressHandler, [
+                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) use ($progressHandler) {
+                    $this->invoke($progressHandler, [
                         new Progress(
                             totalDownloadBytes: $totalDownloadBytes,
                             downloadedBytes: $downloadedBytes,
@@ -328,7 +332,6 @@ trait Client
                     'headers' => ['Content-Type' => 'application/json'],
                     ...$requestData,
                 ]);
-                $this->progressHandler = null;
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
