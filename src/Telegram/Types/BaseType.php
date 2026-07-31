@@ -97,9 +97,12 @@ abstract class BaseType implements Arrayable
 
     public function toArray(): array
     {
-        $data = [...get_object_vars($this), ...$this->_extra];
+        $objectVars = get_object_vars($this);
+        unset($objectVars['_extra']);
 
-        array_walk($data, static function (mixed &$value, string $key) {
+        $data = [...$objectVars, ...$this->_extra];
+
+        array_walk_recursive($data, static function (mixed &$value, string $key) {
             match (true) {
                 str_starts_with($key, '_') => $value = null, // remove internal properties
                 $value instanceof Arrayable => $value = $value->toArray(),
