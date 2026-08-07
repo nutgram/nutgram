@@ -2,6 +2,17 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.49.1 - 2026-08-07
+
+### What's Changed
+
+* Handle property existence in `RichTextUnionResolver` by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1009
+* Fix potential infinite loops by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1007
+* Better `toArray()` output on types by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1008
+* Fix type hydration via Webhook by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1006
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.49.0...4.49.1
+
 ## 4.49.0 - 2026-07-25
 
 ### What's Changed
