@@ -4,7 +4,6 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -18,7 +17,6 @@ class InputRichBlockDivider extends BaseType implements InputRichBlock, JsonSeri
     /**
      * Type of the block, always “divider”
      */
-    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::DIVIDER;
 
     public function __construct()

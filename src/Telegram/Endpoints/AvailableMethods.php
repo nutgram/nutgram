@@ -45,6 +45,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\ManagedBot\BotAccessSettings;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Media\Story;
+use SergiX44\Nutgram\Telegram\Types\Message\EphemeralMessageParameters;
 use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
@@ -131,8 +132,9 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @param int|null $receiver_user_id For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
-     * @param string|null $callback_query_id For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param int|null $receiver_user_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
+     * @param string|null $callback_query_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @return Message|null
      */
     public function sendMessage(
@@ -156,6 +158,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?int $receiver_user_id = null,
         ?string $callback_query_id = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
     ): ?Message {
         $parameters = compact(
             'chat_id',
@@ -178,6 +181,7 @@ trait AvailableMethods
             'suggested_post_parameters',
             'receiver_user_id',
             'callback_query_id',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -185,8 +189,10 @@ trait AvailableMethods
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         if ($this->message()?->isEphemeral()) {
-            $parameters['receiver_user_id'] ??= $this->receiverUserId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
+                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+            );
         }
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
@@ -208,6 +214,7 @@ trait AvailableMethods
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param ReplyParameters|null $reply_parameters Description of the message to reply to
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove a reply keyboard or to force a reply from the user.
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @return Message|null
      * @see https://core.telegram.org/bots/api#sendrichmessage
      *
@@ -225,6 +232,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
     ): ?Message {
         $parameters = compact(
             'rich_message',
@@ -239,11 +247,19 @@ trait AvailableMethods
             'suggested_post_parameters',
             'reply_parameters',
             'reply_markup',
+            'ephemeral_message_parameters',
         );
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
+                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+            );
+        }
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
@@ -462,8 +478,9 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @param int|null $receiver_user_id For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
-     * @param string|null $callback_query_id For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param int|null $receiver_user_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
+     * @param string|null $callback_query_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -489,6 +506,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?int $receiver_user_id = null,
         ?string $callback_query_id = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $parameters = compact(
@@ -513,6 +531,7 @@ trait AvailableMethods
             'suggested_post_parameters',
             'receiver_user_id',
             'callback_query_id',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -520,8 +539,10 @@ trait AvailableMethods
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         if ($this->message()?->isEphemeral()) {
-            $parameters['receiver_user_id'] ??= $this->receiverUserId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
+                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+            );
         }
 
         return $this->sendAttachments(__FUNCTION__, ['photo'], $parameters, $clientOpt);
@@ -546,6 +567,8 @@ trait AvailableMethods
      * @param SuggestedPostParameters|null $suggested_post_parameters
      * @param ReplyParameters|null $reply_parameters
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
+     * @param array $clientOpt Client options
      * @return Message|null
      */
     public function sendLivePhoto(
@@ -567,6 +590,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?ReplyParameters $reply_parameters = null,
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $parameters = compact(
@@ -588,11 +612,19 @@ trait AvailableMethods
             'suggested_post_parameters',
             'reply_parameters',
             'reply_markup',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
 
         return $this->sendAttachments(__FUNCTION__, ['live_photo', 'photo'], $parameters, $clientOpt);
     }
@@ -624,8 +656,9 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @param int|null $receiver_user_id For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
-     * @param string|null $callback_query_id For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param int|null $receiver_user_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
+     * @param string|null $callback_query_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -653,6 +686,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?int $receiver_user_id = null,
         ?string $callback_query_id = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $parameters = compact(
@@ -679,6 +713,7 @@ trait AvailableMethods
             'suggested_post_parameters',
             'receiver_user_id',
             'callback_query_id',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -686,8 +721,10 @@ trait AvailableMethods
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         if ($this->message()?->isEphemeral()) {
-            $parameters['receiver_user_id'] ??= $this->receiverUserId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
+                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+            );
         }
 
         return $this->sendAttachments(__FUNCTION__, ['audio'], $parameters, $clientOpt);
@@ -717,8 +754,9 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @param int|null $receiver_user_id For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
-     * @param string|null $callback_query_id For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param int|null $receiver_user_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
+     * @param string|null $callback_query_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -744,6 +782,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?int $receiver_user_id = null,
         ?string $callback_query_id = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $parameters = compact(
@@ -768,6 +807,7 @@ trait AvailableMethods
             'suggested_post_parameters',
             'receiver_user_id',
             'callback_query_id',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -775,8 +815,10 @@ trait AvailableMethods
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         if ($this->message()?->isEphemeral()) {
-            $parameters['receiver_user_id'] ??= $this->receiverUserId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
+                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+            );
         }
 
         return $this->sendAttachments(__FUNCTION__, ['document'], $parameters, $clientOpt);
@@ -813,8 +855,9 @@ trait AvailableMethods
      * @param int|null $start_timestamp Start timestamp for the video in the message
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @param int|null $receiver_user_id For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
-     * @param string|null $callback_query_id For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param int|null $receiver_user_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
+     * @param string|null $callback_query_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -847,6 +890,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?int $receiver_user_id = null,
         ?string $callback_query_id = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $parameters = compact(
@@ -878,6 +922,7 @@ trait AvailableMethods
             'suggested_post_parameters',
             'receiver_user_id',
             'callback_query_id',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -885,8 +930,10 @@ trait AvailableMethods
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         if ($this->message()?->isEphemeral()) {
-            $parameters['receiver_user_id'] ??= $this->receiverUserId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
+                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+            );
         }
 
         return $this->sendAttachments(__FUNCTION__, ['video'], $parameters, $clientOpt);
@@ -920,8 +967,9 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @param int|null $receiver_user_id For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
-     * @param string|null $callback_query_id For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param int|null $receiver_user_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
+     * @param string|null $callback_query_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -951,6 +999,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?int $receiver_user_id = null,
         ?string $callback_query_id = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $parameters = compact(
@@ -979,6 +1028,7 @@ trait AvailableMethods
             'suggested_post_parameters',
             'receiver_user_id',
             'callback_query_id',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -986,8 +1036,10 @@ trait AvailableMethods
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         if ($this->message()?->isEphemeral()) {
-            $parameters['receiver_user_id'] ??= $this->receiverUserId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
+                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+            );
         }
 
         return $this->sendAttachments(__FUNCTION__, ['animation'], $parameters, $clientOpt);
@@ -1017,8 +1069,9 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @param int|null $receiver_user_id For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
-     * @param string|null $callback_query_id For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param int|null $receiver_user_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
+     * @param string|null $callback_query_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -1043,6 +1096,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?int $receiver_user_id = null,
         ?string $callback_query_id = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $parameters = compact(
@@ -1066,6 +1120,7 @@ trait AvailableMethods
             'suggested_post_parameters',
             'receiver_user_id',
             'callback_query_id',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -1073,8 +1128,10 @@ trait AvailableMethods
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         if ($this->message()?->isEphemeral()) {
-            $parameters['receiver_user_id'] ??= $this->receiverUserId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
+                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+            );
         }
 
         return $this->sendAttachments(__FUNCTION__, ['voice'], $parameters, $clientOpt);
@@ -1102,8 +1159,9 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @param int|null $receiver_user_id For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
-     * @param string|null $callback_query_id For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param int|null $receiver_user_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
+     * @param string|null $callback_query_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -1127,6 +1185,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?int $receiver_user_id = null,
         ?string $callback_query_id = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $parameters = compact(
@@ -1149,6 +1208,7 @@ trait AvailableMethods
             'suggested_post_parameters',
             'receiver_user_id',
             'callback_query_id',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -1156,8 +1216,10 @@ trait AvailableMethods
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         if ($this->message()?->isEphemeral()) {
-            $parameters['receiver_user_id'] ??= $this->receiverUserId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
+                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+            );
         }
 
         return $this->sendAttachments(__FUNCTION__, ['video_note'], $parameters, $clientOpt);
@@ -1317,8 +1379,9 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @param int|null $receiver_user_id For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
-     * @param string|null $callback_query_id For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param int|null $receiver_user_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
+     * @param string|null $callback_query_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @return Message|null
      */
     public function sendLocation(
@@ -1343,6 +1406,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?int $receiver_user_id = null,
         ?string $callback_query_id = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
     ): ?Message {
         $parameters = compact(
             'chat_id',
@@ -1366,6 +1430,7 @@ trait AvailableMethods
             'suggested_post_parameters',
             'receiver_user_id',
             'callback_query_id',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -1373,8 +1438,10 @@ trait AvailableMethods
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         if ($this->message()?->isEphemeral()) {
-            $parameters['receiver_user_id'] ??= $this->receiverUserId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
+                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+            );
         }
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
@@ -1435,8 +1502,9 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @param int|null $receiver_user_id For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
-     * @param string|null $callback_query_id For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param int|null $receiver_user_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
+     * @param string|null $callback_query_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @return Message|null
      */
     public function sendVenue(
@@ -1463,6 +1531,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?int $receiver_user_id = null,
         ?string $callback_query_id = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
     ): ?Message {
         $parameters = compact(
             'chat_id',
@@ -1488,6 +1557,7 @@ trait AvailableMethods
             'suggested_post_parameters',
             'receiver_user_id',
             'callback_query_id',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -1495,8 +1565,10 @@ trait AvailableMethods
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         if ($this->message()?->isEphemeral()) {
-            $parameters['receiver_user_id'] ??= $this->receiverUserId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
+                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+            );
         }
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
@@ -1523,8 +1595,9 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @param int|null $receiver_user_id For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
-     * @param string|null $callback_query_id For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param int|null $receiver_user_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
+     * @param string|null $callback_query_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @return Message|null
      */
     public function sendContact(
@@ -1547,6 +1620,7 @@ trait AvailableMethods
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?int $receiver_user_id = null,
         ?string $callback_query_id = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
     ): ?Message {
         $parameters = compact(
             'chat_id',
@@ -1568,6 +1642,7 @@ trait AvailableMethods
             'suggested_post_parameters',
             'receiver_user_id',
             'callback_query_id',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -1575,8 +1650,10 @@ trait AvailableMethods
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         if ($this->message()?->isEphemeral()) {
-            $parameters['receiver_user_id'] ??= $this->receiverUserId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
+                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+            );
         }
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
@@ -1809,6 +1886,8 @@ trait AvailableMethods
      * @param int|null $message_thread_id Unique identifier for the target message thread
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message text. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
+     * @param bool|null $can_stop Pass True to show the user a button to stop further drafts. The bot will receive an {@see https://core.telegram.org/bots/api#update Update} “stopped_message_generation” if the user presses the button.
+     * @param bool|null $keep_on_stop Pass True to keep the draft in the chat when the button is pressed. The draft will still disappear after a short time or if the bot sends a message. To fully preserve the partial draft, the bot should send it as a new message.
      * @see https://core.telegram.org/bots/api#sendmessagedraft
      */
     public function sendMessageDraft(
@@ -1818,8 +1897,19 @@ trait AvailableMethods
         ?int $message_thread_id = null,
         ParseMode|string|null $parse_mode = null,
         ?array $entities = null,
+        ?bool $can_stop = null,
+        ?bool $keep_on_stop = null,
     ): ?bool {
-        $parameters = compact('draft_id', 'text', 'chat_id', 'message_thread_id', 'parse_mode', 'entities');
+        $parameters = compact(
+            'draft_id',
+            'text',
+            'chat_id',
+            'message_thread_id',
+            'parse_mode',
+            'entities',
+            'can_stop',
+            'keep_on_stop',
+        );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
 
@@ -1836,6 +1926,8 @@ trait AvailableMethods
      * @param InputRichMessage $rich_message The partial message to be streamed
      * @param int|null $chat_id Unique identifier for the target private chat
      * @param int|null $message_thread_id Unique identifier for the target message thread
+     * @param bool|null $can_stop Pass True to show the user a button to stop further drafts. The bot will receive an {@see https://core.telegram.org/bots/api#update Update} “stopped_message_generation” if the user presses the button.
+     * @param bool|null $keep_on_stop Pass True to keep the draft in the chat when the button is pressed. The draft will still disappear after a short time or if the bot sends a message. To fully preserve the partial draft, the bot should send it as a new message.
      * @return bool|null
      * @see https://core.telegram.org/bots/api#sendrichmessagedraft
      */
@@ -1844,8 +1936,17 @@ trait AvailableMethods
         InputRichMessage $rich_message,
         ?int $chat_id = null,
         ?int $message_thread_id = null,
+        ?bool $can_stop = null,
+        ?bool $keep_on_stop = null,
     ): ?bool {
-        $parameters = compact('draft_id', 'rich_message', 'chat_id', 'message_thread_id');
+        $parameters = compact(
+            'draft_id',
+            'rich_message',
+            'chat_id',
+            'message_thread_id',
+            'can_stop',
+            'keep_on_stop',
+        );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
 
@@ -2089,6 +2190,7 @@ trait AvailableMethods
      * @param bool|null $can_manage_topics Pass True if the user is allowed to create, rename, close, and reopen forum topics, supergroups only
      * @param bool|null $can_manage_direct_messages Pass True if the administrator can manage direct messages within the channel and decline suggested posts; for channels only
      * @param bool|null $can_manage_tags Pass True if the administrator can edit the tags of regular members; for groups and supergroups only
+     * @param bool|null $can_send_welcome_messages Pass True if the administrator can manage chat welcome messages or directly send them in the case of bots
      * @return bool|null
      */
     public function promoteChatMember(
@@ -2111,6 +2213,7 @@ trait AvailableMethods
         ?bool $can_manage_topics = null,
         ?bool $can_manage_direct_messages = null,
         ?bool $can_manage_tags = null,
+        ?bool $can_send_welcome_messages = null,
     ): ?bool {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -2132,6 +2235,7 @@ trait AvailableMethods
             'can_manage_topics',
             'can_manage_direct_messages',
             'can_manage_tags',
+            'can_send_welcome_messages',
         ));
     }
 

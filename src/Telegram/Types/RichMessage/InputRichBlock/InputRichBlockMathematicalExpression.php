@@ -4,7 +4,6 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -18,7 +17,6 @@ class InputRichBlockMathematicalExpression extends BaseType implements InputRich
     /**
      * Type of the block, always “mathematical_expression”
      */
-    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::MATHEMATICAL_EXPRESSION;
 
     /**

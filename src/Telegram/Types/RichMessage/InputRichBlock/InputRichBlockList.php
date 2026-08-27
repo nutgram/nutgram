@@ -3,9 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -19,16 +17,17 @@ class InputRichBlockList extends BaseType implements InputRichBlock, JsonSeriali
     /**
      * Type of the block, always “list”
      */
-    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::LIST;
 
     /**
      * Items of the list
      * @var InputRichBlockListItem[]
      */
-    #[ArrayType(InputRichBlockListItem::class)]
     public array $items;
 
+    /**
+     * @param InputRichBlockListItem[] $items
+     */
     public function __construct(array $items)
     {
         parent::__construct();

@@ -51,6 +51,7 @@ enum MessageType: string
     case CHECKLIST_TASKS_DONE = 'checklist_tasks_done';
     case CHECKLIST_TASKS_ADDED = 'checklist_tasks_added';
     case COMMUNITY_CHAT_ADDED = 'community_chat_added';
+    case COMMUNITY_CHAT_JOINED = 'community_chat_joined';
     case COMMUNITY_CHAT_REMOVED = 'community_chat_removed';
     case DIRECT_MESSAGE_PRICE_CHANGED = 'direct_message_price_changed';
     case FORUM_TOPIC_CREATED = 'forum_topic_created';

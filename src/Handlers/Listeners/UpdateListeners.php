@@ -382,4 +382,14 @@ trait UpdateListeners
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::SUBSCRIPTION->value][$pattern] = new Handler($callable, $pattern);
     }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onMessageGenerationStopped($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::STOPPED_MESSAGE_GENERATION->value][] = new Handler($callable);
+    }
 }

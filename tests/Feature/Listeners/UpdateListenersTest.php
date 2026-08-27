@@ -7,6 +7,7 @@ use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessMessagesDeleted;
 use SergiX44\Nutgram\Telegram\Types\ManagedBot\ManagedBotUpdated;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageGenerationStopped;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageOriginUser;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
@@ -484,3 +485,17 @@ it('calls onBotSubscriptionUpdatedPayload() handler', function ($update) {
 
     expect($bot->get('called', false))->toBeTrue();
 })->with('subscription');
+
+it('calls onMessageGenerationStopped() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onMessageGenerationStopped(function (Nutgram $bot) {
+        $bot->set('called', true);
+        expect($bot->update()->stopped_message_generation)
+            ->toBeInstanceOf(MessageGenerationStopped::class);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called', false))->toBeTrue();
+})->with('stopped_message_generation');

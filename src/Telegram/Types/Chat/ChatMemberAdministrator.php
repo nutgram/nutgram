@@ -107,6 +107,11 @@ class ChatMemberAdministrator extends ChatMember
     public ?bool $can_manage_tags = null;
 
     /**
+     * True, if the administrator can manage chat welcome messages or directly send them in the case of bots
+     */
+    public bool $can_send_welcome_messages;
+
+    /**
      * Optional.
      * Custom title for this user
      */

@@ -60,12 +60,19 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
      */
     public ?bool $selective = null;
 
+    /**
+     * Optional. Pass True if the reply interface must be shown to the user,
+     * as if they had manually selected the bot's message and tapped 'Reply'
+     */
+    public ?bool $force_reply = null;
+
     public function __construct(
         ?bool $resize_keyboard = null,
         ?bool $one_time_keyboard = null,
         ?string $input_field_placeholder = null,
         ?bool $selective = null,
         ?bool $is_persistent = null,
+        ?bool $force_reply = null,
     ) {
         parent::__construct();
         $this->resize_keyboard = $resize_keyboard;
@@ -73,6 +80,7 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
         $this->input_field_placeholder = $input_field_placeholder;
         $this->selective = $selective;
         $this->is_persistent = $is_persistent;
+        $this->force_reply = $force_reply;
     }
 
     public static function make(
@@ -81,13 +89,15 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
         ?string $input_field_placeholder = null,
         ?bool $selective = null,
         ?bool $is_persistent = null,
+        ?bool $force_reply = null,
     ): self {
         return new self(
-            $resize_keyboard,
-            $one_time_keyboard,
-            $input_field_placeholder,
-            $selective,
-            $is_persistent,
+            resize_keyboard: $resize_keyboard,
+            one_time_keyboard: $one_time_keyboard,
+            input_field_placeholder: $input_field_placeholder,
+            selective: $selective,
+            is_persistent: $is_persistent,
+            force_reply: $force_reply,
         );
     }
 
@@ -110,6 +120,7 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
             'one_time_keyboard' => $this->one_time_keyboard,
             'input_field_placeholder' => $this->input_field_placeholder,
             'selective' => $this->selective,
+            'force_reply' => $this->force_reply,
         ]);
     }
 }

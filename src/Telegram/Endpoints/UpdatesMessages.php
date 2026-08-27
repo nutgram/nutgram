@@ -301,6 +301,7 @@ trait UpdatesMessages
      * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
      * @param LinkPreviewOptions|null $link_preview_options Link preview generation options for the message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
+     * @param InputRichMessage|null $rich_message New rich content of the message; required if text isn't specified
      * @return bool|null
      * @see https://core.telegram.org/bots/api#editephemeralmessagetext
      */
@@ -313,6 +314,7 @@ trait UpdatesMessages
         ?array $entities = null,
         ?LinkPreviewOptions $link_preview_options = null,
         ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputRichMessage $rich_message = null,
     ): ?bool {
         $parameters = compact(
             'text',
@@ -323,6 +325,7 @@ trait UpdatesMessages
             'entities',
             'link_preview_options',
             'reply_markup',
+            'rich_message',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['receiver_user_id'] ??= $this->receiverUserId();
@@ -375,6 +378,7 @@ trait UpdatesMessages
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param array|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
+     * @param bool|null $show_caption_above_media Pass True if the caption must be shown above the message media. Supported only for animation, photo and video messages.
      * @return bool|null
      * @see https://core.telegram.org/bots/api#editephemeralmessagecaption
      */
@@ -386,6 +390,7 @@ trait UpdatesMessages
         ParseMode|string|null $parse_mode = null,
         ?array $caption_entities = null,
         ?InlineKeyboardMarkup $reply_markup = null,
+        ?bool $show_caption_above_media = null,
     ): ?bool {
         $parameters = compact(
             'chat_id',
@@ -395,6 +400,7 @@ trait UpdatesMessages
             'parse_mode',
             'caption_entities',
             'reply_markup',
+            'show_caption_above_media',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['receiver_user_id'] ??= $this->receiverUserId();

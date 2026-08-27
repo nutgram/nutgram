@@ -32,6 +32,7 @@ class RichTextResolver extends ConcreteResolver
         RichTextType::HASHTAG->value => RichTextHashtag::class,
         RichTextType::CASHTAG->value => RichTextCashtag::class,
         RichTextType::BOT_COMMAND->value => RichTextBotCommand::class,
+        RichTextType::BUTTON->value => RichTextButton::class,
         RichTextType::ANCHOR->value => RichTextAnchor::class,
         RichTextType::ANCHOR_LINK->value => RichTextAnchorLink::class,
         RichTextType::REFERENCE->value => RichTextReference::class,

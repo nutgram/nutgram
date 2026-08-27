@@ -31,7 +31,7 @@ class OwnedGiftRegular extends OwnedGift
 
     /**
      * Optional. Special entities that appear in the text
-     * @var MessageEntity[]
+     * @var MessageEntity[]|null
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $entities = null;

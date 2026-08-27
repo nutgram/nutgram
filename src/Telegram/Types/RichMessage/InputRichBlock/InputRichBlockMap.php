@@ -4,7 +4,6 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
@@ -22,7 +21,6 @@ class InputRichBlockMap extends BaseType implements InputRichBlock, JsonSerializ
     /**
      * Type of the block, always “map”
      */
-    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::MAP;
 
     /**

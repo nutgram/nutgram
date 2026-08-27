@@ -720,19 +720,32 @@ trait MessageListeners
      * @param callable|class-string|array $callable
      * @return Handler
      */
-    public function onCommunityChatAdded($callable): Handler
+    public function onCommunityChatAdded($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::COMMUNITY_CHAT_ADDED->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::COMMUNITY_CHAT_ADDED->value][] = new Handler($callable);
     }
 
     /**
      * @param callable|class-string|array $callable
      * @return Handler
      */
-    public function onCommunityChatRemoved($callable): Handler
+    public function onCommunityChatJoined($callable, UpdateType $target = UpdateType::MESSAGE): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::MESSAGE->value][MessageType::COMMUNITY_CHAT_REMOVED->value][] = new Handler($callable);
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::COMMUNITY_CHAT_JOINED->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onCommunityChatRemoved($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    {
+        $this->checkFinalized();
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::COMMUNITY_CHAT_REMOVED->value][] = new Handler($callable);
     }
 }

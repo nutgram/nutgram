@@ -4,7 +4,6 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
@@ -22,16 +21,19 @@ class InputRichBlockThinking extends BaseType implements InputRichBlock, JsonSer
     /**
      * Type of the block, always “thinking”
      */
-    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::THINKING;
 
     /**
      * Text of the block.
      * See https://t.me/addemoji/AIActions for examples of custom emoji that are recommended for usage in the block.
+     * @var string|RichText[]|RichText
      */
-    public RichText $text;
+    public string|array|RichText $text;
 
-    public function __construct(RichText $text)
+    /**
+     * @param string|RichText[]|RichText $text
+     */
+    public function __construct(string|array|RichText $text)
     {
         parent::__construct();
         $this->text = $text;

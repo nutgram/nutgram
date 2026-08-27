@@ -109,6 +109,11 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
      */
     public ?bool $pay = null;
 
+    /**
+     * Optional. If set, then the button is disabled and does nothing
+     */
+    public ?DisabledButton $disabled = null;
+
     public function __construct(
         string $text,
         ?string $url = null,
@@ -123,6 +128,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?CopyTextButton $copy_text = null,
         ?string $icon_custom_emoji_id = null,
         ButtonStyle|string|null $style = null,
+        ?DisabledButton $disabled = null
     ) {
         parent::__construct();
         $this->text = $text;
@@ -138,6 +144,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         $this->copy_text = $copy_text;
         $this->icon_custom_emoji_id = $icon_custom_emoji_id;
         $this->style = $style;
+        $this->disabled = $disabled;
     }
 
     public static function make(
@@ -154,7 +161,8 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ?CopyTextButton $copy_text = null,
         ?string $icon_custom_emoji_id = null,
         ButtonStyle|string|null $style = null,
-    ): InlineKeyboardButton {
+        ?DisabledButton $disabled = null,
+    ): static {
         return new self(
             text: $text,
             url: $url,
@@ -169,6 +177,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
             copy_text: $copy_text,
             icon_custom_emoji_id: $icon_custom_emoji_id,
             style: $style,
+            disabled: $disabled,
         );
     }
 
@@ -188,6 +197,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
             'copy_text' => $this->copy_text,
             'callback_game' => $this->callback_game,
             'pay' => $this->pay,
+            'disabled' => $this->disabled,
         ]);
     }
 }

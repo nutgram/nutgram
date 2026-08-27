@@ -98,6 +98,11 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
      */
     public ?bool $can_manage_tags = null;
 
+    /**
+     * True, if the administrator can manage chat welcome messages or directly send them in the case of bots
+     */
+    public bool $can_send_welcome_messages;
+
     public function __construct(
         bool $is_anonymous,
         bool $can_manage_chat,
@@ -116,6 +121,7 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
         ?bool $can_manage_topics = null,
         ?bool $can_manage_direct_messages = null,
         ?bool $can_manage_tags = null,
+        bool $can_send_welcome_messages = true,
     ) {
         parent::__construct();
         $this->is_anonymous = $is_anonymous;
@@ -135,6 +141,7 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
         $this->can_delete_stories = $can_delete_stories;
         $this->can_manage_direct_messages = $can_manage_direct_messages;
         $this->can_manage_tags = $can_manage_tags;
+        $this->can_send_welcome_messages = $can_send_welcome_messages;
     }
 
     public static function make(
@@ -155,6 +162,7 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
         ?bool $can_manage_topics = null,
         ?bool $can_manage_direct_messages = null,
         ?bool $can_manage_tags = null,
+        bool $can_send_welcome_messages = true,
     ):self {
         return new self(
             is_anonymous: $is_anonymous,
@@ -174,6 +182,7 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
             can_manage_topics: $can_manage_topics,
             can_manage_direct_messages: $can_manage_direct_messages,
             can_manage_tags: $can_manage_tags,
+            can_send_welcome_messages: $can_send_welcome_messages,
         );
     }
 
@@ -197,6 +206,7 @@ class ChatAdministratorRights extends BaseType implements JsonSerializable
             'can_manage_topics' => $this->can_manage_topics,
             'can_manage_direct_messages' => $this->can_manage_direct_messages,
             'can_manage_tags' => $this->can_manage_tags,
+            'can_send_welcome_messages' => $this->can_send_welcome_messages,
         ]);
     }
 }

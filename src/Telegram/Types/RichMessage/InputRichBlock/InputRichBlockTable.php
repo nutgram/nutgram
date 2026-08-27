@@ -3,9 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockTableCell;
@@ -21,14 +19,12 @@ class InputRichBlockTable extends BaseType implements InputRichBlock, JsonSerial
     /**
      * Type of the block, always “table”
      */
-    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::TABLE;
 
     /**
      * Cells of the table
      * @var RichBlockTableCell[][]
      */
-    #[ArrayType(RichBlockTableCell::class, 2)]
     public array $cells;
 
     /**
@@ -42,21 +38,36 @@ class InputRichBlockTable extends BaseType implements InputRichBlock, JsonSerial
     public ?bool $is_striped = null;
 
     /**
-     * Optional. Caption of the table
+     * Optional. True, if table cells have smaller indents
      */
-    public ?RichText $caption = null;
+    public ?bool $is_compact = null;
 
+    /**
+     * Optional. Caption of the table
+     * @var string|RichText[]|RichText|null
+     */
+    public string|array|RichText|null $caption = null;
+
+    /**
+     * @param RichBlockTableCell[][] $cells
+     * @param bool|null $is_bordered
+     * @param bool|null $is_striped
+     * @param string|RichText[]|RichText|null $caption
+     * @param bool|null $is_compact
+     */
     public function __construct(
         array $cells,
         ?bool $is_bordered = null,
         ?bool $is_striped = null,
-        ?RichText $caption = null,
+        string|array|RichText|null $caption = null,
+        ?bool $is_compact = null,
     ) {
         parent::__construct();
         $this->cells = $cells;
         $this->is_bordered = $is_bordered;
         $this->is_striped = $is_striped;
         $this->caption = $caption;
+        $this->is_compact = $is_compact;
     }
 
     public function jsonSerialize(): array

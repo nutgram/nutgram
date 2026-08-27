@@ -2,9 +2,11 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
+use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\UniqueGiftInfoOrigin;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * Describes a service message about a unique gift that was sent or received.
@@ -28,6 +30,24 @@ class UniqueGiftInfo extends BaseType
      */
     #[EnumOrScalar]
     public UniqueGiftInfoOrigin|string $origin;
+
+    /**
+     * Optional. Text of the message that was added to the gift
+     */
+    public ?string $text = null;
+
+    /**
+     * Optional. Special entities that appear in the text
+     * @var MessageEntity[]|null
+     */
+    #[ArrayType(MessageEntity::class)]
+    public ?array $entities = null;
+
+    /**
+     * Optional. True, if the sender and gift text are shown only to the gift receiver;
+     * otherwise, everyone will be able to see them
+     */
+    public ?bool $is_private = null;
 
     /**
      * Optional.
