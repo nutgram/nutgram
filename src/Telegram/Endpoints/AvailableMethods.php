@@ -179,8 +179,6 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'receiver_user_id',
-            'callback_query_id',
             'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
@@ -190,8 +188,8 @@ trait AvailableMethods
 
         if ($this->message()?->isEphemeral()) {
             $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
-                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
-                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+                receiver_user_id: $receiver_user_id ?? $this->receiverUserId(),
+                callback_query_id: $callback_query_id ?? $this->callbackQuery()?->id,
             );
         }
 
@@ -256,8 +254,8 @@ trait AvailableMethods
 
         if ($this->message()?->isEphemeral()) {
             $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
-                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
-                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
             );
         }
 
@@ -529,8 +527,6 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'receiver_user_id',
-            'callback_query_id',
             'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
@@ -540,8 +536,8 @@ trait AvailableMethods
 
         if ($this->message()?->isEphemeral()) {
             $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
-                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
-                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+                receiver_user_id: $receiver_user_id ?? $this->receiverUserId(),
+                callback_query_id: $callback_query_id ?? $this->callbackQuery()?->id,
             );
         }
 
@@ -711,8 +707,6 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'receiver_user_id',
-            'callback_query_id',
             'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
@@ -722,8 +716,8 @@ trait AvailableMethods
 
         if ($this->message()?->isEphemeral()) {
             $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
-                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
-                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+                receiver_user_id: $receiver_user_id ?? $this->receiverUserId(),
+                callback_query_id: $callback_query_id ?? $this->callbackQuery()?->id,
             );
         }
 
@@ -805,8 +799,6 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'receiver_user_id',
-            'callback_query_id',
             'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
@@ -816,8 +808,8 @@ trait AvailableMethods
 
         if ($this->message()?->isEphemeral()) {
             $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
-                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
-                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+                receiver_user_id: $receiver_user_id ?? $this->receiverUserId(),
+                callback_query_id: $callback_query_id ?? $this->callbackQuery()?->id,
             );
         }
 
@@ -920,8 +912,6 @@ trait AvailableMethods
             'start_timestamp',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'receiver_user_id',
-            'callback_query_id',
             'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
@@ -931,8 +921,8 @@ trait AvailableMethods
 
         if ($this->message()?->isEphemeral()) {
             $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
-                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
-                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+                receiver_user_id: $receiver_user_id ?? $this->receiverUserId(),
+                callback_query_id: $callback_query_id ?? $this->callbackQuery()?->id,
             );
         }
 
@@ -1026,8 +1016,6 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'receiver_user_id',
-            'callback_query_id',
             'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
@@ -1037,8 +1025,8 @@ trait AvailableMethods
 
         if ($this->message()?->isEphemeral()) {
             $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
-                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
-                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+                receiver_user_id: $receiver_user_id ?? $this->receiverUserId(),
+                callback_query_id: $callback_query_id ?? $this->callbackQuery()?->id,
             );
         }
 
@@ -1118,8 +1106,6 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'receiver_user_id',
-            'callback_query_id',
             'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
@@ -1129,8 +1115,8 @@ trait AvailableMethods
 
         if ($this->message()?->isEphemeral()) {
             $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
-                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
-                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+                receiver_user_id: $receiver_user_id ?? $this->receiverUserId(),
+                callback_query_id: $callback_query_id ?? $this->callbackQuery()?->id,
             );
         }
 
@@ -1206,8 +1192,6 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'receiver_user_id',
-            'callback_query_id',
             'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
@@ -1217,8 +1201,8 @@ trait AvailableMethods
 
         if ($this->message()?->isEphemeral()) {
             $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
-                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
-                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+                receiver_user_id: $receiver_user_id ?? $this->receiverUserId(),
+                callback_query_id: $callback_query_id ?? $this->callbackQuery()?->id,
             );
         }
 
@@ -1428,8 +1412,6 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'receiver_user_id',
-            'callback_query_id',
             'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
@@ -1439,8 +1421,8 @@ trait AvailableMethods
 
         if ($this->message()?->isEphemeral()) {
             $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
-                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
-                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+                receiver_user_id: $receiver_user_id ?? $this->receiverUserId(),
+                callback_query_id: $callback_query_id ?? $this->callbackQuery()?->id,
             );
         }
 
@@ -1555,8 +1537,6 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'receiver_user_id',
-            'callback_query_id',
             'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
@@ -1566,8 +1546,8 @@ trait AvailableMethods
 
         if ($this->message()?->isEphemeral()) {
             $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
-                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
-                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+                receiver_user_id: $receiver_user_id ?? $this->receiverUserId(),
+                callback_query_id: $callback_query_id ?? $this->callbackQuery()?->id,
             );
         }
 
@@ -1640,8 +1620,6 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'receiver_user_id',
-            'callback_query_id',
             'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
@@ -1651,8 +1629,8 @@ trait AvailableMethods
 
         if ($this->message()?->isEphemeral()) {
             $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
-                receiver_user_id: $parameters['receiver_user_id'] ?? $this->receiverUserId(),
-                callback_query_id: $parameters['callback_query_id'] ?? $this->callbackQuery()?->id,
+                receiver_user_id: $receiver_user_id ?? $this->receiverUserId(),
+                callback_query_id: $callback_query_id ?? $this->callbackQuery()?->id,
             );
         }
 

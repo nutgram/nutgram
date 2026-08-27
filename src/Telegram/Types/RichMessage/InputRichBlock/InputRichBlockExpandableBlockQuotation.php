@@ -22,7 +22,7 @@ class InputRichBlockExpandableBlockQuotation extends BaseType implements InputRi
 
     /**
      * Optional. Credit of the block
-     * @var string|RichText[]|RichText|null
+     * @var string|RichText[]|RichText
      */
     public string|array|RichText $text;
 

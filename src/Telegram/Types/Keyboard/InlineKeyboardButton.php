@@ -163,7 +163,7 @@ class InlineKeyboardButton extends BaseType implements JsonSerializable
         ButtonStyle|string|null $style = null,
         ?DisabledButton $disabled = null,
     ): static {
-        return new self(
+        return new static(
             text: $text,
             url: $url,
             login_url: $login_url,
