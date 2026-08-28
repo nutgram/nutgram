@@ -32,6 +32,7 @@ enum UpdateType: string
     case REMOVED_CHAT_BOOST = 'removed_chat_boost';
     case MANAGED_BOT = 'managed_bot';
     case SUBSCRIPTION = 'subscription';
+    case STOPPED_MESSAGE_GENERATION = 'stopped_message_generation';
 
     public static function messageTypes(): array
     {

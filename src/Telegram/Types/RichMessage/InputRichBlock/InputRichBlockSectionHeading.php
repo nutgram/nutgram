@@ -25,15 +25,20 @@ class InputRichBlockSectionHeading extends BaseType implements InputRichBlock, J
 
     /**
      * Text of the block
+     * @var string|RichText[]|RichText
      */
-    public RichText $text;
+    public string|array|RichText $text;
 
     /**
      * Relative size of the text font; 1-6, 1 is the largest, 6 is the smallest
      */
     public int $size;
 
-    public function __construct(RichText $text, int $size)
+    /**
+     * @param string|RichText[]|RichText $text
+     * @param int $size
+     */
+    public function __construct(string|array|RichText $text, int $size)
     {
         parent::__construct();
         $this->text = $text;

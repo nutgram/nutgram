@@ -4,7 +4,6 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVoiceNote;
@@ -20,7 +19,6 @@ class InputRichBlockVoiceNote extends BaseType implements InputRichBlock, JsonSe
     /**
      * Type of the block, always “voice_note”
      */
-    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::VOICE_NOTE;
 
     /**

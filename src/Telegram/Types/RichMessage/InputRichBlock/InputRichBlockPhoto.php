@@ -4,7 +4,6 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
@@ -20,7 +19,6 @@ class InputRichBlockPhoto extends BaseType implements InputRichBlock, JsonSerial
     /**
      * Type of the block, always “photo”
      */
-    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::PHOTO;
 
     /**

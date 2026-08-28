@@ -3,9 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
@@ -20,22 +18,25 @@ class InputRichBlockBlockQuotation extends BaseType implements InputRichBlock, J
     /**
      * Type of the block, always “blockquote”
      */
-    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::BLOCKQUOTE;
 
     /**
      * Content of the block
      * @var InputRichBlock[]
      */
-    #[ArrayType(InputRichBlock::class)]
     public array $blocks;
 
     /**
      * Optional. Credit of the block
+     * @var string|RichText[]|RichText|null
      */
-    public ?RichText $credit = null;
+    public string|array|RichText|null $credit = null;
 
-    public function __construct(array $blocks, ?RichText $credit = null)
+    /**
+     * @param array $blocks
+     * @param string|RichText[]|RichText|null $credit
+     */
+    public function __construct(array $blocks, string|array|RichText|null $credit = null)
     {
         parent::__construct();
         $this->blocks = $blocks;

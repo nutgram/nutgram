@@ -13,6 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
+use SergiX44\Nutgram\Telegram\Types\Message\EphemeralMessageParameters;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Gifts;
@@ -47,8 +48,9 @@ trait Stickers
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @param int|null $receiver_user_id For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
-     * @param string|null $callback_query_id For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param int|null $receiver_user_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, unique identifier of the user who will receive the message; for group and supergroup chats only. It is not guaranteed that the user will receive the message, especially if they are offline. See {@see https://core.telegram.org/bots/api#ephemeral-messages-and-commands ephemeral message sending} for more details.
+     * @param string|null $callback_query_id DEPRECATED, use $ephemeral_message_parameters. For outgoing ephemeral messages, identifier of the callback query which triggerred the message if any
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -70,6 +72,7 @@ trait Stickers
         ?SuggestedPostParameters $suggested_post_parameters = null,
         ?int $receiver_user_id = null,
         ?string $callback_query_id = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
         $parameters = compact(
@@ -88,8 +91,7 @@ trait Stickers
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-            'receiver_user_id',
-            'callback_query_id',
+            'ephemeral_message_parameters',
         );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
@@ -97,8 +99,10 @@ trait Stickers
         $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
         if ($this->message()?->isEphemeral()) {
-            $parameters['receiver_user_id'] ??= $this->receiverUserId();
-            $parameters['callback_query_id'] ??= $this->callbackQuery()?->id;
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $receiver_user_id ?? $this->receiverUserId(),
+                callback_query_id: $callback_query_id ?? $this->callbackQuery()?->id,
+            );
         }
 
         return $this->sendAttachments(__FUNCTION__, ['sticker'], $parameters, $clientOpt);

@@ -14,6 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
 use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksAdded;
 use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksDone;
 use SergiX44\Nutgram\Telegram\Types\Community\CommunityChatAdded;
+use SergiX44\Nutgram\Telegram\Types\Community\CommunityChatJoined;
 use SergiX44\Nutgram\Telegram\Types\Community\CommunityChatRemoved;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicClosed;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicCreated;
@@ -322,7 +323,7 @@ class Message extends BaseType
      * Optional.
      * For text messages, special entities like usernames, URLs, bot commands, etc.
      * that appear in the text
-     * @var MessageEntity[] $entities
+     * @var MessageEntity[]|null
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $entities = null;
@@ -682,6 +683,11 @@ class Message extends BaseType
     public ?CommunityChatAdded $community_chat_added = null;
 
     /**
+     * Optional. Service message: chat was joined by a user from a {@see https://core.telegram.org/bots/api#community Community}
+     */
+    public ?CommunityChatJoined $community_chat_joined = null;
+
+    /**
      * Optional. Service message: chat removed from a {@see https://core.telegram.org/bots/api#community Community}
      */
     public ?CommunityChatRemoved $community_chat_removed = null;
@@ -911,6 +917,7 @@ class Message extends BaseType
             $this->checklist_tasks_done !== null => MessageType::CHECKLIST_TASKS_DONE,
             $this->checklist_tasks_added !== null => MessageType::CHECKLIST_TASKS_ADDED,
             $this->community_chat_added !== null => MessageType::COMMUNITY_CHAT_ADDED,
+            $this->community_chat_joined !== null => MessageType::COMMUNITY_CHAT_JOINED,
             $this->community_chat_removed !== null => MessageType::COMMUNITY_CHAT_REMOVED,
             $this->direct_message_price_changed !== null => MessageType::DIRECT_MESSAGE_PRICE_CHANGED,
             $this->forum_topic_created !== null => MessageType::FORUM_TOPIC_CREATED,

@@ -16,7 +16,7 @@ class TextQuote extends BaseType
     /**
      * Optional. Special entities that appear in the quote.
      * Currently, only bold, italic, underline, strikethrough, spoiler, custom_emoji, and date_time entities are kept in quotes.
-     * @var MessageEntity[]
+     * @var MessageEntity[]|null
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $entities = null;

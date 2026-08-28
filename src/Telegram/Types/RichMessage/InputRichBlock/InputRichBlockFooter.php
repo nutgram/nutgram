@@ -4,7 +4,6 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
@@ -19,15 +18,18 @@ class InputRichBlockFooter extends BaseType implements InputRichBlock, JsonSeria
     /**
      * Type of the block, always “footer”
      */
-    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::FOOTER;
 
     /**
      * Text of the block
+     * @var string|RichText[]|RichText
      */
-    public RichText $text;
+    public string|array|RichText $text;
 
-    public function __construct(RichText $text)
+    /**
+     * @param string|RichText[]|RichText $text
+     */
+    public function __construct(string|array|RichText $text)
     {
         parent::__construct();
         $this->text = $text;

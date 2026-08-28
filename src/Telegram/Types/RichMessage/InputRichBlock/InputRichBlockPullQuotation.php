@@ -4,7 +4,6 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
@@ -19,20 +18,25 @@ class InputRichBlockPullQuotation extends BaseType implements InputRichBlock, Js
     /**
      * Type of the block, always “pullquote”
      */
-    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::PULLQUOTE;
 
     /**
      * Text of the block
+     * @var string|RichText[]|RichText
      */
-    public RichText $text;
+    public string|array|RichText $text;
 
     /**
      * Optional. Credit of the block
+     * @var string|RichText[]|RichText|null
      */
-    public ?RichText $credit = null;
+    public string|array|RichText|null $credit = null;
 
-    public function __construct(RichText $text, ?RichText $credit = null)
+    /**
+     * @param string|RichText[]|RichText $text
+     * @param string|RichText[]|RichText|null $credit
+     */
+    public function __construct(string|array|RichText $text, string|array|RichText|null $credit = null)
     {
         parent::__construct();
         $this->text = $text;

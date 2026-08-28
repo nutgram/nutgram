@@ -3,9 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
@@ -20,19 +18,18 @@ class InputRichBlockDetails extends BaseType implements InputRichBlock, JsonSeri
     /**
      * Type of the block, always “details”
      */
-    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::DETAILS;
 
     /**
      * Always shown summary of the block
+     * @var string|RichText[]|RichText
      */
-    public RichText $summary;
+    public string|array|RichText $summary;
 
     /**
      * Content of the block
      * @var InputRichBlock[]
      */
-    #[ArrayType(InputRichBlock::class)]
     public array $blocks;
 
     /**
@@ -40,7 +37,12 @@ class InputRichBlockDetails extends BaseType implements InputRichBlock, JsonSeri
      */
     public ?bool $is_open = null;
 
-    public function __construct(RichText $summary, array $blocks, ?bool $is_open = null)
+    /**
+     * @param string|RichText[]|RichText $summary
+     * @param InputRichBlock[] $blocks
+     * @param bool|null $is_open
+     */
+    public function __construct(string|array|RichText $summary, array $blocks, ?bool $is_open = null)
     {
         parent::__construct();
         $this->summary = $summary;

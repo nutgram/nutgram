@@ -3,9 +3,7 @@
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
 use JsonSerializable;
-use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockListItemType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
@@ -20,7 +18,6 @@ class InputRichBlockListItem extends BaseType implements JsonSerializable
      * The content of the item
      * @var InputRichBlock[]
      */
-    #[ArrayType(InputRichBlock::class)]
     public array $blocks;
 
     /**
@@ -47,9 +44,15 @@ class InputRichBlockListItem extends BaseType implements JsonSerializable
      * - “I” for uppercase Roman numerals
      * - “1” for decimal numbers
      */
-    #[EnumOrScalar]
     public RichBlockListItemType|string|null $type = null;
 
+    /**
+     * @param InputRichBlock[] $blocks
+     * @param bool|null $has_checkbox
+     * @param bool|null $is_checked
+     * @param int|null $value
+     * @param RichBlockListItemType|string|null $type
+     */
     public function __construct(
         array $blocks,
         ?bool $has_checkbox = null,

@@ -26,6 +26,7 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichText;
  * {@see RichTextHashtag}
  * {@see RichTextCashtag}
  * {@see RichTextBotCommand}
+ * {@see RichTextButton}
  * {@see RichTextAnchor}
  * {@see RichTextAnchorLink}
  * {@see RichTextReference}
