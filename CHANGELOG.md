@@ -2,6 +2,19 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.50.0 - 2026-08-28
+
+### What's Changed
+
+* Add Guzzle 8 support by @ziming in https://github.com/nutgram/nutgram/pull/1010
+* Update to Bot API 10.3 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1011
+
+### New Contributors
+
+* @ziming made their first contribution in https://github.com/nutgram/nutgram/pull/1010
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.49.1...4.50.0
+
 ## 4.49.1 - 2026-08-07
 
 ### What's Changed
