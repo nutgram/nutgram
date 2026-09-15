@@ -2,6 +2,18 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.50.1 - 2026-09-15
+
+### What's Changed
+
+* Fix missing default `null` on optional rich block and boost properties by @druidvav in https://github.com/nutgram/nutgram/pull/1012
+
+### New Contributors
+
+* @druidvav made their first contribution in https://github.com/nutgram/nutgram/pull/1012
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.50.0...4.50.1
+
 ## 4.50.0 - 2026-08-28
 
 ### What's Changed
