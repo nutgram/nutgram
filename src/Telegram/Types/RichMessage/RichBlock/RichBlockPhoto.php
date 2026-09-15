@@ -30,7 +30,7 @@ class RichBlockPhoto extends BaseType implements RichBlock
     /**
      * Optional. True, if the media preview is covered by a spoiler animation
      */
-    public ?bool $has_spoiler;
+    public ?bool $has_spoiler = null;
 
     /**
      * Optional. Caption of the block

@@ -21,5 +21,5 @@ class ChatBoostSourcePremium extends ChatBoostSource
     /**
      * User that boosted the chat
      */
-    public ?User $user;
+    public ?User $user = null;
 }
