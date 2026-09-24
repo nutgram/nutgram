@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaAnimation;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaAudio;
+use SergiX44\Nutgram\Telegram\Types\Input\InputMediaDocument;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVoiceNote;
@@ -25,5 +26,5 @@ class InputRichMessageMedia extends BaseType
     /**
      * The message to be sent
      */
-    public InputMediaAnimation|InputMediaAudio|InputMediaPhoto|InputMediaVideo|InputMediaVoiceNote $media;
+    public InputMediaAnimation|InputMediaAudio|InputMediaDocument|InputMediaPhoto|InputMediaVideo|InputMediaVoiceNote $media;
 }
