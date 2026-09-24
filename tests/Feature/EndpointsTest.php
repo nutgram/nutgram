@@ -6,6 +6,7 @@ use Psr\Http\Message\StreamInterface;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
+use SergiX44\Nutgram\Telegram\Properties\Currency;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
@@ -13,8 +14,20 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
+use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhotoAnimated;
+use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhotoStatic;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Poll\InputPollOption;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlockCollage;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlockList;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlockListItem;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlockPhoto;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlockVideo;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichMessage;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichMessageMedia;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostPrice;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Testing\FormDataParser;
 
@@ -501,4 +514,231 @@ it('sends multiple medias via sendMediaGroup', function () {
         ],
         chat_id: 123,
     );
+});
+
+it('serializes suggested post parameters in multipart requests', function (SuggestedPostParameters $parameters, string $expected) {
+    $bot = Nutgram::fake();
+
+    $bot->sendRichMessage(
+        rich_message: new InputRichMessage(html: '<p>Hello</p>'),
+        chat_id: 123,
+        suggested_post_parameters: $parameters,
+    );
+
+    $request = $bot->getRequestHistory()[0]['request'];
+    expect($request->getHeaderLine('Content-Type'))->toStartWith('multipart/form-data;')
+        ->and(FormDataParser::parse($request)->params['suggested_post_parameters'])->toBe($expected);
+})->with([
+    'empty' => [new SuggestedPostParameters(), '{}'],
+    'priced' => [
+        SuggestedPostParameters::make(price: new SuggestedPostPrice(Currency::XTR, 25)),
+        '{"price":{"currency":"XTR","amount":25}}',
+    ],
+    'scheduled' => [
+        SuggestedPostParameters::make(send_date: 2000000000),
+        '{"send_date":2000000000}',
+    ],
+]);
+
+it('uploads business profile photos with serialized metadata', function (string $photoClass, string $filename, array $arguments, array $expected) {
+    $bot = Nutgram::fake();
+    $resource = fopen('php://temp', 'w+b');
+    fwrite($resource, 'profile photo contents');
+    rewind($resource);
+
+    $bot->setBusinessAccountProfilePhoto(
+        photo: new $photoClass(InputFile::make($resource, $filename), ...$arguments),
+        business_connection_id: 'test-connection',
+    );
+
+    $request = $bot->getRequestHistory()[0]['request'];
+    $data = FormDataParser::parse($request);
+    expect($request->getHeaderLine('Content-Type'))->toStartWith('multipart/form-data;')
+        ->and(json_decode($data->params['photo'], true, flags: JSON_THROW_ON_ERROR))->toBe($expected)
+        ->and($data->files)->toHaveKey($filename)
+        ->and((string)$request->getBody())->toContain('profile photo contents');
+})->with([
+    'static' => [
+        InputProfilePhotoStatic::class,
+        'avatar.jpg',
+        [],
+        ['type' => 'static', 'photo' => 'attach://avatar.jpg'],
+    ],
+    'animated' => [
+        InputProfilePhotoAnimated::class,
+        'avatar.mp4',
+        ['main_frame_timestamp' => 0.5],
+        ['type' => 'animated', 'animation' => 'attach://avatar.mp4', 'main_frame_timestamp' => 0.5],
+    ],
+]);
+
+it('uploads the media referenced by a rich message', function () {
+    $bot = Nutgram::fake();
+
+    $media = new InputRichMessageMedia();
+    $media->id = 'pic';
+    $media->media = InputMediaPhoto::make(
+        media: InputFile::make(fopen('php://temp', 'rb'), 'photo.jpg'),
+    );
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        $data = array_column($request['multipart'], 'contents', 'name');
+
+        expect($data)
+            ->toHaveKeys(['chat_id', 'rich_message', 'photo.jpg'])
+            ->and($data['photo.jpg'])->toBeInstanceOf(StreamInterface::class)
+            ->and($data['rich_message'])->toContain('attach:\/\/photo.jpg');
+    });
+
+    $bot->sendRichMessage(
+        rich_message: new InputRichMessage(
+            html: '<img src="tg://photo?id=pic">',
+            media: [$media],
+        ),
+        chat_id: 123,
+    );
+});
+
+it('uploads the media nested inside the blocks of a rich message', function () {
+    $bot = Nutgram::fake();
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        $data = array_column($request['multipart'], 'contents', 'name');
+
+        expect($data)->toHaveKeys(['chat_id', 'rich_message', 'photo.jpg', 'video.mp4', 'thumb.jpg']);
+    });
+
+    $bot->sendRichMessage(
+        rich_message: new InputRichMessage(blocks: [
+            new InputRichBlockList([
+                new InputRichBlockListItem([
+                    new InputRichBlockCollage([
+                        new InputRichBlockPhoto(InputMediaPhoto::make(
+                            media: InputFile::make(fopen('php://temp', 'rb'), 'photo.jpg'),
+                        )),
+                        new InputRichBlockVideo(InputMediaVideo::make(
+                            media: InputFile::make(fopen('php://temp', 'rb'), 'video.mp4'),
+                            thumbnail: InputFile::make(fopen('php://temp', 'rb'), 'thumb.jpg'),
+                        )),
+                    ]),
+                ]),
+            ]),
+        ]),
+        chat_id: 123,
+    );
+});
+
+it('sends a rich message as multipart when there is nothing to upload', function () {
+    $bot = Nutgram::fake();
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request)
+            ->toHaveKey('multipart')
+            ->not->toHaveKey('json');
+
+        $data = array_column($request['multipart'], 'contents', 'name');
+        expect($data)->toHaveCount(2)->toHaveKeys(['chat_id', 'rich_message'])
+            ->and(json_decode($data['rich_message'], true, flags: JSON_THROW_ON_ERROR))
+            ->toBe(['blocks' => [['type' => 'photo', 'photo' => ['type' => 'photo', 'media' => 'file_id']]]]);
+    });
+
+    $bot->sendRichMessage(
+        rich_message: new InputRichMessage(blocks: [
+            new InputRichBlockPhoto(InputMediaPhoto::make(media: 'file_id')),
+        ]),
+        chat_id: 123,
+    );
+});
+
+it('uploads the media of a rich message when editing a message', function () {
+    $bot = Nutgram::fake();
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        $data = array_column($request['multipart'], 'contents', 'name');
+
+        expect($data)->toHaveKeys(['chat_id', 'message_id', 'rich_message', 'photo.jpg']);
+    });
+
+    $bot->editMessageText(
+        chat_id: 123,
+        message_id: 456,
+        rich_message: new InputRichMessage(blocks: [
+            new InputRichBlockPhoto(InputMediaPhoto::make(
+                media: InputFile::make(fopen('php://temp', 'rb'), 'photo.jpg'),
+            )),
+        ]),
+    );
+});
+
+it('uploads the media of the poll options', function () {
+    $bot = Nutgram::fake();
+
+    $withPhoto = new InputPollOption();
+    $withPhoto->text = 'yes';
+    $withPhoto->media = InputMediaPhoto::make(
+        media: InputFile::make(fopen('php://temp', 'rb'), 'yes.jpg'),
+    );
+
+    $withFileId = new InputPollOption();
+    $withFileId->text = 'no';
+    $withFileId->media = InputMediaPhoto::make(media: 'file_id');
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        $data = array_column($request['multipart'], 'contents', 'name');
+
+        expect($data)
+            ->toHaveKeys(['chat_id', 'question', 'options', 'yes.jpg'])
+            ->and($data['yes.jpg'])->toBeInstanceOf(StreamInterface::class)
+            ->and($data['options'])->toContain('attach:\/\/yes.jpg', 'file_id');
+    });
+
+    $bot->sendPoll(
+        question: 'pick one',
+        options: [$withPhoto, $withFileId],
+        chat_id: 123,
+    );
+});
+
+it('uploads the media of the poll description and of the quiz explanation', function () {
+    $bot = Nutgram::fake();
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        $data = array_column($request['multipart'], 'contents', 'name');
+
+        expect($data)->toHaveKeys(['chat_id', 'question', 'options', 'media', 'explanation_media', 'description.mp4', 'thumb.jpg', 'explanation.jpg']);
+    });
+
+    $bot->sendPoll(
+        question: 'pick one',
+        options: ['yes', 'no'],
+        chat_id: 123,
+        media: InputMediaVideo::make(
+            media: InputFile::make(fopen('php://temp', 'rb'), 'description.mp4'),
+            thumbnail: InputFile::make(fopen('php://temp', 'rb'), 'thumb.jpg'),
+        ),
+        explanation_media: InputMediaPhoto::make(
+            media: InputFile::make(fopen('php://temp', 'rb'), 'explanation.jpg'),
+        ),
+    );
+});
+
+it('sends a poll as multipart with serialized options when there is nothing to upload', function () {
+    $bot = Nutgram::fake();
+
+    $option = new InputPollOption();
+    $option->text = 'yes';
+    $option->media = InputMediaPhoto::make(media: 'file_id');
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
+        expect($request)
+            ->toHaveKey('multipart')
+            ->not->toHaveKey('json');
+
+        $data = array_column($request['multipart'], 'contents', 'name');
+        expect($data)->toHaveCount(3)->toHaveKeys(['chat_id', 'question', 'options'])
+            ->and($data['options'])->toBeString()
+            ->toContain('"media":{"type":"photo","media":"file_id"}');
+    });
+
+    $bot->sendPoll(question: 'pick one', options: [$option], chat_id: 123);
 });

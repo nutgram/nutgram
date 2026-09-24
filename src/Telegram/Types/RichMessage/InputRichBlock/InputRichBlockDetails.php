@@ -6,6 +6,7 @@ use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
 
 /**
@@ -13,7 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
  * @see https://core.telegram.org/bots/api#inputrichblockdetails
  */
 #[SkipConstructor]
-class InputRichBlockDetails extends BaseType implements InputRichBlock, JsonSerializable
+class InputRichBlockDetails extends BaseType implements InputRichBlock, Uploadables, JsonSerializable
 {
     /**
      * Type of the block, always “details”
@@ -53,5 +54,10 @@ class InputRichBlockDetails extends BaseType implements InputRichBlock, JsonSeri
     public function jsonSerialize(): array
     {
         return $this->toArray();
+    }
+
+    public function uploadables(): array
+    {
+        return ['blocks'];
     }
 }

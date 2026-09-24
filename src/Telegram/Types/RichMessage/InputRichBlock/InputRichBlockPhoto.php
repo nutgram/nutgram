@@ -7,6 +7,7 @@ use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
 
 /**
@@ -14,7 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
  * @see https://core.telegram.org/bots/api#inputrichblockphoto
  */
 #[SkipConstructor]
-class InputRichBlockPhoto extends BaseType implements InputRichBlock, JsonSerializable
+class InputRichBlockPhoto extends BaseType implements InputRichBlock, Uploadables, JsonSerializable
 {
     /**
      * Type of the block, always “photo”
@@ -41,5 +42,10 @@ class InputRichBlockPhoto extends BaseType implements InputRichBlock, JsonSerial
     public function jsonSerialize(): array
     {
         return $this->toArray();
+    }
+
+    public function uploadables(): array
+    {
+        return ['photo'];
     }
 }
