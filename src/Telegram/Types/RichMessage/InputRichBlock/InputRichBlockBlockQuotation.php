@@ -6,6 +6,7 @@ use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
 
 /**
@@ -13,7 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
  * @see https://core.telegram.org/bots/api#inputrichblockblockquotation
  */
 #[SkipConstructor]
-class InputRichBlockBlockQuotation extends BaseType implements InputRichBlock, JsonSerializable
+class InputRichBlockBlockQuotation extends BaseType implements InputRichBlock, Uploadables, JsonSerializable
 {
     /**
      * Type of the block, always “blockquote”
@@ -46,5 +47,10 @@ class InputRichBlockBlockQuotation extends BaseType implements InputRichBlock, J
     public function jsonSerialize(): array
     {
         return $this->toArray();
+    }
+
+    public function uploadables(): array
+    {
+        return ['blocks'];
     }
 }

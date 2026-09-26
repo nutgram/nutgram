@@ -176,6 +176,34 @@ trait Client
     }
 
     /**
+     * @param mixed $value
+     * @return InputFile[]
+     */
+    protected static function collectUploadables(mixed $value): array
+    {
+        if ($value instanceof InputFile) {
+            return [$value];
+        }
+
+        $items = match (true) {
+            $value instanceof UploadableArray => $value->files,
+            $value instanceof Uploadables => array_map(
+                static fn (string $field) => $value->{$field} ?? null,
+                $value->uploadables()
+            ),
+            is_array($value) => $value,
+            default => [],
+        };
+
+        $files = [];
+        foreach ($items as $item) {
+            array_push($files, ...self::collectUploadables($item));
+        }
+
+        return $files;
+    }
+
+    /**
      * @param string $endpoint
      * @param array $multipart
      * @param string $mapTo
@@ -193,20 +221,14 @@ trait Client
     ): mixed {
         $parameters = [];
         foreach (array_filter_null($multipart) as $name => $contents) {
-            if ($contents instanceof UploadableArray || $contents instanceof Uploadables) {
-                $files = $contents instanceof UploadableArray ? $contents->files : [$contents];
-                foreach ($files as $file) {
-                    if ($file instanceof Uploadables) {
-                        foreach ($file->uploadables() as $field) {
-                            if ($file->{$field} instanceof InputFile) {
-                                $parameters[] = [
-                                    'name' => $file->{$field}->getFilename(),
-                                    'contents' => $file->{$field}->getResource(),
-                                    'filename' => $file->{$field}->getFilename(),
-                                ];
-                            }
-                        }
-                    }
+            if (!$contents instanceof InputFile) {
+                foreach (self::collectUploadables($contents) as $file) {
+                    $filename = $file->getFilename();
+                    $parameters[] = [
+                        'name' => $filename,
+                        'contents' => $file->getResource(),
+                        'filename' => $filename,
+                    ];
                 }
             }
 

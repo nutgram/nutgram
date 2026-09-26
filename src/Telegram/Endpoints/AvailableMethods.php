@@ -259,7 +259,7 @@ trait AvailableMethods
             );
         }
 
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->requestMultipart(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -1718,6 +1718,7 @@ trait AvailableMethods
         ?array $country_codes = null,
     ): ?Message {
         $parameters = compact(
+            'options',
             'chat_id',
             'message_thread_id',
             'question',
@@ -1757,9 +1758,8 @@ trait AvailableMethods
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
-        $parameters['options'] = json_encode($options, JSON_THROW_ON_ERROR);
 
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->requestMultipart(__FUNCTION__, $parameters, Message::class);
     }
 
     /**

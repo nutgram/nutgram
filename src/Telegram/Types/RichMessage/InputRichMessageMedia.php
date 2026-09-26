@@ -9,12 +9,13 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaDocument;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVoiceNote;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 
 /**
  * Describes a media element embedded in an outgoing rich message.
  * @see https://core.telegram.org/bots/api#inputrichmessagemedia
  */
-class InputRichMessageMedia extends BaseType
+class InputRichMessageMedia extends BaseType implements Uploadables
 {
     /**
      * Unique identifier of the media used in a
@@ -27,4 +28,9 @@ class InputRichMessageMedia extends BaseType
      * The message to be sent
      */
     public InputMediaAnimation|InputMediaAudio|InputMediaDocument|InputMediaPhoto|InputMediaVideo|InputMediaVoiceNote $media;
+
+    public function uploadables(): array
+    {
+        return ['media'];
+    }
 }
