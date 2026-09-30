@@ -5,6 +5,7 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage;
 use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ButtonStyle;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Common\LoginUrl;
@@ -39,6 +40,7 @@ class RichMessageButton extends BaseType implements JsonSerializable
      * If omitted, then an app-specific style is used.
      * The style “link” is allowed only for callback buttons.
      */
+    #[EnumOrScalar]
     public ButtonStyle|string|null $style = null;
 
     /**
