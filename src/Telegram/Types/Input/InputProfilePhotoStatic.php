@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputProfilePhotoType;
@@ -14,7 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
  * @see https://core.telegram.org/bots/api#inputprofilephoto
  */
 #[SkipConstructor]
-class InputProfilePhotoStatic extends BaseType implements InputProfilePhoto, Uploadables
+class InputProfilePhotoStatic extends BaseType implements InputProfilePhoto, Uploadables, JsonSerializable
 {
     /**
      * Type of the profile photo, must be static
@@ -38,5 +39,10 @@ class InputProfilePhotoStatic extends BaseType implements InputProfilePhoto, Upl
     public function uploadables(): array
     {
         return ['photo'];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

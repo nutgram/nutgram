@@ -6,13 +6,14 @@ use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockListItemType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 
 /**
  * An item of a list to be sent.
  * @see https://core.telegram.org/bots/api#inputrichblocklistitem
  */
 #[SkipConstructor]
-class InputRichBlockListItem extends BaseType implements JsonSerializable
+class InputRichBlockListItem extends BaseType implements Uploadables, JsonSerializable
 {
     /**
      * The content of the item
@@ -71,5 +72,10 @@ class InputRichBlockListItem extends BaseType implements JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
+    }
+
+    public function uploadables(): array
+    {
+        return ['blocks'];
     }
 }

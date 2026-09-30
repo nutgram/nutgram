@@ -7,6 +7,7 @@ use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVoiceNote;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
 
 /**
@@ -14,7 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
  * @see https://core.telegram.org/bots/api#inputrichblockvoicenote
  */
 #[SkipConstructor]
-class InputRichBlockVoiceNote extends BaseType implements InputRichBlock, JsonSerializable
+class InputRichBlockVoiceNote extends BaseType implements InputRichBlock, Uploadables, JsonSerializable
 {
     /**
      * Type of the block, always “voice_note”
@@ -41,5 +42,10 @@ class InputRichBlockVoiceNote extends BaseType implements InputRichBlock, JsonSe
     public function jsonSerialize(): array
     {
         return $this->toArray();
+    }
+
+    public function uploadables(): array
+    {
+        return ['voice_note'];
     }
 }

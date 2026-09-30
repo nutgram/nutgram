@@ -2,6 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
+use JsonSerializable;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputProfilePhotoType;
@@ -14,7 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
  * @see https://core.telegram.org/bots/api#inputprofilephotoanimated
  */
 #[SkipConstructor]
-class InputProfilePhotoAnimated extends BaseType implements InputProfilePhoto, Uploadables
+class InputProfilePhotoAnimated extends BaseType implements InputProfilePhoto, Uploadables, JsonSerializable
 {
     /**
      * Type of the profile photo, must be animated
@@ -45,5 +46,10 @@ class InputProfilePhotoAnimated extends BaseType implements InputProfilePhoto, U
     public function uploadables(): array
     {
         return ['animation'];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

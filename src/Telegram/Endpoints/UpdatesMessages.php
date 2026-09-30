@@ -73,7 +73,7 @@ trait UpdatesMessages
         );
         $this->setChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->requestMultipart(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -331,7 +331,7 @@ trait UpdatesMessages
         $parameters['receiver_user_id'] ??= $this->receiverUserId();
         $parameters['ephemeral_message_id'] ??= $this->ephemeralMessageId();
 
-        return $this->requestJson(__FUNCTION__, $parameters);
+        return $this->requestMultipart(__FUNCTION__, $parameters);
     }
 
     /**

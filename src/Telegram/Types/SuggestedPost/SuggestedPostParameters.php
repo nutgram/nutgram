@@ -2,13 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\SuggestedPost;
 
+use JsonSerializable;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * Contains parameters of a post that is being suggested by the bot.
  * @see https://core.telegram.org/bots/api#suggestedpostparameters
  */
-class SuggestedPostParameters extends BaseType
+class SuggestedPostParameters extends BaseType implements JsonSerializable
 {
     /**
      * Optional. Proposed price for the post. If the field is omitted, then the post is unpaid.
@@ -32,5 +33,11 @@ class SuggestedPostParameters extends BaseType
     public static function make(?SuggestedPostPrice $price = null, ?int $send_date = null): self
     {
         return new self($price, $send_date);
+    }
+
+    public function jsonSerialize(): object
+    {
+        // Keep an empty set of optional parameters a JSON object.
+        return (object)$this->toArray();
     }
 }
