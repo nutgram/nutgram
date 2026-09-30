@@ -85,3 +85,46 @@ it('hydrates chat boost source premium without user', function () {
     expect($result)->toBeInstanceOf(\SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostSourcePremium::class)
         ->and($result->user)->toBeNull();
 });
+
+it('hydrates rich_message buttons with a style', function () {
+    $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
+
+    $payload = [
+        'message_id' => 1234,
+        'date' => 1784483903,
+        'chat' => [
+            'id' => 12345678,
+            'type' => 'private',
+        ],
+        'rich_message' => [
+            'blocks' => [
+                [
+                    'type' => 'buttons',
+                    'align' => 'center',
+                    'buttons' => [
+                        [
+                            'text' => 'Website',
+                            'style' => 'success',
+                            'url' => 'https://nutgram.dev',
+                        ],
+                        [
+                            'text' => 'Callback',
+                            'style' => 'future_style',
+                            'callback_data' => 'data',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ];
+
+    $result = $hydrator->hydrate($payload, Message::class);
+
+    $buttons = $result->rich_message->blocks[0]->buttons;
+
+    expect($result)->toBeInstanceOf(Message::class)
+        ->and($result->rich_message->blocks[0])->toBeInstanceOf(\SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockButtons::class)
+        ->and($buttons)->toHaveCount(2)
+        ->and($buttons[0]->style)->toBe(\SergiX44\Nutgram\Telegram\Properties\ButtonStyle::SUCCESS)
+        ->and($buttons[1]->style)->toBe('future_style');
+});
