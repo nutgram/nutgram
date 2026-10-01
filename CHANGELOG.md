@@ -2,6 +2,21 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.50.2 - 2026-10-01
+
+### What's Changed
+
+* fix: Bot API 10.3 supports InputMediaDocument upload by @moesoha in https://github.com/nutgram/nutgram/pull/1013
+* fix: recursively find Uploadables and upload them with multipart by @moesoha in https://github.com/nutgram/nutgram/pull/1014
+* fix: hydrate RichMessageButton style with EnumOrScalar by @QWASS in https://github.com/nutgram/nutgram/pull/1016
+
+### New Contributors
+
+* @moesoha made their first contribution in https://github.com/nutgram/nutgram/pull/1013
+* @QWASS made their first contribution in https://github.com/nutgram/nutgram/pull/1016
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.50.1...4.50.2
+
 ## 4.50.1 - 2026-09-15
 
 ### What's Changed
