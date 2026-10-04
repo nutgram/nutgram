@@ -293,7 +293,7 @@ trait UpdatesMessages
      * Use this method to edit an ephemeral text message.
      * Note that it is not guaranteed that the user will receive the message edit event, especially if they are offline.
      * On success, True is returned.
-     * @param string $text New text of the message, 1-4096 characters after entity parsing
+     * @param string|null $text New text of the message, 1-4096 characters after entity parsing; required if rich_message isn't specified
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
      * @param int|null $receiver_user_id Identifier of the user who received the message
      * @param int|null $ephemeral_message_id Identifier of the ephemeral message to edit
@@ -306,7 +306,7 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#editephemeralmessagetext
      */
     public function editEphemeralMessageText(
-        string $text,
+        ?string $text = null,
         int|string|null $chat_id = null,
         ?int $receiver_user_id = null,
         ?int $ephemeral_message_id = null,
