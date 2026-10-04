@@ -23,7 +23,7 @@ class InputRichBlockDetails extends BaseType implements InputRichBlock, Uploadab
 
     /**
      * Always shown summary of the block
-     * @var string|RichText[]|RichText
+     * @var string|RichText|array<mixed>
      */
     public string|array|RichText $summary;
 
@@ -39,7 +39,7 @@ class InputRichBlockDetails extends BaseType implements InputRichBlock, Uploadab
     public ?bool $is_open = null;
 
     /**
-     * @param string|RichText[]|RichText $summary
+     * @param string|RichText|array<mixed> $summary
      * @param InputRichBlock[] $blocks
      * @param bool|null $is_open
      */

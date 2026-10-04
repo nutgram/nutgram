@@ -21,7 +21,7 @@ class RichTextReference extends BaseType implements RichText
 
     /**
      * Text of the reference
-     * @var string|RichText[]|RichText
+     * @var string|RichText|array<mixed>
      */
     #[ArrayType(RichText::class, skipScalars: true)]
     #[RichTextUnionResolver]

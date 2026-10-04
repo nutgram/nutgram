@@ -27,7 +27,7 @@ class RichBlockThinking extends BaseType implements RichBlock
      * Text of the block.
      * See https://t.me/addemoji/AIActions for examples of custom emoji,
      * which are recommended for usage in the block.
-     * @var string|RichText[]|RichText
+     * @var string|RichText|array<mixed>
      */
     #[ArrayType(RichText::class, skipScalars: true)]
     #[RichTextUnionResolver]

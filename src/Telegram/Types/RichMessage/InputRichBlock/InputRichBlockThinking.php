@@ -26,12 +26,12 @@ class InputRichBlockThinking extends BaseType implements InputRichBlock, JsonSer
     /**
      * Text of the block.
      * See https://t.me/addemoji/AIActions for examples of custom emoji that are recommended for usage in the block.
-     * @var string|RichText[]|RichText
+     * @var string|RichText|array<mixed>
      */
     public string|array|RichText $text;
 
     /**
-     * @param string|RichText[]|RichText $text
+     * @param string|RichText|array<mixed> $text
      */
     public function __construct(string|array|RichText $text)
     {

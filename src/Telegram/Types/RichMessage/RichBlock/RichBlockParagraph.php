@@ -23,7 +23,7 @@ class RichBlockParagraph extends BaseType implements RichBlock
 
     /**
      * Text of the block
-     * @var string|RichText[]|RichText
+     * @var string|RichText|array<mixed>
      */
     #[ArrayType(RichText::class, skipScalars: true)]
     #[RichTextUnionResolver]

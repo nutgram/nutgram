@@ -29,13 +29,13 @@ class InputRichBlockBlockQuotation extends BaseType implements InputRichBlock, U
 
     /**
      * Optional. Credit of the block
-     * @var string|RichText[]|RichText|null
+     * @var string|RichText|array<mixed>|null
      */
     public string|array|RichText|null $credit = null;
 
     /**
      * @param array $blocks
-     * @param string|RichText[]|RichText|null $credit
+     * @param string|RichText|array<mixed>|null $credit
      */
     public function __construct(array $blocks, string|array|RichText|null $credit = null)
     {
