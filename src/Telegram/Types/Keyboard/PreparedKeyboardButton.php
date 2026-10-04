@@ -2,12 +2,14 @@
 
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
+use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
 
 /**
  * Describes a keyboard button to be used by a user of a Mini App.
  * @see https://core.telegram.org/bots/api#preparedkeyboardbutton
  */
+#[SkipConstructor]
 class PreparedKeyboardButton extends BaseType
 {
     /**
