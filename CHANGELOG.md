@@ -2,6 +2,18 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.50.3 - 2026-10-04
+
+### What's Changed
+
+* Fix Bot API type mismatches in media, ephemeral edits, entities and rich text by @alikm6 in https://github.com/nutgram/nutgram/pull/1017
+
+### New Contributors
+
+* @alikm6 made their first contribution in https://github.com/nutgram/nutgram/pull/1017
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.50.2...4.50.3
+
 ## 4.50.2 - 2026-10-01
 
 ### What's Changed
