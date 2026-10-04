@@ -74,6 +74,19 @@ class MessageEntity extends BaseType implements JsonSerializable
      */
     public ?string $custom_emoji_id = null;
 
+    /**
+     * Optional.
+     * For “date_time” only, the Unix time associated with the entity
+     */
+    public ?int $unix_time = null;
+
+    /**
+     * Optional.
+     * For “date_time” only, the string that defines the formatting of the date and time.
+     * See {@see https://core.telegram.org/bots/api#date-time-entity-formatting date-time entity formatting} for more details.
+     */
+    public ?string $date_time_format = null;
+
     public function __construct(
         MessageEntityType|string $type,
         int $offset,
@@ -82,6 +95,8 @@ class MessageEntity extends BaseType implements JsonSerializable
         ?User $user = null,
         ?string $language = null,
         ?string $custom_emoji_id = null,
+        ?int $unix_time = null,
+        ?string $date_time_format = null,
     ) {
         parent::__construct();
         $this->type = $type;
@@ -91,6 +106,8 @@ class MessageEntity extends BaseType implements JsonSerializable
         $this->user = $user;
         $this->language = $language;
         $this->custom_emoji_id = $custom_emoji_id;
+        $this->unix_time = $unix_time;
+        $this->date_time_format = $date_time_format;
     }
 
     public static function make(
@@ -101,6 +118,8 @@ class MessageEntity extends BaseType implements JsonSerializable
         ?User $user = null,
         ?string $language = null,
         ?string $custom_emoji_id = null,
+        ?int $unix_time = null,
+        ?string $date_time_format = null,
     ): self {
         return new self(
             type: $type,
@@ -109,7 +128,9 @@ class MessageEntity extends BaseType implements JsonSerializable
             url: $url,
             user: $user,
             language: $language,
-            custom_emoji_id: $custom_emoji_id
+            custom_emoji_id: $custom_emoji_id,
+            unix_time: $unix_time,
+            date_time_format: $date_time_format
         );
     }
 
@@ -123,6 +144,8 @@ class MessageEntity extends BaseType implements JsonSerializable
             'user' => $this->user,
             'language' => $this->language,
             'custom_emoji_id' => $this->custom_emoji_id,
+            'unix_time' => $this->unix_time,
+            'date_time_format' => $this->date_time_format,
         ]);
     }
 }
