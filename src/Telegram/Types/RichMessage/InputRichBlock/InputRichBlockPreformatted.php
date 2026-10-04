@@ -22,7 +22,7 @@ class InputRichBlockPreformatted extends BaseType implements InputRichBlock, Jso
 
     /**
      * Text of the block
-     * @var string|RichText[]|RichText
+     * @var string|RichText|array<mixed>
      */
     public string|array|RichText $text;
 
@@ -32,7 +32,7 @@ class InputRichBlockPreformatted extends BaseType implements InputRichBlock, Jso
     public ?string $language = null;
 
     /**
-     * @param string|RichText[]|RichText $text
+     * @param string|RichText|array<mixed> $text
      * @param string|null $language
      */
     public function __construct(string|array|RichText $text, ?string $language = null)

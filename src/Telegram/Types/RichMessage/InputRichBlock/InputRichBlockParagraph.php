@@ -22,12 +22,12 @@ class InputRichBlockParagraph extends BaseType implements InputRichBlock, JsonSe
 
     /**
      * Text of the block
-     * @var string|RichText[]|RichText
+     * @var string|RichText|array<mixed>
      */
     public string|array|RichText $text;
 
     /**
-     * @param string|RichText[]|RichText $text
+     * @param string|RichText|array<mixed> $text
      */
     public function __construct(string|array|RichText $text)
     {

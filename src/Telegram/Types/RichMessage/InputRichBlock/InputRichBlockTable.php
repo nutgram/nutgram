@@ -44,7 +44,7 @@ class InputRichBlockTable extends BaseType implements InputRichBlock, JsonSerial
 
     /**
      * Optional. Caption of the table
-     * @var string|RichText[]|RichText|null
+     * @var string|RichText|array<mixed>|null
      */
     public string|array|RichText|null $caption = null;
 
@@ -52,7 +52,7 @@ class InputRichBlockTable extends BaseType implements InputRichBlock, JsonSerial
      * @param RichBlockTableCell[][] $cells
      * @param bool|null $is_bordered
      * @param bool|null $is_striped
-     * @param string|RichText[]|RichText|null $caption
+     * @param string|RichText|array<mixed>|null $caption
      * @param bool|null $is_compact
      */
     public function __construct(

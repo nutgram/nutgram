@@ -23,7 +23,7 @@ class RichBlockExpandableBlockQuotation extends BaseType implements RichBlock
 
     /**
      * Optional. Credit of the block
-     * @var string|RichText[]|RichText|null
+     * @var string|RichText|array<mixed>|null
      */
     #[ArrayType(RichText::class, skipScalars: true)]
     #[RichTextUnionResolver]
@@ -31,7 +31,7 @@ class RichBlockExpandableBlockQuotation extends BaseType implements RichBlock
 
     /**
      * Optional. Credit of the block
-     * @var string|RichText[]|RichText|null
+     * @var string|RichText|array<mixed>|null
      */
     #[ArrayType(RichText::class, skipScalars: true)]
     #[RichTextUnionResolver]

@@ -22,7 +22,7 @@ class RichTextTextMention extends BaseType implements RichText
 
     /**
      * The text
-     * @var string|RichText[]|RichText
+     * @var string|RichText|array<mixed>
      */
     #[ArrayType(RichText::class, skipScalars: true)]
     #[RichTextUnionResolver]

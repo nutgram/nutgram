@@ -25,7 +25,7 @@ class InputRichBlockSectionHeading extends BaseType implements InputRichBlock, J
 
     /**
      * Text of the block
-     * @var string|RichText[]|RichText
+     * @var string|RichText|array<mixed>
      */
     public string|array|RichText $text;
 
@@ -35,7 +35,7 @@ class InputRichBlockSectionHeading extends BaseType implements InputRichBlock, J
     public int $size;
 
     /**
-     * @param string|RichText[]|RichText $text
+     * @param string|RichText|array<mixed> $text
      * @param int $size
      */
     public function __construct(string|array|RichText $text, int $size)
