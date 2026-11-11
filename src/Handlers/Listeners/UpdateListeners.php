@@ -392,4 +392,49 @@ trait UpdateListeners
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::STOPPED_MESSAGE_GENERATION->value][] = new Handler($callable);
     }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onWidgetQuery($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::WIDGET_QUERY->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param string $pattern
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onWidgetQueryData(string $pattern, $callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::WIDGET_QUERY->value][$pattern] = new Handler($callable, $pattern);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onSharedWidgetQuery($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::SHARED_WIDGET_QUERY->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param string $pattern
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onSharedWidgetQueryData(string $pattern, $callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::SHARED_WIDGET_QUERY->value][$pattern] = new Handler(
+            $callable,
+            $pattern
+        );
+    }
 }

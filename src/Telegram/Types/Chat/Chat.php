@@ -12,9 +12,11 @@ use SergiX44\Nutgram\Telegram\Types\Business\BusinessOpeningHours;
 use SergiX44\Nutgram\Telegram\Types\Community\Community;
 use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Payment\TonWalletCard;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
 use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGiftColors;
+use SergiX44\Nutgram\Telegram\Types\Theme\ChatShareTheme;
 use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\User\UserRating;
@@ -406,6 +408,19 @@ class Chat extends BaseType
      */
     public ?Community $community = null;
 
+    /**
+     * Optional. For private chats, the TON wallet card of the user, which is shown on their profile page
+     */
+    public ?TonWalletCard $ton_wallet_card = null;
+
+    /**
+     * Optional.
+     * For private chats, supergroups and channels,
+     * the theme of the screen for sharing a link to the user or the chat;
+     * omitted if the default theme is used
+     */
+    public ?ChatShareTheme $share_theme = null;
+
     public static function make(
         int $id,
         ChatType|string $type,
@@ -443,7 +458,9 @@ class Chat extends BaseType
         ?int $paid_message_star_count = null,
         ?Audio $first_profile_audio = null,
         ?User $guard_bot = null,
-        ?Community $community = null
+        ?Community $community = null,
+        ?TonWalletCard $ton_wallet_card = null,
+        ?ChatShareTheme $share_theme = null,
     ): Chat {
         $chat = new self();
         $chat->id = $id;
@@ -483,6 +500,8 @@ class Chat extends BaseType
         $chat->first_profile_audio = $first_profile_audio;
         $chat->guard_bot = $guard_bot;
         $chat->community = $community;
+        $chat->ton_wallet_card = $ton_wallet_card;
+        $chat->share_theme = $share_theme;
         return $chat;
     }
 

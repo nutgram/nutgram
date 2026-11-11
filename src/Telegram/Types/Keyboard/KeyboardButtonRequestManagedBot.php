@@ -25,7 +25,13 @@ class KeyboardButtonRequestManagedBot extends BaseType
     public ?string $suggested_name = null;
 
     /**
-     * Optional. Suggested username for the bot
+     * Optional.
+     * Suggested username for the bot.
+     * The username must end with “bot”.
+     * If the user creating the bot has a Telegram Premium subscription,
+     * then the username can also end with “agent”, “ai”, “app”, “game”, or “gay”; in this case,
+     * the username will be assigned to the bot as a secondary username,
+     * and a regular username ending with “bot” will be assigned to the bot automatically.
      */
     public ?string $suggested_username = null;
 

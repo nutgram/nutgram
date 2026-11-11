@@ -57,7 +57,9 @@ use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichMessage;
 use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
+use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGift;
 use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
+use SergiX44\Nutgram\Telegram\Types\Theme\ChatShareThemeBackdrops;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\User\UserProfileAudios;
 use SergiX44\Nutgram\Telegram\Types\User\UserProfilePhotos;
@@ -343,7 +345,7 @@ trait AvailableMethods
 
     /**
      * Use this method to copy messages of any kind.
-     * Service messages, paid media messages, giveaway messages, giveaway winners messages, and invoice messages can't be copied.
+     * Service messages, paid media messages, giveaway messages, giveaway winners messages, invoice messages, and widget messages can't be copied.
      * A quiz {@see https://core.telegram.org/bots/api#poll poll} can be copied only if the value of the field correct_option_id is known to the bot.
      * The method is analogous to the method {@see https://core.telegram.org/bots/api#forwardmessage forwardMessage}, but the copied message doesn't have a link to the original message.
      * Returns the {@see https://core.telegram.org/bots/api#messageid MessageId} of the sent message on success.
@@ -416,7 +418,7 @@ trait AvailableMethods
     /**
      * Use this method to copy messages of any kind.
      * If some of the specified messages can't be found or copied, they are skipped.
-     * Service messages, paid media messages, giveaway messages, giveaway winners messages, and invoice messages can't be copied.
+     * Service messages, paid media messages, giveaway messages, giveaway winners messages, invoice messages, and widget messages can't be copied.
      * A quiz {@see https://core.telegram.org/bots/api#poll poll} can be copied only if the value of the field correct_option_id is known to the bot.
      * The method is analogous to the method {@see https://core.telegram.org/bots/api#forwardmessages forwardMessages}, but the copied messages don't have a link to the original message.
      * Album grouping is kept for copied messages.
@@ -1207,6 +1209,142 @@ trait AvailableMethods
         }
 
         return $this->sendAttachments(__FUNCTION__, ['video_note'], $parameters, $clientOpt);
+    }
+
+    /**
+     * Use this method to send a message with an {@see https://core.telegram.org/bots/widgets HTML widget}.
+     * Currently, in the production environment, widgets can be sent only to private chats,
+     * and sent widgets automatically have protected content and therefore can't be forwarded.
+     * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
+     * @param string $html HTML code of the widget, 1-32768 bytes. The code must not exceed 4096 bytes when compressed by zlib with the maximum compression level.
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
+     * @param int|null $width Width of the widget in logical pixels; omit if the widget must occupy the whole width of the message bubble. The width is clamped by the app to the range from 200 to the maximum width of the message bubble.
+     * @param int|null $height Height of the widget in logical pixels; omit if the height of the widget isn't fixed. The height is clamped by the app to the range 50-600.
+     * @param string|null $public_data Public data of the widget, 0-1024 bytes, which will be available wherever the widget is shown. If the widget is shared, then all messages with it will have the same public data.
+     * @param string|null $chat_data Data of the widget, which is specific to the message, 0-1024 bytes
+     * @param string|null $caption Widget caption, 0-1024 characters after entities parsing
+     * @param ParseMode|string|null $parse_mode Mode for parsing entities in the widget caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param MessageEntity[]|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @param bool|null $show_caption_above_media Pass True if the caption must be shown above the widget
+     * @param bool|null $allow_queries Pass True to allow the widget to send queries to the bot
+     * @param bool|null $is_shared Pass True to create a shared widget, which can be sent again using the method {@see https://core.telegram.org/bots/api#sendsharedwidget sendSharedWidget}
+     * @param bool|null $disable_notification Sends the message silently. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance.
+     * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
+     * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove a reply keyboard or to force a reply from the user.
+     * @return Message|null
+     * @see https://core.telegram.org/bots/api#sendwidget
+     */
+    public function sendWidget(
+        string $html,
+        int|string|null $chat_id = null,
+        ?int $message_thread_id = null,
+        ?int $width = null,
+        ?int $height = null,
+        ?string $public_data = null,
+        ?string $chat_data = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $show_caption_above_media = null,
+        ?bool $allow_queries = null,
+        ?bool $is_shared = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?bool $allow_paid_broadcast = null,
+        ?string $message_effect_id = null,
+        ?ReplyParameters $reply_parameters = null,
+        InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+    ): ?Message {
+        $parameters = compact(
+            'html',
+            'chat_id',
+            'message_thread_id',
+            'width',
+            'height',
+            'public_data',
+            'chat_data',
+            'caption',
+            'parse_mode',
+            'caption_entities',
+            'show_caption_above_media',
+            'allow_queries',
+            'is_shared',
+            'disable_notification',
+            'protect_content',
+            'allow_paid_broadcast',
+            'message_effect_id',
+            'reply_parameters',
+            'reply_markup'
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+    }
+
+    /**
+     * Use this method to send again a shared widget created by the bot.
+     * Currently, in the production environment, widgets can be sent only to private chats,
+     * and sent widgets automatically have protected content and therefore can't be forwarded.
+     * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
+     * @param string|null $widget_id Unique identifier of the shared widget
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
+     * @param string|null $chat_data Data of the widget, which is specific to the message, 0-1024 bytes
+     * @param string|null $caption Widget caption, 0-1024 characters after entities parsing
+     * @param ParseMode|string|null $parse_mode Mode for parsing entities in the widget caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param MessageEntity[]|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @param bool|null $show_caption_above_media Pass True if the caption must be shown above the widget
+     * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance.
+     * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
+     * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove a reply keyboard or to force a reply from the user.
+     * @return Message|null
+     * @see https://core.telegram.org/bots/api#sendsharedwidget
+     */
+    public function sendSharedWidget(
+        ?string $widget_id = null,
+        int|string|null $chat_id = null,
+        ?int $message_thread_id = null,
+        ?string $chat_data = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $show_caption_above_media = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?bool $allow_paid_broadcast = null,
+        ?string $message_effect_id = null,
+        ?ReplyParameters $reply_parameters = null,
+        InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+    ): ?Message {
+        $parameters = compact(
+            'widget_id',
+            'chat_id',
+            'message_thread_id',
+            'chat_data',
+            'caption',
+            'parse_mode',
+            'caption_entities',
+            'show_caption_above_media',
+            'disable_notification',
+            'protect_content',
+            'allow_paid_broadcast',
+            'message_effect_id',
+            'reply_parameters',
+            'reply_markup'
+        );
+        $parameters['widget_id'] ??= $this->widgetId();
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -2687,6 +2825,19 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to get the list of backdrops, which can be used as the background
+     * of a theme of the screen for sharing a link to a user or a chat.
+     * Requires no parameters.
+     * Returns a {@see https://core.telegram.org/bots/api#chatsharethemebackdrops ChatShareThemeBackdrops} object.
+     * @return ChatShareThemeBackdrops|null
+     * @see https://core.telegram.org/bots/api#getchatsharethemebackdrops
+     */
+    public function getChatShareThemeBackdrops(): ?ChatShareThemeBackdrops
+    {
+        return $this->requestJson(__FUNCTION__, mapTo: ChatShareThemeBackdrops::class);
+    }
+
+    /**
      * Use this method to get the last messages from the personal chat (i.e., the chat currently added to their profile) of a given user.
      * On success, an array of {@see https://core.telegram.org/bots/api#message Message} objects is returned.
      * @param int $user_id Unique identifier for the target user
@@ -2935,6 +3086,25 @@ trait AvailableMethods
             'url',
             'cache_time'
         );
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to send an answer to a query from a widget. The query must be answered within 15 seconds.
+     * The answer is received only by the widget that sent the query and doesn't change data of the widget;
+     * use {@see https://core.telegram.org/bots/api#editmessagewidgetdata editMessageWidgetData}
+     * or {@see https://core.telegram.org/bots/api#editsharedwidgetdata editSharedWidgetData} to change it.
+     * On success, True is returned.
+     * @param string|null $data Data to be returned to the widget, 0-1024 bytes
+     * @param string|null $widget_query_id Unique identifier for the query to be answered
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#answerwidgetquery
+     */
+    public function answerWidgetQuery(?string $data = null, ?string $widget_query_id = null): ?bool
+    {
+        $parameters = compact('data', 'widget_query_id');
+        $parameters['widget_query_id'] ??= ($this->widgetQuery()?->id ?? $this->sharedWidgetQuery()?->id);
 
         return $this->requestJson(__FUNCTION__, $parameters);
     }
@@ -3235,6 +3405,78 @@ trait AvailableMethods
     }
 
     /**
+     * Verifies a user on behalf of the organization which is represented by the bot. Returns True on success.
+     * @param int $user_id Unique identifier of the target user
+     * @param string|null $custom_description Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.
+     * @param ParseMode|string|null $custom_description_parse_mode Mode for parsing entities in the custom description. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details. Only “text_link” entities are supported.
+     * @param MessageEntity[]|null $custom_description_entities A JSON-serialized list of special entities that appear in the custom description, which can be specified instead of custom_description_parse_mode. Only “text_link” entities are supported.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#verifyuser
+     */
+    public function verifyUser(
+        int $user_id,
+        ?string $custom_description = null,
+        ParseMode|string|null $custom_description_parse_mode = null,
+        ?array $custom_description_entities = null,
+    ): ?bool {
+        $parameters = compact(
+            'user_id',
+            'custom_description',
+            'custom_description_parse_mode',
+            'custom_description_entities',
+        );
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Verifies a chat on behalf of the organization which is represented by the bot. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param string|null $custom_description Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.
+     * @param ParseMode|string|null $custom_description_parse_mode Mode for parsing entities in the custom description. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details. Only “text_link” entities are supported.
+     * @param MessageEntity[]|null $custom_description_entities A JSON-serialized list of special entities that appear in the custom description, which can be specified instead of custom_description_parse_mode. Only “text_link” entities are supported.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#verifychat
+     */
+    public function verifyChat(
+        int|string $chat_id,
+        ?string $custom_description = null,
+        ParseMode|string|null $custom_description_parse_mode = null,
+        ?array $custom_description_entities = null,
+    ): ?bool {
+        $parameters = compact(
+            'chat_id',
+            'custom_description',
+            'custom_description_parse_mode',
+            'custom_description_entities',
+        );
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Removes verification from a user who is currently verified on behalf of the organization represented by the bot. Returns True on success.
+     * @param int $user_id Unique identifier of the target user
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#removeuserverification
+     */
+    public function removeUserVerification(int $user_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('user_id'));
+    }
+
+    /**
+     * Removes verification from a chat that is currently verified on behalf of the organization represented by the bot. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#removechatverification
+     */
+    public function removeChatVerification(int|string $chat_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id'));
+    }
+
+    /**
      * Use this method to clear the list of pinned messages in a General forum topic.
      * The bot must be an administrator in the chat for this to work and must have the can_pin_messages administrator right in the supergroup.
      * Returns True on success.
@@ -3335,6 +3577,38 @@ trait AvailableMethods
         $parameters['chat_id'] ??= $this->chatId();
 
         return $this->requestJson(__FUNCTION__, $parameters, OwnedGifts::class);
+    }
+
+    /**
+     * Use this method to get information about a unique gift by its name.
+     * Returns a {@see https://core.telegram.org/bots/api#uniquegift UniqueGift} object on success.
+     * @param string $name Unique name of the gift
+     * @return UniqueGift|null
+     * @see https://core.telegram.org/bots/api#getuniquegift
+     */
+    public function getUniqueGift(string $name): ?UniqueGift
+    {
+        $parameters = compact('name');
+
+        return $this->requestJson(__FUNCTION__, $parameters, UniqueGift::class);
+    }
+
+    /**
+     * Deletes a regular gift owned by a managed business account without receiving Telegram Stars for it.
+     * Requires the can_convert_gifts_to_stars business bot right.
+     * The gift can be deleted only if it isn't limited
+     * (the field total_count of the {@see https://core.telegram.org/bots/api#gift Gift} is omitted) and wasn't refunded.
+     * Returns True on success.
+     * @param string $business_connection_id Unique identifier of the business connection
+     * @param string $owned_gift_id Unique identifier of the regular gift that should be deleted
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#deletebusinessaccountgift
+     */
+    public function deleteBusinessAccountGift(string $business_connection_id, string $owned_gift_id): ?bool
+    {
+        $parameters = compact('business_connection_id', 'owned_gift_id');
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**

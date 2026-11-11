@@ -20,6 +20,8 @@ enum UpdateType: string
     case INLINE_QUERY = 'inline_query';
     case CHOSEN_INLINE_RESULT = 'chosen_inline_result';
     case CALLBACK_QUERY = 'callback_query';
+    case WIDGET_QUERY = 'widget_query';
+    case SHARED_WIDGET_QUERY = 'shared_widget_query';
     case SHIPPING_QUERY = 'shipping_query';
     case PRE_CHECKOUT_QUERY = 'pre_checkout_query';
     case PURCHASED_PAID_MEDIA = 'purchased_paid_media';

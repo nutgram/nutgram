@@ -30,4 +30,5 @@ enum RichTextType: string
     case ANCHOR_LINK = 'anchor_link';
     case REFERENCE = 'reference';
     case REFERENCE_LINK = 'reference_link';
+    case TON_ADDRESS = 'ton_address';
 }

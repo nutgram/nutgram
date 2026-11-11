@@ -53,8 +53,10 @@ use SergiX44\Nutgram\Telegram\Types\Payment\DirectMessagePriceChanged;
 use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaInfo;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMessagePriceChanged;
+use SergiX44\Nutgram\Telegram\Types\Payment\PaidMessagesWaived;
 use SergiX44\Nutgram\Telegram\Types\Payment\RefundedPayment;
 use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
+use SergiX44\Nutgram\Telegram\Types\Payment\TonWalletTransfer;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionAdded;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionDeleted;
@@ -78,6 +80,7 @@ use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatParticipantsInvited;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatScheduled;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatStarted;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppData;
+use SergiX44\Nutgram\Telegram\Types\Widget\Widget;
 
 /**
  * This object represents a message.
@@ -417,6 +420,11 @@ class Message extends BaseType
      * Message is a voice message, information about the file
      */
     public ?Voice $voice = null;
+
+    /**
+     * Optional. Message is an HTML widget, information about the widget
+     */
+    public ?Widget $widget = null;
 
     /**
      * Optional.
@@ -765,6 +773,13 @@ class Message extends BaseType
     public ?PaidMessagePriceChanged $paid_message_price_changed = null;
 
     /**
+     * Optional.
+     * Service message: the sender of the message used a link of the other user,
+     * which allows sending messages to the user without paying Telegram Stars
+     */
+    public ?PaidMessagesWaived $paid_messages_waived = null;
+
+    /**
      * Optional. Service message: answer option was added to a poll
      */
     public ?PollOptionAdded $poll_option_added = null;
@@ -798,6 +813,11 @@ class Message extends BaseType
      * Optional. Service message: payment for a suggested post was refunded
      */
     public ?SuggestedPostRefunded $suggested_post_refunded = null;
+
+    /**
+     * Optional. Service message: a transfer with a TON wallet
+     */
+    public ?TonWalletTransfer $ton_wallet_transfer = null;
 
     /**
      * Optional.
@@ -881,6 +901,7 @@ class Message extends BaseType
             $this->sticker !== null => MessageType::STICKER,
             $this->video !== null => MessageType::VIDEO,
             $this->voice !== null => MessageType::VOICE,
+            $this->widget !== null => MessageType::WIDGET,
             $this->video_note !== null => MessageType::VIDEO_NOTE,
             $this->checklist !== null => MessageType::CHECKLIST,
             $this->contact !== null => MessageType::CONTACT,
@@ -930,8 +951,10 @@ class Message extends BaseType
             $this->giveaway_completed !== null => MessageType::GIVEAWAY_COMPLETED,
             $this->managed_bot_created !== null => MessageType::MANAGED_BOT_CREATED,
             $this->paid_message_price_changed !== null => MessageType::PAID_MESSAGE_PRICE_CHANGED,
+            $this->paid_messages_waived !== null => MessageType::PAID_MESSAGES_WAIVED,
             $this->poll_option_added !== null => MessageType::POLL_OPTION_ADDED,
             $this->poll_option_deleted !== null => MessageType::POLL_OPTION_DELETED,
+            $this->ton_wallet_transfer !== null => MessageType::TON_WALLET_TRANSFER,
             $this->video_chat_scheduled !== null => MessageType::VIDEO_CHAT_SCHEDULED,
             $this->video_chat_started !== null => MessageType::VIDEO_CHAT_STARTED,
             $this->video_chat_ended !== null => MessageType::VIDEO_CHAT_ENDED,

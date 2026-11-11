@@ -22,6 +22,7 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage\RichText;
  * {@see RichTextEmailAddress}
  * {@see RichTextPhoneNumber}
  * {@see RichTextBankCardNumber}
+ * {@see RichTextTonAddress}
  * {@see RichTextMention}
  * {@see RichTextHashtag}
  * {@see RichTextCashtag}

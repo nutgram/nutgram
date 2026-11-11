@@ -121,6 +121,12 @@ abstract class ResolveHandlers extends CollectHandlers
         } elseif ($updateType === UpdateType::SUBSCRIPTION) {
             $data = $this->update->subscription?->invoice_payload;
             $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::WIDGET_QUERY) {
+            $data = $this->update->widget_query?->data;
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::SHARED_WIDGET_QUERY) {
+            $data = $this->update->shared_widget_query?->data;
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         }
 
         if (empty($resolvedHandlers) && $updateType !== null) {

@@ -1,0 +1,18 @@
+{
+  "update_id": 2,
+  "shared_widget_query": {
+    "id": "666728699048485871",
+    "from": {
+      "id": 222222222,
+      "is_bot": false,
+      "first_name": "Mario",
+      "username": "Super",
+      "language_code": "it"
+    },
+    "type": {
+      "type": "data"
+    },
+    "data": "thedata",
+    "widget_id": "123456789"
+  }
+}
