@@ -27,7 +27,7 @@
   "require": {
     "php": "^8.2",
     "ext-json": "*",
-    "guzzlehttp/guzzle": "^7.2|^8.0",
+    "guzzlehttp/guzzle": "^7.15.2|^8.0.1",
     "illuminate/macroable": ">=9.0",
     "laravel/serializable-closure": "^1.0|^2.0",
     "nutgram/hydrator": "^7.2.0",
@@ -40,7 +40,7 @@
     "mockery/mockery": "^1.6",
     "pestphp/pest": "^3.0|^4.0",
     "roave/security-advisories": "dev-latest",
-    "vimeo/psalm": "^6.1.0"
+    "vimeo/psalm": "^7.0"
   },
   "suggest": {
     "ext-sodium": "To validate WebApp data for Third-Party Use"
