@@ -16,7 +16,6 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 #[SkipConstructor]
 class InputWidgetMessageContent extends InputMessageContent
 {
-
     /**
      * HTML code of the widget, 1-32768 bytes.
      * The code must not exceed 4096 bytes when compressed by zlib with the maximum compression level.
