@@ -11,6 +11,8 @@ enum MessageEntityType: string
     case URL = 'url';
     case EMAIL = 'email';
     case PHONE_NUMBER = 'phone_number';
+    case BANK_CARD_NUMBER = 'bank_card_number';
+    case TON_ADDRESS = 'ton_address';
     case BOLD = 'bold';
     case ITALIC = 'italic';
     case UNDERLINE = 'underline';

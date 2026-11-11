@@ -3,6 +3,8 @@
 use SergiX44\Nutgram\Hydrator\Hydrator;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextBold;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextTonAddress;
 
 it('hydrate rich_message', function ($content) {
     $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
@@ -127,4 +129,38 @@ it('hydrates rich_message buttons with a style', function () {
         ->and($buttons)->toHaveCount(2)
         ->and($buttons[0]->style)->toBe(\SergiX44\Nutgram\Telegram\Properties\ButtonStyle::SUCCESS)
         ->and($buttons[1]->style)->toBe('future_style');
+});
+
+it('hydrates a ton_address rich text with nested rich text', function () {
+    $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
+
+    $result = $hydrator->hydrate([
+        'message_id' => 1234,
+        'date' => 1784483903,
+        'chat' => ['id' => 12345678, 'type' => 'private'],
+        'rich_message' => [
+            'blocks' => [
+                [
+                    'type' => 'paragraph',
+                    'text' => [
+                        'wallet: ',
+                        [
+                            'type' => 'ton_address',
+                            'address' => 'EQDtFpEwcFAEcRe5mLVh2N6C0x-_hJEM7W61_JLnSF74p4q2',
+                            'text' => [
+                                ['type' => 'bold', 'text' => 'EQDt'],
+                                'FpEw',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ], Message::class);
+
+    $address = $result->rich_message->blocks[0]->text[1];
+
+    expect($address)->toBeInstanceOf(RichTextTonAddress::class)
+        ->and($address->text[0])->toBeInstanceOf(RichTextBold::class)
+        ->and($address->text[1])->toBe('FpEw');
 });

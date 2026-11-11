@@ -787,3 +787,39 @@ it('calls onCommunityChatJoined handler', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('community_chat_joined');
+
+it('calls onPaidMessagesWaived handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onPaidMessagesWaived(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('paid_messages_waived');
+
+it('calls onTonWalletTransfer handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onTonWalletTransfer(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('ton_wallet_transfer');
+
+it('calls onWidget handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onWidget(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('widget');

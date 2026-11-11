@@ -718,6 +718,7 @@ trait MessageListeners
 
     /**
      * @param callable|class-string|array $callable
+     * @param UpdateType $target
      * @return Handler
      */
     public function onCommunityChatAdded($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -729,6 +730,7 @@ trait MessageListeners
 
     /**
      * @param callable|class-string|array $callable
+     * @param UpdateType $target
      * @return Handler
      */
     public function onCommunityChatJoined($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -740,6 +742,7 @@ trait MessageListeners
 
     /**
      * @param callable|class-string|array $callable
+     * @param UpdateType $target
      * @return Handler
      */
     public function onCommunityChatRemoved($callable, UpdateType $target = UpdateType::MESSAGE): Handler
@@ -747,5 +750,41 @@ trait MessageListeners
         $this->checkFinalized();
         $target->validateMessageType();
         return $this->{$this->target}[$target->value][MessageType::COMMUNITY_CHAT_REMOVED->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @param UpdateType $target
+     * @return Handler
+     */
+    public function onPaidMessagesWaived($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    {
+        $this->checkFinalized();
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::PAID_MESSAGES_WAIVED->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @param UpdateType $target
+     * @return Handler
+     */
+    public function onTonWalletTransfer($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    {
+        $this->checkFinalized();
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::TON_WALLET_TRANSFER->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @param UpdateType $target
+     * @return Handler
+     */
+    public function onWidget($callable, UpdateType $target = UpdateType::MESSAGE): Handler
+    {
+        $this->checkFinalized();
+        $target->validateMessageType();
+        return $this->{$this->target}[$target->value][MessageType::WIDGET->value][] = new Handler($callable);
     }
 }

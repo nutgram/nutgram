@@ -16,7 +16,9 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhotoAnimated;
 use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhotoStatic;
+use SergiX44\Nutgram\Telegram\Types\Input\InputSharedWidgetMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
+use SergiX44\Nutgram\Telegram\Types\Input\InputWidgetMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Poll\InputPollOption;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlockCollage;
@@ -741,4 +743,110 @@ it('sends a poll as multipart with serialized options when there is nothing to u
     });
 
     $bot->sendPoll(question: 'pick one', options: [$option], chat_id: 123);
+});
+
+describe('widgets', function () {
+    $requestBody = fn (Request $request): array => json_decode((string)$request->getBody(), true);
+
+    it('fills chat_id and message_id in editMessageWidgetData from a widget query', function ($update) use ($requestBody) {
+        $bot = Nutgram::fake($update);
+
+        $bot->onWidgetQuery(function (Nutgram $bot) {
+            $bot->editMessageWidgetData(chat_data: 'new');
+        });
+
+        $bot->run();
+
+        $bot->assertRaw(function (Request $request) use ($requestBody) {
+            expect($request->getUri()->getPath())->toBe('editMessageWidgetData')
+                ->and($requestBody($request))->toEqual([
+                    'chat_id' => 222222222,
+                    'message_id' => 4321,
+                    'chat_data' => 'new',
+                ]);
+
+            return true;
+        });
+    })->with('widget_query');
+
+    it('fills inline_message_id in editMessageWidgetData from an inline widget query', function ($update) use ($requestBody) {
+        $bot = Nutgram::fake($update);
+
+        $bot->onWidgetQuery(function (Nutgram $bot) {
+            $bot->editMessageWidgetData(public_data: 'new');
+        });
+
+        $bot->run();
+
+        $bot->assertRaw(function (Request $request) use ($requestBody) {
+            expect($requestBody($request))->toEqual([
+                'inline_message_id' => 'AgAAAAAAAAAAAAAAinline',
+                'public_data' => 'new',
+            ]);
+
+            return true;
+        });
+    })->with('widget_query_inline');
+
+    it('fills widget_id in editSharedWidgetData from a shared widget query', function ($update) use ($requestBody) {
+        $bot = Nutgram::fake($update);
+
+        $bot->onSharedWidgetQuery(function (Nutgram $bot) {
+            $bot->editSharedWidgetData('new');
+        });
+
+        $bot->run();
+
+        $bot->assertRaw(function (Request $request) use ($requestBody) {
+            expect($requestBody($request))->toBe([
+                'public_data' => 'new',
+                'widget_id' => '123456789',
+            ]);
+
+            return true;
+        });
+    })->with('shared_widget_query');
+
+    it('fills widget_id and chat_id in sendSharedWidget from a widget query', function ($update) use ($requestBody) {
+        $bot = Nutgram::fake($update);
+
+        $bot->onWidgetQuery(function (Nutgram $bot) {
+            $bot->sendSharedWidget();
+        });
+
+        $bot->run();
+
+        $bot->assertRaw(function (Request $request) use ($requestBody) {
+            expect($requestBody($request))->toEqual([
+                'widget_id' => '987654321',
+                'chat_id' => 222222222,
+            ]);
+
+            return true;
+        });
+    })->with('widget_query');
+
+    it('fills chat_id in sendWidget from the current message', function () {
+        $bot = Nutgram::fake();
+
+        $bot->onText('widget', function (Nutgram $bot) {
+            $bot->sendWidget('<p>hi</p>');
+        });
+
+        $bot
+            ->hearMessage([
+                'text' => 'widget',
+                'chat' => ['id' => 555, 'type' => 'private'],
+            ])
+            ->reply()
+            ->assertReply('sendWidget', [
+                'html' => '<p>hi</p>',
+                'chat_id' => 555,
+            ]);
+    });
+
+    it('builds widget input message contents from their required fields only', function () {
+        expect(new InputWidgetMessageContent('<p>hi</p>'))->toArray()->toBe(['html' => '<p>hi</p>'])
+            ->and(new InputSharedWidgetMessageContent('987654321'))->toArray()->toBe(['widget_id' => '987654321']);
+    });
 });

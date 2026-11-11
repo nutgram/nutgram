@@ -6,6 +6,7 @@ use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\SkipConstructor;
 use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
@@ -70,6 +71,36 @@ class ReplyParameters extends BaseType implements JsonSerializable
     public ?array $quote_entities = null;
 
     /**
+     * Optional. A JSON-serialized list of quoted parts of the {@see https://core.telegram.org/bots/api#richmessage rich message} to be replied to.
+     * Must contain one element for each quoted text of the message in the order of their appearance.
+     * Each of the following is a separate quoted text: the text of a paragraph, a heading, a preformatted block, a footer, or a mathematical expression;
+     * the text and the credit of a block quotation or a pull quotation; the summary of a details block; the caption and each cell of a table;
+     * the text and the credit of a caption of a media block, a collage, a slideshow, or a map.
+     * Texts of blocks nested in lists, block quotations, details, collages, and slideshows are separate quoted texts too.
+     * The first and the last elements can contain only a part of the corresponding text; all other elements must contain the whole text.
+     * Formatting of the quoted parts must be kept, and rich texts must be nested in the same way as in the message received from the server.
+     * Mathematical expressions must be quoted entirely.
+     * Buttons in {@see https://core.telegram.org/bots/api#richblockbuttons RichBlockButtons}, anchors and dividers can't be quoted.
+     * Up to 32 quoted texts with total length up to 1024 characters can be specified.
+     * Only plain text,
+     * {@see https://core.telegram.org/bots/api#richtextbold RichTextBold},
+     * {@see https://core.telegram.org/bots/api#richtextitalic RichTextItalic},
+     * {@see https://core.telegram.org/bots/api#richtextunderline RichTextUnderline},
+     * {@see https://core.telegram.org/bots/api#richtextstrikethrough RichTextStrikethrough},
+     * {@see https://core.telegram.org/bots/api#richtextspoiler RichTextSpoiler},
+     * {@see https://core.telegram.org/bots/api#richtextsubscript RichTextSubscript},
+     * {@see https://core.telegram.org/bots/api#richtextsuperscript RichTextSuperscript},
+     * {@see https://core.telegram.org/bots/api#richtextdatetime RichTextDateTime},
+     * {@see https://core.telegram.org/bots/api#richtextcustomemoji RichTextCustomEmoji},
+     * {@see https://core.telegram.org/bots/api#richtextmathematicalexpression RichTextMathematicalExpression},
+     * and arrays of them are kept in the quote;
+     * other rich text types are replaced with their text.
+     * If non-empty, then quote, quote_parse_mode and quote_entities are ignored.
+     * @var string|RichText|array<mixed>|null
+     */
+    public string|array|RichText|null $quote_rich_texts = null;
+
+    /**
      * Optional. Position of the quote in the original message in UTF-16 code units
      * @var int|null
      */
@@ -97,6 +128,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
      * @param int|null $checklist_task_id
      * @param string|null $poll_option_id
      * @param int|null $ephemeral_message_id
+     * @param string|RichText|array<mixed>|null $quote_rich_texts
      */
     public function __construct(
         ?int $message_id = null,
@@ -109,6 +141,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
         ?int $checklist_task_id = null,
         ?string $poll_option_id = null,
         ?int $ephemeral_message_id = null,
+        string|array|RichText|null $quote_rich_texts = null,
     ) {
         parent::__construct();
         $this->message_id = $message_id;
@@ -121,6 +154,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
         $this->checklist_task_id = $checklist_task_id;
         $this->poll_option_id = $poll_option_id;
         $this->ephemeral_message_id = $ephemeral_message_id;
+        $this->quote_rich_texts = $quote_rich_texts;
     }
 
     /**
@@ -134,6 +168,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
      * @param int|null $checklist_task_id
      * @param string|null $poll_option_id
      * @param int|null $ephemeral_message_id
+     * @param string|RichText|array<mixed>|null $quote_rich_texts
      * @return self
      */
     public static function make(
@@ -147,6 +182,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
         ?int $checklist_task_id = null,
         ?string $poll_option_id = null,
         ?int $ephemeral_message_id = null,
+        string|array|RichText|null $quote_rich_texts = null,
     ): self {
         return new self(
             message_id: $message_id,
@@ -159,6 +195,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
             checklist_task_id: $checklist_task_id,
             poll_option_id: $poll_option_id,
             ephemeral_message_id: $ephemeral_message_id,
+            quote_rich_texts: $quote_rich_texts,
         );
     }
 
@@ -175,6 +212,7 @@ class ReplyParameters extends BaseType implements JsonSerializable
             'quote_position' => $this->quote_position,
             'checklist_task_id' => $this->checklist_task_id,
             'poll_option_id' => $this->poll_option_id,
+            'quote_rich_texts' => $this->quote_rich_texts,
         ]);
     }
 }
