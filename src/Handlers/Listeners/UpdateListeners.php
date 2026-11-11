@@ -432,7 +432,9 @@ trait UpdateListeners
     public function onSharedWidgetQueryData(string $pattern, $callable): Handler
     {
         $this->checkFinalized();
-        return $this->{$this->target}[UpdateType::SHARED_WIDGET_QUERY->value][$pattern] = new Handler($callable,
-            $pattern);
+        return $this->{$this->target}[UpdateType::SHARED_WIDGET_QUERY->value][$pattern] = new Handler(
+            $callable,
+            $pattern
+        );
     }
 }

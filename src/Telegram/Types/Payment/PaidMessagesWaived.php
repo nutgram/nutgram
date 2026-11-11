@@ -12,5 +12,4 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class PaidMessagesWaived extends BaseType
 {
-
 }
