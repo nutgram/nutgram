@@ -1240,7 +1240,7 @@ trait AvailableMethods
      */
     public function sendWidget(
         string $html,
-        int|string|null $chat_id,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $width = null,
         ?int $height = null,
@@ -1309,7 +1309,7 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#sendsharedwidget
      */
     public function sendSharedWidget(
-        ?string $widget_id,
+        ?string $widget_id = null,
         int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?string $chat_data = null,

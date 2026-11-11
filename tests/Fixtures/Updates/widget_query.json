@@ -9,10 +9,18 @@
       "username": "Super",
       "language_code": "it"
     },
+    "chat": {
+      "id": 222222222,
+      "first_name": "Mario",
+      "username": "Super",
+      "type": "private"
+    },
+    "message_id": 4321,
     "chat_instance": "1628661761791766620",
     "type": {
       "type": "data"
     },
-    "data": "thedata"
+    "data": "thedata",
+    "widget_id": "987654321"
   }
 }

@@ -106,16 +106,16 @@ class InputWidgetMessageContent extends InputMessageContent
      */
     public function __construct(
         string $html,
-        ?int $width,
-        ?int $height,
-        ?string $public_data,
-        ?string $chat_data,
-        ?string $caption,
-        ParseMode|string|null $parse_mode,
-        ?array $caption_entities,
-        ?bool $show_caption_above_media,
-        ?bool $allow_queries,
-        ?bool $is_shared,
+        ?int $width = null,
+        ?int $height = null,
+        ?string $public_data = null,
+        ?string $chat_data = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $show_caption_above_media = null,
+        ?bool $allow_queries = null,
+        ?bool $is_shared = null,
     ) {
         parent::__construct();
         $this->html = $html;

@@ -246,20 +246,14 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#editmessagewidgetdata
      */
     public function editMessageWidgetData(
-        ?string $public_data,
-        ?string $chat_data,
-        int|string|null $chat_id,
-        ?int $message_id,
-        ?string $inline_message_id,
+        ?string $public_data = null,
+        ?string $chat_data = null,
+        int|string|null $chat_id = null,
+        ?int $message_id = null,
+        ?string $inline_message_id = null,
     ): ?bool {
         $parameters = compact('chat_id', 'message_id', 'inline_message_id', 'public_data', 'chat_data');
-
-        if ($this->isInlineQuery()) {
-            $parameters['inline_message_id'] ??= $this->inlineMessageId();
-        } else {
-            $parameters['chat_id'] ??= $this->chatId();
-            $parameters['message_id'] ??= $this->messageId();
-        }
+        $this->setChatMessageOrInlineMessageId($parameters);
 
         return $this->requestJson(__FUNCTION__, $parameters);
     }
@@ -276,11 +270,11 @@ trait UpdatesMessages
      */
     public function editSharedWidgetData(
         string $public_data,
-        ?string $widget_id,
-        ?int $cache_time,
+        ?string $widget_id = null,
+        ?int $cache_time = null,
     ): ?bool {
         $parameters = compact('public_data', 'widget_id', 'cache_time');
-        $parameters['widget_id'] ??= $this->sharedWidgetQuery()?->id;
+        $parameters['widget_id'] ??= $this->widgetId();
 
         return $this->requestJson(__FUNCTION__, $parameters);
     }
