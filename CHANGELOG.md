@@ -2,6 +2,16 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.51.0 - 2026-11-11
+
+### What's Changed
+
+* fix: widget endpoints autofill and type fixes for bot api 10.4 by @sergix44 in https://github.com/nutgram/nutgram/pull/1021
+* Bot API 10.4 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1019
+* Add PHP 8.6 support by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1018
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.50.3...4.51.0
+
 ## 4.50.3 - 2026-10-04
 
 ### What's Changed
