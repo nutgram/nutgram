@@ -240,6 +240,38 @@ test('managed_bot: managedBot() returns User object', function ($update) {
     expect($bot->managedBot())->toBeInstanceOf(User::class);
 })->with('managed_bot');
 
+test('widgetId() returns the shared widget id of a widget query', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->run();
+
+    expect($bot->widgetId())->toBe('987654321');
+})->with('widget_query');
+
+test('widgetId() returns the shared widget id of a shared widget query', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->run();
+
+    expect($bot->widgetId())->toBe('123456789');
+})->with('shared_widget_query');
+
+test('messageId() returns the widget message id on a widget query', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->run();
+
+    expect($bot->messageId())->toBe(4321);
+})->with('widget_query');
+
+test('inlineMessageId() returns the inline message id on an inline widget query', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->run();
+
+    expect($bot->inlineMessageId())->toBe('AgAAAAAAAAAAAAAAinline');
+})->with('widget_query_inline');
+
 test('managedBotId() returns bot id', function ($update) {
     $bot = Nutgram::fake($update);
 

@@ -59,11 +59,11 @@ class InputSharedWidgetMessageContent extends InputMessageContent
      */
     public function __construct(
         string $widget_id,
-        ?string $chat_data,
-        ?string $caption,
-        ParseMode|string|null $parse_mode,
-        ?array $caption_entities,
-        ?bool $show_caption_above_media,
+        ?string $chat_data = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $show_caption_above_media = null,
     ) {
         parent::__construct();
         $this->widget_id = $widget_id;

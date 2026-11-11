@@ -58,7 +58,7 @@ trait UpdateProxy
 
     public function messageId(): ?int
     {
-        return $this->message()?->message_id;
+        return $this->message()?->message_id ?? $this->widgetQuery()?->message_id;
     }
 
     public function messageThreadId(): ?int
@@ -77,7 +77,9 @@ trait UpdateProxy
 
     public function inlineMessageId(): ?string
     {
-        return $this->chosenInlineResult()?->inline_message_id ?? $this->callbackQuery()?->inline_message_id;
+        return $this->chosenInlineResult()?->inline_message_id
+            ?? $this->callbackQuery()?->inline_message_id
+            ?? $this->widgetQuery()?->inline_message_id;
     }
 
     public function directMessagesTopicId(): ?int
@@ -105,7 +107,7 @@ trait UpdateProxy
         return $this->message()?->ephemeral_message_id;
     }
 
-    public function widgetId(): ?int
+    public function widgetId(): ?string
     {
         return $this->update()?->widget_query?->widget_id
             ?? $this->update()?->shared_widget_query?->widget_id

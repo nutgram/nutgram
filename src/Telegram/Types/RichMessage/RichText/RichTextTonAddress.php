@@ -25,7 +25,7 @@ class RichTextTonAddress extends BaseType implements RichText
      */
     #[ArrayType(RichText::class, skipScalars: true)]
     #[RichTextUnionResolver]
-    public string $text;
+    public string|array|RichText $text;
 
     /**
      * The address
