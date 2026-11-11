@@ -40,7 +40,7 @@
     "mockery/mockery": "^1.6",
     "pestphp/pest": "^3.0|^4.0",
     "roave/security-advisories": "dev-latest",
-    "vimeo/psalm": "^6.1.0"
+    "vimeo/psalm": "^7.0"
   },
   "suggest": {
     "ext-sodium": "To validate WebApp data for Third-Party Use"
