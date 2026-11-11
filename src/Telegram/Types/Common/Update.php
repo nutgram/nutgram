@@ -27,6 +27,8 @@ use SergiX44\Nutgram\Telegram\Types\Poll\PollAnswer;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
 use SergiX44\Nutgram\Telegram\Types\User\User;
+use SergiX44\Nutgram\Telegram\Types\Widget\SharedWidgetQuery;
+use SergiX44\Nutgram\Telegram\Types\Widget\WidgetQuery;
 
 /**
  * This {@see https://core.telegram.org/bots/api#available-types object} represents an incoming update.At most one of the optional parameters can be present in any given update.
@@ -128,6 +130,16 @@ class Update extends BaseType
      * New incoming callback query
      */
     public ?CallbackQuery $callback_query = null;
+
+    /**
+     * Optional. New incoming query from a widget in a message sent by the bot or via the bot
+     */
+    public ?WidgetQuery $widget_query = null;
+
+    /**
+     * Optional. New incoming query from a forwarded message with a shared widget
+     */
+    public ?SharedWidgetQuery $shared_widget_query = null;
 
     /**
      * Optional.
@@ -234,6 +246,8 @@ class Update extends BaseType
             $this->inline_query !== null => UpdateType::INLINE_QUERY,
             $this->chosen_inline_result !== null => UpdateType::CHOSEN_INLINE_RESULT,
             $this->callback_query !== null => UpdateType::CALLBACK_QUERY,
+            $this->widget_query !== null => UpdateType::WIDGET_QUERY,
+            $this->shared_widget_query !== null => UpdateType::SHARED_WIDGET_QUERY,
             $this->shipping_query !== null => UpdateType::SHIPPING_QUERY,
             $this->pre_checkout_query !== null => UpdateType::PRE_CHECKOUT_QUERY,
             $this->purchased_paid_media !== null => UpdateType::PURCHASED_PAID_MEDIA,
@@ -272,6 +286,8 @@ class Update extends BaseType
             $this->inline_query !== null => $this->inline_query->from,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from,
             $this->callback_query !== null => $this->callback_query->from,
+            $this->widget_query !== null => $this->widget_query->from,
+            $this->shared_widget_query !== null => $this->shared_widget_query->from,
             $this->shipping_query !== null => $this->shipping_query->from,
             $this->pre_checkout_query !== null => $this->pre_checkout_query->from,
             $this->purchased_paid_media !== null => $this->purchased_paid_media->from,
@@ -306,6 +322,8 @@ class Update extends BaseType
             $this->inline_query !== null => $this->inline_query->from = $user,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from = $user,
             $this->callback_query !== null => $this->callback_query->from = $user,
+            $this->widget_query !== null => $this->widget_query->from = $user,
+            $this->shared_widget_query !== null => $this->shared_widget_query->from = $user,
             $this->shipping_query !== null => $this->shipping_query->from = $user,
             $this->pre_checkout_query !== null => $this->pre_checkout_query->from = $user,
             $this->purchased_paid_media !== null => $this->purchased_paid_media->from = $user,
@@ -340,6 +358,8 @@ class Update extends BaseType
             // inline_query doesn't have a chat
             // chosen_inline_result doesn't have a chat
             $this->callback_query !== null => $this->callback_query->message?->chat,
+            $this->widget_query !== null => $this->widget_query?->chat,
+            // shared_widget_query doesn't have a chat
             // shipping_query doesn't have a chat
             // pre_checkout_query doesn't have a chat
             // purchased_paid_media doesn't have a chat
@@ -374,6 +394,8 @@ class Update extends BaseType
             // inline_query doesn't have a chat
             // chosen_inline_result doesn't have a chat
             $this->callback_query !== null => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
+            $this->widget_query !== null => $this->widget_query->chat = $chat,
+            // shared_widget_query doesn't have a chat
             // shipping_query doesn't have a chat
             // pre_checkout_query doesn't have a chat
             // purchased_paid_media doesn't have a chat

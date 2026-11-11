@@ -234,6 +234,58 @@ trait UpdatesMessages
     }
 
     /**
+     * Use this method to edit data of a widget in a message sent by the bot or via the bot (for inline bots).
+     * Public data of a shared widget can be changed at most once per second.
+     * On success, True is returned.
+     * @param string|null $public_data New public data of the widget, 0-1024 bytes; pass an empty string to remove the public data. If omitted, then the public data isn't changed.
+     * @param string|null $chat_data New data of the widget, which is specific to the message, 0-1024 bytes; pass an empty string to remove the data. If omitted, then the data isn't changed.
+     * @param int|string|null $chat_id Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target supergroup in the format &#64;username.
+     * @param int|null $message_id Required if inline_message_id is not specified. Identifier of the message with the widget.
+     * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#editmessagewidgetdata
+     */
+    public function editMessageWidgetData(
+        ?string $public_data,
+        ?string $chat_data,
+        int|string|null $chat_id,
+        ?int $message_id,
+        ?string $inline_message_id,
+    ): ?bool {
+        $parameters = compact('chat_id', 'message_id', 'inline_message_id', 'public_data', 'chat_data');
+
+        if ($this->isInlineQuery()) {
+            $parameters['inline_message_id'] ??= $this->inlineMessageId();
+        } else {
+            $parameters['chat_id'] ??= $this->chatId();
+            $parameters['message_id'] ??= $this->messageId();
+        }
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to edit public data of a shared widget created by the bot.
+     * A shared widget can be edited at most once per second.
+     * On success, True is returned.
+     * @param string $public_data New public data of the widget, 0-1024 bytes; pass an empty string to remove the public data
+     * @param string|null $widget_id Unique identifier of the shared widget
+     * @param int|null $cache_time The maximum amount of time in seconds that the public data of the widget may be cached client-side; 5-3600. If omitted, then the current value is kept, which is 30 by default.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#editsharedwidgetdata
+     */
+    public function editSharedWidgetData(
+        string $public_data,
+        ?string $widget_id,
+        ?int $cache_time,
+    ): ?bool {
+        $parameters = compact('public_data', 'widget_id', 'cache_time');
+        $parameters['widget_id'] ??= $this->sharedWidgetQuery()?->id;
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
      * Use this method to edit only the reply markup of messages.
      * On success, if the edited message is not an inline message, the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagereplymarkup

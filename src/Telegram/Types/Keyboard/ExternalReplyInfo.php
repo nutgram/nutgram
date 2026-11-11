@@ -28,6 +28,7 @@ use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaInfo;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
+use SergiX44\Nutgram\Telegram\Types\Widget\Widget;
 
 /**
  * This object contains information about a message that is being replied to, which may come from another chat or forum topic.
@@ -123,6 +124,11 @@ class ExternalReplyInfo extends BaseType
      * @var Voice|null
      */
     public ?Voice $voice = null;
+
+    /**
+     * Optional. Message is an HTML widget, information about the widget
+     */
+    public ?Widget $widget = null;
 
     /**
      * Optional. True, if the message media is covered by a spoiler animation

@@ -15,6 +15,7 @@ enum MessageType: string
     case VIDEO = 'video';
     case VIDEO_NOTE = 'video_note';
     case VOICE = 'voice';
+    case WIDGET = 'widget';
     case CHECKLIST = 'checklist';
     case CONTACT = 'contact';
     case DICE = 'dice';
@@ -64,8 +65,10 @@ enum MessageType: string
     case GIVEAWAY_COMPLETED = 'giveaway_completed';
     case MANAGED_BOT_CREATED = 'managed_bot_created';
     case PAID_MESSAGE_PRICE_CHANGED = 'paid_message_price_changed';
+    case PAID_MESSAGES_WAIVED = 'paid_messages_waived';
     case POLL_OPTION_ADDED = 'poll_option_added';
     case POLL_OPTION_DELETED = 'poll_option_deleted';
+    case TON_WALLET_TRANSFER = 'ton_wallet_transfer';
     case VIDEO_CHAT_SCHEDULED = 'video_chat_scheduled';
     case VIDEO_CHAT_STARTED = 'video_chat_started';
     case VIDEO_CHAT_ENDED = 'video_chat_ended';

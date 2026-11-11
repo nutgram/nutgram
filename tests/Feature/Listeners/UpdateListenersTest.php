@@ -499,3 +499,51 @@ it('calls onMessageGenerationStopped() handler', function ($update) {
 
     expect($bot->get('called', false))->toBeTrue();
 })->with('stopped_message_generation');
+
+it('calls onWidgetQuery() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onWidgetQuery(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called', false))->toBeTrue();
+})->with('widget_query');
+
+it('calls onWidgetQueryData() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onWidgetQueryData('thedata', function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called', false))->toBeTrue();
+})->with('widget_query');
+
+it('calls onSharedWidgetQuery() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onSharedWidgetQuery(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called', false))->toBeTrue();
+})->with('shared_widget_query');
+
+it('calls onSharedWidgetQueryData() handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onSharedWidgetQueryData('thedata', function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called', false))->toBeTrue();
+})->with('shared_widget_query');
