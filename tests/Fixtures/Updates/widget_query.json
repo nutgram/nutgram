@@ -1,0 +1,26 @@
+{
+  "update_id": 2,
+  "widget_query": {
+    "id": "666728699048485871",
+    "from": {
+      "id": 222222222,
+      "is_bot": false,
+      "first_name": "Mario",
+      "username": "Super",
+      "language_code": "it"
+    },
+    "chat": {
+      "id": 222222222,
+      "first_name": "Mario",
+      "username": "Super",
+      "type": "private"
+    },
+    "message_id": 4321,
+    "chat_instance": "1628661761791766620",
+    "type": {
+      "type": "data"
+    },
+    "data": "thedata",
+    "widget_id": "987654321"
+  }
+}

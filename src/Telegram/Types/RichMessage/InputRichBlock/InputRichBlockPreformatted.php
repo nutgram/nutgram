@@ -27,7 +27,7 @@ class InputRichBlockPreformatted extends BaseType implements InputRichBlock
 
     /**
      * Text of the block
-     * @var string|RichText[]|RichText
+     * @var string|RichText|array<mixed>
      */
     #[ArrayType(RichText::class)]
     #[TestUnionResolver('string')]
@@ -38,6 +38,10 @@ class InputRichBlockPreformatted extends BaseType implements InputRichBlock
      */
     public ?string $language = null;
 
+    /**
+     * @param string|RichText|array<mixed> $text
+     * @param string|null $language
+     */
     public function __construct(string|array|RichText $text, ?string $language = null)
     {
         parent::__construct();

@@ -10,6 +10,7 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\UnionResolvers\TestUnionResolver;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
 
 /**
@@ -17,7 +18,7 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
  * @see https://core.telegram.org/bots/api#inputrichblockdetails
  */
 #[OverrideConstructor('bindToInstance')]
-class InputRichBlockDetails extends BaseType implements InputRichBlock
+class InputRichBlockDetails extends BaseType implements InputRichBlock, Uploadables
 {
     /**
      * Type of the block, always “details”
@@ -27,7 +28,7 @@ class InputRichBlockDetails extends BaseType implements InputRichBlock
 
     /**
      * Always shown summary of the block
-     * @var string|RichText[]|RichText
+     * @var string|RichText|array<mixed>
      */
     #[ArrayType(RichText::class)]
     #[TestUnionResolver('string')]
@@ -45,11 +46,21 @@ class InputRichBlockDetails extends BaseType implements InputRichBlock
      */
     public ?bool $is_open = null;
 
+    /**
+     * @param string|RichText|array<mixed> $summary
+     * @param InputRichBlock[] $blocks
+     * @param bool|null $is_open
+     */
     public function __construct(string|array|RichText $summary, array $blocks, ?bool $is_open = null)
     {
         parent::__construct();
         $this->summary = $summary;
         $this->blocks = $blocks;
         $this->is_open = $is_open;
+    }
+
+    public function uploadables(): array
+    {
+        return ['blocks'];
     }
 }

@@ -22,10 +22,18 @@ class InlineKeyboardMarkup extends BaseType
     #[ArrayType(InlineKeyboardButton::class, depth: 2)]
     public array $inline_keyboard;
 
-    public function __construct()
+    /**
+     * Optional. Pass True if the reply interface must be shown to the user,
+     * as if they had manually selected the bot's message and tapped 'Reply'.
+     * The value of the field can't be changed when the inline keyboard is edited.
+     */
+    public ?bool $force_reply = null;
+
+    public function __construct(?bool $force_reply = null)
     {
         parent::__construct();
         $this->inline_keyboard = [];
+        $this->force_reply = $force_reply;
     }
 
     /**

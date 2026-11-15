@@ -26,10 +26,12 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\RichTextResolver;
  * {@see RichTextEmailAddress}
  * {@see RichTextPhoneNumber}
  * {@see RichTextBankCardNumber}
+ * {@see RichTextTonAddress}
  * {@see RichTextMention}
  * {@see RichTextHashtag}
  * {@see RichTextCashtag}
  * {@see RichTextBotCommand}
+ * {@see RichTextButton}
  * {@see RichTextAnchor}
  * {@see RichTextAnchorLink}
  * {@see RichTextReference}

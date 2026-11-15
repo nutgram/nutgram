@@ -47,7 +47,7 @@ class Webhook implements RunningMode
         try {
             /** @var Update $update */
             $update = new Hydrator($bot->getContainer())
-                ->hydrate(Update::class, json_decode($input, true, flags: JSON_THROW_ON_ERROR));
+                ->hydrate(Update::class, json_decode($input, flags: JSON_THROW_ON_ERROR));
 
             $bot->processUpdate($update);
 

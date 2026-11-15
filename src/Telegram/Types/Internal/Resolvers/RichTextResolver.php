@@ -56,15 +56,18 @@ class RichTextResolver extends ConcreteResolver
         RichTextType::EMAIL_ADDRESS->value => RichTextEmailAddress::class,
         RichTextType::PHONE_NUMBER->value => RichTextPhoneNumber::class,
         RichTextType::BANK_CARD_NUMBER->value => RichTextBankCardNumber::class,
+        RichTextType::TON_ADDRESS->value => RichTextTonAddress::class,
         RichTextType::MENTION->value => RichTextMention::class,
         RichTextType::HASHTAG->value => RichTextHashtag::class,
         RichTextType::CASHTAG->value => RichTextCashtag::class,
         RichTextType::BOT_COMMAND->value => RichTextBotCommand::class,
+        RichTextType::BUTTON->value => RichTextButton::class,
         RichTextType::ANCHOR->value => RichTextAnchor::class,
         RichTextType::ANCHOR_LINK->value => RichTextAnchorLink::class,
         RichTextType::REFERENCE->value => RichTextReference::class,
         RichTextType::REFERENCE_LINK->value => RichTextReferenceLink::class,
     ];
+
     public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');

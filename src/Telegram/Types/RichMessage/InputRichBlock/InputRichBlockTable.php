@@ -44,23 +44,37 @@ class InputRichBlockTable extends BaseType implements InputRichBlock
     public ?bool $is_striped = null;
 
     /**
+     * Optional. True, if table cells have smaller indents
+     */
+    public ?bool $is_compact = null;
+
+    /**
      * Optional. Caption of the table
-     * @var string|RichText[]|RichText|null
+     * @var string|RichText|array<mixed>|null
      */
     #[ArrayType(RichText::class)]
     #[TestUnionResolver('null')]
     public string|array|RichText|null $caption = null;
 
+    /**
+     * @param RichBlockTableCell[][] $cells
+     * @param bool|null $is_bordered
+     * @param bool|null $is_striped
+     * @param string|RichText|array<mixed>|null $caption
+     * @param bool|null $is_compact
+     */
     public function __construct(
         array $cells,
         ?bool $is_bordered = null,
         ?bool $is_striped = null,
         string|array|RichText|null $caption = null,
+        ?bool $is_compact = null,
     ) {
         parent::__construct();
         $this->cells = $cells;
         $this->is_bordered = $is_bordered;
         $this->is_striped = $is_striped;
         $this->caption = $caption;
+        $this->is_compact = $is_compact;
     }
 }

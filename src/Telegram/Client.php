@@ -9,6 +9,8 @@ use Exception;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
+use GuzzleHttp\Exception\TransferException;
 use Illuminate\Support\Traits\Macroable;
 use JsonException;
 use JsonSerializable;
@@ -35,6 +37,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use Throwable;
 use function SergiX44\Nutgram\Support\array_filter_null;
 use function SergiX44\Nutgram\Support\word_wrap;
 
@@ -153,6 +156,34 @@ trait Client
     }
 
     /**
+     * @param mixed $value
+     * @return InputFile[]
+     */
+    protected static function collectUploadables(mixed $value): array
+    {
+        if ($value instanceof InputFile) {
+            return [$value];
+        }
+
+        $items = match (true) {
+            $value instanceof UploadableArray => $value->files,
+            $value instanceof Uploadables => array_map(
+                static fn (string $field) => $value->{$field} ?? null,
+                $value->uploadables()
+            ),
+            is_array($value) => $value,
+            default => [],
+        };
+
+        $files = [];
+        foreach ($items as $item) {
+            array_push($files, ...self::collectUploadables($item));
+        }
+
+        return $files;
+    }
+
+    /**
      * @param string $endpoint
      * @param array $multipart
      * @param string $mapTo
@@ -170,20 +201,14 @@ trait Client
     ): mixed {
         $parameters = [];
         foreach (array_filter_null($multipart) as $name => $contents) {
-            if ($contents instanceof UploadableArray || $contents instanceof Uploadables) {
-                $files = $contents instanceof UploadableArray ? $contents->files : [$contents];
-                foreach ($files as $file) {
-                    if ($file instanceof Uploadables) {
-                        foreach ($file->uploadables() as $field) {
-                            if ($file->{$field} instanceof InputFile) {
-                                $parameters[] = [
-                                    'name' => $file->{$field}->getFilename(),
-                                    'contents' => $file->{$field}->getStream(),
-                                    'filename' => $file->{$field}->getFilename(),
-                                ];
-                            }
-                        }
-                    }
+            if (!$contents instanceof InputFile) {
+                foreach (self::collectUploadables($contents) as $file) {
+                    $filename = $file->getFilename();
+                    $parameters[] = [
+                        'name' => $filename,
+                        'contents' => $file->getStream(),
+                        'filename' => $filename,
+                    ];
                 }
             }
 
@@ -228,11 +253,12 @@ trait Client
             $this->logResponse((string)$response->getBody());
 
             return $content;
-        } catch (RequestException $exception) {
-            if (!$exception->hasResponse()) {
+        } catch (TransferException $exception) {
+            $response = $this->getResponseFromException($exception);
+            if ($response === null) {
                 throw $exception;
             }
-            return $this->mapResponse($exception->getResponse(), $mapTo, $endpoint, $exception);
+            return $this->mapResponse($response, $mapTo, $endpoint, $exception);
         }
     }
 
@@ -288,12 +314,28 @@ trait Client
             $this->logResponse((string)$response->getBody());
 
             return $content;
-        } catch (RequestException $exception) {
-            if (!$exception->hasResponse()) {
+        } catch (TransferException $exception) {
+            $response = $this->getResponseFromException($exception);
+            if ($response === null) {
                 throw $exception;
             }
-            return $this->mapResponse($exception->getResponse(), $mapTo, $endpoint, $exception);
+            return $this->mapResponse($response, $mapTo, $endpoint, $exception);
         }
+    }
+
+    protected function getResponseFromException(Throwable $e): ?ResponseInterface
+    {
+        // Guzzle 8 uses ResponseException
+        if ($e instanceof ResponseException) {
+            return $e->getResponse();
+        }
+
+        // Guzzle 7 uses RequestException with hasResponse() true
+        if ($e instanceof RequestException && is_callable([$e, 'hasResponse']) && $e->hasResponse()) {
+            return $e->getResponse();
+        }
+
+        return null;
     }
 
     /**
@@ -365,7 +407,6 @@ trait Client
             str_replace($this->token, str_repeat('*', 5), $e->getMessage()),
             $e->getRequest(),
             $e->getPrevious(),
-            $e->getHandlerContext(),
         );
     }
 }

@@ -9,6 +9,7 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
 
 /**
@@ -16,7 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
  * @see https://core.telegram.org/bots/api#inputrichblockcollage
  */
 #[OverrideConstructor('bindToInstance')]
-class InputRichBlockCollage extends BaseType implements InputRichBlock
+class InputRichBlockCollage extends BaseType implements InputRichBlock, Uploadables
 {
     /**
      * Type of the block, always “collage”
@@ -36,10 +37,19 @@ class InputRichBlockCollage extends BaseType implements InputRichBlock
      */
     public ?RichBlockCaption $caption = null;
 
+    /**
+     * @param InputRichBlock[] $blocks
+     * @param RichBlockCaption|null $caption
+     */
     public function __construct(array $blocks, ?RichBlockCaption $caption = null)
     {
         parent::__construct();
         $this->blocks = $blocks;
         $this->caption = $caption;
+    }
+
+    public function uploadables(): array
+    {
+        return ['blocks'];
     }
 }

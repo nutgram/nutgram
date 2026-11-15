@@ -32,7 +32,7 @@ class InputTextMessageContent extends InputMessageContent
     /**
      * Optional.
      * List of special entities that appear in message text, which can be specified instead of parse_mode
-     * @var MessageEntity[] $entities
+     * @var MessageEntity[]|null
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $entities = null;

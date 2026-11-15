@@ -17,5 +17,5 @@ enum InputMediaType: string
     case STICKER = 'sticker';
     case VENUE = 'venue';
     case VIDEO = 'video';
-    case VOICE_NOTE = 'voicenote';
+    case VOICE_NOTE = 'voice_note';
 }

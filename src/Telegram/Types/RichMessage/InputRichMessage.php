@@ -7,6 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\RichMessage;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlock;
 
 /**
@@ -15,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlock;
  * @see https://core.telegram.org/bots/api#inputrichmessage
  */
 #[OverrideConstructor('bindToInstance')]
-class InputRichMessage extends BaseType
+class InputRichMessage extends BaseType implements Uploadables
 {
     /**
      * Optional. Content of the rich message to send described as a list of blocks
@@ -78,5 +79,10 @@ class InputRichMessage extends BaseType
         $this->skip_entity_detection = $skip_entity_detection;
         $this->media = $media;
         $this->blocks = $blocks;
+    }
+
+    public function uploadables(): array
+    {
+        return ['media', 'blocks'];
     }
 }

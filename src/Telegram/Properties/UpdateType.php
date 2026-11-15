@@ -22,6 +22,8 @@ enum UpdateType: string
     case INLINE_QUERY = 'inline_query';
     case CHOSEN_INLINE_RESULT = 'chosen_inline_result';
     case CALLBACK_QUERY = 'callback_query';
+    case WIDGET_QUERY = 'widget_query';
+    case SHARED_WIDGET_QUERY = 'shared_widget_query';
     case SHIPPING_QUERY = 'shipping_query';
     case PRE_CHECKOUT_QUERY = 'pre_checkout_query';
     case PURCHASED_PAID_MEDIA = 'purchased_paid_media';
@@ -34,6 +36,7 @@ enum UpdateType: string
     case REMOVED_CHAT_BOOST = 'removed_chat_boost';
     case MANAGED_BOT = 'managed_bot';
     case SUBSCRIPTION = 'subscription';
+    case STOPPED_MESSAGE_GENERATION = 'stopped_message_generation';
 
     public static function messageTypes(): array
     {

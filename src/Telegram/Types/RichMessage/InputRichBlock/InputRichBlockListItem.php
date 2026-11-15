@@ -9,13 +9,14 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockListItemType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 
 /**
  * An item of a list to be sent.
  * @see https://core.telegram.org/bots/api#inputrichblocklistitem
  */
 #[OverrideConstructor('bindToInstance')]
-class InputRichBlockListItem extends BaseType
+class InputRichBlockListItem extends BaseType implements Uploadables
 {
     /**
      * The content of the item
@@ -51,6 +52,13 @@ class InputRichBlockListItem extends BaseType
     #[EnumOrScalar]
     public RichBlockListItemType|string|null $type = null;
 
+    /**
+     * @param InputRichBlock[] $blocks
+     * @param bool|null $has_checkbox
+     * @param bool|null $is_checked
+     * @param int|null $value
+     * @param RichBlockListItemType|string|null $type
+     */
     public function __construct(
         array $blocks,
         ?bool $has_checkbox = null,
@@ -64,5 +72,10 @@ class InputRichBlockListItem extends BaseType
         $this->is_checked = $is_checked;
         $this->value = $value;
         $this->type = $type;
+    }
+
+    public function uploadables(): array
+    {
+        return ['blocks'];
     }
 }

@@ -17,14 +17,17 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\RichBlockResolver;
  * {@see RichBlockAnchor}
  * {@see RichBlockList}
  * {@see RichBlockBlockQuotation}
+ * {@see RichBlockExpandableBlockQuotation}
  * {@see RichBlockPullQuotation}
  * {@see RichBlockCollage}
  * {@see RichBlockSlideshow}
  * {@see RichBlockTable}
  * {@see RichBlockDetails}
  * {@see RichBlockMap}
+ * {@see RichBlockButtons}
  * {@see RichBlockAnimation}
  * {@see RichBlockAudio}
+ * {@see RichBlockDocument}
  * {@see RichBlockPhoto}
  * {@see RichBlockVideo}
  * {@see RichBlockVoiceNote}

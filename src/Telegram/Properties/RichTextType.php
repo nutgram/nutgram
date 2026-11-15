@@ -27,8 +27,10 @@ enum RichTextType: string
     case HASHTAG = 'hashtag';
     case CASHTAG = 'cashtag';
     case BOT_COMMAND = 'bot_command';
+    case BUTTON = 'button';
     case ANCHOR = 'anchor';
     case ANCHOR_LINK = 'anchor_link';
     case REFERENCE = 'reference';
     case REFERENCE_LINK = 'reference_link';
+    case TON_ADDRESS = 'ton_address';
 }

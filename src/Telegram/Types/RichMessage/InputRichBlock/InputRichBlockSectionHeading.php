@@ -28,7 +28,7 @@ class InputRichBlockSectionHeading extends BaseType implements InputRichBlock
 
     /**
      * Text of the block
-     * @var string|RichText[]|RichText
+     * @var string|RichText|array<mixed>
      */
     #[ArrayType(RichText::class)]
     #[TestUnionResolver('string')]
@@ -39,6 +39,10 @@ class InputRichBlockSectionHeading extends BaseType implements InputRichBlock
      */
     public int $size;
 
+    /**
+     * @param string|RichText|array<mixed> $text
+     * @param int $size
+     */
     public function __construct(string|array|RichText $text, int $size)
     {
         parent::__construct();

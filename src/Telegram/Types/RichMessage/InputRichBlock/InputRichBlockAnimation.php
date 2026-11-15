@@ -9,6 +9,7 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaAnimation;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
 
 /**
@@ -16,7 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
  * @see https://core.telegram.org/bots/api#inputrichblockanimation
  */
 #[OverrideConstructor('bindToInstance')]
-class InputRichBlockAnimation extends BaseType implements InputRichBlock
+class InputRichBlockAnimation extends BaseType implements InputRichBlock, Uploadables, JsonSerializable
 {
     /**
      * Type of the block, always “animation”
@@ -39,5 +40,10 @@ class InputRichBlockAnimation extends BaseType implements InputRichBlock
         parent::__construct();
         $this->animation = $animation;
         $this->caption = $caption;
+    }
+
+    public function uploadables(): array
+    {
+        return ['animation'];
     }
 }

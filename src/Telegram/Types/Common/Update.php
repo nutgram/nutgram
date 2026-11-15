@@ -19,6 +19,7 @@ use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\ManagedBot\ManagedBotUpdated;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageGenerationStopped;
 use SergiX44\Nutgram\Telegram\Types\Payment\BotSubscriptionUpdated;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPurchased;
 use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
@@ -28,6 +29,8 @@ use SergiX44\Nutgram\Telegram\Types\Poll\PollAnswer;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
 use SergiX44\Nutgram\Telegram\Types\User\User;
+use SergiX44\Nutgram\Telegram\Types\Widget\SharedWidgetQuery;
+use SergiX44\Nutgram\Telegram\Types\Widget\WidgetQuery;
 
 /**
  * This {@see https://core.telegram.org/bots/api#available-types object} represents an incoming update.At most one of the optional parameters can be present in any given update.
@@ -131,6 +134,16 @@ class Update extends BaseType
     public ?CallbackQuery $callback_query = null;
 
     /**
+     * Optional. New incoming query from a widget in a message sent by the bot or via the bot
+     */
+    public ?WidgetQuery $widget_query = null;
+
+    /**
+     * Optional. New incoming query from a forwarded message with a shared widget
+     */
+    public ?SharedWidgetQuery $shared_widget_query = null;
+
+    /**
      * Optional.
      * New incoming shipping query.
      * Only for invoices with flexible price
@@ -210,6 +223,11 @@ class Update extends BaseType
     public ?BotSubscriptionUpdated $subscription = null;
 
     /**
+     * Optional. A user asked the bot to stop the generation of a message
+     */
+    public ?MessageGenerationStopped $stopped_message_generation = null;
+
+    /**
      * Return the current update type
      * @return UpdateType|null
      */
@@ -230,6 +248,8 @@ class Update extends BaseType
             $this->inline_query !== null => UpdateType::INLINE_QUERY,
             $this->chosen_inline_result !== null => UpdateType::CHOSEN_INLINE_RESULT,
             $this->callback_query !== null => UpdateType::CALLBACK_QUERY,
+            $this->widget_query !== null => UpdateType::WIDGET_QUERY,
+            $this->shared_widget_query !== null => UpdateType::SHARED_WIDGET_QUERY,
             $this->shipping_query !== null => UpdateType::SHIPPING_QUERY,
             $this->pre_checkout_query !== null => UpdateType::PRE_CHECKOUT_QUERY,
             $this->purchased_paid_media !== null => UpdateType::PURCHASED_PAID_MEDIA,
@@ -242,6 +262,7 @@ class Update extends BaseType
             $this->removed_chat_boost !== null => UpdateType::REMOVED_CHAT_BOOST,
             $this->managed_bot !== null => UpdateType::MANAGED_BOT,
             $this->subscription !== null => UpdateType::SUBSCRIPTION,
+            $this->stopped_message_generation !== null => UpdateType::STOPPED_MESSAGE_GENERATION,
             default => null
         };
     }
@@ -267,6 +288,8 @@ class Update extends BaseType
             $this->inline_query !== null => $this->inline_query->from,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from,
             $this->callback_query !== null => $this->callback_query->from,
+            $this->widget_query !== null => $this->widget_query->from,
+            $this->shared_widget_query !== null => $this->shared_widget_query->from,
             $this->shipping_query !== null => $this->shipping_query->from,
             $this->pre_checkout_query !== null => $this->pre_checkout_query->from,
             $this->purchased_paid_media !== null => $this->purchased_paid_media->from,
@@ -279,6 +302,7 @@ class Update extends BaseType
             $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user,
             $this->managed_bot !== null => $this->managed_bot->user,
             $this->subscription !== null => $this->subscription->user,
+            // stopped_message_generation: doesn't have a user
             default => null,
         };
     }
@@ -300,6 +324,8 @@ class Update extends BaseType
             $this->inline_query !== null => $this->inline_query->from = $user,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from = $user,
             $this->callback_query !== null => $this->callback_query->from = $user,
+            $this->widget_query !== null => $this->widget_query->from = $user,
+            $this->shared_widget_query !== null => $this->shared_widget_query->from = $user,
             $this->shipping_query !== null => $this->shipping_query->from = $user,
             $this->pre_checkout_query !== null => $this->pre_checkout_query->from = $user,
             $this->purchased_paid_media !== null => $this->purchased_paid_media->from = $user,
@@ -312,6 +338,7 @@ class Update extends BaseType
             $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user = $user,
             $this->managed_bot !== null => $this->managed_bot->user = $user,
             $this->subscription !== null => $this->subscription->user = $user,
+            // stopped_message_generation: doesn't have a user
             default => null,
         };
     }
@@ -333,6 +360,8 @@ class Update extends BaseType
             // inline_query doesn't have a chat
             // chosen_inline_result doesn't have a chat
             $this->callback_query !== null => $this->callback_query->message?->chat,
+            $this->widget_query !== null => $this->widget_query?->chat,
+            // shared_widget_query doesn't have a chat
             // shipping_query doesn't have a chat
             // pre_checkout_query doesn't have a chat
             // purchased_paid_media doesn't have a chat
@@ -345,6 +374,7 @@ class Update extends BaseType
             $this->removed_chat_boost !== null => $this->removed_chat_boost->chat,
             // managed_bot doesn't have a chat
             // subscription doesn't have a chat
+            $this->stopped_message_generation !== null => $this->stopped_message_generation->chat,
             default => null
         };
     }
@@ -366,6 +396,8 @@ class Update extends BaseType
             // inline_query doesn't have a chat
             // chosen_inline_result doesn't have a chat
             $this->callback_query !== null => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
+            $this->widget_query !== null => $this->widget_query->chat = $chat,
+            // shared_widget_query doesn't have a chat
             // shipping_query doesn't have a chat
             // pre_checkout_query doesn't have a chat
             // purchased_paid_media doesn't have a chat
@@ -378,6 +410,7 @@ class Update extends BaseType
             $this->removed_chat_boost !== null => $this->removed_chat_boost->chat = $chat,
             // managed_bot doesn't have a chat
             // subscription doesn't have a chat
+            $this->stopped_message_generation !== null => $this->stopped_message_generation->chat = $chat,
             default => null
         };
     }

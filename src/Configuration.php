@@ -36,6 +36,8 @@ final readonly class Configuration
         'inline_query',
         'chosen_inline_result',
         'callback_query',
+        'widget_query',
+        'shared_widget_query',
         'shipping_query',
         'pre_checkout_query',
         'purchased_paid_media',
@@ -48,6 +50,7 @@ final readonly class Configuration
         'removed_chat_boost',
         'managed_bot',
         'subscription',
+        'stopped_message_generation',
     ];
 
     public const DEFAULT_ENABLE_HTTP2 = true;

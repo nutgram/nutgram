@@ -2,6 +2,8 @@
 
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextBold;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextTonAddress;
 
 it('hydrate rich_message', function ($content) {
     $hydrator = Nutgram::fake()->getHydrator();
@@ -10,3 +12,154 @@ it('hydrate rich_message', function ($content) {
 
     expect($result)->toBeInstanceOf(Message::class);
 })->with('message.rich_message');
+
+it('hydrates rich_message with photo, video, and animation blocks without has_spoiler', function () {
+    $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
+
+    $payload = [
+        'message_id' => 1234,
+        'date' => 1784483903,
+        'chat' => [
+            'id' => 12345678,
+            'type' => 'private',
+        ],
+        'rich_message' => [
+            'blocks' => [
+                [
+                    'type' => 'photo',
+                    'photo' => [
+                        [
+                            'file_id' => 'photo_123',
+                            'file_unique_id' => 'u_123',
+                            'width' => 100,
+                            'height' => 100,
+                        ],
+                    ],
+                ],
+                [
+                    'type' => 'video',
+                    'video' => [
+                        'file_id' => 'video_123',
+                        'file_unique_id' => 'u_vid_123',
+                        'width' => 100,
+                        'height' => 100,
+                        'duration' => 10,
+                    ],
+                ],
+                [
+                    'type' => 'animation',
+                    'animation' => [
+                        'file_id' => 'anim_123',
+                        'file_unique_id' => 'u_anim_123',
+                        'width' => 100,
+                        'height' => 100,
+                        'duration' => 5,
+                    ],
+                ],
+            ],
+        ],
+    ];
+
+    /** @var Message $result */
+    $result = $hydrator->hydrate($payload, Message::class);
+
+    expect($result)->toBeInstanceOf(Message::class)
+        ->and($result->rich_message->blocks)->toHaveCount(3)
+        ->and($result->rich_message->blocks[0])->toBeInstanceOf(\SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockPhoto::class)
+        ->and($result->rich_message->blocks[0]->has_spoiler)->toBeNull()
+        ->and($result->rich_message->blocks[1])->toBeInstanceOf(\SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockVideo::class)
+        ->and($result->rich_message->blocks[1]->has_spoiler)->toBeNull()
+        ->and($result->rich_message->blocks[2])->toBeInstanceOf(\SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockAnimation::class)
+        ->and($result->rich_message->blocks[2]->has_spoiler)->toBeNull();
+});
+
+it('hydrates chat boost source premium without user', function () {
+    $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
+
+    $payload = [
+        'source' => 'premium',
+    ];
+
+    /** @var \SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostSourcePremium $result */
+    $result = $hydrator->hydrate($payload, \SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostSourcePremium::class);
+
+    expect($result)->toBeInstanceOf(\SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostSourcePremium::class)
+        ->and($result->user)->toBeNull();
+});
+
+it('hydrates rich_message buttons with a style', function () {
+    $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
+
+    $payload = [
+        'message_id' => 1234,
+        'date' => 1784483903,
+        'chat' => [
+            'id' => 12345678,
+            'type' => 'private',
+        ],
+        'rich_message' => [
+            'blocks' => [
+                [
+                    'type' => 'buttons',
+                    'align' => 'center',
+                    'buttons' => [
+                        [
+                            'text' => 'Website',
+                            'style' => 'success',
+                            'url' => 'https://nutgram.dev',
+                        ],
+                        [
+                            'text' => 'Callback',
+                            'style' => 'future_style',
+                            'callback_data' => 'data',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ];
+
+    $result = $hydrator->hydrate($payload, Message::class);
+
+    $buttons = $result->rich_message->blocks[0]->buttons;
+
+    expect($result)->toBeInstanceOf(Message::class)
+        ->and($result->rich_message->blocks[0])->toBeInstanceOf(\SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockButtons::class)
+        ->and($buttons)->toHaveCount(2)
+        ->and($buttons[0]->style)->toBe(\SergiX44\Nutgram\Telegram\Properties\ButtonStyle::SUCCESS)
+        ->and($buttons[1]->style)->toBe('future_style');
+});
+
+it('hydrates a ton_address rich text with nested rich text', function () {
+    $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
+
+    $result = $hydrator->hydrate([
+        'message_id' => 1234,
+        'date' => 1784483903,
+        'chat' => ['id' => 12345678, 'type' => 'private'],
+        'rich_message' => [
+            'blocks' => [
+                [
+                    'type' => 'paragraph',
+                    'text' => [
+                        'wallet: ',
+                        [
+                            'type' => 'ton_address',
+                            'address' => 'EQDtFpEwcFAEcRe5mLVh2N6C0x-_hJEM7W61_JLnSF74p4q2',
+                            'text' => [
+                                ['type' => 'bold', 'text' => 'EQDt'],
+                                'FpEw',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ], Message::class);
+
+    $address = $result->rich_message->blocks[0]->text[1];
+
+    expect($address)->toBeInstanceOf(RichTextTonAddress::class)
+        ->and($address->text[0])->toBeInstanceOf(RichTextBold::class)
+        ->and($address->text[1])->toBe('FpEw');
+});

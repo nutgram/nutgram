@@ -2,6 +2,79 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.51.0 - 2026-11-11
+
+### What's Changed
+
+* fix: widget endpoints autofill and type fixes for bot api 10.4 by @sergix44 in https://github.com/nutgram/nutgram/pull/1021
+* Bot API 10.4 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1019
+* Add PHP 8.6 support by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1018
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.50.3...4.51.0
+
+## 4.50.3 - 2026-10-04
+
+### What's Changed
+
+* Fix Bot API type mismatches in media, ephemeral edits, entities and rich text by @alikm6 in https://github.com/nutgram/nutgram/pull/1017
+
+### New Contributors
+
+* @alikm6 made their first contribution in https://github.com/nutgram/nutgram/pull/1017
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.50.2...4.50.3
+
+## 4.50.2 - 2026-10-01
+
+### What's Changed
+
+* fix: Bot API 10.3 supports InputMediaDocument upload by @moesoha in https://github.com/nutgram/nutgram/pull/1013
+* fix: recursively find Uploadables and upload them with multipart by @moesoha in https://github.com/nutgram/nutgram/pull/1014
+* fix: hydrate RichMessageButton style with EnumOrScalar by @QWASS in https://github.com/nutgram/nutgram/pull/1016
+
+### New Contributors
+
+* @moesoha made their first contribution in https://github.com/nutgram/nutgram/pull/1013
+* @QWASS made their first contribution in https://github.com/nutgram/nutgram/pull/1016
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.50.1...4.50.2
+
+## 4.50.1 - 2026-09-15
+
+### What's Changed
+
+* Fix missing default `null` on optional rich block and boost properties by @druidvav in https://github.com/nutgram/nutgram/pull/1012
+
+### New Contributors
+
+* @druidvav made their first contribution in https://github.com/nutgram/nutgram/pull/1012
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.50.0...4.50.1
+
+## 4.50.0 - 2026-08-28
+
+### What's Changed
+
+* Add Guzzle 8 support by @ziming in https://github.com/nutgram/nutgram/pull/1010
+* Update to Bot API 10.3 by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1011
+
+### New Contributors
+
+* @ziming made their first contribution in https://github.com/nutgram/nutgram/pull/1010
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.49.1...4.50.0
+
+## 4.49.1 - 2026-08-07
+
+### What's Changed
+
+* Handle property existence in `RichTextUnionResolver` by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1009
+* Fix potential infinite loops by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1007
+* Better `toArray()` output on types by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1008
+* Fix type hydration via Webhook by @Lukasss93 in https://github.com/nutgram/nutgram/pull/1006
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.49.0...4.49.1
+
 ## 4.49.0 - 2026-07-25
 
 ### What's Changed
