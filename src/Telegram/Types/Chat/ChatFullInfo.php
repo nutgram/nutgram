@@ -11,9 +11,11 @@ use SergiX44\Nutgram\Telegram\Types\Business\BusinessOpeningHours;
 use SergiX44\Nutgram\Telegram\Types\Community\Community;
 use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Payment\TonWalletCard;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
 use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGiftColors;
+use SergiX44\Nutgram\Telegram\Types\Theme\ChatShareTheme;
 use SergiX44\Nutgram\Telegram\Types\User\Birthdate;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Telegram\Types\User\UserRating;
@@ -337,4 +339,19 @@ class ChatFullInfo extends Chat
      * Optional. The {@see https://core.telegram.org/bots/api#community Community} to which the chat belongs
      */
     public ?Community $community = null;
+
+    /**
+     * Optional.
+     * For private chats, the TON wallet card of the user,
+     * which is shown on their profile page
+     */
+    public ?TonWalletCard $ton_wallet_card = null;
+
+    /**
+     * Optional.
+     * For private chats, supergroups and channels,
+     * the theme of the screen for sharing a link to the user or the chat;
+     * omitted if the default theme is used
+     */
+    public ?ChatShareTheme $share_theme = null;
 }
