@@ -360,7 +360,7 @@ class Update extends BaseType
             // inline_query doesn't have a chat
             // chosen_inline_result doesn't have a chat
             $this->callback_query !== null => $this->callback_query->message?->chat,
-            $this->widget_query !== null => $this->widget_query?->chat,
+            $this->widget_query !== null => $this->widget_query->chat,
             // shared_widget_query doesn't have a chat
             // shipping_query doesn't have a chat
             // pre_checkout_query doesn't have a chat

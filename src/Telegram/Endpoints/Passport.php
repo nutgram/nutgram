@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
-use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Passport\PassportElementError;
 
 /**
  * Trait Passport
  * @package SergiX44\Nutgram\Telegram\Endpoints
- * @mixin Client
+ * @mixin Nutgram
  */
 trait Passport
 {

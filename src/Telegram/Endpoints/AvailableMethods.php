@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
-use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ChatAction;
 use SergiX44\Nutgram\Telegram\Properties\ChatJoinRequestResult;
 use SergiX44\Nutgram\Telegram\Properties\DiceEmoji;
@@ -71,7 +71,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 /**
  * Trait AvailableMethods
  * @package SergiX44\Nutgram\Telegram\Endpoints
- * @mixin Client
+ * @mixin Nutgram
  */
 trait AvailableMethods
 {
