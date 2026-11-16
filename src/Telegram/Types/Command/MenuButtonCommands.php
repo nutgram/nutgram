@@ -6,12 +6,13 @@ namespace SergiX44\Nutgram\Telegram\Types\Command;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Represents a menu button, which opens the bot's list of commands.
  * @see https://core.telegram.org/bots/api#menubuttoncommands
  */
-class MenuButtonCommands extends MenuButton
+class MenuButtonCommands extends BaseType implements MenuButton
 {
     /** Type of the button, must be commands */
     #[EnumOrScalar]

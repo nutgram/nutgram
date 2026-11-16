@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Command;
 
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
-use SergiX44\Nutgram\Telegram\Properties\MenuButtonType;
-use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\MenuButtonResolver;
 
 /**
@@ -20,13 +17,6 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\MenuButtonResolver;
  * @see https://core.telegram.org/bots/api#menubutton
  */
 #[MenuButtonResolver]
-abstract class MenuButton extends BaseType
+interface MenuButton
 {
-    #[EnumOrScalar]
-    public MenuButtonType|string $type;
-
-    public function getType(): MenuButtonType|string
-    {
-        return $this->type;
-    }
 }
