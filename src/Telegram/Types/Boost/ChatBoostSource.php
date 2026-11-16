@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Boost;
 
 use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\ChatBoostSourceResolver;
-use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object describes the source of a chat boost. It can be one of
@@ -17,8 +16,4 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 #[ChatBoostSourceResolver]
 interface ChatBoostSource
 {
-    public ?User $user = null {
-        get;
-        set;
-    }
 }

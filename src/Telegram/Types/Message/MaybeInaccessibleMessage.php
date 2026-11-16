@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
-use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\MaybeInaccessibleMessageResolver;
 
 /**
@@ -16,11 +15,6 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\MaybeInaccessibleMessageR
 #[MaybeInaccessibleMessageResolver]
 interface MaybeInaccessibleMessage
 {
-    public Chat $chat {
-        get;
-        set;
-    }
-
     /**
      * Check if this message is deleted or is inaccessible to the bot.
      * @return bool
