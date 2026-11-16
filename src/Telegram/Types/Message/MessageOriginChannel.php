@@ -7,16 +7,16 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MessageOriginType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * The message was originally sent to a channel chat.
  * @see https://core.telegram.org/bots/api#messageoriginchannel
  */
-class MessageOriginChannel extends MessageOrigin
+class MessageOriginChannel extends BaseType implements MessageOrigin
 {
     /**
      * Type of the message origin, always “channel”
-     * @var MessageOriginType
      */
     #[EnumOrScalar]
     public MessageOriginType|string $type = MessageOriginType::CHANNEL;
