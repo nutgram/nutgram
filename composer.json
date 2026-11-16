@@ -41,7 +41,7 @@
     "require-dev": {
         "ext-reflection": "*",
         "mockery/mockery": "^1.6",
-        "pestphp/pest": "^4.0",
+        "pestphp/pest": "^5.0",
         "vimeo/psalm": "^7.0"
     },
     "suggest": {
