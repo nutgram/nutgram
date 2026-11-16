@@ -6,12 +6,13 @@ namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\TransactionPartnerType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Describes a withdrawal transaction with Fragment.
  * @see https://core.telegram.org/bots/api#transactionpartnerfragment
  */
-class TransactionPartnerFragment extends TransactionPartner
+class TransactionPartnerFragment extends BaseType implements TransactionPartner
 {
     /**
      * Type of the transaction partner, always “fragment”
