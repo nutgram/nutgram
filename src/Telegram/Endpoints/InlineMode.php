@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
-use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQueryResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQueryResultsButton;
 use SergiX44\Nutgram\Telegram\Types\Inline\PreparedInlineMessage;
@@ -11,7 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\SentWebAppMessage;
 /**
  * Trait InlineMode
  * @package SergiX44\Nutgram\Telegram\Endpoints
- * @mixin Client
+ * @mixin Nutgram
  */
 trait InlineMode
 {

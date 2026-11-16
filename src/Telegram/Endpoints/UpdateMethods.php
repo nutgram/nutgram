@@ -5,14 +5,14 @@ namespace SergiX44\Nutgram\Telegram\Endpoints;
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
 use SergiX44\Nutgram\Configuration;
-use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 
 /**
- * @mixin Client
+ * @mixin Nutgram
  */
 trait UpdateMethods
 {

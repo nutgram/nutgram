@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
-use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Checklist\InputChecklist;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
@@ -24,7 +24,7 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 /**
  * Trait UpdatesMessages
  * @package SergiX44\Nutgram\Telegram
- * @mixin Client
+ * @mixin Nutgram
  */
 trait UpdatesMessages
 {
