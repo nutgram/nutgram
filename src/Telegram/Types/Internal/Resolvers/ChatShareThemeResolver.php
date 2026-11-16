@@ -1,11 +1,16 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types\Theme;
+declare(strict_types=1);
+
+namespace SergiX44\Nutgram\Telegram\Types\Internal\Resolvers;
 
 use Attribute;
 use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Telegram\Properties\ChatShareThemeType;
+use SergiX44\Nutgram\Telegram\Types\Theme\ChatShareTheme;
+use SergiX44\Nutgram\Telegram\Types\Theme\ChatShareThemeEmoji;
+use SergiX44\Nutgram\Telegram\Types\Theme\ChatShareThemeUniqueGift;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class ChatShareThemeResolver extends ConcreteResolver

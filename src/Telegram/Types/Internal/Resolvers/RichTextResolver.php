@@ -14,6 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextAnchorLink;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextBankCardNumber;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextBold;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextBotCommand;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextButton;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextCashtag;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextCode;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextCustomEmoji;
@@ -32,6 +33,7 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextStrikethrough;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextSubscript;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextSuperscript;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextTextMention;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextTonAddress;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextUnderline;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextUrl;
 

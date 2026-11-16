@@ -17,7 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
  * @see https://core.telegram.org/bots/api#inputrichblockanimation
  */
 #[OverrideConstructor('bindToInstance')]
-class InputRichBlockAnimation extends BaseType implements InputRichBlock, Uploadables, JsonSerializable
+class InputRichBlockAnimation extends BaseType implements InputRichBlock, Uploadables
 {
     /**
      * Type of the block, always “animation”

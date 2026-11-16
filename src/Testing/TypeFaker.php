@@ -43,7 +43,7 @@ class TypeFaker
     public function fakeInstanceOf(string $type, array $partial = []): mixed
     {
         try {
-            if (class_exists($type)) {
+            if (class_exists($type) || interface_exists($type)) {
                 $data = $this->fakeDataFor($type, $partial);
                 return $this->hydrator->hydrate($type, $data);
             }
@@ -68,65 +68,71 @@ class TypeFaker
         array $additional = [],
     ): array {
         $this->resolveStack[] = $class;
-        $reflectionClass = $this->getReflectionClass($class, $additional);
+        try {
+            $reflectionClass = $this->getReflectionClass($class, $additional);
 
-        $data = [];
-        $dummyInstance = $reflectionClass->newInstanceWithoutConstructor();
-        foreach ($reflectionClass->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            $userDefined = $additional[$property->name] ?? [];
+            $data = [];
+            $dummyInstance = $reflectionClass->newInstanceWithoutConstructor();
+            foreach ($reflectionClass->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
+                $userDefined = $additional[$property->name] ?? [];
 
-            // if specified by the user
-            if (!is_array($userDefined)) {
-                $data[$property->name] = $additional[$property->name];
-                continue;
+                // if specified by the user
+                if (!is_array($userDefined)) {
+                    $data[$property->name] = $additional[$property->name];
+                    continue;
+                }
+
+                $isNullable = $property->getType()?->allowsNull() ?? false;
+
+                if ($isNullable && !isset($additional[$property->name])) {
+                    $data[$property->name] = null;
+                    continue;
+                }
+
+                // if is not nullable, but the property is already initialized, take the value
+                if (!$isNullable && $property->isInitialized($dummyInstance)) {
+                    $value = $property->getValue($dummyInstance);
+                    $data[$property->name] = $value instanceof BackedEnum ? $value->value : $value;
+                    continue;
+                }
+
+                if ($property->getType() instanceof ReflectionUnionType) {
+                    $typeName = $this->resolveUnionType($property, $userDefined);
+                } else {
+                    $typeName = $property->getType()?->getName();
+                }
+
+                // if is a class, try to resolve it
+                if ($this->shouldInstantiate($typeName, $isNullable, !empty($userDefined))) {
+                    $reflectionClass = $this->getReflectionClass($typeName, $additional[$property->name] ?? []);
+                    $data[$property->name] = $this->fakeDataFor($reflectionClass->getName(),
+                        $additional[$property->name] ?? [],);
+                    continue;
+                }
+
+                $attributes = $property->getAttributes(ArrayType::class);
+                /** @var ArrayType|null $arrayType */
+                $arrayType = array_shift($attributes)?->newInstance();
+                if ($typeName === 'array' && $arrayType !== null && $this->shouldInstantiate($arrayType->class,
+                        $isNullable, !empty($userDefined))) {
+                    $data[$property->name] = $this->fakeArray($arrayType, $userDefined);
+                    continue;
+                }
+
+                // if is an enum, set the first case
+                if (is_subclass_of($typeName, BackedEnum::class)) {
+                    $cases = $typeName::cases();
+                    $data[$property->name] = array_shift($cases)?->value;
+                    continue;
+                }
+
+                $data[$property->name] = self::randomScalarOf($typeName);
             }
 
-            $isNullable = $property->getType()?->allowsNull() ?? false;
-
-            if ($isNullable && !isset($additional[$property->name])) {
-                $data[$property->name] = null;
-                continue;
-            }
-
-            // if is not nullable, but the property is already initialized, take the value
-            if (!$isNullable && $property->isInitialized($dummyInstance)) {
-                $value = $property->getValue($dummyInstance);
-                $data[$property->name] = $value instanceof BackedEnum ? $value->value : $value;
-                continue;
-            }
-
-            if ($property->getType() instanceof ReflectionUnionType) {
-                $typeName = $this->resolveUnionType($property, $userDefined);
-            } else {
-                $typeName = $property->getType()?->getName();
-            }
-
-            // if is a class, try to resolve it
-            if ($this->shouldInstantiate($typeName, $isNullable, !empty($userDefined))) {
-                $reflectionClass = $this->getReflectionClass($typeName, $additional[$property->name] ?? []);
-                $data[$property->name] = $this->fakeDataFor($reflectionClass->getName(), $additional[$property->name] ?? [], );
-                continue;
-            }
-
-            $attributes = $property->getAttributes(ArrayType::class);
-            /** @var ArrayType|null $arrayType */
-            $arrayType = array_shift($attributes)?->newInstance();
-            if ($arrayType !== null && $this->shouldInstantiate($arrayType->class, $isNullable, !empty($userDefined))) {
-                $data[$property->name] = $this->fakeArray($arrayType, $userDefined);
-                continue;
-            }
-
-            // if is an enum, set the first case
-            if (is_subclass_of($typeName, BackedEnum::class)) {
-                $cases = $typeName::cases();
-                $data[$property->name] = array_shift($cases)?->value;
-                continue;
-            }
-
-            $data[$property->name] = self::randomScalarOf($typeName);
+            return $data;
+        } finally {
+            array_pop($this->resolveStack);
         }
-
-        return $data;
     }
 
 
@@ -138,11 +144,15 @@ class TypeFaker
      */
     protected function shouldInstantiate(string $class, bool $isNullable, bool $defined = false): bool
     {
-        if (!class_exists($class)) {
+        if (!class_exists($class) && !interface_exists($class)) {
             return false;
         }
 
         if (enum_exists($class)) {
+            return false;
+        }
+
+        if (interface_exists($class) && $this->hydrator->getConcreteResolverFor($class) === null) {
             return false;
         }
 
@@ -224,7 +234,7 @@ class TypeFaker
     {
         $reflectionClass = new ReflectionClass($class);
 
-        if (!$reflectionClass->isAbstract()) {
+        if (!$reflectionClass->isAbstract() && !$reflectionClass->isInterface()) {
             return $reflectionClass;
         }
 
@@ -271,6 +281,11 @@ class TypeFaker
 
     private function fakeArray(ArrayType $arrayType, array $userDefined = [], $depth = 1): array
     {
+        // End automatically generated recursive arrays, while preserving explicit nested data.
+        if (empty($userDefined) && in_array($arrayType->class, $this->resolveStack, true)) {
+            return [];
+        }
+
         $wrapped = [];
         foreach ($userDefined as $layer) {
             if ($depth < $arrayType->depth) {

@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Describes the position of a rectangle area on a story media or a TON wallet card.
  * @see https://core.telegram.org/bots/api#areaposition
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class AreaPosition extends BaseType
 {
     /**

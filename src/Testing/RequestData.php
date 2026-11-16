@@ -213,4 +213,14 @@ class RequestData
     {
         return !$this->hasFile($key);
     }
+
+    public function endpoint(): string
+    {
+        return $this->endpoint;
+    }
+
+    public function method(): string
+    {
+        return $this->method;
+    }
 }

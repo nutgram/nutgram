@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
@@ -13,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * Currently, widgets can't be sent in response to inline queries in the production environment.
  * @see https://core.telegram.org/bots/api#inputwidgetmessagecontent
  */
-#[SkipConstructor]
+#[OverrideConstructor('bindToInstance')]
 class InputSharedWidgetMessageContent extends InputMessageContent
 {
     /**
@@ -35,6 +38,7 @@ class InputSharedWidgetMessageContent extends InputMessageContent
      * Optional. Mode for parsing entities in the widget caption.
      * See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      */
+    #[EnumOrScalar]
     public ParseMode|string|null $parse_mode = null;
 
     /**

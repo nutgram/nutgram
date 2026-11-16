@@ -8,6 +8,7 @@ use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
+use SergiX44\Nutgram\Telegram\Types\Internal\UnionResolvers\RichTextUnionResolver;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
 
 /**
@@ -100,6 +101,8 @@ class ReplyParameters extends BaseType
      * If non-empty, then quote, quote_parse_mode and quote_entities are ignored.
      * @var string|RichText|array<mixed>|null
      */
+    #[ArrayType(RichText::class, skipScalars: true)]
+    #[RichTextUnionResolver]
     public string|array|RichText|null $quote_rich_texts = null;
 
     /**

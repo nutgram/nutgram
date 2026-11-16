@@ -67,7 +67,8 @@ it('gets the filename and content', function (?string $filename, string $expecte
 
 it('throws exception for invalid stream', function () {
     InputFile::make('foo');
-})->throws(RuntimeException::class, 'Unable to open "foo" using mode "rb": fopen(foo): Failed to open stream: No such file or directory');
+})->throws(RuntimeException::class,
+    'Unable to open foo using mode rb: fopen(foo): Failed to open stream: No such file or directory');
 
 it('throws exception for invalid argument', function () {
     InputFile::make(123);

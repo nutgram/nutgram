@@ -1,11 +1,16 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types\Theme;
+declare(strict_types=1);
+
+namespace SergiX44\Nutgram\Telegram\Types\Internal\Resolvers;
 
 use Attribute;
 use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Telegram\Properties\EmojiTypeEmojiType;
+use SergiX44\Nutgram\Telegram\Types\Theme\EmojiType;
+use SergiX44\Nutgram\Telegram\Types\Theme\EmojiTypeCustomEmoji;
+use SergiX44\Nutgram\Telegram\Types\Theme\EmojiTypeEmoji;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class EmojiTypeResolver extends ConcreteResolver

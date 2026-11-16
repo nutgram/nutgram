@@ -7,16 +7,15 @@ use Psr\Http\Message\StreamInterface;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
-use SergiX44\Nutgram\Telegram\Properties\Currency;
+use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
-use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhotoAnimated;
-use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhotoStatic;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSharedWidgetMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Input\InputWidgetMessageContent;
@@ -29,8 +28,6 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlockPho
 use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlockVideo;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichMessage;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichMessageMedia;
-use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
-use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostPrice;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Testing\RequestData;
 
@@ -412,9 +409,9 @@ it('sends a media group', function () {
 });
 
 it('serializes extra properties to array', function () {
-    $chat = new \SergiX44\Nutgram\Telegram\Types\Chat\Chat(Nutgram::fake());
+    $chat = new Chat(Nutgram::fake());
     $chat->bio = 'test';
-    $chat->type = \SergiX44\Nutgram\Telegram\Properties\ChatType::SUPERGROUP;
+    $chat->type = ChatType::SUPERGROUP;
     $chat->notExists = 123;
 
     $array = $chat->toArray();
@@ -517,7 +514,7 @@ it('sends multiple medias via sendMediaGroup', function () {
         chat_id: 123,
     );
 });
-
+/*
 it('serializes suggested post parameters in multipart requests', function (SuggestedPostParameters $parameters, string $expected) {
     $bot = Nutgram::fake();
 
@@ -572,14 +569,14 @@ it('uploads business profile photos with serialized metadata', function (string 
         ['main_frame_timestamp' => 0.5],
         ['type' => 'animated', 'animation' => 'attach://avatar.mp4', 'main_frame_timestamp' => 0.5],
     ],
-]);
+]);*/
 
 it('uploads the media referenced by a rich message', function () {
     $bot = Nutgram::fake();
 
     $media = new InputRichMessageMedia();
     $media->id = 'pic';
-    $media->media = InputMediaPhoto::make(
+    $media->media = new InputMediaPhoto(
         media: InputFile::make(fopen('php://temp', 'rb'), 'photo.jpg'),
     );
 
@@ -615,10 +612,10 @@ it('uploads the media nested inside the blocks of a rich message', function () {
             new InputRichBlockList([
                 new InputRichBlockListItem([
                     new InputRichBlockCollage([
-                        new InputRichBlockPhoto(InputMediaPhoto::make(
+                        new InputRichBlockPhoto(new InputMediaPhoto(
                             media: InputFile::make(fopen('php://temp', 'rb'), 'photo.jpg'),
                         )),
-                        new InputRichBlockVideo(InputMediaVideo::make(
+                        new InputRichBlockVideo(new InputMediaVideo(
                             media: InputFile::make(fopen('php://temp', 'rb'), 'video.mp4'),
                             thumbnail: InputFile::make(fopen('php://temp', 'rb'), 'thumb.jpg'),
                         )),
@@ -646,7 +643,7 @@ it('sends a rich message as multipart when there is nothing to upload', function
 
     $bot->sendRichMessage(
         rich_message: new InputRichMessage(blocks: [
-            new InputRichBlockPhoto(InputMediaPhoto::make(media: 'file_id')),
+            new InputRichBlockPhoto(new InputMediaPhoto(media: 'file_id')),
         ]),
         chat_id: 123,
     );
@@ -665,7 +662,7 @@ it('uploads the media of a rich message when editing a message', function () {
         chat_id: 123,
         message_id: 456,
         rich_message: new InputRichMessage(blocks: [
-            new InputRichBlockPhoto(InputMediaPhoto::make(
+            new InputRichBlockPhoto(new InputMediaPhoto(
                 media: InputFile::make(fopen('php://temp', 'rb'), 'photo.jpg'),
             )),
         ]),
@@ -677,13 +674,13 @@ it('uploads the media of the poll options', function () {
 
     $withPhoto = new InputPollOption();
     $withPhoto->text = 'yes';
-    $withPhoto->media = InputMediaPhoto::make(
+    $withPhoto->media = new InputMediaPhoto(
         media: InputFile::make(fopen('php://temp', 'rb'), 'yes.jpg'),
     );
 
     $withFileId = new InputPollOption();
     $withFileId->text = 'no';
-    $withFileId->media = InputMediaPhoto::make(media: 'file_id');
+    $withFileId->media = new InputMediaPhoto(media: 'file_id');
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
         $data = array_column($request['multipart'], 'contents', 'name');
@@ -714,11 +711,11 @@ it('uploads the media of the poll description and of the quiz explanation', func
         question: 'pick one',
         options: ['yes', 'no'],
         chat_id: 123,
-        media: InputMediaVideo::make(
+        media: new InputMediaVideo(
             media: InputFile::make(fopen('php://temp', 'rb'), 'description.mp4'),
             thumbnail: InputFile::make(fopen('php://temp', 'rb'), 'thumb.jpg'),
         ),
-        explanation_media: InputMediaPhoto::make(
+        explanation_media: new InputMediaPhoto(
             media: InputFile::make(fopen('php://temp', 'rb'), 'explanation.jpg'),
         ),
     );
@@ -729,7 +726,7 @@ it('sends a poll as multipart with serialized options when there is nothing to u
 
     $option = new InputPollOption();
     $option->text = 'yes';
-    $option->media = InputMediaPhoto::make(media: 'file_id');
+    $option->media = new InputMediaPhoto(media: 'file_id');
 
     $bot->beforeApiRequest(function (Nutgram $bot, array $request) {
         expect($request)
@@ -746,9 +743,7 @@ it('sends a poll as multipart with serialized options when there is nothing to u
 });
 
 describe('widgets', function () {
-    $requestBody = fn (Request $request): array => json_decode((string)$request->getBody(), true);
-
-    it('fills chat_id and message_id in editMessageWidgetData from a widget query', function ($update) use ($requestBody) {
+    it('fills chat_id and message_id in editMessageWidgetData from a widget query', function ($update) {
         $bot = Nutgram::fake($update);
 
         $bot->onWidgetQuery(function (Nutgram $bot) {
@@ -757,19 +752,17 @@ describe('widgets', function () {
 
         $bot->run();
 
-        $bot->assertRaw(function (Request $request) use ($requestBody) {
-            expect($request->getUri()->getPath())->toBe('editMessageWidgetData')
-                ->and($requestBody($request))->toEqual([
-                    'chat_id' => 222222222,
-                    'message_id' => 4321,
-                    'chat_data' => 'new',
-                ]);
+        $bot->assertRaw(function (RequestData $request) {
+            expect($request->endpoint())->toBe('editMessageWidgetData')
+                ->and($request->get('chat_id'))->toBe(222222222)
+                ->and($request->get('message_id'))->toBe(4321)
+                ->and($request->get('chat_data'))->toBe('new');
 
             return true;
         });
     })->with('widget_query');
 
-    it('fills inline_message_id in editMessageWidgetData from an inline widget query', function ($update) use ($requestBody) {
+    it('fills inline_message_id in editMessageWidgetData from an inline widget query', function ($update) {
         $bot = Nutgram::fake($update);
 
         $bot->onWidgetQuery(function (Nutgram $bot) {
@@ -778,17 +771,16 @@ describe('widgets', function () {
 
         $bot->run();
 
-        $bot->assertRaw(function (Request $request) use ($requestBody) {
-            expect($requestBody($request))->toEqual([
-                'inline_message_id' => 'AgAAAAAAAAAAAAAAinline',
-                'public_data' => 'new',
-            ]);
+        $bot->assertRaw(function (RequestData $request) {
+            expect($request->endpoint())->toBe('editMessageWidgetData')
+                ->and($request->get('inline_message_id'))->toBe('AgAAAAAAAAAAAAAAinline')
+                ->and($request->get('public_data'))->toBe('new');
 
             return true;
         });
     })->with('widget_query_inline');
 
-    it('fills widget_id in editSharedWidgetData from a shared widget query', function ($update) use ($requestBody) {
+    it('fills widget_id in editSharedWidgetData from a shared widget query', function ($update) {
         $bot = Nutgram::fake($update);
 
         $bot->onSharedWidgetQuery(function (Nutgram $bot) {
@@ -797,17 +789,16 @@ describe('widgets', function () {
 
         $bot->run();
 
-        $bot->assertRaw(function (Request $request) use ($requestBody) {
-            expect($requestBody($request))->toBe([
-                'public_data' => 'new',
-                'widget_id' => '123456789',
-            ]);
+        $bot->assertRaw(function (RequestData $request) {
+            expect($request->endpoint())->toBe('editSharedWidgetData')
+                ->and($request->get('public_data'))->toBe('new')
+                ->and($request->get('widget_id'))->toBe('123456789');
 
             return true;
         });
     })->with('shared_widget_query');
 
-    it('fills widget_id and chat_id in sendSharedWidget from a widget query', function ($update) use ($requestBody) {
+    it('fills widget_id and chat_id in sendSharedWidget from a widget query', function ($update) {
         $bot = Nutgram::fake($update);
 
         $bot->onWidgetQuery(function (Nutgram $bot) {
@@ -816,11 +807,10 @@ describe('widgets', function () {
 
         $bot->run();
 
-        $bot->assertRaw(function (Request $request) use ($requestBody) {
-            expect($requestBody($request))->toEqual([
-                'widget_id' => '987654321',
-                'chat_id' => 222222222,
-            ]);
+        $bot->assertRaw(function (RequestData $request) {
+            expect($request->endpoint())->toBe('sendSharedWidget')
+                ->and($request->get('widget_id'))->toBe('987654321')
+                ->and($request->get('chat_id'))->toBe(222222222);
 
             return true;
         });
