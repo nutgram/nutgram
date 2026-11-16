@@ -6,12 +6,13 @@ namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RevenueWithdrawalStateType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * The withdrawal succeeded.
  * @see https://core.telegram.org/bots/api#revenuewithdrawalstatesucceeded
  */
-class RevenueWithdrawalStateSucceeded extends RevenueWithdrawalState
+class RevenueWithdrawalStateSucceeded extends BaseType implements RevenueWithdrawalState
 {
     /**
      * Type of the state, always “succeeded”

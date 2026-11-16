@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
-use SergiX44\Nutgram\Telegram\Properties\RevenueWithdrawalStateType;
-use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\RevenueWithdrawalStateResolver;
 
 /**
@@ -18,11 +15,6 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\RevenueWithdrawalStateRes
  * @see https://core.telegram.org/bots/api#revenuewithdrawalstate
  */
 #[RevenueWithdrawalStateResolver]
-abstract class RevenueWithdrawalState extends BaseType
+interface RevenueWithdrawalState
 {
-    /**
-     * Type of the state, can be “pending”, “succeeded” or “failed”.
-     */
-    #[EnumOrScalar]
-    public RevenueWithdrawalStateType|string $type;
 }
