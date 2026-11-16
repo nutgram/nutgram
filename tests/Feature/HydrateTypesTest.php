@@ -9,7 +9,6 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockButtons;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextBold;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextTonAddress;
 
-
 it('hydrate rich_message', function ($content) {
     $hydrator = Nutgram::fake()->getHydrator();
 

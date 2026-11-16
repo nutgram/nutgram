@@ -535,7 +535,6 @@ it('serializes suggested post parameters in multipart requests', function (Sugge
 
         return true;
     });
-
 })->with([
     'empty' => [new SuggestedPostParameters(), '[]'],
     'priced' => [
