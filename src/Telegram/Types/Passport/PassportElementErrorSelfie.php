@@ -8,6 +8,7 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Represents an issue with the selfie with a document.
@@ -15,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Properties\PassportType;
  * @see https://core.telegram.org/bots/api#passportelementerrorselfie
  */
 #[OverrideConstructor('bindToInstance')]
-class PassportElementErrorSelfie extends PassportElementError
+class PassportElementErrorSelfie extends BaseType implements PassportElementError
 {
     /** Error source, must be selfie */
     #[EnumOrScalar]
