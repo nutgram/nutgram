@@ -105,16 +105,21 @@ class TypeFaker
                 // if is a class, try to resolve it
                 if ($this->shouldInstantiate($typeName, $isNullable, !empty($userDefined))) {
                     $reflectionClass = $this->getReflectionClass($typeName, $additional[$property->name] ?? []);
-                    $data[$property->name] = $this->fakeDataFor($reflectionClass->getName(),
-                        $additional[$property->name] ?? [],);
+                    $data[$property->name] = $this->fakeDataFor(
+                        $reflectionClass->getName(),
+                        $additional[$property->name] ?? [],
+                    );
                     continue;
                 }
 
                 $attributes = $property->getAttributes(ArrayType::class);
                 /** @var ArrayType|null $arrayType */
                 $arrayType = array_shift($attributes)?->newInstance();
-                if ($typeName === 'array' && $arrayType !== null && $this->shouldInstantiate($arrayType->class,
-                        $isNullable, !empty($userDefined))) {
+                if ($typeName === 'array' && $arrayType !== null && $this->shouldInstantiate(
+                    $arrayType->class,
+                    $isNullable,
+                    !empty($userDefined)
+                )) {
                     $data[$property->name] = $this->fakeArray($arrayType, $userDefined);
                     continue;
                 }
