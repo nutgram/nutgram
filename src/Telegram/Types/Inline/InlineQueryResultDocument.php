@@ -10,6 +10,7 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
@@ -21,7 +22,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * @see https://core.telegram.org/bots/api#inlinequeryresultdocument
  */
 #[OverrideConstructor('bindToInstance')]
-class InlineQueryResultDocument extends InlineQueryResult
+class InlineQueryResultDocument extends BaseType implements InlineQueryResult
 {
     /** Type of the result, must be document */
     #[EnumOrScalar]

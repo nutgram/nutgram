@@ -10,6 +10,7 @@ use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
@@ -20,7 +21,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * @see https://core.telegram.org/bots/api#inlinequeryresultmpeg4gif
  */
 #[OverrideConstructor('bindToInstance')]
-class InlineQueryResultMpeg4Gif extends InlineQueryResult
+class InlineQueryResultMpeg4Gif extends BaseType implements InlineQueryResult
 {
     /** Type of the result, must be mpeg4_gif */
     #[EnumOrScalar]
