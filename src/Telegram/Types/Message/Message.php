@@ -29,6 +29,7 @@ use SergiX44\Nutgram\Telegram\Types\Giveaway\Giveaway;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCompleted;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCreated;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayWinners;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ExternalReplyInfo;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -86,7 +87,7 @@ use SergiX44\Nutgram\Telegram\Types\Widget\Widget;
  * This object represents a message.
  * @see https://core.telegram.org/bots/api#message
  */
-class Message extends MaybeInaccessibleMessage
+class Message extends BaseType implements MaybeInaccessibleMessage
 {
     /** Unique message identifier inside this chat */
     public int $message_id;
@@ -939,6 +940,11 @@ class Message extends MaybeInaccessibleMessage
     public function isEphemeral(): bool
     {
         return $this->receiver_user !== null && $this->ephemeral_message_id !== null;
+    }
+
+    public function isInaccessible(): bool
+    {
+        return false;
     }
 
     /**
