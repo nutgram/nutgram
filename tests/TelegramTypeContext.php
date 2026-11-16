@@ -7,5 +7,6 @@ enum TelegramTypeContext
     case All;
     case NonAbstract;
     case Abstract;
+    case Interface;
     case Buildable;
 }

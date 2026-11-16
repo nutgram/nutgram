@@ -31,7 +31,7 @@ arch('check that Type Resolvers extends ConcreteResolver')
     ->toExtend(ConcreteResolver::class);
 
 test('check that abstract Telegram Input Types have a ConcreteResolver attribute', function () {
-    $types = getTelegramTypes(TelegramTypeContext::Abstract);
+    $types = getTelegramTypes([TelegramTypeContext::Abstract, TelegramTypeContext::Interface]);
 
     $ignore = [
         InlineQueryResult::class,
