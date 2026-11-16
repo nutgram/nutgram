@@ -7,6 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Command;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\BotCommandScopeType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 
 /**
@@ -14,7 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
  * @see https://core.telegram.org/bots/api#botcommandscopechatmember
  */
 #[OverrideConstructor('bindToInstance')]
-class BotCommandScopeChatMember extends BotCommandScope
+class BotCommandScopeChatMember extends BaseType implements BotCommandScope
 {
     /** Scope type, must be chat_member */
     #[EnumOrScalar]
