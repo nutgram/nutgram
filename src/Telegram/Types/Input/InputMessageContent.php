@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\InputMessageContentResolver;
 
 /**
@@ -21,6 +20,6 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\InputMessageContentResolv
  * @see https://core.telegram.org/bots/api#inputmessagecontent
  */
 #[InputMessageContentResolver]
-abstract class InputMessageContent extends BaseType
+interface InputMessageContent
 {
 }

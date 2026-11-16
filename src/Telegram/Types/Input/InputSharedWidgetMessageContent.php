@@ -8,6 +8,7 @@ use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
@@ -17,7 +18,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * @see https://core.telegram.org/bots/api#inputwidgetmessagecontent
  */
 #[OverrideConstructor('bindToInstance')]
-class InputSharedWidgetMessageContent extends InputMessageContent
+class InputSharedWidgetMessageContent extends BaseType implements InputMessageContent
 {
     /**
      * Unique identifier of the shared widget created by the bot
