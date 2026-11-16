@@ -8,6 +8,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
+use SergiX44\Nutgram\Telegram\Properties\Currency;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
@@ -16,6 +17,8 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
+use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhotoAnimated;
+use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhotoStatic;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSharedWidgetMessageContent;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Input\InputWidgetMessageContent;
@@ -28,6 +31,8 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlockPho
 use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlockVideo;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichMessage;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichMessageMedia;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
+use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostPrice;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 use SergiX44\Nutgram\Testing\RequestData;
 
@@ -514,7 +519,7 @@ it('sends multiple medias via sendMediaGroup', function () {
         chat_id: 123,
     );
 });
-/*
+
 it('serializes suggested post parameters in multipart requests', function (SuggestedPostParameters $parameters, string $expected) {
     $bot = Nutgram::fake();
 
@@ -524,20 +529,25 @@ it('serializes suggested post parameters in multipart requests', function (Sugge
         suggested_post_parameters: $parameters,
     );
 
-    $request = $bot->getRequestHistory()[0]['request'];
-    expect($request->getHeaderLine('Content-Type'))->toStartWith('multipart/form-data;')
-        ->and(FormDataParser::parse($request)->params['suggested_post_parameters'])->toBe($expected);
+    $bot->assertRaw(function (RequestData $request) use ($expected) {
+        expect($request->isMultipart())->toBeTrue()
+            ->and($request->getRaw('suggested_post_parameters'))->toBe($expected);
+
+        return true;
+    });
+
 })->with([
-    'empty' => [new SuggestedPostParameters(), '{}'],
+    'empty' => [new SuggestedPostParameters(), '[]'],
     'priced' => [
-        SuggestedPostParameters::make(price: new SuggestedPostPrice(Currency::XTR, 25)),
+        new SuggestedPostParameters(price: new SuggestedPostPrice(Currency::XTR, 25)),
         '{"price":{"currency":"XTR","amount":25}}',
     ],
     'scheduled' => [
-        SuggestedPostParameters::make(send_date: 2000000000),
+        new SuggestedPostParameters(send_date: 2000000000),
         '{"send_date":2000000000}',
     ],
 ]);
+
 
 it('uploads business profile photos with serialized metadata', function (string $photoClass, string $filename, array $arguments, array $expected) {
     $bot = Nutgram::fake();
@@ -550,12 +560,14 @@ it('uploads business profile photos with serialized metadata', function (string 
         business_connection_id: 'test-connection',
     );
 
-    $request = $bot->getRequestHistory()[0]['request'];
-    $data = FormDataParser::parse($request);
-    expect($request->getHeaderLine('Content-Type'))->toStartWith('multipart/form-data;')
-        ->and(json_decode($data->params['photo'], true, flags: JSON_THROW_ON_ERROR))->toBe($expected)
-        ->and($data->files)->toHaveKey($filename)
-        ->and((string)$request->getBody())->toContain('profile photo contents');
+    $bot->assertRaw(function (RequestData $request) use ($expected, $filename) {
+        expect($request->isMultipart())->toBeTrue()
+            ->and($request->hasFile($filename))->toBeTrue()
+            ->and($request->file($filename)->getStream()->getContents())->toContain('profile photo contents')
+            ->and($request->get('photo'))->toBe($expected);
+
+        return true;
+    });
 })->with([
     'static' => [
         InputProfilePhotoStatic::class,
@@ -569,7 +581,7 @@ it('uploads business profile photos with serialized metadata', function (string 
         ['main_frame_timestamp' => 0.5],
         ['type' => 'animated', 'animation' => 'attach://avatar.mp4', 'main_frame_timestamp' => 0.5],
     ],
-]);*/
+]);
 
 it('uploads the media referenced by a rich message', function () {
     $bot = Nutgram::fake();
