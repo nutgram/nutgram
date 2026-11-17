@@ -4,18 +4,12 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
-use SergiX44\Nutgram\Telegram\Properties\InputStoryContentType;
-use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
-
 /**
  * This object describes the content of a story to post. Currently, it can be one of
  * - {@see InputStoryContentPhoto}
  * - {@see InputStoryContentVideo}
  * @see https://core.telegram.org/bots/api#inputstorycontent
  */
-abstract class InputStoryContent extends BaseType
+interface InputStoryContent
 {
-    #[EnumOrScalar]
-    public InputStoryContentType|string $type;
 }

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
-use SergiX44\Nutgram\Telegram\Properties\BackgroundFillType;
-use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\BackgroundFillResolver;
 
 /**
@@ -17,11 +14,6 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\BackgroundFillResolver;
  * @see https://core.telegram.org/bots/api#backgroundfill
  */
 #[BackgroundFillResolver]
-abstract class BackgroundFill extends BaseType
+interface BackgroundFill
 {
-    /**
-     * Type of the background fill
-     */
-    #[EnumOrScalar]
-    public BackgroundFillType|string $type;
 }

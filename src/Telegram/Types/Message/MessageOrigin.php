@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
-use SergiX44\Nutgram\Telegram\Properties\MessageOriginType;
-use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\MessageOriginResolver;
 
 /**
@@ -18,12 +15,6 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\MessageOriginResolver;
  * @see https://core.telegram.org/bots/api#messageorigin
  */
 #[MessageOriginResolver]
-abstract class MessageOrigin extends BaseType
+interface MessageOrigin
 {
-    /**
-     * Type of the message origin
-     * @var MessageOriginType
-     */
-    #[EnumOrScalar]
-    public MessageOriginType|string $type;
 }

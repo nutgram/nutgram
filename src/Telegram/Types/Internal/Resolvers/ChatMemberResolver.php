@@ -15,6 +15,8 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberLeft;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberMember;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberOwner;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberRestricted;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class ChatMemberResolver extends ConcreteResolver
@@ -31,7 +33,9 @@ class ChatMemberResolver extends ConcreteResolver
     public function concreteFor(array $data, array $all): ?string
     {
         $status = $data['status'] ?? throw new InvalidArgumentException('Status must be defined');
-        return $this->concretes[$status] ?? (new class extends ChatMember {
+        return $this->concretes[$status] ?? (new class extends BaseType implements ChatMember {
+            public string $status;
+            public User $user;
         })::class;
     }
 }

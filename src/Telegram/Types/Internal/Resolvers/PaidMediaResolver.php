@@ -8,6 +8,7 @@ use Attribute;
 use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Telegram\Properties\PaidMediaType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMedia;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPreview;
@@ -25,7 +26,8 @@ class PaidMediaResolver extends ConcreteResolver
     public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
-        return $this->concretes[$type] ?? (new class extends PaidMedia {
+        return $this->concretes[$type] ?? (new class extends BaseType implements PaidMedia {
+            public string $type;
         })::class;
     }
 }

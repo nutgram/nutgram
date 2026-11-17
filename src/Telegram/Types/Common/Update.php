@@ -298,8 +298,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->from,
             $this->chat_member !== null => $this->chat_member->from,
             $this->chat_join_request !== null => $this->chat_join_request->from,
-            $this->chat_boost !== null => $this->chat_boost->boost->source->user,
-            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user,
+            $this->chat_boost !== null => $this->chat_boost->boost->source->user ?? null,
+            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user ?? null,
             $this->managed_bot !== null => $this->managed_bot->user,
             $this->subscription !== null => $this->subscription->user,
             // stopped_message_generation: doesn't have a user
@@ -334,8 +334,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->from = $user,
             $this->chat_member !== null => $this->chat_member->from = $user,
             $this->chat_join_request !== null => $this->chat_join_request->from = $user,
-            $this->chat_boost !== null => $this->chat_boost->boost->source->user = $user,
-            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user = $user,
+            $this->chat_boost !== null => (isset($this->chat_boost->boost->source->user) || property_exists($this->chat_boost->boost->source, 'user')) ? $this->chat_boost->boost->source->user = $user : null,
+            $this->removed_chat_boost !== null => (isset($this->removed_chat_boost->source->user) || property_exists($this->removed_chat_boost->source, 'user')) ? $this->removed_chat_boost->source->user = $user : null,
             $this->managed_bot !== null => $this->managed_bot->user = $user,
             $this->subscription !== null => $this->subscription->user = $user,
             // stopped_message_generation: doesn't have a user
@@ -359,7 +359,7 @@ class Update extends BaseType
             $this->message_reaction_count !== null => $this->message_reaction_count->chat,
             // inline_query doesn't have a chat
             // chosen_inline_result doesn't have a chat
-            $this->callback_query !== null => $this->callback_query->message?->chat,
+            $this->callback_query !== null => $this->callback_query->message !== null && isset($this->callback_query->message->chat) ? $this->callback_query->message->chat : null,
             $this->widget_query !== null => $this->widget_query->chat,
             // shared_widget_query doesn't have a chat
             // shipping_query doesn't have a chat
@@ -395,7 +395,7 @@ class Update extends BaseType
             $this->message_reaction_count !== null => $this->message_reaction_count->chat = $chat,
             // inline_query doesn't have a chat
             // chosen_inline_result doesn't have a chat
-            $this->callback_query !== null => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
+            $this->callback_query !== null => $this->callback_query->message !== null && (isset($this->callback_query->message->chat) || property_exists($this->callback_query->message, 'chat')) ? $this->callback_query->message->chat = $chat : null,
             $this->widget_query !== null => $this->widget_query->chat = $chat,
             // shared_widget_query doesn't have a chat
             // shipping_query doesn't have a chat

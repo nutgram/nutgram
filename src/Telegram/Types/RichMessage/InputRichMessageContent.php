@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage;
 
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content}
  * of a rich message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputrichmessagecontent
  */
-class InputRichMessageContent extends InputMessageContent
+class InputRichMessageContent extends BaseType implements InputMessageContent
 {
     /**
      * The message to be sent

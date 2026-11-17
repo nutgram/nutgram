@@ -6,13 +6,14 @@ namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PaidMediaType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\Video;
 
 /**
  * The paid media is a video.
  * @see https://core.telegram.org/bots/api#paidmediavideo
  */
-class PaidMediaVideo extends PaidMedia
+class PaidMediaVideo extends BaseType implements PaidMedia
 {
     /**
      * Type of the paid media, always “video”

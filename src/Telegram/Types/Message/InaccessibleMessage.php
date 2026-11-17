@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object describes a message that was deleted or is otherwise inaccessible to the bot.
  * @see https://core.telegram.org/bots/api#inaccessiblemessage
  */
-class InaccessibleMessage extends MaybeInaccessibleMessage
+class InaccessibleMessage extends BaseType implements MaybeInaccessibleMessage
 {
     /**
      * Conversation the message belongs to
@@ -26,4 +27,9 @@ class InaccessibleMessage extends MaybeInaccessibleMessage
      * Date the message was sent in Unix time
      */
     public int $date;
+
+    public function isInaccessible(): bool
+    {
+        return true;
+    }
 }

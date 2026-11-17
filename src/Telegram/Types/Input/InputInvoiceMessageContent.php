@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
 
 /**
@@ -13,7 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\Payment\LabeledPrice;
  * @see https://core.telegram.org/bots/api#inputinvoicemessagecontent
  */
 #[OverrideConstructor('bindToInstance')]
-class InputInvoiceMessageContent extends InputMessageContent
+class InputInvoiceMessageContent extends BaseType implements InputMessageContent
 {
     /** Product name, 1-32 characters */
     public string $title;

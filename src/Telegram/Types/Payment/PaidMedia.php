@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
-use SergiX44\Nutgram\Telegram\Properties\PaidMediaType;
-use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\PaidMediaResolver;
 
 /**
@@ -18,11 +15,6 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\PaidMediaResolver;
  * @see https://core.telegram.org/bots/api#paidmedia
  */
 #[PaidMediaResolver]
-abstract class PaidMedia extends BaseType
+interface PaidMedia
 {
-    /**
-     * Type of the transaction partner, can be “preview”, “photo”, “live_photo” or “video”.
-     */
-    #[EnumOrScalar]
-    public PaidMediaType|string $type;
 }

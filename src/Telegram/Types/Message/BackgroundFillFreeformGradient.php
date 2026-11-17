@@ -6,8 +6,9 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\BackgroundFillType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
-class BackgroundFillFreeformGradient extends BackgroundFill
+class BackgroundFillFreeformGradient extends BaseType implements BackgroundFill
 {
     /**
      * Type of the background fill, always “freeform_gradient”
