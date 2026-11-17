@@ -17,6 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Common\WebhookInfo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
+use SergiX44\Nutgram\Telegram\Types\Input\InputPaidMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhotoAnimated;
 use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhotoStatic;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSharedWidgetMessageContent;
@@ -518,6 +519,28 @@ it('sends multiple medias via sendMediaGroup', function () {
         ],
         chat_id: 123,
     );
+});
+
+it('sends paid media with an upload and an existing file ID', function () {
+    $bot = Nutgram::fake();
+    $file = InputFile::makeFromString('photo', 'paid.jpg');
+
+    $bot->beforeApiRequest(function (Nutgram $bot, array $request) use ($file) {
+        $parts = $request['multipart'];
+        $data = array_column($parts, 'contents', 'name');
+
+        expect(array_column($parts, 'filename'))->toBe(['paid.jpg'])
+            ->and($data['paid.jpg'])->toBe($file->getStream())
+            ->and(json_decode($data['media'], true, flags: JSON_THROW_ON_ERROR))->toBe([
+                ['type' => 'photo', 'media' => 'attach://paid.jpg'],
+                ['type' => 'photo', 'media' => 'photo-file-id'],
+            ]);
+    });
+
+    $bot->sendPaidMedia(star_count: 10, media: [
+        new InputPaidMediaPhoto($file),
+        new InputPaidMediaPhoto('photo-file-id'),
+    ], chat_id: 123);
 });
 
 it('serializes suggested post parameters in multipart requests', function (SuggestedPostParameters $parameters, string $expected) {

@@ -50,6 +50,6 @@ class InputRichBlockSlideshow extends BaseType implements InputRichBlock, Upload
 
     public function uploadables(): array
     {
-        return ['blocks'];
+        return ['blocks' => $this->blocks];
     }
 }

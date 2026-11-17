@@ -73,6 +73,6 @@ class InputSticker extends BaseType implements Uploadables
 
     public function uploadables(): array
     {
-        return ['sticker'];
+        return ['sticker' => $this->sticker];
     }
 }

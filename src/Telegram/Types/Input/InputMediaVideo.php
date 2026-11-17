@@ -157,6 +157,10 @@ class InputMediaVideo extends BaseType implements InputMedia, InputPollMedia, In
 
     public function uploadables(): array
     {
-        return ['media', 'thumbnail', 'cover'];
+        return [
+            'media' => $this->media,
+            'thumbnail' => $this->thumbnail,
+            'cover' => $this->cover,
+        ];
     }
 }

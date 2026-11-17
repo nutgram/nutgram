@@ -41,6 +41,6 @@ class InputProfilePhotoStatic extends BaseType implements InputProfilePhoto, Upl
 
     public function uploadables(): array
     {
-        return ['photo'];
+        return ['photo' => $this->photo];
     }
 }

@@ -44,6 +44,6 @@ class InputRichBlockVideo extends BaseType implements InputRichBlock, Uploadable
 
     public function uploadables(): array
     {
-        return ['video'];
+        return ['video' => $this->video];
     }
 }

@@ -42,6 +42,6 @@ class InputRichBlockList extends BaseType implements InputRichBlock, Uploadables
 
     public function uploadables(): array
     {
-        return ['items'];
+        return ['items' => $this->items];
     }
 }

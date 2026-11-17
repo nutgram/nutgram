@@ -44,6 +44,6 @@ class InputRichBlockAnimation extends BaseType implements InputRichBlock, Upload
 
     public function uploadables(): array
     {
-        return ['animation'];
+        return ['animation' => $this->animation];
     }
 }

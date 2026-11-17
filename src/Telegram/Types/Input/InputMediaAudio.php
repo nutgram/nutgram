@@ -112,6 +112,9 @@ class InputMediaAudio extends BaseType implements InputMedia, InputPollMedia, Up
 
     public function uploadables(): array
     {
-        return ['media', 'thumbnail'];
+        return [
+            'media' => $this->media,
+            'thumbnail' => $this->thumbnail,
+        ];
     }
 }

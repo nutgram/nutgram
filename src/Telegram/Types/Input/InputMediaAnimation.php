@@ -127,6 +127,9 @@ class InputMediaAnimation extends BaseType implements InputMedia, InputPollMedia
 
     public function uploadables(): array
     {
-        return ['media', 'thumbnail'];
+        return [
+            'media' => $this->media,
+            'thumbnail' => $this->thumbnail,
+        ];
     }
 }

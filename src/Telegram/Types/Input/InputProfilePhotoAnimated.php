@@ -48,6 +48,6 @@ class InputProfilePhotoAnimated extends BaseType implements InputProfilePhoto, U
 
     public function uploadables(): array
     {
-        return ['animation'];
+        return ['animation' => $this->animation];
     }
 }
