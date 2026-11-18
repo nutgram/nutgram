@@ -44,6 +44,6 @@ class InputRichBlockDocument extends BaseType implements InputRichBlock, Uploada
 
     public function uploadables(): array
     {
-        return ['document'];
+        return ['document' => $this->document];
     }
 }

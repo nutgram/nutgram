@@ -54,6 +54,6 @@ class InputRichBlockBlockQuotation extends BaseType implements InputRichBlock, U
 
     public function uploadables(): array
     {
-        return ['blocks'];
+        return ['blocks' => $this->blocks];
     }
 }

@@ -8,8 +8,8 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaAudio;
-use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
 
 /**
@@ -44,6 +44,6 @@ class InputRichBlockAudio extends BaseType implements InputRichBlock, Uploadable
 
     public function uploadables(): array
     {
-        return ['audio'];
+        return ['audio' => $this->audio];
     }
 }

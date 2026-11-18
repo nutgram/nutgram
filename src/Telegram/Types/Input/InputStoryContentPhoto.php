@@ -41,6 +41,6 @@ class InputStoryContentPhoto extends BaseType implements InputStoryContent, Uplo
 
     public function uploadables(): array
     {
-        return ['photo'];
+        return ['photo' => $this->photo];
     }
 }

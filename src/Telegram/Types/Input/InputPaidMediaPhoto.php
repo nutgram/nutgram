@@ -44,6 +44,6 @@ class InputPaidMediaPhoto extends BaseType implements InputPaidMedia, Uploadable
 
     public function uploadables(): array
     {
-        return ['media'];
+        return ['media' => $this->media];
     }
 }

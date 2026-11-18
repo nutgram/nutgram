@@ -37,7 +37,6 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputPaidMedia;
 use SergiX44\Nutgram\Telegram\Types\Input\InputPollMedia;
 use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhoto;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
-use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -1386,7 +1385,7 @@ trait AvailableMethods
         );
 
         return $this->requestMultipart(__FUNCTION__, [
-            'media' => new UploadableArray($media),
+            'media' => $media,
             ...$params,
         ], Message::class, $clientOpt);
     }
@@ -1396,7 +1395,7 @@ trait AvailableMethods
      * Documents and audio files can be only grouped in an album with messages of the same type.
      * On success, an array of {@see https://core.telegram.org/bots/api#message Messages} that were sent is returned.
      * @see https://core.telegram.org/bots/api#sendmediagroup
-     * @param InputMediaAudio[]|InputMediaDocument[]|InputMediaPhoto[]|InputMediaLivePhoto[]|InputMediaVideo[] $media A JSON-serialized array describing messages to be sent, must include 2-10 items
+     * @param array<InputMediaAudio|InputMediaDocument|InputMediaPhoto|InputMediaLivePhoto|InputMediaVideo> $media A JSON-serialized array describing messages to be sent, must include 2-10 items
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param bool|null $disable_notification Sends messages {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
@@ -1432,7 +1431,7 @@ trait AvailableMethods
         $direct_messages_topic_id ??= $this->directMessagesTopicId();
 
         return $this->requestMultipart(__FUNCTION__, [
-            'media' => new UploadableArray($media),
+            'media' => $media,
             ...compact(
                 'chat_id',
                 'message_thread_id',

@@ -83,6 +83,9 @@ class InputRichMessage extends BaseType implements Uploadables
 
     public function uploadables(): array
     {
-        return ['media', 'blocks'];
+        return [
+            'media' => $this->media,
+            'blocks' => $this->blocks,
+        ];
     }
 }

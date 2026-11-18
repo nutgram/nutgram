@@ -100,6 +100,9 @@ class InputMediaLivePhoto extends BaseType implements InputMedia, InputPollMedia
 
     public function uploadables(): array
     {
-        return ['media', 'photo'];
+        return [
+            'media' => $this->media,
+            'photo' => $this->photo,
+        ];
     }
 }

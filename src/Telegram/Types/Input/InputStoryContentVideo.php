@@ -59,6 +59,6 @@ class InputStoryContentVideo extends BaseType implements InputStoryContent, Uplo
 
     public function uploadables(): array
     {
-        return ['video'];
+        return ['video' => $this->video];
     }
 }

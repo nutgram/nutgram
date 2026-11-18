@@ -33,7 +33,6 @@ use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\UnknownType;
-use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
@@ -156,31 +155,34 @@ trait Client
     }
 
     /**
-     * @param mixed $value
-     * @return InputFile[]
+     * Nested values contribute file parts. A named field also carries its serialized value.
+     * @return iterable<int, array{name: int|string, contents: mixed, filename?: string}>
      */
-    protected static function collectUploadables(mixed $value): array
+    private static function multipartParts(mixed $value, int|string|null $fieldName = null): iterable
     {
         if ($value instanceof InputFile) {
-            return [$value];
+            $filename = $value->getFilename();
+            yield ['name' => $fieldName ?? $filename, 'contents' => $value->getStream(), 'filename' => $filename];
+            return;
         }
 
-        $items = match (true) {
-            $value instanceof UploadableArray => $value->files,
-            $value instanceof Uploadables => array_map(
-                static fn (string $field) => $value->{$field} ?? null,
-                $value->uploadables()
-            ),
-            is_array($value) => $value,
-            default => [],
-        };
-
-        $files = [];
-        foreach ($items as $item) {
-            array_push($files, ...self::collectUploadables($item));
+        $items = $value instanceof Uploadables ? $value->uploadables() : $value;
+        if (is_array($items)) {
+            foreach ($items as $item) {
+                yield from self::multipartParts($item);
+            }
         }
 
-        return $files;
+        if ($fieldName !== null) {
+            yield [
+                'name' => $fieldName,
+                'contents' => match (true) {
+                    $value instanceof JsonSerializable, is_array($value) => json_encode($value, JSON_THROW_ON_ERROR),
+                    $value instanceof BackedEnum => $value->value,
+                    default => $value,
+                },
+            ];
+        }
     }
 
     /**
@@ -201,32 +203,9 @@ trait Client
     ): mixed {
         $parameters = [];
         foreach (array_filter_null($multipart) as $name => $contents) {
-            if (!$contents instanceof InputFile) {
-                foreach (self::collectUploadables($contents) as $file) {
-                    $filename = $file->getFilename();
-                    $parameters[] = [
-                        'name' => $filename,
-                        'contents' => $file->getStream(),
-                        'filename' => $filename,
-                    ];
-                }
+            foreach (self::multipartParts($contents, $name) as $part) {
+                $parameters[] = $part;
             }
-
-            $parameters[] = match (true) {
-                $contents instanceof InputFile => [
-                    'name' => $name,
-                    'contents' => $contents->getStream(),
-                    'filename' => $contents->getFilename(),
-                ],
-                $contents instanceof JsonSerializable, is_array($contents) => [
-                    'name' => $name,
-                    'contents' => json_encode($contents, JSON_THROW_ON_ERROR),
-                ],
-                default => [
-                    'name' => $name,
-                    'contents' => $contents instanceof BackedEnum ? $contents->value : $contents,
-                ]
-            };
         }
 
         $this->setGuzzleHandler($options, ProgressType::Upload);

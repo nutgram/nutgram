@@ -49,6 +49,6 @@ class InputMediaSticker extends BaseType implements InputPollOptionMedia, Upload
 
     public function uploadables(): array
     {
-        return ['media'];
+        return ['media' => $this->media];
     }
 }

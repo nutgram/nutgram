@@ -42,6 +42,6 @@ class InputPollOption extends BaseType implements Uploadables
 
     public function uploadables(): array
     {
-        return ['media'];
+        return ['media' => $this->media];
     }
 }

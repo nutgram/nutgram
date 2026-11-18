@@ -7,8 +7,8 @@ namespace SergiX44\Nutgram\Telegram\Types\Internal;
 interface Uploadables
 {
     /**
-     * Names of the properties that can be uploaded
-     * @return string[]
+     * Current values of properties that may contain files, keyed by property name.
+     * @return array<string, object|array|string|null>
      */
     public function uploadables(): array;
 }

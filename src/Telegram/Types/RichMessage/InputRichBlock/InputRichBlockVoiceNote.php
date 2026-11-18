@@ -44,6 +44,6 @@ class InputRichBlockVoiceNote extends BaseType implements InputRichBlock, Upload
 
     public function uploadables(): array
     {
-        return ['voice_note'];
+        return ['voice_note' => $this->voice_note];
     }
 }
