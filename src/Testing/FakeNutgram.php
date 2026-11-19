@@ -122,7 +122,6 @@ class FakeNutgram extends Nutgram
     private static function inject(Nutgram $bot, MockHandler $mock, HandlerStack $handlerStack): void
     {
         (function () use ($handlerStack, $mock) {
-            /** @psalm-scope-this \SergiX44\Nutgram\Testing\FakeNutgram */
             $this->mockHandler = $mock;
             $this->typeFaker = $this->container->get(TypeFaker::class);
             $this->container->set(ClockInterface::class, new TestClock());

@@ -30,7 +30,6 @@ class RichTextUnionResolver extends UnionResolver
      * @param string $propertyName
      * @param array $data
      * @return string
-     * @psalm-suppress TypeDoesNotContainType
      */
     protected function getType(string $propertyName, array $data): string
     {
