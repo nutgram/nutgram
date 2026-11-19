@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
-use SergiX44\Nutgram\Telegram\Properties\ChatMemberStatus;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\ChatMemberResolver;
-use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * This object contains information about one member of a chat.
@@ -22,16 +18,6 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  * @see https://core.telegram.org/bots/api#chatmember
  */
 #[ChatMemberResolver]
-abstract class ChatMember extends BaseType
+interface ChatMember
 {
-    /**
-     * The member's status in the chat
-     */
-    #[EnumOrScalar]
-    public ChatMemberStatus|string $status;
-
-    /**
-     * Information about the user
-     */
-    public User $user;
 }

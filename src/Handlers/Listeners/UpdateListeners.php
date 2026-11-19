@@ -322,6 +322,17 @@ trait UpdateListeners
     }
 
     /**
+     * @param string $pattern
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onChatJoinRequestQuery(string $pattern, $callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::CHAT_JOIN_REQUEST->value][$pattern] = new Handler($callable, $pattern);
+    }
+
+    /**
      * @param callable|class-string|array $callable
      * @return Handler
      */
@@ -349,5 +360,91 @@ trait UpdateListeners
     {
         $this->checkFinalized();
         return $this->{$this->target}[UpdateType::MANAGED_BOT->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onGuestMessage($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::GUEST_MESSAGE->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onBotSubscriptionUpdated($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::SUBSCRIPTION->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param string $pattern
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onBotSubscriptionUpdatedPayload(string $pattern, $callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::SUBSCRIPTION->value][$pattern] = new Handler($callable, $pattern);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onMessageGenerationStopped($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::STOPPED_MESSAGE_GENERATION->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onWidgetQuery($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::WIDGET_QUERY->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param string $pattern
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onWidgetQueryData(string $pattern, $callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::WIDGET_QUERY->value][$pattern] = new Handler($callable, $pattern);
+    }
+
+    /**
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onSharedWidgetQuery($callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::SHARED_WIDGET_QUERY->value][] = new Handler($callable);
+    }
+
+    /**
+     * @param string $pattern
+     * @param callable|class-string|array $callable
+     * @return Handler
+     */
+    public function onSharedWidgetQueryData(string $pattern, $callable): Handler
+    {
+        $this->checkFinalized();
+        return $this->{$this->target}[UpdateType::SHARED_WIDGET_QUERY->value][$pattern] = new Handler(
+            $callable,
+            $pattern
+        );
     }
 }

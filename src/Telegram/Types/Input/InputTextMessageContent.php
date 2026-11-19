@@ -8,6 +8,7 @@ use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
@@ -16,7 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * @see https://core.telegram.org/bots/api#inputtextmessagecontent
  */
 #[OverrideConstructor('bindToInstance')]
-class InputTextMessageContent extends InputMessageContent
+class InputTextMessageContent extends BaseType implements InputMessageContent
 {
     /** Text of the message to be sent, 1-4096 characters */
     public string $message_text;
@@ -32,7 +33,7 @@ class InputTextMessageContent extends InputMessageContent
     /**
      * Optional.
      * List of special entities that appear in message text, which can be specified instead of parse_mode
-     * @var MessageEntity[] $entities
+     * @var MessageEntity[]|null
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $entities = null;

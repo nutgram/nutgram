@@ -8,6 +8,7 @@ use Attribute;
 use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Telegram\Properties\BackgroundFillType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\BackgroundFill;
 use SergiX44\Nutgram\Telegram\Types\Message\BackgroundFillFreeformGradient;
 use SergiX44\Nutgram\Telegram\Types\Message\BackgroundFillGradient;
@@ -25,7 +26,8 @@ class BackgroundFillResolver extends ConcreteResolver
     public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
-        return $this->concretes[$type] ?? (new class extends BackgroundFill {
+        return $this->concretes[$type] ?? (new class extends BaseType implements BackgroundFill {
+            public string $type;
         })::class;
     }
 }

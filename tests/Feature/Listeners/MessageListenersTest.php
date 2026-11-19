@@ -5,7 +5,6 @@ declare(strict_types=1);
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
-use SergiX44\Nutgram\Telegram\Types\User\User;
 
 it('calls onText() handler', function ($update) {
     $bot = Nutgram::fake($update);
@@ -742,3 +741,87 @@ it('calls onPollOptionDeleted handler', function ($update) {
 
     expect($bot->get('called'))->toBeTrue();
 })->with('poll_option_deleted');
+
+it('calls onCommunityChatAdded handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onCommunityChatAdded(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('community_chat_added');
+
+it('calls onCommunityChatRemoved handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onCommunityChatRemoved(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('community_chat_removed');
+
+it('calls onRichMessage handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onRichMessage(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('rich_message');
+
+it('calls onCommunityChatJoined handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onCommunityChatJoined(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('community_chat_joined');
+
+it('calls onPaidMessagesWaived handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onPaidMessagesWaived(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('paid_messages_waived');
+
+it('calls onTonWalletTransfer handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onTonWalletTransfer(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('ton_wallet_transfer');
+
+it('calls onWidget handler', function ($update) {
+    $bot = Nutgram::fake($update);
+
+    $bot->onWidget(function (Nutgram $bot) {
+        $bot->set('called', true);
+    });
+
+    $bot->run();
+
+    expect($bot->get('called'))->toBeTrue();
+})->with('widget');

@@ -1,0 +1,20 @@
+{
+  "update_id": 2,
+  "widget_query": {
+    "id": "666728699048485872",
+    "from": {
+      "id": 222222222,
+      "is_bot": false,
+      "first_name": "Mario",
+      "username": "Super",
+      "language_code": "it"
+    },
+    "inline_message_id": "AgAAAAAAAAAAAAAAinline",
+    "chat_instance": "1628661761791766620",
+    "chat_type": "sender",
+    "type": {
+      "type": "data"
+    },
+    "data": "thedata"
+  }
+}

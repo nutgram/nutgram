@@ -12,6 +12,8 @@ use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostSource;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostSourceGiftCode;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostSourceGiveaway;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostSourcePremium;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class ChatBoostSourceResolver extends ConcreteResolver
@@ -25,7 +27,9 @@ class ChatBoostSourceResolver extends ConcreteResolver
     public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['source'] ?? throw new InvalidArgumentException('Source must be defined');
-        return $this->concretes[$type] ?? (new class extends ChatBoostSource {
+        return $this->concretes[$type] ?? (new class extends BaseType implements ChatBoostSource {
+            public string $source;
+            public ?User $user = null;
         })::class;
     }
 }

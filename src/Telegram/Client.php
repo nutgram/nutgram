@@ -9,6 +9,8 @@ use Exception;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
+use GuzzleHttp\Exception\TransferException;
 use Illuminate\Support\Traits\Macroable;
 use JsonException;
 use JsonSerializable;
@@ -17,6 +19,8 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Support\Progress\ProgressType;
+use SergiX44\Nutgram\Support\Progress\WithProgress;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
 use SergiX44\Nutgram\Telegram\Endpoints\CustomEndpoints;
 use SergiX44\Nutgram\Telegram\Endpoints\Games;
@@ -29,10 +33,10 @@ use SergiX44\Nutgram\Telegram\Endpoints\UpdatesMessages;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\UnknownType;
-use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
-use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use Throwable;
 use function SergiX44\Nutgram\Support\array_filter_null;
 use function SergiX44\Nutgram\Support\word_wrap;
 
@@ -53,15 +57,8 @@ trait Client
         CustomEndpoints,
         Macroable,
         UpdateMethods,
-        ProvidesHttpResponse;
-
-    protected $progressHandler = null;
-
-    public function withProgress(string|array|callable|object $callable): static
-    {
-        $this->progressHandler = $callable;
-        return $this;
-    }
+        ProvidesHttpResponse,
+        WithProgress;
 
     /**
      * @param string $endpoint
@@ -81,35 +78,19 @@ trait Client
         return $this->requestJson($endpoint, options: $options);
     }
 
-    /**
-     * @param string $endpoint
-     * @param string $param
-     * @param mixed $value
-     * @param array $opt
-     * @param array $clientOpt
-     * @return Message|null
-     * @throws GuzzleException
-     * @throws JsonException
-     * @throws TelegramException
-     */
-    protected function sendAttachment(
-        string $endpoint,
-        string $param,
-        mixed $value,
-        array $opt = [],
-        array $clientOpt = []
-    ): ?Message {
-        $required = [
-            'chat_id' => $this->chatId(),
-            $param => $value,
-        ];
-
-        if (is_resource($value) || $value instanceof InputFile) {
-            $required[$param] = $value instanceof InputFile ? $value : new InputFile($value);
-            return $this->requestMultipart($endpoint, [...$required, ...$opt], Message::class, $clientOpt);
+    protected function sendAttachments(string $endpoint, array $attachments, array $parameters = [], array $clientOpt = []): ?Message
+    {
+        if (empty(array_intersect_key($parameters, array_flip($attachments)))) {
+            return $this->requestJson($endpoint, $parameters, Message::class, $clientOpt);
         }
 
-        return $this->requestJson($endpoint, [...$required, ...$opt], Message::class);
+        foreach ($parameters as $key => $value) {
+            if (in_array($key, $attachments, true) && (is_resource($value) || $value instanceof InputFile)) {
+                $parameters[$key] = $value instanceof InputFile ? $value : new InputFile($value);
+            }
+        }
+
+        return $this->requestMultipart($endpoint, $parameters, Message::class, $clientOpt);
     }
 
     /**
@@ -136,21 +117,7 @@ trait Client
             return copy($this->downloadUrl($file), $path);
         }
 
-        if ($this->progressHandler !== null) {
-            $clientOpt = [
-                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    $this->invoke($this->progressHandler, [
-                        new Progress(
-                            totalDownloadBytes: $totalDownloadBytes,
-                            downloadedBytes: $downloadedBytes,
-                            totalUploadBytes: $totalUploadBytes,
-                            uploadedBytes: $uploadedBytes,
-                        ),
-                    ]);
-                },
-                ...$clientOpt,
-            ];
-        }
+        $this->setGuzzleHandler($clientOpt, ProgressType::Download);
 
         $request = ['sink' => $path, ...$clientOpt];
         $endpoint = $this->downloadUrl($file);
@@ -159,7 +126,6 @@ trait Client
 
         try {
             $response = $this->http->get($endpoint, $requestPost ?? $request);
-            $this->progressHandler = null;
         } catch (ConnectException $e) {
             $this->redactTokenFromConnectException($e);
         }
@@ -190,6 +156,37 @@ trait Client
     }
 
     /**
+     * Nested values contribute file parts. A named field also carries its serialized value.
+     * @return iterable<int, array{name: int|string, contents: mixed, filename?: string}>
+     */
+    private static function multipartParts(mixed $value, int|string|null $fieldName = null): iterable
+    {
+        if ($value instanceof InputFile) {
+            $filename = $value->getFilename();
+            yield ['name' => $fieldName ?? $filename, 'contents' => $value->getStream(), 'filename' => $filename];
+            return;
+        }
+
+        $items = $value instanceof Uploadables ? $value->uploadables() : $value;
+        if (is_array($items)) {
+            foreach ($items as $item) {
+                yield from self::multipartParts($item);
+            }
+        }
+
+        if ($fieldName !== null) {
+            yield [
+                'name' => $fieldName,
+                'contents' => match (true) {
+                    $value instanceof JsonSerializable, is_array($value) => json_encode($value, JSON_THROW_ON_ERROR),
+                    $value instanceof BackedEnum => $value->value,
+                    default => $value,
+                },
+            ];
+        }
+    }
+
+    /**
      * @param string $endpoint
      * @param array $multipart
      * @param string $mapTo
@@ -207,51 +204,12 @@ trait Client
     ): mixed {
         $parameters = [];
         foreach (array_filter_null($multipart) as $name => $contents) {
-            if ($contents instanceof UploadableArray || $contents instanceof Uploadable) {
-                $files = $contents instanceof UploadableArray ? $contents->files : [$contents];
-                foreach ($files as $file) {
-                    if ($file->isLocal()) {
-                        $parameters[] = [
-                            'name' => $file->getFilename(),
-                            'contents' => $file->getStream(),
-                            'filename' => $file->getFilename(),
-                        ];
-                    }
-                }
+            foreach (self::multipartParts($contents, $name) as $part) {
+                $parameters[] = $part;
             }
-
-            $parameters[] = match (true) {
-                $contents instanceof InputFile => [
-                    'name' => $name,
-                    'contents' => $contents->getStream(),
-                    'filename' => $contents->getFilename(),
-                ],
-                $contents instanceof JsonSerializable, is_array($contents) => [
-                    'name' => $name,
-                    'contents' => json_encode($contents, JSON_THROW_ON_ERROR),
-                ],
-                default => [
-                    'name' => $name,
-                    'contents' => $contents instanceof BackedEnum ? $contents->value : $contents,
-                ]
-            };
         }
 
-        if ($this->progressHandler !== null) {
-            $options = [
-                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    $this->invoke($this->progressHandler, [
-                        new Progress(
-                            totalDownloadBytes: $totalDownloadBytes,
-                            downloadedBytes: $downloadedBytes,
-                            totalUploadBytes: $totalUploadBytes,
-                            uploadedBytes: $uploadedBytes,
-                        ),
-                    ]);
-                },
-                ...$options,
-            ];
-        }
+        $this->setGuzzleHandler($options, ProgressType::Upload);
 
         $request = ['multipart' => $parameters, ...$options];
 
@@ -267,7 +225,6 @@ trait Client
 
             try {
                 $response = $this->http->post($endpoint, $requestData);
-                $this->progressHandler = null;
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
@@ -276,11 +233,12 @@ trait Client
             $this->logResponse((string)$response->getBody());
 
             return $content;
-        } catch (RequestException $exception) {
-            if (!$exception->hasResponse()) {
+        } catch (TransferException $exception) {
+            $response = $this->getResponseFromException($exception);
+            if ($response === null) {
                 throw $exception;
             }
-            return $this->mapResponse($exception->getResponse(), $mapTo, $endpoint, $exception);
+            return $this->mapResponse($response, $mapTo, $endpoint, $exception);
         }
     }
 
@@ -305,21 +263,7 @@ trait Client
             default => $item,
         }, array_filter_null($json));
 
-        if ($this->progressHandler !== null) {
-            $options = [
-                'progress' => function (int $totalDownloadBytes, int $downloadedBytes, int $totalUploadBytes, int $uploadedBytes) {
-                    $this->invoke($this->progressHandler, [
-                        new Progress(
-                            totalDownloadBytes: $totalDownloadBytes,
-                            downloadedBytes: $downloadedBytes,
-                            totalUploadBytes: $totalUploadBytes,
-                            uploadedBytes: $uploadedBytes,
-                        ),
-                    ]);
-                },
-                ...$options,
-            ];
-        }
+        $this->setGuzzleHandler($options, ProgressType::Upload);
 
         $request = ['json' => $json, ...$options];
 
@@ -342,7 +286,6 @@ trait Client
                     'headers' => ['Content-Type' => 'application/json'],
                     ...$requestData,
                 ]);
-                $this->progressHandler = null;
             } catch (ConnectException $e) {
                 $this->redactTokenFromConnectException($e);
             }
@@ -351,12 +294,28 @@ trait Client
             $this->logResponse((string)$response->getBody());
 
             return $content;
-        } catch (RequestException $exception) {
-            if (!$exception->hasResponse()) {
+        } catch (TransferException $exception) {
+            $response = $this->getResponseFromException($exception);
+            if ($response === null) {
                 throw $exception;
             }
-            return $this->mapResponse($exception->getResponse(), $mapTo, $endpoint, $exception);
+            return $this->mapResponse($response, $mapTo, $endpoint, $exception);
         }
+    }
+
+    protected function getResponseFromException(Throwable $e): ?ResponseInterface
+    {
+        // Guzzle 8 uses ResponseException
+        if ($e instanceof ResponseException) {
+            return $e->getResponse();
+        }
+
+        // Guzzle 7 uses RequestException with hasResponse() true
+        if ($e instanceof RequestException && is_callable([$e, 'hasResponse']) && $e->hasResponse()) {
+            return $e->getResponse();
+        }
+
+        return null;
     }
 
     /**
@@ -428,7 +387,6 @@ trait Client
             str_replace($this->token, str_repeat('*', 5), $e->getMessage()),
             $e->getRequest(),
             $e->getPrevious(),
-            $e->getHandlerContext(),
         );
     }
 }

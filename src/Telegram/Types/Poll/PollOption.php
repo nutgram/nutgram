@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Poll;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
@@ -29,6 +29,11 @@ class PollOption extends BaseType
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $text_entities = null;
+
+    /**
+     * Optional. Media added to the poll option
+     */
+    public ?PollMedia $media = null;
 
     /** Number of users that voted for this option */
     public int $voter_count;

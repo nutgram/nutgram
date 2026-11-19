@@ -7,14 +7,16 @@ namespace SergiX44\Nutgram\Telegram\Types\Poll;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Input\InputPollOptionMedia;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
  * This object contains information about one answer option in a poll to send.
  * @see https://core.telegram.org/bots/api#inputpolloption
  */
-class InputPollOption extends BaseType
+class InputPollOption extends BaseType implements Uploadables
 {
     /** Option text, 1-100 characters */
     public string $text;
@@ -32,4 +34,14 @@ class InputPollOption extends BaseType
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $text_entities = null;
+
+    /**
+     * Optional. Media added to the poll option
+     */
+    public ?InputPollOptionMedia $media = null;
+
+    public function uploadables(): array
+    {
+        return ['media' => $this->media];
+    }
 }

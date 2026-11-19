@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
-use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Checklist\InputChecklist;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMedia;
@@ -17,6 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Payment\StarAmount;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichMessage;
 use SergiX44\Nutgram\Telegram\Types\Sticker\AcceptedGiftTypes;
 use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
 use SergiX44\Nutgram\Telegram\Types\Story\StoryArea;
@@ -25,15 +26,15 @@ use function SergiX44\Nutgram\Support\array_filter_null;
 /**
  * Trait UpdatesMessages
  * @package SergiX44\Nutgram\Telegram
- * @mixin Client
+ * @mixin Nutgram
  */
 trait UpdatesMessages
 {
     /**
-     * Use this method to edit text and {@see https://core.telegram.org/bots/api#games game} messages.
+     * Use this method to edit text, rich and {@see https://core.telegram.org/bots/api#games game} messages.
      * On success, if the edited message is not an inline message, the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagetext
-     * @param string $text New text of the message, 1-4096 characters after entities parsing
+     * @param string|null $text New text of the message, 1-4096 characters after entity parsing; required if rich_message isn't specified
      * @param int|string|null $chat_id Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_id Required if inline_message_id is not specified. Identifier of the message to edit
      * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message
@@ -43,10 +44,11 @@ trait UpdatesMessages
      * @param LinkPreviewOptions|null $link_preview_options Link preview generation options for the message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
+     * @param InputRichMessage|null $rich_message New rich content of the message; required if text isn't specified
      * @return Message|bool|null
      */
     public function editMessageText(
-        string $text,
+        ?string $text = null,
         int|string|null $chat_id = null,
         ?int $message_id = null,
         ?string $inline_message_id = null,
@@ -56,6 +58,7 @@ trait UpdatesMessages
         ?LinkPreviewOptions $link_preview_options = null,
         ?InlineKeyboardMarkup $reply_markup = null,
         ?string $business_connection_id = null,
+        ?InputRichMessage $rich_message = null,
     ): Message|bool|null {
         $parameters = compact(
             'chat_id',
@@ -68,10 +71,11 @@ trait UpdatesMessages
             'link_preview_options',
             'reply_markup',
             'business_connection_id',
+            'rich_message',
         );
         $this->setChatMessageOrInlineMessageId($parameters);
 
-        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+        return $this->requestMultipart(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -232,6 +236,52 @@ trait UpdatesMessages
     }
 
     /**
+     * Use this method to edit data of a widget in a message sent by the bot or via the bot (for inline bots).
+     * Public data of a shared widget can be changed at most once per second.
+     * On success, True is returned.
+     * @param string|null $public_data New public data of the widget, 0-1024 bytes; pass an empty string to remove the public data. If omitted, then the public data isn't changed.
+     * @param string|null $chat_data New data of the widget, which is specific to the message, 0-1024 bytes; pass an empty string to remove the data. If omitted, then the data isn't changed.
+     * @param int|string|null $chat_id Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target supergroup in the format &#64;username.
+     * @param int|null $message_id Required if inline_message_id is not specified. Identifier of the message with the widget.
+     * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#editmessagewidgetdata
+     */
+    public function editMessageWidgetData(
+        ?string $public_data = null,
+        ?string $chat_data = null,
+        int|string|null $chat_id = null,
+        ?int $message_id = null,
+        ?string $inline_message_id = null,
+    ): ?bool {
+        $parameters = compact('chat_id', 'message_id', 'inline_message_id', 'public_data', 'chat_data');
+        $this->setChatMessageOrInlineMessageId($parameters);
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to edit public data of a shared widget created by the bot.
+     * A shared widget can be edited at most once per second.
+     * On success, True is returned.
+     * @param string $public_data New public data of the widget, 0-1024 bytes; pass an empty string to remove the public data
+     * @param string|null $widget_id Unique identifier of the shared widget
+     * @param int|null $cache_time The maximum amount of time in seconds that the public data of the widget may be cached client-side; 5-3600. If omitted, then the current value is kept, which is 30 by default.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#editsharedwidgetdata
+     */
+    public function editSharedWidgetData(
+        string $public_data,
+        ?string $widget_id = null,
+        ?int $cache_time = null,
+    ): ?bool {
+        $parameters = compact('public_data', 'widget_id', 'cache_time');
+        $parameters['widget_id'] ??= $this->widgetId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
      * Use this method to edit only the reply markup of messages.
      * On success, if the edited message is not an inline message, the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagereplymarkup
@@ -285,6 +335,156 @@ trait UpdatesMessages
         );
 
         return $this->requestJson(__FUNCTION__, $parameters, Poll::class);
+    }
+
+    /**
+     * Use this method to edit an ephemeral text message.
+     * Note that it is not guaranteed that the user will receive the message edit event, especially if they are offline.
+     * On success, True is returned.
+     * @param string|null $text New text of the message, 1-4096 characters after entity parsing; required if rich_message isn't specified
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $receiver_user_id Identifier of the user who received the message
+     * @param int|null $ephemeral_message_id Identifier of the ephemeral message to edit
+     * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message text. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
+     * @param LinkPreviewOptions|null $link_preview_options Link preview generation options for the message
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
+     * @param InputRichMessage|null $rich_message New rich content of the message; required if text isn't specified
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#editephemeralmessagetext
+     */
+    public function editEphemeralMessageText(
+        ?string $text = null,
+        int|string|null $chat_id = null,
+        ?int $receiver_user_id = null,
+        ?int $ephemeral_message_id = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $entities = null,
+        ?LinkPreviewOptions $link_preview_options = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?InputRichMessage $rich_message = null,
+    ): ?bool {
+        $parameters = compact(
+            'text',
+            'chat_id',
+            'receiver_user_id',
+            'ephemeral_message_id',
+            'parse_mode',
+            'entities',
+            'link_preview_options',
+            'reply_markup',
+            'rich_message',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['receiver_user_id'] ??= $this->receiverUserId();
+        $parameters['ephemeral_message_id'] ??= $this->ephemeralMessageId();
+
+        return $this->requestMultipart(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to edit the media of an ephemeral message.
+     * Note that it is not guaranteed that the user will receive the message edit event, especially if they are offline.
+     * On success, True is returned.
+     * @param InputMedia $media A JSON-serialized object for the new media content of the message. A new file can't be uploaded; use a previously uploaded file via its file_id or specify a URL.
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $receiver_user_id Identifier of the user who received the message
+     * @param int|null $ephemeral_message_id Identifier of the ephemeral message to edit
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#editephemeralmessagemedia
+     */
+    public function editEphemeralMessageMedia(
+        InputMedia $media,
+        int|string|null $chat_id = null,
+        ?int $receiver_user_id = null,
+        ?int $ephemeral_message_id = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+    ): ?bool {
+        $parameters = compact(
+            'media',
+            'chat_id',
+            'receiver_user_id',
+            'ephemeral_message_id',
+            'reply_markup',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['receiver_user_id'] ??= $this->receiverUserId();
+        $parameters['ephemeral_message_id'] ??= $this->ephemeralMessageId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to edit the caption of an ephemeral message.
+     * Note that it is not guaranteed that the user will receive the message edit event, especially if they are offline.
+     * On success, True is returned.
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $receiver_user_id Identifier of the user who received the message
+     * @param int|null $ephemeral_message_id Identifier of the ephemeral message to edit
+     * @param string|null $caption New caption of the message, 0-1024 characters after entities parsing
+     * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param array|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
+     * @param bool|null $show_caption_above_media Pass True if the caption must be shown above the message media. Supported only for animation, photo and video messages.
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#editephemeralmessagecaption
+     */
+    public function editEphemeralMessageCaption(
+        int|string|null $chat_id = null,
+        ?int $receiver_user_id = null,
+        ?int $ephemeral_message_id = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+        ?bool $show_caption_above_media = null,
+    ): ?bool {
+        $parameters = compact(
+            'chat_id',
+            'receiver_user_id',
+            'ephemeral_message_id',
+            'caption',
+            'parse_mode',
+            'caption_entities',
+            'reply_markup',
+            'show_caption_above_media',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['receiver_user_id'] ??= $this->receiverUserId();
+        $parameters['ephemeral_message_id'] ??= $this->ephemeralMessageId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to edit only the reply markup of an ephemeral message.
+     * Note that it is not guaranteed that the user will receive the message edit event, especially if they are offline.
+     * On success, True is returned.
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $receiver_user_id Identifier of the user who received the message
+     * @param int|null $ephemeral_message_id Identifier of the ephemeral message to edit
+     * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#editephemeralmessagereplymarkup
+     */
+    public function editEphemeralMessageReplyMarkup(
+        int|string|null $chat_id = null,
+        ?int $receiver_user_id = null,
+        ?int $ephemeral_message_id = null,
+        ?InlineKeyboardMarkup $reply_markup = null,
+    ): ?bool {
+        $parameters = compact(
+            'chat_id',
+            'receiver_user_id',
+            'ephemeral_message_id',
+            'reply_markup',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['receiver_user_id'] ??= $this->receiverUserId();
+        $parameters['ephemeral_message_id'] ??= $this->ephemeralMessageId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -360,6 +560,62 @@ trait UpdatesMessages
     public function deleteMessages(int|string $chat_id, array $message_ids): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'message_ids'));
+    }
+
+    /**
+     * Use this method to delete an ephemeral message.
+     * Note that it is not guaranteed that the user will receive the message deletion event,
+     * especially if they are offline.
+     * Returns True on success.
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $receiver_user_id Identifier of the user who received the message
+     * @param int|null $ephemeral_message_id Identifier of the ephemeral message to delete
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#deleteephemeralmessage
+     */
+    public function deleteEphemeralMessage(
+        int|string|null $chat_id = null,
+        int|null $receiver_user_id = null,
+        int|null $ephemeral_message_id = null,
+    ): ?bool {
+        $parameters = compact('chat_id', 'receiver_user_id', 'ephemeral_message_id');
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['receiver_user_id'] ??= $this->receiverUserId();
+        $parameters['ephemeral_message_id'] ??= $this->ephemeralMessageId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to remove a reaction from a message in a group or a supergroup chat.
+     * The bot must have the 'can_delete_messages' administrator right in the chat. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;username)
+     * @param int $message_id Identifier of the target message
+     * @param int|null $user_id Identifier of the user whose reaction will be removed, if the reaction was added by a user
+     * @param int|null $actor_chat_id Identifier of the chat whose reaction will be removed, if the reaction was added by a chat
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#deletemessagereaction
+     */
+    public function deleteMessageReaction(int|string $chat_id, int $message_id, ?int $user_id = null, ?int $actor_chat_id = null): ?bool
+    {
+        $parameters = compact('chat_id', 'message_id', 'user_id', 'actor_chat_id');
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to remove up to 10000 recent reactions in a group or a supergroup chat added by a given user or chat. The bot must have the 'can_delete_messages' administrator right in the chat. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;username)
+     * @param int|null $user_id Identifier of the user whose reactions will be removed, if the reactions were added by a user
+     * @param int|null $actor_chat_id Identifier of the chat whose reactions will be removed, if the reactions were added by a chat
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#deleteallmessagereactions
+     */
+    public function deleteAllMessageReactions(int|string $chat_id, ?int $user_id = null, ?int $actor_chat_id = null): ?bool
+    {
+        $parameters = compact('chat_id', 'user_id', 'actor_chat_id');
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**

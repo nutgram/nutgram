@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard.

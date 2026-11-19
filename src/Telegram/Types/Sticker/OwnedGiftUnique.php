@@ -6,12 +6,14 @@ namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\OwnedGiftType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * Describes a unique gift received and owned by a user or a chat.
  * @see https://core.telegram.org/bots/api#ownedgiftunique
  */
-class OwnedGiftUnique extends OwnedGift
+class OwnedGiftUnique extends BaseType implements OwnedGift
 {
     /**
      * Type of the gift, always “unique”
@@ -23,6 +25,26 @@ class OwnedGiftUnique extends OwnedGift
      * Information about the unique gift
      */
     public UniqueGift $gift;
+
+    /**
+     * Optional. Unique identifier of the received gift for the bot; for gifts received on behalf of business accounts only
+     */
+    public ?string $owned_gift_id = null;
+
+    /**
+     * Optional. Sender of the gift if it is a known user
+     */
+    public ?User $sender_user = null;
+
+    /**
+     * Date the gift was sent in Unix time
+     */
+    public int $send_date;
+
+    /**
+     * Optional. True, if the gift is displayed on the account's profile page; for gifts received on behalf of business accounts only
+     */
+    public ?bool $is_saved = null;
 
     /**
      * Optional. True, if the gift can be transferred to another owner; for gifts received on behalf of business accounts only

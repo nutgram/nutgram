@@ -7,9 +7,9 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ButtonStyle;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Common\LoginUrl;
 use SergiX44\Nutgram\Telegram\Types\Game\CallbackGame;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 /**
@@ -109,6 +109,11 @@ class InlineKeyboardButton extends BaseType
      */
     public ?bool $pay = null;
 
+    /**
+     * Optional. If set, then the button is disabled and does nothing
+     */
+    public ?DisabledButton $disabled = null;
+
     public function __construct(
         string $text,
         ?string $url = null,
@@ -123,6 +128,7 @@ class InlineKeyboardButton extends BaseType
         ?CopyTextButton $copy_text = null,
         ?string $icon_custom_emoji_id = null,
         ButtonStyle|string|null $style = null,
+        ?DisabledButton $disabled = null
     ) {
         parent::__construct();
         $this->text = $text;
@@ -138,5 +144,6 @@ class InlineKeyboardButton extends BaseType
         $this->copy_text = $copy_text;
         $this->icon_custom_emoji_id = $icon_custom_emoji_id;
         $this->style = $style;
+        $this->disabled = $disabled;
     }
 }

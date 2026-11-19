@@ -110,6 +110,18 @@ abstract class ResolveHandlers extends CollectHandlers
         } elseif ($updateType === UpdateType::PURCHASED_PAID_MEDIA) {
             $data = $this->update->purchased_paid_media?->paid_media_payload;
             $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::CHAT_JOIN_REQUEST) {
+            $data = $this->update->chat_join_request?->query_id;
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::SUBSCRIPTION) {
+            $data = $this->update->subscription?->invoice_payload;
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::WIDGET_QUERY) {
+            $data = $this->update->widget_query?->data;
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::SHARED_WIDGET_QUERY) {
+            $data = $this->update->shared_widget_query?->data;
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         }
 
         if (empty($resolvedHandlers)) {
@@ -317,8 +329,11 @@ abstract class ResolveHandlers extends CollectHandlers
                         foreach ($middlewares as $middleware) {
                             $leaf->middleware($middleware);
                         }
-                        if ($leaf instanceof InternalCommand && !empty($scopes)) {
-                            $leaf->scope($scopes);
+                        if ($leaf instanceof InternalCommand) {
+                            if (!empty($scopes)) {
+                                $leaf->scope($scopes);
+                            }
+                            $leaf->ephemeral($group->isEphemeral());
                         }
                         $leaf->tags([...$leaf->getTags(), ...$tags]);
                         $leaf->unless($group->isDisabled());

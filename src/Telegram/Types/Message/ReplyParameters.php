@@ -6,8 +6,10 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
+use SergiX44\Nutgram\Telegram\Types\Internal\UnionResolvers\RichTextUnionResolver;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
 
 /**
  * Describes reply parameters for the message that is being sent.
@@ -17,18 +19,29 @@ use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 class ReplyParameters extends BaseType
 {
     /**
-     * Identifier of the message that will be replied to in the current chat, or in the chat chat_id if it is specified
-     * @var int
+     * Optional.
+     * Identifier of the message that will be replied to in the current chat, or in the chat chat_id if it is specified.
+     * Required if ephemeral_message_id isn't specified.
      */
-    public int $message_id;
+    public ?int $message_id = null;
 
     /**
-     * Optional. If the message to be replied to is from a different chat,
+     * Optional.
+     * If the message to be replied to is from a different chat,
      * unique identifier for the chat or username of the channel (in the format [at]channelusername)
      * @var int|string|null
      */
     #[BaseUnion]
     public int|string|null $chat_id = null;
+
+    /**
+     * Optional.
+     * Identifier of the incoming ephemeral message that will be replied to in the current chat.
+     * A reply to an ephemeral message must itself be an ephemeral message.
+     * An ephemeral message may only be replied to within 15 seconds of being sent.
+     * Required if message_id isn't specified.
+     */
+    public ?int $ephemeral_message_id = null;
 
     /**
      * Optional. Pass True if the message should be sent even if the specified message to be replied to is not found;
@@ -61,6 +74,38 @@ class ReplyParameters extends BaseType
     public ?array $quote_entities = null;
 
     /**
+     * Optional. A JSON-serialized list of quoted parts of the {@see https://core.telegram.org/bots/api#richmessage rich message} to be replied to.
+     * Must contain one element for each quoted text of the message in the order of their appearance.
+     * Each of the following is a separate quoted text: the text of a paragraph, a heading, a preformatted block, a footer, or a mathematical expression;
+     * the text and the credit of a block quotation or a pull quotation; the summary of a details block; the caption and each cell of a table;
+     * the text and the credit of a caption of a media block, a collage, a slideshow, or a map.
+     * Texts of blocks nested in lists, block quotations, details, collages, and slideshows are separate quoted texts too.
+     * The first and the last elements can contain only a part of the corresponding text; all other elements must contain the whole text.
+     * Formatting of the quoted parts must be kept, and rich texts must be nested in the same way as in the message received from the server.
+     * Mathematical expressions must be quoted entirely.
+     * Buttons in {@see https://core.telegram.org/bots/api#richblockbuttons RichBlockButtons}, anchors and dividers can't be quoted.
+     * Up to 32 quoted texts with total length up to 1024 characters can be specified.
+     * Only plain text,
+     * {@see https://core.telegram.org/bots/api#richtextbold RichTextBold},
+     * {@see https://core.telegram.org/bots/api#richtextitalic RichTextItalic},
+     * {@see https://core.telegram.org/bots/api#richtextunderline RichTextUnderline},
+     * {@see https://core.telegram.org/bots/api#richtextstrikethrough RichTextStrikethrough},
+     * {@see https://core.telegram.org/bots/api#richtextspoiler RichTextSpoiler},
+     * {@see https://core.telegram.org/bots/api#richtextsubscript RichTextSubscript},
+     * {@see https://core.telegram.org/bots/api#richtextsuperscript RichTextSuperscript},
+     * {@see https://core.telegram.org/bots/api#richtextdatetime RichTextDateTime},
+     * {@see https://core.telegram.org/bots/api#richtextcustomemoji RichTextCustomEmoji},
+     * {@see https://core.telegram.org/bots/api#richtextmathematicalexpression RichTextMathematicalExpression},
+     * and arrays of them are kept in the quote;
+     * other rich text types are replaced with their text.
+     * If non-empty, then quote, quote_parse_mode and quote_entities are ignored.
+     * @var string|RichText|array<mixed>|null
+     */
+    #[ArrayType(RichText::class, skipScalars: true)]
+    #[RichTextUnionResolver]
+    public string|array|RichText|null $quote_rich_texts = null;
+
+    /**
      * Optional. Position of the quote in the original message in UTF-16 code units
      * @var int|null
      */
@@ -78,7 +123,7 @@ class ReplyParameters extends BaseType
     public ?string $poll_option_id = null;
 
     /**
-     * @param int $message_id
+     * @param int|null $message_id
      * @param int|string|null $chat_id
      * @param bool|null $allow_sending_without_reply
      * @param string|null $quote
@@ -87,9 +132,11 @@ class ReplyParameters extends BaseType
      * @param int|null $quote_position
      * @param int|null $checklist_task_id
      * @param string|null $poll_option_id
+     * @param int|null $ephemeral_message_id
+     * @param string|RichText|array<mixed>|null $quote_rich_texts
      */
     public function __construct(
-        int $message_id,
+        ?int $message_id = null,
         int|string|null $chat_id = null,
         ?bool $allow_sending_without_reply = null,
         ?string $quote = null,
@@ -98,6 +145,8 @@ class ReplyParameters extends BaseType
         ?int $quote_position = null,
         ?int $checklist_task_id = null,
         ?string $poll_option_id = null,
+        ?int $ephemeral_message_id = null,
+        string|array|RichText|null $quote_rich_texts = null,
     ) {
         parent::__construct();
         $this->message_id = $message_id;
@@ -109,5 +158,7 @@ class ReplyParameters extends BaseType
         $this->quote_position = $quote_position;
         $this->checklist_task_id = $checklist_task_id;
         $this->poll_option_id = $poll_option_id;
+        $this->ephemeral_message_id = $ephemeral_message_id;
+        $this->quote_rich_texts = $quote_rich_texts;
     }
 }

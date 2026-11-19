@@ -7,7 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ButtonStyle;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 /**
@@ -103,6 +103,7 @@ class KeyboardButton extends BaseType
         ?KeyboardButtonRequestChat $request_chat = null,
         ?string $icon_custom_emoji_id = null,
         ButtonStyle|string|null $style = null,
+        ?KeyboardButtonRequestManagedBot $request_managed_bot = null,
     ) {
         parent::__construct();
         $this->text = $text;
@@ -114,5 +115,6 @@ class KeyboardButton extends BaseType
         $this->request_chat = $request_chat;
         $this->icon_custom_emoji_id = $icon_custom_emoji_id;
         $this->style = $style;
+        $this->request_managed_bot = $request_managed_bot;
     }
 }

@@ -6,12 +6,13 @@ namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PaidMediaType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * The paid media isn't available before the payment.
  * @see https://core.telegram.org/bots/api#paidmediapreview
  */
-class PaidMediaPreview extends PaidMedia
+class PaidMediaPreview extends BaseType implements PaidMedia
 {
     /**
      * Type of the paid media, always “preview”

@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a contact message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputcontactmessagecontent
  */
 #[OverrideConstructor('bindToInstance')]
-class InputContactMessageContent extends InputMessageContent
+class InputContactMessageContent extends BaseType implements InputMessageContent
 {
     /** Contact's phone number */
     public string $phone_number;

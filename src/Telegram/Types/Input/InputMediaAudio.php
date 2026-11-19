@@ -9,8 +9,10 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
@@ -18,11 +20,21 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * @see https://core.telegram.org/bots/api#inputmediaaudio
  */
 #[OverrideConstructor('bindToInstance')]
-class InputMediaAudio extends InputMedia
+class InputMediaAudio extends BaseType implements InputMedia, InputPollMedia, Uploadables
 {
     /** Type of the result, must be audio */
     #[EnumOrScalar]
     public InputMediaType|string $type = InputMediaType::AUDIO;
+
+    /**
+     * File to send.
+     * Pass a file_id to send a file that exists on the Telegram servers (recommended),
+     * pass an HTTP URL for Telegram to get a file from the Internet,
+     * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
+     * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
+     */
+    #[BaseUnion]
+    public InputFile|string $media;
 
     /**
      * Optional.
@@ -79,13 +91,13 @@ class InputMediaAudio extends InputMedia
 
     public function __construct(
         InputFile|string $media,
-        InputFile|string|null $thumbnail,
-        ?string $caption,
-        ParseMode|string|null $parse_mode,
-        ?array $caption_entities,
-        ?int $duration,
-        ?string $performer,
-        ?string $title
+        InputFile|string|null $thumbnail = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?int $duration = null,
+        ?string $performer = null,
+        ?string $title = null,
     ) {
         parent::__construct();
         $this->media = $media;
@@ -96,5 +108,13 @@ class InputMediaAudio extends InputMedia
         $this->duration = $duration;
         $this->performer = $performer;
         $this->title = $title;
+    }
+
+    public function uploadables(): array
+    {
+        return [
+            'media' => $this->media,
+            'thumbnail' => $this->thumbnail,
+        ];
     }
 }

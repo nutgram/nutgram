@@ -7,6 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Inline;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 /**
@@ -14,7 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * @see https://core.telegram.org/bots/api#inlinequeryresultgame
  */
 #[OverrideConstructor('bindToInstance')]
-class InlineQueryResultGame extends InlineQueryResult
+class InlineQueryResultGame extends BaseType implements InlineQueryResult
 {
     /** Type of the result, must be game */
     #[EnumOrScalar]

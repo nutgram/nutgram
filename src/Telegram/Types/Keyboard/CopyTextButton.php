@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object represents an inline keyboard button that copies specified text to the clipboard.

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
-use SergiX44\Nutgram\Telegram\Properties\TransactionPartnerType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\TransactionPartnerResolver;
 
 /**
@@ -22,11 +19,6 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\TransactionPartnerResolve
  * @see https://core.telegram.org/bots/api#transactionpartner
  */
 #[TransactionPartnerResolver]
-abstract class TransactionPartner extends BaseType
+interface TransactionPartner
 {
-    /**
-     * Type of the transaction partner.
-     */
-    #[EnumOrScalar]
-    public TransactionPartnerType|string $type;
 }

@@ -6,6 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\BackgroundTypeType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\Document;
 
 /**
@@ -13,7 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Document;
  * The background is a wallpaper in the JPEG format.
  * @see https://core.telegram.org/bots/api#backgroundtypewallpaper
  */
-class BackgroundTypeWallpaper extends BackgroundType
+class BackgroundTypeWallpaper extends BaseType implements BackgroundType
 {
     /**
      * Type of the background, always “wallpaper”

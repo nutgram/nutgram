@@ -136,7 +136,7 @@ class Nutgram extends ResolveHandlers
 
     public function getBotId(): int
     {
-        return $this->config->botId ?? (int)explode(':', $this->token)[0];
+        return (int)explode(':', $this->token)[0];
     }
 
     /**
@@ -281,6 +281,11 @@ class Nutgram extends ResolveHandlers
     public function getContainer(): Container
     {
         return $this->container;
+    }
+
+    public function getHydrator(): Hydrator
+    {
+        return $this->hydrator;
     }
 
     public function bindParameter(string $name, callable $resolver): \SergiX44\Container\Definition

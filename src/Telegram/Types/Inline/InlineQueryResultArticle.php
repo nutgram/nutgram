@@ -8,6 +8,7 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMessageContent;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 /**
@@ -15,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
  * @see https://core.telegram.org/bots/api#inlinequeryresultarticle
  */
 #[OverrideConstructor('bindToInstance')]
-class InlineQueryResultArticle extends InlineQueryResult
+class InlineQueryResultArticle extends BaseType implements InlineQueryResult
 {
     /** Type of the result, must be article */
     #[EnumOrScalar]

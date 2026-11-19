@@ -19,7 +19,8 @@
       "can_promote_members": false,
       "can_manage_video_chats": true,
       "is_anonymous": false,
-      "can_manage_voice_chats": true
+      "can_manage_voice_chats": true,
+      "can_send_welcome_messages": true
     },
     {
       "user": {

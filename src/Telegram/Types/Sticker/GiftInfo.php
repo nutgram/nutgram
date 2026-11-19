@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
@@ -51,7 +51,7 @@ class GiftInfo extends BaseType
 
     /**
      * Optional. Special entities that appear in the text
-     * @var MessageEntity[]
+     * @var MessageEntity[]|null
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $entities = null;

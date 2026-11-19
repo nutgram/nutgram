@@ -7,14 +7,17 @@ namespace SergiX44\Nutgram\Telegram\Properties;
 enum MessageType: string
 {
     case TEXT = 'text';
+    case RICH_MESSAGE = 'rich_message';
     case ANIMATION = 'animation';
     case AUDIO = 'audio';
     case DOCUMENT = 'document';
     case PHOTO = 'photo';
+    case LIVE_PHOTO = 'live_photo';
     case STICKER = 'sticker';
     case VIDEO = 'video';
     case VIDEO_NOTE = 'video_note';
     case VOICE = 'voice';
+    case WIDGET = 'widget';
     case CHECKLIST = 'checklist';
     case CONTACT = 'contact';
     case DICE = 'dice';
@@ -50,6 +53,9 @@ enum MessageType: string
     case BOOST_ADDED = 'boost_added';
     case CHECKLIST_TASKS_DONE = 'checklist_tasks_done';
     case CHECKLIST_TASKS_ADDED = 'checklist_tasks_added';
+    case COMMUNITY_CHAT_ADDED = 'community_chat_added';
+    case COMMUNITY_CHAT_JOINED = 'community_chat_joined';
+    case COMMUNITY_CHAT_REMOVED = 'community_chat_removed';
     case DIRECT_MESSAGE_PRICE_CHANGED = 'direct_message_price_changed';
     case FORUM_TOPIC_CREATED = 'forum_topic_created';
     case FORUM_TOPIC_EDITED = 'forum_topic_edited';
@@ -61,8 +67,10 @@ enum MessageType: string
     case GIVEAWAY_COMPLETED = 'giveaway_completed';
     case MANAGED_BOT_CREATED = 'managed_bot_created';
     case PAID_MESSAGE_PRICE_CHANGED = 'paid_message_price_changed';
+    case PAID_MESSAGES_WAIVED = 'paid_messages_waived';
     case POLL_OPTION_ADDED = 'poll_option_added';
     case POLL_OPTION_DELETED = 'poll_option_deleted';
+    case TON_WALLET_TRANSFER = 'ton_wallet_transfer';
     case VIDEO_CHAT_SCHEDULED = 'video_chat_scheduled';
     case VIDEO_CHAT_STARTED = 'video_chat_started';
     case VIDEO_CHAT_ENDED = 'video_chat_ended';

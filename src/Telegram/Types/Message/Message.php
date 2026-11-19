@@ -7,7 +7,6 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostAdded;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatOwnerChanged;
@@ -15,6 +14,9 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatOwnerLeft;
 use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
 use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksAdded;
 use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksDone;
+use SergiX44\Nutgram\Telegram\Types\Community\CommunityChatAdded;
+use SergiX44\Nutgram\Telegram\Types\Community\CommunityChatJoined;
+use SergiX44\Nutgram\Telegram\Types\Community\CommunityChatRemoved;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicClosed;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicCreated;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicEdited;
@@ -27,6 +29,7 @@ use SergiX44\Nutgram\Telegram\Types\Giveaway\Giveaway;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCompleted;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCreated;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayWinners;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ExternalReplyInfo;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -41,6 +44,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Media\Contact;
 use SergiX44\Nutgram\Telegram\Types\Media\Dice;
 use SergiX44\Nutgram\Telegram\Types\Media\Document;
+use SergiX44\Nutgram\Telegram\Types\Media\LivePhoto;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 use SergiX44\Nutgram\Telegram\Types\Media\Story;
 use SergiX44\Nutgram\Telegram\Types\Media\Video;
@@ -51,12 +55,15 @@ use SergiX44\Nutgram\Telegram\Types\Payment\DirectMessagePriceChanged;
 use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaInfo;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMessagePriceChanged;
+use SergiX44\Nutgram\Telegram\Types\Payment\PaidMessagesWaived;
 use SergiX44\Nutgram\Telegram\Types\Payment\RefundedPayment;
 use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
+use SergiX44\Nutgram\Telegram\Types\Payment\TonWalletTransfer;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionAdded;
 use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionDeleted;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichMessage;
 use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
 use SergiX44\Nutgram\Telegram\Types\Sticker\GiftInfo;
@@ -74,12 +81,13 @@ use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatParticipantsInvited;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatScheduled;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatStarted;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppData;
+use SergiX44\Nutgram\Telegram\Types\Widget\Widget;
 
 /**
  * This object represents a message.
  * @see https://core.telegram.org/bots/api#message
  */
-class Message extends MaybeInaccessibleMessage
+class Message extends BaseType implements MaybeInaccessibleMessage
 {
     /** Unique message identifier inside this chat */
     public int $message_id;
@@ -129,8 +137,26 @@ class Message extends MaybeInaccessibleMessage
      */
     public ?string $sender_tag = null;
 
+    /**
+     * Optional. For ephemeral messages, the user who received the message
+     */
+    public ?User $receiver_user = null;
+
+    /**
+     * Optional. For ephemeral messages, identifier of the ephemeral message inside this chat.
+     * The identifier may be reused for another ephemeral message after the message is deleted or expires.
+     */
+    public ?int $ephemeral_message_id = null;
+
     /** Date the message was sent in Unix time */
     public int $date;
+
+    /**
+     * Optional. The unique identifier for the guest query.
+     * Use this identifier with the method {@see https://core.telegram.org/bots/api#answerguestquery answerGuestQuery} to send a response message.
+     * If non-empty, the message belongs to the chat where the guest bot was summoned, which may not coincide with other existing bot chats sharing the same identifier.
+     */
+    public ?string $guest_query_id = null;
 
     /**
      * Optional. Unique identifier of the business connection from which the message was received.
@@ -199,6 +225,16 @@ class Message extends MaybeInaccessibleMessage
     public ?User $via_bot = null;
 
     /**
+     * Optional. For a message sent by a guest bot, this is the user whose original message triggered the bot's response
+     */
+    public ?User $guest_bot_caller_user = null;
+
+    /**
+     * Optional. For a message sent by a guest bot, this is the chat whose original message triggered the bot's response
+     */
+    public ?Chat $guest_bot_caller_chat = null;
+
+    /**
      * Optional.
      * Date the message was last edited in Unix time
      */
@@ -249,7 +285,7 @@ class Message extends MaybeInaccessibleMessage
      * Optional.
      * For text messages, special entities like usernames, URLs, bot commands, etc.
      * that appear in the text
-     * @var MessageEntity[] $entities
+     * @var MessageEntity[]|null
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $entities = null;
@@ -272,6 +308,11 @@ class Message extends MaybeInaccessibleMessage
     public ?string $effect_id = null;
 
     /**
+     * Optional. Message is a rich formatted message
+     */
+    public ?RichMessage $rich_message = null;
+
+    /**
      * Optional.
      * Message is an animation, information about the animation.
      * For backward compatibility, when this field is set, the document field will also be set
@@ -289,6 +330,12 @@ class Message extends MaybeInaccessibleMessage
      * Message is a general file, information about the file
      */
     public ?Document $document = null;
+
+    /**
+     * Optional. Message is a live photo, information about the live photo.
+     * For backward compatibility, when this field is set, the photo field will also be set
+     */
+    public ?LivePhoto $live_photo = null;
 
     /**
      * Optional. Message contains paid media; information about the paid media
@@ -332,6 +379,11 @@ class Message extends MaybeInaccessibleMessage
      * Message is a voice message, information about the file
      */
     public ?Voice $voice = null;
+
+    /**
+     * Optional. Message is an HTML widget, information about the widget
+     */
+    public ?Widget $widget = null;
 
     /**
      * Optional.
@@ -587,6 +639,21 @@ class Message extends MaybeInaccessibleMessage
     public ?ChecklistTasksAdded $checklist_tasks_added = null;
 
     /**
+     * Optional. Service message: chat added to a {@see https://core.telegram.org/bots/api#community Community}
+     */
+    public ?CommunityChatAdded $community_chat_added = null;
+
+    /**
+     * Optional. Service message: chat was joined by a user from a {@see https://core.telegram.org/bots/api#community Community}
+     */
+    public ?CommunityChatJoined $community_chat_joined = null;
+
+    /**
+     * Optional. Service message: chat removed from a {@see https://core.telegram.org/bots/api#community Community}
+     */
+    public ?CommunityChatRemoved $community_chat_removed = null;
+
+    /**
      * Optional.
      * Service message: the price for paid messages in the corresponding direct messages chat of a channel has changed
      */
@@ -659,6 +726,13 @@ class Message extends MaybeInaccessibleMessage
     public ?PaidMessagePriceChanged $paid_message_price_changed = null;
 
     /**
+     * Optional.
+     * Service message: the sender of the message used a link of the other user,
+     * which allows sending messages to the user without paying Telegram Stars
+     */
+    public ?PaidMessagesWaived $paid_messages_waived = null;
+
+    /**
      * Optional. Service message: answer option was added to a poll
      */
     public ?PollOptionAdded $poll_option_added = null;
@@ -692,6 +766,11 @@ class Message extends MaybeInaccessibleMessage
      * Optional. Service message: payment for a suggested post was refunded
      */
     public ?SuggestedPostRefunded $suggested_post_refunded = null;
+
+    /**
+     * Optional. Service message: a transfer with a TON wallet
+     */
+    public ?TonWalletTransfer $ton_wallet_transfer = null;
 
     /**
      * Optional.
@@ -767,13 +846,16 @@ class Message extends MaybeInaccessibleMessage
     {
         return match (true) {
             $this->text !== null => MessageType::TEXT,
+            $this->rich_message !== null => MessageType::RICH_MESSAGE,
             $this->audio !== null => MessageType::AUDIO,
             $this->animation !== null => MessageType::ANIMATION,
             $this->game !== null => MessageType::GAME,
+            $this->live_photo !== null => MessageType::LIVE_PHOTO,
             $this->photo !== null => MessageType::PHOTO,
             $this->sticker !== null => MessageType::STICKER,
             $this->video !== null => MessageType::VIDEO,
             $this->voice !== null => MessageType::VOICE,
+            $this->widget !== null => MessageType::WIDGET,
             $this->video_note !== null => MessageType::VIDEO_NOTE,
             $this->checklist !== null => MessageType::CHECKLIST,
             $this->contact !== null => MessageType::CONTACT,
@@ -809,6 +891,9 @@ class Message extends MaybeInaccessibleMessage
             $this->boost_added !== null => MessageType::BOOST_ADDED,
             $this->checklist_tasks_done !== null => MessageType::CHECKLIST_TASKS_DONE,
             $this->checklist_tasks_added !== null => MessageType::CHECKLIST_TASKS_ADDED,
+            $this->community_chat_added !== null => MessageType::COMMUNITY_CHAT_ADDED,
+            $this->community_chat_joined !== null => MessageType::COMMUNITY_CHAT_JOINED,
+            $this->community_chat_removed !== null => MessageType::COMMUNITY_CHAT_REMOVED,
             $this->direct_message_price_changed !== null => MessageType::DIRECT_MESSAGE_PRICE_CHANGED,
             $this->forum_topic_created !== null => MessageType::FORUM_TOPIC_CREATED,
             $this->forum_topic_edited !== null => MessageType::FORUM_TOPIC_EDITED,
@@ -820,8 +905,10 @@ class Message extends MaybeInaccessibleMessage
             $this->giveaway_completed !== null => MessageType::GIVEAWAY_COMPLETED,
             $this->managed_bot_created !== null => MessageType::MANAGED_BOT_CREATED,
             $this->paid_message_price_changed !== null => MessageType::PAID_MESSAGE_PRICE_CHANGED,
+            $this->paid_messages_waived !== null => MessageType::PAID_MESSAGES_WAIVED,
             $this->poll_option_added !== null => MessageType::POLL_OPTION_ADDED,
             $this->poll_option_deleted !== null => MessageType::POLL_OPTION_DELETED,
+            $this->ton_wallet_transfer !== null => MessageType::TON_WALLET_TRANSFER,
             $this->video_chat_scheduled !== null => MessageType::VIDEO_CHAT_SCHEDULED,
             $this->video_chat_started !== null => MessageType::VIDEO_CHAT_STARTED,
             $this->video_chat_ended !== null => MessageType::VIDEO_CHAT_ENDED,
@@ -848,6 +935,16 @@ class Message extends MaybeInaccessibleMessage
     public function getEntities(): ?array
     {
         return $this->entities ?? $this->caption_entities;
+    }
+
+    public function isEphemeral(): bool
+    {
+        return $this->receiver_user !== null && $this->ephemeral_message_id !== null;
+    }
+
+    public function isInaccessible(): bool
+    {
+        return false;
     }
 
     /**

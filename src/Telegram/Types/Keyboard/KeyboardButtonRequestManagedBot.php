@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object defines the parameters for the creation of a managed bot.
@@ -29,7 +29,13 @@ class KeyboardButtonRequestManagedBot extends BaseType
     public ?string $suggested_name = null;
 
     /**
-     * Optional. Suggested username for the bot
+     * Optional.
+     * Suggested username for the bot.
+     * The username must end with “bot”.
+     * If the user creating the bot has a Telegram Premium subscription,
+     * then the username can also end with “agent”, “ai”, “app”, “game”, or “gay”; in this case,
+     * the username will be assigned to the bot as a secondary username,
+     * and a regular username ending with “bot” will be assigned to the bot automatically.
      */
     public ?string $suggested_username = null;
 

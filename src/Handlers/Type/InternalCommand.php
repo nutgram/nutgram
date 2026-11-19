@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Handlers\Type;
 
 use SergiX44\Nutgram\Handlers\Handler;
+use SergiX44\Nutgram\Support\IsEphemeral;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
 
 final class InternalCommand extends Handler
 {
+    use IsEphemeral;
+
     protected array $description = [];
 
     protected array $scopes = [];
@@ -94,10 +97,15 @@ final class InternalCommand extends Handler
         if ($languageCode !== null) {
             return new BotCommand(
                 command: $this->getName(),
-                description: $descriptions[$languageCode] ?? array_shift($descriptions)
+                description: $descriptions[$languageCode] ?? array_shift($descriptions),
+                is_ephemeral: $this->isEphemeral ? true : null,
             );
         }
 
-        return new BotCommand($this->getName(), $descriptions['*'] ?? null);
+        return new BotCommand(
+            command: $this->getName(),
+            description: $descriptions['*'] ?? null,
+            is_ephemeral: $this->isEphemeral ? true : null,
+        );
     }
 }

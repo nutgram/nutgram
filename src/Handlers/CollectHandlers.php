@@ -76,15 +76,17 @@ abstract class CollectHandlers
      * @param string $type
      * @param callable|class-string|array $callableOrPattern
      * @param callable|class-string|array $callable
-     * @return Handler
+     * @return void
      */
-    private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
+    private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): void
     {
         if ($callable !== null) {
-            return $this->{$this->target}[$type][$callableOrPattern] = new Handler($callable, $callableOrPattern);
+            $this->{$this->target}[$type][$callableOrPattern] = new Handler($callable, $callableOrPattern);
+
+            return;
         }
 
-        return $this->{$this->target}[$type][] = new Handler($callableOrPattern);
+        $this->{$this->target}[$type][] = new Handler($callableOrPattern);
     }
 
     /**

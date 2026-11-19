@@ -7,7 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MessageEntityType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
@@ -22,17 +22,21 @@ class MessageEntity extends BaseType
      * Type of the entity.
      * Currently, can be
      * “mention” (&#64;username),
-     * “hashtag” (#hashtag),
-     * “cashtag” ($USD),
+     * “hashtag” (#hashtag or #hashtag&#64;chatusername),
+     * “cashtag” ($USD or $USD&#64;chatusername),
      * “bot_command” (/start&#64;jobs_bot),
      * “url” (https://telegram.org),
      * “email” (do-not-reply&#64;telegram.org),
      * “phone_number” (+1-212-555-0123),
+     * “bank_card_number” (bank card number),
+     * “ton_address” (address in the TON blockchain),
      * “bold” (bold text),
      * “italic” (italic text),
      * “underline” (underlined text),
      * “strikethrough” (strikethrough text),
      * “spoiler” (spoiler message),
+     * “blockquote” (block quotation),
+     * “expandable_blockquote” (collapsed-by-default block quotation),
      * “code” (monowidth string),
      * “pre” (monowidth block),
      * “text_link” (for clickable text URLs),
@@ -74,6 +78,19 @@ class MessageEntity extends BaseType
      */
     public ?string $custom_emoji_id = null;
 
+    /**
+     * Optional.
+     * For “date_time” only, the Unix time associated with the entity
+     */
+    public ?int $unix_time = null;
+
+    /**
+     * Optional.
+     * For “date_time” only, the string that defines the formatting of the date and time.
+     * See {@see https://core.telegram.org/bots/api#date-time-entity-formatting date-time entity formatting} for more details.
+     */
+    public ?string $date_time_format = null;
+
     public function __construct(
         MessageEntityType|string $type,
         int $offset,
@@ -82,6 +99,8 @@ class MessageEntity extends BaseType
         ?User $user = null,
         ?string $language = null,
         ?string $custom_emoji_id = null,
+        ?int $unix_time = null,
+        ?string $date_time_format = null,
     ) {
         parent::__construct();
         $this->type = $type;
@@ -91,5 +110,7 @@ class MessageEntity extends BaseType
         $this->user = $user;
         $this->language = $language;
         $this->custom_emoji_id = $custom_emoji_id;
+        $this->unix_time = $unix_time;
+        $this->date_time_format = $date_time_format;
     }
 }

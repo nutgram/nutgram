@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
-use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\StickerFormat;
 use SergiX44\Nutgram\Telegram\Properties\StickerType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputSticker;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
-use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
+use SergiX44\Nutgram\Telegram\Types\Message\EphemeralMessageParameters;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Gifts;
@@ -26,7 +26,7 @@ use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
 /**
  * Trait Stickers
  * @package SergiX44\Nutgram\Telegram\Endpoints
- * @mixin Client
+ * @mixin Nutgram
  */
 trait Stickers
 {
@@ -49,6 +49,7 @@ trait Stickers
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
      * @return Message|null
      */
@@ -68,13 +69,11 @@ trait Stickers
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'sticker',
             'chat_id',
             'message_thread_id',
             'emoji',
@@ -89,9 +88,21 @@ trait Stickers
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
+            'ephemeral_message_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'sticker', $sticker, $opt, $clientOpt);
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->sendAttachments(__FUNCTION__, ['sticker'], $parameters, $clientOpt);
     }
 
     /**
@@ -162,8 +173,8 @@ trait Stickers
             'title',
             'sticker_type',
             'needs_repainting',
+            'stickers',
         );
-        $parameters['stickers'] = new UploadableArray($stickers);
 
         return $this->requestMultipart(__FUNCTION__, $parameters, options: $clientOpt);
     }
@@ -404,51 +415,5 @@ trait Stickers
         $chat_id ??= $this->chatId();
         $parameters = compact('gift_id', 'user_id', 'text', 'text_parse_mode', 'text_entities', 'pay_for_upgrade', 'chat_id');
         return $this->requestJson(__FUNCTION__, $parameters);
-    }
-
-    /**
-     * Verifies a user on behalf of the organization which is represented by the bot. Returns True on success.
-     * @param int $user_id Unique identifier of the target user
-     * @param string|null $custom_description Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.
-     * @return bool|null
-     * @see https://core.telegram.org/bots/api#verifyuser
-     */
-    public function verifyUser(int $user_id, ?string $custom_description = null): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('user_id', 'custom_description'));
-    }
-
-    /**
-     * Verifies a chat on behalf of the organization which is represented by the bot. Returns True on success.
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @param string|null $custom_description Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.
-     * @return bool|null
-     * @see https://core.telegram.org/bots/api#verifychat
-     */
-    public function verifyChat(int|string $chat_id, ?string $custom_description = null): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id', 'custom_description'));
-    }
-
-    /**
-     * Removes verification from a user who is currently verified on behalf of the organization represented by the bot. Returns True on success.
-     * @param int $user_id Unique identifier of the target user
-     * @return bool|null
-     * @see https://core.telegram.org/bots/api#removeuserverification
-     */
-    public function removeUserVerification(int $user_id): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('user_id'));
-    }
-
-    /**
-     * Removes verification from a chat that is currently verified on behalf of the organization represented by the bot. Returns True on success.
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @return bool|null
-     * @see https://core.telegram.org/bots/api#removechatverification
-     */
-    public function removeChatVerification(int|string $chat_id): ?bool
-    {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 }

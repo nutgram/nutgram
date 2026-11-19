@@ -94,21 +94,95 @@ function get_value(mixed $value): mixed
     return $value instanceof BackedEnum ? (string)$value->value : $value;
 }
 
-if (!function_exists(__NAMESPACE__.'\getSafeReflectionTypeName')) {
-    function getSafeReflectionTypeName(?ReflectionType $type): ?string
-    {
-        if ($type instanceof ReflectionUnionType) {
-            return $type->getTypes()[0]->getName();
+function dot_get(array $array, string $key, mixed $default = null): mixed
+{
+    $dotKeys = explode('.', $key);
+    $return = $array;
+
+    foreach ($dotKeys as $dotKey) {
+        if (!isset($return[$dotKey])) {
+            return $default;
         }
 
-        if ($type instanceof ReflectionIntersectionType) {
-            return getSafeReflectionTypeName($type->getTypes()[0]);
-        }
-
-        if ($type instanceof ReflectionNamedType) {
-            return $type->getName();
-        }
-
-        return null;
+        $return = $return[$dotKey];
     }
+
+    return $return;
+}
+
+function dot_has(array $array, string $key): bool
+{
+    $dotKeys = explode('.', $key);
+    $return = $array;
+
+    foreach ($dotKeys as $dotKey) {
+        if (!isset($return[$dotKey])) {
+            return false;
+        }
+
+        $return = $return[$dotKey];
+    }
+
+    return true;
+}
+
+function is_nonscalar_json(string $value): bool
+{
+    return (str_starts_with($value, '{') && str_ends_with($value, '}'))
+        || (str_starts_with($value, '[') && str_ends_with($value, ']'));
+}
+
+/**
+ * Map the interval [$sourceStart,$sourceEnd] onto the interval [$targetStart,$targetEnd].
+ * @param float $current
+ * @param float $sourceStart
+ * @param float $sourceEnd
+ * @param float $targetStart
+ * @param float $targetEnd
+ * @param int $precision
+ * @return int|float
+ * @see https://math.stackexchange.com/a/914843
+ */
+function mapInterval(
+    float $current,
+    float $sourceStart,
+    float $sourceEnd,
+    float $targetStart = 0,
+    float $targetEnd = 100,
+    int $precision = 0,
+): int|float {
+    if ($sourceEnd <= 0) {
+        return 0;
+    }
+
+    if ($sourceEnd === $sourceStart) {
+        return $targetEnd;
+    }
+
+    $map = ($targetEnd - $targetStart) / ($sourceEnd - $sourceStart);
+    $result = $targetStart + $map * ($current - $sourceStart);
+    $result = round($result, $precision);
+
+    if ($precision === 0) {
+        return (int)$result;
+    }
+
+    return $result;
+}
+
+function getSafeReflectionTypeName(?ReflectionType $type): ?string
+{
+    if ($type instanceof ReflectionUnionType) {
+        return $type->getTypes()[0]->getName();
+    }
+
+    if ($type instanceof ReflectionIntersectionType) {
+        return getSafeReflectionTypeName($type->getTypes()[0]);
+    }
+
+    if ($type instanceof ReflectionNamedType) {
+        return $type->getName();
+    }
+
+    return null;
 }

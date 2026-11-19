@@ -34,11 +34,14 @@ final readonly class Configuration
         'business_message',
         'edited_business_message',
         'deleted_business_messages',
+        'guest_message',
         'message_reaction',
         'message_reaction_count',
         'inline_query',
         'chosen_inline_result',
         'callback_query',
+        'widget_query',
+        'shared_widget_query',
         'shipping_query',
         'pre_checkout_query',
         'purchased_paid_media',
@@ -50,14 +53,16 @@ final readonly class Configuration
         'chat_boost',
         'removed_chat_boost',
         'managed_bot',
+        'subscription',
+        'stopped_message_generation',
     ];
+
     public const bool DEFAULT_ENABLE_HTTP2 = true;
     public const int DEFAULT_CONVERSATION_TTL = 43200;
 
     /**
      * @param string $apiUrl Useful if you need to change to a local or different API server. WARNING: If the server does not support HTTP/2, remember to disable enableHttp2 in the configuration.
-     * @param int|null $botId Bot ID. It will be automatically retrieved from the bot token if not specified.
-     * @param string|null $botName Useful when the bot is a group bot (with {@see https://core.telegram.org/bots/features#privacy-mode Group Privacy} disabled) and you need to specify the bot name.
+    * @param string|null $botName Useful when the bot is a group bot (with {@see https://core.telegram.org/bots/features#privacy-mode Group Privacy} disabled) and you need to specify the bot name.
      * @param bool $testEnv Enable test environments useful when working with {@see https://core.telegram.org/bots/webapps#testing-web-apps Web Apps}.
      * @param bool $isLocal Enable the local mode when used along a self-hosted Telegram Bot API server. Nutgram will copy the file from your Telegram Bot API server instead downloading it. WARNING: If your local server does not support HTTP/2, remember to disable enableHttp2 in the configuration.
      * @param int $clientTimeout In seconds, define the timeout when sending requests to the Telegram API.
@@ -75,7 +80,6 @@ final readonly class Configuration
      */
     public function __construct(
         public string $apiUrl = self::DEFAULT_API_URL,
-        public ?int $botId = null,
         public ?string $botName = null,
         public bool $testEnv = false,
         public bool $isLocal = false,
@@ -103,7 +107,6 @@ final readonly class Configuration
     {
         return new self(
             apiUrl: $config['api_url'] ?? self::DEFAULT_API_URL,
-            botId: $config['bot_id'] ?? null,
             botName: $config['bot_name'] ?? null,
             testEnv: $config['test_env'] ?? false,
             isLocal: $config['is_local'] ?? false,
@@ -132,7 +135,6 @@ final readonly class Configuration
     {
         return [
             'api_url' => $this->apiUrl,
-            'bot_id' => $this->botId,
             'bot_name' => $this->botName,
             'test_env' => $this->testEnv,
             'is_local' => $this->isLocal,

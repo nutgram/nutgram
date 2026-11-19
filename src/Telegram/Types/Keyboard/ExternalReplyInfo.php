@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
 use SergiX44\Nutgram\Telegram\Types\Game\Game;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\Giveaway;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayWinners;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
 use SergiX44\Nutgram\Telegram\Types\Location\Venue;
 use SergiX44\Nutgram\Telegram\Types\Media\Animation;
@@ -18,6 +18,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Media\Contact;
 use SergiX44\Nutgram\Telegram\Types\Media\Dice;
 use SergiX44\Nutgram\Telegram\Types\Media\Document;
+use SergiX44\Nutgram\Telegram\Types\Media\LivePhoto;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 use SergiX44\Nutgram\Telegram\Types\Media\Story;
 use SergiX44\Nutgram\Telegram\Types\Media\Video;
@@ -29,6 +30,7 @@ use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaInfo;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
+use SergiX44\Nutgram\Telegram\Types\Widget\Widget;
 
 /**
  * This object contains information about a message that is being replied to, which may come from another chat or forum topic.
@@ -79,6 +81,11 @@ class ExternalReplyInfo extends BaseType
     public ?Document $document = null;
 
     /**
+     * Optional. Message is a live photo, information about the live photo
+     */
+    public ?LivePhoto $live_photo = null;
+
+    /**
      * Optional. Message contains paid media; information about the paid media
      */
     public ?PaidMediaInfo $paid_media = null;
@@ -119,6 +126,11 @@ class ExternalReplyInfo extends BaseType
      * @var Voice|null
      */
     public ?Voice $voice = null;
+
+    /**
+     * Optional. Message is an HTML widget, information about the widget
+     */
+    public ?Widget $widget = null;
 
     /**
      * Optional. True, if the message media is covered by a spoiler animation

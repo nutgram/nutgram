@@ -56,13 +56,25 @@ function getUpdateType(string $type, bool $associative = false): array|stdClass
 }
 
 /**
- * @param TelegramTypeContext $context
+ * @param TelegramTypeContext|TelegramTypeContext[] $context
  * @return ReflectionClass[]
  * @throws ReflectionException
  */
-function getTelegramTypes(TelegramTypeContext $context = TelegramTypeContext::All): array
+function getTelegramTypes(TelegramTypeContext|array $context = TelegramTypeContext::All): array
 {
-    $classes = glob(__DIR__.'/../src/Telegram/Types/**/*.php');
+    $context = is_array($context) ? $context : [$context];
+
+    $directory = __DIR__.'/../src/Telegram/Types/';
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS)
+    );
+
+    $classes = [];
+    foreach ($iterator as $file) {
+        if ($file->isFile() && $file->getExtension() === 'php') {
+            $classes[] = $file->getPathname();
+        }
+    }
 
     $types = array_map(function (string $classPath) {
         $classPath = realpath($classPath);
@@ -78,22 +90,25 @@ function getTelegramTypes(TelegramTypeContext $context = TelegramTypeContext::Al
             return false;
         }
 
-        if ($context === TelegramTypeContext::All) {
-            return true;
+        if ($class->isInterface() && !in_array(TelegramTypeContext::Interface, $context, true)) {
+            return false;
         }
 
-        if ($context === TelegramTypeContext::NonAbstract) {
-            return !$class->isAbstract();
+        foreach ($context as $typeContext) {
+            $matches = match ($typeContext) {
+                TelegramTypeContext::All => true,
+                TelegramTypeContext::NonAbstract => !$class->isAbstract(),
+                TelegramTypeContext::Abstract => $class->isAbstract(),
+                TelegramTypeContext::Interface => $class->isInterface(),
+                TelegramTypeContext::Buildable => $class->getConstructor()?->getDeclaringClass()->getName() === $class->getName(),
+                default => false,
+            };
+
+            if (!$matches) {
+                return false;
+            }
         }
 
-        if ($context === TelegramTypeContext::Abstract) {
-            return $class->isAbstract();
-        }
-
-        if ($context === TelegramTypeContext::Buildable) {
-            return $class->getMethod('__construct')?->getDeclaringClass()?->getName() === $class->getName();
-        }
-
-        return false;
+        return true;
     }));
 }
