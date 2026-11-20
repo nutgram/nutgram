@@ -41,7 +41,7 @@ trait WithProgress
                 int $downloadedBytes,
                 int $totalUploadBytes,
                 int $uploadedBytes,
-            ) use ($type, $callable, $trigger) {
+            ) use ($type, $callable, $trigger): void {
                 $progress = new Progress(
                     totalBytes: $type === ProgressType::Download ? $totalDownloadBytes : $totalUploadBytes,
                     currentBytes: $type === ProgressType::Download ? $downloadedBytes : $uploadedBytes,

@@ -203,7 +203,7 @@ trait Client
             $this->logRequest(
                 endpoint: $endpoint,
                 content: $requestData['multipart'],
-                options: array_filter($requestData, fn ($x) => $x !== 'multipart', ARRAY_FILTER_USE_KEY)
+                options: array_filter($requestData, fn ($x): bool => $x !== 'multipart', ARRAY_FILTER_USE_KEY)
             );
 
             try {

@@ -243,7 +243,8 @@ class TypeFaker
         try {
             $resolvedType = $unionResolver->resolve(
                 propertyName: $property->name,
-                propertyTypes: array_filter($propertyTypes, fn ($type) => $type instanceof ReflectionNamedType),
+                propertyTypes: array_filter($propertyTypes, fn (\ReflectionNamedType|\ReflectionIntersectionType $type
+                ): bool => $type instanceof ReflectionNamedType),
                 data: $userDefined,
             );
 

@@ -84,7 +84,7 @@ class Handler extends MiddlewareChain
         $pattern = str_replace('/', '\/', $this->pattern);
 
         // replace named parameters with regex
-        $replaceRule = function ($matches) {
+        $replaceRule = function ($matches): string {
             $parameterName = $matches[1];
             $constraint = $this->constraints[$parameterName] ?? '.*';
             return sprintf("(?<%s>%s?)", $parameterName, $constraint);

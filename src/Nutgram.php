@@ -100,16 +100,17 @@ class Nutgram extends ResolveHandlers
         $this->container->set(ClockInterface::class, new SystemClock());
         $this->container->singleton(CacheInterface::class, $config->cache);
         $this->container->singleton(LoggerInterface::class, $config->logger);
-        $this->container->singleton(ConversationCache::class, fn (ContainerInterface $c) => new ConversationCache(
+        $this->container->singleton(ConversationCache::class,
+            fn (ContainerInterface $c): ConversationCache => new ConversationCache(
             cache: $c->get(CacheInterface::class),
             botId: $this->getBotId(),
             ttl: $config->conversationTtl,
         ));
-        $this->container->singleton(GlobalCache::class, fn (ContainerInterface $c) => new GlobalCache(
+        $this->container->singleton(GlobalCache::class, fn (ContainerInterface $c): GlobalCache => new GlobalCache(
             cache: $c->get(CacheInterface::class),
             botId: $this->getBotId(),
         ));
-        $this->container->singleton(UserCache::class, fn (ContainerInterface $c) => new UserCache(
+        $this->container->singleton(UserCache::class, fn (ContainerInterface $c): UserCache => new UserCache(
             cache: $c->get(CacheInterface::class),
             botId: $this->getBotId(),
         ));
@@ -286,7 +287,7 @@ class Nutgram extends ResolveHandlers
         $this->preflight();
 
         $myCommands = [];
-        array_walk_recursive($this->handlers, static function ($handler) use (&$myCommands) {
+        array_walk_recursive($this->handlers, static function ($handler) use (&$myCommands): void {
             if ($handler instanceof InternalCommand && !$handler->isHidden() && !$handler->isDisabled()) {
                 // scopes
                 foreach ($handler->scopes() as $scope) {

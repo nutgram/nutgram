@@ -231,7 +231,7 @@ abstract class ResolveHandlers extends CollectHandlers
 
     protected function applyGlobalMiddleware(): void
     {
-        array_walk_recursive($this->handlers, function ($leaf) {
+        array_walk_recursive($this->handlers, function ($leaf): void {
             if ($leaf instanceof Handler) {
                 $this->applyGlobalMiddlewareTo($leaf);
                 $this->applyRateLimitersTo($leaf);
@@ -245,8 +245,8 @@ abstract class ResolveHandlers extends CollectHandlers
      */
     protected function refreshInstance(Conversation $conversation): void
     {
-        $getAttributes = fn () => array_filter(get_object_vars($this));
-        $setAttributes = function (array $attributes) {
+        $getAttributes = fn (): array => array_filter(get_object_vars($this));
+        $setAttributes = function (array $attributes): void {
             foreach ($attributes as $attribute => $value) {
                 $this->{$attribute} = $value;
             }
@@ -297,7 +297,7 @@ abstract class ResolveHandlers extends CollectHandlers
             // apply the middleware stack to the current registered group handlers
             array_walk_recursive(
                 $this->groupHandlers,
-                function ($leaf) use ($rateLimiters, $constraints, $tags, $middlewares, $scopes, $group) {
+                function ($leaf) use ($rateLimiters, $constraints, $tags, $middlewares, $scopes, $group): void {
                     if ($leaf instanceof Handler) {
                         $leaf->appendRateLimiters(array_reverse($rateLimiters));
                         $leaf->withoutThrottle($group->isWithoutRateLimit());

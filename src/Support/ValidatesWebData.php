@@ -119,7 +119,7 @@ trait ValidatesWebData
         ksort($data);
         $data = array_filter($data);
         $data = array_map(
-            fn ($key, $value) => sprintf('%s=%s', $key, $value),
+            fn ($key, $value): string => sprintf('%s=%s', $key, $value),
             array_keys($data),
             $data,
         );

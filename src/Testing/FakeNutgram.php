@@ -84,7 +84,7 @@ class FakeNutgram extends Nutgram
 
     private static function inject(Nutgram $bot, MockHandler $mock, HandlerStack $handlerStack): void
     {
-        (function () use ($handlerStack, $mock) {
+        (function () use ($handlerStack, $mock): void {
             $this->mockHandler = $mock;
             $this->typeFaker = $this->container->get(TypeFaker::class);
             $this->container->set(ClockInterface::class, new TestClock());
@@ -106,7 +106,10 @@ class FakeNutgram extends Nutgram
             }
 
             $handlerStack->push(Middleware::history($this->testingHistory));
-            $handlerStack->push(fn (callable $handler) => function (RequestInterface $request, array $options) use (
+            $handlerStack->push(fn (callable $handler): \Closure => function (
+                RequestInterface $request,
+                array $options
+            ) use (
                 $handler
             ) {
                 if ($this->mockHandler->count() === 0) {
@@ -282,7 +285,7 @@ class FakeNutgram extends Nutgram
         $middleware = !is_array($middleware) ? [$middleware] : $middleware;
         $this->globalMiddlewares = array_filter(
             array: $this->globalMiddlewares,
-            callback: fn ($item) => !in_array($item, $middleware, true),
+            callback: fn (callable $item): bool => !in_array($item, $middleware, true),
         );
 
         return $this;
@@ -307,7 +310,7 @@ class FakeNutgram extends Nutgram
     public static function getActualData(Request $request, array $mapping = []): array
     {
         $data = new RequestData($request);
-        $data->when($data->isMultipart(), function (RequestData $data) use ($mapping) {
+        $data->when($data->isMultipart(), function (RequestData $data) use ($mapping): void {
             $data->withMapping(array_map(gettype(...), $mapping));
         });
 

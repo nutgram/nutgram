@@ -13,7 +13,7 @@ use ReflectionUnionType;
 
 function array_filter_null(array $array): array
 {
-    return array_filter($array, static fn ($value) => $value !== null);
+    return array_filter($array, static fn ($value): bool => $value !== null);
 }
 
 function word_wrap(string $string, int $width = 75, string $break = "\n", bool $cut = false): string
