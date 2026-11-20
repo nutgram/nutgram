@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\RunningMode;
 
@@ -12,7 +13,6 @@ interface RespondsToWebhook
     public function canRespond(): bool;
 
     /**
-     * @param string $method
      * @param array<array-key, mixed> $parameters
      */
     public function respond(string $method, array $parameters): void;
