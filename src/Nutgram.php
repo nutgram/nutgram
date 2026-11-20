@@ -100,12 +100,14 @@ class Nutgram extends ResolveHandlers
         $this->container->set(ClockInterface::class, new SystemClock());
         $this->container->singleton(CacheInterface::class, $config->cache);
         $this->container->singleton(LoggerInterface::class, $config->logger);
-        $this->container->singleton(ConversationCache::class,
+        $this->container->singleton(
+            ConversationCache::class,
             fn (ContainerInterface $c): ConversationCache => new ConversationCache(
-            cache: $c->get(CacheInterface::class),
-            botId: $this->getBotId(),
-            ttl: $config->conversationTtl,
-        ));
+                cache: $c->get(CacheInterface::class),
+                botId: $this->getBotId(),
+                ttl: $config->conversationTtl,
+            )
+        );
         $this->container->singleton(GlobalCache::class, fn (ContainerInterface $c): GlobalCache => new GlobalCache(
             cache: $c->get(CacheInterface::class),
             botId: $this->getBotId(),
