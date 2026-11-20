@@ -95,7 +95,7 @@ class BulkMessenger
         }
 
         pcntl_async_signals(true);
-        pcntl_signal(SIGALRM, [$this, 'handleAlarm']);
+        pcntl_signal(SIGALRM, $this->handleAlarm(...));
 
         $this->handleAlarm();
     }

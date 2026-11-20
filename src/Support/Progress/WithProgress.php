@@ -50,7 +50,7 @@ trait WithProgress
                 );
 
                 $canInvokeProgress = $this->getContainer()->call(
-                    callable: [$trigger, 'handle'],
+                    callable: $trigger->handle(...),
                     arguments: [$progress, $this->getContainer()],
                 );
 

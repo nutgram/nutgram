@@ -356,7 +356,7 @@ class FakeNutgram extends Nutgram
     {
         $data = new RequestData($request);
         $data->when($data->isMultipart(), function (RequestData $data) use ($mapping) {
-            $data->withMapping(array_map(fn ($value) => gettype($value), $mapping));
+            $data->withMapping(array_map(gettype(...), $mapping));
         });
 
         return [...$data->allRaw(), ...$data->files()];
