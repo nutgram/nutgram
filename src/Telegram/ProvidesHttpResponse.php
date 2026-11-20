@@ -2,10 +2,12 @@
 
 namespace SergiX44\Nutgram\Telegram;
 
+use SergiX44\Nutgram\RunningMode\RespondsToWebhook;
+use SergiX44\Nutgram\RunningMode\RunningMode;
+
 trait ProvidesHttpResponse
 {
     protected bool $enableAsResponse = false;
-    protected bool $responseSent = false;
 
     public function asResponse(): self
     {
@@ -13,20 +15,28 @@ trait ProvidesHttpResponse
         return $this;
     }
 
-    protected function canHandleAsResponse(): bool
+    /**
+     * Hands the request to the running mode as the response to the current update,
+     * when asResponse() was called before it and the running mode can still respond.
+     * @param string $method
+     * @param array<array-key, mixed> $parameters
+     * @return bool
+     */
+    protected function respondAsWebhook(string $method, array $parameters): bool
     {
-        return !$this->responseSent && $this->enableAsResponse && function_exists('fastcgi_finish_request');
-    }
+        if (!$this->enableAsResponse) {
+            return false;
+        }
 
-    protected function sendResponse(string $methodName, array $payload): null
-    {
-        header('Content-Type: application/json', response_code: 200);
-        echo json_encode(['method' => $methodName, ...$payload['json']], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
-        fastcgi_finish_request();
-
-        $this->responseSent = true;
         $this->enableAsResponse = false;
 
-        return null;
+        $runningMode = $this->container->get(RunningMode::class);
+        if (!$runningMode instanceof RespondsToWebhook || !$runningMode->canRespond()) {
+            return false;
+        }
+
+        $runningMode->respond($method, $parameters);
+
+        return true;
     }
 }
