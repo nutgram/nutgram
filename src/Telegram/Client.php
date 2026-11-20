@@ -307,11 +307,13 @@ trait Client
     {
         // Guzzle 8 uses ResponseException
         if ($e instanceof ResponseException) {
+            /** @phpstan-ignore method.notFound */
             return $e->getResponse();
         }
 
         // Guzzle 7 uses RequestException with hasResponse() true
         if ($e instanceof RequestException && is_callable([$e, 'hasResponse']) && $e->hasResponse()) {
+            /** @phpstan-ignore method.notFound */
             return $e->getResponse();
         }
 

@@ -92,6 +92,7 @@ class PollMedia extends BaseType
             $this->sticker !== null => Sticker::class,
             $this->venue !== null => Venue::class,
             $this->video !== null => Video::class,
+            default => null,
         };
 
         return $currentType === $type;

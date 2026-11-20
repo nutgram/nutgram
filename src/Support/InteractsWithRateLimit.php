@@ -45,7 +45,7 @@ trait InteractsWithRateLimit
             return null;
         }
 
-        return $this->rateLimiters[$firstKey] ?? null;
+        return $this->rateLimiters[$firstKey];
     }
 
     public function appendRateLimiters(array $rateLimiters): void

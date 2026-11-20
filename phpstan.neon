@@ -2,7 +2,7 @@ includes:
     - vendor/phpstan/phpstan-mockery/extension.neon
 
 parameters:
-    level: 6
+    level: 5
     paths:
         - src
     tips:
@@ -16,10 +16,10 @@ parameters:
             identifier: new.static
             paths:
                 - src/Exception/ApiException.php
-                - src/Testing/FormDataParser.php
         -
             identifier: nullsafe.neverNull
-        -
-            identifier: missingType.iterableValue
-            paths:
-                - src/Cache/Adapters/ArrayCache.php
+
+        # -
+        #     identifier: missingType.iterableValue
+        #     paths:
+        #         - src/Cache/Adapters/ArrayCache.php

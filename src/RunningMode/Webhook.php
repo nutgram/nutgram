@@ -31,7 +31,6 @@ class Webhook implements RunningMode
 
     /**
      * @param Nutgram $bot
-     * @throws JsonMapper_Exception
      * @throws InvalidArgumentException
      * @throws Throwable
      */
