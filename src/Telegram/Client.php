@@ -61,10 +61,6 @@ trait Client
         WithProgress;
 
     /**
-     * @param string $endpoint
-     * @param array $parameters
-     * @param array $options
-     * @return mixed
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
@@ -94,10 +90,6 @@ trait Client
     }
 
     /**
-     * @param File $file
-     * @param string $path
-     * @param array $clientOpt
-     * @return bool|null
      * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws NotFoundExceptionInterface
@@ -133,10 +125,6 @@ trait Client
         return $response->getStatusCode() === 200;
     }
 
-    /**
-     * @param File $file
-     * @return string|null
-     */
     public function downloadUrl(File $file): string|null
     {
         if ($this->config->isLocal) {
@@ -187,11 +175,6 @@ trait Client
     }
 
     /**
-     * @param string $endpoint
-     * @param array $multipart
-     * @param string $mapTo
-     * @param array $options
-     * @return mixed
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
@@ -243,11 +226,6 @@ trait Client
     }
 
     /**
-     * @param string $endpoint
-     * @param array $json
-     * @param string $mapTo
-     * @param array $options
-     * @return mixed
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
@@ -321,11 +299,6 @@ trait Client
     }
 
     /**
-     * @param ResponseInterface $response
-     * @param string $mapTo
-     * @param string $endpoint
-     * @param Exception|null $clientException
-     * @return mixed
      * @throws JsonException
      * @throws TelegramException
      */
@@ -357,8 +330,6 @@ trait Client
 
     /**
      * Sets the chat_id + message_id or inline_message_id combination based on the current update.
-     * @param array $params
-     * @return void
      */
     protected function setChatMessageOrInlineMessageId(array &$params = []): void
     {
@@ -374,9 +345,6 @@ trait Client
 
     /**
      * Chunk a string into an array of strings.
-     * @param string $text
-     * @param int $length
-     * @return array
      */
     protected function chunkText(string $text, int $length): array
     {

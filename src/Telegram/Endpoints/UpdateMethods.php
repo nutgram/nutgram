@@ -23,11 +23,7 @@ trait UpdateMethods
      * An Array of Update objects is returned.
      * @see https://core.telegram.org/bots/api#getupdates
      * @see https://en.wikipedia.org/wiki/Push_technology#Long_polling
-     * @param int|null $offset
-     * @param int|null $limit
-     * @param int|null $timeout
      * @param string[]|null $allowed_updates
-     * @return array|null
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
@@ -45,14 +41,7 @@ trait UpdateMethods
     }
 
     /**
-     * @param string $url
-     * @param InputFile|null $certificate
-     * @param string|null $ip_address
-     * @param int|null $max_connections
      * @param string[]|null $allowed_updates
-     * @param bool|null $drop_pending_updates
-     * @param string|null $secret_token
-     * @return bool|null
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
@@ -79,7 +68,6 @@ trait UpdateMethods
 
     /**
      * @param bool $drop_pending_updates
-     * @return bool|null
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
@@ -90,7 +78,6 @@ trait UpdateMethods
     }
 
     /**
-     * @return WebhookInfo|null
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException

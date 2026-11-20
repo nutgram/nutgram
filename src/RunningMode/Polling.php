@@ -73,9 +73,7 @@ class Polling implements RunningMode
     }
 
     /**
-     * @param Nutgram $bot
      * @param Update[] $updates
-     * @return void
      */
     protected function fire(Nutgram $bot, array $updates = []): void
     {

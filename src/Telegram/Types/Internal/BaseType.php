@@ -27,9 +27,6 @@ abstract class BaseType implements Arrayable, JsonSerializable
     /** @internal */
     private array $_extra = [];
 
-    /**
-     * @param Nutgram|null $bot
-     */
     public function __construct(?Nutgram $bot = null)
     {
         $this->_bot = $bot;
@@ -49,38 +46,21 @@ abstract class BaseType implements Arrayable, JsonSerializable
         return $this->callMacro($method, $parameters);
     }
 
-    /**
-     * @param string $name
-     * @param mixed $value
-     * @return void
-     */
     public function __set(string $name, mixed $value): void
     {
         $this->_extra[$name] = $value;
     }
 
-    /**
-     * @param string $name
-     * @return mixed
-     */
     public function __get(string $name): mixed
     {
         return $this->_extra[$name] ?? null;
     }
 
-    /**
-     * @param string $name
-     * @return bool
-     */
     public function __isset(string $name): bool
     {
         return isset($this->_extra[$name]);
     }
 
-    /**
-     * @param Nutgram|null $bot
-     * @return BaseType
-     */
     public function bindToInstance(?Nutgram $bot): self
     {
         $this->_bot = $bot;

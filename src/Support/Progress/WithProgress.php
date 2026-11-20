@@ -15,7 +15,6 @@ trait WithProgress
 
     /**
      * @param callable|class-string|array $callable
-     * @param Trigger|null $trigger
      * @return $this
      */
     public function withProgress(callable|string|array $callable, ?Trigger $trigger = null): static

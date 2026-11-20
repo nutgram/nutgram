@@ -41,14 +41,8 @@ class Handler extends MiddlewareChain
      */
     protected const PARAM_NAME_REGEX = '/{([a-zA-Z][_a-zA-Z\d]*)}/';
 
-    /**
-     * @var string|null
-     */
     protected ?string $pattern;
 
-    /**
-     * @var array
-     */
     protected array $parameters = [];
 
     /**
@@ -56,9 +50,6 @@ class Handler extends MiddlewareChain
      */
     protected $callable;
 
-    /**
-     * @var bool
-     */
     protected bool $skipGlobalMiddlewares = false;
 
     /**
@@ -71,7 +62,6 @@ class Handler extends MiddlewareChain
     /**
      * Handler constructor.
      * @param callable|class-string|array $callable
-     * @param string|null $pattern
      */
     public function __construct($callable, ?string $pattern = null)
     {
@@ -80,11 +70,6 @@ class Handler extends MiddlewareChain
         $this->head = new Link($this);
     }
 
-    /**
-     * @param string $value
-     * @param Container $container
-     * @return bool
-     */
     public function matching(string $value, Container $container): bool
     {
         if ($this->pattern === null) {
@@ -133,7 +118,6 @@ class Handler extends MiddlewareChain
 
     /**
      * @param array $parameters
-     * @return Handler
      */
     public function setParameters(...$parameters): Handler
     {
@@ -148,7 +132,6 @@ class Handler extends MiddlewareChain
 
     /**
      * @param list<mixed> $parameters
-     * @return Handler
      */
     public function addParameters(array $parameters): Handler
     {
@@ -157,8 +140,6 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param Nutgram $bot
-     * @return mixed
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -174,8 +155,6 @@ class Handler extends MiddlewareChain
     /**
      * Skip global middlewares.
      * If you want to skip a specific global middleware, use the "$middlewares" parameter.
-     * @param array $middlewares
-     * @return $this
      */
     public function skipGlobalMiddlewares(array $middlewares = []): Handler
     {
@@ -186,7 +165,6 @@ class Handler extends MiddlewareChain
 
     /**
      * Returns true if the handler is skipping global middlewares.
-     * @return bool
      */
     public function isSkippingGlobalMiddlewares(): bool
     {
@@ -195,16 +173,12 @@ class Handler extends MiddlewareChain
 
     /**
      * Returns the skipped global middlewares.
-     * @return array
      */
     public function getSkippedGlobalMiddlewares(): array
     {
         return $this->skippedGlobalMiddlewares;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPattern(): ?string
     {
         return $this->pattern;

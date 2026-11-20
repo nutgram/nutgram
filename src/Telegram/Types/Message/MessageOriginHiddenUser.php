@@ -22,13 +22,11 @@ class MessageOriginHiddenUser extends BaseType implements MessageOrigin
 
     /**
      * Date the message was sent originally in Unix time
-     * @var int
      */
     public int $date;
 
     /**
      * Name of the user that sent the message originally
-     * @var string
      */
     public string $sender_user_name;
 }

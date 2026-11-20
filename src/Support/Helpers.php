@@ -134,13 +134,6 @@ function is_nonscalar_json(string $value): bool
 
 /**
  * Map the interval [$sourceStart,$sourceEnd] onto the interval [$targetStart,$targetEnd].
- * @param float $current
- * @param float $sourceStart
- * @param float $sourceEnd
- * @param float $targetStart
- * @param float $targetEnd
- * @param int $precision
- * @return int|float
  * @see https://math.stackexchange.com/a/914843
  */
 function mapInterval(

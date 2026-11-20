@@ -44,9 +44,6 @@ class InputChecklistTask extends BaseType
     public ?array $text_entities = null;
 
     /**
-     * @param int $id
-     * @param string $text
-     * @param ParseMode|string|null $parse_mode
      * @param MessageEntity[]|null $text_entities
      */
     public function __construct(

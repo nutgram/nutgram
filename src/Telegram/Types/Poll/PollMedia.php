@@ -78,7 +78,6 @@ class PollMedia extends BaseType
     /**
      * Check if the media is of a specific type
      * @param class-string<BaseType> $type
-     * @return bool
      */
     public function is(string $type): bool
     {

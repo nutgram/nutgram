@@ -58,10 +58,7 @@ class InputRichBlockTable extends BaseType implements InputRichBlock
 
     /**
      * @param RichBlockTableCell[][] $cells
-     * @param bool|null $is_bordered
-     * @param bool|null $is_striped
      * @param string|RichText|array<mixed>|null $caption
-     * @param bool|null $is_compact
      */
     public function __construct(
         array $cells,

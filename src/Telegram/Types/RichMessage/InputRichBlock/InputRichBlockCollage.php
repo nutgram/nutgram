@@ -39,7 +39,6 @@ class InputRichBlockCollage extends BaseType implements InputRichBlock, Uploadab
 
     /**
      * @param InputRichBlock[] $blocks
-     * @param RichBlockCaption|null $caption
      */
     public function __construct(array $blocks, ?RichBlockCaption $caption = null)
     {

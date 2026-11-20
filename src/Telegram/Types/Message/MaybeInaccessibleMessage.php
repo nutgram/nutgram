@@ -17,7 +17,6 @@ interface MaybeInaccessibleMessage
 {
     /**
      * Check if this message is deleted or is inaccessible to the bot.
-     * @return bool
      */
     public function isInaccessible(): bool;
 }

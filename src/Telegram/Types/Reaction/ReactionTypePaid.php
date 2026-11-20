@@ -18,7 +18,6 @@ class ReactionTypePaid extends BaseType implements ReactionType
 {
     /**
      * Type of the reaction, always “paid”
-     * @var ReactionTypeType|string
      */
     #[EnumOrScalar]
     public ReactionTypeType|string $type = ReactionTypeType::PAID;

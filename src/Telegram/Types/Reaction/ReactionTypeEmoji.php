@@ -92,7 +92,6 @@ class ReactionTypeEmoji extends BaseType implements ReactionType
 
     /**
      * Type of the reaction, always “emoji”
-     * @var ReactionTypeType|string
      */
     #[EnumOrScalar]
     public ReactionTypeType|string $type = ReactionTypeType::EMOJI;
@@ -104,7 +103,6 @@ class ReactionTypeEmoji extends BaseType implements ReactionType
      * "💔", "🤨", "😐", "🍓", "🍾", "💋", "🖕", "😈", "😴", "😭", "🤓", "👻", "👨‍💻", "👀", "🎃", "🙈",
      * "😇", "😨", "🤝", "✍", "🤗", "🫡", "🎅", "🎄", "☃", "💅", "🤪", "🗿", "🆒", "💘", "🙉", "🦄",
      * "😘", "💊", "🙊", "😎", "👾", "🤷‍♂", "🤷", "🤷‍♀", "😡"
-     * @var string
      */
     public string $emoji;
 

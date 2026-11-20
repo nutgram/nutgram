@@ -54,10 +54,6 @@ class InputRichBlockListItem extends BaseType implements Uploadables
 
     /**
      * @param InputRichBlock[] $blocks
-     * @param bool|null $has_checkbox
-     * @param bool|null $is_checked
-     * @param int|null $value
-     * @param RichBlockListItemType|string|null $type
      */
     public function __construct(
         array $blocks,

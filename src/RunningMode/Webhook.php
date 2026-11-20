@@ -30,7 +30,6 @@ class Webhook implements RunningMode
     }
 
     /**
-     * @param Nutgram $bot
      * @throws InvalidArgumentException
      * @throws Throwable
      */
@@ -61,27 +60,17 @@ class Webhook implements RunningMode
         }
     }
 
-    /**
-     * @return bool
-     */
     public function isSafeMode(): bool
     {
         return $this->safeMode;
     }
 
-    /**
-     * @param bool $safeMode
-     * @return self
-     */
     public function setSafeMode(bool $safeMode): self
     {
         $this->safeMode = $safeMode;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     protected function input(): ?string
     {
         return file_get_contents('php://input') ?: null;

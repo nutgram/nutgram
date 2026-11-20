@@ -32,10 +32,6 @@ trait Hears
         return $this;
     }
 
-    /**
-     * @param Update $update
-     * @return static
-     */
     public function hearUpdate(Update $update): static
     {
         if ($this->commonUser !== null) {
@@ -66,11 +62,6 @@ trait Hears
         return $this;
     }
 
-    /**
-     * @param UpdateType $type
-     * @param array $partialAttributes
-     * @return static
-     */
     public function hearUpdateType(
         UpdateType $type,
         array $partialAttributes = [],
@@ -89,10 +80,6 @@ trait Hears
         return $this->hearUpdate($update);
     }
 
-    /**
-     * @param  array  $value
-     * @return static
-     */
     public function hearMessage(array $value): static
     {
         return $this->hearUpdateType(
@@ -101,19 +88,11 @@ trait Hears
         );
     }
 
-    /**
-     * @param  string  $value
-     * @return static
-     */
     public function hearText(string $value): static
     {
         return $this->hearMessage(['text' => $value]);
     }
 
-    /**
-     * @param  string  $value
-     * @return static
-     */
     public function hearCallbackQueryData(string $value): static
     {
         return $this->hearUpdateType(UpdateType::CALLBACK_QUERY, [

@@ -33,66 +33,28 @@ class FakeNutgram extends Nutgram
 
     public const TOKEN = '123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11';
 
-    /**
-     * @var MockHandler
-     */
     protected MockHandler $mockHandler;
 
-    /**
-     * @var array
-     */
     protected array $testingHistory = [];
 
-    /**
-     * @var array
-     */
     protected array $partialReceives = [];
 
-    /**
-     * @var TypeFaker
-     */
     protected TypeFaker $typeFaker;
 
-    /**
-     * @var bool
-     */
     private bool $rememberUserAndChat = false;
 
-    /**
-     * @var User|null
-     */
     private ?User $storedUser = null;
 
-    /**
-     * @var Chat|null
-     */
     private ?Chat $storedChat = null;
 
-    /**
-     * @var array
-     */
     private array $methodsReturnTypes = [];
 
-    /**
-     * @var array
-     */
     protected array $dumpHistory = [];
 
-    /**
-     * @var User|null
-     */
     protected ?User $commonUser = null;
 
-    /**
-     * @var Chat|null
-     */
     protected ?Chat $commonChat = null;
 
-    /**
-     * @param null|array|object $update
-     * @param array $responses
-     * @return FakeNutgram
-     */
     public static function instance(
         null|array|object $update = null,
         array $responses = [],
@@ -180,9 +142,6 @@ class FakeNutgram extends Nutgram
         })->call($bot);
     }
 
-    /**
-     * @return array
-     */
     public function getRequestHistory(): array
     {
         return $this->testingHistory;
@@ -194,8 +153,6 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param array|int|true $result
-     * @param bool $ok
      * @return $this
      */
     public function willReceive(array|int|true $result, bool $ok = true): self
@@ -207,8 +164,6 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param array|int|true $result
-     * @param bool $ok
      * @return $this
      */
     public function willReceivePartial(array|int|true $result, bool $ok = true): self
@@ -247,7 +202,6 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param bool $remember
      * @return $this
      */
     public function willStartConversation(bool $remember = true): self
@@ -347,9 +301,6 @@ class FakeNutgram extends Nutgram
 
     /**
      * Get the actual data from the request.
-     * @param Request $request
-     * @param array $mapping
-     * @return array
      * @throws JsonException
      */
     public static function getActualData(Request $request, array $mapping = []): array
@@ -362,9 +313,6 @@ class FakeNutgram extends Nutgram
         return [...$data->allRaw(), ...$data->files()];
     }
 
-    /**
-     * @return array
-     */
     public function __serialize(): array
     {
         $attributes = parent::__serialize();
@@ -377,8 +325,6 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param array $data
-     * @return void
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
@@ -416,7 +362,6 @@ class FakeNutgram extends Nutgram
      * Generates webapp data for third party + signature.
      * @param int $botId The bot id.
      * @param array $data The generated webapp data as query string.
-     * @return array
      * @internal For testing purposes only.
      */
     public static function generateWebAppDataForThirdParty(int $botId, array $data): array

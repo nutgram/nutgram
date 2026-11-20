@@ -57,10 +57,6 @@ class InputRichMessage extends BaseType implements Uploadables
     public ?bool $skip_entity_detection = null;
 
     /**
-     * @param string|null $html
-     * @param string|null $markdown
-     * @param bool|null $is_rtl
-     * @param bool|null $skip_entity_detection
      * @param InputRichMessageMedia[]|null $media
      * @param InputRichBlock[]|null $blocks
      */

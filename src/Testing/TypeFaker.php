@@ -15,7 +15,6 @@ use ReflectionProperty;
 use ReflectionUnionType;
 use RuntimeException;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Hydrator\Annotation\UnionResolver;
 use SergiX44\Hydrator\Hydrator;
 use SergiX44\Nutgram\Nutgram;
@@ -35,7 +34,6 @@ class TypeFaker
     /**
      * @template T of class-string|string
      * @param T $type
-     * @param array $partial
      * @return T|object|scalar|array|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -58,8 +56,6 @@ class TypeFaker
     /**
      *
      * @param class-string $class
-     * @param array $additional
-     * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
@@ -142,12 +138,6 @@ class TypeFaker
     }
 
 
-    /**
-     * @param string $class
-     * @param bool $isNullable
-     * @param bool $defined
-     * @return bool
-     */
     protected function shouldInstantiate(string $class, bool $isNullable, bool $defined = false): bool
     {
         if (!class_exists($class) && !interface_exists($class)) {
@@ -170,11 +160,6 @@ class TypeFaker
     }
 
 
-    /**
-     * @param mixed $what
-     * @param int $layer
-     * @return array
-     */
     protected function wrap(mixed $what, int $layer = 0): array
     {
         if ($layer > 1) {
@@ -184,10 +169,6 @@ class TypeFaker
         return [$what];
     }
 
-    /**
-     * @param string $type
-     * @return string|int|bool|array|float|null
-     */
     public static function randomScalarOf(string $type): string|int|bool|array|null|float
     {
         return match ($type) {
@@ -200,10 +181,6 @@ class TypeFaker
         };
     }
 
-    /**
-     * @param int $length
-     * @return string
-     */
     public static function randomString(int $length = 8): string
     {
         static $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -213,27 +190,17 @@ class TypeFaker
         )), 1, $length);
     }
 
-    /**
-     * @param int $min
-     * @param int|null $max
-     * @return int
-     */
     public static function randomInt(int $min = 0, ?int $max = null): int
     {
         return mt_rand($min, $max ?? mt_getrandmax());
     }
 
-    /**
-     * @return float
-     */
     public static function randomFloat(): float
     {
         return abs(1.0 - ((float)self::randomInt() / (float)self::randomInt()));
     }
 
     /**
-     * @param string $class
-     * @return ReflectionClass
      * @throws ReflectionException
      */
     private function getReflectionClass(string $class, array $context = []): ReflectionClass
@@ -244,7 +211,6 @@ class TypeFaker
             return $reflectionClass;
         }
 
-        /** @var ConcreteResolver|null $concreteResolver */
         $concreteResolver = $this->hydrator->getConcreteResolverFor($reflectionClass->getName());
         if ($concreteResolver !== null) {
             try {
@@ -294,10 +260,7 @@ class TypeFaker
     }
 
     /**
-     * @param ArrayType $arrayType
      * @param array<string, mixed> $userDefined
-     * @param int $depth
-     * @return array
      */
     private function fakeArray(ArrayType $arrayType, array $userDefined = [], int $depth = 1): array
     {

@@ -21,7 +21,6 @@ trait Passport
      * @see https://core.telegram.org/bots/api#setpassportdataerrors
      * @param int $user_id User identifier
      * @param PassportElementError[] $errors A JSON-serialized array describing the errors
-     * @return bool|null
      */
     public function setPassportDataErrors(int $user_id, array $errors): ?bool
     {

@@ -101,7 +101,6 @@ final readonly class Configuration
     /**
      * Create a configuration from an array.
      * @param array<string, mixed> $config
-     * @return self
      */
     public static function fromArray(array $config): self
     {
@@ -174,7 +173,6 @@ final readonly class Configuration
 
     /**
      * @param array<string, mixed> $data
-     * @return void
      */
     public function __unserialize(array $data): void
     {

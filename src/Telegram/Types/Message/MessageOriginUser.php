@@ -23,13 +23,11 @@ class MessageOriginUser extends BaseType implements MessageOrigin
 
     /**
      * Date the message was sent originally in Unix time
-     * @var int
      */
     public int $date;
 
     /**
      * User that sent the message originally
-     * @var User
      */
     public User $sender_user;
 }

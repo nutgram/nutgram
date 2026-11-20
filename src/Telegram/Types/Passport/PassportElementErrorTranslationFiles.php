@@ -36,9 +36,7 @@ class PassportElementErrorTranslationFiles extends BaseType implements PassportE
     public string $message;
 
     /**
-     * @param PassportType|string $type
      * @param string[] $file_hashes
-     * @param string $message
      */
     public function __construct(
         PassportType|string $type,

@@ -814,8 +814,6 @@ class Message extends BaseType implements MaybeInaccessibleMessage
      * Example:
      * IN: /hello param1 param2 or /hello[at]MyDearBot param1 param2
      * OUT: /hello param1 param2
-     * @param string|null $username
-     * @return string|null
      */
     public function getParsedCommand(?string $username = null): ?string
     {
@@ -831,7 +829,6 @@ class Message extends BaseType implements MaybeInaccessibleMessage
 
     /**
      * Check if the message is forwarded
-     * @return bool
      */
     public function isForwarded(): bool
     {
@@ -840,7 +837,6 @@ class Message extends BaseType implements MaybeInaccessibleMessage
 
     /**
      * Return the current message type
-     * @return MessageType|null
      */
     public function getType(): ?MessageType
     {
@@ -921,7 +917,6 @@ class Message extends BaseType implements MaybeInaccessibleMessage
 
     /**
      * Returns the message text or caption
-     * @return string|null
      */
     public function getText(): ?string
     {
@@ -949,7 +944,6 @@ class Message extends BaseType implements MaybeInaccessibleMessage
 
     /**
      * Delete the current message
-     * @return bool|null
      */
     public function delete(): ?bool
     {
@@ -971,7 +965,6 @@ class Message extends BaseType implements MaybeInaccessibleMessage
      * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
      * @param bool|null $disable_web_page_preview Disables link previews for links in this message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
-     * @return Message|bool|null
      * @see Nutgram::editMessageText
      */
     public function editText(
@@ -1018,7 +1011,6 @@ class Message extends BaseType implements MaybeInaccessibleMessage
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
-     * @return MessageId|null
      * @see Nutgram::copyMessage
      */
     public function copy(
@@ -1065,7 +1057,6 @@ class Message extends BaseType implements MaybeInaccessibleMessage
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the forwarded message from forwarding and saving
-     * @return Message|null
      * @see Nutgram::forwardMessage
      */
     public function forward(
@@ -1097,7 +1088,6 @@ class Message extends BaseType implements MaybeInaccessibleMessage
      * @see https://core.telegram.org/bots/api#setmessagereaction
      * @param ReactionType|ReactionType[]|null $reaction Optional. New list of reaction types to set on the message. Currently, as non-premium users, bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already present on the message or explicitly allowed by chat administrators.
      * @param bool $is_big Optional. Pass True to set the reaction with a big animation
-     * @return bool|null
      */
     public function react(ReactionType|array|null $reaction = null, bool $is_big = false): ?bool
     {

@@ -56,12 +56,8 @@ class InputChecklist extends BaseType
     public ?bool $others_can_mark_tasks_as_done = null;
 
     /**
-     * @param string $title
      * @param InputChecklistTask[] $tasks
-     * @param ParseMode|string|null $parse_mode
      * @param MessageEntity[]|null $title_entities
-     * @param bool|null $others_can_add_tasks
-     * @param bool|null $others_can_mark_tasks_as_done
      */
     public function __construct(
         string $title,

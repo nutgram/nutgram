@@ -26,9 +26,6 @@ abstract class ResolveHandlers extends CollectHandlers
 {
     use UpdateProxy;
 
-    /**
-     * @var Update|null
-     */
     protected ?Update $update = null;
 
     abstract public function getConfig(): Configuration;
@@ -38,10 +35,6 @@ abstract class ResolveHandlers extends CollectHandlers
     abstract public function getInstance(): Nutgram;
 
     /**
-     * @param int|null $userId
-     * @param int|null $chatId
-     * @param int|null $threadId
-     * @return callable|Conversation|\Closure|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \Psr\Container\NotFoundExceptionInterface|ContainerExceptionInterface
      */
@@ -54,9 +47,6 @@ abstract class ResolveHandlers extends CollectHandlers
         return $this->getContainer()->get(ConversationCache::class)->get($userId, $chatId, $threadId);
     }
 
-    /**
-     * @return array
-     */
     protected function resolveHandlers(): array
     {
         $resolvedHandlers = [];
@@ -133,12 +123,6 @@ abstract class ResolveHandlers extends CollectHandlers
         return $resolvedHandlers;
     }
 
-    /**
-     * @param array $handlers
-     * @param string $type
-     * @param string|null $subType
-     * @param string|null $value
-     */
     protected function addHandlersBy(
         array &$handlers,
         string $type,
@@ -173,8 +157,6 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param Conversation|callable $conversation
-     * @return array
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function continueConversation(Conversation|callable $conversation): array
@@ -212,9 +194,6 @@ abstract class ResolveHandlers extends CollectHandlers
         return $resolvedHandlers;
     }
 
-    /**
-     * @param Handler $handler
-     */
     protected function applyGlobalMiddlewareTo(Handler $handler): void
     {
         $skippedGlobalMiddlewares = $handler->getSkippedGlobalMiddlewares();
@@ -261,8 +240,6 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param Conversation $conversation
-     * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -295,8 +272,6 @@ abstract class ResolveHandlers extends CollectHandlers
 
     /**
      * @param HandlerGroup[] $groups
-     * @param array $currentMiddlewares
-     * @param array $currentScopes
      * @return void
      */
     private function resolveNestedGroups(

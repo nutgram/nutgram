@@ -25,9 +25,6 @@ abstract class BotCache
         $this->botId = $botId;
     }
 
-    /**
-     * @return string
-     */
     protected function makeKey(): string
     {
         return implode('_', [$this->key, $this->botId, ...func_get_args()]);

@@ -21,9 +21,6 @@ abstract class CollectHandlers
      */
     protected array $globalMiddlewares = [];
 
-    /**
-     * @var string
-     */
     protected string $target = 'handlers';
 
     /**
@@ -73,10 +70,8 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param string $type
      * @param callable|class-string|array $callableOrPattern
      * @param callable|class-string|array $callable
-     * @return void
      */
     private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): void
     {
@@ -89,11 +84,6 @@ abstract class CollectHandlers
         $this->{$this->target}[$type][] = new Handler($callableOrPattern);
     }
 
-    /**
-     * @param bool $exception
-     * @param bool $apiError
-     * @return void
-     */
     public function clearErrorHandlers(bool $exception = true, bool $apiError = true): void
     {
         if ($exception) {
@@ -112,7 +102,6 @@ abstract class CollectHandlers
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onUpdate($callable): Handler
     {

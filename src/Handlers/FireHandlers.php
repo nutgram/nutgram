@@ -14,8 +14,6 @@ trait FireHandlers
 
     /**
      * Return the current resolved handler
-     *
-     * @return Handler|null
      */
     public function currentHandler(): ?Handler
     {
@@ -32,9 +30,7 @@ trait FireHandlers
     }
 
     /**
-     * @param string $type
      * @param list<mixed> $parameters
-     * @return mixed
      * @throws Throwable
      */
     protected function fireHandlersBy(string $type, array $parameters = []): mixed
@@ -47,7 +43,6 @@ trait FireHandlers
     /**
      * @param Handler[] $handlers
      * @param list<mixed> $parameters
-     * @return mixed
      * @throws Throwable
      */
     protected function fireHandlers(array $handlers, array $parameters = []): mixed
@@ -68,9 +63,6 @@ trait FireHandlers
     }
 
     /**
-     * @param string $type
-     * @param Throwable $e
-     * @return mixed
      * @throws Throwable
      */
     protected function fireExceptionHandlerBy(string $type, Throwable $e): mixed

@@ -91,7 +91,6 @@ class RequestData
      * @param (callable(static): bool)|bool $condition
      * @param callable(static): (static|null|void) $onSuccess
      * @param ?callable(static): (static|null|void) $onFail
-     * @return static
      */
     public function when(callable|bool $condition, callable $onSuccess, ?callable $onFail = null): static
     {

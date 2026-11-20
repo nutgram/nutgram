@@ -13,10 +13,6 @@ class TelegramException extends Exception
 
     /**
      * TelegramException constructor.
-     * @param string $message
-     * @param int $code
-     * @param  array  $parameters
-     * @param  Throwable|null  $previous
      */
     public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null, array $parameters = [])
     {

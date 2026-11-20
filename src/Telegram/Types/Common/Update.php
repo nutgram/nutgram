@@ -229,7 +229,6 @@ class Update extends BaseType
 
     /**
      * Return the current update type
-     * @return UpdateType|null
      */
     public function getType(): ?UpdateType
     {
@@ -269,7 +268,6 @@ class Update extends BaseType
 
     /**
      * Get the sender User
-     * @return User|null
      */
     public function getUser(): ?User
     {

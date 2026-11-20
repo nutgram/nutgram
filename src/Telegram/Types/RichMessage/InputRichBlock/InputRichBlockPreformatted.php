@@ -40,7 +40,6 @@ class InputRichBlockPreformatted extends BaseType implements InputRichBlock
 
     /**
      * @param string|RichText|array<mixed> $text
-     * @param string|null $language
      */
     public function __construct(string|array|RichText $text, ?string $language = null)
     {
