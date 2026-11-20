@@ -15,7 +15,6 @@ trait WithProgress
 
     /**
      * @param callable|class-string|array $callable
-     * @param Trigger|null $trigger
      * @return $this
      */
     public function withProgress(callable|string|array $callable, ?Trigger $trigger = null): static
@@ -42,7 +41,7 @@ trait WithProgress
                 int $downloadedBytes,
                 int $totalUploadBytes,
                 int $uploadedBytes,
-            ) use ($type, $callable, $trigger) {
+            ) use ($type, $callable, $trigger): void {
                 $progress = new Progress(
                     totalBytes: $type === ProgressType::Download ? $totalDownloadBytes : $totalUploadBytes,
                     currentBytes: $type === ProgressType::Download ? $downloadedBytes : $uploadedBytes,
@@ -50,7 +49,7 @@ trait WithProgress
                 );
 
                 $canInvokeProgress = $this->getContainer()->call(
-                    callable: [$trigger, 'handle'],
+                    callable: $trigger->handle(...),
                     arguments: [$progress, $this->getContainer()],
                 );
 

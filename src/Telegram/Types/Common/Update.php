@@ -229,7 +229,6 @@ class Update extends BaseType
 
     /**
      * Return the current update type
-     * @return UpdateType|null
      */
     public function getType(): ?UpdateType
     {
@@ -269,7 +268,6 @@ class Update extends BaseType
 
     /**
      * Get the sender User
-     * @return User|null
      */
     public function getUser(): ?User
     {
@@ -424,7 +422,7 @@ class Update extends BaseType
             $this->edited_channel_post !== null => $this->edited_channel_post,
             $this->business_message !== null => $this->business_message,
             $this->edited_business_message !== null => $this->edited_business_message,
-            $this->callback_query !== null => $this->callback_query->message !== null && !$this->callback_query->message->isInaccessible() ? $this->callback_query->message : null,
+            $this->callback_query !== null => $this->callback_query->message !== null && $this->callback_query->message instanceof Message ? $this->callback_query->message : null,
             $this->guest_message !== null => $this->guest_message,
             default => null
         };

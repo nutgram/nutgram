@@ -18,14 +18,12 @@ class ReactionTypeCustomEmoji extends BaseType implements ReactionType
 {
     /**
      * Type of the reaction, always “custom_emoji”
-     * @var ReactionTypeType|string
      */
     #[EnumOrScalar]
     public ReactionTypeType|string $type = ReactionTypeType::CUSTOM_EMOJI;
 
     /**
      * Custom emoji identifier
-     * @var string
      */
     public string $custom_emoji_id;
 

@@ -45,7 +45,6 @@ trait UpdatesMessages
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
      * @param InputRichMessage|null $rich_message New rich content of the message; required if text isn't specified
-     * @return Message|bool|null
      */
     public function editMessageText(
         ?string $text = null,
@@ -91,7 +90,6 @@ trait UpdatesMessages
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @param bool|null $show_caption_above_media Pass True, if the caption must be shown above the message media
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
-     * @return Message|bool|null
      */
     public function editMessageCaption(
         int|string|null $chat_id = null,
@@ -134,7 +132,6 @@ trait UpdatesMessages
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for a new {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @param array $clientOpt Client options
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
-     * @return Message|bool|null
      */
     public function editMessageMedia(
         InputMedia $media,
@@ -174,7 +171,6 @@ trait UpdatesMessages
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for a new {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @param int|null $live_period New period in seconds during which the location can be updated, starting from the message send date. If 0x7FFFFFFF is specified, then the location can be updated forever. Otherwise, the new value must not exceed the current live_period by more than a day, and the live location expiration date must remain within the next 90 days. If not specified, then live_period remains unchanged
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
-     * @return Message|bool|null
      */
     public function editMessageLiveLocation(
         float $latitude,
@@ -215,7 +211,6 @@ trait UpdatesMessages
      * @param int|null $chat_id Unique identifier for the target chat
      * @param int|null $message_id Unique identifier for the target message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for the new inline keyboard for the message
-     * @return Message|null
      */
     public function editMessageChecklist(
         InputChecklist $checklist,
@@ -244,7 +239,6 @@ trait UpdatesMessages
      * @param int|string|null $chat_id Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target supergroup in the format &#64;username.
      * @param int|null $message_id Required if inline_message_id is not specified. Identifier of the message with the widget.
      * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message.
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#editmessagewidgetdata
      */
     public function editMessageWidgetData(
@@ -267,7 +261,6 @@ trait UpdatesMessages
      * @param string $public_data New public data of the widget, 0-1024 bytes; pass an empty string to remove the public data
      * @param string|null $widget_id Unique identifier of the shared widget
      * @param int|null $cache_time The maximum amount of time in seconds that the public data of the widget may be cached client-side; 5-3600. If omitted, then the current value is kept, which is 30 by default.
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#editsharedwidgetdata
      */
     public function editSharedWidgetData(
@@ -290,7 +283,6 @@ trait UpdatesMessages
      * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
-     * @return Message|bool|null
      */
     public function editMessageReplyMarkup(
         int|string|null $chat_id = null,
@@ -319,7 +311,6 @@ trait UpdatesMessages
      * @param int $message_id Identifier of the original message with the poll
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for a new message {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
-     * @return Poll|null
      */
     public function stopPoll(
         int|string $chat_id,
@@ -350,7 +341,6 @@ trait UpdatesMessages
      * @param LinkPreviewOptions|null $link_preview_options Link preview generation options for the message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
      * @param InputRichMessage|null $rich_message New rich content of the message; required if text isn't specified
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#editephemeralmessagetext
      */
     public function editEphemeralMessageText(
@@ -391,7 +381,6 @@ trait UpdatesMessages
      * @param int|null $receiver_user_id Identifier of the user who received the message
      * @param int|null $ephemeral_message_id Identifier of the ephemeral message to edit
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#editephemeralmessagemedia
      */
     public function editEphemeralMessageMedia(
@@ -427,7 +416,6 @@ trait UpdatesMessages
      * @param array|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
      * @param bool|null $show_caption_above_media Pass True if the caption must be shown above the message media. Supported only for animation, photo and video messages.
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#editephemeralmessagecaption
      */
     public function editEphemeralMessageCaption(
@@ -465,7 +453,6 @@ trait UpdatesMessages
      * @param int|null $receiver_user_id Identifier of the user who received the message
      * @param int|null $ephemeral_message_id Identifier of the ephemeral message to edit
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#editephemeralmessagereplymarkup
      */
     public function editEphemeralMessageReplyMarkup(
@@ -494,7 +481,6 @@ trait UpdatesMessages
      * @param int|null $chat_id Unique identifier for the target direct messages chat
      * @param int|null $message_id Identifier of a suggested post message to approve
      * @param int|null $send_date Point in time (Unix timestamp) when the post is expected to be published; omit if the date has already been specified when the suggested post was created. If specified, then the date must be not more than 2678400 seconds (30 days) in the future
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#approvesuggestedpost
      */
     public function approveSuggestedPost(
@@ -519,7 +505,6 @@ trait UpdatesMessages
      * @param int|null $chat_id Unique identifier for the target direct messages chat
      * @param int|null $message_id Identifier of a suggested post message to decline
      * @param string|null $comment Comment for the creator of the suggested post; 0-128 characters
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#declinesuggestedpost
      */
     public function declineSuggestedPost(
@@ -542,7 +527,6 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#deletemessage
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int $message_id Identifier of the message to delete
-     * @return bool|null
      */
     public function deleteMessage(int|string $chat_id, int $message_id): ?bool
     {
@@ -555,7 +539,6 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#deletemessages
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int[] $message_ids Identifiers of 1-100 messages to delete. See {@see https://core.telegram.org/bots/api#deletemessage deleteMessage} for limitations on which messages can be deleted
-     * @return bool|null
      */
     public function deleteMessages(int|string $chat_id, array $message_ids): ?bool
     {
@@ -570,7 +553,6 @@ trait UpdatesMessages
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
      * @param int|null $receiver_user_id Identifier of the user who received the message
      * @param int|null $ephemeral_message_id Identifier of the ephemeral message to delete
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#deleteephemeralmessage
      */
     public function deleteEphemeralMessage(
@@ -593,7 +575,6 @@ trait UpdatesMessages
      * @param int $message_id Identifier of the target message
      * @param int|null $user_id Identifier of the user whose reaction will be removed, if the reaction was added by a user
      * @param int|null $actor_chat_id Identifier of the chat whose reaction will be removed, if the reaction was added by a chat
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#deletemessagereaction
      */
     public function deleteMessageReaction(int|string $chat_id, int $message_id, ?int $user_id = null, ?int $actor_chat_id = null): ?bool
@@ -608,7 +589,6 @@ trait UpdatesMessages
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;username)
      * @param int|null $user_id Identifier of the user whose reactions will be removed, if the reactions were added by a user
      * @param int|null $actor_chat_id Identifier of the chat whose reactions will be removed, if the reactions were added by a chat
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#deleteallmessagereactions
      */
     public function deleteAllMessageReactions(int|string $chat_id, ?int $user_id = null, ?int $actor_chat_id = null): ?bool
@@ -627,7 +607,6 @@ trait UpdatesMessages
      * @param string|null $text Text that will be shown along with the service message about the subscription; 0-128 characters
      * @param ParseMode|string|null $text_parse_mode Mode for parsing entities in the text. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, “custom_emoji”, and “date_time” are ignored.
      * @param MessageEntity[]|null $text_entities A JSON-serialized list of special entities that appear in the gift text. It can be specified instead of text_parse_mode. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, “custom_emoji”, and “date_time” are ignored.
-     * @return bool|null
      */
     public function giftPremiumSubscription(
         int $user_id,
@@ -653,7 +632,6 @@ trait UpdatesMessages
      * @param int $chat_id Unique identifier of the chat in which the message was received. The chat must have been active in the last 24 hours.
      * @param int $message_id Unique identifier of the message to mark as read
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which to read the message
-     * @return bool|null
      */
     public function readBusinessMessage(int $chat_id, int $message_id, ?string $business_connection_id = null): ?bool
     {
@@ -671,7 +649,6 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#deletebusinessmessages
      * @param array $message_ids A JSON-serialized list of 1-100 identifiers of messages to delete. All messages must be from the same chat. See {@see https://core.telegram.org/bots/api#deletemessage deleteMessage} for limitations on which messages can be deleted
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which to delete the messages
-     * @return bool|null
      */
     public function deleteBusinessMessages(array $message_ids, ?string $business_connection_id = null): ?bool
     {
@@ -689,7 +666,6 @@ trait UpdatesMessages
      * @param string $first_name The new value of the first name for the business account; 1-64 characters
      * @param string $last_name The new value of the last name for the business account; 0-64 characters
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return bool|null
      */
     public function setBusinessAccountName(string $first_name, string $last_name, ?string $business_connection_id = null): ?bool
     {
@@ -707,7 +683,6 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#setbusinessaccountusername
      * @param string|null $username The new value of the username for the business account; 0-32 characters
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return bool|null
      */
     public function setBusinessAccountUsername(?string $username = null, ?string $business_connection_id = null): ?bool
     {
@@ -724,7 +699,6 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#setbusinessaccountbio
      * @param string|null $bio The new value of the bio for the business account; 0-140 characters
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return bool|null
      */
     public function setBusinessAccountBio(?string $bio = null, ?string $business_connection_id = null): ?bool
     {
@@ -744,7 +718,6 @@ trait UpdatesMessages
      * @param InputProfilePhoto $photo The new profile photo to set
      * @param bool|null $is_public Pass True to set the public photo, which will be visible even if the main photo is hidden by the business account's privacy settings. An account can have only one public photo.
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return bool|null
      */
     public function setBusinessAccountProfilePhoto(InputProfilePhoto $photo, ?bool $is_public = null, ?string $business_connection_id = null): ?bool
     {
@@ -764,7 +737,6 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#removebusinessaccountprofilephoto
      * @param bool|null $is_public Pass True to remove the public photo, which is visible even if the main photo is hidden by the business account's privacy settings. After the main photo is removed, the previous profile photo (if present) becomes the main photo.
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return bool|null
      */
     public function removeBusinessAccountProfilePhoto(?bool $is_public = null, ?string $business_connection_id = null): ?bool
     {
@@ -784,7 +756,6 @@ trait UpdatesMessages
      * @param bool $show_gift_button Pass True, if a button for sending a gift to the user or by the business account must always be shown in the input field
      * @param AcceptedGiftTypes $accepted_gift_types Types of gifts accepted by the business account
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return bool|null
      */
     public function setBusinessAccountGiftSettings(bool $show_gift_button, AcceptedGiftTypes $accepted_gift_types, ?string $business_connection_id = null): ?bool
     {
@@ -801,7 +772,6 @@ trait UpdatesMessages
      * Returns the amount of Telegram Stars owned by a managed business account. Requires the can_view_gifts_and_stars business bot right.
      * Returns {@see https://core.telegram.org/bots/api#staramount StarAmount} on success.
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return StarAmount|null
      */
     public function getBusinessAccountStarBalance(?string $business_connection_id = null): ?StarAmount
     {
@@ -819,7 +789,6 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#transferbusinessaccountstars
      * @param int $star_count Number of Telegram Stars to transfer; 1-10000
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return bool|null
      */
     public function transferBusinessAccountStars(int $star_count, ?string $business_connection_id = null): ?bool
     {
@@ -847,7 +816,6 @@ trait UpdatesMessages
      * @param bool|null $limit The maximum number of gifts to be returned; 1-100. Defaults to 100
      * @param string|null $business_connection_id Unique identifier of the business connection
      * @param bool|null $exclude_from_blockchain Pass True to exclude gifts that were assigned from the TON blockchain and can't be resold or transferred in Telegram
-     * @return OwnedGifts|null
      */
     public function getBusinessAccountGifts(
         ?bool $exclude_unsaved = null,
@@ -886,7 +854,6 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#convertgifttostars
      * @param string $owned_gift_id Unique identifier of the regular gift that should be converted to Telegram Stars
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return bool|null
      */
     public function convertGiftToStars(string $owned_gift_id, ?string $business_connection_id = null): ?bool
     {
@@ -908,7 +875,6 @@ trait UpdatesMessages
      * @param bool|null $keep_original_details Pass True to keep the original gift text, sender and receiver in the upgraded gift
      * @param bool|null $star_count The amount of Telegram Stars that will be paid for the upgrade from the business account balance. If gift.prepaid_upgrade_star_count > 0, then pass 0, otherwise, the can_transfer_stars business bot right is required and gift.upgrade_star_count must be passed.
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return bool|null
      */
     public function upgradeGift(string $owned_gift_id, ?bool $keep_original_details = null, ?bool $star_count = null, ?string $business_connection_id = null): ?bool
     {
@@ -932,7 +898,6 @@ trait UpdatesMessages
      * @param int $new_owner_chat_id Unique identifier of the chat which will own the gift. The chat must be active in the last 24 hours.
      * @param int|null $star_count The amount of Telegram Stars that will be paid for the transfer from the business account balance. If positive, then the can_transfer_stars business bot right is required.
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return bool|null
      */
     public function transferGift(string $owned_gift_id, int $new_owner_chat_id, ?int $star_count = null, ?string $business_connection_id = null): ?bool
     {
@@ -960,7 +925,6 @@ trait UpdatesMessages
      * @param bool|null $post_to_chat_page Pass True to keep the story accessible after it expires
      * @param bool|null $protect_content Pass True if the content of the story must be protected from forwarding and screenshotting
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return Story|null
      */
     public function postStory(
         InputStoryContent $content,
@@ -1000,7 +964,6 @@ trait UpdatesMessages
      * @param MessageEntity[]|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
      * @param StoryArea[]|null $areas A JSON-serialized list of clickable areas to be shown on the story
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return Story|null
      */
     public function editStory(
         int $story_id,
@@ -1031,7 +994,6 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#deletestory
      * @param int $story_id Unique identifier of the story to delete
      * @param string|null $business_connection_id Unique identifier of the business connection
-     * @return bool|null
      */
     public function deleteStory(int $story_id, ?string $business_connection_id = null): ?bool
     {

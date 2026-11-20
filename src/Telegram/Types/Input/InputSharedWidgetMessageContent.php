@@ -55,12 +55,7 @@ class InputSharedWidgetMessageContent extends BaseType implements InputMessageCo
     public ?bool $show_caption_above_media = null;
 
     /**
-     * @param string $widget_id
-     * @param string|null $chat_data
-     * @param string|null $caption
-     * @param ParseMode|string|null $parse_mode
      * @param MessageEntity[]|null $caption_entities
-     * @param bool|null $show_caption_above_media
      */
     public function __construct(
         string $widget_id,

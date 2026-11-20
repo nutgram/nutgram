@@ -61,10 +61,6 @@ trait Client
         WithProgress;
 
     /**
-     * @param string $endpoint
-     * @param array $parameters
-     * @param array $options
-     * @return mixed
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
@@ -94,10 +90,6 @@ trait Client
     }
 
     /**
-     * @param File $file
-     * @param string $path
-     * @param array $clientOpt
-     * @return bool|null
      * @throws ContainerExceptionInterface
      * @throws GuzzleException
      * @throws NotFoundExceptionInterface
@@ -123,6 +115,7 @@ trait Client
         $endpoint = $this->downloadUrl($file);
 
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
+
         try {
             $response = $this->http->get($endpoint, $requestPost ?? $request);
         } catch (ConnectException $e) {
@@ -132,10 +125,6 @@ trait Client
         return $response->getStatusCode() === 200;
     }
 
-    /**
-     * @param File $file
-     * @return string|null
-     */
     public function downloadUrl(File $file): string|null
     {
         if ($this->config->isLocal) {
@@ -186,11 +175,6 @@ trait Client
     }
 
     /**
-     * @param string $endpoint
-     * @param array $multipart
-     * @param string $mapTo
-     * @param array $options
-     * @return mixed
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
@@ -219,7 +203,7 @@ trait Client
             $this->logRequest(
                 endpoint: $endpoint,
                 content: $requestData['multipart'],
-                options: array_filter($requestData, fn ($x) => $x !== 'multipart', ARRAY_FILTER_USE_KEY)
+                options: array_filter($requestData, fn ($x): bool => $x !== 'multipart', ARRAY_FILTER_USE_KEY)
             );
 
             try {
@@ -242,11 +226,6 @@ trait Client
     }
 
     /**
-     * @param string $endpoint
-     * @param array $json
-     * @param string $mapTo
-     * @param array $options
-     * @return mixed
      * @throws GuzzleException
      * @throws JsonException
      * @throws TelegramException
@@ -306,11 +285,13 @@ trait Client
     {
         // Guzzle 8 uses ResponseException
         if ($e instanceof ResponseException) {
+            /** @phpstan-ignore method.notFound */
             return $e->getResponse();
         }
 
         // Guzzle 7 uses RequestException with hasResponse() true
         if ($e instanceof RequestException && is_callable([$e, 'hasResponse']) && $e->hasResponse()) {
+            /** @phpstan-ignore method.notFound */
             return $e->getResponse();
         }
 
@@ -318,11 +299,6 @@ trait Client
     }
 
     /**
-     * @param ResponseInterface $response
-     * @param string $mapTo
-     * @param string $endpoint
-     * @param Exception|null $clientException
-     * @return mixed
      * @throws JsonException
      * @throws TelegramException
      */
@@ -354,33 +330,28 @@ trait Client
 
     /**
      * Sets the chat_id + message_id or inline_message_id combination based on the current update.
-     * @param array $params
-     * @return void
      */
     protected function setChatMessageOrInlineMessageId(array &$params = []): void
     {
         $inlineMessageId = $this->inlineMessageId();
         if ($inlineMessageId !== null && empty($params['chat_id']) && empty($params['message_id'])) {
-            $params['inline_message_id'] = $params['inline_message_id'] ?? $inlineMessageId;
+            $params['inline_message_id'] ??= $inlineMessageId;
             return;
         }
 
-        $params['chat_id'] = $params['chat_id'] ?? $this->chatId();
-        $params['message_id'] = $params['message_id'] ?? $this->messageId();
+        $params['chat_id'] ??= $this->chatId();
+        $params['message_id'] ??= $this->messageId();
     }
 
     /**
      * Chunk a string into an array of strings.
-     * @param string $text
-     * @param int $length
-     * @return array
      */
     protected function chunkText(string $text, int $length): array
     {
         return explode('%#TGMSG#%', word_wrap($text, $length, "%#TGMSG#%", true));
     }
 
-    protected function redactTokenFromConnectException(ConnectException $e): void
+    protected function redactTokenFromConnectException(ConnectException $e): never
     {
         throw new ConnectException(
             str_replace($this->token, str_repeat('*', 5), $e->getMessage()),

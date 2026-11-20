@@ -14,13 +14,11 @@ class ReactionCount extends BaseType
 {
     /**
      * Type of the reaction
-     * @var ReactionType
      */
     public ReactionType $type;
 
     /**
      * Number of times the reaction was added
-     * @var int
      */
     public int $total_count;
 }

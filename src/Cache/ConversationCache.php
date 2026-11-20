@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Cache;
 
-use Closure;
 use DateInterval;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
@@ -18,9 +17,6 @@ class ConversationCache extends BotCache
 
     /**
      * ConversationCache constructor.
-     * @param CacheInterface $cache
-     * @param int|null $botId
-     * @param DateInterval|int|null $ttl
      */
     public function __construct(CacheInterface $cache, ?int $botId, DateInterval|int|null $ttl = null)
     {
@@ -28,10 +24,6 @@ class ConversationCache extends BotCache
     }
 
     /**
-     * @param int $userId
-     * @param int $chatId
-     * @param int|null $threadId
-     * @return callable|Conversation|null
      * @throws InvalidArgumentException
      */
     public function get(int $userId, int $chatId, ?int $threadId): null|callable|Conversation
@@ -45,11 +37,6 @@ class ConversationCache extends BotCache
     }
 
     /**
-     * @param int $userId
-     * @param int $chatId
-     * @param int|null $threadId
-     * @param callable|Conversation $conversation
-     * @return bool
      * @throws InvalidArgumentException
      */
     public function set(
@@ -64,10 +51,6 @@ class ConversationCache extends BotCache
     }
 
     /**
-     * @param int $userId
-     * @param int $chatId
-     * @param int|null $threadId
-     * @return bool
      * @throws InvalidArgumentException
      */
     public function delete(int $userId, int $chatId, ?int $threadId): bool

@@ -15,7 +15,12 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 
 class HandlerGroup
 {
-    use Taggable, Macroable, Disable, Constraints, InteractsWithRateLimit, IsEphemeral;
+    use Taggable;
+    use Macroable;
+    use Disable;
+    use Constraints;
+    use InteractsWithRateLimit;
+    use IsEphemeral;
 
     protected array $middlewares = [];
 

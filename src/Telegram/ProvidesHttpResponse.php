@@ -21,9 +21,7 @@ trait ProvidesHttpResponse
     }
 
     /**
-     * @param string $methodName
      * @param array{json: array<array-key, mixed>} $payload
-     * @return null
      */
     protected function sendResponse(string $methodName, array $payload): null
     {

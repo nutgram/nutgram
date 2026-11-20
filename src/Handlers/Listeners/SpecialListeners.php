@@ -23,7 +23,6 @@ trait SpecialListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return void
      */
     public function fallback($callable): void
     {
@@ -32,9 +31,7 @@ trait SpecialListeners
     }
 
     /**
-     * @param UpdateType $type
      * @param callable|class-string|array $callable
-     * @return void
      */
     public function fallbackOn(UpdateType $type, $callable): void
     {
@@ -45,7 +42,6 @@ trait SpecialListeners
     /**
      * @param class-string|callable|callable-string|array $callableOrException
      * @param callable|callable-string|array|null $callable
-     * @return void
      */
     public function onException($callableOrException, $callable = null): void
     {
@@ -56,7 +52,6 @@ trait SpecialListeners
     /**
      * @param callable|string $callableOrPattern
      * @param callable|null $callable
-     * @return void
      */
     public function onApiError($callableOrPattern, $callable = null): void
     {
@@ -65,8 +60,8 @@ trait SpecialListeners
     }
 
     /**
-     * @param class-string<ApiException>|ApiException $exceptionClass
-     * @return void
+     * @template T of class-string<ApiException>|ApiException
+     * @param T $exceptionClass
      */
     public function registerApiException(string|ApiException $exceptionClass): void
     {
@@ -89,21 +84,19 @@ trait SpecialListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return void
      */
     public function beforeApiRequest($callable): void
     {
         $this->checkFinalized();
-        $this->{$this->target}[self::BEFORE_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
+        $this->{$this->target}[self::BEFORE_API_REQUEST] = new Handler($callable)->skipGlobalMiddlewares();
     }
 
     /**
      * @param callable|class-string|array $callable
-     * @return void
      */
     public function afterApiRequest($callable): void
     {
         $this->checkFinalized();
-        $this->{$this->target}[self::AFTER_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
+        $this->{$this->target}[self::AFTER_API_REQUEST] = new Handler($callable)->skipGlobalMiddlewares();
     }
 }

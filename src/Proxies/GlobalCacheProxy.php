@@ -17,7 +17,6 @@ trait GlobalCacheProxy
     /**
      * @param string $key
      * @param mixed $default
-     * @return mixed
      * @throws InvalidArgumentException
      */
     public function getGlobalData($key, $default = null): mixed
@@ -28,8 +27,6 @@ trait GlobalCacheProxy
     /**
      * @param string $key
      * @param mixed $value
-     * @param DateInterval|int|null $ttl
-     * @return bool
      * @throws InvalidArgumentException
      */
     public function setGlobalData($key, $value, DateInterval|int|null $ttl = null): bool
@@ -39,7 +36,6 @@ trait GlobalCacheProxy
 
     /**
      * @param string $key
-     * @return bool
      * @throws InvalidArgumentException
      */
     public function deleteGlobalData($key): bool

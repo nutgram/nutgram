@@ -81,7 +81,7 @@ jobs:
                     format: clover
     static-analysis:
         runs-on: ubuntu-latest
-        name: Psalm
+        name: Phpstan
         steps:
             -   uses: actions/checkout@v7
 
@@ -97,7 +97,5 @@ jobs:
             -   name: Install dependencies
                 run: composer install --no-progress --no-ansi
 
-            -   name: Run Psalm
-                run: |
-                        echo Psalm Level: $(grep -oP '(?<=errorLevel=")[0-9]+' psalm.xml)
-                        composer run-script psalm
+            -   name: Run Phpstan
+                run: composer run-script phpstan

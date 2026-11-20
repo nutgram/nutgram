@@ -23,19 +23,16 @@ class MessageOriginChat extends BaseType implements MessageOrigin
 
     /**
      * Date the message was sent originally in Unix time
-     * @var int
      */
     public int $date;
 
     /**
      * Chat that sent the message originally
-     * @var Chat
      */
     public Chat $sender_chat;
 
     /**
      * Optional. For messages originally sent by an anonymous chat administrator, original message author signature
-     * @var string|null
      */
     public ?string $author_signature = null;
 }

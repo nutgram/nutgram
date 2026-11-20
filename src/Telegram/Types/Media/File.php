@@ -39,11 +39,6 @@ class File extends BaseType
      */
     public ?string $file_path = null;
 
-    /**
-     * @param string $path
-     * @param array $clientOpt
-     * @return bool|null
-     */
     public function save(string $path, array $clientOpt = []): ?bool
     {
         if (is_dir($path)) {
@@ -54,9 +49,6 @@ class File extends BaseType
         return $this->getBot()?->downloadFile($this, $path, $clientOpt);
     }
 
-    /**
-     * @return string|null
-     */
     public function url(): string|null
     {
         return $this->getBot()?->downloadUrl($this);

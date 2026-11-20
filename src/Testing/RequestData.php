@@ -32,7 +32,7 @@ class RequestData
     {
         $this->endpoint = $request->getUri()->getPath();
         $this->method = $request->getMethod();
-        $this->headers = array_map(fn (array $value) => $value[0], $request->getHeaders());
+        $this->headers = array_map(fn (array $value): string => $value[0], $request->getHeaders());
 
         try {
             $body = (string)$request->getBody();
@@ -89,9 +89,8 @@ class RequestData
 
     /**
      * @param (callable(static): bool)|bool $condition
-     * @param callable(static): (static|null) $onSuccess
-     * @param ?callable(static): (static|null) $onFail
-     * @return static
+     * @param callable(static): (static|null|void) $onSuccess
+     * @param ?callable(static): (static|null|void) $onFail
      */
     public function when(callable|bool $condition, callable $onSuccess, ?callable $onFail = null): static
     {
@@ -113,7 +112,7 @@ class RequestData
 
     public function withMapping(array $mapping): static
     {
-        $caster = fn (string $cast, mixed $value) => match ($cast) {
+        $caster = fn (string $cast, mixed $value): mixed => match ($cast) {
             'integer', 'int' => filter_var($value, FILTER_VALIDATE_INT),
             'double', 'float' => filter_var($value, FILTER_VALIDATE_FLOAT),
             'boolean', 'bool' => filter_var($value, FILTER_VALIDATE_BOOLEAN),

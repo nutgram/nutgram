@@ -23,25 +23,21 @@ class MessageOriginChannel extends BaseType implements MessageOrigin
 
     /**
      * Date the message was sent originally in Unix time
-     * @var int
      */
     public int $date;
 
     /**
      * Channel chat to which the message was originally sent
-     * @var Chat
      */
     public Chat $chat;
 
     /**
      * Unique message identifier inside the chat
-     * @var int
      */
     public int $message_id;
 
     /**
      * Optional. Signature of the original post author
-     * @var string|null
      */
     public ?string $author_signature = null;
 }

@@ -20,10 +20,10 @@ readonly class OutgoingResource implements JsonSerializable
     public function jsonSerialize(): string
     {
         if ($this->name === null) {
-            return basename(__CLASS__);
+            return basename(self::class);
         }
 
-        return sprintf("%s{%s}", basename(__CLASS__), $this->name);
+        return sprintf("%s{%s}", basename(self::class), $this->name);
     }
 
     public function getName(): ?string

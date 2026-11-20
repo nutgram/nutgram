@@ -14,43 +14,28 @@ use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 abstract class InlineMenu extends Conversation
 {
-    /**
-     * @var int|null
-     */
     protected ?int $messageId = null;
 
-    /**
-     * @var int|null
-     */
     protected ?int $chatId = null;
 
-    /**
-     * @var string
-     */
     private string $text;
 
-    /**
-     * @var InlineKeyboardMarkup
-     */
     private InlineKeyboardMarkup $buttons;
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     private array $callbacks = [];
 
-    /**
-     * @var string|null
-     */
     private ?string $orNext = null;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private array $opt = [];
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private array $callbackQueryOpt = [];
 
@@ -60,7 +45,7 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     protected function getSerializableAttributes(): array
     {
@@ -70,9 +55,8 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param string $text
-     * @param array $opt
-     * @return InlineMenu
+     * Set the message text and the optional message parameters
+     * @param array<string, mixed> $opt
      */
     protected function menuText(string $text, array $opt = []): self
     {
@@ -94,7 +78,6 @@ abstract class InlineMenu extends Conversation
 
     /**
      * @param InlineKeyboardButton $buttons
-     * @return InlineMenu
      */
     protected function addButtonRow(...$buttons): self
     {
@@ -125,10 +108,6 @@ abstract class InlineMenu extends Conversation
         return $this;
     }
 
-    /**
-     * @param string|null $orNext
-     * @return InlineMenu
-     */
     protected function orNext(?string $orNext): self
     {
         $this->orNext = $orNext;
@@ -136,7 +115,6 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @return mixed
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function handleStep(): mixed
@@ -166,10 +144,6 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param bool $reopen
-     * @param bool $noHandlers
-     * @param bool $noMiddlewares
-     * @return Message|bool|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function showMenu(
@@ -197,11 +171,8 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param string|null $finalText
-     * @param array $opt
-     * @param bool $reopen
-     *
-     * @return Message|bool
+     * Close the menu deleting the current message
+     * @param array<string, mixed> $opt
      */
     protected function closeMenu(?string $finalText = null, array $opt = [], bool $reopen = false): bool|Message
     {
@@ -233,7 +204,7 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param array $opt
+     * @param array<string, mixed> $opt
      * @return $this
      */
     protected function setCallbackQueryOptions(array $opt): self
@@ -243,7 +214,6 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param Nutgram $bot
      *
      * @return void
      */
@@ -253,11 +223,9 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param string $text
-     * @param InlineKeyboardMarkup $buttons
-     * @param array $opt
-     * @return Message|null
-     * @internal Override only to change the Telegram method.
+     * Send the message. Default: sendMessage
+     * Override only to change the Telegram method.
+     * @param array<string, mixed> $opt
      */
     protected function doOpen(string $text, InlineKeyboardMarkup $buttons, array $opt): Message|null
     {
@@ -270,15 +238,9 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param string $text
-     * @param int|null $chatId
-     * @param int|null $messageId
-     * @param InlineKeyboardMarkup $buttons
-     * @param array $opt
-     *
-     * @return Message|bool|null
-     *
-     * @internal Override only to change the Telegram method.
+     * Edit the message. Default: editMessageText
+     * Override only to change the Telegram method.
+     * @param array<string, mixed> $opt
      */
     protected function doUpdate(
         string $text,
@@ -297,9 +259,6 @@ abstract class InlineMenu extends Conversation
     }
 
     /**
-     * @param int $chatId
-     * @param int $messageId
-     * @return bool
      * @internal Override only to change the Telegram method.
      */
     protected function doClose(int $chatId, int $messageId): bool

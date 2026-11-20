@@ -16,19 +16,16 @@ class MessageReactionCountUpdated extends BaseType
 {
     /**
      * The chat containing the message
-     * @var Chat
      */
     public Chat $chat;
 
     /**
      * Unique message identifier inside the chat
-     * @var int
      */
     public int $message_id;
 
     /**
      * Date of the change in Unix time
-     * @var int
      */
     public int $date;
 

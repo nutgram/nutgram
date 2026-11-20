@@ -18,7 +18,6 @@ trait UpdateListeners
 {
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onMessage($callable): Handler
     {
@@ -27,9 +26,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param MessageType $type
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onMessageType(MessageType $type, $callable): Handler
     {
@@ -39,7 +36,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onEditedMessage($callable): Handler
     {
@@ -49,7 +45,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onChannelPost($callable): Handler
     {
@@ -59,7 +54,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onEditedChannelPost($callable): Handler
     {
@@ -69,7 +63,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onBusinessConnection($callable): Handler
     {
@@ -79,7 +72,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onBusinessMessage($callable): Handler
     {
@@ -89,7 +81,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onEditedBusinessMessage($callable): Handler
     {
@@ -99,7 +90,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onDeletedBusinessMessages($callable): Handler
     {
@@ -109,7 +99,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onMessageReaction($callable): Handler
     {
@@ -119,7 +108,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onMessageReactionCount($callable): Handler
     {
@@ -129,7 +117,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onInlineQuery($callable): Handler
     {
@@ -138,9 +125,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param BackedEnum|string $pattern
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onInlineQueryText(BackedEnum|string $pattern, $callable): Handler
     {
@@ -151,7 +136,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onChosenInlineResult($callable): Handler
     {
@@ -160,9 +144,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param BackedEnum|string $pattern
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onChosenInlineResultQuery(BackedEnum|string $pattern, $callable): Handler
     {
@@ -175,9 +157,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param BackedEnum|string $pattern
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onChosenInlineResultId(BackedEnum|string $pattern, $callable): Handler
     {
@@ -191,7 +171,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onCallbackQuery($callable): Handler
     {
@@ -200,9 +179,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param BackedEnum|string $pattern
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onCallbackQueryData(BackedEnum|string $pattern, $callable): Handler
     {
@@ -213,7 +190,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onShippingQuery($callable): Handler
     {
@@ -223,7 +199,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onPreCheckoutQuery($callable): Handler
     {
@@ -232,9 +207,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param BackedEnum|string $pattern
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onPreCheckoutQueryPayload(BackedEnum|string $pattern, $callable): Handler
     {
@@ -248,7 +221,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onPaidMediaPurchased($callable): Handler
     {
@@ -257,9 +229,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param BackedEnum|string $pattern
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onPaidMediaPurchasedPayload(BackedEnum|string $pattern, $callable): Handler
     {
@@ -273,7 +243,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onUpdatePoll($callable): Handler
     {
@@ -283,7 +252,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onPollAnswer($callable): Handler
     {
@@ -293,7 +261,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onMyChatMember($callable): Handler
     {
@@ -303,7 +270,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onChatMember($callable): Handler
     {
@@ -313,7 +279,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onChatJoinRequest($callable): Handler
     {
@@ -322,9 +287,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param string $pattern
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onChatJoinRequestQuery(string $pattern, $callable): Handler
     {
@@ -334,7 +297,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onChatBoost($callable): Handler
     {
@@ -344,7 +306,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onRemovedChatBoost($callable): Handler
     {
@@ -354,7 +315,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onManagedBotUpdated($callable): Handler
     {
@@ -364,7 +324,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onGuestMessage($callable): Handler
     {
@@ -374,7 +333,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onBotSubscriptionUpdated($callable): Handler
     {
@@ -383,9 +341,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param string $pattern
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onBotSubscriptionUpdatedPayload(string $pattern, $callable): Handler
     {
@@ -395,7 +351,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onMessageGenerationStopped($callable): Handler
     {
@@ -405,7 +360,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onWidgetQuery($callable): Handler
     {
@@ -414,9 +368,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param string $pattern
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onWidgetQueryData(string $pattern, $callable): Handler
     {
@@ -426,7 +378,6 @@ trait UpdateListeners
 
     /**
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onSharedWidgetQuery($callable): Handler
     {
@@ -435,9 +386,7 @@ trait UpdateListeners
     }
 
     /**
-     * @param string $pattern
      * @param callable|class-string|array $callable
-     * @return Handler
      */
     public function onSharedWidgetQueryData(string $pattern, $callable): Handler
     {

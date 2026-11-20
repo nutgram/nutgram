@@ -22,13 +22,10 @@ trait Asserts
     /**
      * Asserts custom conditions on the request and response.
      * @param callable(RequestData, ResponseData):bool $closure
-     * @param int|null $index
-     * @param string $message
-     * @return static
      */
     public function assertRaw(callable $closure, ?int $index = null, string $message = ''): static
     {
-        $index = $index ?? $this->sequenceIndex;
+        $index ??= $this->sequenceIndex;
         $reqRes = $this->testingHistory[$index] ?? null;
 
         if ($reqRes === null) {
@@ -46,9 +43,6 @@ trait Asserts
 
     /**
      * Asserts that a method was called.
-     * @param string $method
-     * @param int $times
-     * @return static
      */
     public function assertCalled(string $method, int $times = 1): static
     {
@@ -70,13 +64,10 @@ trait Asserts
     /**
      * Asserts that a reply was sent.
      * @param string|string[] $method
-     * @param array|null $expected
-     * @param int|null $index
-     * @return static
      */
     public function assertReply(string|array $method, ?array $expected = null, ?int $index = null): static
     {
-        $index = $index ?? $this->sequenceIndex;
+        $index ??= $this->sequenceIndex;
         $method = !is_array($method) ? [$method] : $method;
 
         $reqRes = $this->testingHistory[$index] ?? null;
@@ -106,35 +97,24 @@ trait Asserts
 
     /**
      * Asserts that the reply message is equal to the expected message.
-     * @param array $expected
-     * @param int|null $index
-     * @param string|null $forceMethod
-     * @return static
      */
     public function assertReplyMessage(array $expected, ?int $index = null, ?string $forceMethod = null): static
     {
-        $index = $index ?? $this->sequenceIndex;
+        $index ??= $this->sequenceIndex;
         return $this->assertReply($forceMethod ?? $this->methodsReturnTypes[Message::class] ?? [], $expected, $index);
     }
 
     /**
      * Asserts that the reply message text is equal to the expected text.
-     * @param string $expected
-     * @param int|null $index
-     * @return static
      */
     public function assertReplyText(string $expected, ?int $index = null): static
     {
-        $index = $index ?? $this->sequenceIndex;
+        $index ??= $this->sequenceIndex;
         return $this->assertReplyMessage(['text' => $expected], $index);
     }
 
     /**
      * Asserts that a conversation is active.
-     * @param int|null $userId
-     * @param int|null $chatId
-     * @param int|null $threadId
-     * @return static
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function assertActiveConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): static
@@ -148,10 +128,6 @@ trait Asserts
 
     /**
      * Asserts that no conversation is active.
-     * @param int|null $userId
-     * @param int|null $chatId
-     * @param int|null $threadId
-     * @return static
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function assertNoConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): static
@@ -165,7 +141,6 @@ trait Asserts
 
     /**
      * Asserts that no reply was sent.
-     * @return static
      */
     public function assertNoReply(): static
     {
@@ -176,8 +151,6 @@ trait Asserts
 
     /**
      * Asserts that the sequence of calls is correct.
-     * @param callable ...$callbacks
-     * @return static
      */
     public function assertSequence(callable ...$callbacks): static
     {
@@ -193,11 +166,6 @@ trait Asserts
         return $this;
     }
 
-    /**
-     * @param int|null $userId
-     * @param int|null $chatId
-     * @return array
-     */
     private function checkUserChatIds(?int $userId, ?int $chatId): array
     {
         $userId = $this->storedUser?->id ?? $userId;

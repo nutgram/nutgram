@@ -49,7 +49,6 @@ class InputRichBlockDetails extends BaseType implements InputRichBlock, Uploadab
     /**
      * @param string|RichText|array<mixed> $summary
      * @param InputRichBlock[] $blocks
-     * @param bool|null $is_open
      */
     public function __construct(string|array|RichText $summary, array $blocks, ?bool $is_open = null)
     {

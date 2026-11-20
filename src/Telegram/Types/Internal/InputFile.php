@@ -31,7 +31,6 @@ class InputFile implements JsonSerializable
     /**
      * @param StreamInterface|resource|string $stream StreamInterface, resource, filepath or URI
      * @param string|null $filename Custom filename
-     * @return InputFile
      */
     public static function make(mixed $stream, ?string $filename = null): InputFile
     {

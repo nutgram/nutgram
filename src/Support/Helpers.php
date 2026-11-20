@@ -6,10 +6,14 @@ namespace SergiX44\Nutgram\Support;
 
 use BackedEnum;
 use InvalidArgumentException;
+use ReflectionIntersectionType;
+use ReflectionNamedType;
+use ReflectionType;
+use ReflectionUnionType;
 
 function array_filter_null(array $array): array
 {
-    return array_filter($array, static fn ($value) => $value !== null);
+    return array_filter($array, static fn ($value): bool => $value !== null);
 }
 
 function word_wrap(string $string, int $width = 75, string $break = "\n", bool $cut = false): string
@@ -130,13 +134,6 @@ function is_nonscalar_json(string $value): bool
 
 /**
  * Map the interval [$sourceStart,$sourceEnd] onto the interval [$targetStart,$targetEnd].
- * @param float $current
- * @param float $sourceStart
- * @param float $sourceEnd
- * @param float $targetStart
- * @param float $targetEnd
- * @param int $precision
- * @return int|float
  * @see https://math.stackexchange.com/a/914843
  */
 function mapInterval(
@@ -164,4 +161,21 @@ function mapInterval(
     }
 
     return $result;
+}
+
+function getSafeReflectionTypeName(?ReflectionType $type): ?string
+{
+    if ($type instanceof ReflectionUnionType) {
+        return $type->getTypes()[0]->getName();
+    }
+
+    if ($type instanceof ReflectionIntersectionType) {
+        return getSafeReflectionTypeName($type->getTypes()[0]);
+    }
+
+    if ($type instanceof ReflectionNamedType) {
+        return $type->getName();
+    }
+
+    return null;
 }

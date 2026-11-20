@@ -78,7 +78,6 @@ class PollMedia extends BaseType
     /**
      * Check if the media is of a specific type
      * @param class-string<BaseType> $type
-     * @return bool
      */
     public function is(string $type): bool
     {
@@ -92,6 +91,7 @@ class PollMedia extends BaseType
             $this->sticker !== null => Sticker::class,
             $this->venue !== null => Venue::class,
             $this->video !== null => Video::class,
+            default => null,
         };
 
         return $currentType === $type;

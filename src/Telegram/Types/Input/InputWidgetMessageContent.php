@@ -97,17 +97,7 @@ class InputWidgetMessageContent extends BaseType implements InputMessageContent
     public ?bool $is_shared = null;
 
     /**
-     * @param string $html
-     * @param int|null $width
-     * @param int|null $height
-     * @param string|null $public_data
-     * @param string|null $chat_data
-     * @param string|null $caption
-     * @param ParseMode|string|null $parse_mode
      * @param MessageEntity[]|null $caption_entities
-     * @param bool|null $show_caption_above_media
-     * @param bool|null $allow_queries
-     * @param bool|null $is_shared
      */
     public function __construct(
         string $html,

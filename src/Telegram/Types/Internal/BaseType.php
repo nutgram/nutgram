@@ -27,20 +27,15 @@ abstract class BaseType implements Arrayable, JsonSerializable
     /** @internal */
     private array $_extra = [];
 
-    /**
-     * @param Nutgram|null $bot
-     */
     public function __construct(?Nutgram $bot = null)
     {
         $this->_bot = $bot;
     }
 
     /**
-     * @param string $method
-     * @param array $parameters
      * @return mixed
      */
-    public function __call($method, $parameters)
+    public function __call(string $method, array $parameters)
     {
         if ($this->_bot instanceof Nutgram && method_exists($this->_bot, $method)) {
             return $this->_bot->$method(...$parameters);
@@ -49,38 +44,21 @@ abstract class BaseType implements Arrayable, JsonSerializable
         return $this->callMacro($method, $parameters);
     }
 
-    /**
-     * @param string $name
-     * @param mixed $value
-     * @return void
-     */
     public function __set(string $name, mixed $value): void
     {
         $this->_extra[$name] = $value;
     }
 
-    /**
-     * @param string $name
-     * @return mixed
-     */
     public function __get(string $name): mixed
     {
         return $this->_extra[$name] ?? null;
     }
 
-    /**
-     * @param string $name
-     * @return bool
-     */
     public function __isset(string $name): bool
     {
         return isset($this->_extra[$name]);
     }
 
-    /**
-     * @param Nutgram|null $bot
-     * @return BaseType
-     */
     public function bindToInstance(?Nutgram $bot): self
     {
         $this->_bot = $bot;
@@ -94,7 +72,7 @@ abstract class BaseType implements Arrayable, JsonSerializable
 
     public static function fromArray(array $data): static
     {
-        return (new Hydrator(new Container()))->hydrate(static::class, $data);
+        return new Hydrator(new Container())->hydrate(static::class, $data);
     }
 
     public function toArray(): array
@@ -104,7 +82,7 @@ abstract class BaseType implements Arrayable, JsonSerializable
 
         $data = [...$objectVars, ...$this->_extra];
 
-        array_walk_recursive($data, static function (mixed &$value, string $key) {
+        array_walk_recursive($data, static function (mixed &$value, string $key): void {
             match (true) {
                 str_starts_with($key, '_') => $value = null, // remove internal properties
                 $value instanceof Arrayable => $value = $value->toArray(),

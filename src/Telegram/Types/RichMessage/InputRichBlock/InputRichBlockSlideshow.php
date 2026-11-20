@@ -39,7 +39,6 @@ class InputRichBlockSlideshow extends BaseType implements InputRichBlock, Upload
 
     /**
      * @param InputRichBlock[] $blocks
-     * @param RichBlockCaption|null $caption
      */
     public function __construct(array $blocks, ?RichBlockCaption $caption = null)
     {

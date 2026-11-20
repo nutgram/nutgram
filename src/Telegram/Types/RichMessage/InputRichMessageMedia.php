@@ -35,7 +35,6 @@ class InputRichMessageMedia extends BaseType implements Uploadables
 
     public function uploadables(): array
     {
-        /** @psalm-suppress RedundantPropertyInitializationCheck The caller assigns media after construction. */
         return ['media' => $this->media ?? null];
     }
 }
