@@ -16,7 +16,7 @@ class Polling implements RunningMode
 
     public function __construct()
     {
-        if (!(\PHP_SAPI === 'cli' || \PHP_SAPI === 'phpdbg')) {
+        if (\PHP_SAPI !== 'cli' && \PHP_SAPI !== 'phpdbg') {
             throw new RuntimeException('This mode can be only invoked via cli.');
         }
     }
