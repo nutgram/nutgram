@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram\RunningMode;
 
 use Closure;
+use JsonException;
 use JsonMapper_Exception;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\InvalidArgumentException;
@@ -12,7 +13,7 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use Throwable;
 
-class Webhook implements RunningMode
+class Webhook implements RunningMode, RespondsToWebhook
 {
     protected bool $safeMode = false;
 
@@ -62,6 +63,27 @@ class Webhook implements RunningMode
                 ->error(sprintf('Update failed: %s%s%s', $update?->getType()?->value, PHP_EOL, $input), ['exception' => $e]);
             throw $e;
         }
+    }
+
+    /**
+     * The response is flushed right away with fastcgi_finish_request(), so PHP-FPM is required.
+     * @return bool
+     */
+    public function canRespond(): bool
+    {
+        return function_exists('fastcgi_finish_request') && !headers_sent();
+    }
+
+    /**
+     * @param string $method
+     * @param array<array-key, mixed> $parameters
+     * @throws JsonException
+     */
+    public function respond(string $method, array $parameters): void
+    {
+        header('Content-Type: application/json', response_code: 200);
+        echo json_encode(['method' => $method, ...$parameters], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        fastcgi_finish_request();
     }
 
     /**

@@ -16,6 +16,12 @@
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
+    <taintAnalysis>
+        <ignoreFiles>
+            <!-- testing helpers print the faked requests to the terminal -->
+            <directory name="src/Testing"/>
+        </ignoreFiles>
+    </taintAnalysis>
     <issueHandlers>
         <PropertyNotSetInConstructor>
             <errorLevel type="suppress">

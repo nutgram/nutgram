@@ -2,7 +2,7 @@
 
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
-use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Limits;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
@@ -15,7 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
- * @mixin Client
+ * @mixin Nutgram
  */
 trait CustomEndpoints
 {
