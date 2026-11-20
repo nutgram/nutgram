@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object describes a unique gift that was upgraded from a regular gift.
@@ -52,6 +52,11 @@ class UniqueGift extends BaseType
      * Optional. True, if the original regular gift was exclusively purchasable by Telegram Premium subscribers
      */
     public ?bool $is_premium = null;
+
+    /**
+     * Optional. True, if the gift was used to craft another gift and isn't available anymore
+     */
+    public ?bool $is_burned = null;
 
     /**
      * Optional. True, if the gift is assigned from the TON blockchain and can't be resold or transferred in Telegram

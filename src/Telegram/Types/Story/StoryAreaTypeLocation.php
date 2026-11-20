@@ -7,6 +7,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Story;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\StoryAreaTypeType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Location\LocationAddress;
 
 /**
@@ -14,7 +15,7 @@ use SergiX44\Nutgram\Telegram\Types\Location\LocationAddress;
  * @see https://core.telegram.org/bots/api#storyareatypelocation
  */
 #[OverrideConstructor('bindToInstance')]
-class StoryAreaTypeLocation extends StoryAreaType
+class StoryAreaTypeLocation extends BaseType implements StoryAreaType
 {
     /**
      * Type of the area, always “location”

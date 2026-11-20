@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
-use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
@@ -17,7 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
 /**
  * Trait Payments
  * @package SergiX44\Nutgram\Telegram\Endpoints
- * @mixin Client
+ * @mixin Nutgram
  */
 trait Payments
 {
@@ -58,7 +58,6 @@ trait Payments
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @return Message|null
      */
     public function sendInvoice(
         string $title,
@@ -163,7 +162,6 @@ trait Payments
      * @param bool|null $is_flexible Pass True if the final price depends on the shipping method
      * @param int|null $subscription_period The number of seconds the subscription will be active for before the next payment. The currency must be set to “XTR” (Telegram Stars) if the parameter is used. Currently, it must always be 2592000 (30 days) if specified. Any number of subscriptions can be active for a given bot at the same time, including multiple concurrent subscriptions from the same user. Subscription price must no exceed 10000 Telegram Stars.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the link will be created
-     * @return string|null
      */
     public function createInvoiceLink(
         string $title,
@@ -225,7 +223,6 @@ trait Payments
      * @param string|null $shipping_query_id Unique identifier for the query to be answered
      * @param ShippingOption[]|null $shipping_options Required if ok is True. A JSON-serialized array of available shipping options.
      * @param string|null $error_message Required if ok is False. Error message in human readable form that explains why it is impossible to complete the order (e.g. "Sorry, delivery to your desired address is unavailable'). Telegram will display this message to the user.
-     * @return bool|null
      */
     public function answerShippingQuery(
         bool $ok,
@@ -248,7 +245,6 @@ trait Payments
      * @param bool $ok Specify True if everything is alright (goods are available, etc.) and the bot is ready to proceed with the order. Use False if there are any problems.
      * @param string|null $pre_checkout_query_id Unique identifier for the query to be answered
      * @param string|null $error_message Required if ok is False. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!"). Telegram will display this message to the user.
-     * @return bool|null
      */
     public function answerPreCheckoutQuery(
         bool $ok,
@@ -266,7 +262,6 @@ trait Payments
      * Requires no parameters.
      * On success, returns a StarAmount object.
      * @see https://core.telegram.org/bots/api#getmystarbalance
-     * @return StarAmount|null
      */
     public function getMyStarBalance(): ?StarAmount
     {
@@ -278,7 +273,6 @@ trait Payments
      * On success, returns a {@see https://core.telegram.org/bots/api#startransactions StarTransactions} object.
      * @param int|null $offset Number of transactions to skip in the response
      * @param int|null $limit The maximum number of transactions to be retrieved. Values between 1-100 are accepted. Defaults to 100.
-     * @return StarTransactions|null
      * @see https://core.telegram.org/bots/api#getstartransactions
      */
     public function getStarTransactions(?int $offset = null, ?int $limit = null): ?StarTransactions
@@ -294,7 +288,6 @@ trait Payments
      * @param string $telegram_payment_charge_id Telegram payment identifier for the subscription
      * @param bool $is_canceled Pass True to cancel extension of the user subscription; the subscription must be active up to the end of the current subscription period. Pass False to allow the user to re-enable a subscription that was previously canceled by the bot.
      * @param int|null $user_id Identifier of the user whose subscription will be edited
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#edituserstarsubscription
      */
     public function editUserStarSubscription(
@@ -314,7 +307,6 @@ trait Payments
      * @see https://core.telegram.org/bots/api#refundstarpayment
      * @param int|null $user_id Identifier of the user whose payment will be refunded
      * @param string $telegram_payment_charge_id Telegram payment identifier
-     * @return bool|null
      */
     public function refundStarPayment(
         string $telegram_payment_charge_id,

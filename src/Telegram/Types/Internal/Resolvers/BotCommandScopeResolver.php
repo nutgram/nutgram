@@ -16,6 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChat;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChatAdministrators;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChatMember;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class BotCommandScopeResolver extends ConcreteResolver
@@ -33,7 +34,8 @@ class BotCommandScopeResolver extends ConcreteResolver
     public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
-        return $this->concretes[$type] ?? (new class extends BotCommandScope {
+        return $this->concretes[$type] ?? (new class extends BaseType implements BotCommandScope {
+            public string $type;
         })::class;
     }
 }

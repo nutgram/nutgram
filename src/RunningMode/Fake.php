@@ -13,15 +13,12 @@ class Fake implements RunningMode
 {
     /**
      * Fake running mode constructor.
-     * @param object|array|null $update
      */
     public function __construct(private object|array|null $update = null)
     {
     }
 
     /**
-     * @param Nutgram $bot
-     * @return void
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\SimpleCache\InvalidArgumentException
@@ -39,10 +36,6 @@ class Fake implements RunningMode
         $bot->processUpdate($update);
     }
 
-    /**
-     * @param mixed $update
-     * @return Fake
-     */
     public function setUpdate(mixed $update): Fake
     {
         $this->update = $update;

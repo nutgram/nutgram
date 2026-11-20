@@ -7,13 +7,14 @@ namespace SergiX44\Nutgram\Telegram\Types\Reaction;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ReactionTypeType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * The reaction is based on an emoji.
  * @see https://core.telegram.org/bots/api#reactiontypeemoji
  */
 #[OverrideConstructor('bindToInstance')]
-class ReactionTypeEmoji extends ReactionType
+class ReactionTypeEmoji extends BaseType implements ReactionType
 {
     public const THUMBS_UP = '👍';
     public const THUMBS_DOWN = '👎';
@@ -91,7 +92,6 @@ class ReactionTypeEmoji extends ReactionType
 
     /**
      * Type of the reaction, always “emoji”
-     * @var ReactionTypeType|string
      */
     #[EnumOrScalar]
     public ReactionTypeType|string $type = ReactionTypeType::EMOJI;
@@ -103,7 +103,6 @@ class ReactionTypeEmoji extends ReactionType
      * "💔", "🤨", "😐", "🍓", "🍾", "💋", "🖕", "😈", "😴", "😭", "🤓", "👻", "👨‍💻", "👀", "🎃", "🙈",
      * "😇", "😨", "🤝", "✍", "🤗", "🫡", "🎅", "🎄", "☃", "💅", "🤪", "🗿", "🆒", "💘", "🙉", "🦄",
      * "😘", "💊", "🙊", "😎", "👾", "🤷‍♂", "🤷", "🤷‍♀", "😡"
-     * @var string
      */
     public string $emoji;
 

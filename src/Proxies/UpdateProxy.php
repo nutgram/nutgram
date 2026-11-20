@@ -17,6 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
+use SergiX44\Nutgram\Telegram\Types\Message\MaybeInaccessibleMessage;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPurchased;
@@ -27,6 +28,8 @@ use SergiX44\Nutgram\Telegram\Types\Poll\PollAnswer;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
 use SergiX44\Nutgram\Telegram\Types\User\User;
+use SergiX44\Nutgram\Telegram\Types\Widget\SharedWidgetQuery;
+use SergiX44\Nutgram\Telegram\Types\Widget\WidgetQuery;
 
 /**
  * Trait UpdateProxy
@@ -57,7 +60,7 @@ trait UpdateProxy
 
     public function messageId(): ?int
     {
-        return $this->message()?->message_id;
+        return $this->message()?->message_id ?? $this->widgetQuery()?->message_id;
     }
 
     public function messageThreadId(): ?int
@@ -76,12 +79,42 @@ trait UpdateProxy
 
     public function inlineMessageId(): ?string
     {
-        return $this->chosenInlineResult()?->inline_message_id ?? $this->callbackQuery()?->inline_message_id;
+        return $this->chosenInlineResult()?->inline_message_id
+            ?? $this->callbackQuery()?->inline_message_id
+            ?? $this->widgetQuery()?->inline_message_id;
     }
 
     public function directMessagesTopicId(): ?int
     {
         return $this->message()?->direct_messages_topic?->topic_id;
+    }
+
+    public function managedBotId(): ?int
+    {
+        return $this->managedBot()?->id;
+    }
+
+    public function guestQueryId(): ?string
+    {
+        return $this->message()?->guest_query_id;
+    }
+
+    public function receiverUserId(): ?int
+    {
+        return $this->message()?->receiver_user?->id;
+    }
+
+    public function ephemeralMessageId(): ?int
+    {
+        return $this->message()?->ephemeral_message_id;
+    }
+
+    public function widgetId(): ?string
+    {
+        return $this->update()?->widget_query?->widget_id
+            ?? $this->update()?->shared_widget_query?->widget_id
+            ?? $this->message()?->widget?->id
+            ?? $this->message()?->external_reply?->widget?->id;
     }
 
     /*
@@ -113,7 +146,7 @@ trait UpdateProxy
 
     public function isCommand(): bool
     {
-        /** @var MessageEntity $entity */
+        /** @var MessageEntity|null $entity */
         $entity = $this->update?->message?->entities[0] ?? null;
 
         return $entity !== null &&
@@ -154,6 +187,16 @@ trait UpdateProxy
             || $this->message()?->suggested_post_declined !== null
             || $this->message()?->suggested_post_paid !== null
             || $this->message()?->suggested_post_refunded !== null;
+    }
+
+    public function isWidgetQuery(): bool
+    {
+        return $this->update?->widget_query !== null;
+    }
+
+    public function isSharedWidgetQuery(): bool
+    {
+        return $this->update?->shared_widget_query !== null;
     }
 
     /*
@@ -252,5 +295,20 @@ trait UpdateProxy
         return $this->message()?->checklist
             ?? $this->message()?->checklist_tasks_done?->checklist_message?->checklist
             ?? $this->message()?->checklist_tasks_added?->checklist_message?->checklist;
+    }
+
+    public function managedBot(): ?User
+    {
+        return $this->message()?->managed_bot_created?->bot ?? $this->update()?->managed_bot?->bot;
+    }
+
+    public function widgetQuery(): ?WidgetQuery
+    {
+        return $this->update?->widget_query;
+    }
+
+    public function sharedWidgetQuery(): ?SharedWidgetQuery
+    {
+        return $this->update?->shared_widget_query;
     }
 }

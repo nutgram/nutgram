@@ -1,0 +1,20 @@
+{
+  "update_id": 144011148,
+  "managed_bot": {
+    "user": {
+      "id": 12345,
+      "is_bot": false,
+      "first_name": "Mario",
+      "last_name": "Bros",
+      "username": "MarioBros",
+      "language_code": "it",
+      "is_premium": false
+    },
+    "bot": {
+      "id": 67890,
+      "is_bot": true,
+      "first_name": "My Robot",
+      "username": "MyRobot"
+    }
+  }
+}

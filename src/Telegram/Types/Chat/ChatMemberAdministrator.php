@@ -6,13 +6,14 @@ namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ChatMemberStatus;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member} that has some additional privileges.
  * @see https://core.telegram.org/bots/api#chatmemberadministrator
  */
-class ChatMemberAdministrator extends ChatMember
+class ChatMemberAdministrator extends BaseType implements ChatMember
 {
     /** The member's status in the chat, always “administrator” */
     #[EnumOrScalar]
@@ -100,6 +101,18 @@ class ChatMemberAdministrator extends ChatMember
      * for channels only
      */
     public ?bool $can_manage_direct_messages = null;
+
+    /**
+     * Optional.
+     * True, if the administrator can edit the tags of regular members; for groups and supergroups only.
+     * If omitted defaults to the value of can_pin_messages.
+     */
+    public ?bool $can_manage_tags = null;
+
+    /**
+     * True, if the administrator can manage chat welcome messages or directly send them in the case of bots
+     */
+    public bool $can_send_welcome_messages;
 
     /**
      * Optional.

@@ -16,7 +16,7 @@ class Polling implements RunningMode
 
     public function __construct()
     {
-        if (!(\PHP_SAPI === 'cli' || \PHP_SAPI === 'phpdbg')) {
+        if (\PHP_SAPI !== 'cli' && \PHP_SAPI !== 'phpdbg') {
             throw new RuntimeException('This mode can be only invoked via cli.');
         }
     }
@@ -38,7 +38,7 @@ class Polling implements RunningMode
             );
 
             if ($offset === 1) {
-                /** @var Update $last */
+                /** @var Update|false $last */
                 $last = end($updates);
                 if ($last) {
                     $offset = $last->update_id;
@@ -58,11 +58,11 @@ class Polling implements RunningMode
         if (extension_loaded('pcntl')) {
             pcntl_async_signals(true);
 
-            $killMe = static function () {
-                exit('Goodbye!');
+            $killMe = static function (): void {
+                exit("\nGoodbye!\n");
             };
 
-            $exitGracefully = static function () {
+            $exitGracefully = static function (): void {
                 self::$FOREVER = false;
             };
 
@@ -73,9 +73,7 @@ class Polling implements RunningMode
     }
 
     /**
-     * @param Nutgram $bot
      * @param Update[] $updates
-     * @return void
      */
     protected function fire(Nutgram $bot, array $updates = []): void
     {

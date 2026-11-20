@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use GuzzleHttp\Psr7\Request;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Testing\RequestData;
 
 describe('message_thread_id', function () {
     test('not autofilled in general topic message', function ($update) {
@@ -15,9 +15,8 @@ describe('message_thread_id', function () {
 
         $bot->run();
 
-        $bot->assertRaw(function (Request $request) {
-            $body = json_decode($request->getBody()->getContents(), true);
-            return !array_key_exists('message_thread_id', $body);
+        $bot->assertRaw(function (RequestData $request) {
+            return $request->missing('message_thread_id');
         }, message: 'message_thread_id should not be autofilled');
     })->with('message_general_topic');
 
@@ -30,9 +29,8 @@ describe('message_thread_id', function () {
 
         $bot->run();
 
-        $bot->assertRaw(function (Request $request) {
-            $body = json_decode($request->getBody()->getContents(), true);
-            return !array_key_exists('message_thread_id', $body);
+        $bot->assertRaw(function (RequestData $request) {
+            return $request->missing('message_thread_id');
         }, message: 'message_thread_id should not be autofilled');
     })->with('message_general_topic_reply');
 
@@ -45,9 +43,8 @@ describe('message_thread_id', function () {
 
         $bot->run();
 
-        $bot->assertRaw(function (Request $request) {
-            $body = json_decode($request->getBody()->getContents(), true);
-            return array_key_exists('message_thread_id', $body);
+        $bot->assertRaw(function (RequestData $request) {
+            return $request->has('message_thread_id');
         }, message: 'message_thread_id should be autofilled');
     })->with('message_different_topic');
 
@@ -60,9 +57,8 @@ describe('message_thread_id', function () {
 
         $bot->run();
 
-        $bot->assertRaw(function (Request $request) {
-            $body = json_decode($request->getBody()->getContents(), true);
-            return array_key_exists('message_thread_id', $body);
+        $bot->assertRaw(function (RequestData $request) {
+            return $request->has('message_thread_id');
         }, message: 'message_thread_id should be autofilled');
     })->with('message_different_topic_reply');
 });

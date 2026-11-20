@@ -59,15 +59,6 @@ class TestClock implements ClockInterface
             throw new RuntimeException('Cannot modify when clock is not freezed');
         }
 
-        if (PHP_VERSION_ID < 80300) {
-            $modified = @self::getFreezedTime()->modify($modifier) ?: throw new InvalidArgumentException(
-                error_get_last()['message'] ?? sprintf('Invalid modifier: "%s". Could not modify MockClock.', $modifier)
-            );
-
-            self::freeze($modified);
-            return;
-        }
-
         try {
             self::freeze(self::getFreezedTime()->modify($modifier));
         } catch (Throwable $e) {

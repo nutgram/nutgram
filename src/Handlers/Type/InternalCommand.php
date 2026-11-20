@@ -5,28 +5,27 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Handlers\Type;
 
 use SergiX44\Nutgram\Handlers\Handler;
+use SergiX44\Nutgram\Support\IsEphemeral;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
 
 final class InternalCommand extends Handler
 {
+    use IsEphemeral;
+
     protected array $description = [];
 
     protected array $scopes = [];
 
     /**
      * @param callable|callable-string|class-string|array $callable
-     * @param string $command
      */
     public function __construct($callable, string $command)
     {
         parent::__construct($callable, "/{$command}");
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         [$cmd,] = explode(' ', strtolower($this->pattern ?? ''));
@@ -38,9 +37,6 @@ final class InternalCommand extends Handler
         return $this->description;
     }
 
-    /**
-     * @return bool
-     */
     public function isHidden(): bool
     {
         return empty($this->getDescription());
@@ -48,7 +44,6 @@ final class InternalCommand extends Handler
 
     /**
      * @param array<string, string>|string $description
-     * @return InternalCommand
      */
     public function description(array|string $description): InternalCommand
     {
@@ -63,7 +58,6 @@ final class InternalCommand extends Handler
 
     /**
      * @param BotCommandScope|BotCommandScope[] $scope
-     * @return $this
      */
     public function scope(BotCommandScope|array $scope): InternalCommand
     {
@@ -83,10 +77,6 @@ final class InternalCommand extends Handler
         return !empty($this->scopes) ? $this->scopes : [new BotCommandScopeDefault];
     }
 
-    /**
-     * @param string|null $languageCode
-     * @return BotCommand
-     */
     public function toBotCommand(?string $languageCode = null): BotCommand
     {
         $descriptions = $this->getDescription();
@@ -94,10 +84,15 @@ final class InternalCommand extends Handler
         if ($languageCode !== null) {
             return new BotCommand(
                 command: $this->getName(),
-                description: $descriptions[$languageCode] ?? array_shift($descriptions)
+                description: $descriptions[$languageCode] ?? array_shift($descriptions),
+                is_ephemeral: $this->isEphemeral ? true : null,
             );
         }
 
-        return new BotCommand($this->getName(), $descriptions['*'] ?? null);
+        return new BotCommand(
+            command: $this->getName(),
+            description: $descriptions['*'] ?? null,
+            is_ephemeral: $this->isEphemeral ? true : null,
+        );
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Passport;
 
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Describes data required for decrypting and authenticating {@see https://core.telegram.org/bots/api#encryptedpassportelement EncryptedPassportElement}.

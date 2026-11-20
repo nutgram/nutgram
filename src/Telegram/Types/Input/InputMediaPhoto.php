@@ -9,7 +9,10 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
@@ -17,11 +20,21 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * @see https://core.telegram.org/bots/api#inputmediaphoto
  */
 #[OverrideConstructor('bindToInstance')]
-class InputMediaPhoto extends InputMedia
+class InputMediaPhoto extends BaseType implements InputMedia, InputPollMedia, InputPollOptionMedia, Uploadables
 {
     /** Type of the result, must be photo */
     #[EnumOrScalar]
     public InputMediaType|string $type = InputMediaType::PHOTO;
+
+    /**
+     * File to send.
+     * Pass a file_id to send a file that exists on the Telegram servers (recommended),
+     * pass an HTTP URL for Telegram to get a file from the Internet,
+     * or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.
+     * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
+     */
+    #[BaseUnion]
+    public InputFile|string $media;
 
     /**
      * Optional.
@@ -71,5 +84,10 @@ class InputMediaPhoto extends InputMedia
         $this->caption_entities = $caption_entities;
         $this->has_spoiler = $has_spoiler;
         $this->show_caption_above_media = $show_caption_above_media;
+    }
+
+    public function uploadables(): array
+    {
+        return ['media' => $this->media];
     }
 }

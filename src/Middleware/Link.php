@@ -9,19 +9,15 @@ use SergiX44\Nutgram\Nutgram;
 class Link
 {
     /**
-     * @var
+     * @var callable|class-string|array
      */
     private $callable;
 
-    /**
-     * @var Link|null
-     */
     private ?Link $next;
 
     /**
      * Link constructor.
-     * @param $callable
-     * @param  Link|null  $next
+     * @param callable|class-string|array $callable
      */
     public function __construct($callable, ?Link $next = null)
     {
@@ -29,10 +25,6 @@ class Link
         $this->next = $next;
     }
 
-    /**
-     * @param Nutgram $bot
-     * @return mixed
-     */
     public function __invoke(Nutgram $bot): mixed
     {
         return $bot->invoke($this->callable, ['bot' => $bot, $this->next]);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\RunningMode;
 
 use Closure;
+use JsonException;
 use JsonMapper_Exception;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\InvalidArgumentException;
@@ -13,27 +14,23 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use Throwable;
 
-class Webhook implements RunningMode
+class Webhook implements RunningMode, RespondsToWebhook
 {
     protected bool $safeMode = false;
-
     protected Closure $resolveSecretToken;
     protected ?string $secretToken = null;
 
     /**
-     * @param Closure|null $getToken
-     * @param string|null $secretToken
+     * @param string|null $secretToken Secret token to verify incoming requests.
+     * @param Closure|null $getToken A closure that returns the secret token. If not provided, it will look for the token in the `HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN` header.
      */
-    public function __construct(?Closure $getToken = null, ?string $secretToken = null)
+    public function __construct(?string $secretToken = null, ?Closure $getToken = null)
     {
-        $this->resolveSecretToken = $getToken ?? static fn (): string => $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ?? '';
         $this->secretToken = $secretToken;
+        $this->resolveSecretToken = $getToken ?? static fn (): string => $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ?? '';
     }
 
-
     /**
-     * @param Nutgram $bot
-     * @throws JsonMapper_Exception
      * @throws InvalidArgumentException
      * @throws Throwable
      */
@@ -49,7 +46,7 @@ class Webhook implements RunningMode
         try {
             /** @var Update $update */
             $update = new Hydrator($bot->getContainer())
-                ->hydrate(Update::class, json_decode($input, true, flags: JSON_THROW_ON_ERROR));
+                ->hydrate(Update::class, json_decode($input, flags: JSON_THROW_ON_ERROR));
 
             $bot->processUpdate($update);
 
@@ -65,26 +62,35 @@ class Webhook implements RunningMode
     }
 
     /**
-     * @return bool
+     * The response is flushed right away with fastcgi_finish_request(), so PHP-FPM is required.
      */
+    public function canRespond(): bool
+    {
+        return function_exists('fastcgi_finish_request') && !headers_sent();
+    }
+
+    /**
+     * @param array<array-key, mixed> $parameters
+     * @throws JsonException
+     */
+    public function respond(string $method, array $parameters): void
+    {
+        header('Content-Type: application/json', response_code: 200);
+        echo json_encode(['method' => $method, ...$parameters], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        fastcgi_finish_request();
+    }
+
     public function isSafeMode(): bool
     {
         return $this->safeMode;
     }
 
-    /**
-     * @param bool $safeMode
-     * @return self
-     */
     public function setSafeMode(bool $safeMode): self
     {
         $this->safeMode = $safeMode;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     protected function input(): ?string
     {
         return file_get_contents('php://input') ?: null;

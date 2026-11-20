@@ -7,24 +7,23 @@ namespace SergiX44\Nutgram\Telegram\Types\Reaction;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ReactionTypeType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * The reaction is based on a custom emoji.
  * @see https://core.telegram.org/bots/api#reactiontypecustomemoji
  */
 #[OverrideConstructor('bindToInstance')]
-class ReactionTypeCustomEmoji extends ReactionType
+class ReactionTypeCustomEmoji extends BaseType implements ReactionType
 {
     /**
      * Type of the reaction, always “custom_emoji”
-     * @var ReactionTypeType|string
      */
     #[EnumOrScalar]
     public ReactionTypeType|string $type = ReactionTypeType::CUSTOM_EMOJI;
 
     /**
      * Custom emoji identifier
-     * @var string
      */
     public string $custom_emoji_id;
 

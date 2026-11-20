@@ -8,6 +8,7 @@ use Attribute;
 use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Telegram\Properties\StoryAreaTypeType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Story\StoryAreaType;
 use SergiX44\Nutgram\Telegram\Types\Story\StoryAreaTypeLink;
 use SergiX44\Nutgram\Telegram\Types\Story\StoryAreaTypeLocation;
@@ -29,7 +30,8 @@ class StoryAreaTypeResolver extends ConcreteResolver
     public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
-        return $this->concretes[$type] ?? (new class extends StoryAreaType {
+        return $this->concretes[$type] ?? (new class extends BaseType implements StoryAreaType {
+            public string $type;
         })::class;
     }
 }

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Reaction;
 
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
-use SergiX44\Nutgram\Telegram\Properties\ReactionTypeType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\ReactionTypeResolver;
 
 /**
@@ -17,12 +14,6 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\ReactionTypeResolver;
  * @see https://core.telegram.org/bots/api#reactiontype
  */
 #[ReactionTypeResolver]
-abstract class ReactionType extends BaseType
+interface ReactionType
 {
-    /**
-     * Type of the reaction
-     * @var ReactionTypeType|string
-     */
-    #[EnumOrScalar]
-    public ReactionTypeType|string $type;
 }

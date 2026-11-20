@@ -6,13 +6,14 @@ namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\TransactionPartnerType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * Describes the affiliate program that issued the affiliate commission received via this transaction.
  * @see https://core.telegram.org/bots/api#transactionpartneraffiliateprogram
  */
-class TransactionPartnerAffiliateProgram extends TransactionPartner
+class TransactionPartnerAffiliateProgram extends BaseType implements TransactionPartner
 {
     /**
      * Type of the transaction partner, always “affiliate_program”

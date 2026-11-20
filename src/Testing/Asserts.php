@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Testing;
 
-use ArrayAccess;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Testing\Assert;
 use InvalidArgumentException;
 use JsonException;
@@ -20,29 +20,31 @@ trait Asserts
     private int $sequenceIndex = 0;
 
     /**
-     * @param callable(Request):bool $closure
-     * @param int|null $index
-     * @return $this
+     * Asserts custom conditions on the request and response.
+     * @param callable(RequestData, ResponseData):bool $closure
      */
-    public function assertRaw(callable $closure, ?int $index = null, string $message = ''): self
+    public function assertRaw(callable $closure, ?int $index = null, string $message = ''): static
     {
-        $index = $index ?? $this->sequenceIndex;
-        $reqRes = $this->testingHistory[$index];
+        $index ??= $this->sequenceIndex;
+        $reqRes = $this->testingHistory[$index] ?? null;
+
+        if ($reqRes === null) {
+            PHPUnit::fail('No request found');
+        }
 
         /** @var Request $request */
-        [$request,] = array_values($reqRes);
+        /** @var Response $response */
+        [$request, $response] = array_values($reqRes);
 
-        PHPUnit::assertTrue($closure($request), $message);
+        PHPUnit::assertTrue($closure(new RequestData($request), new ResponseData($response)), $message);
 
         return $this;
     }
 
     /**
-     * @param string $method
-     * @param int $times
-     * @return $this
+     * Asserts that a method was called.
      */
-    public function assertCalled(string $method, int $times = 1): self
+    public function assertCalled(string $method, int $times = 1): static
     {
         $actual = 0;
         foreach ($this->testingHistory as $reqRes) {
@@ -60,17 +62,15 @@ trait Asserts
     }
 
     /**
+     * Asserts that a reply was sent.
      * @param string|string[] $method
-     * @param array|null $expected
-     * @param int|null $index
-     * @return $this
      */
-    public function assertReply(string|array $method, ?array $expected = null, ?int $index = null): self
+    public function assertReply(string|array $method, ?array $expected = null, ?int $index = null): static
     {
-        $index = $index ?? $this->sequenceIndex;
+        $index ??= $this->sequenceIndex;
         $method = !is_array($method) ? [$method] : $method;
 
-        $reqRes = $this->testingHistory[$index];
+        $reqRes = $this->testingHistory[$index] ?? null;
 
         if ($reqRes === null) {
             PHPUnit::fail('No request found');
@@ -89,76 +89,70 @@ trait Asserts
                 $actual = [];
             }
 
-            $this->assertArraySubset($expected, $actual, msg: 'Sub array not found in the request body');
+            Assert::assertArraySubset($expected, $actual, msg: 'Sub array not found in the request body');
         }
 
         return $this;
     }
 
     /**
-     * @param array $expected
-     * @param int|null $index
-     * @param string|null $forceMethod
-     * @return $this
+     * Asserts that the reply message is equal to the expected message.
      */
-    public function assertReplyMessage(array $expected, ?int $index = null, ?string $forceMethod = null): self
+    public function assertReplyMessage(array $expected, ?int $index = null, ?string $forceMethod = null): static
     {
-        $index = $index ?? $this->sequenceIndex;
+        $index ??= $this->sequenceIndex;
         return $this->assertReply($forceMethod ?? $this->methodsReturnTypes[Message::class] ?? [], $expected, $index);
     }
 
     /**
-     * @param string $expected
-     * @param int|null $index
-     * @return $this
+     * Asserts that the reply message text is equal to the expected text.
      */
-    public function assertReplyText(string $expected, ?int $index = null): self
+    public function assertReplyText(string $expected, ?int $index = null): static
     {
-        $index = $index ?? $this->sequenceIndex;
+        $index ??= $this->sequenceIndex;
         return $this->assertReplyMessage(['text' => $expected], $index);
     }
 
     /**
-     * @param int|null $userId
-     * @param int|null $chatId
-     * @return $this
+     * Asserts that a conversation is active.
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function assertActiveConversation(?int $userId = null, ?int $chatId = null): self
+    public function assertActiveConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): static
     {
         [$userId, $chatId] = $this->checkUserChatIds($userId, $chatId);
 
-        PHPUnit::assertNotNull($this->currentConversation($userId, $chatId), 'No active conversation found');
+        PHPUnit::assertNotNull($this->currentConversation($userId, $chatId, $threadId), 'No active conversation found');
 
         return $this;
     }
 
     /**
-     * @param int|null $userId
-     * @param int|null $chatId
-     * @return $this
+     * Asserts that no conversation is active.
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function assertNoConversation(?int $userId = null, ?int $chatId = null): self
+    public function assertNoConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): static
     {
         [$userId, $chatId] = $this->checkUserChatIds($userId, $chatId);
 
-        PHPUnit::assertNull($this->currentConversation($userId, $chatId), 'Found an active conversation');
+        PHPUnit::assertNull($this->currentConversation($userId, $chatId, $threadId), 'Found an active conversation');
 
         return $this;
     }
 
     /**
-     * @return $this
+     * Asserts that no reply was sent.
      */
-    public function assertNoReply(): self
+    public function assertNoReply(): static
     {
         PHPUnit::assertEmpty($this->testingHistory, 'A reply was sent');
 
         return $this;
     }
 
-    public function assertSequence(callable ...$callbacks): self
+    /**
+     * Asserts that the sequence of calls is correct.
+     */
+    public function assertSequence(callable ...$callbacks): static
     {
         $closures = func_get_args();
 
@@ -172,20 +166,6 @@ trait Asserts
         return $this;
     }
 
-    protected function assertArraySubset(
-        ArrayAccess|array $subset,
-        ArrayAccess|array $array,
-        bool $checkForIdentity = false,
-        string $msg = ''
-    ): void {
-        Assert::assertArraySubset($subset, $array, $checkForIdentity, $msg);
-    }
-
-    /**
-     * @param int|null $userId
-     * @param int|null $chatId
-     * @return array
-     */
     private function checkUserChatIds(?int $userId, ?int $chatId): array
     {
         $userId = $this->storedUser?->id ?? $userId;

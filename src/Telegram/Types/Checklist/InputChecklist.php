@@ -8,7 +8,7 @@ use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
@@ -31,7 +31,8 @@ class InputChecklist extends BaseType
     public ParseMode|string|null $parse_mode = null;
 
     /**
-     * Optional. Special entities that appear in the checklist title
+     * Optional. List of special entities that appear in the title, which can be specified instead of parse_mode.
+     * Currently, only bold, italic, underline, strikethrough, spoiler, custom_emoji, and date_time entities are allowed.
      * @var MessageEntity[]|null
      */
     #[ArrayType(MessageEntity::class)]
@@ -55,12 +56,8 @@ class InputChecklist extends BaseType
     public ?bool $others_can_mark_tasks_as_done = null;
 
     /**
-     * @param string $title
      * @param InputChecklistTask[] $tasks
-     * @param ParseMode|string|null $parse_mode
      * @param MessageEntity[]|null $title_entities
-     * @param bool|null $others_can_add_tasks
-     * @param bool|null $others_can_mark_tasks_as_done
      */
     public function __construct(
         string $title,

@@ -6,7 +6,6 @@ namespace SergiX44\Nutgram\Telegram\Types\Common;
 
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostRemoved;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
@@ -17,7 +16,11 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
 use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\ManagedBot\ManagedBotUpdated;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Message\MessageGenerationStopped;
+use SergiX44\Nutgram\Telegram\Types\Payment\BotSubscriptionUpdated;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPurchased;
 use SergiX44\Nutgram\Telegram\Types\Payment\PreCheckoutQuery;
 use SergiX44\Nutgram\Telegram\Types\Payment\ShippingQuery;
@@ -26,6 +29,8 @@ use SergiX44\Nutgram\Telegram\Types\Poll\PollAnswer;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionCountUpdated;
 use SergiX44\Nutgram\Telegram\Types\Reaction\MessageReactionUpdated;
 use SergiX44\Nutgram\Telegram\Types\User\User;
+use SergiX44\Nutgram\Telegram\Types\Widget\SharedWidgetQuery;
+use SergiX44\Nutgram\Telegram\Types\Widget\WidgetQuery;
 
 /**
  * This {@see https://core.telegram.org/bots/api#available-types object} represents an incoming update.At most one of the optional parameters can be present in any given update.
@@ -90,6 +95,11 @@ class Update extends BaseType
     public ?BusinessMessagesDeleted $deleted_business_messages = null;
 
     /**
+     * Optional. New guest message. The bot can use the field Message.guest_query_id and the method answerGuestQuery to send a message in response.
+     */
+    public ?Message $guest_message = null;
+
+    /**
      * Optional.
      * A reaction to a message was changed by a user.
      * The bot must be an administrator in the chat and must explicitly specify "message_reaction" in the list of allowed_updates to receive these updates.
@@ -122,6 +132,16 @@ class Update extends BaseType
      * New incoming callback query
      */
     public ?CallbackQuery $callback_query = null;
+
+    /**
+     * Optional. New incoming query from a widget in a message sent by the bot or via the bot
+     */
+    public ?WidgetQuery $widget_query = null;
+
+    /**
+     * Optional. New incoming query from a forwarded message with a shared widget
+     */
+    public ?SharedWidgetQuery $shared_widget_query = null;
 
     /**
      * Optional.
@@ -193,8 +213,22 @@ class Update extends BaseType
     public ?ChatBoostRemoved $removed_chat_boost = null;
 
     /**
+     * Optional. A new bot was created to be managed by the bot or token of a bot was changed
+     */
+    public ?ManagedBotUpdated $managed_bot = null;
+
+    /**
+     * Optional. User payment subscription has changed
+     */
+    public ?BotSubscriptionUpdated $subscription = null;
+
+    /**
+     * Optional. A user asked the bot to stop the generation of a message
+     */
+    public ?MessageGenerationStopped $stopped_message_generation = null;
+
+    /**
      * Return the current update type
-     * @return UpdateType|null
      */
     public function getType(): ?UpdateType
     {
@@ -207,11 +241,14 @@ class Update extends BaseType
             $this->business_message !== null => UpdateType::BUSINESS_MESSAGE,
             $this->edited_business_message !== null => UpdateType::EDITED_BUSINESS_MESSAGE,
             $this->deleted_business_messages !== null => UpdateType::DELETED_BUSINESS_MESSAGES,
+            $this->guest_message !== null => UpdateType::GUEST_MESSAGE,
             $this->message_reaction !== null => UpdateType::MESSAGE_REACTION,
             $this->message_reaction_count !== null => UpdateType::MESSAGE_REACTION_COUNT,
             $this->inline_query !== null => UpdateType::INLINE_QUERY,
             $this->chosen_inline_result !== null => UpdateType::CHOSEN_INLINE_RESULT,
             $this->callback_query !== null => UpdateType::CALLBACK_QUERY,
+            $this->widget_query !== null => UpdateType::WIDGET_QUERY,
+            $this->shared_widget_query !== null => UpdateType::SHARED_WIDGET_QUERY,
             $this->shipping_query !== null => UpdateType::SHIPPING_QUERY,
             $this->pre_checkout_query !== null => UpdateType::PRE_CHECKOUT_QUERY,
             $this->purchased_paid_media !== null => UpdateType::PURCHASED_PAID_MEDIA,
@@ -222,13 +259,15 @@ class Update extends BaseType
             $this->chat_join_request !== null => UpdateType::CHAT_JOIN_REQUEST,
             $this->chat_boost !== null => UpdateType::CHAT_BOOST,
             $this->removed_chat_boost !== null => UpdateType::REMOVED_CHAT_BOOST,
+            $this->managed_bot !== null => UpdateType::MANAGED_BOT,
+            $this->subscription !== null => UpdateType::SUBSCRIPTION,
+            $this->stopped_message_generation !== null => UpdateType::STOPPED_MESSAGE_GENERATION,
             default => null
         };
     }
 
     /**
      * Get the sender User
-     * @return User|null
      */
     public function getUser(): ?User
     {
@@ -241,11 +280,14 @@ class Update extends BaseType
             $this->business_message !== null => $this->business_message->from,
             $this->edited_business_message !== null => $this->edited_business_message->from,
             // deleted_business_messages: doesn't have a user
+            $this->guest_message !== null => $this->guest_message->from,
             $this->message_reaction !== null => $this->message_reaction->user,
             // message_reaction_count: doesn't have a user
             $this->inline_query !== null => $this->inline_query->from,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from,
             $this->callback_query !== null => $this->callback_query->from,
+            $this->widget_query !== null => $this->widget_query->from,
+            $this->shared_widget_query !== null => $this->shared_widget_query->from,
             $this->shipping_query !== null => $this->shipping_query->from,
             $this->pre_checkout_query !== null => $this->pre_checkout_query->from,
             $this->purchased_paid_media !== null => $this->purchased_paid_media->from,
@@ -254,8 +296,11 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->from,
             $this->chat_member !== null => $this->chat_member->from,
             $this->chat_join_request !== null => $this->chat_join_request->from,
-            $this->chat_boost !== null => $this->chat_boost->boost->source->user,
-            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user,
+            $this->chat_boost !== null => $this->chat_boost->boost->source->user ?? null,
+            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user ?? null,
+            $this->managed_bot !== null => $this->managed_bot->user,
+            $this->subscription !== null => $this->subscription->user,
+            // stopped_message_generation: doesn't have a user
             default => null,
         };
     }
@@ -271,11 +316,14 @@ class Update extends BaseType
             $this->business_message !== null => $this->business_message->from = $user,
             $this->edited_business_message !== null => $this->edited_business_message->from = $user,
             // deleted_business_messages: doesn't have a user
+            $this->guest_message !== null => $this->guest_message->from = $user,
             $this->message_reaction !== null => $this->message_reaction->user = $user,
             // message_reaction_count: doesn't have a user
             $this->inline_query !== null => $this->inline_query->from = $user,
             $this->chosen_inline_result !== null => $this->chosen_inline_result->from = $user,
             $this->callback_query !== null => $this->callback_query->from = $user,
+            $this->widget_query !== null => $this->widget_query->from = $user,
+            $this->shared_widget_query !== null => $this->shared_widget_query->from = $user,
             $this->shipping_query !== null => $this->shipping_query->from = $user,
             $this->pre_checkout_query !== null => $this->pre_checkout_query->from = $user,
             $this->purchased_paid_media !== null => $this->purchased_paid_media->from = $user,
@@ -284,8 +332,11 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->from = $user,
             $this->chat_member !== null => $this->chat_member->from = $user,
             $this->chat_join_request !== null => $this->chat_join_request->from = $user,
-            $this->chat_boost !== null => $this->chat_boost->boost->source->user = $user,
-            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user = $user,
+            $this->chat_boost !== null => (isset($this->chat_boost->boost->source->user) || property_exists($this->chat_boost->boost->source, 'user')) ? $this->chat_boost->boost->source->user = $user : null,
+            $this->removed_chat_boost !== null => (isset($this->removed_chat_boost->source->user) || property_exists($this->removed_chat_boost->source, 'user')) ? $this->removed_chat_boost->source->user = $user : null,
+            $this->managed_bot !== null => $this->managed_bot->user = $user,
+            $this->subscription !== null => $this->subscription->user = $user,
+            // stopped_message_generation: doesn't have a user
             default => null,
         };
     }
@@ -301,11 +352,14 @@ class Update extends BaseType
             $this->business_message !== null => $this->business_message->chat,
             $this->edited_business_message !== null => $this->edited_business_message->chat,
             $this->deleted_business_messages !== null => $this->deleted_business_messages->chat,
+            $this->guest_message !== null => $this->guest_message->chat,
             $this->message_reaction !== null => $this->message_reaction->chat,
             $this->message_reaction_count !== null => $this->message_reaction_count->chat,
             // inline_query doesn't have a chat
             // chosen_inline_result doesn't have a chat
-            $this->callback_query !== null => $this->callback_query->message?->chat,
+            $this->callback_query !== null => $this->callback_query->message !== null && isset($this->callback_query->message->chat) ? $this->callback_query->message->chat : null,
+            $this->widget_query !== null => $this->widget_query->chat,
+            // shared_widget_query doesn't have a chat
             // shipping_query doesn't have a chat
             // pre_checkout_query doesn't have a chat
             // purchased_paid_media doesn't have a chat
@@ -316,6 +370,9 @@ class Update extends BaseType
             $this->chat_join_request !== null => $this->chat_join_request->chat,
             $this->chat_boost !== null => $this->chat_boost->chat,
             $this->removed_chat_boost !== null => $this->removed_chat_boost->chat,
+            // managed_bot doesn't have a chat
+            // subscription doesn't have a chat
+            $this->stopped_message_generation !== null => $this->stopped_message_generation->chat,
             default => null
         };
     }
@@ -331,11 +388,14 @@ class Update extends BaseType
             $this->business_message !== null => $this->business_message->chat = $chat,
             $this->edited_business_message !== null => $this->edited_business_message->chat = $chat,
             $this->deleted_business_messages !== null => $this->deleted_business_messages->chat = $chat,
+            $this->guest_message !== null => $this->guest_message->chat = $chat,
             $this->message_reaction !== null => $this->message_reaction->chat = $chat,
             $this->message_reaction_count !== null => $this->message_reaction_count->chat = $chat,
             // inline_query doesn't have a chat
             // chosen_inline_result doesn't have a chat
-            $this->callback_query !== null => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
+            $this->callback_query !== null => $this->callback_query->message !== null && (isset($this->callback_query->message->chat) || property_exists($this->callback_query->message, 'chat')) ? $this->callback_query->message->chat = $chat : null,
+            $this->widget_query !== null => $this->widget_query->chat = $chat,
+            // shared_widget_query doesn't have a chat
             // shipping_query doesn't have a chat
             // pre_checkout_query doesn't have a chat
             // purchased_paid_media doesn't have a chat
@@ -346,6 +406,9 @@ class Update extends BaseType
             $this->chat_join_request !== null => $this->chat_join_request->chat = $chat,
             $this->chat_boost !== null => $this->chat_boost->chat = $chat,
             $this->removed_chat_boost !== null => $this->removed_chat_boost->chat = $chat,
+            // managed_bot doesn't have a chat
+            // subscription doesn't have a chat
+            $this->stopped_message_generation !== null => $this->stopped_message_generation->chat = $chat,
             default => null
         };
     }
@@ -359,8 +422,55 @@ class Update extends BaseType
             $this->edited_channel_post !== null => $this->edited_channel_post,
             $this->business_message !== null => $this->business_message,
             $this->edited_business_message !== null => $this->edited_business_message,
-            $this->callback_query !== null => $this->callback_query->message,
+            $this->callback_query !== null => $this->callback_query->message !== null && $this->callback_query->message instanceof Message ? $this->callback_query->message : null,
+            $this->guest_message !== null => $this->guest_message,
             default => null
         };
+    }
+
+    public static function frankensteinize(int $userId, int $chatId, ?int $threadId, ?Update $existingUpdate = null): self
+    {
+        // the barest minimum update data to make the update valid
+        $updateData = [
+            'update_id' => 0,
+            'message' => [
+                'message_id' => 0,
+                'message_thread_id' => $threadId,
+                'from' => [
+                    'id' => $userId,
+                    'is_bot' => false,
+                    'first_name' => '$$__ssc__$$',
+                ],
+                'chat' => [
+                    'id' => $chatId,
+                    'type' => 'private',
+                    'first_name' => '$$__ssc__$$',
+                ],
+                'date' => time(),
+                'text' => '$$__ssc__$$',
+            ],
+        ];
+
+        if ($existingUpdate === null) {
+            return self::fromArray($updateData);
+        }
+
+        // fill in the existing update data
+        $updateData = array_replace_recursive($updateData, $existingUpdate->toArray());
+
+        // overwrite the message data with the new data to change context
+        $updateData = array_replace_recursive($updateData, [
+            'message' => [
+                'message_thread_id' => $threadId,
+                'from' => [
+                    'id' => $userId,
+                ],
+                'chat' => [
+                    'id' => $chatId,
+                ],
+            ],
+        ]);
+
+        return self::fromArray($updateData);
     }
 }

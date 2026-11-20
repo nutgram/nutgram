@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
-use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Game\GameHighScore;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
@@ -13,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
 /**
  * Trait Games
  * @package SergiX44\Nutgram\Telegram\Endpoints
- * @mixin Client
+ * @mixin Nutgram
  */
 trait Games
 {
@@ -33,7 +33,6 @@ trait Games
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
-     * @return Message|null
      */
     public function sendGame(
         string $game_short_name,
@@ -82,7 +81,6 @@ trait Games
      * @param int|null $chat_id Required if inline_message_id is not specified. Unique identifier for the target chat
      * @param int|null $message_id Required if inline_message_id is not specified. Identifier of the sent message
      * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message
-     * @return Message|bool|null
      */
     public function setGameScore(
         int $score,

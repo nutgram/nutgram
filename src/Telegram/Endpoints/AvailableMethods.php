@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
-use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ChatAction;
+use SergiX44\Nutgram\Telegram\Properties\ChatJoinRequestResult;
 use SergiX44\Nutgram\Telegram\Properties\DiceEmoji;
 use SergiX44\Nutgram\Telegram\Properties\ForumIconColor;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -13,7 +14,6 @@ use SergiX44\Nutgram\Telegram\Properties\PollType;
 use SergiX44\Nutgram\Telegram\Properties\StoryActivePeriod;
 use SergiX44\Nutgram\Telegram\Types\Boost\UserChatBoosts;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
-use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatAdministratorRights;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatFullInfo;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatInviteLink;
@@ -27,37 +27,50 @@ use SergiX44\Nutgram\Telegram\Types\Description\BotDescription;
 use SergiX44\Nutgram\Telegram\Types\Description\BotName;
 use SergiX44\Nutgram\Telegram\Types\Description\BotShortDescription;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopic;
+use SergiX44\Nutgram\Telegram\Types\Inline\InlineQueryResult;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaAudio;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaDocument;
+use SergiX44\Nutgram\Telegram\Types\Input\InputMediaLivePhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaVideo;
 use SergiX44\Nutgram\Telegram\Types\Input\InputPaidMedia;
+use SergiX44\Nutgram\Telegram\Types\Input\InputPollMedia;
+use SergiX44\Nutgram\Telegram\Types\Input\InputProfilePhoto;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
-use SergiX44\Nutgram\Telegram\Types\Internal\UploadableArray;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\PreparedKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
+use SergiX44\Nutgram\Telegram\Types\ManagedBot\BotAccessSettings;
 use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Telegram\Types\Media\Story;
+use SergiX44\Nutgram\Telegram\Types\Message\EphemeralMessageParameters;
 use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageId;
 use SergiX44\Nutgram\Telegram\Types\Message\ReplyParameters;
+use SergiX44\Nutgram\Telegram\Types\Message\SentGuestMessage;
 use SergiX44\Nutgram\Telegram\Types\Poll\InputPollOption;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichMessage;
 use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
+use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGift;
 use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
+use SergiX44\Nutgram\Telegram\Types\Theme\ChatShareThemeBackdrops;
 use SergiX44\Nutgram\Telegram\Types\User\User;
+use SergiX44\Nutgram\Telegram\Types\User\UserProfileAudios;
 use SergiX44\Nutgram\Telegram\Types\User\UserProfilePhotos;
 use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * Trait AvailableMethods
  * @package SergiX44\Nutgram\Telegram\Endpoints
- * @mixin Client
+ * @mixin Nutgram
  */
 trait AvailableMethods
 {
@@ -66,7 +79,6 @@ trait AvailableMethods
      * Requires no parameters.
      * Returns basic information about the bot in form of a {@see https://core.telegram.org/bots/api#user User} object.
      * @see https://core.telegram.org/bots/api#getme
-     * @return User|null
      */
     public function getMe(): ?User
     {
@@ -80,7 +92,6 @@ trait AvailableMethods
      * Returns True on success.
      * Requires no parameters.
      * @see https://core.telegram.org/bots/api#logout
-     * @return bool|null
      */
     public function logOut(): ?bool
     {
@@ -94,7 +105,6 @@ trait AvailableMethods
      * Returns True on success.
      * Requires no parameters.
      * @see https://core.telegram.org/bots/api#close
-     * @return bool|null
      */
     public function close(): ?bool
     {
@@ -123,7 +133,7 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @return Message|null
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      */
     public function sendMessage(
         string $text,
@@ -144,11 +154,8 @@ trait AvailableMethods
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
         $parameters = compact(
             'chat_id',
             'message_thread_id',
@@ -168,9 +175,86 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
+            'ephemeral_message_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
 
         return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+    }
+
+    /**
+     * Use this method to send rich messages.
+     * If the message contains a block with a media element, then the bot must have the right to send the media to the chat.
+     * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
+     * @param InputRichMessage $rich_message The message to be sent
+     * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be sent
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target bot, supergroup or channel in the format &#64;username
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
+     * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
+     * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance.
+     * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
+     * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove a reply keyboard or to force a reply from the user.
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
+     * @see https://core.telegram.org/bots/api#sendrichmessage
+     *
+     */
+    public function sendRichMessage(
+        InputRichMessage $rich_message,
+        ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
+        ?int $message_thread_id = null,
+        ?int $direct_messages_topic_id = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?bool $allow_paid_broadcast = null,
+        ?string $message_effect_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?ReplyParameters $reply_parameters = null,
+        InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
+    ): ?Message {
+        $parameters = compact(
+            'rich_message',
+            'business_connection_id',
+            'chat_id',
+            'message_thread_id',
+            'direct_messages_topic_id',
+            'disable_notification',
+            'protect_content',
+            'allow_paid_broadcast',
+            'message_effect_id',
+            'suggested_post_parameters',
+            'reply_parameters',
+            'reply_markup',
+            'ephemeral_message_parameters',
+        );
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->requestMultipart(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -188,7 +272,6 @@ trait AvailableMethods
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; only available when forwarding to private chats
-     * @return Message|null
      */
     public function forwardMessage(
         int|string $chat_id,
@@ -254,7 +337,7 @@ trait AvailableMethods
 
     /**
      * Use this method to copy messages of any kind.
-     * Service messages, paid media messages, giveaway messages, giveaway winners messages, and invoice messages can't be copied.
+     * Service messages, paid media messages, giveaway messages, giveaway winners messages, invoice messages, and widget messages can't be copied.
      * A quiz {@see https://core.telegram.org/bots/api#poll poll} can be copied only if the value of the field correct_option_id is known to the bot.
      * The method is analogous to the method {@see https://core.telegram.org/bots/api#forwardmessage forwardMessage}, but the copied message doesn't have a link to the original message.
      * Returns the {@see https://core.telegram.org/bots/api#messageid MessageId} of the sent message on success.
@@ -278,7 +361,6 @@ trait AvailableMethods
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; only available when forwarding to private chats
-     * @return MessageId|null
      */
     public function copyMessage(
         int|string $chat_id,
@@ -327,7 +409,7 @@ trait AvailableMethods
     /**
      * Use this method to copy messages of any kind.
      * If some of the specified messages can't be found or copied, they are skipped.
-     * Service messages, paid media messages, giveaway messages, giveaway winners messages, and invoice messages can't be copied.
+     * Service messages, paid media messages, giveaway messages, giveaway winners messages, invoice messages, and widget messages can't be copied.
      * A quiz {@see https://core.telegram.org/bots/api#poll poll} can be copied only if the value of the field correct_option_id is known to the bot.
      * The method is analogous to the method {@see https://core.telegram.org/bots/api#forwardmessages forwardMessages}, but the copied messages don't have a link to the original message.
      * Album grouping is kept for copied messages.
@@ -387,8 +469,8 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
-     * @return Message|null
      */
     public function sendPhoto(
         InputFile|string $photo,
@@ -410,13 +492,11 @@ trait AvailableMethods
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'photo',
             'chat_id',
             'message_thread_id',
             'caption',
@@ -435,9 +515,83 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
+            'ephemeral_message_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'photo', $photo, $opt, $clientOpt);
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->sendAttachments(__FUNCTION__, ['photo'], $parameters, $clientOpt);
+    }
+
+    /**
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
+     * @param array $clientOpt Client options
+     */
+    public function sendLivePhoto(
+        InputFile|string $live_photo,
+        InputFile|string $photo,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
+        ?int $message_thread_id = null,
+        ?int $direct_messages_topic_id = null,
+        ?bool $show_caption_above_media = null,
+        ?bool $has_spoiler = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?bool $allow_paid_broadcast = null,
+        ?string $message_effect_id = null,
+        ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?ReplyParameters $reply_parameters = null,
+        InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
+        array $clientOpt = [],
+    ): ?Message {
+        $parameters = compact(
+            'business_connection_id',
+            'chat_id',
+            'message_thread_id',
+            'direct_messages_topic_id',
+            'live_photo',
+            'photo',
+            'caption',
+            'parse_mode',
+            'caption_entities',
+            'show_caption_above_media',
+            'has_spoiler',
+            'disable_notification',
+            'protect_content',
+            'allow_paid_broadcast',
+            'message_effect_id',
+            'suggested_post_parameters',
+            'reply_parameters',
+            'reply_markup',
+            'ephemeral_message_parameters',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->sendAttachments(__FUNCTION__, ['live_photo', 'photo'], $parameters, $clientOpt);
     }
 
     /**
@@ -467,8 +621,8 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
-     * @return Message|null
      */
     public function sendAudio(
         InputFile|string $audio,
@@ -492,13 +646,11 @@ trait AvailableMethods
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'audio',
             'chat_id',
             'message_thread_id',
             'caption',
@@ -519,9 +671,21 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
+            'ephemeral_message_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'audio', $audio, $opt, $clientOpt);
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->sendAttachments(__FUNCTION__, ['audio'], $parameters, $clientOpt);
     }
 
     /**
@@ -548,8 +712,8 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
-     * @return Message|null
      */
     public function sendDocument(
         InputFile|string $document,
@@ -571,13 +735,11 @@ trait AvailableMethods
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'document',
             'chat_id',
             'message_thread_id',
             'thumbnail',
@@ -596,9 +758,21 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
+            'ephemeral_message_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'document', $document, $opt, $clientOpt);
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->sendAttachments(__FUNCTION__, ['document'], $parameters, $clientOpt);
     }
 
     /**
@@ -632,8 +806,8 @@ trait AvailableMethods
      * @param int|null $start_timestamp Start timestamp for the video in the message
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
-     * @return Message|null
      */
     public function sendVideo(
         InputFile|string $video,
@@ -662,13 +836,11 @@ trait AvailableMethods
         ?int $start_timestamp = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'video',
             'chat_id',
             'message_thread_id',
             'duration',
@@ -694,9 +866,21 @@ trait AvailableMethods
             'start_timestamp',
             'direct_messages_topic_id',
             'suggested_post_parameters',
+            'ephemeral_message_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'video', $video, $opt, $clientOpt);
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->sendAttachments(__FUNCTION__, ['video'], $parameters, $clientOpt);
     }
 
     /**
@@ -727,8 +911,8 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
-     * @return Message|null
      */
     public function sendAnimation(
         InputFile|string $animation,
@@ -754,13 +938,11 @@ trait AvailableMethods
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'animation',
             'chat_id',
             'message_thread_id',
             'duration',
@@ -783,9 +965,21 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
+            'ephemeral_message_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'animation', $animation, $opt, $clientOpt);
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->sendAttachments(__FUNCTION__, ['animation'], $parameters, $clientOpt);
     }
 
     /**
@@ -812,8 +1006,8 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
-     * @return Message|null
      */
     public function sendVoice(
         InputFile|string $voice,
@@ -834,13 +1028,11 @@ trait AvailableMethods
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'voice',
             'chat_id',
             'message_thread_id',
             'caption',
@@ -858,9 +1050,21 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
+            'ephemeral_message_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'voice', $voice, $opt, $clientOpt);
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->sendAttachments(__FUNCTION__, ['voice'], $parameters, $clientOpt);
     }
 
     /**
@@ -885,8 +1089,8 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      * @param array $clientOpt Client options
-     * @return Message|null
      */
     public function sendVideoNote(
         InputFile|string $video_note,
@@ -906,13 +1110,11 @@ trait AvailableMethods
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
         array $clientOpt = [],
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        $opt = compact(
+        $parameters = compact(
+            'video_note',
             'chat_id',
             'message_thread_id',
             'duration',
@@ -929,9 +1131,155 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
+            'ephemeral_message_parameters',
         );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
 
-        return $this->sendAttachment(__FUNCTION__, 'video_note', $video_note, $opt, $clientOpt);
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->sendAttachments(__FUNCTION__, ['video_note'], $parameters, $clientOpt);
+    }
+
+    /**
+     * Use this method to send a message with an {@see https://core.telegram.org/bots/widgets HTML widget}.
+     * Currently, in the production environment, widgets can be sent only to private chats,
+     * and sent widgets automatically have protected content and therefore can't be forwarded.
+     * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
+     * @param string $html HTML code of the widget, 1-32768 bytes. The code must not exceed 4096 bytes when compressed by zlib with the maximum compression level.
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
+     * @param int|null $width Width of the widget in logical pixels; omit if the widget must occupy the whole width of the message bubble. The width is clamped by the app to the range from 200 to the maximum width of the message bubble.
+     * @param int|null $height Height of the widget in logical pixels; omit if the height of the widget isn't fixed. The height is clamped by the app to the range 50-600.
+     * @param string|null $public_data Public data of the widget, 0-1024 bytes, which will be available wherever the widget is shown. If the widget is shared, then all messages with it will have the same public data.
+     * @param string|null $chat_data Data of the widget, which is specific to the message, 0-1024 bytes
+     * @param string|null $caption Widget caption, 0-1024 characters after entities parsing
+     * @param ParseMode|string|null $parse_mode Mode for parsing entities in the widget caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param MessageEntity[]|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @param bool|null $show_caption_above_media Pass True if the caption must be shown above the widget
+     * @param bool|null $allow_queries Pass True to allow the widget to send queries to the bot
+     * @param bool|null $is_shared Pass True to create a shared widget, which can be sent again using the method {@see https://core.telegram.org/bots/api#sendsharedwidget sendSharedWidget}
+     * @param bool|null $disable_notification Sends the message silently. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance.
+     * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
+     * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove a reply keyboard or to force a reply from the user.
+     * @see https://core.telegram.org/bots/api#sendwidget
+     */
+    public function sendWidget(
+        string $html,
+        int|string|null $chat_id = null,
+        ?int $message_thread_id = null,
+        ?int $width = null,
+        ?int $height = null,
+        ?string $public_data = null,
+        ?string $chat_data = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $show_caption_above_media = null,
+        ?bool $allow_queries = null,
+        ?bool $is_shared = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?bool $allow_paid_broadcast = null,
+        ?string $message_effect_id = null,
+        ?ReplyParameters $reply_parameters = null,
+        InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+    ): ?Message {
+        $parameters = compact(
+            'html',
+            'chat_id',
+            'message_thread_id',
+            'width',
+            'height',
+            'public_data',
+            'chat_data',
+            'caption',
+            'parse_mode',
+            'caption_entities',
+            'show_caption_above_media',
+            'allow_queries',
+            'is_shared',
+            'disable_notification',
+            'protect_content',
+            'allow_paid_broadcast',
+            'message_effect_id',
+            'reply_parameters',
+            'reply_markup'
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
+    }
+
+    /**
+     * Use this method to send again a shared widget created by the bot.
+     * Currently, in the production environment, widgets can be sent only to private chats,
+     * and sent widgets automatically have protected content and therefore can't be forwarded.
+     * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
+     * @param string|null $widget_id Unique identifier of the shared widget
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup in the format &#64;username
+     * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
+     * @param string|null $chat_data Data of the widget, which is specific to the message, 0-1024 bytes
+     * @param string|null $caption Widget caption, 0-1024 characters after entities parsing
+     * @param ParseMode|string|null $parse_mode Mode for parsing entities in the widget caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param MessageEntity[]|null $caption_entities A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @param bool|null $show_caption_above_media Pass True if the caption must be shown above the widget
+     * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
+     * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
+     * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance.
+     * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
+     * @param ReplyParameters|null $reply_parameters Description of the message to reply to
+     * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove a reply keyboard or to force a reply from the user.
+     * @see https://core.telegram.org/bots/api#sendsharedwidget
+     */
+    public function sendSharedWidget(
+        ?string $widget_id = null,
+        int|string|null $chat_id = null,
+        ?int $message_thread_id = null,
+        ?string $chat_data = null,
+        ?string $caption = null,
+        ParseMode|string|null $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $show_caption_above_media = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?bool $allow_paid_broadcast = null,
+        ?string $message_effect_id = null,
+        ?ReplyParameters $reply_parameters = null,
+        InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
+    ): ?Message {
+        $parameters = compact(
+            'widget_id',
+            'chat_id',
+            'message_thread_id',
+            'chat_data',
+            'caption',
+            'parse_mode',
+            'caption_entities',
+            'show_caption_above_media',
+            'disable_notification',
+            'protect_content',
+            'allow_paid_broadcast',
+            'message_effect_id',
+            'reply_parameters',
+            'reply_markup'
+        );
+        $parameters['widget_id'] ??= $this->widgetId();
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -939,7 +1287,7 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#sendpaidmedia
      * @param int $star_count The number of Telegram Stars that must be paid to buy access to the media; 1-25000
-     * @param InputPaidMedia[] $media A JSON-serialized array describing the media to be sent; up to 10 items
+     * @param array<InputPaidMedia&Uploadables> $media A JSON-serialized array describing the media to be sent; up to 10 items
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string|null $caption Media caption, 0-1024 characters after entities parsing
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the voice message caption. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
@@ -956,7 +1304,6 @@ trait AvailableMethods
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param array $clientOpt Client options
-     * @return Message|null
      */
     public function sendPaidMedia(
         int $star_count,
@@ -1002,7 +1349,7 @@ trait AvailableMethods
         );
 
         return $this->requestMultipart(__FUNCTION__, [
-            'media' => new UploadableArray($media),
+            'media' => $media,
             ...$params,
         ], Message::class, $clientOpt);
     }
@@ -1012,7 +1359,7 @@ trait AvailableMethods
      * Documents and audio files can be only grouped in an album with messages of the same type.
      * On success, an array of {@see https://core.telegram.org/bots/api#message Messages} that were sent is returned.
      * @see https://core.telegram.org/bots/api#sendmediagroup
-     * @param InputMediaAudio[]|InputMediaDocument[]|InputMediaPhoto[]|InputMediaVideo[] $media A JSON-serialized array describing messages to be sent, must include 2-10 items
+     * @param array<InputMediaAudio|InputMediaDocument|InputMediaPhoto|InputMediaLivePhoto|InputMediaVideo> $media A JSON-serialized array describing messages to be sent, must include 2-10 items
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param bool|null $disable_notification Sends messages {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
@@ -1048,7 +1395,7 @@ trait AvailableMethods
         $direct_messages_topic_id ??= $this->directMessagesTopicId();
 
         return $this->requestMultipart(__FUNCTION__, [
-            'media' => new UploadableArray($media),
+            'media' => $media,
             ...compact(
                 'chat_id',
                 'message_thread_id',
@@ -1088,7 +1435,7 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @return Message|null
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      */
     public function sendLocation(
         float $latitude,
@@ -1110,12 +1457,9 @@ trait AvailableMethods
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-        return $this->requestJson(__FUNCTION__, compact(
+        $parameters = compact(
             'chat_id',
             'message_thread_id',
             'latitude',
@@ -1135,7 +1479,21 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-        ), Message::class);
+            'ephemeral_message_parameters',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -1147,7 +1505,6 @@ trait AvailableMethods
      * @param string|null $inline_message_id Required if chat_id and message_id are not specified. Identifier of the inline message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for a new {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message to be edited was sent
-     * @return Message|bool|null
      */
     public function stopMessageLiveLocation(
         int|string|null $chat_id = null,
@@ -1193,7 +1550,7 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @return Message|null
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      */
     public function sendVenue(
         float $latitude,
@@ -1217,13 +1574,9 @@ trait AvailableMethods
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-
-        return $this->requestJson(__FUNCTION__, compact(
+        $parameters = compact(
             'chat_id',
             'message_thread_id',
             'latitude',
@@ -1245,7 +1598,21 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-        ), Message::class);
+            'ephemeral_message_parameters',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -1269,7 +1636,7 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @return Message|null
+     * @param EphemeralMessageParameters|null $ephemeral_message_parameters A JSON-serialized object containing the parameters of the ephemeral message to send
      */
     public function sendContact(
         string $phone_number,
@@ -1289,13 +1656,9 @@ trait AvailableMethods
         ?bool $allow_paid_broadcast = null,
         ?int $direct_messages_topic_id = null,
         ?SuggestedPostParameters $suggested_post_parameters = null,
+        ?EphemeralMessageParameters $ephemeral_message_parameters = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
-        $direct_messages_topic_id ??= $this->directMessagesTopicId();
-
-        return $this->requestJson(__FUNCTION__, compact(
+        $parameters = compact(
             'chat_id',
             'message_thread_id',
             'phone_number',
@@ -1313,7 +1676,21 @@ trait AvailableMethods
             'allow_paid_broadcast',
             'direct_messages_topic_id',
             'suggested_post_parameters',
-        ), Message::class);
+            'ephemeral_message_parameters',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+        $parameters['direct_messages_topic_id'] ??= $this->directMessagesTopicId();
+
+        if ($this->message()?->isEphemeral()) {
+            $parameters['ephemeral_message_parameters'] ??= new EphemeralMessageParameters(
+                receiver_user_id: $this->receiverUserId(),
+                callback_query_id: $this->callbackQuery()?->id,
+            );
+        }
+
+        return $this->requestJson(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -1321,18 +1698,18 @@ trait AvailableMethods
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#sendpoll
      * @param string $question Poll question, 1-300 characters
-     * @param InputPollOption[]|string[] $options A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
+     * @param InputPollOption[]|string[] $options A JSON-serialized list of 1-12 answer options
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only
      * @param bool|null $is_anonymous True, if the poll needs to be anonymous, defaults to True
      * @param PollType|string|null $type Poll type, “quiz” or “regular”, defaults to “regular”
      * @param bool|null $allows_multiple_answers True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False
-     * @param int|null $correct_option_id 0-based identifier of the correct answer option, required for polls in quiz mode
+     * @param int[]|null $correct_option_ids A JSON-serialized list of monotonically increasing 0-based identifiers of the correct answer options, required for polls in quiz mode
      * @param string|null $explanation Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
      * @param ParseMode|string|null $explanation_parse_mode Mode for parsing entities in the explanation. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $explanation_entities A JSON-serialized list of special entities that appear in the poll explanation, which can be specified instead of parse_mode
-     * @param int|null $open_period Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
-     * @param int|null $close_date Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
+     * @param int|null $open_period Amount of time in seconds the poll will be active after creation, 5-2628000. Can't be used together with close_date.
+     * @param int|null $close_date Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 2628000 seconds in the future. Can't be used together with open_period.
      * @param bool|null $is_closed Pass True if the poll needs to be immediately closed. This can be useful for poll preview.
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the sent message from forwarding and saving
@@ -1345,7 +1722,17 @@ trait AvailableMethods
      * @param MessageEntity[]|null $question_entities A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of question_parse_mode
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message; for private chats only
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
-     * @return Message|null
+     * @param bool|null $allows_revoting Pass True, if the poll allows to change chosen answer options, defaults to False for quizzes and to True for regular polls
+     * @param bool|null $shuffle_options Pass True, if the poll options must be shown in random order
+     * @param bool|null $allow_adding_options Pass True, if answer options can be added to the poll after creation; not supported for anonymous polls and quizzes
+     * @param bool|null $hide_results_until_closes Pass True, if poll results must be shown only after the poll closes
+     * @param string|null $description Description of the poll to be sent, 0-1024 characters after entities parsing
+     * @param ParseMode|string|null $description_parse_mode Mode for parsing entities in the poll description. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
+     * @param MessageEntity[]|null $description_entities A JSON-serialized list of special entities that appear in the poll description, which can be specified instead of description_parse_mode
+     * @param InputPollMedia|null $media Media added to the poll description
+     * @param InputPollMedia|null $explanation_media Media added to the quiz explanation
+     * @param bool|null $member_only Pass True, if voting is limited to users who have been members of the chat where the poll is being sent for more than 24 hours; for channel chats only
+     * @param string[]|null $country_codes A JSON-serialized list of 0-12 two-letter {@see https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 ISO 3166-1 alpha-2} country codes indicating the countries from which users can vote in the poll; for channel chats only. If omitted or empty, then users from any country can participate in the poll.
      */
     public function sendPoll(
         string $question,
@@ -1355,7 +1742,7 @@ trait AvailableMethods
         ?bool $is_anonymous = null,
         PollType|string|null $type = null,
         ?bool $allows_multiple_answers = null,
-        ?int $correct_option_id = null,
+        ?array $correct_option_ids = null,
         ?string $explanation = null,
         ParseMode|string|null $explanation_parse_mode = null,
         ?array $explanation_entities = null,
@@ -1373,18 +1760,27 @@ trait AvailableMethods
         ?array $question_entities = null,
         ?string $message_effect_id = null,
         ?bool $allow_paid_broadcast = null,
+        ?bool $allows_revoting = null,
+        ?bool $shuffle_options = null,
+        ?bool $allow_adding_options = null,
+        ?bool $hide_results_until_closes = null,
+        ?string $description = null,
+        ParseMode|string|null $description_parse_mode = null,
+        ?array $description_entities = null,
+        ?InputPollMedia $media = null,
+        ?InputPollMedia $explanation_media = null,
+        ?bool $member_only = null,
+        ?array $country_codes = null,
     ): ?Message {
-        $chat_id ??= $this->chatId();
-        $message_thread_id ??= $this->messageThreadId();
-        $business_connection_id ??= $this->businessConnectionId();
         $parameters = compact(
+            'options',
             'chat_id',
             'message_thread_id',
             'question',
             'is_anonymous',
             'type',
             'allows_multiple_answers',
-            'correct_option_id',
+            'correct_option_ids',
             'explanation',
             'explanation_parse_mode',
             'explanation_entities',
@@ -1402,11 +1798,23 @@ trait AvailableMethods
             'question_entities',
             'message_effect_id',
             'allow_paid_broadcast',
+            'allows_revoting',
+            'shuffle_options',
+            'allow_adding_options',
+            'hide_results_until_closes',
+            'description',
+            'description_parse_mode',
+            'description_entities',
+            'media',
+            'explanation_media',
+            'member_only',
+            'country_codes',
         );
-        return $this->requestJson(__FUNCTION__, [
-            'options' => json_encode($options, JSON_THROW_ON_ERROR),
-            ...$parameters,
-        ], Message::class);
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+        $parameters['business_connection_id'] ??= $this->businessConnectionId();
+
+        return $this->requestMultipart(__FUNCTION__, $parameters, Message::class);
     }
 
     /**
@@ -1420,7 +1828,6 @@ trait AvailableMethods
      * @param string|null $message_effect_id Unique identifier of the message effect to be added to the message
      * @param ReplyParameters|null $reply_parameters A JSON-serialized object for description of the message to reply to
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an inline keyboard
-     * @return Message|null
      */
     public function sendChecklist(
         InputChecklist $checklist,
@@ -1461,7 +1868,6 @@ trait AvailableMethods
      * @param bool|null $allow_paid_broadcast Pass True to allow up to 1000 messages per second, ignoring {@see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once broadcasting limits} for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance
      * @param int|null $direct_messages_topic_id Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat
      * @param SuggestedPostParameters|null $suggested_post_parameters A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined.
-     * @return Message|null
      */
     public function sendDice(
         int|string|null $chat_id = null,
@@ -1506,22 +1912,71 @@ trait AvailableMethods
      * supported only for bots with forum topic mode enabled.
      * Returns True on success.
      * @param int $draft_id Unique identifier of the message draft; must be non-zero. Changes of drafts with the same identifier are animated
-     * @param string $text Text of the message to be sent, 1-4096 characters after entities parsing
+     * @param string $text Text of the message to be sent, 0-4096 characters after entities parsing. Pass an empty text to show a “Thinking…” placeholder.
      * @param int|null $chat_id Unique identifier for the target private chat
      * @param int|null $message_thread_id Unique identifier for the target message thread
      * @param ParseMode|string|null $parse_mode Mode for parsing entities in the message text. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
+     * @param bool|null $can_stop Pass True to show the user a button to stop further drafts. The bot will receive an {@see https://core.telegram.org/bots/api#update Update} “stopped_message_generation” if the user presses the button.
+     * @param bool|null $keep_on_stop Pass True to keep the draft in the chat when the button is pressed. The draft will still disappear after a short time or if the bot sends a message. To fully preserve the partial draft, the bot should send it as a new message.
      * @see https://core.telegram.org/bots/api#sendmessagedraft
      */
     public function sendMessageDraft(
         int $draft_id,
-        string $text,
+        string $text = '',
         ?int $chat_id = null,
         ?int $message_thread_id = null,
         ParseMode|string|null $parse_mode = null,
         ?array $entities = null,
+        ?bool $can_stop = null,
+        ?bool $keep_on_stop = null,
     ): ?bool {
-        $parameters = compact('draft_id', 'text', 'chat_id', 'message_thread_id', 'parse_mode', 'entities');
+        $parameters = compact(
+            'draft_id',
+            'text',
+            'chat_id',
+            'message_thread_id',
+            'parse_mode',
+            'entities',
+            'can_stop',
+            'keep_on_stop',
+        );
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['message_thread_id'] ??= $this->messageThreadId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to stream a partial rich message to a user while the message is being generated.
+     * Note that the streamed draft is ephemeral and acts as a temporary 30-second preview - once the output is finalized,
+     * you must call {@see https://core.telegram.org/bots/api#sendrichmessage sendRichMessage}
+     * with the complete message to persist it in the user's chat.
+     * Returns True on success.
+     * @param int $draft_id Unique identifier of the message draft; must be non-zero. Changes to drafts with the same identifier are animated.
+     * @param InputRichMessage $rich_message The partial message to be streamed
+     * @param int|null $chat_id Unique identifier for the target private chat
+     * @param int|null $message_thread_id Unique identifier for the target message thread
+     * @param bool|null $can_stop Pass True to show the user a button to stop further drafts. The bot will receive an {@see https://core.telegram.org/bots/api#update Update} “stopped_message_generation” if the user presses the button.
+     * @param bool|null $keep_on_stop Pass True to keep the draft in the chat when the button is pressed. The draft will still disappear after a short time or if the bot sends a message. To fully preserve the partial draft, the bot should send it as a new message.
+     * @see https://core.telegram.org/bots/api#sendrichmessagedraft
+     */
+    public function sendRichMessageDraft(
+        int $draft_id,
+        InputRichMessage $rich_message,
+        ?int $chat_id = null,
+        ?int $message_thread_id = null,
+        ?bool $can_stop = null,
+        ?bool $keep_on_stop = null,
+    ): ?bool {
+        $parameters = compact(
+            'draft_id',
+            'rich_message',
+            'chat_id',
+            'message_thread_id',
+            'can_stop',
+            'keep_on_stop',
+        );
         $parameters['chat_id'] ??= $this->chatId();
         $parameters['message_thread_id'] ??= $this->messageThreadId();
 
@@ -1537,7 +1992,6 @@ trait AvailableMethods
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_thread_id Unique identifier for the target message thread or topic of a forum; for supergroups and private chats of bots with forum topic mode enabled only
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the action will be sent
-     * @return bool|null
      */
     public function sendChatAction(
         ChatAction|string $action,
@@ -1567,7 +2021,6 @@ trait AvailableMethods
      * @param bool|null $is_big Optional. Pass True to set the reaction with a big animation
      * @param int|string|null $chat_id Unique identifier for the target chat or username of the target channel (in the format [at]channelusername)
      * @param int|null $message_id Identifier of the target message
-     * @return bool|null
      */
     public function setMessageReaction(
         ?array $reaction = null,
@@ -1593,7 +2046,6 @@ trait AvailableMethods
      * @param int|null $user_id Unique identifier of the target user
      * @param int|null $offset Sequential number of the first photo to be returned. By default, all photos are returned.
      * @param int|null $limit Limits the number of photos to be retrieved. Values between 1-100 are accepted. Defaults to 100.
-     * @return UserProfilePhotos|null
      */
     public function getUserProfilePhotos(
         ?int $user_id = null,
@@ -1609,12 +2061,27 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to get a list of profile audios for a user.
+     * Returns a {@see https://core.telegram.org/bots/api#userprofileaudios UserProfileAudios} object.
+     * @see https://core.telegram.org/bots/api#getuserprofileaudios
+     * @param int|null $user_id Unique identifier of the target user
+     * @param int|null $offset Sequential number of the first audio to be returned. By default, all audios are returned.
+     * @param int|null $limit Limits the number of audios to be retrieved. Values between 1-100 are accepted. Defaults to 100.
+     */
+    public function getUserProfileAudios(?int $user_id = null, ?int $offset = null, ?int $limit = null): ?UserProfileAudios
+    {
+        $parameters = compact('user_id', 'offset', 'limit');
+        $parameters['user_id'] ??= $this->userId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, UserProfileAudios::class);
+    }
+
+    /**
      * Changes the emoji status for a given user that previously allowed the bot to manage their emoji status via the Mini App method requestEmojiStatusAccess.
      * Returns True on success.
      * @param string|null $emoji_status_custom_emoji_id Custom emoji identifier of the emoji status to set. Pass an empty string to remove the status.
      * @param int|null $emoji_status_expiration_date Expiration date of the emoji status, if any
      * @param int|null $user_id Unique identifier of the target user
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#setuseremojistatus
      */
     public function setUserEmojiStatus(
@@ -1636,7 +2103,6 @@ trait AvailableMethods
      * When the link expires, a new one can be requested by calling {@see https://core.telegram.org/bots/api#getfile getFile} again.
      * @see https://core.telegram.org/bots/api#getfile
      * @param string $file_id File identifier to get information about
-     * @return File|null
      */
     public function getFile(string $file_id): ?File
     {
@@ -1653,7 +2119,6 @@ trait AvailableMethods
      * @param int $user_id Unique identifier of the target user
      * @param int|null $until_date Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only.
      * @param bool|null $revoke_messages Pass True to delete all messages from the chat for the user that is being removed. If False, the user will be able to see messages in the group that were sent before the user was removed. Always True for supergroups and channels.
-     * @return bool|null
      */
     public function banChatMember(
         int|string $chat_id,
@@ -1681,7 +2146,6 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target group or username of the target supergroup or channel (in the format &#64;channelusername)
      * @param int $user_id Unique identifier of the target user
      * @param bool|null $only_if_banned Do nothing if the user is not banned
-     * @return bool|null
      */
     public function unbanChatMember(int|string $chat_id, int $user_id, ?bool $only_if_banned = null): ?bool
     {
@@ -1703,7 +2167,6 @@ trait AvailableMethods
      * @param ChatPermissions $permissions A JSON-serialized object for new user permissions
      * @param bool|null $use_independent_chat_permissions Pass True if chat permissions are set independently. Otherwise, the can_send_other_messages and can_add_web_page_previews permissions will imply the can_send_messages, can_send_audios, can_send_documents, can_send_photos, can_send_videos, can_send_video_notes, and can_send_voice_notes permissions; the can_send_polls permission will imply the can_send_messages permission.
      * @param int|null $until_date Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever
-     * @return bool|null
      */
     public function restrictChatMember(
         int|string $chat_id,
@@ -1747,7 +2210,8 @@ trait AvailableMethods
      * @param bool|null $can_pin_messages Pass True if the administrator can pin messages, supergroups only
      * @param bool|null $can_manage_topics Pass True if the user is allowed to create, rename, close, and reopen forum topics, supergroups only
      * @param bool|null $can_manage_direct_messages Pass True if the administrator can manage direct messages within the channel and decline suggested posts; for channels only
-     * @return bool|null
+     * @param bool|null $can_manage_tags Pass True if the administrator can edit the tags of regular members; for groups and supergroups only
+     * @param bool|null $can_send_welcome_messages Pass True if the administrator can manage chat welcome messages or directly send them in the case of bots
      */
     public function promoteChatMember(
         int|string $chat_id,
@@ -1768,6 +2232,8 @@ trait AvailableMethods
         ?bool $can_pin_messages = null,
         ?bool $can_manage_topics = null,
         ?bool $can_manage_direct_messages = null,
+        ?bool $can_manage_tags = null,
+        ?bool $can_send_welcome_messages = null,
     ): ?bool {
         return $this->requestJson(__FUNCTION__, compact(
             'chat_id',
@@ -1788,6 +2254,8 @@ trait AvailableMethods
             'can_pin_messages',
             'can_manage_topics',
             'can_manage_direct_messages',
+            'can_manage_tags',
+            'can_send_welcome_messages',
         ));
     }
 
@@ -1798,7 +2266,6 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param int $user_id Unique identifier of the target user
      * @param string $custom_title New custom title for the administrator; 0-16 characters, emoji are not allowed
-     * @return bool|null
      */
     public function setChatAdministratorCustomTitle(int|string $chat_id, int $user_id, string $custom_title): ?bool
     {
@@ -1810,6 +2277,23 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to set a tag for a regular member in a group or a supergroup.
+     * The bot must be an administrator in the chat for this to work and must have the can_manage_tags administrator right. Returns True on success.
+     * @param string|null $tag New tag for the member; 0-16 characters, emoji are not allowed
+     * @param int|string|null $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
+     * @param int|null $user_id Unique identifier of the target user
+     * @see https://core.telegram.org/bots/api#setchatmembertag
+     */
+    public function setChatMemberTag(?string $tag = null, int|string|null $chat_id = null, int|null $user_id = null): ?bool
+    {
+        $parameters = compact('tag', 'chat_id', 'user_id');
+        $parameters['chat_id'] ??= $this->chatId();
+        $parameters['user_id'] ??= $this->userId();
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
      * Use this method to ban a channel chat in a supergroup or a channel.
      * Until the chat is {@see https://core.telegram.org/bots/api#unbanchatsenderchat unbanned}, the owner of the banned chat won't be able to send messages on behalf of any of their channels.
      * The bot must be an administrator in the supergroup or channel for this to work and must have the appropriate administrator rights.
@@ -1817,7 +2301,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#banchatsenderchat
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int $sender_chat_id Unique identifier of the target sender chat
-     * @return bool|null
      */
     public function banChatSenderChat(int|string $chat_id, int $sender_chat_id): ?bool
     {
@@ -1834,7 +2317,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#unbanchatsenderchat
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int $sender_chat_id Unique identifier of the target sender chat
-     * @return bool|null
      */
     public function unbanChatSenderChat(int|string $chat_id, int $sender_chat_id): ?bool
     {
@@ -1849,7 +2331,6 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param ChatPermissions $permissions A JSON-serialized object for new default chat permissions
      * @param bool|null $use_independent_chat_permissions Pass True if chat permissions are set independently. Otherwise, the can_send_other_messages and can_add_web_page_previews permissions will imply the can_send_messages, can_send_audios, can_send_documents, can_send_photos, can_send_videos, can_send_video_notes, and can_send_voice_notes permissions; the can_send_polls permission will imply the can_send_messages permission.
-     * @return bool|null
      */
     public function setChatPermissions(
         int|string $chat_id,
@@ -1873,7 +2354,6 @@ trait AvailableMethods
      * Returns the new invite link as String on success.
      * @see https://core.telegram.org/bots/api#exportchatinvitelink
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @return string|null
      */
     public function exportChatInviteLink(int|string $chat_id): ?string
     {
@@ -1891,7 +2371,6 @@ trait AvailableMethods
      * @param int|null $expire_date Point in time (Unix timestamp) when the link will expire
      * @param int|null $member_limit The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
      * @param bool|null $creates_join_request True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified
-     * @return ChatInviteLink|null
      */
     public function createChatInviteLink(
         int|string $chat_id,
@@ -1920,7 +2399,6 @@ trait AvailableMethods
      * @param int|null $expire_date Point in time (Unix timestamp) when the link will expire
      * @param int|null $member_limit The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
      * @param bool|null $creates_join_request True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified
-     * @return ChatInviteLink|null
      */
     public function editChatInviteLink(
         int|string $chat_id,
@@ -1954,7 +2432,6 @@ trait AvailableMethods
      * @param int $subscription_period The number of seconds the subscription will be active for before the next payment. Currently, it must always be 2592000 (30 days).
      * @param int $subscription_price The amount of Telegram Stars a user must pay initially and after each subsequent subscription period to be a member of the chat; 1-10000
      * @param string|null $name Invite link name; 0-32 characters
-     * @return ChatInviteLink|null
      */
     public function createChatSubscriptionInviteLink(
         string|int $chat_id,
@@ -1978,7 +2455,6 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string $invite_link The invite link to edit
      * @param string|null $name Invite link name; 0-32 characters
-     * @return ChatInviteLink|null
      */
     public function editChatSubscriptionInviteLink(
         int|string $chat_id,
@@ -2000,7 +2476,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#revokechatinvitelink
      * @param int|string $chat_id Unique identifier of the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string $invite_link The invite link to revoke
-     * @return ChatInviteLink|null
      */
     public function revokeChatInviteLink(int|string $chat_id, string $invite_link): ?ChatInviteLink
     {
@@ -2014,7 +2489,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#approvechatjoinrequest
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int $user_id Unique identifier of the target user
-     * @return bool|null
      */
     public function approveChatJoinRequest(int|string $chat_id, int $user_id): ?bool
     {
@@ -2028,11 +2502,40 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#declinechatjoinrequest
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int $user_id Unique identifier of the target user
-     * @return bool|null
      */
     public function declineChatJoinRequest(int|string $chat_id, int $user_id): ?bool
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'));
+    }
+
+    /**
+     * Use this method to process a received chat join request query.
+     * Returns True on success.
+     * @param ChatJoinRequestResult|string $result Result of the query. Must be either “approve” to allow the user to join the chat, “decline” to disallow the user to join the chat, or “queue” to leave the decision to other administrators.
+     * @param string|null $chat_join_request_query_id Unique identifier of the join request query
+     * @see https://core.telegram.org/bots/api#answerchatjoinrequestquery
+     */
+    public function answerChatJoinRequestQuery(ChatJoinRequestResult|string $result, ?string $chat_join_request_query_id = null): ?bool
+    {
+        $parameters = compact('result', 'chat_join_request_query_id');
+        $parameters['chat_join_request_query_id'] ??= $this->chatJoinRequest()->query_id;
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to process a received chat join request query by showing a Mini App to the user before deciding the outcome.
+     * Returns True on success.
+     * @param string $web_app_url The URL of the Mini App to be opened
+     * @param string|null $chat_join_request_query_id Unique identifier of the join request query
+     * @see https://core.telegram.org/bots/api#sendchatjoinrequestwebapp
+     */
+    public function sendChatJoinRequestWebApp(string $web_app_url, ?string $chat_join_request_query_id = null): ?bool
+    {
+        $parameters = compact('web_app_url', 'chat_join_request_query_id');
+        $parameters['chat_join_request_query_id'] ??= $this->chatJoinRequest()->query_id;
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2044,7 +2547,6 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param InputFile $photo New chat photo, uploaded using multipart/form-data
      * @param array $clientOpt Client options
-     * @return bool|null
      */
     public function setChatPhoto(int|string $chat_id, InputFile $photo, array $clientOpt = []): ?bool
     {
@@ -2058,7 +2560,6 @@ trait AvailableMethods
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#deletechatphoto
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @return bool|null
      */
     public function deleteChatPhoto(int|string $chat_id): ?bool
     {
@@ -2073,7 +2574,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setchattitle
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string $title New chat title, 1-128 characters
-     * @return bool|null
      */
     public function setChatTitle(int|string $chat_id, string $title): ?bool
     {
@@ -2087,7 +2587,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setchatdescription
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string|null $description New chat description, 0-255 characters
-     * @return bool|null
      */
     public function setChatDescription(int|string $chat_id, ?string $description = null): ?bool
     {
@@ -2103,7 +2602,6 @@ trait AvailableMethods
      * @param int $message_id Identifier of a message to pin
      * @param bool|null $disable_notification Pass True if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels and private chats.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be pinned
-     * @return bool|null
      */
     public function pinChatMessage(
         int|string $chat_id,
@@ -2123,7 +2621,6 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int|null $message_id Identifier of a message to unpin. If not specified, the most recent pinned message (by sending date) will be unpinned.
      * @param string|null $business_connection_id Unique identifier of the business connection on behalf of which the message will be pinned
-     * @return bool|null
      */
     public function unpinChatMessage(
         int|string $chat_id,
@@ -2140,7 +2637,6 @@ trait AvailableMethods
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#unpinallchatmessages
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
-     * @return bool|null
      */
     public function unpinAllChatMessages(int|string $chat_id): ?bool
     {
@@ -2152,7 +2648,6 @@ trait AvailableMethods
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#leavechat
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
-     * @return bool|null
      */
     public function leaveChat(int|string $chat_id): ?bool
     {
@@ -2164,7 +2659,6 @@ trait AvailableMethods
      * Returns a {@see https://core.telegram.org/bots/api#chatfullinfo ChatFullInfo} object on success.
      * @see https://core.telegram.org/bots/api#getchat
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
-     * @return ChatFullInfo|null
      */
     public function getChat(int|string $chat_id): ?ChatFullInfo
     {
@@ -2172,15 +2666,16 @@ trait AvailableMethods
     }
 
     /**
-     * Use this method to get a list of administrators in a chat, which aren't bots.
+     * Use this method to get a list of administrators in a chat.
      * Returns an Array of {@see https://core.telegram.org/bots/api#chatmember ChatMember} objects.
      * @see https://core.telegram.org/bots/api#getchatadministrators
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
+     * @param bool|null $return_bots Pass True to additionally receive all bots that are administrators of the chat. By default, bots other than the current bot are omitted.
      * @return ChatMember[]|null
      */
-    public function getChatAdministrators(int|string $chat_id): ?array
+    public function getChatAdministrators(int|string $chat_id, ?bool $return_bots = null): ?array
     {
-        return $this->requestJson(__FUNCTION__, compact('chat_id'), ChatMember::class);
+        return $this->requestJson(__FUNCTION__, compact('chat_id', 'return_bots'), ChatMember::class);
     }
 
     /**
@@ -2188,7 +2683,6 @@ trait AvailableMethods
      * Returns Int on success.
      * @see https://core.telegram.org/bots/api#getchatmembercount
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
-     * @return int|null
      */
     public function getChatMemberCount(int|string $chat_id): ?int
     {
@@ -2202,11 +2696,37 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#getchatmember
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
      * @param int $user_id Unique identifier of the target user
-     * @return ChatMember|null
      */
     public function getChatMember(int|string $chat_id, int $user_id): ?ChatMember
     {
         return $this->requestJson(__FUNCTION__, compact('chat_id', 'user_id'), ChatMember::class);
+    }
+
+    /**
+     * Use this method to get the list of backdrops, which can be used as the background
+     * of a theme of the screen for sharing a link to a user or a chat.
+     * Requires no parameters.
+     * Returns a {@see https://core.telegram.org/bots/api#chatsharethemebackdrops ChatShareThemeBackdrops} object.
+     * @see https://core.telegram.org/bots/api#getchatsharethemebackdrops
+     */
+    public function getChatShareThemeBackdrops(): ?ChatShareThemeBackdrops
+    {
+        return $this->requestJson(__FUNCTION__, mapTo: ChatShareThemeBackdrops::class);
+    }
+
+    /**
+     * Use this method to get the last messages from the personal chat (i.e., the chat currently added to their profile) of a given user.
+     * On success, an array of {@see https://core.telegram.org/bots/api#message Message} objects is returned.
+     * @param int $user_id Unique identifier for the target user
+     * @param int $limit The maximum number of messages to return; 1-20
+     * @return Message[]|null
+     * @see https://core.telegram.org/bots/api#getuserpersonalchatmessages
+     */
+    public function getUserPersonalChatMessages(int $user_id, int $limit = 20): ?array
+    {
+        $params = compact('user_id', 'limit');
+
+        return $this->requestJson(__FUNCTION__, $params, Message::class);
     }
 
     /**
@@ -2217,7 +2737,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setchatstickerset
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param string $sticker_set_name Name of the sticker set to be set as the group sticker set
-     * @return bool|null
      */
     public function setChatStickerSet(int|string $chat_id, string $sticker_set_name): ?bool
     {
@@ -2231,7 +2750,6 @@ trait AvailableMethods
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#deletechatstickerset
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
-     * @return bool|null
      */
     public function deleteChatStickerSet(int|string $chat_id): ?bool
     {
@@ -2251,15 +2769,14 @@ trait AvailableMethods
     }
 
     /**
-     * Use this method to create a topic in a forum supergroup chat.
-     * The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
+     * Use this method to create a topic in a forum supergroup chat or a private chat with a user.
+     * In the case of a supergroup chat the bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator right.
      * Returns information about the created topic as a {@see https://core.telegram.org/bots/api#forumtopic ForumTopic} object.
      * @see https://core.telegram.org/bots/api#createforumtopic
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param string $name Topic name, 1-128 characters
      * @param ForumIconColor|int|null $icon_color Color of the topic icon in RGB format. Currently, must be one of 7322096 (0x6FB9F0), 16766590 (0xFFD67E), 13338331 (0xCB86DB), 9367192 (0x8EEE98), 16749490 (0xFF93B2), or 16478047 (0xFB6F5F)
      * @param string|null $icon_custom_emoji_id Unique identifier of the custom emoji shown as the topic icon. Use {@see https://core.telegram.org/bots/api#getforumtopiciconstickers getForumTopicIconStickers} to get all allowed custom emoji identifiers.
-     * @return ForumTopic|null
      */
     public function createForumTopic(
         int|string $chat_id,
@@ -2280,7 +2797,6 @@ trait AvailableMethods
      * @param int $message_thread_id Unique identifier for the target message thread of the forum topic
      * @param string|null $name New topic name, 0-128 characters. If not specified or empty, the current name of the topic will be kept
      * @param string|null $icon_custom_emoji_id New unique identifier of the custom emoji shown as the topic icon. Use {@see https://core.telegram.org/bots/api#getforumtopiciconstickers getForumTopicIconStickers} to get all allowed custom emoji identifiers. Pass an empty string to remove the icon. If not specified, the current icon will be kept
-     * @return bool|null
      */
     public function editForumTopic(
         int|string $chat_id,
@@ -2299,7 +2815,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#closeforumtopic
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param int $message_thread_id Unique identifier for the target message thread of the forum topic
-     * @return bool|null
      */
     public function closeForumTopic(int|string $chat_id, int $message_thread_id): ?bool
     {
@@ -2313,7 +2828,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#reopenforumtopic
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param int $message_thread_id Unique identifier for the target message thread of the forum topic
-     * @return bool|null
      */
     public function reopenForumTopic(int|string $chat_id, int $message_thread_id): ?bool
     {
@@ -2327,7 +2841,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#deleteforumtopic
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param int $message_thread_id Unique identifier for the target message thread of the forum topic
-     * @return bool|null
      */
     public function deleteForumTopic(int|string $chat_id, int $message_thread_id): ?bool
     {
@@ -2341,7 +2854,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#unpinallforumtopicmessages
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param int $message_thread_id Unique identifier for the target message thread of the forum topic
-     * @return bool|null
      */
     public function unpinAllForumTopicMessages(int|string $chat_id, int $message_thread_id): ?bool
     {
@@ -2355,7 +2867,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#editgeneralforumtopic
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param string $name New topic name, 1-128 characters
-     * @return bool|null
      */
     public function editGeneralForumTopic(int|string $chat_id, string $name): ?bool
     {
@@ -2368,7 +2879,6 @@ trait AvailableMethods
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#closegeneralforumtopic
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
-     * @return bool|null
      */
     public function closeGeneralForumTopic(int|string $chat_id): ?bool
     {
@@ -2382,7 +2892,6 @@ trait AvailableMethods
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#reopengeneralforumtopic
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
-     * @return bool|null
      */
     public function reopenGeneralForumTopic(int|string $chat_id): ?bool
     {
@@ -2396,7 +2905,6 @@ trait AvailableMethods
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#hidegeneralforumtopic
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
-     * @return bool|null
      */
     public function hideGeneralForumTopic(int|string $chat_id): ?bool
     {
@@ -2409,7 +2917,6 @@ trait AvailableMethods
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#unhidegeneralforumtopic
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
-     * @return bool|null
      */
     public function unhideGeneralForumTopic(int|string $chat_id): ?bool
     {
@@ -2426,7 +2933,6 @@ trait AvailableMethods
      * @param bool|null $show_alert If True, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
      * @param string|null $url URL that will be opened by the user's client. If you have created a {@see https://core.telegram.org/bots/api#game Game} and accepted the conditions via {@see https://t.me/botfather @BotFather}, specify the URL that opens your game - note that this will only work if the query comes from a {@see https://core.telegram.org/bots/api#inlinekeyboardbutton callback_game} button.Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter.
      * @param int|null $cache_time The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0.
-     * @return bool|null
      */
     public function answerCallbackQuery(
         ?string $callback_query_id = null,
@@ -2448,13 +2954,45 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to send an answer to a query from a widget. The query must be answered within 15 seconds.
+     * The answer is received only by the widget that sent the query and doesn't change data of the widget;
+     * use {@see https://core.telegram.org/bots/api#editmessagewidgetdata editMessageWidgetData}
+     * or {@see https://core.telegram.org/bots/api#editsharedwidgetdata editSharedWidgetData} to change it.
+     * On success, True is returned.
+     * @param string|null $data Data to be returned to the widget, 0-1024 bytes
+     * @param string|null $widget_query_id Unique identifier for the query to be answered
+     * @see https://core.telegram.org/bots/api#answerwidgetquery
+     */
+    public function answerWidgetQuery(?string $data = null, ?string $widget_query_id = null): ?bool
+    {
+        $parameters = compact('data', 'widget_query_id');
+        $parameters['widget_query_id'] ??= ($this->widgetQuery()?->id ?? $this->sharedWidgetQuery()?->id);
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to reply to a received guest message.
+     * On success, a {@see https://core.telegram.org/bots/api#sentguestmessage SentGuestMessage} object is returned.
+     * @param InlineQueryResult $result A JSON-serialized object describing the message to be sent
+     * @param string|null $guest_query_id Unique identifier for the query to be answered
+     * @see https://core.telegram.org/bots/api#answerguestquery
+     */
+    public function answerGuestQuery(InlineQueryResult $result, ?string $guest_query_id = null): ?SentGuestMessage
+    {
+        $parameters = compact('guest_query_id', 'result');
+        $parameters['guest_query_id'] ??= $this->guestQueryId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, SentGuestMessage::class);
+    }
+
+    /**
      * Use this method to get the list of boosts added to a chat by a user.
      * Requires administrator rights in the chat.
      * Returns a UserChatBoosts object.
      * @see https://core.telegram.org/bots/api#getuserchatboosts
      * @param int|string|null $chat_id Unique identifier for the chat or username of the channel (in the format &#64;channelusername)
      * @param int|null $user_id Unique identifier of the target user
-     * @return UserChatBoosts|null
      */
     public function getUserChatBoosts(null|int|string $chat_id = null, ?int $user_id = null): ?UserChatBoosts
     {
@@ -2466,11 +3004,56 @@ trait AvailableMethods
      * Returns a {@see https://core.telegram.org/bots/api#businessconnection BusinessConnection} object on success.
      * @see https://core.telegram.org/bots/api#getbusinessconnection
      * @param string $business_connection_id Unique identifier of the business connection
-     * @return BusinessConnection|null
      */
     public function getBusinessConnection(string $business_connection_id): ?BusinessConnection
     {
         return $this->requestJson(__FUNCTION__, compact('business_connection_id'), BusinessConnection::class);
+    }
+
+    /**
+     * Use this method to get the token of a managed bot.
+     * Returns the token as String on success.
+     * @param int $user_id User identifier of the managed bot whose token will be returned
+     * @see https://core.telegram.org/bots/api#getmanagedbottoken
+     */
+    public function getManagedBotToken(int $user_id): ?string
+    {
+        return $this->requestJson(__FUNCTION__, compact('user_id'));
+    }
+
+    /**
+     * Use this method to revoke the current token of a managed bot and generate a new one. Returns the new token as String on success.
+     * @param int $user_id User identifier of the managed bot whose token will be replaced
+     * @see https://core.telegram.org/bots/api#replacemanagedbottoken
+     */
+    public function replaceManagedBotToken(int $user_id): ?string
+    {
+        return $this->requestJson(__FUNCTION__, compact('user_id'));
+    }
+
+    /**
+     * Use this method to get the access settings of a managed bot.
+     * Returns a {@see https://core.telegram.org/bots/api#botaccesssettings BotAccessSettings} object on success.
+     * @param int $user_id User identifier of the managed bot whose access settings will be returned
+     * @see https://core.telegram.org/bots/api#getmanagedbotaccesssettings
+     */
+    public function getManagedBotAccessSettings(int $user_id): ?BotAccessSettings
+    {
+        return $this->requestJson(__FUNCTION__, compact('user_id'), BotAccessSettings::class);
+    }
+
+    /**
+     * Use this method to change the access settings of a managed bot. Returns True on success.
+     * @param int $user_id User identifier of the managed bot whose access settings will be changed
+     * @param bool $is_access_restricted Pass True, if only selected users can access the bot. The bot's owner can always access it.
+     * @param array|null $added_user_ids A JSON-serialized list of up to 10 identifiers of users who will have access to the bot in addition to its owner. Ignored if is_access_restricted is false.
+     * @see https://core.telegram.org/bots/api#setmanagedbotaccesssettings
+     */
+    public function setManagedBotAccessSettings(int $user_id, bool $is_access_restricted, ?array $added_user_ids = null): ?bool
+    {
+        $parameters = compact('user_id', 'is_access_restricted', 'added_user_ids');
+
+        return $this->requestJson(__FUNCTION__, $parameters);
     }
 
     /**
@@ -2481,7 +3064,6 @@ trait AvailableMethods
      * @param BotCommand[] $commands A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified.
      * @param BotCommandScope|null $scope A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to {@see https://core.telegram.org/bots/api#botcommandscopedefault BotCommandScopeDefault}.
      * @param string|null $language_code A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands
-     * @return bool|null
      */
     public function setMyCommands(array $commands, ?BotCommandScope $scope = null, ?string $language_code = null): ?bool
     {
@@ -2503,7 +3085,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#deletemycommands
      * @param BotCommandScope|null $scope A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to {@see https://core.telegram.org/bots/api#botcommandscopedefault BotCommandScopeDefault}.
      * @param string|null $language_code A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands
-     * @return bool|null
      */
     public function deleteMyCommands(?BotCommandScope $scope = null, ?string $language_code = null): ?bool
     {
@@ -2529,7 +3110,6 @@ trait AvailableMethods
      * Returns {@see https://core.telegram.org/bots/api#botname BotName} on success.
      * @see https://core.telegram.org/bots/api#getmyname
      * @param string|null $language_code A two-letter ISO 639-1 language code or an empty string
-     * @return BotName|null
      */
     public function getMyName(?string $language_code = null): ?BotName
     {
@@ -2542,7 +3122,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setmyname
      * @param string|null $name New bot name; 0-64 characters. Pass an empty string to remove the dedicated name for the given language.
      * @param string|null $language_code A two-letter ISO 639-1 language code. If empty, the name will be shown to all users for whose language there is no dedicated name.
-     * @return bool|null
      */
     public function setMyName(?string $name = null, ?string $language_code = null): ?bool
     {
@@ -2555,7 +3134,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setmydescription
      * @param string|null $description New bot description; 0-512 characters. Pass an empty string to remove the dedicated description for the given language.
      * @param string|null $language_code A two-letter ISO 639-1 language code. If empty, the description will be applied to all users for whose language there is no dedicated description.
-     * @return bool|null
      */
     public function setMyDescription(?string $description = null, ?string $language_code = null): ?bool
     {
@@ -2567,7 +3145,6 @@ trait AvailableMethods
      * Returns {@see https://core.telegram.org/bots/api#botdescription BotDescription} on success.
      * @see https://core.telegram.org/bots/api#getmydescription
      * @param string|null $language_code A two-letter ISO 639-1 language code or an empty string
-     * @return BotDescription|null
      */
     public function getMyDescription(?string $language_code = null): ?BotDescription
     {
@@ -2580,7 +3157,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setmyshortdescription
      * @param string|null $short_description New short description for the bot; 0-120 characters. Pass an empty string to remove the dedicated short description for the given language.
      * @param string|null $language_code A two-letter ISO 639-1 language code. If empty, the short description will be applied to all users for whose language there is no dedicated short description.
-     * @return bool|null
      */
     public function setMyShortDescription(?string $short_description = null, ?string $language_code = null): ?bool
     {
@@ -2592,11 +3168,30 @@ trait AvailableMethods
      * Returns {@see https://core.telegram.org/bots/api#botshortdescription BotShortDescription} on success.
      * @see https://core.telegram.org/bots/api#getmyshortdescription
      * @param string|null $language_code A two-letter ISO 639-1 language code or an empty string
-     * @return BotShortDescription|null
      */
     public function getMyShortDescription(?string $language_code = null): ?BotShortDescription
     {
         return $this->requestJson(__FUNCTION__, compact('language_code'), BotShortDescription::class);
+    }
+
+    /**
+     * Changes the profile photo of the bot. Returns True on success.
+     * @see https://core.telegram.org/bots/api#setmyprofilephoto
+     * @param InputProfilePhoto $photo The new profile photo to set
+     */
+    public function setMyProfilePhoto(InputProfilePhoto $photo): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('photo'));
+    }
+
+    /**
+     * Removes the profile photo of the bot.
+     * Requires no parameters.
+     * Returns True on success.
+     */
+    public function removeMyProfilePhoto(): ?bool
+    {
+        return $this->requestJson(__FUNCTION__);
     }
 
     /**
@@ -2605,7 +3200,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setchatmenubutton
      * @param int|null $chat_id Unique identifier for the target private chat. If not specified, default bot's menu button will be changed
      * @param MenuButton|null $menu_button A JSON-serialized object for the bot's new menu button. Defaults to {@see https://core.telegram.org/bots/api#menubuttondefault MenuButtonDefault}
-     * @return bool|null
      */
     public function setChatMenuButton(?int $chat_id = null, ?MenuButton $menu_button = null): ?bool
     {
@@ -2618,7 +3212,6 @@ trait AvailableMethods
      * Returns {@see https://core.telegram.org/bots/api#menubutton MenuButton} on success.
      * @see https://core.telegram.org/bots/api#getchatmenubutton
      * @param int|null $chat_id Unique identifier for the target private chat. If not specified, default bot's menu button will be returned
-     * @return MenuButton|null
      */
     public function getChatMenuButton(?int $chat_id = null): ?MenuButton
     {
@@ -2633,7 +3226,6 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setmydefaultadministratorrights
      * @param ChatAdministratorRights|null $rights A JSON-serialized object describing new default administrator rights. If not specified, the default administrator rights will be cleared.
      * @param bool|null $for_channels Pass True to change the default administrator rights of the bot in channels. Otherwise, the default administrator rights of the bot for groups and supergroups will be changed.
-     * @return bool|null
      */
     public function setMyDefaultAdministratorRights(
         ?ChatAdministratorRights $rights = null,
@@ -2647,11 +3239,78 @@ trait AvailableMethods
      * Returns {@see https://core.telegram.org/bots/api#chatadministratorrights ChatAdministratorRights} on success.
      * @see https://core.telegram.org/bots/api#getmydefaultadministratorrights
      * @param bool|null $for_channels Pass True to get default administrator rights of the bot in channels. Otherwise, default administrator rights of the bot for groups and supergroups will be returned.
-     * @return ChatAdministratorRights|null
      */
     public function getMyDefaultAdministratorRights(?bool $for_channels = null): ?ChatAdministratorRights
     {
         return $this->requestJson(__FUNCTION__, compact('for_channels'), ChatAdministratorRights::class);
+    }
+
+    /**
+     * Verifies a user on behalf of the organization which is represented by the bot. Returns True on success.
+     * @param int $user_id Unique identifier of the target user
+     * @param string|null $custom_description Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.
+     * @param ParseMode|string|null $custom_description_parse_mode Mode for parsing entities in the custom description. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details. Only “text_link” entities are supported.
+     * @param MessageEntity[]|null $custom_description_entities A JSON-serialized list of special entities that appear in the custom description, which can be specified instead of custom_description_parse_mode. Only “text_link” entities are supported.
+     * @see https://core.telegram.org/bots/api#verifyuser
+     */
+    public function verifyUser(
+        int $user_id,
+        ?string $custom_description = null,
+        ParseMode|string|null $custom_description_parse_mode = null,
+        ?array $custom_description_entities = null,
+    ): ?bool {
+        $parameters = compact(
+            'user_id',
+            'custom_description',
+            'custom_description_parse_mode',
+            'custom_description_entities',
+        );
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Verifies a chat on behalf of the organization which is represented by the bot. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param string|null $custom_description Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.
+     * @param ParseMode|string|null $custom_description_parse_mode Mode for parsing entities in the custom description. See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details. Only “text_link” entities are supported.
+     * @param MessageEntity[]|null $custom_description_entities A JSON-serialized list of special entities that appear in the custom description, which can be specified instead of custom_description_parse_mode. Only “text_link” entities are supported.
+     * @see https://core.telegram.org/bots/api#verifychat
+     */
+    public function verifyChat(
+        int|string $chat_id,
+        ?string $custom_description = null,
+        ParseMode|string|null $custom_description_parse_mode = null,
+        ?array $custom_description_entities = null,
+    ): ?bool {
+        $parameters = compact(
+            'chat_id',
+            'custom_description',
+            'custom_description_parse_mode',
+            'custom_description_entities',
+        );
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Removes verification from a user who is currently verified on behalf of the organization represented by the bot. Returns True on success.
+     * @param int $user_id Unique identifier of the target user
+     * @see https://core.telegram.org/bots/api#removeuserverification
+     */
+    public function removeUserVerification(int $user_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('user_id'));
+    }
+
+    /**
+     * Removes verification from a chat that is currently verified on behalf of the organization represented by the bot. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @see https://core.telegram.org/bots/api#removechatverification
+     */
+    public function removeChatVerification(int|string $chat_id): ?bool
+    {
+        return $this->requestJson(__FUNCTION__, compact('chat_id'));
     }
 
     /**
@@ -2660,7 +3319,6 @@ trait AvailableMethods
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#unpinallgeneralforumtopicmessages
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
-     * @return bool|null
      */
     public function unpinAllGeneralForumTopicMessages(int|string $chat_id): ?bool
     {
@@ -2679,7 +3337,6 @@ trait AvailableMethods
      * @param bool|null $sort_by_price Pass True to sort results by gift price instead of send date. Sorting is applied before pagination.
      * @param string|null $offset Offset of the first entry to return as received from the previous request; use an empty string to get the first chunk of results
      * @param int|null $limit The maximum number of gifts to be returned; 1-100. Defaults to 100
-     * @return OwnedGifts|null
      * @see https://core.telegram.org/bots/api#getusergifts
      */
     public function getUserGifts(
@@ -2723,7 +3380,6 @@ trait AvailableMethods
      * @param bool|null $sort_by_price Pass True to sort results by gift price instead of send date. Sorting is applied before pagination.
      * @param string|null $offset Offset of the first entry to return as received from the previous request; use an empty string to get the first chunk of results
      * @param int|null $limit The maximum number of gifts to be returned; 1-100. Defaults to 100
-     * @return OwnedGifts|null
      * @see https://core.telegram.org/bots/api#getchatgifts
      */
     public function getChatGifts(
@@ -2758,6 +3414,36 @@ trait AvailableMethods
     }
 
     /**
+     * Use this method to get information about a unique gift by its name.
+     * Returns a {@see https://core.telegram.org/bots/api#uniquegift UniqueGift} object on success.
+     * @param string $name Unique name of the gift
+     * @see https://core.telegram.org/bots/api#getuniquegift
+     */
+    public function getUniqueGift(string $name): ?UniqueGift
+    {
+        $parameters = compact('name');
+
+        return $this->requestJson(__FUNCTION__, $parameters, UniqueGift::class);
+    }
+
+    /**
+     * Deletes a regular gift owned by a managed business account without receiving Telegram Stars for it.
+     * Requires the can_convert_gifts_to_stars business bot right.
+     * The gift can be deleted only if it isn't limited
+     * (the field total_count of the {@see https://core.telegram.org/bots/api#gift Gift} is omitted) and wasn't refunded.
+     * Returns True on success.
+     * @param string $business_connection_id Unique identifier of the business connection
+     * @param string $owned_gift_id Unique identifier of the regular gift that should be deleted
+     * @see https://core.telegram.org/bots/api#deletebusinessaccountgift
+     */
+    public function deleteBusinessAccountGift(string $business_connection_id, string $owned_gift_id): ?bool
+    {
+        $parameters = compact('business_connection_id', 'owned_gift_id');
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
      * Reposts a story on behalf of a business account from another business account.
      * Both business accounts must be managed by the same bot, and the story on the source account must have been posted (or reposted) by the bot.
      * Requires the can_manage_stories business bot right for both business accounts.
@@ -2768,7 +3454,6 @@ trait AvailableMethods
      * @param StoryActivePeriod|int $active_period Period after which the story is moved to the archive, in seconds; must be one of 6 * 3600, 12 * 3600, 86400, or 2 * 86400
      * @param bool|null $post_to_chat_page Pass True to keep the story accessible after it expires
      * @param bool|null $protect_content Pass True if the content of the story must be protected from forwarding and screenshotting
-     * @return Story|null
      * @see https://core.telegram.org/bots/api#repoststory
      */
     public function repostStory(
@@ -2790,5 +3475,20 @@ trait AvailableMethods
         $parameters['business_connection_id'] ??= $this->businessConnectionId();
 
         return $this->requestJson(__FUNCTION__, $parameters, Story::class);
+    }
+
+    /**
+     * Stores a keyboard button that can be used by a user within a Mini App.
+     * Returns a {@see https://core.telegram.org/bots/api#preparedkeyboardbutton PreparedKeyboardButton} object.
+     * @param KeyboardButton $button A JSON-serialized object describing the button to be saved. The button must be of the type request_users, request_chat, or request_managed_bot
+     * @param int|null $user_id Unique identifier of the target user that can use the button
+     * @see https://core.telegram.org/bots/api#savepreparedkeyboardbutton
+     */
+    public function savePreparedKeyboardButton(KeyboardButton $button, ?int $user_id = null): ?PreparedKeyboardButton
+    {
+        $parameters = compact('user_id', 'button');
+        $parameters['user_id'] ??= $this->userId();
+
+        return $this->requestJson(__FUNCTION__, $parameters, PreparedKeyboardButton::class);
     }
 }

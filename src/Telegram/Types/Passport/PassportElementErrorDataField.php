@@ -8,6 +8,7 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Represents an issue in one of the data fields that was provided by the user.
@@ -15,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Properties\PassportType;
  * @see https://core.telegram.org/bots/api#passportelementerrordatafield
  */
 #[OverrideConstructor('bindToInstance')]
-class PassportElementErrorDataField extends PassportElementError
+class PassportElementErrorDataField extends BaseType implements PassportElementError
 {
     /** Error source, must be data */
     #[EnumOrScalar]

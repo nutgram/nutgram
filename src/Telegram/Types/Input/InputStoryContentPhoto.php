@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use Psr\Http\Message\StreamInterface;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputStoryContentType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
-use SergiX44\Nutgram\Telegram\Types\Internal\Uploadable;
+use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 
 /**
  * Describes a photo to post as a story.
  * @see https://core.telegram.org/bots/api#inputstorycontentphoto
  */
 #[OverrideConstructor('bindToInstance')]
-class InputStoryContentPhoto extends InputStoryContent implements Uploadable
+class InputStoryContentPhoto extends BaseType implements InputStoryContent, Uploadables
 {
     /**
      * Type of the content, must be photo
@@ -33,24 +33,14 @@ class InputStoryContentPhoto extends InputStoryContent implements Uploadable
     #[BaseUnion]
     public InputFile|string $photo;
 
-    public function isLocal(): bool
-    {
-        return $this->photo instanceof InputFile;
-    }
-
-    public function getFilename(): string
-    {
-        return $this->photo->getFilename();
-    }
-
-    public function getStream(): StreamInterface
-    {
-        return $this->photo->getStream();
-    }
-
     public function __construct(InputFile|string $photo)
     {
         parent::__construct();
         $this->photo = $photo;
+    }
+
+    public function uploadables(): array
+    {
+        return ['photo' => $this->photo];
     }
 }

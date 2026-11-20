@@ -49,13 +49,11 @@ class WebAppUser extends Entity
 
     /**
      * Optional. True, if this user added the bot to the attachment menu.
-     * @var bool
      */
     public bool $added_to_attachment_menu = false;
 
     /**
      * Optional. True, if this user allowed the bot to message them.
-     * @var bool
      */
     public bool $allows_write_to_pm = false;
 

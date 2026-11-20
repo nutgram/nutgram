@@ -20,9 +20,6 @@ class BulkMessenger
      */
     private $callable;
 
-    /**
-     * @param  Nutgram  $bot
-     */
     public function __construct(Nutgram $bot)
     {
         if (!$this->isCli()) {
@@ -36,7 +33,6 @@ class BulkMessenger
     }
 
     /**
-     * @param  callable  $action
      * @return $this
      */
     public function using(callable $action): static
@@ -46,7 +42,6 @@ class BulkMessenger
     }
 
     /**
-     * @param  array  $chats
      * @return $this
      */
     public function setChats(array $chats): static
@@ -56,7 +51,6 @@ class BulkMessenger
     }
 
     /**
-     * @param  int  $seconds
      * @return $this
      */
     public function setInterval(int $seconds): static
@@ -66,7 +60,6 @@ class BulkMessenger
     }
 
     /**
-     * @param  string  $text
      * @return $this
      */
     public function setText(string $text): static
@@ -76,7 +69,6 @@ class BulkMessenger
     }
 
     /**
-     * @param  array  $params
      * @return $this
      */
     public function setOpt(array $params): static
@@ -85,9 +77,6 @@ class BulkMessenger
         return $this;
     }
 
-    /**
-     * @return void
-     */
     public function startAsync(): void
     {
         if (!$this->hasPcntl()) {
@@ -95,23 +84,17 @@ class BulkMessenger
         }
 
         pcntl_async_signals(true);
-        pcntl_signal(SIGALRM, [$this, 'handleAlarm']);
+        pcntl_signal(SIGALRM, $this->handleAlarm(...));
 
         $this->handleAlarm();
     }
 
-    /**
-     * @return void
-     */
     public function handleAlarm(): void
     {
         $this();
         pcntl_alarm($this->seconds);
     }
 
-    /**
-     * @return void
-     */
     public function startSync(): void
     {
         while (!empty($this->chats)) {
@@ -120,9 +103,6 @@ class BulkMessenger
         }
     }
 
-    /**
-     * @return void
-     */
     public function __invoke(): void
     {
         $chatId = array_shift($this->chats);

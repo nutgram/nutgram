@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a venue message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputvenuemessagecontent
  */
 #[OverrideConstructor('bindToInstance')]
-class InputVenueMessageContent extends InputMessageContent
+class InputVenueMessageContent extends BaseType implements InputMessageContent
 {
     /** Latitude of the venue in degrees */
     public float $latitude;

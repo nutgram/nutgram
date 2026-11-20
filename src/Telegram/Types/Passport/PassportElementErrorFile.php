@@ -8,6 +8,7 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Represents an issue with a document scan.
@@ -15,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Properties\PassportType;
  * @see https://core.telegram.org/bots/api#passportelementerrorfile
  */
 #[OverrideConstructor('bindToInstance')]
-class PassportElementErrorFile extends PassportElementError
+class PassportElementErrorFile extends BaseType implements PassportElementError
 {
     /** Error source, must be file */
     #[EnumOrScalar]

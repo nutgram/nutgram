@@ -6,8 +6,11 @@ use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
-use SergiX44\Nutgram\Testing\TestClock;
+use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\User\User;
+use SergiX44\Nutgram\Testing\TestClock;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationEmpty;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithBeforeStep;
 use SergiX44\Nutgram\Tests\Fixtures\Conversations\ConversationWithClosing;
@@ -259,6 +262,20 @@ it('starts manually for a specific user/chat', function () {
     expect($bot->get('test'))->toBe(1);
 });
 
+it('starts manually for a specific user/chat/thread', function () {
+    $userId = 123;
+    $chatId = 456;
+    $thread = 789;
+
+    $bot = Nutgram::fake();
+
+    TwoStepConversation::begin($bot, $userId, $chatId, $thread);
+
+    $bot->assertActiveConversation($userId, $chatId, $thread);
+
+    expect($bot->get('test'))->toBe(1);
+});
+
 it('fails to start manually for a specific user/chat', function () {
     $bot = Nutgram::fake();
     TwoStepConversation::begin($bot, 123, null);
@@ -298,6 +315,43 @@ it('starts a conversation from server', function () {
         'text' => 'First step',
         'chat_id' => 123456789,
     ]);
+
+    $bot
+        ->setCommonChat(Chat::make(123456789, ChatType::PRIVATE))
+        ->setCommonUser(User::make(123456789, false, 'John'))
+        ->hearText('foo')
+        ->reply()
+        ->assertReplyText('Second step');
+});
+
+it('starts a conversation from handler keeping same handler context', function () {
+    $bot = Nutgram::fake();
+    $bot->onMessage(function (Nutgram $bot) {
+        $bot->sendMessage('Before begin');
+        ServerConversation::begin(
+            bot: $bot,
+            userId: 123,
+            chatId: 456
+        );
+        $bot->sendMessage('After begin');
+    });
+
+    $bot
+        ->setCommonChat(Chat::make(789, ChatType::PRIVATE))
+        ->hearText('hey')
+        ->reply()
+        ->assertReplyMessage([
+            'chat_id' => 789,
+            'text' => 'Before begin',
+        ])
+        ->assertReplyMessage([
+            'chat_id' => 456,
+            'text' => 'First step',
+        ], 1)
+        ->assertReplyMessage([
+            'chat_id' => 789,
+            'text' => 'After begin',
+        ], 2);
 });
 
 it('restarts the conversation with an expired cache', function ($update) {

@@ -3,9 +3,14 @@
 declare(strict_types=1);
 
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\RunningMode\Polling;
+use SergiX44\Nutgram\RunningMode\RespondsToWebhook;
 use SergiX44\Nutgram\RunningMode\SingleUpdate;
 use SergiX44\Nutgram\RunningMode\Webhook;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
+use SergiX44\Nutgram\Telegram\Types\Message\Message;
 
 it('works with webhook mode', function () {
     $bot = Nutgram::fake();
@@ -33,7 +38,7 @@ it('works with webhook mode with safe mode and wrong secret', function () {
 
     $bot = Nutgram::fake();
 
-    $mock = mock(Webhook::class, [null, 'bar'])
+    $mock = mock(Webhook::class, ['bar', null])
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('input')
         ->andReturn(file_get_contents(__DIR__.'/../Fixtures/Updates/message.json'))
@@ -56,7 +61,7 @@ it('works with webhook mode with safe mode and right secret', function () {
 
     $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] = 'foo';
 
-    $mock = mock(Webhook::class, [null, 'foo'])
+    $mock = mock(Webhook::class, ['foo', null])
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('input')
         ->andReturn(file_get_contents(__DIR__.'/../Fixtures/Updates/message.json'))
@@ -163,9 +168,85 @@ it('works with polling mode with exception', function ($update) {
         ->and(stream_get_contents(Polling::$STDERR))->toContain('stop!');
 })->with('message');
 
-it('works with send as response', function ($update) {
+function respondingRunningMode(mixed $update): Fake&RespondsToWebhook
+{
+    return new class($update) extends Fake implements RespondsToWebhook {
+        public bool $accepting = true;
+
+        /** @var list<array{string, array<array-key, mixed>}> */
+        public array $responses = [];
+
+        public function canRespond(): bool
+        {
+            return $this->accepting;
+        }
+
+        public function respond(string $method, array $parameters): void
+        {
+            $this->responses[] = [$method, $parameters];
+        }
+    };
+}
+
+it('sends the request as the webhook response when the running mode can respond', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->setRunningMode($runningMode = respondingRunningMode($update));
+
+    $bot->onText('Ciao', function (Nutgram $bot) {
+        expect($bot->asResponse()->sendMessage('Hello', parse_mode: ParseMode::HTML))->toBeNull();
+    });
+
+    $bot->reply()->assertNoReply();
+
+    expect($runningMode->responses)->toBe([
+        ['sendMessage', ['chat_id' => 456, 'text' => 'Hello', 'parse_mode' => 'HTML']],
+    ]);
+})->with('message');
+
+it('sends a normal request when the running mode cannot respond', function ($update) {
     $bot = Nutgram::fake($update);
 
+    $bot->onText('Ciao', function (Nutgram $bot) {
+        expect($bot->asResponse()->sendMessage('Hello'))->toBeInstanceOf(Message::class);
+    });
+
+    $bot->reply()->assertReply('sendMessage', ['chat_id' => 456, 'text' => 'Hello']);
+})->with('message');
+
+it('applies asResponse to the next request only', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->setRunningMode($runningMode = respondingRunningMode($update));
+
+    $bot->onText('Ciao', function (Nutgram $bot) use ($runningMode) {
+        $runningMode->accepting = false;
+        $bot->asResponse()->sendMessage('Hello');
+
+        $runningMode->accepting = true;
+        $bot->sendMessage('World');
+    });
+
+    $bot->reply()->assertCalled('sendMessage', 2);
+
+    expect($runningMode->responses)->toBe([]);
+})->with('message');
+
+it('does not send a multipart request as the webhook response', function ($update) {
+    $bot = Nutgram::fake($update);
+    $bot->setRunningMode($runningMode = respondingRunningMode($update));
+
+    $bot->onText('Ciao', function (Nutgram $bot) {
+        $bot->asResponse()->sendDocument(InputFile::make(fopen('php://temp', 'rb'), 'document.txt'));
+        $bot->sendMessage('Hello');
+    });
+
+    $bot->reply()
+        ->assertCalled('sendDocument')
+        ->assertCalled('sendMessage');
+
+    expect($runningMode->responses)->toBe([]);
+})->with('message');
+
+it('echoes the webhook response in webhook mode', function () {
     if (!function_exists('fastcgi_finish_request')) {
         function fastcgi_finish_request()
         {
@@ -173,21 +254,11 @@ it('works with send as response', function ($update) {
         }
     }
 
-    $bot->onText('Ciao', function (Nutgram $bot) {
-        ob_start();
-        $u = $bot->asResponse()->sendMessage('Hello');
-        $contents = ob_get_contents();
-        ob_end_clean();
-        expect($u)->toBeNull()
-            ->and($contents)->toBe('{"method":"sendMessage","chat_id":456,"text":"Hello"}');
-    });
+    ob_start();
+    (new Webhook())->respond('sendMessage', ['chat_id' => 456, 'text' => 'Hello']);
 
-    $bot->willReceivePartial([
-        'message' => [
-            'text' => 'Ciao',
-        ],
-    ])->reply();
-})->with('message');
+    expect(ob_get_clean())->toBe('{"method":"sendMessage","chat_id":456,"text":"Hello"}');
+});
 
 it('works with single update running mode', function ($update) {
     $update->update_id = 100;

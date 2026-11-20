@@ -12,6 +12,7 @@ use SergiX44\Nutgram\Telegram\Types\Command\MenuButton;
 use SergiX44\Nutgram\Telegram\Types\Command\MenuButtonCommands;
 use SergiX44\Nutgram\Telegram\Types\Command\MenuButtonDefault;
 use SergiX44\Nutgram\Telegram\Types\Command\MenuButtonWebApp;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class MenuButtonResolver extends ConcreteResolver
@@ -25,7 +26,8 @@ class MenuButtonResolver extends ConcreteResolver
     public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
-        return $this->concretes[$type] ?? (new class extends MenuButton {
+        return $this->concretes[$type] ?? (new class extends BaseType implements MenuButton {
+            public string $type;
         })::class;
     }
 }

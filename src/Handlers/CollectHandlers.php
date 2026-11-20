@@ -14,20 +14,20 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 abstract class CollectHandlers
 {
-    use UpdateListeners, MessageListeners, SpecialListeners, InteractsWithRateLimit;
+    use UpdateListeners;
+    use MessageListeners;
+    use SpecialListeners;
+    use InteractsWithRateLimit;
 
     /**
-     * @var array
+     * @var list<callable>
      */
     protected array $globalMiddlewares = [];
 
-    /**
-     * @var string
-     */
     protected string $target = 'handlers';
 
     /**
-     * @var array
+     * @var array<string, callable>|array<string, array<string, callable>>
      */
     protected array $handlers = [];
 
@@ -37,19 +37,16 @@ abstract class CollectHandlers
     protected array $groups = [];
 
     /**
-     * @var array
+     * @var array<string, callable>|array<string, array<string, callable>>
      */
     protected array $groupHandlers = [];
 
-    /**
-     * @var bool
-     */
     protected bool $finalized = false;
 
     abstract public function getContainer(): Container;
 
     /**
-     * @param callable|callable-string|array $callable
+     * @param callable|class-string|array $callable
      */
     public function middleware($callable): void
     {
@@ -58,15 +55,14 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param Array<callable|callable-string|array> $callable
+     * @param list<callable|class-string|array> $callables
      */
-    public function middlewares($callable): void
+    public function middlewares(array $callables): void
     {
         $this->checkFinalized();
-        $middlewares = is_array($callable) ? $callable : [$callable];
 
-        foreach ($middlewares as $middleware) {
-            $this->middleware($middleware);
+        foreach ($callables as $callable) {
+            $this->middleware($callable);
         }
     }
 
@@ -77,25 +73,20 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param string $type
-     * @param $callableOrPattern
-     * @param $callable
-     * @return Handler
+     * @param callable|class-string|array $callableOrPattern
+     * @param callable|class-string|array $callable
      */
-    private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): Handler
+    private function registerErrorHandlerFor(string $type, $callableOrPattern, $callable = null): void
     {
         if ($callable !== null) {
-            return $this->{$this->target}[$type][$callableOrPattern] = new Handler($callable, $callableOrPattern);
+            $this->{$this->target}[$type][$callableOrPattern] = new Handler($callable, $callableOrPattern);
+
+            return;
         }
 
-        return $this->{$this->target}[$type][] = new Handler($callableOrPattern);
+        $this->{$this->target}[$type][] = new Handler($callableOrPattern);
     }
 
-    /**
-     * @param bool $exception
-     * @param bool $apiError
-     * @return void
-     */
     public function clearErrorHandlers(bool $exception = true, bool $apiError = true): void
     {
         if ($exception) {
@@ -113,8 +104,7 @@ abstract class CollectHandlers
     }
 
     /**
-     * @param $callable
-     * @return Handler
+     * @param callable|class-string|array $callable
      */
     public function onUpdate($callable): Handler
     {

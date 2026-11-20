@@ -1,0 +1,110 @@
+{
+  "message_id": 1234,
+  "from": {
+    "id": 987654321,
+    "is_bot": true,
+    "first_name": "Test Bot",
+    "username": "mytestbot"
+  },
+  "chat": {
+    "id": 12345678,
+    "first_name": "Mario",
+    "last_name": "Bros",
+    "username": "SuperMario",
+    "type": "private"
+  },
+  "date": 1784483903,
+  "rich_message": {
+    "blocks": [
+      {
+        "type": "paragraph",
+        "text": "it's me"
+      },
+      {
+        "type": "heading",
+        "text": "mario",
+        "size": 2
+      },
+      {
+        "type": "table",
+        "cells": [
+          [
+            {
+              "text": "Codes",
+              "is_header": true,
+              "align": "center",
+              "valign": "middle"
+            },
+            {
+              "text": "Colors",
+              "is_header": true,
+              "align": "center",
+              "valign": "middle"
+            }
+          ],
+          [
+            {
+              "text": [
+                {
+                  "type": "code",
+                  "text": "EI136"
+                },
+                " ",
+                {
+                  "type": "code",
+                  "text": "EI136"
+                }
+              ],
+              "align": "left",
+              "valign": "middle"
+            },
+            {
+              "text": [
+                {
+                  "type": "bold",
+                  "text": [
+                    "red",
+                    {
+                      "type": "italic",
+                      "text": "One"
+                    }
+                  ]
+                },
+                "capisco",
+                {
+                  "type": "bold",
+                  "text": "red"
+                },
+                " ",
+                {
+                  "type": "code",
+                  "text": "blue"
+                }
+              ],
+              "align": "left",
+              "valign": "middle"
+            }
+          ]
+        ]
+      },
+      {
+        "type": "footer",
+        "text": {
+          "type": "bold",
+          "text": "bold"
+        }
+      },
+      {
+        "type": "footer",
+        "text": [
+          "prefix",
+          {
+            "type": "bold",
+            "text": "bold"
+          },
+          "suffix"
+        ]
+      }
+    ]
+  }
+}

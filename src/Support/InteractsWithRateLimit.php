@@ -15,11 +15,7 @@ trait InteractsWithRateLimit
     protected bool $withoutRateLimit = false;
 
     /**
-     * @param int $maxAttempts
-     * @param int $decaySeconds
-     * @param string|null $key
      * @param null|callable(Nutgram $bot, int $availableIn): void $warningCallback
-     * @return self
      */
     public function throttle(
         int $maxAttempts,
@@ -45,7 +41,7 @@ trait InteractsWithRateLimit
             return null;
         }
 
-        return $this->rateLimiters[$firstKey] ?? null;
+        return $this->rateLimiters[$firstKey];
     }
 
     public function appendRateLimiters(array $rateLimiters): void

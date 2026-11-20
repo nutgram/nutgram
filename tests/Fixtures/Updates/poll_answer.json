@@ -12,6 +12,9 @@
     },
     "option_ids": [
       1
+    ],
+    "option_persistent_ids": [
+      "abc"
     ]
   }
 }

@@ -7,13 +7,14 @@ namespace SergiX44\Nutgram\Telegram\Types\Payment;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\TransactionPartnerType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * Describes a transaction with a user.
  * @see https://core.telegram.org/bots/api#transactionpartneruser
  */
-class TransactionPartnerUser extends TransactionPartner
+class TransactionPartnerUser extends BaseType implements TransactionPartner
 {
     /**
      * Type of the transaction partner, always “user”

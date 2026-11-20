@@ -6,7 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Annotation\OverrideConstructor;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object represents a {@see https://core.telegram.org/bots/features#keyboards custom keyboard} with reply options (see {@see https://core.telegram.org/bots/features#keyboards Introduction to bots} for details and examples).
@@ -60,12 +60,19 @@ class ReplyKeyboardMarkup extends BaseType
      */
     public ?bool $selective = null;
 
+    /**
+     * Optional. Pass True if the reply interface must be shown to the user,
+     * as if they had manually selected the bot's message and tapped 'Reply'
+     */
+    public ?bool $force_reply = null;
+
     public function __construct(
         ?bool $resize_keyboard = null,
         ?bool $one_time_keyboard = null,
         ?string $input_field_placeholder = null,
         ?bool $selective = null,
         ?bool $is_persistent = null,
+        ?bool $force_reply = null,
     ) {
         parent::__construct();
         $this->keyboard = [];
@@ -74,6 +81,7 @@ class ReplyKeyboardMarkup extends BaseType
         $this->input_field_placeholder = $input_field_placeholder;
         $this->selective = $selective;
         $this->is_persistent = $is_persistent;
+        $this->force_reply = $force_reply;
     }
 
     /**

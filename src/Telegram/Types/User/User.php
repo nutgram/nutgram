@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\User;
 
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object represents a Telegram user or bot.
@@ -71,6 +71,13 @@ class User extends BaseType
 
     /**
      * Optional.
+     * True, if the bot supports guest queries from chats it is not a member of.
+     * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     */
+    public ?bool $supports_guest_queries = null;
+
+    /**
+     * Optional.
      * True, if the bot supports inline queries.
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
      */
@@ -97,6 +104,25 @@ class User extends BaseType
      */
     public ?bool $has_topics_enabled = null;
 
+    /**
+     * Optional. True, if the bot allows users to create and delete topics in private chats.
+     * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     */
+    public ?bool $allows_users_to_create_topics = null;
+
+    /**
+     * Optional.
+     * True, if other bots can be created to be controlled by the bot.
+     * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     */
+    public ?bool $can_manage_bots = null;
+
+    /**
+     * Optional. True, if the bot supports join request queries and can be assigned to process them.
+     * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     */
+    public ?bool $supports_join_request_queries = null;
+
     public static function make(
         int $id,
         bool $is_bot,
@@ -111,7 +137,11 @@ class User extends BaseType
         ?bool $supports_inline_queries = null,
         ?bool $can_connect_to_business = null,
         ?bool $has_main_web_app = null,
-        ?bool $has_topics_enabled = null
+        ?bool $has_topics_enabled = null,
+        ?bool $allows_users_to_create_topics = null,
+        ?bool $can_manage_bots = null,
+        ?bool $supports_guest_queries = null,
+        ?bool $supports_join_request_queries = null,
     ): User {
         $user = new self();
         $user->id = $id;
@@ -128,6 +158,10 @@ class User extends BaseType
         $user->can_connect_to_business = $can_connect_to_business;
         $user->has_main_web_app = $has_main_web_app;
         $user->has_topics_enabled = $has_topics_enabled;
+        $user->allows_users_to_create_topics = $allows_users_to_create_topics;
+        $user->can_manage_bots = $can_manage_bots;
+        $user->supports_guest_queries = $supports_guest_queries;
+        $user->supports_join_request_queries = $supports_join_request_queries;
         return $user;
     }
 }

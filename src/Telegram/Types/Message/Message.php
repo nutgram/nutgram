@@ -7,12 +7,16 @@ namespace SergiX44\Nutgram\Telegram\Types\Message;
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostAdded;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatOwnerChanged;
+use SergiX44\Nutgram\Telegram\Types\Chat\ChatOwnerLeft;
 use SergiX44\Nutgram\Telegram\Types\Checklist\Checklist;
 use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksAdded;
 use SergiX44\Nutgram\Telegram\Types\Checklist\ChecklistTasksDone;
+use SergiX44\Nutgram\Telegram\Types\Community\CommunityChatAdded;
+use SergiX44\Nutgram\Telegram\Types\Community\CommunityChatJoined;
+use SergiX44\Nutgram\Telegram\Types\Community\CommunityChatRemoved;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicClosed;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicCreated;
 use SergiX44\Nutgram\Telegram\Types\Forum\ForumTopicEdited;
@@ -25,6 +29,7 @@ use SergiX44\Nutgram\Telegram\Types\Giveaway\Giveaway;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCompleted;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCreated;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayWinners;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ExternalReplyInfo;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -33,11 +38,13 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
 use SergiX44\Nutgram\Telegram\Types\Location\ProximityAlertTriggered;
 use SergiX44\Nutgram\Telegram\Types\Location\Venue;
+use SergiX44\Nutgram\Telegram\Types\ManagedBot\ManagedBotCreated;
 use SergiX44\Nutgram\Telegram\Types\Media\Animation;
 use SergiX44\Nutgram\Telegram\Types\Media\Audio;
 use SergiX44\Nutgram\Telegram\Types\Media\Contact;
 use SergiX44\Nutgram\Telegram\Types\Media\Dice;
 use SergiX44\Nutgram\Telegram\Types\Media\Document;
+use SergiX44\Nutgram\Telegram\Types\Media\LivePhoto;
 use SergiX44\Nutgram\Telegram\Types\Media\PhotoSize;
 use SergiX44\Nutgram\Telegram\Types\Media\Story;
 use SergiX44\Nutgram\Telegram\Types\Media\Video;
@@ -48,10 +55,15 @@ use SergiX44\Nutgram\Telegram\Types\Payment\DirectMessagePriceChanged;
 use SergiX44\Nutgram\Telegram\Types\Payment\Invoice;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaInfo;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMessagePriceChanged;
+use SergiX44\Nutgram\Telegram\Types\Payment\PaidMessagesWaived;
 use SergiX44\Nutgram\Telegram\Types\Payment\RefundedPayment;
 use SergiX44\Nutgram\Telegram\Types\Payment\SuccessfulPayment;
+use SergiX44\Nutgram\Telegram\Types\Payment\TonWalletTransfer;
 use SergiX44\Nutgram\Telegram\Types\Poll\Poll;
+use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionAdded;
+use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionDeleted;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichMessage;
 use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
 use SergiX44\Nutgram\Telegram\Types\Sticker\GiftInfo;
@@ -69,12 +81,13 @@ use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatParticipantsInvited;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatScheduled;
 use SergiX44\Nutgram\Telegram\Types\VideoChat\VideoChatStarted;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppData;
+use SergiX44\Nutgram\Telegram\Types\Widget\Widget;
 
 /**
  * This object represents a message.
  * @see https://core.telegram.org/bots/api#message
  */
-class Message extends BaseType
+class Message extends BaseType implements MaybeInaccessibleMessage
 {
     /** Unique message identifier inside this chat */
     public int $message_id;
@@ -119,8 +132,31 @@ class Message extends BaseType
      */
     public ?User $sender_business_bot = null;
 
+    /**
+     * Optional. Tag or custom title of the sender of the message; for supergroups only
+     */
+    public ?string $sender_tag = null;
+
+    /**
+     * Optional. For ephemeral messages, the user who received the message
+     */
+    public ?User $receiver_user = null;
+
+    /**
+     * Optional. For ephemeral messages, identifier of the ephemeral message inside this chat.
+     * The identifier may be reused for another ephemeral message after the message is deleted or expires.
+     */
+    public ?int $ephemeral_message_id = null;
+
     /** Date the message was sent in Unix time */
     public int $date;
+
+    /**
+     * Optional. The unique identifier for the guest query.
+     * Use this identifier with the method {@see https://core.telegram.org/bots/api#answerguestquery answerGuestQuery} to send a response message.
+     * If non-empty, the message belongs to the chat where the guest bot was summoned, which may not coincide with other existing bot chats sharing the same identifier.
+     */
+    public ?string $guest_query_id = null;
 
     /**
      * Optional. Unique identifier of the business connection from which the message was received.
@@ -178,10 +214,25 @@ class Message extends BaseType
     public ?int $reply_to_checklist_task_id = null;
 
     /**
+     * Optional. Persistent identifier of the specific poll option that is being replied to
+     */
+    public ?string $reply_to_poll_option_id = null;
+
+    /**
      * Optional.
      * Bot through which the message was sent
      */
     public ?User $via_bot = null;
+
+    /**
+     * Optional. For a message sent by a guest bot, this is the user whose original message triggered the bot's response
+     */
+    public ?User $guest_bot_caller_user = null;
+
+    /**
+     * Optional. For a message sent by a guest bot, this is the chat whose original message triggered the bot's response
+     */
+    public ?Chat $guest_bot_caller_chat = null;
 
     /**
      * Optional.
@@ -234,7 +285,7 @@ class Message extends BaseType
      * Optional.
      * For text messages, special entities like usernames, URLs, bot commands, etc.
      * that appear in the text
-     * @var MessageEntity[] $entities
+     * @var MessageEntity[]|null
      */
     #[ArrayType(MessageEntity::class)]
     public ?array $entities = null;
@@ -257,6 +308,11 @@ class Message extends BaseType
     public ?string $effect_id = null;
 
     /**
+     * Optional. Message is a rich formatted message
+     */
+    public ?RichMessage $rich_message = null;
+
+    /**
      * Optional.
      * Message is an animation, information about the animation.
      * For backward compatibility, when this field is set, the document field will also be set
@@ -274,6 +330,12 @@ class Message extends BaseType
      * Message is a general file, information about the file
      */
     public ?Document $document = null;
+
+    /**
+     * Optional. Message is a live photo, information about the live photo.
+     * For backward compatibility, when this field is set, the photo field will also be set
+     */
+    public ?LivePhoto $live_photo = null;
 
     /**
      * Optional. Message contains paid media; information about the paid media
@@ -317,6 +379,11 @@ class Message extends BaseType
      * Message is a voice message, information about the file
      */
     public ?Voice $voice = null;
+
+    /**
+     * Optional. Message is an HTML widget, information about the widget
+     */
+    public ?Widget $widget = null;
 
     /**
      * Optional.
@@ -401,6 +468,16 @@ class Message extends BaseType
     public ?User $left_chat_member = null;
 
     /**
+     * Optional. Service message: chat owner has left
+     */
+    public ?ChatOwnerLeft $chat_owner_left = null;
+
+    /**
+     * Optional. Service message: chat owner has changed
+     */
+    public ?ChatOwnerChanged $chat_owner_changed = null;
+
+    /**
      * Optional.
      * A chat title was changed to this value
      */
@@ -467,9 +544,10 @@ class Message extends BaseType
     /**
      * Optional.
      * Specified message was pinned.
-     * Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
+     * Note that the {@see https://core.telegram.org/bots/api#message Message}
+     * object in this field will not contain further reply_to_message fields even if it is itself a reply.
      */
-    public ?Message $pinned_message = null;
+    public ?MaybeInaccessibleMessage $pinned_message = null;
 
     /**
      * Optional.
@@ -561,6 +639,21 @@ class Message extends BaseType
     public ?ChecklistTasksAdded $checklist_tasks_added = null;
 
     /**
+     * Optional. Service message: chat added to a {@see https://core.telegram.org/bots/api#community Community}
+     */
+    public ?CommunityChatAdded $community_chat_added = null;
+
+    /**
+     * Optional. Service message: chat was joined by a user from a {@see https://core.telegram.org/bots/api#community Community}
+     */
+    public ?CommunityChatJoined $community_chat_joined = null;
+
+    /**
+     * Optional. Service message: chat removed from a {@see https://core.telegram.org/bots/api#community Community}
+     */
+    public ?CommunityChatRemoved $community_chat_removed = null;
+
+    /**
      * Optional.
      * Service message: the price for paid messages in the corresponding direct messages chat of a channel has changed
      */
@@ -623,9 +716,31 @@ class Message extends BaseType
     public ?GiveawayCompleted $giveaway_completed = null;
 
     /**
+     * Optional. Service message: user created a bot that will be managed by the current bot
+     */
+    public ?ManagedBotCreated $managed_bot_created = null;
+
+    /**
      * Optional. Service message: the price for paid messages has changed in the chat
      */
     public ?PaidMessagePriceChanged $paid_message_price_changed = null;
+
+    /**
+     * Optional.
+     * Service message: the sender of the message used a link of the other user,
+     * which allows sending messages to the user without paying Telegram Stars
+     */
+    public ?PaidMessagesWaived $paid_messages_waived = null;
+
+    /**
+     * Optional. Service message: answer option was added to a poll
+     */
+    public ?PollOptionAdded $poll_option_added = null;
+
+    /**
+     * Optional. Service message: answer option was deleted from a poll
+     */
+    public ?PollOptionDeleted $poll_option_deleted = null;
 
     /**
      * Optional. Service message: a suggested post was approved
@@ -651,6 +766,11 @@ class Message extends BaseType
      * Optional. Service message: payment for a suggested post was refunded
      */
     public ?SuggestedPostRefunded $suggested_post_refunded = null;
+
+    /**
+     * Optional. Service message: a transfer with a TON wallet
+     */
+    public ?TonWalletTransfer $ton_wallet_transfer = null;
 
     /**
      * Optional.
@@ -694,8 +814,6 @@ class Message extends BaseType
      * Example:
      * IN: /hello param1 param2 or /hello[at]MyDearBot param1 param2
      * OUT: /hello param1 param2
-     * @param string|null $username
-     * @return string|null
      */
     public function getParsedCommand(?string $username = null): ?string
     {
@@ -711,7 +829,6 @@ class Message extends BaseType
 
     /**
      * Check if the message is forwarded
-     * @return bool
      */
     public function isForwarded(): bool
     {
@@ -720,19 +837,21 @@ class Message extends BaseType
 
     /**
      * Return the current message type
-     * @return MessageType|null
      */
     public function getType(): ?MessageType
     {
         return match (true) {
             $this->text !== null => MessageType::TEXT,
+            $this->rich_message !== null => MessageType::RICH_MESSAGE,
             $this->audio !== null => MessageType::AUDIO,
             $this->animation !== null => MessageType::ANIMATION,
             $this->game !== null => MessageType::GAME,
+            $this->live_photo !== null => MessageType::LIVE_PHOTO,
             $this->photo !== null => MessageType::PHOTO,
             $this->sticker !== null => MessageType::STICKER,
             $this->video !== null => MessageType::VIDEO,
             $this->voice !== null => MessageType::VOICE,
+            $this->widget !== null => MessageType::WIDGET,
             $this->video_note !== null => MessageType::VIDEO_NOTE,
             $this->checklist !== null => MessageType::CHECKLIST,
             $this->contact !== null => MessageType::CONTACT,
@@ -743,6 +862,8 @@ class Message extends BaseType
             $this->dice !== null => MessageType::DICE,
             $this->new_chat_members !== null => MessageType::NEW_CHAT_MEMBERS,
             $this->left_chat_member !== null => MessageType::LEFT_CHAT_MEMBER,
+            $this->chat_owner_left !== null => MessageType::CHAT_OWNER_LEFT,
+            $this->chat_owner_changed !== null => MessageType::CHAT_OWNER_CHANGED,
             $this->new_chat_title !== null => MessageType::NEW_CHAT_TITLE,
             $this->new_chat_photo !== null => MessageType::NEW_CHAT_PHOTO,
             $this->delete_chat_photo !== null => MessageType::DELETE_CHAT_PHOTO,
@@ -766,6 +887,9 @@ class Message extends BaseType
             $this->boost_added !== null => MessageType::BOOST_ADDED,
             $this->checklist_tasks_done !== null => MessageType::CHECKLIST_TASKS_DONE,
             $this->checklist_tasks_added !== null => MessageType::CHECKLIST_TASKS_ADDED,
+            $this->community_chat_added !== null => MessageType::COMMUNITY_CHAT_ADDED,
+            $this->community_chat_joined !== null => MessageType::COMMUNITY_CHAT_JOINED,
+            $this->community_chat_removed !== null => MessageType::COMMUNITY_CHAT_REMOVED,
             $this->direct_message_price_changed !== null => MessageType::DIRECT_MESSAGE_PRICE_CHANGED,
             $this->forum_topic_created !== null => MessageType::FORUM_TOPIC_CREATED,
             $this->forum_topic_edited !== null => MessageType::FORUM_TOPIC_EDITED,
@@ -775,7 +899,12 @@ class Message extends BaseType
             $this->giveaway !== null => MessageType::GIVEAWAY,
             $this->giveaway_winners !== null => MessageType::GIVEAWAY_WINNERS,
             $this->giveaway_completed !== null => MessageType::GIVEAWAY_COMPLETED,
+            $this->managed_bot_created !== null => MessageType::MANAGED_BOT_CREATED,
             $this->paid_message_price_changed !== null => MessageType::PAID_MESSAGE_PRICE_CHANGED,
+            $this->paid_messages_waived !== null => MessageType::PAID_MESSAGES_WAIVED,
+            $this->poll_option_added !== null => MessageType::POLL_OPTION_ADDED,
+            $this->poll_option_deleted !== null => MessageType::POLL_OPTION_DELETED,
+            $this->ton_wallet_transfer !== null => MessageType::TON_WALLET_TRANSFER,
             $this->video_chat_scheduled !== null => MessageType::VIDEO_CHAT_SCHEDULED,
             $this->video_chat_started !== null => MessageType::VIDEO_CHAT_STARTED,
             $this->video_chat_ended !== null => MessageType::VIDEO_CHAT_ENDED,
@@ -788,7 +917,6 @@ class Message extends BaseType
 
     /**
      * Returns the message text or caption
-     * @return string|null
      */
     public function getText(): ?string
     {
@@ -804,9 +932,18 @@ class Message extends BaseType
         return $this->entities ?? $this->caption_entities;
     }
 
+    public function isEphemeral(): bool
+    {
+        return $this->receiver_user !== null && $this->ephemeral_message_id !== null;
+    }
+
+    public function isInaccessible(): bool
+    {
+        return false;
+    }
+
     /**
      * Delete the current message
-     * @return bool|null
      */
     public function delete(): ?bool
     {
@@ -828,7 +965,6 @@ class Message extends BaseType
      * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
      * @param bool|null $disable_web_page_preview Disables link previews for links in this message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
-     * @return Message|bool|null
      * @see Nutgram::editMessageText
      */
     public function editText(
@@ -875,7 +1011,6 @@ class Message extends BaseType
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
-     * @return MessageId|null
      * @see Nutgram::copyMessage
      */
     public function copy(
@@ -922,7 +1057,6 @@ class Message extends BaseType
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the forwarded message from forwarding and saving
-     * @return Message|null
      * @see Nutgram::forwardMessage
      */
     public function forward(
@@ -947,15 +1081,6 @@ class Message extends BaseType
     }
 
     /**
-     * Check if this message is deleted or is inaccessible to the bot.
-     * @return bool
-     */
-    public function isInaccessible(): bool
-    {
-        return $this->date === 0;
-    }
-
-    /**
      * Use this method to change the chosen reactions on a message.
      * Service messages can't be reacted to.
      * Automatically forwarded messages from a channel to its discussion group have the same available reactions as messages in the channel.
@@ -963,7 +1088,6 @@ class Message extends BaseType
      * @see https://core.telegram.org/bots/api#setmessagereaction
      * @param ReactionType|ReactionType[]|null $reaction Optional. New list of reaction types to set on the message. Currently, as non-premium users, bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already present on the message or explicitly allowed by chat administrators.
      * @param bool $is_big Optional. Pass True to set the reaction with a big animation
-     * @return bool|null
      */
     public function react(ReactionType|array|null $reaction = null, bool $is_big = false): ?bool
     {

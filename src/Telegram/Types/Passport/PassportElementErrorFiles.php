@@ -8,6 +8,7 @@ use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\PassportSource;
 use SergiX44\Nutgram\Telegram\Properties\PassportType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Represents an issue with a list of scans.
@@ -15,7 +16,7 @@ use SergiX44\Nutgram\Telegram\Properties\PassportType;
  * @see https://core.telegram.org/bots/api#passportelementerrorfiles
  */
 #[OverrideConstructor('bindToInstance')]
-class PassportElementErrorFiles extends PassportElementError
+class PassportElementErrorFiles extends BaseType implements PassportElementError
 {
     /** Base64-encoded file hashes */
     public string $file_hash;
@@ -38,9 +39,7 @@ class PassportElementErrorFiles extends PassportElementError
     public string $message;
 
     /**
-     * @param PassportType|string $type
      * @param string[] $file_hashes
-     * @param string $message
      */
     public function __construct(
         PassportType|string $type,

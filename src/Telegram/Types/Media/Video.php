@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Media;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Downloadable;
 
 /**
@@ -53,6 +53,13 @@ class Video extends BaseType
      * Timestamp in seconds from which the video will play in the message
      */
     public ?int $start_timestamp = null;
+
+    /**
+     * Optional. List of available qualities of the video
+     * @var VideoQuality[]|null
+     */
+    #[ArrayType(VideoQuality::class)]
+    public ?array $qualities = null;
 
     /**
      * Optional.

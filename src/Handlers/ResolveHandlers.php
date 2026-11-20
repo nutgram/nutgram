@@ -8,8 +8,6 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Container\Container;
 use SergiX44\Nutgram\Cache\ConversationCache;
-use SergiX44\Nutgram\Cache\GlobalCache;
-use SergiX44\Nutgram\Cache\UserCache;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Handlers\Type\InternalCommand;
@@ -28,33 +26,27 @@ abstract class ResolveHandlers extends CollectHandlers
 {
     use UpdateProxy;
 
-    /**
-     * @var Update|null
-     */
     protected ?Update $update = null;
 
     abstract public function getConfig(): Configuration;
 
     abstract public function getContainer(): Container;
 
+    abstract public function getInstance(): Nutgram;
+
     /**
-     * @param int|null $userId
-     * @param int|null $chatId
-     * @return callable|Conversation|\Closure|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Psr\Container\NotFoundExceptionInterface|ContainerExceptionInterface
      */
-    public function currentConversation(?int $userId, ?int $chatId): callable|Conversation|\Closure|null
+    public function currentConversation(?int $userId, ?int $chatId, ?int $threadId): callable|Conversation|\Closure|null
     {
         if ($chatId === null || $userId === null) {
             return null;
         }
 
-        return $this->container->get(ConversationCache::class)->get($userId, $chatId);
+        return $this->getContainer()->get(ConversationCache::class)->get($userId, $chatId, $threadId);
     }
 
-    /**
-     * @return array
-     */
     protected function resolveHandlers(): array
     {
         $resolvedHandlers = [];
@@ -108,6 +100,18 @@ abstract class ResolveHandlers extends CollectHandlers
         } elseif ($updateType === UpdateType::PURCHASED_PAID_MEDIA) {
             $data = $this->update->purchased_paid_media?->paid_media_payload;
             $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::CHAT_JOIN_REQUEST) {
+            $data = $this->update->chat_join_request?->query_id;
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::SUBSCRIPTION) {
+            $data = $this->update->subscription?->invoice_payload;
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::WIDGET_QUERY) {
+            $data = $this->update->widget_query?->data;
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
+        } elseif ($updateType === UpdateType::SHARED_WIDGET_QUERY) {
+            $data = $this->update->shared_widget_query?->data;
+            $this->addHandlersBy($resolvedHandlers, $updateType->value, value: $data);
         }
 
         if (empty($resolvedHandlers)) {
@@ -119,12 +123,6 @@ abstract class ResolveHandlers extends CollectHandlers
         return $resolvedHandlers;
     }
 
-    /**
-     * @param array $handlers
-     * @param string $type
-     * @param string|null $subType
-     * @param string|null $value
-     */
     protected function addHandlersBy(
         array &$handlers,
         string $type,
@@ -159,8 +157,6 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param Conversation|callable $conversation
-     * @return array
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function continueConversation(Conversation|callable $conversation): array
@@ -176,7 +172,7 @@ abstract class ResolveHandlers extends CollectHandlers
                 // we should escape the conversation
                 if ($handler->getPattern() !== null || $handler->shouldStopConversation()) {
                     if ($conversation instanceof Conversation) {
-                        $conversation->terminate($this);
+                        $conversation->terminate($this->getInstance());
                     }
                     return $handlers;
                 }
@@ -198,9 +194,6 @@ abstract class ResolveHandlers extends CollectHandlers
         return $resolvedHandlers;
     }
 
-    /**
-     * @param Handler $handler
-     */
     protected function applyGlobalMiddlewareTo(Handler $handler): void
     {
         $skippedGlobalMiddlewares = $handler->getSkippedGlobalMiddlewares();
@@ -238,7 +231,7 @@ abstract class ResolveHandlers extends CollectHandlers
 
     protected function applyGlobalMiddleware(): void
     {
-        array_walk_recursive($this->handlers, function ($leaf) {
+        array_walk_recursive($this->handlers, function ($leaf): void {
             if ($leaf instanceof Handler) {
                 $this->applyGlobalMiddlewareTo($leaf);
                 $this->applyRateLimitersTo($leaf);
@@ -247,15 +240,13 @@ abstract class ResolveHandlers extends CollectHandlers
     }
 
     /**
-     * @param Conversation $conversation
-     * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     protected function refreshInstance(Conversation $conversation): void
     {
-        $getAttributes = fn () => array_filter(get_object_vars($this));
-        $setAttributes = function (array $attributes) {
+        $getAttributes = fn (): array => array_filter(get_object_vars($this));
+        $setAttributes = function (array $attributes): void {
             foreach ($attributes as $attribute => $value) {
                 $this->{$attribute} = $value;
             }
@@ -281,8 +272,6 @@ abstract class ResolveHandlers extends CollectHandlers
 
     /**
      * @param HandlerGroup[] $groups
-     * @param array $currentMiddlewares
-     * @param array $currentScopes
      * @return void
      */
     private function resolveNestedGroups(
@@ -308,15 +297,18 @@ abstract class ResolveHandlers extends CollectHandlers
             // apply the middleware stack to the current registered group handlers
             array_walk_recursive(
                 $this->groupHandlers,
-                function ($leaf) use ($rateLimiters, $constraints, $tags, $middlewares, $scopes, $group) {
+                function ($leaf) use ($rateLimiters, $constraints, $tags, $middlewares, $scopes, $group): void {
                     if ($leaf instanceof Handler) {
                         $leaf->appendRateLimiters(array_reverse($rateLimiters));
                         $leaf->withoutThrottle($group->isWithoutRateLimit());
                         foreach ($middlewares as $middleware) {
                             $leaf->middleware($middleware);
                         }
-                        if ($leaf instanceof InternalCommand && !empty($scopes)) {
-                            $leaf->scope($scopes);
+                        if ($leaf instanceof InternalCommand) {
+                            if (!empty($scopes)) {
+                                $leaf->scope($scopes);
+                            }
+                            $leaf->ephemeral($group->isEphemeral());
                         }
                         $leaf->tags([...$leaf->getTags(), ...$tags]);
                         $leaf->unless($group->isDisabled());

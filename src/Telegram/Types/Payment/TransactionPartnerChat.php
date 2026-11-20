@@ -7,12 +7,13 @@ namespace SergiX44\Nutgram\Telegram\Types\Payment;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\TransactionPartnerType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Describes a transaction with a chat.
  * @see https://core.telegram.org/bots/api#transactionpartnerchat
  */
-class TransactionPartnerChat extends TransactionPartner
+class TransactionPartnerChat extends BaseType implements TransactionPartner
 {
     /**
      * Type of the transaction partner, always “chat”

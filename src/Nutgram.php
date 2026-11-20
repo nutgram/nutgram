@@ -6,7 +6,6 @@ namespace SergiX44\Nutgram;
 
 use GuzzleHttp\Client as Guzzle;
 use InvalidArgumentException;
-use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -38,40 +37,30 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 use Throwable;
+use function Opis\Closure\init;
 
 class Nutgram extends ResolveHandlers
 {
-    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy, FireHandlers, ValidatesWebData, HandleLogging;
+    use Client;
+    use UpdateDataProxy;
+    use GlobalCacheProxy;
+    use UserCacheProxy;
+    use FireHandlers;
+    use ValidatesWebData;
+    use HandleLogging;
 
-    /**
-     * @var string
-     */
     private string $token;
 
-    /**
-     * @var Configuration
-     */
     protected Configuration $config;
 
-    /**
-     * @var Guzzle
-     */
     private Guzzle $http;
 
-    /**
-     * @var Hydrator
-     */
     protected Hydrator $hydrator;
 
-    /**
-     * @var Container
-     */
     protected Container $container;
 
     /**
      * Nutgram constructor.
-     * @param string $token
-     * @param Configuration|null $config
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -84,9 +73,6 @@ class Nutgram extends ResolveHandlers
 
     /**
      * Initializes the current instance
-     * @param string $token
-     * @param Configuration $config
-     * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -99,7 +85,7 @@ class Nutgram extends ResolveHandlers
             $this->container->delegate($config->container);
         }
 
-        SerializableClosure::setSecretKey($this->token);
+        init($this->token, true);
 
         $this->http = new Guzzle([
             'base_uri' => sprintf(
@@ -116,16 +102,19 @@ class Nutgram extends ResolveHandlers
         $this->container->set(ClockInterface::class, new SystemClock());
         $this->container->singleton(CacheInterface::class, $config->cache);
         $this->container->singleton(LoggerInterface::class, $config->logger);
-        $this->container->singleton(ConversationCache::class, fn (ContainerInterface $c) => new ConversationCache(
+        $this->container->singleton(
+            ConversationCache::class,
+            fn (ContainerInterface $c): ConversationCache => new ConversationCache(
+                cache: $c->get(CacheInterface::class),
+                botId: $this->getBotId(),
+                ttl: $config->conversationTtl,
+            )
+        );
+        $this->container->singleton(GlobalCache::class, fn (ContainerInterface $c): GlobalCache => new GlobalCache(
             cache: $c->get(CacheInterface::class),
             botId: $this->getBotId(),
-            ttl: $config->conversationTtl,
         ));
-        $this->container->singleton(GlobalCache::class, fn (ContainerInterface $c) => new GlobalCache(
-            cache: $c->get(CacheInterface::class),
-            botId: $this->getBotId(),
-        ));
-        $this->container->singleton(UserCache::class, fn (ContainerInterface $c) => new UserCache(
+        $this->container->singleton(UserCache::class, fn (ContainerInterface $c): UserCache => new UserCache(
             cache: $c->get(CacheInterface::class),
             botId: $this->getBotId(),
         ));
@@ -133,17 +122,14 @@ class Nutgram extends ResolveHandlers
         $this->hydrator = new Hydrator($this->container);
 
         $this->container->singleton(RunningMode::class, Polling::class);
-        $this->container->set(__CLASS__, $this);
+        $this->container->set(self::class, $this);
     }
 
     public function getBotId(): int
     {
-        return $this->config->botId ?? (int)explode(':', $this->token)[0];
+        return (int)explode(':', $this->token)[0];
     }
 
-    /**
-     * @return array
-     */
     public function __serialize(): array
     {
         return [
@@ -153,8 +139,6 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param array $data
-     * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -163,19 +147,11 @@ class Nutgram extends ResolveHandlers
         $this->bootstrap($data['token'], $data['config']);
     }
 
-    /**
-     * @param mixed $update
-     * @param array $responses
-     * @return FakeNutgram
-     */
     public static function fake(mixed $update = null, array $responses = [], ?Configuration $config = null): FakeNutgram
     {
         return FakeNutgram::instance($update, $responses, $config);
     }
 
-    /**
-     * @param string|RunningMode $classOrInstance
-     */
     public function setRunningMode(string|RunningMode $classOrInstance): void
     {
         $this->container->bind(RunningMode::class, $classOrInstance);
@@ -201,15 +177,14 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @param Update $update
      * @throws Throwable
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function processUpdate(Update $update): void
     {
-        $this->update = $update;
+        $this->setContextUpdate($update);
 
-        $conversation = $this->currentConversation($this->userId(), $this->chatId());
+        $conversation = $this->currentConversation($this->userId(), $this->chatId(), $this->messageThreadId());
 
         if ($conversation !== null) {
             $handlers = $this->continueConversation($conversation);
@@ -228,46 +203,48 @@ class Nutgram extends ResolveHandlers
         $this->fireHandlers($handlers);
     }
 
+    public function setContextUpdate(Update $update): void
+    {
+        $this->update = $update;
+    }
+
     /**
-     * @param Conversations\Conversation|callable $callable
-     * @param int|null $userId
-     * @param int|null $chatId
      * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function stepConversation(
         Conversations\Conversation|callable $callable,
         ?int $userId = null,
-        ?int $chatId = null
+        ?int $chatId = null,
+        ?int $threadId = null,
     ): self {
-        $userId = $userId ?? $this->userId();
-        $chatId = $chatId ?? $this->chatId();
+        $userId ??= $this->userId();
+        $chatId ??= $this->chatId();
+        $threadId ??= $this->messageThreadId();
 
         if ($this->update === null && ($userId === null || $chatId === null)) {
             throw new InvalidArgumentException('You cannot step a conversation without userId and chatId.');
         }
 
-        $this->container->get(ConversationCache::class)->set($userId, $chatId, $callable);
+        $this->container->get(ConversationCache::class)->set($userId, $chatId, $threadId, $callable);
 
         return $this;
     }
 
     /**
-     * @param int|null $userId
-     * @param int|null $chatId
      * @return $this
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function endConversation(?int $userId = null, ?int $chatId = null): self
+    public function endConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): self
     {
-        $userId = $userId ?? $this->userId();
-        $chatId = $chatId ?? $this->chatId();
+        $userId ??= $this->userId();
+        $chatId ??= $this->chatId();
 
         if ($this->update === null && ($userId === null || $chatId === null)) {
             throw new InvalidArgumentException('You cannot end a conversation without userId and chatId.');
         }
 
-        $this->container->get(ConversationCache::class)->delete($userId, $chatId);
+        $this->container->get(ConversationCache::class)->delete($userId, $chatId, $threadId);
 
         return $this;
     }
@@ -277,21 +254,27 @@ class Nutgram extends ResolveHandlers
         return $this->container;
     }
 
+    public function getHydrator(): Hydrator
+    {
+        return $this->hydrator;
+    }
+
     public function bindParameter(string $name, callable $resolver): \SergiX44\Container\Definition
     {
         return $this->container->bind("param.$name", $resolver);
     }
 
-    /**
-     * @return Configuration
-     */
     public function getConfig(): Configuration
     {
         return $this->config;
     }
 
+    public function getInstance(): Nutgram
+    {
+        return $this;
+    }
+
     /**
-     * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -312,7 +295,7 @@ class Nutgram extends ResolveHandlers
          * @var array<string, array{scopes:BotCommandScope[], commands:BotCommand[]}> $myCommands
          */
         $myCommands = [];
-        array_walk_recursive($this->handlers, static function ($handler) use (&$myCommands) {
+        array_walk_recursive($this->handlers, static function ($handler) use (&$myCommands): void {
             if ($handler instanceof InternalCommand && !$handler->isHidden() && !$handler->isDisabled()) {
                 // scopes
                 foreach ($handler->scopes() as $scope) {
@@ -356,7 +339,6 @@ class Nutgram extends ResolveHandlers
     }
 
     /**
-     * @return BulkMessenger
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -372,8 +354,6 @@ class Nutgram extends ResolveHandlers
 
     /**
      * Validate the token
-     * @param string $token
-     * @return void
      */
     protected function validateToken(string $token): void
     {

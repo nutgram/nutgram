@@ -6,7 +6,7 @@ namespace SergiX44\Nutgram\Telegram\Types\Media;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\DiceEmoji;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object represents an animated emoji that displays a random value.

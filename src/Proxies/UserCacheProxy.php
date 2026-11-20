@@ -15,41 +15,34 @@ use SergiX44\Nutgram\Cache\UserCache;
 trait UserCacheProxy
 {
     /**
-     * @param  $key
-     * @param  int|null  $userId
-     * @param  mixed  $default
-     * @return mixed
+     * @param string $key
+     * @param mixed $default
      * @throws InvalidArgumentException
      */
     public function getUserData($key, ?int $userId = null, $default = null): mixed
     {
-        $userId = $userId ?? $this->userId();
+        $userId ??= $this->userId();
         return $this->container->get(UserCache::class)->get($userId, $key, $default);
     }
 
     /**
-     * @param $key
-     * @param $value
-     * @param  int|null  $userId
-     * @param  DateInterval|int|null  $ttl
-     * @return bool
+     * @param string $key
+     * @param mixed $value
      * @throws InvalidArgumentException
      */
     public function setUserData($key, $value, ?int $userId = null, DateInterval|int|null $ttl = null): bool
     {
-        $userId = $userId ?? $this->userId();
+        $userId ??= $this->userId();
         return $this->container->get(UserCache::class)->set($userId, $key, $value, $ttl);
     }
 
     /**
-     * @param $key
-     * @param  int|null  $userId
-     * @return bool
+     * @param string $key
      * @throws InvalidArgumentException
      */
     public function deleteUserData($key, ?int $userId = null): bool
     {
-        $userId = $userId ?? $this->userId();
+        $userId ??= $this->userId();
         return $this->container->get(UserCache::class)->delete($userId, $key);
     }
 }

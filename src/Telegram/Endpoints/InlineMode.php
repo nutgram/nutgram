@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
-use SergiX44\Nutgram\Telegram\Client;
+use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQueryResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQueryResultsButton;
 use SergiX44\Nutgram\Telegram\Types\Inline\PreparedInlineMessage;
@@ -13,7 +13,7 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\SentWebAppMessage;
 /**
  * Trait InlineMode
  * @package SergiX44\Nutgram\Telegram\Endpoints
- * @mixin Client
+ * @mixin Nutgram
  */
 trait InlineMode
 {
@@ -27,7 +27,6 @@ trait InlineMode
      * @param bool|null $is_personal Pass True if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query.
      * @param string|null $next_offset Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don't support pagination. Offset length can't exceed 64 bytes.
      * @param InlineQueryResultsButton|null $button A JSON-serialized object describing a button to be shown above inline query results
-     * @return bool|null
      */
     public function answerInlineQuery(
         array $results,
@@ -57,7 +56,6 @@ trait InlineMode
      * @see https://core.telegram.org/bots/api#answerwebappquery
      * @param string $web_app_query_id Unique identifier for the query to be answered
      * @param InlineQueryResult $result A JSON-serialized object describing the message to be sent
-     * @return SentWebAppMessage|null
      */
     public function answerWebAppQuery(string $web_app_query_id, InlineQueryResult $result): ?SentWebAppMessage
     {
@@ -76,7 +74,6 @@ trait InlineMode
      * @param bool|null $allow_bot_chats Pass True if the message can be sent to private chats with bots
      * @param bool|null $allow_group_chats Pass True if the message can be sent to group and supergroup chats
      * @param bool|null $allow_channel_chats Pass True if the message can be sent to channel chats
-     * @return PreparedInlineMessage|null
      * @see https://core.telegram.org/bots/api#savepreparedinlinemessage
      */
     public function savePreparedInlineMessage(

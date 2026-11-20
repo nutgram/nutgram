@@ -6,13 +6,13 @@ namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RevenueWithdrawalStateType;
-use SergiX44\Nutgram\Telegram\Properties\TransactionPartnerType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * The withdrawal is in progress.
  * @see https://core.telegram.org/bots/api#revenuewithdrawalstatepending
  */
-class RevenueWithdrawalStatePending extends RevenueWithdrawalState
+class RevenueWithdrawalStatePending extends BaseType implements RevenueWithdrawalState
 {
     /**
      * Type of the state, always “pending”

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SergiX44\Nutgram\Telegram\Types\Reaction;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object represents reaction changes on a message with anonymous reactions.
@@ -16,19 +16,16 @@ class MessageReactionCountUpdated extends BaseType
 {
     /**
      * The chat containing the message
-     * @var Chat
      */
     public Chat $chat;
 
     /**
      * Unique message identifier inside the chat
-     * @var int
      */
     public int $message_id;
 
     /**
      * Date of the change in Unix time
-     * @var int
      */
     public int $date;
 

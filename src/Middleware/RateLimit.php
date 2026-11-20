@@ -22,7 +22,7 @@ class RateLimit
         protected ?string $key = null,
         $warningCallback = null,
     ) {
-        $this->warningCallback = $warningCallback ?? function (Nutgram $bot, int $availableIn) {
+        $this->warningCallback = $warningCallback ?? function (Nutgram $bot, int $availableIn): void {
             $bot->sendMessage('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
 
             if ($bot->isCallbackQuery()) {

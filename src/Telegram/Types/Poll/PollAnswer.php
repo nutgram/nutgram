@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Telegram\Types\Poll;
 
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
@@ -35,4 +35,11 @@ class PollAnswer extends BaseType
      * @var int[] $option_ids
      */
     public array $option_ids;
+
+    /**
+     * Persistent identifiers of the chosen answer options.
+     * May be empty if the vote was retracted.
+     * @var string[]
+     */
+    public array $option_persistent_ids;
 }

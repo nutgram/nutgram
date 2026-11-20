@@ -8,6 +8,7 @@ use Attribute;
 use InvalidArgumentException;
 use SergiX44\Hydrator\Annotation\ConcreteResolver;
 use SergiX44\Nutgram\Telegram\Properties\RevenueWithdrawalStateType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Payment\RevenueWithdrawalState;
 use SergiX44\Nutgram\Telegram\Types\Payment\RevenueWithdrawalStateFailed;
 use SergiX44\Nutgram\Telegram\Types\Payment\RevenueWithdrawalStatePending;
@@ -25,7 +26,8 @@ class RevenueWithdrawalStateResolver extends ConcreteResolver
     public function concreteFor(array $data, array $all): ?string
     {
         $type = $data['type'] ?? throw new InvalidArgumentException('Type must be defined');
-        return $this->concretes[$type] ?? (new class extends RevenueWithdrawalState {
+        return $this->concretes[$type] ?? (new class extends BaseType implements RevenueWithdrawalState {
+            public string $type;
         })::class;
     }
 }

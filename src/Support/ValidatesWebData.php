@@ -64,7 +64,7 @@ trait ValidatesWebData
             throw new InvalidDataException('Invalid webapp data');
         }
 
-        return (new Hydrator())->hydrate(WebAppData::class, self::queryStringToArray($queryString));
+        return new Hydrator()->hydrate(WebAppData::class, self::queryStringToArray($queryString));
     }
 
     /**
@@ -119,7 +119,7 @@ trait ValidatesWebData
         ksort($data);
         $data = array_filter($data);
         $data = array_map(
-            fn ($key, $value) => sprintf('%s=%s', $key, $value),
+            fn ($key, $value): string => sprintf('%s=%s', $key, $value),
             array_keys($data),
             $data,
         );
