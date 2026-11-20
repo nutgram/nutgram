@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\RunningMode;
 
@@ -8,7 +9,7 @@ use JsonException;
 use JsonMapper_Exception;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\InvalidArgumentException;
-use SergiX44\Nutgram\Hydrator\Hydrator;
+use SergiX44\Hydrator\Hydrator;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use Throwable;
@@ -16,24 +17,20 @@ use Throwable;
 class Webhook implements RunningMode, RespondsToWebhook
 {
     protected bool $safeMode = false;
-
     protected Closure $resolveSecretToken;
     protected ?string $secretToken = null;
 
     /**
-     * @param Closure|null $getToken
-     * @param string|null $secretToken
+     * @param string|null $secretToken Secret token to verify incoming requests.
+     * @param Closure|null $getToken A closure that returns the secret token. If not provided, it will look for the token in the `HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN` header.
      */
-    public function __construct(?Closure $getToken = null, ?string $secretToken = null)
+    public function __construct(?string $secretToken = null, ?Closure $getToken = null)
     {
-        $this->resolveSecretToken = $getToken ?? static fn (): string => $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ?? '';
         $this->secretToken = $secretToken;
+        $this->resolveSecretToken = $getToken ?? static fn (): string => $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ?? '';
     }
 
-
     /**
-     * @param Nutgram $bot
-     * @throws JsonMapper_Exception
      * @throws InvalidArgumentException
      * @throws Throwable
      */
@@ -48,26 +45,24 @@ class Webhook implements RunningMode, RespondsToWebhook
         $update = null;
         try {
             /** @var Update $update */
-            $update = $bot->getContainer()
-                ->get(Hydrator::class)
-                ->hydrate(json_decode($input, flags: JSON_THROW_ON_ERROR), Update::class);
+            $update = new Hydrator($bot->getContainer())
+                ->hydrate(Update::class, json_decode($input, flags: JSON_THROW_ON_ERROR));
 
             $bot->processUpdate($update);
 
             $bot->getContainer()
                 ->get(LoggerInterface::class)
-                ->debug(sprintf('Update processed: %s%s%s', $update?->getType()?->value, PHP_EOL, $input));
+                ->debug(sprintf('Update processed: %s%s%s', $update->getType()?->value ?? '', PHP_EOL, $input));
         } catch (Throwable $e) {
             $bot->getContainer()
                 ->get(LoggerInterface::class)
-                ->error(sprintf('Update failed: %s%s%s', $update?->getType()?->value, PHP_EOL, $input), ['exception' => $e]);
+                ->error(sprintf('Update failed: %s%s%s', $update?->getType()?->value ?? '', PHP_EOL, $input), ['exception' => $e]);
             throw $e;
         }
     }
 
     /**
      * The response is flushed right away with fastcgi_finish_request(), so PHP-FPM is required.
-     * @return bool
      */
     public function canRespond(): bool
     {
@@ -75,7 +70,6 @@ class Webhook implements RunningMode, RespondsToWebhook
     }
 
     /**
-     * @param string $method
      * @param array<array-key, mixed> $parameters
      * @throws JsonException
      */
@@ -86,27 +80,17 @@ class Webhook implements RunningMode, RespondsToWebhook
         fastcgi_finish_request();
     }
 
-    /**
-     * @return bool
-     */
     public function isSafeMode(): bool
     {
         return $this->safeMode;
     }
 
-    /**
-     * @param bool $safeMode
-     * @return self
-     */
     public function setSafeMode(bool $safeMode): self
     {
         $this->safeMode = $safeMode;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     protected function input(): ?string
     {
         return file_get_contents('php://input') ?: null;

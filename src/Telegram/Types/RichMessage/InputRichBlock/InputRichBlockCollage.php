@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
 
@@ -13,18 +16,20 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
  * A collage, corresponding to the custom HTML tag <code><tg-collage></code>.
  * @see https://core.telegram.org/bots/api#inputrichblockcollage
  */
-#[SkipConstructor]
-class InputRichBlockCollage extends BaseType implements InputRichBlock, Uploadables, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichBlockCollage extends BaseType implements InputRichBlock, Uploadables
 {
     /**
      * Type of the block, always “collage”
      */
+    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::COLLAGE;
 
     /**
      * Elements of the collage
      * @var InputRichBlock[]
      */
+    #[ArrayType(InputRichBlock::class)]
     public array $blocks;
 
     /**
@@ -34,7 +39,6 @@ class InputRichBlockCollage extends BaseType implements InputRichBlock, Uploadab
 
     /**
      * @param InputRichBlock[] $blocks
-     * @param RichBlockCaption|null $caption
      */
     public function __construct(array $blocks, ?RichBlockCaption $caption = null)
     {
@@ -43,13 +47,8 @@ class InputRichBlockCollage extends BaseType implements InputRichBlock, Uploadab
         $this->caption = $caption;
     }
 
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
-
     public function uploadables(): array
     {
-        return ['blocks'];
+        return ['blocks' => $this->blocks];
     }
 }

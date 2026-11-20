@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Handlers;
 
 use Illuminate\Support\Traits\Macroable;
-use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Container\Container;
@@ -15,10 +15,15 @@ use SergiX44\Nutgram\Support\Constraints;
 use SergiX44\Nutgram\Support\Disable;
 use SergiX44\Nutgram\Support\InteractsWithRateLimit;
 use SergiX44\Nutgram\Support\Taggable;
+use function Opis\Closure\serialize;
 
 class Handler extends MiddlewareChain
 {
-    use Taggable, Macroable, Disable, Constraints, InteractsWithRateLimit;
+    use Taggable;
+    use Macroable;
+    use Disable;
+    use Constraints;
+    use InteractsWithRateLimit;
 
     /**
      * Regex to capture named parameters.
@@ -40,14 +45,8 @@ class Handler extends MiddlewareChain
      */
     protected const PARAM_NAME_REGEX = '/{([a-zA-Z][_a-zA-Z\d]*)}/';
 
-    /**
-     * @var string|null
-     */
     protected ?string $pattern;
 
-    /**
-     * @var array
-     */
     protected array $parameters = [];
 
     /**
@@ -55,13 +54,10 @@ class Handler extends MiddlewareChain
      */
     protected $callable;
 
-    /**
-     * @var bool
-     */
     protected bool $skipGlobalMiddlewares = false;
 
     /**
-     * @var array
+     * @var list<callable>
      */
     protected array $skippedGlobalMiddlewares = [];
 
@@ -70,7 +66,6 @@ class Handler extends MiddlewareChain
     /**
      * Handler constructor.
      * @param callable|class-string|array $callable
-     * @param string|null $pattern
      */
     public function __construct($callable, ?string $pattern = null)
     {
@@ -79,11 +74,6 @@ class Handler extends MiddlewareChain
         $this->head = new Link($this);
     }
 
-    /**
-     * @param string $value
-     * @param Container $container
-     * @return bool
-     */
     public function matching(string $value, Container $container): bool
     {
         if ($this->pattern === null) {
@@ -94,7 +84,7 @@ class Handler extends MiddlewareChain
         $pattern = str_replace('/', '\/', $this->pattern);
 
         // replace named parameters with regex
-        $replaceRule = function ($matches) {
+        $replaceRule = function ($matches): string {
             $parameterName = $matches[1];
             $constraint = $this->constraints[$parameterName] ?? '.*';
             return sprintf("(?<%s>%s?)", $parameterName, $constraint);
@@ -132,7 +122,6 @@ class Handler extends MiddlewareChain
 
     /**
      * @param array $parameters
-     * @return Handler
      */
     public function setParameters(...$parameters): Handler
     {
@@ -146,8 +135,7 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param array $parameters
-     * @return Handler
+     * @param list<mixed> $parameters
      */
     public function addParameters(array $parameters): Handler
     {
@@ -156,8 +144,6 @@ class Handler extends MiddlewareChain
     }
 
     /**
-     * @param Nutgram $bot
-     * @return mixed
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -173,8 +159,6 @@ class Handler extends MiddlewareChain
     /**
      * Skip global middlewares.
      * If you want to skip a specific global middleware, use the "$middlewares" parameter.
-     * @param array $middlewares
-     * @return $this
      */
     public function skipGlobalMiddlewares(array $middlewares = []): Handler
     {
@@ -185,7 +169,6 @@ class Handler extends MiddlewareChain
 
     /**
      * Returns true if the handler is skipping global middlewares.
-     * @return bool
      */
     public function isSkippingGlobalMiddlewares(): bool
     {
@@ -194,16 +177,12 @@ class Handler extends MiddlewareChain
 
     /**
      * Returns the skipped global middlewares.
-     * @return array
      */
     public function getSkippedGlobalMiddlewares(): array
     {
         return $this->skippedGlobalMiddlewares;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPattern(): ?string
     {
         return $this->pattern;
@@ -218,7 +197,7 @@ class Handler extends MiddlewareChain
     {
         $data = [
             'pattern' => $this->pattern,
-            'callable' => new SerializableClosure($this->callable),
+            'callable' => serialize($this->callable),
             'disabled' => $this->disabled,
             'constraints' => $this->constraints,
             'tags' => $this->tags,

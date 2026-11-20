@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaAnimation;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
 
@@ -14,12 +16,13 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
  * A block with an animation, corresponding to the HTML tag <code><video></code>.
  * @see https://core.telegram.org/bots/api#inputrichblockanimation
  */
-#[SkipConstructor]
-class InputRichBlockAnimation extends BaseType implements InputRichBlock, Uploadables, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichBlockAnimation extends BaseType implements InputRichBlock, Uploadables
 {
     /**
      * Type of the block, always “animation”
      */
+    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::ANIMATION;
 
     /**
@@ -39,13 +42,8 @@ class InputRichBlockAnimation extends BaseType implements InputRichBlock, Upload
         $this->caption = $caption;
     }
 
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
-
     public function uploadables(): array
     {
-        return ['animation'];
+        return ['animation' => $this->animation];
     }
 }

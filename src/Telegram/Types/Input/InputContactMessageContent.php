@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
-use function SergiX44\Nutgram\Support\array_filter_null;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content} of a contact message to be sent as the result of an inline query.
  * @see https://core.telegram.org/bots/api#inputcontactmessagecontent
  */
-#[SkipConstructor]
-class InputContactMessageContent extends InputMessageContent
+#[OverrideConstructor('bindToInstance')]
+class InputContactMessageContent extends BaseType implements InputMessageContent
 {
     /** Contact's phone number */
     public string $phone_number;
@@ -41,29 +43,5 @@ class InputContactMessageContent extends InputMessageContent
         $this->first_name = $first_name;
         $this->last_name = $last_name;
         $this->vcard = $vcard;
-    }
-
-    public static function make(
-        string $phone_number,
-        string $first_name,
-        ?string $last_name = null,
-        ?string $vcard = null,
-    ): self {
-        return new self(
-            phone_number: $phone_number,
-            first_name: $first_name,
-            last_name: $last_name,
-            vcard: $vcard
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'phone_number' => $this->phone_number,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'vcard' => $this->vcard,
-        ]);
     }
 }

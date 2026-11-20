@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram;
 
 use SergiX44\Nutgram\RunningMode\RespondsToWebhook;
@@ -18,9 +20,7 @@ trait ProvidesHttpResponse
     /**
      * Hands the request to the running mode as the response to the current update,
      * when asResponse() was called before it and the running mode can still respond.
-     * @param string $method
      * @param array<array-key, mixed> $parameters
-     * @return bool
      */
     protected function respondAsWebhook(string $method, array $parameters): bool
     {

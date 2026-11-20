@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Story;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\StoryAreaTypeType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Describes a story area pointing to a unique gift. Currently, a story can have at most 1 unique gift area.
  * @see https://core.telegram.org/bots/api#storyareatypeuniquegift
  */
-#[SkipConstructor]
-class StoryAreaTypeUniqueGift extends StoryAreaType
+#[OverrideConstructor('bindToInstance')]
+class StoryAreaTypeUniqueGift extends BaseType implements StoryAreaType
 {
     /**
      * Type of the area, always “unique_gift”

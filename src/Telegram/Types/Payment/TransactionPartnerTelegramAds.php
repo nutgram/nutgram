@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Payment;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\TransactionPartnerType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Describes a withdrawal transaction to the Telegram Ads platform.
  * @see https://core.telegram.org/bots/api#transactionpartnertelegramads
  */
-class TransactionPartnerTelegramAds extends TransactionPartner
+class TransactionPartnerTelegramAds extends BaseType implements TransactionPartner
 {
     /**
      * Type of the transaction partner, always “telegram_ads”

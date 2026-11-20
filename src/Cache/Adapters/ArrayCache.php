@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Cache\Adapters;
 
 use DateInterval;
+use DateTimeImmutable;
+use Psr\Clock\ClockInterface;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Support\InteractsWithTime;
 
@@ -15,15 +18,26 @@ class ArrayCache implements CacheInterface
 {
     use InteractsWithTime;
 
+    /**
+     * The cache values.
+     * @var array<string, mixed>
+     */
     private array $cache = [];
-    private array $expires = [];
 
     /**
-     * @param  string  $key
-     * @param  mixed  $default
-     * @return mixed
+     * Expiration timestamps.
+     * @var array<string, DateTimeImmutable>
      */
-    public function get($key, $default = null): mixed
+    private array $expires = [];
+
+    public function __construct(protected ClockInterface $clock)
+    {
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function get(string $key, mixed $default = null): mixed
     {
         $this->checkExpire($key);
 
@@ -31,12 +45,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  string  $key
-     * @param  mixed  $value
-     * @param  DateInterval|int|null  $ttl
-     * @return bool
+     * @inheritDoc
      */
-    public function set($key, $value, $ttl = null): bool
+    public function set(string $key, mixed $value, DateInterval|int|null $ttl = null): bool
     {
         $this->delete($key);
 
@@ -49,10 +60,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  string  $key
-     * @return bool
+     * @inheritDoc
      */
-    public function delete($key): bool
+    public function delete(string $key): bool
     {
         unset($this->cache[$key], $this->expires[$key]);
 
@@ -60,7 +70,7 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @return bool
+     * @inheritDoc
      */
     public function clear(): bool
     {
@@ -71,11 +81,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  iterable  $keys
-     * @param  mixed  $default
-     * @return array
+     * @inheritDoc
      */
-    public function getMultiple($keys, $default = null): array
+    public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
         $values = [];
 
@@ -87,11 +95,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  iterable  $values
-     * @param  DateInterval|int|null  $ttl
-     * @return bool
+     * @inheritDoc
      */
-    public function setMultiple($values, $ttl = null): bool
+    public function setMultiple(iterable $values, DateInterval|int|null $ttl = null): bool
     {
         foreach ($values as $key => $value) {
             $this->set($key, $value, $ttl);
@@ -101,10 +107,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  iterable  $keys
-     * @return bool
+     * @inheritDoc
      */
-    public function deleteMultiple($keys): bool
+    public function deleteMultiple(iterable $keys): bool
     {
         foreach ($keys as $key) {
             unset($this->cache[$key], $this->expires[$key]);
@@ -114,10 +119,9 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     * @param  string  $key
-     * @return bool
+     * @inheritDoc
      */
-    public function has($key): bool
+    public function has(string $key): bool
     {
         $this->checkExpire($key);
 

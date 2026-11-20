@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Web;
 
 abstract class Entity
@@ -8,7 +10,7 @@ abstract class Entity
     {
         $data = get_object_vars($this);
         foreach ($data as $key => $value) {
-            if (is_subclass_of($value, __CLASS__)) {
+            if (is_subclass_of($value, self::class)) {
                 $data[$key] = $value->toArray();
             }
         }

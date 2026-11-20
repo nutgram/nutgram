@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Testing;
 
 use GuzzleHttp\Handler\MockHandler;
@@ -7,8 +9,8 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use InvalidArgumentException;
 use JsonException;
+use Psr\Clock\ClockInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
@@ -22,74 +24,38 @@ use SergiX44\Nutgram\RunningMode\Fake;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\User\User;
+use function SergiX44\Nutgram\Support\getSafeReflectionTypeName;
 use function sodium_bin2base64;
 
 class FakeNutgram extends Nutgram
 {
-    use Hears, Asserts;
+    use Hears;
+    use Asserts;
 
     public const TOKEN = '123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11';
 
-    /**
-     * @var MockHandler
-     */
     protected MockHandler $mockHandler;
 
-    /**
-     * @var array
-     */
     protected array $testingHistory = [];
 
-    /**
-     * @var array
-     */
     protected array $partialReceives = [];
 
-    /**
-     * @var TypeFaker
-     */
     protected TypeFaker $typeFaker;
 
-    /**
-     * @var bool
-     */
     private bool $rememberUserAndChat = false;
 
-    /**
-     * @var User|null
-     */
     private ?User $storedUser = null;
 
-    /**
-     * @var Chat|null
-     */
     private ?Chat $storedChat = null;
 
-    /**
-     * @var array
-     */
     private array $methodsReturnTypes = [];
 
-    /**
-     * @var array
-     */
     protected array $dumpHistory = [];
 
-    /**
-     * @var User|null
-     */
     protected ?User $commonUser = null;
 
-    /**
-     * @var Chat|null
-     */
     protected ?Chat $commonChat = null;
 
-    /**
-     * @param mixed $update
-     * @param array $responses
-     * @return FakeNutgram
-     */
     public static function instance(
         null|array|object $update = null,
         array $responses = [],
@@ -118,17 +84,18 @@ class FakeNutgram extends Nutgram
 
     private static function inject(Nutgram $bot, MockHandler $mock, HandlerStack $handlerStack): void
     {
-        (function () use ($handlerStack, $mock) {
-            /** @psalm-scope-this \SergiX44\Nutgram\Testing\FakeNutgram */
+        (function () use ($handlerStack, $mock): void {
             $this->mockHandler = $mock;
-            $this->typeFaker = new TypeFaker($this->hydrator);
+            $this->typeFaker = $this->container->get(TypeFaker::class);
+            $this->container->set(ClockInterface::class, new TestClock());
 
-            $properties = (new ReflectionClass(Client::class))->getMethods(ReflectionMethod::IS_PUBLIC);
+            $properties = new ReflectionClass(Client::class)->getMethods(ReflectionMethod::IS_PUBLIC);
 
             foreach ($properties as $property) {
                 $return = $property->getReturnType();
                 if ($return instanceof ReflectionNamedType) {
-                    $this->methodsReturnTypes[$property->getReturnType()?->getName()][] = $property->getName();
+                    $returnTypeName = getSafeReflectionTypeName($property->getReturnType());
+                    $this->methodsReturnTypes[$returnTypeName][] = $property->getName();
                 }
 
                 if ($return instanceof ReflectionUnionType) {
@@ -139,46 +106,46 @@ class FakeNutgram extends Nutgram
             }
 
             $handlerStack->push(Middleware::history($this->testingHistory));
-            $handlerStack->push(function (callable $handler) {
-                return function (RequestInterface $request, array $options) use ($handler) {
-                    if ($this->mockHandler->count() === 0) {
-                        [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
-                        $return = (new ReflectionClass(self::class))
-                            ->getMethod((string)$request->getUri())
-                            ->getReturnType();
+            $handlerStack->push(fn (callable $handler): \Closure => function (
+                RequestInterface $request,
+                array $options
+            ) use (
+                $handler
+            ) {
+                if ($this->mockHandler->count() === 0) {
+                    [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
+                    $return = new ReflectionClass(self::class)
+                        ->getMethod((string)$request->getUri())
+                        ->getReturnType();
 
-                        $instance = null;
-                        if ($return instanceof ReflectionNamedType) {
+                    $instance = null;
+                    if ($return instanceof ReflectionNamedType) {
+                        $instance = $this->typeFaker->fakeInstanceOf(
+                            $return->getName(),
+                            $partialResult
+                        );
+                    } elseif ($return instanceof ReflectionUnionType) {
+                        foreach ($return->getTypes() as $type) {
                             $instance = $this->typeFaker->fakeInstanceOf(
-                                $return->getName(),
+                                $type->getName(),
                                 $partialResult
                             );
-                        } elseif ($return instanceof ReflectionUnionType) {
-                            foreach ($return->getTypes() as $type) {
-                                $instance = $this->typeFaker->fakeInstanceOf(
-                                    $type,
-                                    $partialResult
-                                );
-                                if (is_object($instance)) {
-                                    break;
-                                }
+                            if (is_object($instance)) {
+                                break;
                             }
                         }
-
-                        $this->mockHandler->append(new Response(body: json_encode([
-                            'ok' => $ok,
-                            'result' => $instance,
-                        ], JSON_THROW_ON_ERROR)));
                     }
-                    return $handler($request, $options);
-                };
+
+                    $this->mockHandler->append(new Response(body: json_encode([
+                        'ok' => $ok,
+                        'result' => $instance,
+                    ], JSON_THROW_ON_ERROR)));
+                }
+                return $handler($request, $options);
             }, 'handles_empty_queue');
         })->call($bot);
     }
 
-    /**
-     * @return array
-     */
     public function getRequestHistory(): array
     {
         return $this->testingHistory;
@@ -190,8 +157,6 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param array|int|true $result
-     * @param bool $ok
      * @return $this
      */
     public function willReceive(array|int|true $result, bool $ok = true): self
@@ -203,8 +168,6 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param array|int|true $result
-     * @param bool $ok
      * @return $this
      */
     public function willReceivePartial(array|int|true $result, bool $ok = true): self
@@ -243,7 +206,6 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param bool $remember
      * @return $this
      */
     public function willStartConversation(bool $remember = true): self
@@ -321,9 +283,10 @@ class FakeNutgram extends Nutgram
     public function withoutMiddleware(string|array $middleware): self
     {
         $middleware = !is_array($middleware) ? [$middleware] : $middleware;
-        $this->globalMiddlewares = array_filter($this->globalMiddlewares, function ($item) use ($middleware) {
-            return !in_array($item, $middleware, true);
-        });
+        $this->globalMiddlewares = array_filter(
+            array: $this->globalMiddlewares,
+            callback: fn (callable $item): bool => !in_array($item, $middleware, true),
+        );
 
         return $this;
     }
@@ -342,51 +305,18 @@ class FakeNutgram extends Nutgram
 
     /**
      * Get the actual data from the request.
-     * @param Request $request
-     * @param array $mapping
-     * @return array
      * @throws JsonException
      */
     public static function getActualData(Request $request, array $mapping = []): array
     {
-        //get content type
-        $contentType = $request->getHeaderLine('Content-Type');
+        $data = new RequestData($request);
+        $data->when($data->isMultipart(), function (RequestData $data) use ($mapping): void {
+            $data->withMapping(array_map(gettype(...), $mapping));
+        });
 
-        //get body
-        $body = (string)$request->getBody();
-
-        //get data from json
-        if (str_contains($contentType, 'application/json')) {
-            return json_decode($body, true, flags: JSON_THROW_ON_ERROR);
-        }
-
-        //get data from form data
-        if (str_contains($contentType, 'multipart/form-data')) {
-            $formData = FormDataParser::parse($request);
-            $params = $formData->params;
-
-            //remap types lost in the form data parser
-            if (count($mapping) > 0) {
-                array_walk_recursive($params, function (&$value, $key) use ($mapping) {
-                    if (array_key_exists($key, $mapping)) {
-                        $value = match (gettype($mapping[$key])) {
-                            'integer' => filter_var($value, FILTER_VALIDATE_INT),
-                            'double' => filter_var($value, FILTER_VALIDATE_FLOAT),
-                            'boolean' => filter_var($value, FILTER_VALIDATE_BOOLEAN),
-                            default => $value,
-                        };
-                    }
-                });
-            }
-            return [...$params, ...$formData->files];
-        }
-
-        throw new InvalidArgumentException("Content-Type '$contentType' not supported");
+        return [...$data->allRaw(), ...$data->files()];
     }
 
-    /**
-     * @return array
-     */
     public function __serialize(): array
     {
         $attributes = parent::__serialize();
@@ -399,8 +329,6 @@ class FakeNutgram extends Nutgram
     }
 
     /**
-     * @param array $data
-     * @return void
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
@@ -438,7 +366,6 @@ class FakeNutgram extends Nutgram
      * Generates webapp data for third party + signature.
      * @param int $botId The bot id.
      * @param array $data The generated webapp data as query string.
-     * @return array
      * @internal For testing purposes only.
      */
     public static function generateWebAppDataForThirdParty(int $botId, array $data): array

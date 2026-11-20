@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Nutgram\Telegram\Properties\MessageType;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostAdded;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Chat\ChatOwnerChanged;
@@ -28,6 +29,7 @@ use SergiX44\Nutgram\Telegram\Types\Giveaway\Giveaway;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCompleted;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayCreated;
 use SergiX44\Nutgram\Telegram\Types\Giveaway\GiveawayWinners;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ExternalReplyInfo;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ForceReply;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -63,7 +65,6 @@ use SergiX44\Nutgram\Telegram\Types\Poll\PollOptionDeleted;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichMessage;
 use SergiX44\Nutgram\Telegram\Types\Shared\ChatShared;
-use SergiX44\Nutgram\Telegram\Types\Shared\UserShared;
 use SergiX44\Nutgram\Telegram\Types\Shared\UsersShared;
 use SergiX44\Nutgram\Telegram\Types\Sticker\GiftInfo;
 use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
@@ -86,7 +87,7 @@ use SergiX44\Nutgram\Telegram\Types\Widget\Widget;
  * This object represents a message.
  * @see https://core.telegram.org/bots/api#message
  */
-class Message extends BaseType
+class Message extends BaseType implements MaybeInaccessibleMessage
 {
     /** Unique message identifier inside this chat */
     public int $message_id;
@@ -171,48 +172,6 @@ class Message extends BaseType
      * Information about the original message for forwarded messages
      */
     public ?MessageOrigin $forward_origin = null;
-
-    /**
-     * Optional.
-     * For forwarded messages, sender of the original message
-     * @deprecated Use the $forward_origin field instead
-     */
-    public ?User $forward_from = null;
-
-    /**
-     * Optional.
-     * For messages forwarded from channels or from anonymous administrators, information about the original sender chat
-     * @deprecated Use the $forward_origin field instead
-     */
-    public ?Chat $forward_from_chat = null;
-
-    /**
-     * Optional.
-     * For messages forwarded from channels, identifier of the original message in the channel
-     * @deprecated Use the $forward_origin field instead
-     */
-    public ?int $forward_from_message_id = null;
-
-    /**
-     * Optional.
-     * For forwarded messages that were originally sent in channels or by an anonymous chat administrator, signature of the message sender if present
-     * @deprecated Use the $forward_origin field instead
-     */
-    public ?string $forward_signature = null;
-
-    /**
-     * Optional.
-     * Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages
-     * @deprecated Use the $forward_origin field instead
-     */
-    public ?string $forward_sender_name = null;
-
-    /**
-     * Optional.
-     * For forwarded messages, date the original message was sent in Unix time
-     * @deprecated Use the $forward_origin field instead
-     */
-    public ?int $forward_date = null;
 
     /**
      * Optional.
@@ -585,9 +544,10 @@ class Message extends BaseType
     /**
      * Optional.
      * Specified message was pinned.
-     * Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
+     * Note that the {@see https://core.telegram.org/bots/api#message Message}
+     * object in this field will not contain further reply_to_message fields even if it is itself a reply.
      */
-    public ?Message $pinned_message = null;
+    public ?MaybeInaccessibleMessage $pinned_message = null;
 
     /**
      * Optional.
@@ -604,13 +564,6 @@ class Message extends BaseType
     public ?SuccessfulPayment $successful_payment = null;
 
     public ?RefundedPayment $refunded_payment = null;
-
-    /**
-     * Optional.
-     * Service message: a user was shared with the bot
-     * @deprecated Use the $users_shared field instead
-     */
-    public ?UserShared $user_shared = null;
 
     /**
      * Optional. Service message: users were shared with the bot
@@ -861,8 +814,6 @@ class Message extends BaseType
      * Example:
      * IN: /hello param1 param2 or /hello[at]MyDearBot param1 param2
      * OUT: /hello param1 param2
-     * @param string|null $username
-     * @return string|null
      */
     public function getParsedCommand(?string $username = null): ?string
     {
@@ -872,12 +823,12 @@ class Message extends BaseType
         if ($this->text !== null && preg_match($pattern, $this->text, $matches)) {
             return $matches['name'].($matches['args'] ?? '');
         }
+
         return null;
     }
 
     /**
      * Check if the message is forwarded
-     * @return bool
      */
     public function isForwarded(): bool
     {
@@ -886,7 +837,6 @@ class Message extends BaseType
 
     /**
      * Return the current message type
-     * @return MessageType|null
      */
     public function getType(): ?MessageType
     {
@@ -967,7 +917,6 @@ class Message extends BaseType
 
     /**
      * Returns the message text or caption
-     * @return string|null
      */
     public function getText(): ?string
     {
@@ -988,9 +937,13 @@ class Message extends BaseType
         return $this->receiver_user !== null && $this->ephemeral_message_id !== null;
     }
 
+    public function isInaccessible(): bool
+    {
+        return false;
+    }
+
     /**
      * Delete the current message
-     * @return bool|null
      */
     public function delete(): ?bool
     {
@@ -1012,7 +965,6 @@ class Message extends BaseType
      * @param MessageEntity[]|null $entities A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
      * @param bool|null $disable_web_page_preview Disables link previews for links in this message
      * @param InlineKeyboardMarkup|null $reply_markup A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}.
-     * @return Message|bool|null
      * @see Nutgram::editMessageText
      */
     public function editText(
@@ -1059,7 +1011,6 @@ class Message extends BaseType
      * @param int|null $reply_to_message_id If the message is a reply, ID of the original message
      * @param bool|null $allow_sending_without_reply Pass True if the message should be sent even if the specified replied-to message is not found
      * @param InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup Additional interface options. A JSON-serialized object for an {@see https://core.telegram.org/bots/features#inline-keyboards inline keyboard}, {@see https://core.telegram.org/bots/features#keyboards custom reply keyboard}, instructions to remove reply keyboard or to force a reply from the user.
-     * @return MessageId|null
      * @see Nutgram::copyMessage
      */
     public function copy(
@@ -1106,7 +1057,6 @@ class Message extends BaseType
      * @param int|null $message_thread_id Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
      * @param bool|null $disable_notification Sends the message {@see https://telegram.org/blog/channels-2-0#silent-messages silently}. Users will receive a notification with no sound.
      * @param bool|null $protect_content Protects the contents of the forwarded message from forwarding and saving
-     * @return Message|null
      * @see Nutgram::forwardMessage
      */
     public function forward(
@@ -1131,15 +1081,6 @@ class Message extends BaseType
     }
 
     /**
-     * Check if this message is deleted or is inaccessible to the bot.
-     * @return bool
-     */
-    public function isInaccessible(): bool
-    {
-        return $this->date === 0;
-    }
-
-    /**
      * Use this method to change the chosen reactions on a message.
      * Service messages can't be reacted to.
      * Automatically forwarded messages from a channel to its discussion group have the same available reactions as messages in the channel.
@@ -1147,7 +1088,6 @@ class Message extends BaseType
      * @see https://core.telegram.org/bots/api#setmessagereaction
      * @param ReactionType|ReactionType[]|null $reaction Optional. New list of reaction types to set on the message. Currently, as non-premium users, bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already present on the message or explicitly allowed by chat administrators.
      * @param bool $is_big Optional. Pass True to set the reaction with a big animation
-     * @return bool|null
      */
     public function react(ReactionType|array|null $reaction = null, bool $is_big = false): ?bool
     {

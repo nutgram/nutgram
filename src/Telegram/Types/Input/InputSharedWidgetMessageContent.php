@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 
 /**
@@ -13,8 +17,8 @@ use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
  * Currently, widgets can't be sent in response to inline queries in the production environment.
  * @see https://core.telegram.org/bots/api#inputwidgetmessagecontent
  */
-#[SkipConstructor]
-class InputSharedWidgetMessageContent extends InputMessageContent
+#[OverrideConstructor('bindToInstance')]
+class InputSharedWidgetMessageContent extends BaseType implements InputMessageContent
 {
     /**
      * Unique identifier of the shared widget created by the bot
@@ -35,6 +39,7 @@ class InputSharedWidgetMessageContent extends InputMessageContent
      * Optional. Mode for parsing entities in the widget caption.
      * See {@see https://core.telegram.org/bots/api#formatting-options formatting options} for more details.
      */
+    #[EnumOrScalar]
     public ParseMode|string|null $parse_mode = null;
 
     /**
@@ -50,12 +55,7 @@ class InputSharedWidgetMessageContent extends InputMessageContent
     public ?bool $show_caption_above_media = null;
 
     /**
-     * @param string $widget_id
-     * @param string|null $chat_data
-     * @param string|null $caption
-     * @param ParseMode|string|null $parse_mode
      * @param MessageEntity[]|null $caption_entities
-     * @param bool|null $show_caption_above_media
      */
     public function __construct(
         string $widget_id,

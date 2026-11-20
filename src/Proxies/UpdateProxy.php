@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Proxies;
 
@@ -16,6 +17,7 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
+use SergiX44\Nutgram\Telegram\Types\Message\MaybeInaccessibleMessage;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
 use SergiX44\Nutgram\Telegram\Types\Payment\PaidMediaPurchased;
@@ -144,7 +146,7 @@ trait UpdateProxy
 
     public function isCommand(): bool
     {
-        /** @var MessageEntity $entity */
+        /** @var MessageEntity|null $entity */
         $entity = $this->update?->message?->entities[0] ?? null;
 
         return $entity !== null &&

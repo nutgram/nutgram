@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
-use SergiX44\Nutgram\Telegram\Properties\BackgroundTypeType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\Resolvers\BackgroundTypeResolver;
 
 /**
  * This object describes the type of a background. Currently, it can be one of
@@ -15,11 +15,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * @see https://core.telegram.org/bots/api#backgroundtype
  */
 #[BackgroundTypeResolver]
-abstract class BackgroundType extends BaseType
+interface BackgroundType
 {
-    /**
-     * Type of the background
-     */
-    #[EnumOrScalar]
-    public BackgroundTypeType|string $type;
 }

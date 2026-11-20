@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\UnionResolvers\TestUnionResolver;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
 
@@ -13,24 +17,28 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
  * An expandable block for details disclosure, corresponding to the HTML tag <code><details></code>.
  * @see https://core.telegram.org/bots/api#inputrichblockdetails
  */
-#[SkipConstructor]
-class InputRichBlockDetails extends BaseType implements InputRichBlock, Uploadables, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichBlockDetails extends BaseType implements InputRichBlock, Uploadables
 {
     /**
      * Type of the block, always “details”
      */
+    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::DETAILS;
 
     /**
      * Always shown summary of the block
      * @var string|RichText|array<mixed>
      */
+    #[ArrayType(RichText::class)]
+    #[TestUnionResolver('string')]
     public string|array|RichText $summary;
 
     /**
      * Content of the block
      * @var InputRichBlock[]
      */
+    #[ArrayType(InputRichBlock::class)]
     public array $blocks;
 
     /**
@@ -41,7 +49,6 @@ class InputRichBlockDetails extends BaseType implements InputRichBlock, Uploadab
     /**
      * @param string|RichText|array<mixed> $summary
      * @param InputRichBlock[] $blocks
-     * @param bool|null $is_open
      */
     public function __construct(string|array|RichText $summary, array $blocks, ?bool $is_open = null)
     {
@@ -51,13 +58,8 @@ class InputRichBlockDetails extends BaseType implements InputRichBlock, Uploadab
         $this->is_open = $is_open;
     }
 
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
-
     public function uploadables(): array
     {
-        return ['blocks'];
+        return ['blocks' => $this->blocks];
     }
 }

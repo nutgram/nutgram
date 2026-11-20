@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Describes the parameters of an ephemeral message.
  * @see https://core.telegram.org/bots/api#ephemeralmessageparameters
  */
-#[SkipConstructor]
-class EphemeralMessageParameters extends BaseType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class EphemeralMessageParameters extends BaseType
 {
     /**
      * Optional.
@@ -51,10 +52,5 @@ class EphemeralMessageParameters extends BaseType implements JsonSerializable
         $this->receiver_user_id = $receiver_user_id;
         $this->callback_query_id = $callback_query_id;
         $this->replace_callback_query_message = $replace_callback_query_message;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

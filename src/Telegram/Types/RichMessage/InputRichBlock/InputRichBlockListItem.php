@@ -1,24 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\ArrayType;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\RichBlockListItemType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 
 /**
  * An item of a list to be sent.
  * @see https://core.telegram.org/bots/api#inputrichblocklistitem
  */
-#[SkipConstructor]
-class InputRichBlockListItem extends BaseType implements Uploadables, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichBlockListItem extends BaseType implements Uploadables
 {
     /**
      * The content of the item
      * @var InputRichBlock[]
      */
+    #[ArrayType(InputRichBlock::class)]
     public array $blocks;
 
     /**
@@ -45,14 +49,11 @@ class InputRichBlockListItem extends BaseType implements Uploadables, JsonSerial
      * - “I” for uppercase Roman numerals
      * - “1” for decimal numbers
      */
+    #[EnumOrScalar]
     public RichBlockListItemType|string|null $type = null;
 
     /**
      * @param InputRichBlock[] $blocks
-     * @param bool|null $has_checkbox
-     * @param bool|null $is_checked
-     * @param int|null $value
-     * @param RichBlockListItemType|string|null $type
      */
     public function __construct(
         array $blocks,
@@ -69,13 +70,8 @@ class InputRichBlockListItem extends BaseType implements Uploadables, JsonSerial
         $this->type = $type;
     }
 
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
-
     public function uploadables(): array
     {
-        return ['blocks'];
+        return ['blocks' => $this->blocks];
     }
 }

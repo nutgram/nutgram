@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
 
@@ -15,12 +17,13 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockCaption;
  * The width and height ratio must be at most 20.
  * @see https://core.telegram.org/bots/api#inputrichblockmap
  */
-#[SkipConstructor]
-class InputRichBlockMap extends BaseType implements InputRichBlock, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichBlockMap extends BaseType implements InputRichBlock
 {
     /**
      * Type of the block, always “map”
      */
+    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::MAP;
 
     /**
@@ -61,10 +64,5 @@ class InputRichBlockMap extends BaseType implements InputRichBlock, JsonSerializ
         $this->width = $width;
         $this->height = $height;
         $this->caption = $caption;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

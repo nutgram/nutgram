@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Poll;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Location\Location;
 use SergiX44\Nutgram\Telegram\Types\Location\Venue;
 use SergiX44\Nutgram\Telegram\Types\Media\Animation;
@@ -76,7 +78,6 @@ class PollMedia extends BaseType
     /**
      * Check if the media is of a specific type
      * @param class-string<BaseType> $type
-     * @return bool
      */
     public function is(string $type): bool
     {
@@ -90,6 +91,7 @@ class PollMedia extends BaseType
             $this->sticker !== null => Sticker::class,
             $this->venue !== null => Venue::class,
             $this->video !== null => Video::class,
+            default => null,
         };
 
         return $currentType === $type;

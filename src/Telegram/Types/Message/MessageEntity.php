@@ -1,22 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\MessageEntityType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
-use function SergiX44\Nutgram\Support\array_filter_null;
 
 /**
  * This object represents one special entity in a text message.
  * For example, hashtags, usernames, URLs, etc.
  * @see https://core.telegram.org/bots/api#messageentity
  */
-#[SkipConstructor]
-class MessageEntity extends BaseType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class MessageEntity extends BaseType
 {
     /**
      * Type of the entity.
@@ -112,44 +112,5 @@ class MessageEntity extends BaseType implements JsonSerializable
         $this->custom_emoji_id = $custom_emoji_id;
         $this->unix_time = $unix_time;
         $this->date_time_format = $date_time_format;
-    }
-
-    public static function make(
-        MessageEntityType|string $type,
-        int $offset,
-        int $length,
-        ?string $url = null,
-        ?User $user = null,
-        ?string $language = null,
-        ?string $custom_emoji_id = null,
-        ?int $unix_time = null,
-        ?string $date_time_format = null,
-    ): self {
-        return new self(
-            type: $type,
-            offset: $offset,
-            length: $length,
-            url: $url,
-            user: $user,
-            language: $language,
-            custom_emoji_id: $custom_emoji_id,
-            unix_time: $unix_time,
-            date_time_format: $date_time_format
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'offset' => $this->offset,
-            'length' => $this->length,
-            'url' => $this->url,
-            'user' => $this->user,
-            'language' => $this->language,
-            'custom_emoji_id' => $this->custom_emoji_id,
-            'unix_time' => $this->unix_time,
-            'date_time_format' => $this->date_time_format,
-        ]);
     }
 }

@@ -1,15 +1,18 @@
 <?php
 
-use SergiX44\Nutgram\Hydrator\Hydrator;
+use SergiX44\Hydrator\Hydrator;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Properties\ButtonStyle;
+use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostSourcePremium;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockButtons;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextBold;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextTonAddress;
 
 it('hydrate rich_message', function ($content) {
-    $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
+    $hydrator = Nutgram::fake()->getHydrator();
 
-    $result = $hydrator->hydrate($content, Message::class);
+    $result = $hydrator->hydrate(Message::class, $content);
 
     expect($result)->toBeInstanceOf(Message::class);
 })->with('message.rich_message');
@@ -62,7 +65,7 @@ it('hydrates rich_message with photo, video, and animation blocks without has_sp
     ];
 
     /** @var Message $result */
-    $result = $hydrator->hydrate($payload, Message::class);
+    $result = $hydrator->hydrate(Message::class, $payload);
 
     expect($result)->toBeInstanceOf(Message::class)
         ->and($result->rich_message->blocks)->toHaveCount(3)
@@ -81,10 +84,10 @@ it('hydrates chat boost source premium without user', function () {
         'source' => 'premium',
     ];
 
-    /** @var \SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostSourcePremium $result */
-    $result = $hydrator->hydrate($payload, \SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostSourcePremium::class);
+    /** @var ChatBoostSourcePremium $result */
+    $result = $hydrator->hydrate(ChatBoostSourcePremium::class, $payload);
 
-    expect($result)->toBeInstanceOf(\SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostSourcePremium::class)
+    expect($result)->toBeInstanceOf(ChatBoostSourcePremium::class)
         ->and($result->user)->toBeNull();
 });
 
@@ -120,21 +123,21 @@ it('hydrates rich_message buttons with a style', function () {
         ],
     ];
 
-    $result = $hydrator->hydrate($payload, Message::class);
+    $result = $hydrator->hydrate(Message::class, $payload);
 
     $buttons = $result->rich_message->blocks[0]->buttons;
 
     expect($result)->toBeInstanceOf(Message::class)
-        ->and($result->rich_message->blocks[0])->toBeInstanceOf(\SergiX44\Nutgram\Telegram\Types\RichMessage\RichBlock\RichBlockButtons::class)
+        ->and($result->rich_message->blocks[0])->toBeInstanceOf(RichBlockButtons::class)
         ->and($buttons)->toHaveCount(2)
-        ->and($buttons[0]->style)->toBe(\SergiX44\Nutgram\Telegram\Properties\ButtonStyle::SUCCESS)
+        ->and($buttons[0]->style)->toBe(ButtonStyle::SUCCESS)
         ->and($buttons[1]->style)->toBe('future_style');
 });
 
 it('hydrates a ton_address rich text with nested rich text', function () {
     $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
 
-    $result = $hydrator->hydrate([
+    $result = $hydrator->hydrate(Message::class, [
         'message_id' => 1234,
         'date' => 1784483903,
         'chat' => ['id' => 12345678, 'type' => 'private'],
@@ -156,7 +159,7 @@ it('hydrates a ton_address rich text with nested rich text', function () {
                 ],
             ],
         ],
-    ], Message::class);
+    ]);
 
     $address = $result->rich_message->blocks[0]->text[1];
 

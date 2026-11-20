@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Support;
 
 trait Taggable
@@ -8,8 +10,6 @@ trait Taggable
 
     /**
      * Set a meta value
-     * @param string $key
-     * @param mixed $value
      * @return $this
      */
     public function tag(string $key, mixed $value = null): self
@@ -31,9 +31,7 @@ trait Taggable
 
     /**
      * Get a meta value
-     * @param string $key
      * @param mixed|null $default
-     * @return mixed
      */
     public function getTag(string $key, mixed $default = null): mixed
     {
@@ -51,8 +49,6 @@ trait Taggable
 
     /**
      * Check if a meta value exists
-     * @param string $key
-     * @return bool
      */
     public function hasTag(string $key): bool
     {
@@ -61,7 +57,6 @@ trait Taggable
 
     /**
      * Remove a meta value
-     * @param string $key
      * @return $this
      */
     public function removeTag(string $key): self

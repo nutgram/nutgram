@@ -1,19 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Keyboard;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
-use function SergiX44\Nutgram\Support\array_filter_null;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * This object represents a {@see https://core.telegram.org/bots/features#keyboards custom keyboard} with reply options (see {@see https://core.telegram.org/bots/features#keyboards Introduction to bots} for details and examples).
  * @see https://core.telegram.org/bots/api#replykeyboardmarkup
  */
-#[SkipConstructor]
-class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class ReplyKeyboardMarkup extends BaseType
 {
     /**
      * Array of button rows, each represented by an Array of {@see https://core.telegram.org/bots/api#keyboardbutton KeyboardButton} objects
@@ -75,6 +75,7 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
         ?bool $force_reply = null,
     ) {
         parent::__construct();
+        $this->keyboard = [];
         $this->resize_keyboard = $resize_keyboard;
         $this->one_time_keyboard = $one_time_keyboard;
         $this->input_field_placeholder = $input_field_placeholder;
@@ -83,44 +84,13 @@ class ReplyKeyboardMarkup extends BaseType implements JsonSerializable
         $this->force_reply = $force_reply;
     }
 
-    public static function make(
-        ?bool $resize_keyboard = null,
-        ?bool $one_time_keyboard = null,
-        ?string $input_field_placeholder = null,
-        ?bool $selective = null,
-        ?bool $is_persistent = null,
-        ?bool $force_reply = null,
-    ): self {
-        return new self(
-            resize_keyboard: $resize_keyboard,
-            one_time_keyboard: $one_time_keyboard,
-            input_field_placeholder: $input_field_placeholder,
-            selective: $selective,
-            is_persistent: $is_persistent,
-            force_reply: $force_reply,
-        );
-    }
-
     /**
-     * @param  KeyboardButton  ...$buttons
+     * @param KeyboardButton ...$buttons
      * @return $this
      */
     public function addRow(...$buttons): static
     {
         $this->keyboard[] = $buttons;
         return $this;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'keyboard' => $this->keyboard ?? [],
-            'is_persistent' => $this->is_persistent,
-            'resize_keyboard' => $this->resize_keyboard,
-            'one_time_keyboard' => $this->one_time_keyboard,
-            'input_field_placeholder' => $this->input_field_placeholder,
-            'selective' => $this->selective,
-            'force_reply' => $this->force_reply,
-        ]);
     }
 }

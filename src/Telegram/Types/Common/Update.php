@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Common;
 
 use SergiX44\Nutgram\Telegram\Properties\ChatType;
 use SergiX44\Nutgram\Telegram\Properties\UpdateType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostRemoved;
 use SergiX44\Nutgram\Telegram\Types\Boost\ChatBoostUpdated;
 use SergiX44\Nutgram\Telegram\Types\Business\BusinessConnection;
@@ -15,6 +16,7 @@ use SergiX44\Nutgram\Telegram\Types\Chat\ChatMemberUpdated;
 use SergiX44\Nutgram\Telegram\Types\Inline\CallbackQuery;
 use SergiX44\Nutgram\Telegram\Types\Inline\ChosenInlineResult;
 use SergiX44\Nutgram\Telegram\Types\Inline\InlineQuery;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\ManagedBot\ManagedBotUpdated;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageGenerationStopped;
@@ -227,7 +229,6 @@ class Update extends BaseType
 
     /**
      * Return the current update type
-     * @return UpdateType|null
      */
     public function getType(): ?UpdateType
     {
@@ -267,7 +268,6 @@ class Update extends BaseType
 
     /**
      * Get the sender User
-     * @return User|null
      */
     public function getUser(): ?User
     {
@@ -296,8 +296,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->from,
             $this->chat_member !== null => $this->chat_member->from,
             $this->chat_join_request !== null => $this->chat_join_request->from,
-            $this->chat_boost !== null => $this->chat_boost->boost->source->user,
-            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user,
+            $this->chat_boost !== null => $this->chat_boost->boost->source->user ?? null,
+            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user ?? null,
             $this->managed_bot !== null => $this->managed_bot->user,
             $this->subscription !== null => $this->subscription->user,
             // stopped_message_generation: doesn't have a user
@@ -332,8 +332,8 @@ class Update extends BaseType
             $this->my_chat_member !== null => $this->my_chat_member->from = $user,
             $this->chat_member !== null => $this->chat_member->from = $user,
             $this->chat_join_request !== null => $this->chat_join_request->from = $user,
-            $this->chat_boost !== null => $this->chat_boost->boost->source->user = $user,
-            $this->removed_chat_boost !== null => $this->removed_chat_boost->source->user = $user,
+            $this->chat_boost !== null => (isset($this->chat_boost->boost->source->user) || property_exists($this->chat_boost->boost->source, 'user')) ? $this->chat_boost->boost->source->user = $user : null,
+            $this->removed_chat_boost !== null => (isset($this->removed_chat_boost->source->user) || property_exists($this->removed_chat_boost->source, 'user')) ? $this->removed_chat_boost->source->user = $user : null,
             $this->managed_bot !== null => $this->managed_bot->user = $user,
             $this->subscription !== null => $this->subscription->user = $user,
             // stopped_message_generation: doesn't have a user
@@ -357,7 +357,7 @@ class Update extends BaseType
             $this->message_reaction_count !== null => $this->message_reaction_count->chat,
             // inline_query doesn't have a chat
             // chosen_inline_result doesn't have a chat
-            $this->callback_query !== null => $this->callback_query->message?->chat,
+            $this->callback_query !== null => $this->callback_query->message !== null && isset($this->callback_query->message->chat) ? $this->callback_query->message->chat : null,
             $this->widget_query !== null => $this->widget_query->chat,
             // shared_widget_query doesn't have a chat
             // shipping_query doesn't have a chat
@@ -393,7 +393,7 @@ class Update extends BaseType
             $this->message_reaction_count !== null => $this->message_reaction_count->chat = $chat,
             // inline_query doesn't have a chat
             // chosen_inline_result doesn't have a chat
-            $this->callback_query !== null => $this->callback_query->message !== null ? $this->callback_query->message->chat = $chat : null,
+            $this->callback_query !== null => $this->callback_query->message !== null && (isset($this->callback_query->message->chat) || property_exists($this->callback_query->message, 'chat')) ? $this->callback_query->message->chat = $chat : null,
             $this->widget_query !== null => $this->widget_query->chat = $chat,
             // shared_widget_query doesn't have a chat
             // shipping_query doesn't have a chat
@@ -422,9 +422,55 @@ class Update extends BaseType
             $this->edited_channel_post !== null => $this->edited_channel_post,
             $this->business_message !== null => $this->business_message,
             $this->edited_business_message !== null => $this->edited_business_message,
-            $this->callback_query !== null => $this->callback_query->message,
+            $this->callback_query !== null => $this->callback_query->message !== null && $this->callback_query->message instanceof Message ? $this->callback_query->message : null,
             $this->guest_message !== null => $this->guest_message,
             default => null
         };
+    }
+
+    public static function frankensteinize(int $userId, int $chatId, ?int $threadId, ?Update $existingUpdate = null): self
+    {
+        // the barest minimum update data to make the update valid
+        $updateData = [
+            'update_id' => 0,
+            'message' => [
+                'message_id' => 0,
+                'message_thread_id' => $threadId,
+                'from' => [
+                    'id' => $userId,
+                    'is_bot' => false,
+                    'first_name' => '$$__ssc__$$',
+                ],
+                'chat' => [
+                    'id' => $chatId,
+                    'type' => 'private',
+                    'first_name' => '$$__ssc__$$',
+                ],
+                'date' => time(),
+                'text' => '$$__ssc__$$',
+            ],
+        ];
+
+        if ($existingUpdate === null) {
+            return self::fromArray($updateData);
+        }
+
+        // fill in the existing update data
+        $updateData = array_replace_recursive($updateData, $existingUpdate->toArray());
+
+        // overwrite the message data with the new data to change context
+        $updateData = array_replace_recursive($updateData, [
+            'message' => [
+                'message_thread_id' => $threadId,
+                'from' => [
+                    'id' => $userId,
+                ],
+                'chat' => [
+                    'id' => $chatId,
+                ],
+            ],
+        ]);
+
+        return self::fromArray($updateData);
     }
 }

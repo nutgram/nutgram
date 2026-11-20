@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Endpoints;
 
 use SergiX44\Nutgram\Nutgram;
@@ -551,7 +553,7 @@ trait CustomEndpoints
         }
 
         //send messages
-        return array_map(function ($chunk, $index) use ($medias, $parameters, $clientOpt, $attachments, $totalChunks, $replyMarkup, $endpoint) {
+        return array_map(function ($chunk, int|string $index) use ($medias, $parameters, $clientOpt, $attachments, $totalChunks, $replyMarkup, $endpoint) {
             // first message = send media + first caption chunk + other parameters
             if ($index === 0) {
                 return $this->sendAttachments(
