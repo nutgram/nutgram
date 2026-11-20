@@ -14,7 +14,10 @@ use SergiX44\Nutgram\Telegram\Types\Common\Update;
 
 abstract class CollectHandlers
 {
-    use UpdateListeners, MessageListeners, SpecialListeners, InteractsWithRateLimit;
+    use UpdateListeners;
+    use MessageListeners;
+    use SpecialListeners;
+    use InteractsWithRateLimit;
 
     /**
      * @var list<callable>

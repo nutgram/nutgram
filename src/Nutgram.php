@@ -39,7 +39,13 @@ use function Opis\Closure\init;
 
 class Nutgram extends ResolveHandlers
 {
-    use Client, UpdateDataProxy, GlobalCacheProxy, UserCacheProxy, FireHandlers, ValidatesWebData, HandleLogging;
+    use Client;
+    use UpdateDataProxy;
+    use GlobalCacheProxy;
+    use UserCacheProxy;
+    use FireHandlers;
+    use ValidatesWebData;
+    use HandleLogging;
 
     private string $token;
 

@@ -19,7 +19,11 @@ use function Opis\Closure\serialize;
 
 class Handler extends MiddlewareChain
 {
-    use Taggable, Macroable, Disable, Constraints, InteractsWithRateLimit;
+    use Taggable;
+    use Macroable;
+    use Disable;
+    use Constraints;
+    use InteractsWithRateLimit;
 
     /**
      * Regex to capture named parameters.

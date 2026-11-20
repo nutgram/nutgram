@@ -29,7 +29,8 @@ use function sodium_bin2base64;
 
 class FakeNutgram extends Nutgram
 {
-    use Hears, Asserts;
+    use Hears;
+    use Asserts;
 
     public const TOKEN = '123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11';
 
