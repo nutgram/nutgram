@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.52.0 - 2026-11-20
+
+### What's Changed
+
+* fix: let the running mode send asResponse() webhook responses by @sergix44 in https://github.com/nutgram/nutgram/pull/1026
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.51.0...4.52.0
+
 ## 4.51.0 - 2026-11-11
 
 ### What's Changed
