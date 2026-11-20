@@ -67,7 +67,7 @@
     "scripts": {
         "test": "@php vendor/bin/pest --fail-on-warning --fail-on-deprecation",
         "test-coverage": "@php vendor/bin/pest --coverage --coverage-clover=coverage.xml --fail-on-warning --fail-on-deprecation",
-        "lint": "@php vendor/bin/phpstan analyse"
+        "phpstan": "@php vendor/bin/phpstan analyse"
     },
     "config": {
         "sort-packages": true,
