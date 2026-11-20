@@ -131,7 +131,7 @@ class Nutgram extends ResolveHandlers
         $this->hydrator = new Hydrator($this->container);
 
         $this->container->singleton(RunningMode::class, Polling::class);
-        $this->container->set(__CLASS__, $this);
+        $this->container->set(self::class, $this);
     }
 
     public function getBotId(): int
@@ -266,8 +266,8 @@ class Nutgram extends ResolveHandlers
      */
     public function endConversation(?int $userId = null, ?int $chatId = null, ?int $threadId = null): self
     {
-        $userId = $userId ?? $this->userId();
-        $chatId = $chatId ?? $this->chatId();
+        $userId ??= $this->userId();
+        $chatId ??= $this->chatId();
 
         if ($this->update === null && ($userId === null || $chatId === null)) {
             throw new InvalidArgumentException('You cannot end a conversation without userId and chatId.');

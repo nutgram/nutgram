@@ -220,7 +220,7 @@ class TypeFaker
      */
     public static function randomInt(int $min = 0, ?int $max = null): int
     {
-        return mt_rand($min, $max ?? getrandmax());
+        return mt_rand($min, $max ?? mt_getrandmax());
     }
 
     /**

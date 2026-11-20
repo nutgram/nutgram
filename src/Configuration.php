@@ -181,10 +181,7 @@ final readonly class Configuration
         $data['cache'] = self::DEFAULT_CACHE;
         $data['extra'] = [];
         $data['container'] = null;
-
-        if (!isset($data['logger'])) {
-            $data['logger'] = self::DEFAULT_LOGGER;
-        }
+        $data['logger'] ??= self::DEFAULT_LOGGER;
 
         foreach ($data as $attribute => $value) {
             $this->{$attribute} = $value;

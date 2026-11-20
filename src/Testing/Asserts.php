@@ -28,7 +28,7 @@ trait Asserts
      */
     public function assertRaw(callable $closure, ?int $index = null, string $message = ''): static
     {
-        $index = $index ?? $this->sequenceIndex;
+        $index ??= $this->sequenceIndex;
         $reqRes = $this->testingHistory[$index] ?? null;
 
         if ($reqRes === null) {
@@ -76,7 +76,7 @@ trait Asserts
      */
     public function assertReply(string|array $method, ?array $expected = null, ?int $index = null): static
     {
-        $index = $index ?? $this->sequenceIndex;
+        $index ??= $this->sequenceIndex;
         $method = !is_array($method) ? [$method] : $method;
 
         $reqRes = $this->testingHistory[$index] ?? null;
@@ -113,7 +113,7 @@ trait Asserts
      */
     public function assertReplyMessage(array $expected, ?int $index = null, ?string $forceMethod = null): static
     {
-        $index = $index ?? $this->sequenceIndex;
+        $index ??= $this->sequenceIndex;
         return $this->assertReply($forceMethod ?? $this->methodsReturnTypes[Message::class] ?? [], $expected, $index);
     }
 
@@ -125,7 +125,7 @@ trait Asserts
      */
     public function assertReplyText(string $expected, ?int $index = null): static
     {
-        $index = $index ?? $this->sequenceIndex;
+        $index ??= $this->sequenceIndex;
         return $this->assertReplyMessage(['text' => $expected], $index);
     }
 

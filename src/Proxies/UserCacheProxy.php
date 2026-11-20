@@ -23,7 +23,7 @@ trait UserCacheProxy
      */
     public function getUserData($key, ?int $userId = null, $default = null): mixed
     {
-        $userId = $userId ?? $this->userId();
+        $userId ??= $this->userId();
         return $this->container->get(UserCache::class)->get($userId, $key, $default);
     }
 
@@ -37,7 +37,7 @@ trait UserCacheProxy
      */
     public function setUserData($key, $value, ?int $userId = null, DateInterval|int|null $ttl = null): bool
     {
-        $userId = $userId ?? $this->userId();
+        $userId ??= $this->userId();
         return $this->container->get(UserCache::class)->set($userId, $key, $value, $ttl);
     }
 
@@ -49,7 +49,7 @@ trait UserCacheProxy
      */
     public function deleteUserData($key, ?int $userId = null): bool
     {
-        $userId = $userId ?? $this->userId();
+        $userId ??= $this->userId();
         return $this->container->get(UserCache::class)->delete($userId, $key);
     }
 }
