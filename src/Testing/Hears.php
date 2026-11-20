@@ -80,7 +80,7 @@ trait Hears
         /** @var Update $update */
         $update = $this->getContainer()->get(Update::class);
 
-        $reflectionType = (new ReflectionObject($update))->getProperty($typeName)->getType();
+        $reflectionType = new ReflectionObject($update)->getProperty($typeName)->getType();
 
         $class = getSafeReflectionTypeName($reflectionType);
 

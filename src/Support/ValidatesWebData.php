@@ -64,7 +64,7 @@ trait ValidatesWebData
             throw new InvalidDataException('Invalid webapp data');
         }
 
-        return (new Hydrator())->hydrate(WebAppData::class, self::queryStringToArray($queryString));
+        return new Hydrator()->hydrate(WebAppData::class, self::queryStringToArray($queryString));
     }
 
     /**

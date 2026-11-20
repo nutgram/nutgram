@@ -94,7 +94,7 @@ abstract class BaseType implements Arrayable, JsonSerializable
 
     public static function fromArray(array $data): static
     {
-        return (new Hydrator(new Container()))->hydrate(static::class, $data);
+        return new Hydrator(new Container())->hydrate(static::class, $data);
     }
 
     public function toArray(): array

@@ -126,7 +126,7 @@ class FakeNutgram extends Nutgram
             $this->typeFaker = $this->container->get(TypeFaker::class);
             $this->container->set(ClockInterface::class, new TestClock());
 
-            $properties = (new ReflectionClass(Client::class))->getMethods(ReflectionMethod::IS_PUBLIC);
+            $properties = new ReflectionClass(Client::class)->getMethods(ReflectionMethod::IS_PUBLIC);
 
             foreach ($properties as $property) {
                 $return = $property->getReturnType();
@@ -148,7 +148,7 @@ class FakeNutgram extends Nutgram
             ) {
                 if ($this->mockHandler->count() === 0) {
                     [$partialResult, $ok] = array_pop($this->partialReceives) ?? [[], true];
-                    $return = (new ReflectionClass(self::class))
+                    $return = new ReflectionClass(self::class)
                         ->getMethod((string)$request->getUri())
                         ->getReturnType();
 

@@ -95,7 +95,7 @@ trait SpecialListeners
     public function beforeApiRequest($callable): void
     {
         $this->checkFinalized();
-        $this->{$this->target}[self::BEFORE_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
+        $this->{$this->target}[self::BEFORE_API_REQUEST] = new Handler($callable)->skipGlobalMiddlewares();
     }
 
     /**
@@ -105,6 +105,6 @@ trait SpecialListeners
     public function afterApiRequest($callable): void
     {
         $this->checkFinalized();
-        $this->{$this->target}[self::AFTER_API_REQUEST] = (new Handler($callable))->skipGlobalMiddlewares();
+        $this->{$this->target}[self::AFTER_API_REQUEST] = new Handler($callable)->skipGlobalMiddlewares();
     }
 }
