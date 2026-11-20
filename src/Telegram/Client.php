@@ -185,6 +185,9 @@ trait Client
         string $mapTo = UnknownType::class,
         array $options = []
     ): mixed {
+        // uploads cannot be sent as a webhook response, and asResponse() must not carry over to the next request
+        $this->enableAsResponse = false;
+
         $parameters = [];
         foreach (array_filter_null($multipart) as $name => $contents) {
             foreach (self::multipartParts($contents, $name) as $part) {
@@ -249,8 +252,8 @@ trait Client
             $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
             $requestData = $requestPost ?? $request;
 
-            if ($this->canHandleAsResponse()) {
-                return $this->sendResponse($endpoint, $requestData);
+            if ($this->respondAsWebhook($endpoint, $requestData['json'])) {
+                return null;
             }
 
             $json = $requestData['json'];
