@@ -55,10 +55,26 @@ class User extends BaseType
      */
     public ?bool $added_to_attachment_menu = null;
 
+    /*
+    |--------------------------------------------------------------------------
+    | BotFullInfo Properties
+    |--------------------------------------------------------------------------
+    |
+    | https://core.telegram.org/bots/api#botfullinfo
+    |
+    | The following properties are only returned by getMe method.
+    | https://core.telegram.org/bots/api#getme
+    |
+    | To not make breaking changes, we will split this class in the next major version.
+    | @deprecated <= Bookmark this line for Nutgram 5.0.0
+    |
+    */
+
     /**
      * Optional.
      * True, if the bot can be invited to groups.
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     * @deprecated since Bot API v10.5 Please use the "getMe" method.
      */
     public ?bool $can_join_groups = null;
 
@@ -66,6 +82,7 @@ class User extends BaseType
      * Optional.
      * True, if {@see https://core.telegram.org/bots/features#privacy-mode privacy mode} is disabled for the bot.
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     * @deprecated since Bot API v10.5 Please use the "getMe" method.
      */
     public ?bool $can_read_all_group_messages = null;
 
@@ -73,6 +90,7 @@ class User extends BaseType
      * Optional.
      * True, if the bot supports guest queries from chats it is not a member of.
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     * @deprecated since Bot API v10.5 Please use the "getMe" method.
      */
     public ?bool $supports_guest_queries = null;
 
@@ -80,6 +98,7 @@ class User extends BaseType
      * Optional.
      * True, if the bot supports inline queries.
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     * @deprecated since Bot API v10.5 Please use the "getMe" method.
      */
     public ?bool $supports_inline_queries = null;
 
@@ -87,6 +106,7 @@ class User extends BaseType
      * Optional.
      * True, if the bot can be connected to a Telegram Business account to receive its messages.
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     * @deprecated since Bot API v10.5 Please use the "getMe" method.
      */
     public ?bool $can_connect_to_business = null;
 
@@ -94,6 +114,7 @@ class User extends BaseType
      * Optional.
      * True, if the bot has a main Web App.
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     * @deprecated since Bot API v10.5 Please use the "getMe" method.
      */
     public ?bool $has_main_web_app = null;
 
@@ -101,12 +122,14 @@ class User extends BaseType
      * Optional.
      * True, if the bot has forum topic mode enabled in private chats.
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     * @deprecated since Bot API v10.5 Please use the "getMe" method.
      */
     public ?bool $has_topics_enabled = null;
 
     /**
      * Optional. True, if the bot allows users to create and delete topics in private chats.
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     * @deprecated since Bot API v10.5 Please use the "getMe" method.
      */
     public ?bool $allows_users_to_create_topics = null;
 
@@ -114,12 +137,14 @@ class User extends BaseType
      * Optional.
      * True, if other bots can be created to be controlled by the bot.
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     * @deprecated since Bot API v10.5 Please use the "getMe" method.
      */
     public ?bool $can_manage_bots = null;
 
     /**
      * Optional. True, if the bot supports join request queries and can be assigned to process them.
      * Returned only in {@see https://core.telegram.org/bots/api#getme getMe}.
+     * @deprecated since Bot API v10.5 Please use the "getMe" method.
      */
     public ?bool $supports_join_request_queries = null;
 

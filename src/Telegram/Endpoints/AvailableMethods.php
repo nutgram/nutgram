@@ -62,7 +62,7 @@ use SergiX44\Nutgram\Telegram\Types\Sticker\Sticker;
 use SergiX44\Nutgram\Telegram\Types\Sticker\UniqueGift;
 use SergiX44\Nutgram\Telegram\Types\SuggestedPost\SuggestedPostParameters;
 use SergiX44\Nutgram\Telegram\Types\Theme\ChatShareThemeBackdrops;
-use SergiX44\Nutgram\Telegram\Types\User\User;
+use SergiX44\Nutgram\Telegram\Types\User\BotFullInfo;
 use SergiX44\Nutgram\Telegram\Types\User\UserProfileAudios;
 use SergiX44\Nutgram\Telegram\Types\User\UserProfilePhotos;
 use function SergiX44\Nutgram\Support\array_filter_null;
@@ -77,12 +77,13 @@ trait AvailableMethods
     /**
      * A simple method for testing your bot's authentication token.
      * Requires no parameters.
-     * Returns basic information about the bot in form of a {@see https://core.telegram.org/bots/api#user User} object.
+     * Returns information about the bot in form of a {@see https://core.telegram.org/bots/api#botfullinfo BotFullInfo} object.
      * @see https://core.telegram.org/bots/api#getme
+     * @return BotFullInfo|null
      */
-    public function getMe(): ?User
+    public function getMe(): ?BotFullInfo
     {
-        return $this->requestJson(__FUNCTION__, mapTo: User::class);
+        return $this->requestJson(__FUNCTION__, mapTo: BotFullInfo::class);
     }
 
     /**
@@ -3052,6 +3053,64 @@ trait AvailableMethods
     public function setManagedBotAccessSettings(int $user_id, bool $is_access_restricted, ?array $added_user_ids = null): ?bool
     {
         $parameters = compact('user_id', 'is_access_restricted', 'added_user_ids');
+
+        return $this->requestJson(__FUNCTION__, $parameters);
+    }
+
+    /**
+     * Use this method to change settings of the bot. Settings that aren't specified remain unchanged. Returns True on success.
+     * @param bool|null $supports_inline_queries Pass True to enable {@see https://core.telegram.org/bots/api#inline-mode inline mode} for the bot or False to disable it
+     * @param string|null $inline_query_placeholder New placeholder for inline queries, which is shown in the input field after the bot's username. Pass an empty string to use the default placeholder.
+     * @param bool|null $needs_inline_query_location Pass True to request the location of the user with every inline query to the bot or False to stop requesting it
+     * @param int|null $inline_feedback_share_denominator Denominator of the share of {@see https://core.telegram.org/bots/api#choseninlineresult chosen inline results} received by the bot; the bot receives 1 out of inline_feedback_share_denominator chosen results. Must be one of 1, 10, 100, or 1000. Pass 0 to stop receiving chosen inline results.
+     * @param bool|null $can_join_groups Pass True to allow adding the bot to groups or False to disallow it
+     * @param bool|null $can_read_all_group_messages Pass True to disable {@see https://core.telegram.org/bots/features#privacy-mode privacy mode} for the bot or False to enable it
+     * @param bool|null $can_connect_to_business Pass True to allow connecting the bot to user accounts to manage them or False to disallow it
+     * @param bool|null $can_manage_bots Pass True to allow creating other bots that will be controlled by the bot or False to disallow it
+     * @param bool|null $supports_guest_queries Pass True to allow guest queries to the bot from chats it isn't a member of or False to disallow them
+     * @param bool|null $supports_join_request_queries Pass True to allow assigning the bot to process join request queries or False to disallow it
+     * @param bool|null $has_topics_enabled Pass True to enable forum topic mode in private chats with the bot or False to disable it
+     * @param bool|null $allows_users_to_create_topics Pass True to allow users to create and delete topics in private chats with the bot or False to disallow it
+     * @param bool|null $has_topic_sidebar Pass True to show topics in private chats with the bot in a sidebar or False to stop showing them in a sidebar
+     * @param bool|null $can_communicate_with_bots Pass True to allow the bot to communicate with other bots in groups, private chats, and through business accounts or False to disallow it
+     * @param string|null $callback_query_mode Mode in which the bot receives {@see https://core.telegram.org/bots/api#callbackquery callback queries} from buttons in messages sent by the bot. Must be one of “default” (the field message is always used and contains an {@see https://core.telegram.org/bots/api#inaccessiblemessage InaccessibleMessage} if the message is inaccessible to the bot), “auto” (the field inline_message_id is used instead of the field message if the message is inaccessible to the bot; the field message can still contain an inaccessible message if the message has just been deleted), or “inline” (the field inline_message_id is always used instead of the field message).
+     * @return bool|null
+     * @see https://core.telegram.org/bots/api#setmysettings
+     */
+    public function setMySettings(
+        ?bool $supports_inline_queries = null,
+        ?string $inline_query_placeholder = null,
+        ?bool $needs_inline_query_location = null,
+        ?int $inline_feedback_share_denominator = null,
+        ?bool $can_join_groups = null,
+        ?bool $can_read_all_group_messages = null,
+        ?bool $can_connect_to_business = null,
+        ?bool $can_manage_bots = null,
+        ?bool $supports_guest_queries = null,
+        ?bool $supports_join_request_queries = null,
+        ?bool $has_topics_enabled = null,
+        ?bool $allows_users_to_create_topics = null,
+        ?bool $has_topic_sidebar = null,
+        ?bool $can_communicate_with_bots = null,
+        ?string $callback_query_mode = null,
+    ): ?bool {
+        $parameters = compact(
+            'supports_inline_queries',
+            'inline_query_placeholder',
+            'needs_inline_query_location',
+            'inline_feedback_share_denominator',
+            'can_join_groups',
+            'can_read_all_group_messages',
+            'can_connect_to_business',
+            'can_manage_bots',
+            'supports_guest_queries',
+            'supports_join_request_queries',
+            'has_topics_enabled',
+            'allows_users_to_create_topics',
+            'has_topic_sidebar',
+            'can_communicate_with_bots',
+            'callback_query_mode',
+        );
 
         return $this->requestJson(__FUNCTION__, $parameters);
     }

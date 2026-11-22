@@ -24,12 +24,11 @@ class RichBlockExpandableBlockQuotation extends BaseType implements RichBlock
     public RichBlockType|string $type = RichBlockType::EXPANDABLE_BLOCKQUOTE;
 
     /**
-     * Optional. Credit of the block
-     * @var string|RichText|array<mixed>
+     * Content of the block
+     * @var RichBlock[]
      */
-    #[ArrayType(RichText::class, skipScalars: true)]
-    #[RichTextUnionResolver]
-    public string|array|RichText $text;
+    #[ArrayType(RichBlock::class)]
+    public array $blocks;
 
     /**
      * Optional. Credit of the block
