@@ -79,7 +79,6 @@ trait AvailableMethods
      * Requires no parameters.
      * Returns information about the bot in form of a {@see https://core.telegram.org/bots/api#botfullinfo BotFullInfo} object.
      * @see https://core.telegram.org/bots/api#getme
-     * @return BotFullInfo|null
      */
     public function getMe(): ?BotFullInfo
     {
@@ -3074,7 +3073,6 @@ trait AvailableMethods
      * @param bool|null $has_topic_sidebar Pass True to show topics in private chats with the bot in a sidebar or False to stop showing them in a sidebar
      * @param bool|null $can_communicate_with_bots Pass True to allow the bot to communicate with other bots in groups, private chats, and through business accounts or False to disallow it
      * @param string|null $callback_query_mode Mode in which the bot receives {@see https://core.telegram.org/bots/api#callbackquery callback queries} from buttons in messages sent by the bot. Must be one of “default” (the field message is always used and contains an {@see https://core.telegram.org/bots/api#inaccessiblemessage InaccessibleMessage} if the message is inaccessible to the bot), “auto” (the field inline_message_id is used instead of the field message if the message is inaccessible to the bot; the field message can still contain an inaccessible message if the message has just been deleted), or “inline” (the field inline_message_id is always used instead of the field message).
-     * @return bool|null
      * @see https://core.telegram.org/bots/api#setmysettings
      */
     public function setMySettings(
