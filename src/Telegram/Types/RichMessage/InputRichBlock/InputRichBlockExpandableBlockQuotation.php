@@ -26,12 +26,10 @@ class InputRichBlockExpandableBlockQuotation extends BaseType implements InputRi
     public InputRichBlockType|string $type = InputRichBlockType::EXPANDABLE_BLOCKQUOTE;
 
     /**
-     * Optional. Credit of the block
-     * @var string|RichText|array<mixed>
+     * Content of the block
+     * @var InputRichBlock[]
      */
-    #[ArrayType(RichText::class, skipScalars: true)]
-    #[RichTextUnionResolver]
-    public string|array|RichText $text;
+    public array $blocks;
 
     /**
      * Optional. Credit of the block
@@ -42,13 +40,13 @@ class InputRichBlockExpandableBlockQuotation extends BaseType implements InputRi
     public string|array|RichText|null $credit = null;
 
     /**
-     * @param string|RichText|array<mixed> $text
+     * @param InputRichBlock[] $blocks
      * @param string|RichText|array<mixed>|null $credit
      */
-    public function __construct(string|array|RichText $text, string|array|RichText|null $credit = null)
+    public function __construct(array $blocks, string|array|RichText|null $credit = null)
     {
         parent::__construct();
-        $this->text = $text;
+        $this->blocks = $blocks;
         $this->credit = $credit;
     }
 }
