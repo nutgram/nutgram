@@ -21,7 +21,7 @@ trait Asserts
 
     /**
      * Asserts custom conditions on the request and response.
-     * @param callable(RequestData, ResponseData):bool|void $closure
+     * @param callable(RequestData, ResponseData):(bool|void) $closure
      */
     public function assertRaw(callable $closure, ?int $index = null, string $message = ''): static
     {
