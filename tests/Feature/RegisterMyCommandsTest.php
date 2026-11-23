@@ -10,6 +10,7 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChat;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChatAdministrators;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChatMember;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
+use SergiX44\Nutgram\Telegram\Types\Internal\RegisteredCommand;
 use SergiX44\Nutgram\Tests\Fixtures\Commands\HelpStringDescriptionCommand;
 use SergiX44\Nutgram\Tests\Fixtures\Commands\HelpStringDescriptionWithScopesCommand;
 
@@ -606,75 +607,94 @@ test('registerMyCommands returns a recap', function () {
     ])->scope([new BotCommandScopeChat(123), new BotCommandScopeAllChatAdministrators()]);
 
     $recap = $bot->registerMyCommands();
+    $recap = array_map(fn (RegisteredCommand $command) => $command->toArray(), $recap);
 
     expect($recap)->toBe([
         [
-            'command' => 'start',
-            'description' => 'Start command',
+            'command' => [
+                'command' => 'start',
+                'description' => 'Start command',
+            ],
             'language' => null,
             'scope' => [
                 'type' => 'default',
             ],
         ],
         [
-            'command' => 'help',
-            'description' => 'Help command',
+            'command' => [
+                'command' => 'help',
+                'description' => 'Help command',
+            ],
             'language' => null,
             'scope' => [
                 'type' => 'default',
             ],
         ],
         [
-            'command' => 'help',
-            'description' => 'Comando help',
+            'command' => [
+                'command' => 'help',
+                'description' => 'Comando help',
+            ],
             'language' => 'it',
             'scope' => [
                 'type' => 'default',
             ],
         ],
         [
-            'command' => 'help',
-            'description' => 'Comando ayuda',
+            'command' => [
+                'command' => 'help',
+                'description' => 'Comando ayuda',
+            ],
             'language' => 'es',
             'scope' => [
                 'type' => 'default',
             ],
         ],
         [
-            'command' => 'about',
-            'description' => 'About command',
+            'command' => [
+                'command' => 'about',
+                'description' => 'About command',
+            ],
             'language' => null,
             'scope' => [
                 'type' => 'all_chat_administrators',
             ],
         ],
         [
-            'command' => 'foo',
-            'description' => 'Foo command',
+            'command' => [
+                'command' => 'foo',
+                'description' => 'Foo command',
+            ],
             'language' => null,
             'scope' => [
                 'type' => 'all_chat_administrators',
             ],
         ],
         [
-            'command' => 'foo',
-            'description' => 'Foo command',
+            'command' => [
+                'command' => 'foo',
+                'description' => 'Foo command',
+            ],
             'language' => 'en',
             'scope' => [
                 'type' => 'all_chat_administrators',
             ],
         ],
         [
-            'command' => 'foo',
-            'description' => 'Comando foo',
+            'command' => [
+                'command' => 'foo',
+                'description' => 'Comando foo',
+            ],
             'language' => 'it',
             'scope' => [
                 'type' => 'all_chat_administrators',
             ],
         ],
         [
-            'command' => 'foo',
-            'description' => 'Foo command',
+            'command' => [
+                'command' => 'foo',
+                'description' => 'Foo command',
+            ],
             'language' => null,
             'scope' => [
                 'type' => 'chat',
@@ -682,8 +702,10 @@ test('registerMyCommands returns a recap', function () {
             ],
         ],
         [
-            'command' => 'foo',
-            'description' => 'Foo command',
+            'command' => [
+                'command' => 'foo',
+                'description' => 'Foo command',
+            ],
             'language' => 'en',
             'scope' => [
                 'type' => 'chat',
@@ -691,8 +713,10 @@ test('registerMyCommands returns a recap', function () {
             ],
         ],
         [
-            'command' => 'foo',
-            'description' => 'Comando foo',
+            'command' => [
+                'command' => 'foo',
+                'description' => 'Comando foo',
+            ],
             'language' => 'it',
             'scope' => [
                 'type' => 'chat',
