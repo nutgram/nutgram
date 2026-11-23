@@ -29,7 +29,7 @@
         "ext-json": "*",
         "guzzlehttp/guzzle": "^7.15.2|^8.0.1",
         "illuminate/macroable": ">=9.0",
-        "illuminate/testing": "^11.0|^12.0",
+        "illuminate/testing": "^12.0|^13.0",
         "nutgram/hydrator": "^7.2.0",
         "opis/closure": "^4.5",
         "psr/clock": "^1.0",
