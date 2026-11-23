@@ -21,7 +21,7 @@ trait Asserts
 
     /**
      * Asserts custom conditions on the request and response.
-     * @param callable(RequestData, ResponseData):bool $closure
+     * @param callable(RequestData, ResponseData):bool|void $closure
      */
     public function assertRaw(callable $closure, ?int $index = null, string $message = ''): static
     {
@@ -36,7 +36,11 @@ trait Asserts
         /** @var Response $response */
         [$request, $response] = array_values($reqRes);
 
-        PHPUnit::assertTrue($closure(new RequestData($request), new ResponseData($response)), $message);
+        $result = $closure(new RequestData($request), new ResponseData($response));
+
+        if (is_bool($result)) {
+            PHPUnit::assertTrue($result, $message);
+        }
 
         return $this;
     }
