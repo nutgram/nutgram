@@ -88,6 +88,20 @@ test('assertRaw with multiple files', function () {
         });
 });
 
+test('assertRaw without return', function () {
+    $bot = Nutgram::fake();
+
+    $bot->onCommand('test', function (Nutgram $bot) {
+        $bot->sendMessage('test');
+    });
+
+    $bot->hearText('/test')
+        ->reply()
+        ->assertRaw(function (RequestData $request) {
+            expect($request->get('text'))->toBe('test');
+        });
+});
+
 test('assertCalled 0 times', function () {
     $bot = Nutgram::fake();
 
