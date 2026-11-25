@@ -1,16 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Boost;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ChatBoostSourceSource;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * The boost was obtained by subscribing to Telegram Premium or by gifting a Telegram Premium subscription to another user.
  * @see https://core.telegram.org/bots/api#chatboostsourcepremium
  */
-class ChatBoostSourcePremium extends ChatBoostSource
+class ChatBoostSourcePremium extends BaseType implements ChatBoostSource
 {
     /**
      * Source of the boost, always “premium”

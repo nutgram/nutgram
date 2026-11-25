@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\BackgroundFillType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * The background is a gradient fill.
  * @see https://core.telegram.org/bots/api#backgroundfillgradient
  */
-class BackgroundFillGradient extends BackgroundFill
+class BackgroundFillGradient extends BaseType implements BackgroundFill
 {
     /**
      * Type of the background fill, always “gradient”

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Handlers;
 
 use Closure;
@@ -13,7 +15,12 @@ use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScope;
 
 class HandlerGroup
 {
-    use Taggable, Macroable, Disable, Constraints, InteractsWithRateLimit, IsEphemeral;
+    use Taggable;
+    use Macroable;
+    use Disable;
+    use Constraints;
+    use InteractsWithRateLimit;
+    use IsEphemeral;
 
     protected array $middlewares = [];
 

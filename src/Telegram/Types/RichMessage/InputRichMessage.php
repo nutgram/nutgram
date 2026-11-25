@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlock;
 
@@ -14,8 +15,8 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock\InputRichBlock;
  * Exactly one of the fields html, markdown, or blocks must be used.
  * @see https://core.telegram.org/bots/api#inputrichmessage
  */
-#[SkipConstructor]
-class InputRichMessage extends BaseType implements Uploadables, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichMessage extends BaseType implements Uploadables
 {
     /**
      * Optional. Content of the rich message to send described as a list of blocks
@@ -56,10 +57,6 @@ class InputRichMessage extends BaseType implements Uploadables, JsonSerializable
     public ?bool $skip_entity_detection = null;
 
     /**
-     * @param string|null $html
-     * @param string|null $markdown
-     * @param bool|null $is_rtl
-     * @param bool|null $skip_entity_detection
      * @param InputRichMessageMedia[]|null $media
      * @param InputRichBlock[]|null $blocks
      */
@@ -80,13 +77,11 @@ class InputRichMessage extends BaseType implements Uploadables, JsonSerializable
         $this->blocks = $blocks;
     }
 
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
-
     public function uploadables(): array
     {
-        return ['media', 'blocks'];
+        return [
+            'media' => $this->media,
+            'blocks' => $this->blocks,
+        ];
     }
 }

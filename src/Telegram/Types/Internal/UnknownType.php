@@ -1,8 +1,8 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types\Internal;
+declare(strict_types=1);
 
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+namespace SergiX44\Nutgram\Telegram\Types\Internal;
 
 class UnknownType extends BaseType
 {

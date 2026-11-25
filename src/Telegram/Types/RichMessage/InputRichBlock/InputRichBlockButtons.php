@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage\InputRichBlock;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
+use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockButtonsAlign;
 use SergiX44\Nutgram\Telegram\Properties\InputRichBlockType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichMessageButton;
 
 /**
@@ -14,12 +16,13 @@ use SergiX44\Nutgram\Telegram\Types\RichMessage\RichMessageButton;
  * corresponding to the custom HTML tag <tg-button-row>.
  * @see https://core.telegram.org/bots/api#inputrichblockbuttons
  */
-#[SkipConstructor]
-class InputRichBlockButtons extends BaseType implements InputRichBlock, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputRichBlockButtons extends BaseType implements InputRichBlock
 {
     /**
      * Type of the block, always “buttons”
      */
+    #[EnumOrScalar]
     public InputRichBlockType|string $type = InputRichBlockType::BUTTONS;
 
     /**
@@ -32,10 +35,12 @@ class InputRichBlockButtons extends BaseType implements InputRichBlock, JsonSeri
      * Optional. Horizontal alignment of the buttons.
      * Currently, must be one of “left”, “center”, or “right”.
      */
+    #[EnumOrScalar]
     public InputRichBlockButtonsAlign|string|null $align = null;
 
     public function __construct(InputRichBlockButtonsAlign|string|null $align = null)
     {
+        parent::__construct();
         $this->align = $align;
         $this->buttons = [];
     }
@@ -45,10 +50,5 @@ class InputRichBlockButtons extends BaseType implements InputRichBlock, JsonSeri
         $this->buttons[] = $button;
 
         return $this;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

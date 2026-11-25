@@ -1,17 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Sticker;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\OwnedGiftType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Message\MessageEntity;
+use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * Describes a regular gift owned by a user or a chat.
  * @see https://core.telegram.org/bots/api#ownedgiftregular
  */
-class OwnedGiftRegular extends OwnedGift
+class OwnedGiftRegular extends BaseType implements OwnedGift
 {
     /**
      * Type of the gift, always “regular”
@@ -23,6 +27,21 @@ class OwnedGiftRegular extends OwnedGift
      * Information about the regular gift
      */
     public Gift $gift;
+
+    /**
+     * Optional. Unique identifier of the received gift for the bot; for gifts received on behalf of business accounts only
+     */
+    public ?string $owned_gift_id = null;
+
+    /**
+     * Optional. Sender of the gift if it is a known user
+     */
+    public ?User $sender_user = null;
+
+    /**
+     * Date the gift was sent in Unix time
+     */
+    public int $send_date;
 
     /**
      * Optional. Text of the message that was added to the gift
@@ -40,6 +59,11 @@ class OwnedGiftRegular extends OwnedGift
      * Optional. True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them
      */
     public ?bool $is_private = null;
+
+    /**
+     * Optional. True, if the gift is displayed on the account's profile page; for gifts received on behalf of business accounts only
+     */
+    public ?bool $is_saved = null;
 
     /**
      * Optional. True, if the gift can be upgraded to a unique gift; for gifts received on behalf of business accounts only

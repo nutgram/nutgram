@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Support;
 
 /**
@@ -27,7 +29,6 @@ class DeepLink
      * Example: https:\/\/t.me/\<username\>
      * @see https://core.telegram.org/api/links#public-username-links
      * @param string $username Username
-     * @return string
      */
     public function username(string $username): string
     {
@@ -41,7 +42,6 @@ class DeepLink
      * Example: https:\/\/t.me/contact/\<token\>
      * @see https://core.telegram.org/api/links#temporary-profile-links
      * @param string $token Profile token
-     * @return string
      */
     public function contact(string $token): string
     {
@@ -54,9 +54,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/+\<phone_number\>
      * @see https://core.telegram.org/api/links#phone-number-links
-     * @param int $prefix
-     * @param int $phone
-     * @return string
      */
     public function phone(int $prefix, int $phone): string
     {
@@ -71,9 +68,6 @@ class DeepLink
      *
      * Example (legacy): https:\/\/t.me/joinchat/\<hash\>
      * @see https://core.telegram.org/api/links#chat-invite-links
-     * @param string $hash
-     * @param bool $legacy
-     * @return string
      */
     public function joinChat(string $hash, bool $legacy = false): string
     {
@@ -90,8 +84,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/addlist/\<slug\>
      * @see https://core.telegram.org/api/links#chat-folder-links
-     * @param string $slug
-     * @return string
      */
     public function addList(string $slug): string
     {
@@ -104,13 +96,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/\<username\>\/<thread_id?\>/\<message_id\>
      * @see https://core.telegram.org/api/links#message-links
-     * @param string $username
-     * @param int $messageId
-     * @param int|null $threadId
-     * @param bool $single
-     * @param int|null $comment
-     * @param string|null $mediaTimestamp
-     * @return string
      */
     public function publicMessage(
         string $username,
@@ -121,9 +106,9 @@ class DeepLink
         ?string $mediaTimestamp = null,
     ): string {
         if ($threadId === null) {
-            $endpoint = $username.'/'.$messageId;
+            $endpoint = sprintf("%s/%d", $username, (string)$messageId);
         } else {
-            $endpoint = $username.'/'.$threadId.'/'.$messageId;
+            $endpoint = sprintf("%s/%d/%d", $username, (string)$threadId, (string)$messageId);
         }
 
         return $this->buildUrl($endpoint, [
@@ -139,13 +124,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/c/\<chat_id\>/\<thread_id?\>/\<message_id\>
      * @see https://core.telegram.org/api/links#message-links
-     * @param int $chatId
-     * @param int $messageId
-     * @param int|null $threadId
-     * @param bool $single
-     * @param int|null $comment
-     * @param string|null $mediaTimestamp
-     * @return string
      */
     public function privateMessage(
         int $chatId,
@@ -176,11 +154,8 @@ class DeepLink
      *
      * Example: https:\/\/t.me/\<username\>\/<topic_id\>
      * @see https://core.telegram.org/api/links#forum-topic-links
-     * @param string $username
-     * @param string $topicId
-     * @return string
      */
-    public function publicForumTopic(string $username, string $topicId): string
+    public function publicForumTopic(string $username, int $topicId): string
     {
         return $this->publicMessage($username, $topicId);
     }
@@ -193,11 +168,8 @@ class DeepLink
      *
      * Example: https:\/\/t.me/c/\<chat_id\>/\<topic_id\>
      * @see https://core.telegram.org/api/links#forum-topic-links
-     * @param int $chatId
-     * @param string $topicId
-     * @return string
      */
-    public function privateForumTopic(int $chatId, string $topicId): string
+    public function privateForumTopic(int $chatId, int $topicId): string
     {
         return $this->privateMessage($chatId, $topicId);
     }
@@ -208,9 +180,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/share?url=\<url\>&text=\<text?\>
      * @see https://core.telegram.org/api/links#share-links
-     * @param string $url
-     * @param string|null $text
-     * @return string
      */
     public function share(string $url, ?string $text = null): string
     {
@@ -226,9 +195,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/\<username\>?videochat=\<invite_hash?\>
      * @see https://core.telegram.org/api/links#video-chat-livestream-links
-     * @param string $username
-     * @param string $inviteHash
-     * @return string
      */
     public function videochat(string $username, string $inviteHash = ''): string
     {
@@ -243,9 +209,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/\<username\>?livestream=\<invite_hash?\>
      * @see https://core.telegram.org/api/links#video-chat-livestream-links
-     * @param string $username
-     * @param string $inviteHash
-     * @return string
      */
     public function livestream(string $username, string $inviteHash = ''): string
     {
@@ -260,8 +223,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/addstickers/\<slug\>
      * @see https://core.telegram.org/api/links#stickerset-links
-     * @param string $slug
-     * @return string
      */
     public function addStickers(string $slug): string
     {
@@ -274,8 +235,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/addemoji/\<slug\>
      * @see https://core.telegram.org/api/links#custom-emoji-stickerset-links
-     * @param string $slug
-     * @return string
      */
     public function addEmoji(string $slug): string
     {
@@ -288,9 +247,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/\<username\>/s/\<story_id\>
      * @see https://core.telegram.org/api/links#story-links
-     * @param string $username
-     * @param int $storyId
-     * @return string
      */
     public function story(string $username, int $storyId): string
     {
@@ -303,8 +259,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/boost/\<username\>
      * @see https://core.telegram.org/api/links#boost-links
-     * @param string $username
-     * @return string
      */
     public function publicBoost(string $username): string
     {
@@ -317,8 +271,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/boost?c=\<chat_id\>
      * @see https://core.telegram.org/api/links#boost-links
-     * @param int $chatId
-     * @return string
      */
     public function privateBoost(int $chatId): string
     {
@@ -333,10 +285,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/proxy?server=\<server\>&port=\<port\>&secret=\<secret\>
      * @see https://core.telegram.org/api/links#mtproxy-links
-     * @param string $server
-     * @param int $port
-     * @param string $secret
-     * @return string
      */
     public function proxyMTP(string $server, int $port, string $secret): string
     {
@@ -353,11 +301,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/socks?server=\<server\>&port=\<port\>&user=\<user\>&pass=\<pass\>
      * @see https://core.telegram.org/api/links#socks5-proxy-links
-     * @param string $server
-     * @param int $port
-     * @param string $user
-     * @param string $pass
-     * @return string
      */
     public function proxySocks5(string $server, int $port, string $user, string $pass): string
     {
@@ -375,8 +318,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/addtheme/\<slug\>
      * @see https://core.telegram.org/api/links#theme-links
-     * @param string $slug
-     * @return string
      */
     public function addTheme(string $slug): string
     {
@@ -389,9 +330,7 @@ class DeepLink
      *
      * Example: https:\/\/t.me/bg/\<slug\>?mode=\<mode?\>
      * @see https://core.telegram.org/api/links#image-wallpapers
-     * @param string $slug
-     * @param string|null $mode A combination of blur and motion (joined by +) to enable blurring and/or parallax motion
-     * @return string
+     * @param string[] $mode A combination of blur and motion to enable blurring and/or parallax motion
      */
     public function wallpaperImage(string $slug, array $mode = []): string
     {
@@ -406,8 +345,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/bg/\<hex_color\>
      * @see https://core.telegram.org/api/links#solid-fill-wallpapers
-     * @param string $hexColor
-     * @return string
      */
     public function wallpaperSolidFill(string $hexColor): string
     {
@@ -423,7 +360,6 @@ class DeepLink
      * @param string $topColor Top gradient color in hex RGB format.
      * @param string $bottomColor Bottom gradient color in hex RGB format.
      * @param int $rotation Clockwise rotation angle of the gradient, in degrees; 0-359. Must be always divisible by 45, default to 0 if not set.
-     * @return string
      */
     public function wallpaperGradientFill(string $topColor, string $bottomColor, int $rotation = 0): string
     {
@@ -438,11 +374,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/bg/\<color1\>~\<color2\>~\<color3\>~\<color4?\>
      * @see https://core.telegram.org/api/links#freeform-gradient-fill-wallpapers
-     * @param string $hexColor1
-     * @param string $hexColor2
-     * @param string $hexColor3
-     * @param string|null $hexColor4
-     * @return string
      */
     public function wallpaperFreeformGradientFill(
         string $hexColor1,
@@ -465,11 +396,7 @@ class DeepLink
      *
      * Example: https:\/\/t.me/bg/\<slug\>?intensity=\<intensity\>&bg_color=\<bg_color\>&mode=\<mode?\>
      * @see https://core.telegram.org/api/links#solid-pattern-wallpapers
-     * @param string $slug
-     * @param int $intensity
-     * @param string $bgColor
-     * @param string|null $mode
-     * @return string
+     * @param string[] $mode
      */
     public function wallpaperSolidPattern(string $slug, int $intensity, string $bgColor, array $mode = []): string
     {
@@ -486,13 +413,7 @@ class DeepLink
      *
      * Example: https:\/\/t.me/bg/\<slug\>?intensity=\<intensity\>&top_color=\<top_color\>&bottom_color=\<bottom_color\>&rotation=\<rotation\>&mode=\<mode?\>
      * @see https://core.telegram.org/api/links#gradient-pattern-wallpapers
-     * @param string $slug
-     * @param int $intensity
-     * @param string $topColor
-     * @param string $bottomColor
-     * @param int $rotation
-     * @param string|null $mode
-     * @return string
+     * @param string[] $mode
      */
     public function wallpaperGradientPattern(
         string $slug,
@@ -517,14 +438,7 @@ class DeepLink
      *
      * Example: https:\/\/t.me/bg/\<slug\>?intensity=\<intensity\>&bg_color=\<hex_color1\>~\<hex_color2\>~\<hex_color3\>~\<hex_color4?\>&mode=\<mode?\>
      * @see https://core.telegram.org/api/links#freeform-gradient-pattern-wallpapers
-     * @param string $slug
-     * @param int $intensity
-     * @param string $hexColor1
-     * @param string $hexColor2
-     * @param string $hexColor3
-     * @param string|null $hexColor4
-     * @param string|null $mode
-     * @return string
+     * @param string[] $mode
      */
     public function wallpaperFreeformGradientPattern(
         string $slug,
@@ -553,9 +467,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/\<bot_username\>?start=\<value\>
      * @see https://core.telegram.org/api/links#bot-links
-     * @param string $botUsername
-     * @param string $value
-     * @return string
      */
     public function start(string $botUsername, string $value): string
     {
@@ -570,10 +481,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/\<bot_username\>?startgroup=\<value\>&admin=\<permission1\>+\<permission2\> ...
      * @see https://core.telegram.org/api/links#group-channel-bot-links
-     * @param string $botUsername
-     * @param string $value
-     * @param array $admin
-     * @return string
      */
     public function startGroup(string $botUsername, string $value, array $admin = []): string
     {
@@ -589,9 +496,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/\<bot_username\>?startchannel&admin=\<permission1\>+\<permission2\> ...
      * @see https://core.telegram.org/api/links#group-channel-bot-links
-     * @param string $botUsername
-     * @param array $admin
-     * @return string
      */
     public function startChannel(string $botUsername, array $admin = []): string
     {
@@ -607,9 +511,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/\<bot_username\>?game=\<short_name\>
      * @see https://core.telegram.org/api/links#game-links
-     * @param string $botUsername
-     * @param string $shortName
-     * @return string
      */
     public function game(string $botUsername, string $shortName): string
     {
@@ -624,8 +525,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/login/\<code\>
      * @see https://core.telegram.org/api/links#login-code-link
-     * @param string $code
-     * @return string
      */
     public function login(string $code): string
     {
@@ -638,8 +537,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/invoice/\<slug\>
      * @see https://core.telegram.org/api/links#invoice-links
-     * @param string $slug
-     * @return string
      */
     public function invoice(string $slug): string
     {
@@ -652,8 +549,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/setlanguage/\<slug\>
      * @see https://core.telegram.org/api/links#language-pack-links
-     * @param string $slug
-     * @return string
      */
     public function setLanguage(string $slug): string
     {
@@ -666,9 +561,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/confirmphone?phone=\<phone\>&hash=\<hash\>
      * @see https://core.telegram.org/api/links#phone-confirmation-links
-     * @param string $phone
-     * @param string $hash
-     * @return string
      */
     public function confirmPhone(string $phone, string $hash): string
     {
@@ -684,8 +576,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/giftcode/\<slug\>
      * @see https://core.telegram.org/api/links#premium-giftcode-links
-     * @param string $slug
-     * @return string
      */
     public function giftcode(string $slug): string
     {
@@ -698,9 +588,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/\<bot_username\>?startapp=\<value?\>
      * @see https://core.telegram.org/api/links#mini-app-links
-     * @param string $botUsername
-     * @param string $value
-     * @return string
      */
     public function startApp(string $botUsername, string $value = ''): string
     {
@@ -715,10 +602,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/\<bot_username\>/\<app_name\>?startapp=\<start_parameter?\>
      * @see https://core.telegram.org/api/links#direct-mini-app-links
-     * @param string $botUsername
-     * @param string $appName
-     * @param string|null $startParameter
-     * @return string
      */
     public function miniApp(string $botUsername, string $appName, ?string $startParameter = null): string
     {
@@ -737,10 +620,7 @@ class DeepLink
      * Example: https:\/\/t.me/\<bot_username\>?startattach=\<start_parameter?\>&choose=\<choose1\>+\<choose2\> ...
      * @see https://core.telegram.org/api/links#open-in-current-chat Open in current chat
      * @see https://core.telegram.org/api/links#open-in-any-chat Open in any chat
-     * @param string $botUsername
-     * @param string|null $startParameter
      * @param array $choose A combination of users, bots, groups, channels
-     * @return string
      */
     public function startAttach(string $botUsername, ?string $startParameter = null, array $choose = []): string
     {
@@ -757,10 +637,6 @@ class DeepLink
      *
      * Example: https:\/\/t.me/\<usernameOrPhone\>?attach=\<bot_username\>&startattach=\<start_parameter?\>
      * @see https://core.telegram.org/api/links#open-in-specific-chat
-     * @param string $usernameOrPhone
-     * @param string $botUsername
-     * @param string|null $startParameter
-     * @return string
      */
     public function attach(string $usernameOrPhone, string $botUsername, ?string $startParameter = null): string
     {

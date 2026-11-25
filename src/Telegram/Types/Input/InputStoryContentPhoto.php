@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputStoryContentType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseUnion;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
 
@@ -12,8 +16,8 @@ use SergiX44\Nutgram\Telegram\Types\Internal\Uploadables;
  * Describes a photo to post as a story.
  * @see https://core.telegram.org/bots/api#inputstorycontentphoto
  */
-#[SkipConstructor]
-class InputStoryContentPhoto extends InputStoryContent implements Uploadables
+#[OverrideConstructor('bindToInstance')]
+class InputStoryContentPhoto extends BaseType implements InputStoryContent, Uploadables
 {
     /**
      * Type of the content, must be photo
@@ -26,6 +30,7 @@ class InputStoryContentPhoto extends InputStoryContent implements Uploadables
      * The photo can't be reused and can only be uploaded as a new file, so you can pass “attach://<file_attach_name>” if the photo was uploaded using multipart/form-data under <file_attach_name>.
      * {@see https://core.telegram.org/bots/api#sending-files More information on Sending Files »}
      */
+    #[BaseUnion]
     public InputFile|string $photo;
 
     public function __construct(InputFile|string $photo)
@@ -36,6 +41,6 @@ class InputStoryContentPhoto extends InputStoryContent implements Uploadables
 
     public function uploadables(): array
     {
-        return ['photo'];
+        return ['photo' => $this->photo];
     }
 }

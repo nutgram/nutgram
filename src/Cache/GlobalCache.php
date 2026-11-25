@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Cache;
 
@@ -11,19 +12,12 @@ class GlobalCache extends BotCache
 {
     protected const GLOBAL_PREFIX = 'GLOBAL';
 
-    /**
-     * @param  CacheInterface  $cache
-     * @param  int|null  $botId
-     */
     public function __construct(CacheInterface $cache, ?int $botId)
     {
         parent::__construct($cache, self::GLOBAL_PREFIX, $botId);
     }
 
     /**
-     * @param  string  $key
-     * @param  mixed  $default
-     * @return mixed
      * @throws InvalidArgumentException
      */
     public function get(string $key, mixed $default = null): mixed
@@ -32,10 +26,6 @@ class GlobalCache extends BotCache
     }
 
     /**
-     * @param  string  $key
-     * @param  mixed  $data
-     * @param  DateInterval|int|null  $ttl
-     * @return bool
      * @throws InvalidArgumentException
      */
     public function set(string $key, mixed $data, DateInterval|int|null $ttl = null): bool
@@ -44,8 +34,6 @@ class GlobalCache extends BotCache
     }
 
     /**
-     * @param  string  $key
-     * @return bool
      * @throws InvalidArgumentException
      */
     public function delete(string $key): bool

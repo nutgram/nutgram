@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Handlers;
 
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
@@ -12,8 +14,6 @@ trait FireHandlers
 
     /**
      * Return the current resolved handler
-     *
-     * @return Handler|null
      */
     public function currentHandler(): ?Handler
     {
@@ -22,8 +22,7 @@ trait FireHandlers
 
     /**
      * Returns a list of all parameters parsed by the current handlers
-     *
-     * @return array
+     * @return array<string, mixed>
      */
     public function currentParameters(): array
     {
@@ -31,9 +30,7 @@ trait FireHandlers
     }
 
     /**
-     * @param string $type
-     * @param array $parameters
-     * @return mixed
+     * @param list<mixed> $parameters
      * @throws Throwable
      */
     protected function fireHandlersBy(string $type, array $parameters = []): mixed
@@ -44,16 +41,14 @@ trait FireHandlers
     }
 
     /**
-     * @param array $handlers
-     * @param array $parameters
-     * @return mixed
+     * @param Handler[] $handlers
+     * @param list<mixed> $parameters
      * @throws Throwable
      */
     protected function fireHandlers(array $handlers, array $parameters = []): mixed
     {
         $result = null;
 
-        /** @var Handler $handler */
         foreach ($handlers as $handler) {
             try {
                 $this->currentHandler = $handler;
@@ -68,9 +63,6 @@ trait FireHandlers
     }
 
     /**
-     * @param string $type
-     * @param Throwable $e
-     * @return mixed
      * @throws Throwable
      */
     protected function fireExceptionHandlerBy(string $type, Throwable $e): mixed

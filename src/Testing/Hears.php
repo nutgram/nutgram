@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Testing;
 
 use ReflectionObject;
@@ -9,31 +11,28 @@ use SergiX44\Nutgram\Telegram\Properties\UpdateType;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
 use SergiX44\Nutgram\Telegram\Types\User\User;
+use function SergiX44\Nutgram\Support\getSafeReflectionTypeName;
 
 /**
  * @mixin FakeNutgram
  */
 trait Hears
 {
-    public function setCommonUser(User $user): self
+    public function setCommonUser(User $user): static
     {
         $this->commonUser = $user;
 
         return $this;
     }
 
-    public function setCommonChat(Chat $chat): self
+    public function setCommonChat(Chat $chat): static
     {
         $this->commonChat = $chat;
 
         return $this;
     }
 
-    /**
-     * @param  mixed  $update
-     * @return $this
-     */
-    public function hearUpdate(Update $update): self
+    public function hearUpdate(Update $update): static
     {
         if ($this->commonUser !== null) {
             $update->setUser($this->commonUser);
@@ -63,35 +62,25 @@ trait Hears
         return $this;
     }
 
-    /**
-     * @param UpdateType $type
-     * @param array $partialAttributes
-     * @return $this
-     */
     public function hearUpdateType(
         UpdateType $type,
         array $partialAttributes = [],
-    ): self {
+    ): static {
         $typeName = $type->value;
 
         /** @var Update $update */
         $update = $this->getContainer()->get(Update::class);
 
-        $class = (new ReflectionObject($update))
-            ->getProperty($typeName)
-            ->getType()
-            ?->getName();
+        $reflectionType = new ReflectionObject($update)->getProperty($typeName)->getType();
+
+        $class = getSafeReflectionTypeName($reflectionType);
 
         $update->{$typeName} = $this->typeFaker->fakeInstanceOf($class, $partialAttributes);
 
         return $this->hearUpdate($update);
     }
 
-    /**
-     * @param  array  $value
-     * @return $this
-     */
-    public function hearMessage(array $value): self
+    public function hearMessage(array $value): static
     {
         return $this->hearUpdateType(
             UpdateType::MESSAGE,
@@ -99,20 +88,12 @@ trait Hears
         );
     }
 
-    /**
-     * @param  string  $value
-     * @return $this
-     */
-    public function hearText(string $value): self
+    public function hearText(string $value): static
     {
         return $this->hearMessage(['text' => $value]);
     }
 
-    /**
-     * @param  string  $value
-     * @return $this
-     */
-    public function hearCallbackQueryData(string $value): self
+    public function hearCallbackQueryData(string $value): static
     {
         return $this->hearUpdateType(UpdateType::CALLBACK_QUERY, [
             'message' => ['from' => [], 'date' => 1703892479],

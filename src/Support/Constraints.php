@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Support;
 
 use BackedEnum;
@@ -25,7 +27,7 @@ trait Constraints
 
     public function whereIn(string $parameter, array $values): self
     {
-        $values = array_map(function (mixed $item) {
+        $values = array_map(function (mixed $item): string {
             if ($item instanceof BackedEnum) {
                 $item = $item->value;
             }

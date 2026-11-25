@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ChatMemberStatus;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
@@ -11,7 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
  * Supergroups only.
  * @see https://core.telegram.org/bots/api#chatmemberrestricted
  */
-class ChatMemberRestricted extends ChatMember
+class ChatMemberRestricted extends BaseType implements ChatMember
 {
     /** The member's status in the chat, always “restricted” */
     #[EnumOrScalar]

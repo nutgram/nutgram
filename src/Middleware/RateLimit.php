@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Middleware;
 
+use Psr\Clock\ClockInterface;
 use Psr\SimpleCache\CacheInterface;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Support\RateLimiter;
@@ -19,7 +22,7 @@ class RateLimit
         protected ?string $key = null,
         $warningCallback = null,
     ) {
-        $this->warningCallback = $warningCallback ?? function (Nutgram $bot, int $availableIn) {
+        $this->warningCallback = $warningCallback ?? function (Nutgram $bot, int $availableIn): void {
             $bot->sendMessage('Too many messages, please wait a bit. This message will only be sent once until the rate limit is reset.');
 
             if ($bot->isCallbackQuery()) {
@@ -42,8 +45,10 @@ class RateLimit
         $key = sprintf("%s:%s.%s", $key, $userId, $chatId);
 
         $cache = $bot->getContainer()->get(CacheInterface::class);
+        $clock = $bot->getContainer()->get(ClockInterface::class);
         $rateLimiter = new RateLimiter(
             cache: $cache,
+            clock: $clock,
             key: $key,
             maxAttempts: $this->maxAttempts,
             decaySeconds: $this->decaySeconds,

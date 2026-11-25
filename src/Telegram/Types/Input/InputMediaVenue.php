@@ -1,20 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Input;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\InputMediaType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
-use function SergiX44\Nutgram\Support\array_filter_null;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * Represents a venue to be sent.
  * @see https://core.telegram.org/bots/api#inputmediavenue
  */
-#[SkipConstructor]
-class InputMediaVenue extends BaseType implements InputPollMedia, InputPollOptionMedia, JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class InputMediaVenue extends BaseType implements InputPollMedia, InputPollOptionMedia
 {
     /**
      * Type of the result, must be venue
@@ -82,42 +82,5 @@ class InputMediaVenue extends BaseType implements InputPollMedia, InputPollOptio
         $this->foursquare_type = $foursquare_type;
         $this->google_place_id = $google_place_id;
         $this->google_place_type = $google_place_type;
-    }
-
-    public static function make(
-        float $latitude,
-        float $longitude,
-        string $title,
-        string $address,
-        ?string $foursquare_id = null,
-        ?string $foursquare_type = null,
-        ?string $google_place_id = null,
-        ?string $google_place_type = null,
-    ): self {
-        return new self(
-            latitude: $latitude,
-            longitude: $longitude,
-            title: $title,
-            address: $address,
-            foursquare_id: $foursquare_id,
-            foursquare_type: $foursquare_type,
-            google_place_id: $google_place_id,
-            google_place_type: $google_place_type,
-        );
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            'title' => $this->title,
-            'address' => $this->address,
-            'foursquare_id' => $this->foursquare_id,
-            'foursquare_type' => $this->foursquare_type,
-            'google_place_id' => $this->google_place_id,
-            'google_place_type' => $this->google_place_type,
-        ]);
     }
 }

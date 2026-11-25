@@ -1,16 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Chat;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ChatMemberStatus;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\User\User;
 
 /**
  * Represents a {@see https://core.telegram.org/bots/api#chatmember chat member} that owns the chat and has all administrator privileges.
  * @see https://core.telegram.org/bots/api#chatmemberowner
  */
-class ChatMemberOwner extends ChatMember
+class ChatMemberOwner extends BaseType implements ChatMember
 {
     /** The member's status in the chat, always “creator” */
     #[EnumOrScalar]

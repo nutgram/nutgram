@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\NetworkException;
 use GuzzleHttp\Exception\NetworkTimeoutException;
@@ -144,15 +146,33 @@ it('redacts the transfer exception attached to a Telegram API error', function (
     });
 })->with('response_user_deactivated');
 
-it('calls the specific api error handler using a custom api exception', function ($responseBody) {
+it('calls the specific api error handler using a custom api exception', function ($responseBody, $class) {
     $bot = Nutgram::fake(responses: [
         new Response(403, body: $responseBody),
     ]);
 
-    $bot->registerApiException(UserDeactivatedException::class);
+    $bot->registerApiException($class);
 
     $bot->sendMessage('hi');
-})->with('response_user_deactivated')->throws(UserDeactivatedException::class);
+})
+    ->with('response_user_deactivated')
+    ->with([
+        'class-string' => UserDeactivatedException::class,
+        'class-instance' => new UserDeactivatedException(),
+    ])
+    ->throws(UserDeactivatedException::class);
+
+it('mutes the specific api error handler using a custom api exception', function ($responseBody) {
+    $bot = Nutgram::fake(responses: [
+        new Response(403, body: $responseBody),
+    ]);
+
+    $bot->registerApiException(new UserDeactivatedException(mute: true));
+
+    $message = $bot->sendMessage('hi');
+
+    expect($message)->toBeNull();
+})->with('response_user_deactivated');
 
 it('throws an error with a wrong custom api exception class', function ($responseBody) {
     $bot = Nutgram::fake(responses: [

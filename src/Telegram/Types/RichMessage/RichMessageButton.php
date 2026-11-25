@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\RichMessage;
 
-use JsonSerializable;
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ButtonStyle;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Common\LoginUrl;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\UnionResolvers\RichTextUnionResolver;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\CopyTextButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\DisabledButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\SwitchInlineQueryChosenChat;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
-use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextUnionResolver;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 /**
@@ -21,8 +22,8 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
  * Exactly one of the fields other than text and style must be used to specify the type of the button.
  * @see https://core.telegram.org/bots/api#richmessagebutton
  */
-#[SkipConstructor]
-class RichMessageButton extends BaseType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class RichMessageButton extends BaseType
 {
     /**
      * Text of the button.
@@ -116,6 +117,7 @@ class RichMessageButton extends BaseType implements JsonSerializable
         ?CopyTextButton $copy_text = null,
         ?DisabledButton $disabled = null,
     ) {
+        parent::__construct();
         $this->text = $text;
         $this->style = $style;
         $this->url = $url;
@@ -127,10 +129,5 @@ class RichMessageButton extends BaseType implements JsonSerializable
         $this->switch_inline_query_chosen_chat = $switch_inline_query_chosen_chat;
         $this->copy_text = $copy_text;
         $this->disabled = $disabled;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

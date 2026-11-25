@@ -1,11 +1,8 @@
 <?php
 
-namespace SergiX44\Nutgram\Telegram\Types\Inline;
+declare(strict_types=1);
 
-use JsonSerializable;
-use SergiX44\Hydrator\Resolver\EnumOrScalar;
-use SergiX44\Nutgram\Telegram\Properties\InlineQueryResultType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+namespace SergiX44\Nutgram\Telegram\Types\Inline;
 
 /**
  * This object represents one result of an inline query.
@@ -35,9 +32,6 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  * therefore must be assumed to be public.
  * @see https://core.telegram.org/bots/api#inlinequeryresult
  */
-abstract class InlineQueryResult extends BaseType implements JsonSerializable
+interface InlineQueryResult
 {
-    /** Type of the result */
-    #[EnumOrScalar]
-    public InlineQueryResultType|string $type;
 }

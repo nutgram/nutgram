@@ -70,7 +70,7 @@ Official Documentation on [https://nutgram.dev/](https://nutgram.dev)
 
 ## 🧩 Features
 
-- Latest PHP 8.2 features
+- Latest PHP 8.4 features
 - Framework agnostic
 - Vanilla PHP [Starter Kit](https://github.com/nutgram/starter-kit)
 - Framework integrations ([Laravel](https://github.com/nutgram/laravel) and [Symfony](https://github.com/nutgram/symfony-bundle))
@@ -99,10 +99,11 @@ Official Documentation on [https://nutgram.dev/](https://nutgram.dev)
 
 ## 🔰 Supported versions
 
-| Nutgram | PHP  | Support Until |
-|---------|------|---------------|
-| ^3.0    | ^8.0 | EOL           |
-| ^4.0    | ^8.2 | On going      |
+| Nutgram | PHP  | Telegram Bot API Support Up To                                             | Support Until                                                  |
+|---------|------|----------------------------------------------------------------------------|----------------------------------------------------------------|
+| ^3.0    | ^8.0 | ![api](https://img.shields.io/badge/April%2021,%202023-6.7-28a8ea.svg)     | ![EOL](https://img.shields.io/badge/EOL-red.svg)               |
+| ^4.0    | ^8.2 | ![api](https://img.shields.io/badge/November%2022,%202026-10.4-28a8ea.svg) | ![EOL](https://img.shields.io/badge/EOL-red.svg)               |
+| ^5.0    | ^8.4 | ![api](https://img.shields.io/badge/LATEST-green.svg)                      | ![On going](https://img.shields.io/badge/On%20going-green.svg) |
 
 ## ✨ Projects with this library
 

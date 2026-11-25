@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Reaction;
 
-use JsonSerializable;
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\ReactionTypeType;
-use function SergiX44\Nutgram\Support\array_filter_null;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * The reaction is based on an emoji.
  * @see https://core.telegram.org/bots/api#reactiontypeemoji
  */
-#[SkipConstructor]
-class ReactionTypeEmoji extends ReactionType implements JsonSerializable
+#[OverrideConstructor('bindToInstance')]
+class ReactionTypeEmoji extends BaseType implements ReactionType
 {
     public const THUMBS_UP = '👍';
     public const THUMBS_DOWN = '👎';
@@ -91,7 +92,6 @@ class ReactionTypeEmoji extends ReactionType implements JsonSerializable
 
     /**
      * Type of the reaction, always “emoji”
-     * @var ReactionTypeType|string
      */
     #[EnumOrScalar]
     public ReactionTypeType|string $type = ReactionTypeType::EMOJI;
@@ -103,7 +103,6 @@ class ReactionTypeEmoji extends ReactionType implements JsonSerializable
      * "💔", "🤨", "😐", "🍓", "🍾", "💋", "🖕", "😈", "😴", "😭", "🤓", "👻", "👨‍💻", "👀", "🎃", "🙈",
      * "😇", "😨", "🤝", "✍", "🤗", "🫡", "🎅", "🎄", "☃", "💅", "🤪", "🗿", "🆒", "💘", "🙉", "🦄",
      * "😘", "💊", "🙊", "😎", "👾", "🤷‍♂", "🤷", "🤷‍♀", "😡"
-     * @var string
      */
     public string $emoji;
 
@@ -111,18 +110,5 @@ class ReactionTypeEmoji extends ReactionType implements JsonSerializable
     {
         parent::__construct();
         $this->emoji = $emoji;
-    }
-
-    public static function make(string $emoji): self
-    {
-        return new self(emoji: $emoji);
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_filter_null([
-            'type' => $this->type,
-            'emoji' => $this->emoji,
-        ]);
     }
 }

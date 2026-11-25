@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Hydrator\Annotation\ArrayType;
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\UnionResolvers\RichTextUnionResolver;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichText;
-use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextUnionResolver;
 
 class TextQuote extends BaseType
 {
     /**
      * Text of the quoted part of a message that is replied to by the given message
-     * @var string
      */
     public string $text;
 
@@ -46,13 +47,11 @@ class TextQuote extends BaseType
 
     /**
      * Approximate quote position in the original message in UTF-16 code units as specified by the sender
-     * @var int
      */
     public int $position;
 
     /**
      * Optional. True, if the quote was chosen manually by the message sender. Otherwise, the quote was added automatically by the server.
-     * @var bool|null
      */
     public ?bool $is_manual = null;
 }

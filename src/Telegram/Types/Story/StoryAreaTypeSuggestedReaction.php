@@ -1,18 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Story;
 
-use SergiX44\Hydrator\Annotation\SkipConstructor;
+use SergiX44\Hydrator\Annotation\OverrideConstructor;
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\StoryAreaTypeType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Reaction\ReactionType;
 
 /**
  * Describes a story area pointing to a suggested reaction. Currently, a story can have up to 5 suggested reaction areas.
  * @see https://core.telegram.org/bots/api#storyareatypesuggestedreaction
  */
-#[SkipConstructor]
-class StoryAreaTypeSuggestedReaction extends StoryAreaType
+#[OverrideConstructor('bindToInstance')]
+class StoryAreaTypeSuggestedReaction extends BaseType implements StoryAreaType
 {
     /**
      * Type of the area, always “suggested_reaction”

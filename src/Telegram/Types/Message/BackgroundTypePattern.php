@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Message;
 
 use SergiX44\Hydrator\Resolver\EnumOrScalar;
 use SergiX44\Nutgram\Telegram\Properties\BackgroundTypeType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 use SergiX44\Nutgram\Telegram\Types\Media\Document;
 
 /**
@@ -11,7 +14,7 @@ use SergiX44\Nutgram\Telegram\Types\Media\Document;
  * pattern to be combined with the background fill chosen by the user.
  * @see https://core.telegram.org/bots/api#backgroundtypepattern
  */
-class BackgroundTypePattern extends BackgroundType
+class BackgroundTypePattern extends BaseType implements BackgroundType
 {
     /**
      * Type of the background, always “pattern”

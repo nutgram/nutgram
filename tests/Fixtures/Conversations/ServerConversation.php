@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Tests\Fixtures\Conversations;
 
@@ -10,7 +11,7 @@ class ServerConversation extends Conversation
 {
     public function start(Nutgram $bot): void
     {
-        $bot->sendMessage('First step', chat_id: $this->getChatId());
+        $bot->sendMessage('First step');
         $this->next('secondStep');
     }
 

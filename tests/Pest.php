@@ -1,6 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
+use SergiX44\Nutgram\Tests\TelegramTypeContext;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +16,8 @@ use PHPUnit\Framework\TestCase;
 |
 */
 
-uses(TestCase::class)
+pest()
+    ->extend(TestCase::class)
     ->in('Feature', 'Unit', 'E2E');
 
 /*
@@ -27,7 +31,9 @@ uses(TestCase::class)
 |
 */
 
-expect()->extend('getFileContent', fn () => $this->and(File::get($this->value)));
+expect()->extend('toBeOne', function () {
+    return $this->toBe(1);
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -47,4 +53,62 @@ function getUpdateType(string $type, bool $associative = false): array|stdClass
         $associative,
         flags: JSON_THROW_ON_ERROR
     );
+}
+
+/**
+ * @param TelegramTypeContext|TelegramTypeContext[] $context
+ * @return ReflectionClass[]
+ * @throws ReflectionException
+ */
+function getTelegramTypes(TelegramTypeContext|array $context = TelegramTypeContext::All): array
+{
+    $context = is_array($context) ? $context : [$context];
+
+    $directory = __DIR__.'/../src/Telegram/Types/';
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS)
+    );
+
+    $classes = [];
+    foreach ($iterator as $file) {
+        if ($file->isFile() && $file->getExtension() === 'php') {
+            $classes[] = $file->getPathname();
+        }
+    }
+
+    $types = array_map(function (string $classPath) {
+        $classPath = realpath($classPath);
+        $classPath = str_replace(realpath(__DIR__.'/../src/'), 'SergiX44\Nutgram', $classPath);
+        $classPath = str_replace('/', '\\', $classPath);
+        $classPath = str_replace('.php', '', $classPath);
+
+        return new ReflectionClass($classPath);
+    }, $classes);
+
+    return array_values(array_filter($types, function (ReflectionClass $class) use ($context) {
+        if (str_contains($class->getName(), 'SergiX44\Nutgram\Telegram\Types\Internal')) {
+            return false;
+        }
+
+        if ($class->isInterface() && !in_array(TelegramTypeContext::Interface, $context, true)) {
+            return false;
+        }
+
+        foreach ($context as $typeContext) {
+            $matches = match ($typeContext) {
+                TelegramTypeContext::All => true,
+                TelegramTypeContext::NonAbstract => !$class->isAbstract(),
+                TelegramTypeContext::Abstract => $class->isAbstract(),
+                TelegramTypeContext::Interface => $class->isInterface(),
+                TelegramTypeContext::Buildable => $class->getConstructor()?->getDeclaringClass()->getName() === $class->getName(),
+                default => false,
+            };
+
+            if (!$matches) {
+                return false;
+            }
+        }
+
+        return true;
+    }));
 }

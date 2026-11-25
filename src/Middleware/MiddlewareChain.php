@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
 
 namespace SergiX44\Nutgram\Middleware;
 
 abstract class MiddlewareChain
 {
+    /**
+     * @var Link
+     */
     protected mixed $head;
 
     /**

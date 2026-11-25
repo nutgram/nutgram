@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SergiX44\Nutgram\Telegram\Types\Game;
 
-use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Internal\BaseType;
 
 /**
  * A placeholder, currently holds no information.
@@ -11,8 +13,4 @@ use SergiX44\Nutgram\Telegram\Types\BaseType;
  */
 class CallbackGame extends BaseType
 {
-    public static function make(): self
-    {
-        return new self();
-    }
 }
