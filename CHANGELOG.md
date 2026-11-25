@@ -2,6 +2,14 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.53.1 - 2026-11-25
+
+### What's Changed
+
+* Fix/guzzle network token redaction by @sergix44 in https://github.com/nutgram/nutgram/pull/1033
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.53.0...4.53.1
+
 ## 4.53.0 - 2026-11-22
 
 ### What's Changed
