@@ -4,7 +4,6 @@
 namespace SergiX44\Nutgram\Telegram;
 
 use BackedEnum;
-use Error;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -451,10 +450,8 @@ trait Client
     protected function redactTokenFromException(TransferException $exception): void
     {
         for ($cause = $exception; $cause !== null; $cause = $cause->getPrevious()) {
-            $message = $cause->getMessage();
-            if (str_contains($message, $this->token)) {
-                $property = new ReflectionProperty($cause instanceof Error ? Error::class : Exception::class, 'message');
-                $property->setValue($cause, str_replace($this->token, '*****', $message));
+            if (str_contains($cause->getMessage(), $this->token)) {
+                (new ReflectionProperty($cause, 'message'))->setValue($cause, str_replace($this->token, '*****', $cause->getMessage()));
             }
         }
     }
