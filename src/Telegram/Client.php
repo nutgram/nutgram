@@ -353,7 +353,7 @@ trait Client
     {
         for ($cause = $exception; $cause !== null; $cause = $cause->getPrevious()) {
             if (str_contains($cause->getMessage(), $this->token)) {
-                (new ReflectionProperty($cause, 'message'))->setValue($cause, str_replace($this->token, '*****', $cause->getMessage()));
+                new ReflectionProperty($cause, 'message')->setValue($cause, str_replace($this->token, '*****', $cause->getMessage()));
             }
         }
     }
