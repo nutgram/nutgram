@@ -19,6 +19,7 @@ use RuntimeException;
 use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Fake;
+use SergiX44\Nutgram\Support\RedactMiddleware;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\User\User;
@@ -97,6 +98,7 @@ class FakeNutgram extends Nutgram
     ): self {
         $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);
+        $handlerStack->unshift(new RedactMiddleware(self::TOKEN), 'redact');
 
         $c = [
             'client' => ['handler' => $handlerStack, 'base_uri' => ''],

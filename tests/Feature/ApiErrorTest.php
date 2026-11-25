@@ -1,6 +1,9 @@
 <?php
 
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\NetworkException;
+use GuzzleHttp\Exception\NetworkTimeoutException;
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
@@ -103,22 +106,48 @@ it('throws exception if too many requests', function ($responseBody) {
     }
 })->with('too_many_requests');
 
-it('redacts bot token when there is a connectexception', function () {
+it('redacts bot token when there is a guzzle exception', function (string $exceptionClass, string $message) {
+    if (!class_exists($exceptionClass)) {
+        return;
+    }
+
+    $path = sprintf('bot%s/getUpdates', FakeNutgram::TOKEN);
+    $message = sprintf($message, $path);
+    $request = new Request('GET', sprintf('https://api.telegram.org/bot%s/sendMessage', FakeNutgram::TOKEN));
+
+    $exception = method_exists($exceptionClass, 'getRequest')
+        ? new $exceptionClass(message: $message, request: $request)
+        : new $exceptionClass(message: $message);
+
     $bot = Nutgram::fake(
         responses: [
-            new ConnectException(
-                'cURL error 6: Could not resolve host: api.telegram.org (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/getUpdates',
-                new Request('GET', 'https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/sendMessage')
-            ),
+            $exception,
         ],
     );
 
     try {
         $bot->sendMessage('hello');
-    } catch (ConnectException $e) {
+    } catch (Throwable $e) {
         expect($e->getMessage())->not->toContain(FakeNutgram::TOKEN);
     }
-});
+})->with([
+    'TransferException' => [
+        TransferException::class,
+        'Client error: `GET https://api.telegram.org/%s` resulted in a `404 Not Found` response',
+    ],
+    'ConnectException' => [
+        ConnectException::class,
+        'cURL error 6: Could not resolve host: api.telegram.org (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://api.telegram.org/%s',
+    ],
+    'NetworkException' => [
+        NetworkException::class,
+        'cURL error 56: Recv failure: Connection reset by peer (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://api.telegram.org/%s',
+    ],
+    'NetworkTimeoutException' => [
+        NetworkTimeoutException::class,
+        'cURL error 28: Operation timed out after 5000 milliseconds with 0 bytes received (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://api.telegram.org/%s',
+    ],
+]);
 
 it('calls the specific api error handler using a custom api exception', function ($responseBody) {
     $bot = Nutgram::fake(responses: [

@@ -5,7 +5,6 @@ namespace SergiX44\Nutgram\Telegram;
 
 use BackedEnum;
 use Exception;
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ResponseException;
@@ -144,11 +143,7 @@ trait Client
         $endpoint = $this->downloadUrl($file);
 
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
-        try {
-            $response = $this->http->get($endpoint, $requestPost ?? $request);
-        } catch (ConnectException $e) {
-            $this->redactTokenFromConnectException($e);
-        }
+        $response = $this->http->get($endpoint, $requestPost ?? $request);
 
         return $response->getStatusCode() === 200;
     }
@@ -282,11 +277,7 @@ trait Client
                 options: array_filter($requestData, fn ($x) => $x !== 'multipart', ARRAY_FILTER_USE_KEY)
             );
 
-            try {
-                $response = $this->http->post($endpoint, $requestData);
-            } catch (ConnectException $e) {
-                $this->redactTokenFromConnectException($e);
-            }
+            $response = $this->http->post($endpoint, $requestData);
             $content = $this->mapResponse($response, $mapTo);
 
             $this->logResponse((string)$response->getBody());
@@ -355,15 +346,11 @@ trait Client
 
             $this->logRequest($endpoint, $json, $requestData);
 
-            try {
-                $response = $this->http->post($endpoint, [
-                    'body' => json_encode($json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
-                    'headers' => ['Content-Type' => 'application/json'],
-                    ...$requestData,
-                ]);
-            } catch (ConnectException $e) {
-                $this->redactTokenFromConnectException($e);
-            }
+            $response = $this->http->post($endpoint, [
+                'body' => json_encode($json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
+                'headers' => ['Content-Type' => 'application/json'],
+                ...$requestData,
+            ]);
             $content = $this->mapResponse($response, $mapTo);
 
             $this->logResponse((string)$response->getBody());
@@ -450,14 +437,5 @@ trait Client
     protected function chunkText(string $text, int $length): array
     {
         return explode('%#TGMSG#%', word_wrap($text, $length, "%#TGMSG#%", true));
-    }
-
-    protected function redactTokenFromConnectException(ConnectException $e): void
-    {
-        throw new ConnectException(
-            str_replace($this->token, str_repeat('*', 5), $e->getMessage()),
-            $e->getRequest(),
-            $e->getPrevious(),
-        );
     }
 }

@@ -4,6 +4,7 @@
 namespace SergiX44\Nutgram;
 
 use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\HandlerStack;
 use InvalidArgumentException;
 use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Container\ContainerExceptionInterface;
@@ -28,6 +29,7 @@ use SergiX44\Nutgram\RunningMode\Polling;
 use SergiX44\Nutgram\RunningMode\RunningMode;
 use SergiX44\Nutgram\Support\BulkMessenger;
 use SergiX44\Nutgram\Support\HandleLogging;
+use SergiX44\Nutgram\Support\RedactMiddleware;
 use SergiX44\Nutgram\Support\ValidatesWebData;
 use SergiX44\Nutgram\Telegram\Client;
 use SergiX44\Nutgram\Telegram\Types\Common\Update;
@@ -101,7 +103,11 @@ class Nutgram extends ResolveHandlers
 
         SerializableClosure::setSecretKey($this->token);
 
+        $stack = new HandlerStack();
+        $stack->unshift(new RedactMiddleware($this->token), 'redact');
+
         $this->http = new Guzzle([
+            'handler' => $stack,
             'base_uri' => sprintf(
                 '%s/bot%s/%s',
                 $config->apiUrl,
