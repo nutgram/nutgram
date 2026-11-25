@@ -70,7 +70,7 @@ Official Documentation on [https://nutgram.dev/](https://nutgram.dev)
 
 ## 🧩 Features
 
-- Latest PHP 8.2 features
+- Latest PHP 8.4 features
 - Framework agnostic
 - Vanilla PHP [Starter Kit](https://github.com/nutgram/starter-kit)
 - Framework integrations ([Laravel](https://github.com/nutgram/laravel) and [Symfony](https://github.com/nutgram/symfony-bundle))
