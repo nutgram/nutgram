@@ -1,10 +1,15 @@
 <?php
 
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\NetworkException;
+use GuzzleHttp\Exception\NetworkTimeoutException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
+use SergiX44\Nutgram\Telegram\Types\Media\File;
 use SergiX44\Nutgram\Testing\FakeNutgram;
 use SergiX44\Nutgram\Tests\Fixtures\Exceptions\UserDeactivatedException;
 use SergiX44\Nutgram\Tests\Fixtures\Exceptions\WrongCustomException;
@@ -103,22 +108,41 @@ it('throws exception if too many requests', function ($responseBody) {
     }
 })->with('too_many_requests');
 
-it('redacts bot token when there is a connectexception', function () {
-    $bot = Nutgram::fake(
-        responses: [
-            new ConnectException(
-                'cURL error 6: Could not resolve host: api.telegram.org (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/getUpdates',
-                new Request('GET', 'https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/sendMessage')
-            ),
-        ],
-    );
+it('redacts messages throughout the original transfer exception chain', function (string $type, string $operation) {
+    $request = new Request('POST', 'https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/getMe');
+    $cause = new Error('Transport failed for '.FakeNutgram::TOKEN);
+    $failure = new $type('Request failed for '.$request->getUri(), $request, $cause);
+    $bot = Nutgram::fake(responses: [$failure]);
 
-    try {
-        $bot->sendMessage('hello');
-    } catch (ConnectException $e) {
-        expect($e->getMessage())->not->toContain(FakeNutgram::TOKEN);
-    }
-});
+    $file = new File();
+    $file->file_path = 'photo.jpg';
+    expect(fn () => match ($operation) {
+        'json' => $bot->getMe(),
+        'multipart' => $bot->sendRequest('sendDocument', ['document' => 'file-id']),
+        'download' => $bot->downloadFile($file, __DIR__.'/photo.jpg'),
+    })->toThrow(function (TransferException $e) use ($failure, $cause) {
+        expect($e)->toBe($failure)
+            ->and($e->getMessage())->toBe('Request failed for https://api.telegram.org/bot*****/getMe')
+            ->and($e->getPrevious())->toBe($cause)
+            ->and($cause->getMessage())->toBe('Transport failed for *****');
+    });
+})->with(array_filter([
+    ConnectException::class,
+    NetworkException::class,
+    NetworkTimeoutException::class,
+], 'class_exists'))->with(['json', 'multipart', 'download']);
+
+it('redacts the transfer exception attached to a Telegram API error', function ($responseBody) {
+    $request = new Request('POST', 'https://api.telegram.org/bot'.FakeNutgram::TOKEN.'/sendMessage');
+    $failure = RequestException::create($request, new Response(403, body: $responseBody));
+    $bot = Nutgram::fake(responses: [$failure]);
+
+    expect(fn () => $bot->sendMessage('hi'))->toThrow(function (TelegramException $e) use ($failure) {
+        expect($e->getCode())->toBe(403)
+            ->and($e->getPrevious())->toBe($failure)
+            ->and($failure->getMessage())->not->toContain(FakeNutgram::TOKEN);
+    });
+})->with('response_user_deactivated');
 
 it('calls the specific api error handler using a custom api exception', function ($responseBody) {
     $bot = Nutgram::fake(responses: [

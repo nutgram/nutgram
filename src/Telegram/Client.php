@@ -4,8 +4,8 @@
 namespace SergiX44\Nutgram\Telegram;
 
 use BackedEnum;
+use Error;
 use Exception;
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ResponseException;
@@ -16,6 +16,7 @@ use JsonSerializable;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use ReflectionProperty;
 use RuntimeException;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Endpoints\AvailableMethods;
@@ -146,8 +147,9 @@ trait Client
         $requestPost = $this->fireHandlersBy(self::BEFORE_API_REQUEST, [$request, $endpoint]);
         try {
             $response = $this->http->get($endpoint, $requestPost ?? $request);
-        } catch (ConnectException $e) {
-            $this->redactTokenFromConnectException($e);
+        } catch (TransferException $exception) {
+            $this->redactTokenFromException($exception);
+            throw $exception;
         }
 
         return $response->getStatusCode() === 200;
@@ -282,17 +284,14 @@ trait Client
                 options: array_filter($requestData, fn ($x) => $x !== 'multipart', ARRAY_FILTER_USE_KEY)
             );
 
-            try {
-                $response = $this->http->post($endpoint, $requestData);
-            } catch (ConnectException $e) {
-                $this->redactTokenFromConnectException($e);
-            }
+            $response = $this->http->post($endpoint, $requestData);
             $content = $this->mapResponse($response, $mapTo);
 
             $this->logResponse((string)$response->getBody());
 
             return $content;
         } catch (TransferException $exception) {
+            $this->redactTokenFromException($exception);
             $response = $this->getResponseFromException($exception);
             if ($response === null) {
                 throw $exception;
@@ -355,21 +354,18 @@ trait Client
 
             $this->logRequest($endpoint, $json, $requestData);
 
-            try {
-                $response = $this->http->post($endpoint, [
-                    'body' => json_encode($json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
-                    'headers' => ['Content-Type' => 'application/json'],
-                    ...$requestData,
-                ]);
-            } catch (ConnectException $e) {
-                $this->redactTokenFromConnectException($e);
-            }
+            $response = $this->http->post($endpoint, [
+                'body' => json_encode($json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
+                'headers' => ['Content-Type' => 'application/json'],
+                ...$requestData,
+            ]);
             $content = $this->mapResponse($response, $mapTo);
 
             $this->logResponse((string)$response->getBody());
 
             return $content;
         } catch (TransferException $exception) {
+            $this->redactTokenFromException($exception);
             $response = $this->getResponseFromException($exception);
             if ($response === null) {
                 throw $exception;
@@ -452,12 +448,14 @@ trait Client
         return explode('%#TGMSG#%', word_wrap($text, $length, "%#TGMSG#%", true));
     }
 
-    protected function redactTokenFromConnectException(ConnectException $e): void
+    private function redactTokenFromException(TransferException $exception): void
     {
-        throw new ConnectException(
-            str_replace($this->token, str_repeat('*', 5), $e->getMessage()),
-            $e->getRequest(),
-            $e->getPrevious(),
-        );
+        for ($cause = $exception; $cause !== null; $cause = $cause->getPrevious()) {
+            $message = $cause->getMessage();
+            if (str_contains($message, $this->token)) {
+                $property = new ReflectionProperty($cause instanceof Error ? Error::class : Exception::class, 'message');
+                $property->setValue($cause, str_replace($this->token, '*****', $message));
+            }
+        }
     }
 }
