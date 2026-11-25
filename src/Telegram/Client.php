@@ -448,7 +448,7 @@ trait Client
         return explode('%#TGMSG#%', word_wrap($text, $length, "%#TGMSG#%", true));
     }
 
-    private function redactTokenFromException(TransferException $exception): void
+    protected function redactTokenFromException(TransferException $exception): void
     {
         for ($cause = $exception; $cause !== null; $cause = $cause->getPrevious()) {
             $message = $cause->getMessage();
