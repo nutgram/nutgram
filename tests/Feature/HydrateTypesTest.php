@@ -3,8 +3,10 @@
 use SergiX44\Nutgram\Hydrator\Hydrator;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Message\Message;
+use SergiX44\Nutgram\Telegram\Types\Payment\TonNft;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextBold;
 use SergiX44\Nutgram\Telegram\Types\RichMessage\RichText\RichTextTonAddress;
+use SergiX44\Nutgram\Telegram\Types\Sticker\OwnedGifts;
 
 it('hydrate rich_message', function ($content) {
     $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
@@ -163,4 +165,30 @@ it('hydrates a ton_address rich text with nested rich text', function () {
     expect($address)->toBeInstanceOf(RichTextTonAddress::class)
         ->and($address->text[0])->toBeInstanceOf(RichTextBold::class)
         ->and($address->text[1])->toBe('FpEw');
+});
+
+it('hydrates a ton nft without collection_address', function () {
+    $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
+
+    $result = $hydrator->hydrate([
+        'address' => 'EQDtFpEwcFAEcRe5mLVh2N6C0x-_hJEM7W61_JLnSF74p4q2',
+        'index' => '1',
+        'name' => 'NFT',
+        'description' => 'An NFT without a known collection',
+    ], TonNft::class);
+
+    expect($result)->toBeInstanceOf(TonNft::class)
+        ->and($result->collection_address)->toBeNull();
+});
+
+it('hydrates owned gifts without next_offset', function () {
+    $hydrator = Nutgram::fake()->getContainer()->get(Hydrator::class);
+
+    $result = $hydrator->hydrate([
+        'total_count' => 0,
+        'gifts' => [],
+    ], OwnedGifts::class);
+
+    expect($result)->toBeInstanceOf(OwnedGifts::class)
+        ->and($result->next_offset)->toBeNull();
 });

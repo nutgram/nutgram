@@ -20,7 +20,7 @@ class TonNft extends BaseType
     /**
      * Optional. Address of the collection to which the NFT belongs; omitted if unknown
      */
-    public string $collection_address;
+    public ?string $collection_address = null;
 
     /**
      * Index of the NFT among all NFTs from the collection as a decimal number
