@@ -2,6 +2,18 @@
 
 All notable changes to `nutgram` will be documented in this file.
 
+## 4.53.2 - 2026-11-28
+
+### What's Changed
+
+* fix: make optional TonNft.collection_address and OwnedGifts.next_offset nullable by @manch1915 in https://github.com/nutgram/nutgram/pull/1034
+
+### New Contributors
+
+* @manch1915 made their first contribution in https://github.com/nutgram/nutgram/pull/1034
+
+**Full Changelog**: https://github.com/nutgram/nutgram/compare/4.53.1...4.53.2
+
 ## 4.53.1 - 2026-11-25
 
 ### What's Changed
