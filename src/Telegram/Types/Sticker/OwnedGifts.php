@@ -22,5 +22,5 @@ class OwnedGifts extends BaseType
     /**
      * Optional. Offset for the next request. If empty, then there are no more results
      */
-    public string $next_offset;
+    public ?string $next_offset = null;
 }
